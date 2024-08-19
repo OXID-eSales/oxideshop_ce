@@ -255,7 +255,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
             if (!self::$_blIsNewSession && $blSwapped) {
                 $this->initNewSession();
 
-                if ($this->_sErrorMsg && ContainerFacade::getParameter('oxid_debug_mode')) {
+                if ($this->_sErrorMsg && ContainerFacade::getParameter('oxid_esales.debug_mode')) {
                     Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
                 }
             } elseif (!$blSwapped) {
@@ -819,7 +819,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         return !Registry::getUtils()->isSearchEngine() &&
             (
-                ContainerFacade::getParameter('oxid_force_session_start') ||
+                ContainerFacade::getParameter('oxid_esales.force_session_start') ||
                 Registry::getRequest()->getRequestEscapedParameter('su') ||
                 $this->_blForceNewSession
             );
@@ -936,7 +936,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         //if cookie was there once but now is gone it means we have to reset
         if ($blSessCookieSetOnce && !$sCookieSid) {
-            if (ContainerFacade::getParameter('oxid_debug_mode')) {
+            if (ContainerFacade::getParameter('oxid_esales.debug_mode')) {
                 $this->_sErrorMsg = "Cookie not found, creating new SID...<br>";
                 $this->_sErrorMsg .= "Cookie: $sCookieSid<br>";
                 $this->_sErrorMsg .= "Session: $blSessCookieSetOnce<br>";
@@ -990,12 +990,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getBasketName()
     {
-        $myConfig = Registry::getConfig();
-        if ($myConfig->getConfigParam('blMallSharedBasket') == 0) {
-            return $myConfig->getShopId() . "_basket";
-        }
-
-        return "basket";
+        return 'basket';
     }
 
     /**
@@ -1016,7 +1011,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getRequireSessionWithParams()
     {
-        $config = ContainerFacade::getParameter('oxid_session_init_params');
+        $config = ContainerFacade::getParameter('oxid_esales.session_init_params');
         $defaults = $this->_aRequireSessionWithParams;
         if (!$config) {
             return $defaults;
@@ -1059,7 +1054,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function getSessionUseCookies()
     {
-        return $this->isAdmin() || ContainerFacade::getParameter('oxid_cookies_session');
+        return $this->isAdmin() || ContainerFacade::getParameter('oxid_esales.cookies_session');
     }
 
     /**
@@ -1156,7 +1151,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
     private function isForceSidBlocked(): bool
     {
-        return ContainerFacade::getParameter('oxid_disallow_force_session_id');
+        return ContainerFacade::getParameter('oxid_esales.disallow_force_session_id');
     }
 
     private function canSendSidWithRequest(bool $useForceSid): bool

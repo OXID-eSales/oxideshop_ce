@@ -9,9 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Controller\BaseController;
-use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
-use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -19,8 +17,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBrid
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
-use PHPMailer\PHPMailer\PHPMailer;
 use ReflectionMethod;
 use Symfony\Component\Filesystem\Path;
 
@@ -90,25 +86,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected $_oCache = null;
 
     /**
-     * Path to the file, which holds the timestamp of the moment the last offline warning was sent.
-     *
-     * @var
-     */
-    protected $offlineWarningTimestampFile;
-
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->offlineWarningTimestampFile =
-            Path::join(
-                (new BasicContext())->getSourcePath(),
-                'log',
-                'last-offline-warning-timestamp.log'
-            );
-    }
-
-    /**
      * Main shop manager, that sets shop status, executes configuration methods.
      * Executes \OxidEsales\Eshop\Core\ShopControl::_runOnce(), if needed sets default class (according
      * to admin or regular activities). Additionally its possible to pass class name,
@@ -133,8 +110,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $this->handleSystemException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
             $this->handleCookieException($exception);
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
-            $this->handleDatabaseException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
             $this->handleRoutingException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
@@ -143,7 +118,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns the difference between stored profiler end time and start time. Works only after stopMonitoring() is called, otherwise returns 0.
+     * Returns the difference between stored profiler end time and start time. Works only after stopMonitoring() is
+     * called, otherwise returns 0.
      *
      * @return double
      */
@@ -526,7 +502,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
             // check if setup is still there
             $setupIndexFile = Path::join(
-                ContainerFacade::getParameter('oxid_shop_source_directory'),
+                ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
                 'Setup',
                 'index.php'
             );
@@ -553,7 +529,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      */
     protected function isDebugMode()
     {
-        return ContainerFacade::getParameter('oxid_debug_mode');
+        return ContainerFacade::getParameter('oxid_esales.debug_mode');
     }
 
     /**
@@ -642,7 +618,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->process('exceptionError', 'displayExceptionError');
         } else {
-            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start');
         }
     }
 
@@ -665,44 +641,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             Registry::getUtilsView()->addErrorToDisplay($exception);
         }
         Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
-    }
-
-    /**
-     * @deprecated will be removed in next major, standard execution handling will be used.
-     *
-     * Handle database exceptions
-     * There is still space for improving this as a similar exception handling for database exceptions may be done in
-     * \OxidEsales\EshopCommunity\Core\Config::init() and the current method may not be executed
-     *
-     * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception Exception to handle
-     */
-    protected function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
-    {
-        /**
-         * There may be some more exceptions, while trying to retrieve debug mode.
-         * As we are already inside the exception handling process, we MUST catch any exception here.
-         * The exception newly thrown will not be handled as we might end up in a loop.
-         */
-        try {
-            $debugMode = $this->isDebugMode();
-        } catch (\Exception $newException) {
-            $this->logException($newException);
-            $debugMode = 0;
-        }
-        if ($exception instanceof \OxidEsales\Eshop\Core\Exception\DatabaseConnectionException) {
-            try {
-                $this->reportDatabaseConnectionException($exception);
-            } catch (\Exception $newException) {
-                $this->logException($newException);
-            }
-        }
-
-        /**
-         * Do not use oxNew here as this code forms already part of the exception handling process and there should at
-         * least shop code called as possible.
-         */
-        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler($debugMode);
-        $exceptionHandler->handleDatabaseException($exception);
     }
 
     /**
@@ -733,121 +671,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
         }
         Registry::getLogger()->error($exception->getMessage(), [$exception]);
-    }
-
-    /**
-     * @deprecated will be removed in next major, standard execution handling will be used.
-     *
-     * Notify the shop owner about database connection problems.
-     *
-     * This method forms part of the exception handling process. Any further exceptions must be caught.
-     *
-     * @param DatabaseConnectionException $exception Database connection exception to report
-     *
-     * @return null
-     */
-    protected function reportDatabaseConnectionException(DatabaseConnectionException $exception)
-    {
-        /**
-         * If the shop is not in debug mode, a "shop offline" warning is send to the shop admin.
-         * In order not to spam the shop admin, the warning will be sent in a certain interval of time.
-         */
-        if ($this->messageWasSentWithinThreshold() || $this->isDebugMode()) {
-            return;
-        }
-
-        $result = $this->sendOfflineWarning($exception);
-        if ($result) {
-            file_put_contents($this->offlineWarningTimestampFile, time());
-        }
-    }
-
-    /**
-     * @deprecated will be removed in next major, standard execution handling will be used.
-     *
-     * Return true, if a message was already sent within a given threshold.
-     *
-     * This method forms part of the exception handling process. Any further exceptions must be caught.
-     *
-     * @return bool
-     */
-    protected function messageWasSentWithinThreshold()
-    {
-        $wasSentWithinThreshold = false;
-
-        /** @var int $threshold Threshold in seconds */
-        $threshold = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('offlineWarningInterval');
-        if (file_exists($this->offlineWarningTimestampFile)) {
-            $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
-            $lastSentBefore = time() - $lastSentTimestamp;
-            if ($lastSentBefore < $threshold) {
-                $wasSentWithinThreshold = true;
-            }
-        }
-
-        return $wasSentWithinThreshold;
-    }
-
-    /**
-     * @deprecated will be removed in next major, standard execution handling will be used.
-     *
-     * Send an offline warning to the shop owner.
-     * Currently an email is sent to the email address configured as 'sAdminEmail' in the eShop config file.
-     *
-     * This method forms part of the exception handling process. Any further exceptions must be caught.
-     *
-     * @param StandardException $exception
-     *
-     * @return bool Returns true, if the email was sent.
-     */
-    protected function sendOfflineWarning(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
-    {
-        $result = false;
-        /** @var  $emailAddress Email address to sent the message to */
-        $emailAddress = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sAdminEmail');
-
-        if ($emailAddress) {
-            /** As we are inside the exception handling process, any further exceptions must be caught */
-            $failedShop = isset($_REQUEST['shp']) ? addslashes($_REQUEST['shp']) : 'Base shop';
-
-            $date = date(DATE_RFC822); // RFC 822 (example: Mon, 15 Aug 05 15:52:01 +0000)
-            $script = $_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING'];
-            $referrer = $_SERVER['HTTP_REFERER'];
-
-            //sending a message to admin
-            $emailSubject = 'Offline warning!';
-            $emailBody = "
-                Database connection error in OXID eShop:
-                Date: {$date}
-                Shop: {$failedShop}
-
-                mysql error: " . $exception->getMessage() . "
-                mysql error no: " . $exception->getCode() . "
-
-                Script: {$script}
-                Referrer: {$referrer}";
-
-            $mailer = new PHPMailer();
-            $mailer->isMail();
-
-            $mailer->setFrom($emailAddress);
-            $mailer->addAddress($emailAddress);
-            $mailer->Subject = $emailSubject;
-            $mailer->Body = $emailBody;
-            /** Set the priority of the message
-             * For most clients expecting the Priority header:
-             * 1 = High, 2 = Medium, 3 = Low
-             * */
-            $mailer->Priority = 1;
-            /** MS Outlook custom header */
-            $mailer->addCustomHeader("X-MSMail-Priority: Urgent");
-            /** Set the Importance header: */
-            $mailer->addCustomHeader("Importance: High");
-
-            $result = $mailer->send();
-        }
-
-        return $result;
     }
 
     /**

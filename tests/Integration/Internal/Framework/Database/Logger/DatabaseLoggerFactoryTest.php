@@ -21,14 +21,14 @@ final class DatabaseLoggerFactoryTest extends TestCase
     {
         $context = new ContextStub();
         $context->setIsAdmin(true);
-        $context->setIsEnabledAdminQueryLog(true);
 
         $loggerFactory = new DatabaseLoggerFactory(
             $context,
             $this->getMockBuilder(QueryLogger::class)
                 ->disableOriginalConstructor()
                 ->getMock(),
-            new NullLogger()
+            new NullLogger(),
+            true
         );
 
         $this->assertInstanceOf(
@@ -41,14 +41,14 @@ final class DatabaseLoggerFactoryTest extends TestCase
     {
         $context = new ContextStub();
         $context->setIsAdmin(true);
-        $context->setIsEnabledAdminQueryLog(false);
 
         $loggerFactory = new DatabaseLoggerFactory(
             $context,
             $this->getMockBuilder(QueryLogger::class)
                 ->disableOriginalConstructor()
                 ->getMock(),
-            new NullLogger()
+            new NullLogger(),
+            false
         );
 
         $this->assertInstanceOf(
@@ -61,14 +61,14 @@ final class DatabaseLoggerFactoryTest extends TestCase
     {
         $context = new ContextStub();
         $context->setIsAdmin(false);
-        $context->setIsEnabledAdminQueryLog(true);
 
         $loggerFactory = new DatabaseLoggerFactory(
             $context,
             $this->getMockBuilder(QueryLogger::class)
                 ->disableOriginalConstructor()
                 ->getMock(),
-            new NullLogger()
+            new NullLogger(),
+            true
         );
 
         $this->assertInstanceOf(

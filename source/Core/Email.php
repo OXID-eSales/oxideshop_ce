@@ -411,7 +411,7 @@ class Email extends PHPMailer
             $this->setSmtpAuthInfo($shop->oxshops__oxsmtpuser->value, $shop->oxshops__oxsmtppwd->getRawValue());
         }
 
-        if (ContainerFacade::getParameter('oxid_smtp_debug_mode')) {
+        if (ContainerFacade::getParameter('oxid_esales.smtp_debug_mode')) {
             $this->setSmtpDebug(true);
         }
     }
@@ -1935,7 +1935,7 @@ class Email extends PHPMailer
      */
     private function isDebugModeEnabled()
     {
-        return ContainerFacade::getParameter('oxid_debug_mode');
+        return ContainerFacade::getParameter('oxid_esales.debug_mode');
     }
 
     /**

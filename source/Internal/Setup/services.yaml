@@ -7,9 +7,6 @@ imports:
   - { resource: Parameters/services.yaml }
   - { resource: ShopConfiguration/services.yaml }
 
-parameters:
-  option_setup_language: language
-
 services:
   _defaults:
     autowire: true
@@ -18,5 +15,3 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand
     tags:
       - { name: 'console.command', command: 'oe:setup:shop' }
-    arguments:
-      $optionSetupLanguage: '%option_setup_language%'

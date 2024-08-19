@@ -428,8 +428,7 @@ class FrontendController extends BaseController
     /**
      * Returns component names.
      *
-     * At the moment it is not possible to override $_aCollectedComponentNames in oxUBase,
-     * so aUserComponentNames was added to config.inc.php file.
+     * At the moment it is not possible to override $_aCollectedComponentNames in oxUBase.
      *
      * @return array
      */
@@ -438,7 +437,7 @@ class FrontendController extends BaseController
         if (self::$_aCollectedComponentNames === null) {
             self::$_aCollectedComponentNames = array_merge($this->_aComponentNames, $this->_aUserComponentNames);
 
-            if (($userComponentNames = Registry::getConfig()->getConfigParam('aUserComponentNames'))) {
+            if ($userComponentNames = ContainerFacade::getParameter('oxid_esales.cacheable_user_components')) {
                 self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $userComponentNames);
             }
 
@@ -447,7 +446,6 @@ class FrontendController extends BaseController
             }
         }
 
-        // resetting array pointer
         reset(self::$_aCollectedComponentNames);
 
         return self::$_aCollectedComponentNames;
@@ -472,7 +470,7 @@ class FrontendController extends BaseController
                 // forcing to set no index/follow meta
                 $this->forceNoIndex();
 
-                if (Registry::getConfig()->getConfigParam('blSeoLogging')) {
+                if (ContainerFacade::getParameter('oxid_esales.log_not_seo_urls')) {
                     $shopId = Registry::getConfig()->getShopId();
                     $languageId = Registry::getLang()->getBaseLanguage();
                     $id = md5(strtolower($requestUrl) . $shopId . $languageId);
@@ -2075,7 +2073,7 @@ class FrontendController extends BaseController
 
         $config = Registry::getConfig();
         $this->_aViewData["defaultLang"] = $config->getConfigParam('sDefaultLang');
-        $this->_aViewData["shopURLParam"] = ContainerFacade::getParameter('oxid_shop_url');
+        $this->_aViewData["shopURLParam"] = ContainerFacade::getParameter('oxid_esales.shop_url');
 
         return $this->_sThisTemplate;
     }

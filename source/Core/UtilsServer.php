@@ -171,7 +171,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     protected function getCookiePath($path)
     {
         return ContainerFacade::getParameter(
-            'oxid_cookie_paths'
+            'oxid_esales.cookie_paths'
         )[ContainerFacade::get(ContextInterface::class)->getCurrentShopId()] ??
             $path ?:
             '';
@@ -186,7 +186,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     {
         return $domain ?:
             ContainerFacade::getParameter(
-                'oxid_cookie_domains'
+                'oxid_esales.cookie_domains'
             )[ContainerFacade::get(ContextInterface::class)->getCurrentShopId()] ??
             '';
     }
@@ -320,7 +320,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     {
         return in_array(
             $this->getRemoteAddress(),
-            ContainerFacade::getParameter('oxid_trusted_ips'),
+            ContainerFacade::getParameter('oxid_esales.trusted_ips'),
             true
         );
     }

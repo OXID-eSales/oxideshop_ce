@@ -31,7 +31,7 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
         $oAuthUser->loadAdminUser();
         $this->_aViewData["blIsMallAdmin"] = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
-        $this->_aViewData['showViewUpdate'] = ContainerFacade::getParameter('oxid_show_update_views_button');
+        $this->_aViewData['showViewUpdate'] = ContainerFacade::getParameter('oxid_esales.show_update_views_button');
 
         return "tools_main";
     }

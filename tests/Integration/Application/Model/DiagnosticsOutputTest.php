@@ -9,12 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Application\Model\DiagnosticsOutput;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
 final class DiagnosticsOutputTest extends TestCase

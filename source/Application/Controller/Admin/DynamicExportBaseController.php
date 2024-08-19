@@ -123,7 +123,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // set generic frame template
         $this->_sFilePath = Path::join(
-            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
             $this->sExportPath,
             "$this->sExportFileName.$this->sExportFileType"
         );
@@ -148,7 +148,7 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
         $this->_aViewData['sOutputFile'] = $this->_sFilePath;
         $this->_aViewData['sDownloadFile'] =
             Path::join(
-                ContainerFacade::getParameter('oxid_shop_url'),
+                ContainerFacade::getParameter('oxid_esales.shop_url'),
                 $this->sExportPath,
                 "$this->sExportFileName.$this->sExportFileType"
             );

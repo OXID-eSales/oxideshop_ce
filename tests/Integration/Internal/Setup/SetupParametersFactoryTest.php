@@ -9,12 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup;
 
+use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Parameters\SetupParametersFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Symfony\Component\Console\Input\InputInterface;
 
 final class SetupParametersFactoryTest extends TestCase
 {
@@ -24,13 +24,8 @@ final class SetupParametersFactoryTest extends TestCase
     public function testCreate(): void
     {
         $setupLanguage = 'de';
-        $input = $this->prophesize(InputInterface::class);
-        $input->getOption('language')->willReturn($setupLanguage);
 
-        $parameters = $this->get(SetupParametersFactoryInterface::class)
-            ->create(
-                $input->reveal()
-            );
+        $parameters = $this->get(SetupParametersFactoryInterface::class)->create(new DefaultLanguage($setupLanguage));
 
         $context = $this->get(ContextInterface::class);
         $this->assertEquals($context->getCacheDirectory(), $parameters->getCacheDir());

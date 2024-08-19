@@ -187,7 +187,7 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
 
     private function getLanguageSuffix(): string
     {
-        return ContainerFacade::getParameter('oxid_skip_database_views_usage')
+        return ContainerFacade::getParameter('oxid_esales.skip_database_views_usage')
             ? Registry::getLang()->getLanguageTag()
             : '';
     }

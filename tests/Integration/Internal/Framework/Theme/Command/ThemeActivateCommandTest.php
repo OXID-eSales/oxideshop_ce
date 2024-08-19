@@ -96,7 +96,7 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         Registry::getConfig()->setConfigParam('sTheme', 'absolute-dummy-value');
 
         $this->createContainer();
-        $this->container->setParameter('oxid_shop_source_directory', "$this->fixtureDirectory/shop/source/");
+        $this->container->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
         $this->compileContainer();
         $this->attachContainerToContainerFactory();
     }

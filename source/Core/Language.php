@@ -1215,7 +1215,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             'oxvendor',
             'oxwrapping',
         ];
-        $configTables = ContainerFacade::getParameter('oxid_multilingual_tables');
+        $configTables = ContainerFacade::getParameter('oxid_esales.multilingual_tables');
         if (\is_array($configTables)) {
             $tables = \array_merge($tables, $configTables);
         }

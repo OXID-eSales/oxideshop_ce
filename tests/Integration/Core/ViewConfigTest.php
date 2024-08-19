@@ -30,7 +30,7 @@ final class ViewConfigTest extends IntegrationTestCase
     public function testIsAltImageServerConfiguredWithEmptyParameter(): void
     {
         $this->createContainer();
-        $this->container->setParameter('oxid_alternative_image_url', '');
+        $this->container->setParameter('oxid_esales.alternative_image_url', '');
         $this->compileContainer();
         $this->attachContainerToContainerFactory();
 
@@ -42,7 +42,7 @@ final class ViewConfigTest extends IntegrationTestCase
     public function testIsAltImageServerConfiguredWithNotEmptyParameter(): void
     {
         $this->createContainer();
-        $this->container->setParameter('oxid_alternative_image_url', 'someValue');
+        $this->container->setParameter('oxid_esales.alternative_image_url', 'someValue');
         $this->compileContainer();
         $this->attachContainerToContainerFactory();
 

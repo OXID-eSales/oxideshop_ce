@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Setup;
 
 use OxidEsales\EshopCommunity\Internal\Setup\Database\ShopDbManagerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdaterInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\LanguageInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Parameters\SetupParametersFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\ShopConfiguration\ShopConfigurationUpdaterInterface;
@@ -30,8 +31,7 @@ class ShopSetupCommand extends Command
         private readonly ShopDbManagerInterface $shopDbManager,
         private readonly LanguageInstallerInterface $languageInstaller,
         private readonly HtaccessUpdaterInterface $htaccessUpdateService,
-        private readonly ShopConfigurationUpdaterInterface $shopConfigurationUpdater,
-        private readonly string $optionSetupLanguage,
+        private readonly ShopConfigurationUpdaterInterface $shopConfigurationUpdater
     ) {
         parent::__construct();
     }
@@ -39,7 +39,7 @@ class ShopSetupCommand extends Command
     protected function configure(): void
     {
         $this->addOption(
-            name: $this->optionSetupLanguage,
+            name: 'language',
             mode: InputOption::VALUE_OPTIONAL,
             default: self::DEFAULT_LANG
         );
@@ -50,7 +50,7 @@ class ShopSetupCommand extends Command
     {
         $output->writeln('<info>Running pre-setup checks...</info>');
         $setupParameters = $this->setupParametersFactory
-            ->create($input);
+            ->create(new DefaultLanguage($input->getOption('language')));
         $this->setupInfrastructureValidator
             ->validate($setupParameters);
 

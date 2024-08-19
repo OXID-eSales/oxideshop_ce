@@ -438,7 +438,7 @@ final class CheckoutProcessCest
         $I->wantToTest('checkout process can be completed with cookies disabled');
 
         $I->amGoingTo('disable storing session in cookies via configuration');
-        $I->updateProjectConfigurations(['oxid_cookies_session' => false], []);
+        $I->updateProjectConfigurations(['oxid_esales.cookies_session' => false], []);
 
         $I->amGoingTo('go through checkout steps');
         (new Basket($I))->addProductToBasketAndOpenUserCheckout('1000', 10);

@@ -167,10 +167,10 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         $oShop = parent::addGlobalParams($oShop);
 
-        if (ContainerFacade::getParameter('oxid_shop_admin_url')) {
-            $url = ContainerFacade::getParameter('oxid_shop_admin_url');
+        if (ContainerFacade::getParameter('oxid_esales.shop_admin_url')) {
+            $url = ContainerFacade::getParameter('oxid_esales.shop_admin_url');
         } else {
-            $url = ContainerFacade::getParameter('oxid_shop_url') .
+            $url = ContainerFacade::getParameter('oxid_esales.shop_url') .
                 $myConfig->getConfigParam('sAdminDir') .
                 "/";
         }

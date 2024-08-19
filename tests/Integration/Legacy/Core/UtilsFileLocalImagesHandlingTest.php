@@ -198,7 +198,7 @@ final class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
 
     private function prepareTestDirectories(): void
     {
-        $this->someTmpDir = ContainerFacade::getParameter('oxid_build_directory');
+        $this->someTmpDir = ContainerFacade::getParameter('oxid_esales.build_directory');
         $pictureDir = Registry::getConfig()->getPictureDir(false);
         $uniqueFilename = uniqid('some_image_', true);
         $this->testFile = sprintf('%s.jpg', $uniqueFilename);

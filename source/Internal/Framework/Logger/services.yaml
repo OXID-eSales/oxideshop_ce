@@ -1,6 +1,3 @@
-parameters:
-  oxid_log_level: '%env(OXID_LOG_LEVEL)%'
-
 services:
   _defaults:
     autowire: true

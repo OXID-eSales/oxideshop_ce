@@ -20,7 +20,7 @@ final class WidgetControlTest extends IntegrationTestCase
 {
     public function testIfDoesNotAllowToInitiateNonWidgetClass(): void
     {
-        if (!ContainerFacade::getParameter('oxid_debug_mode')) {
+        if (!ContainerFacade::getParameter('oxid_esales.debug_mode')) {
             $this->markTestSkipped('Test works only in debug mode.');
         }
 

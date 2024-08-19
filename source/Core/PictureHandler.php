@@ -276,7 +276,7 @@ class PictureHandler extends Base
 
     public function getAltImageUrl($filePath, $file)
     {
-        $altUrl = ContainerFacade::getParameter('oxid_alternative_image_url') ?: null;
+        $altUrl = ContainerFacade::getParameter('oxid_esales.alternative_image_url') ?: null;
 
         if ($altUrl && !is_null($file)) {
             $altUrl = Path::join($altUrl, $filePath, $file);

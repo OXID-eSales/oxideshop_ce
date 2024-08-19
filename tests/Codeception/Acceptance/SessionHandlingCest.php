@@ -57,7 +57,7 @@ final class SessionHandlingCest
         $userData = Fixtures::get('existingUser');
 
         $I->amGoingTo('disable force_sid via configuration');
-        $I->updateProjectConfigurations(['oxid_disallow_force_session_id' => true], []);
+        $I->updateProjectConfigurations(['oxid_esales.disallow_force_session_id' => true], []);
 
         $I->amGoingTo('login to existing user account and grab active session ID');
         $this->createUserSession(

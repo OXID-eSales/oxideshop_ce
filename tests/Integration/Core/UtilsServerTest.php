@@ -52,7 +52,7 @@ final class UtilsServerTest extends TestCase
         $someIp = '255.255.255.255';
         $_SERVER['HTTP_CLIENT_IP'] = $someIp;
         $this->createContainer();
-        $this->container->setParameter('oxid_trusted_ips', [$someIp]);
+        $this->container->setParameter('oxid_esales.trusted_ips', [$someIp]);
         $this->compileContainer();
         $this->attachContainerToContainerFactory();
 
@@ -66,7 +66,7 @@ final class UtilsServerTest extends TestCase
         $someIp = '255.255.255.255';
         $_SERVER['HTTP_CLIENT_IP'] = $someIp;
         $this->createContainer();
-        $this->container->setParameter('oxid_trusted_ips', ['1.2.3.4', '5.6.7.8']);
+        $this->container->setParameter('oxid_esales.trusted_ips', ['1.2.3.4', '5.6.7.8']);
         $this->compileContainer();
         $this->attachContainerToContainerFactory();
 

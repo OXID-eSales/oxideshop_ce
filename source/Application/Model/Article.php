@@ -2357,7 +2357,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $str = Str::getStr();
         $pictureCounter = 0;
         $activePicId = true;
-        $maxPicPerProduct = ContainerFacade::getParameter('oxid_max_product_picture_count');
+        $maxPicPerProduct = ContainerFacade::getParameter('oxid_esales.max_product_picture_count');
 
         for ($i = 1; $i <= $maxPicPerProduct; $i++) {
             $picture = $this->getPictureUrl($i);
@@ -4723,7 +4723,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         //deleting custom thumbnail
         $pictureHandler->deleteThumbnail($this);
 
-        for ($i = 1; $i <= ContainerFacade::getParameter('oxid_max_product_picture_count'); $i++) {
+        for ($i = 1; $i <= ContainerFacade::getParameter('oxid_esales.max_product_picture_count'); $i++) {
             $pictureHandler->deleteArticleMasterPicture($this, $i);
         }
     }

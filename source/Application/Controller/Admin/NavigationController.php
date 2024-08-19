@@ -183,7 +183,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         if (
             file_exists(
                 Path::join(
-                    ContainerFacade::getParameter('oxid_shop_source_directory'),
+                    ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
                     'Setup',
                     'index.php'
                 )
@@ -193,7 +193,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
         }
 
         // check if config file is writable
-        $sConfPath = Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'config.inc.php');
+        $sConfPath = Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), 'config.inc.php');
         if (!is_readable($sConfPath) || is_writable($sConfPath)) {
             $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }

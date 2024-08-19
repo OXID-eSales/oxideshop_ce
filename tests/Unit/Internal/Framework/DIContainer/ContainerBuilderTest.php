@@ -31,11 +31,7 @@ final class ContainerBuilderTest extends TestCase
         );
         $this->assertEquals(
             $sourcePath,
-            $symfonyContainerBuilder->getParameter('oxid_shop_source_directory')
-        );
-        $this->assertEquals(
-            $cachePath,
-            $symfonyContainerBuilder->getParameter('oxid_cache_directory')
+            $symfonyContainerBuilder->getParameter('oxid_esales.shop_source_directory')
         );
     }
 }

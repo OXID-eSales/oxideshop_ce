@@ -319,7 +319,7 @@ class SystemRequirements
             'not_writable' => []
         ];
 
-        $buildDirectory = ContainerFacade::getParameter('oxid_build_directory');
+        $buildDirectory = ContainerFacade::getParameter('oxid_esales.build_directory');
 
         $pathsToCheck = [
             $buildDirectory
@@ -361,7 +361,7 @@ class SystemRequirements
      */
     protected function getShopSSLHostInfoFromConfig()
     {
-        $sslShopURL = ContainerFacade::getParameter('oxid_shop_url');
+        $sslShopURL = ContainerFacade::getParameter('oxid_esales.shop_url');
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sslShopURL, $shopUrlComponents)) {
             $host = $shopUrlComponents[2];
             $port = (int) $shopUrlComponents[4];

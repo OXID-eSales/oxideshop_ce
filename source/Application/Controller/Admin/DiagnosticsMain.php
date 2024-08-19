@@ -89,7 +89,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         parent::__construct();
 
-        $this->_sShopDir = ContainerFacade::getParameter('oxid_shop_source_directory');
+        $this->_sShopDir = ContainerFacade::getParameter('oxid_esales.shop_source_directory');
         $this->_oOutput = oxNew(\OxidEsales\Eshop\Application\Model\DiagnosticsOutput::class);
     }
 
@@ -132,7 +132,7 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         $aViewData = [];
         $oDiagnostics = oxNew(\OxidEsales\Eshop\Application\Model\Diagnostics::class);
 
-        $oDiagnostics->setShopLink(ContainerFacade::getParameter('oxid_shop_url'));
+        $oDiagnostics->setShopLink(ContainerFacade::getParameter('oxid_esales.shop_url'));
         $oDiagnostics->setEdition(Registry::getConfig()->getFullEdition());
         $oDiagnostics->setVersion(
             oxNew(\OxidEsales\Eshop\Core\ShopVersion::class)->getVersion()

@@ -574,10 +574,10 @@ class NavigationTree extends Base
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        if (($adminUrl = ContainerFacade::getParameter('oxid_shop_admin_url'))) {
+        if (($adminUrl = ContainerFacade::getParameter('oxid_esales.shop_admin_url'))) {
             $url = trim($adminUrl, '/');
         } else {
-            $url = trim(ContainerFacade::getParameter('oxid_shop_url'), '/') . '/admin';
+            $url = trim(ContainerFacade::getParameter('oxid_esales.shop_url'), '/') . '/admin';
         }
 
         return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl("{$url}/index.php", false);

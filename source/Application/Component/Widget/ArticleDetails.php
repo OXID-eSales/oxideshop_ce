@@ -943,8 +943,8 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         $config = Registry::getConfig();
         $this->_aViewData['preview'] = Registry::getRequest()->getRequestEscapedParameter('preview');
-        $this->_aViewData['altImageUrl'] = ContainerFacade::getParameter('oxid_alternative_image_url');
-        $this->_aViewData['SSLAltImageUrl'] = ContainerFacade::getParameter('oxid_alternative_image_url');
+        $this->_aViewData['altImageUrl'] = ContainerFacade::getParameter('oxid_esales.alternative_image_url');
+        $this->_aViewData['SSLAltImageUrl'] = ContainerFacade::getParameter('oxid_esales.alternative_image_url');
 
         return $this->_sThisTemplate;
     }

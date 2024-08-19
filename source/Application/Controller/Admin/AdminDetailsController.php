@@ -24,12 +24,12 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         // generate help link
         $myConfig = Registry::getConfig();
         $sDir = Path::join(
-            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
             'documentation',
             'admin'
         );
         if (is_dir($sDir)) {
-            $sDir = ContainerFacade::getParameter('oxid_shop_url') . 'documentation/admin';
+            $sDir = ContainerFacade::getParameter('oxid_esales.shop_url') . 'documentation/admin';
         } else {
             $languageId = $this->getDocumentationLanguageId();
             $shopVersion = oxNew(ShopVersion::class)->getVersion();

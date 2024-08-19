@@ -1,3 +1,6 @@
+parameters:
+  oxid_esales.log_admin_queries: false
+
 services:
   _defaults:
     autowire: true
@@ -13,6 +16,7 @@ services:
     arguments:
       $queryLogger: '@OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger'
       $nullLogger: '@OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger'
+      $logQueriesInAdmin: '%oxid_esales.log_admin_queries%'
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilterInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter

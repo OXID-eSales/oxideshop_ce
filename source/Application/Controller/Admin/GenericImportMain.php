@@ -289,7 +289,7 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
         $aFile = $oConfig->getUploadedFile('csvfile');
         if (isset($aFile['name']) && $aFile['name']) {
             $this->_sCsvFilePath = Path::join(
-                ContainerFacade::getParameter('oxid_build_directory'),
+                ContainerFacade::getParameter('oxid_esales.build_directory'),
                 basename($aFile['tmp_name'])
             );
             move_uploaded_file($aFile['tmp_name'], $this->_sCsvFilePath);

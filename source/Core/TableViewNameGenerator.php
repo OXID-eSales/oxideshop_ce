@@ -52,7 +52,7 @@ class TableViewNameGenerator
     {
         $config = $this->getConfig();
 
-        if (!ContainerFacade::getParameter('oxid_skip_database_views_usage')) {
+        if (!ContainerFacade::getParameter('oxid_esales.skip_database_views_usage')) {
             $language = $this->getLanguage();
             $languageId = $languageId !== null ? $languageId : $language->getBaseLanguage();
             $shopId = $shopId !== null ? $shopId : $config->getShopId();

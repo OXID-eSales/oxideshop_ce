@@ -1,8 +1,45 @@
 parameters:
-  oxid_force_session_start: false
-  oxid_cookies_session: true
-  oxid_cookie_domains: []
-  oxid_cookie_paths: []
-  oxid_trusted_ips: []
-  oxid_session_init_params: []
-  oxid_disallow_force_session_id: false
+  oxid_esales.shop_admin_url: null
+  oxid_esales.force_session_start: false
+  oxid_esales.session_init_params: [ ]
+  oxid_esales.disallow_force_session_id: false
+  oxid_esales.cookies_session: true
+  oxid_esales.cookie_domains: []
+  oxid_esales.cookie_paths: []
+  oxid_esales.trusted_ips: []
+  oxid_esales.log_not_seo_urls: false
+  oxid_esales.cacheable_user_components: []
+  oxid_esales.demo_shop_mode: false
+  oxid_esales.smtp_debug_mode: false
+  oxid_esales.cron_enabled: false
+  oxid_esales.alternative_image_url:
+  oxid_esales.allowed_uploaded_types:
+    - 'avi'
+    - 'doc'
+    - 'gif'
+    - 'jpg'
+    - 'mp3'
+    - 'mpeg'
+    - 'mpg'
+    - 'pdf'
+    - 'png'
+    - 'ppt'
+    - 'xls'
+  oxid_esales.search_engine_list:
+    - 'ahrefs'
+    - 'ahrefsbot'
+    - 'applebot'
+    - 'archive.org'
+    - 'baidubot'
+    - 'bingbot'
+    - 'duckduckgo'
+    - 'facebookexternalhit'
+    - 'googlebot'
+    - 'lighthouse'
+    - 'linkedinbot'
+    - 'semrushbot'
+    - 'sistrixcrawler'
+    - 'sogouspider'
+    - 'twitterbot'
+    - 'yandexbot'
+    - 'yesco'

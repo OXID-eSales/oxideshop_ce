@@ -205,7 +205,7 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     public function addShopHost($url)
     {
         if (!preg_match("#^https?://#i", $url)) {
-            $url = ContainerFacade::getParameter('oxid_shop_url') . $url;
+            $url = ContainerFacade::getParameter('oxid_esales.shop_url') . $url;
         }
 
         return $url;
@@ -533,10 +533,10 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
             $this->addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
 
             // current url
-            $this->addHost(ContainerFacade::getParameter('oxid_shop_url'), $this->_aHosts);
+            $this->addHost(ContainerFacade::getParameter('oxid_esales.shop_url'), $this->_aHosts);
 
             if ($this->isAdmin()) {
-                $this->addHost(ContainerFacade::getParameter('oxid_shop_admin_url'), $this->_aHosts);
+                $this->addHost(ContainerFacade::getParameter('oxid_esales.shop_admin_url'), $this->_aHosts);
             }
         }
 

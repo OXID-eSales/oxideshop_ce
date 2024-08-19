@@ -45,9 +45,7 @@ class ContainerBuilder
         $this->containerBuilder = new SymfonyContainerBuilder();
 
         $this->containerBuilder->setParameter('oxid_esales.current_shop_id', $this->shopId);
-        $this->containerBuilder->setParameter('oxid_shop_source_directory', $this->basicContext->getSourcePath());
-        $this->containerBuilder->setParameter('oxid_cache_directory', $this->basicContext->getCacheDirectory());
-        $this->containerBuilder->setParameter('oxid_db_url', $this->basicContext->getDatabaseUrl());
+        $this->containerBuilder->setParameter('oxid_esales.shop_source_directory', $this->basicContext->getSourcePath());
 
         $this->containerBuilder->addCompilerPass(new RegisterListenersPass());
         $this->containerBuilder->addCompilerPass(new AddConsoleCommandPass());

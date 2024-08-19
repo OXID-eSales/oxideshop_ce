@@ -7,9 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Parameters;
 
-use Symfony\Component\Console\Input\InputInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 
 interface SetupParametersFactoryInterface
 {
-    public function create(InputInterface $input): SetupParameters;
+    public function create(DefaultLanguage $language): SetupParameters;
 }

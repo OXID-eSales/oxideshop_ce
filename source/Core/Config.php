@@ -7,16 +7,16 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\Facts\Facts;
 use stdClass;
-use OxidEsales\Eshop\Application\Controller\FrontendController;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use Symfony\Component\Filesystem\Path;
 
 //max integer
@@ -341,10 +341,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $this->setConfigParam('sDefaultLang', 0);
         }
 
-        if (is_null($this->getConfigParam('blLogChangesInAdmin'))) {
-            $this->setConfigParam('blLogChangesInAdmin', false);
-        }
-
         if (is_null($this->getConfigParam('blCheckTemplates'))) {
             $this->setConfigParam('blCheckTemplates', false);
         }
@@ -607,9 +603,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $this->setIsSsl();
         if (isset($httpsServerVar) && ($httpsServerVar === 'on' || $httpsServerVar === 'ON' || $httpsServerVar == '1')) {
-            $this->setIsSsl(ContainerFacade::getParameter('oxid_shop_url') || $this->getConfigParam('sMallSSLShopURL'));
+            $this->setIsSsl(ContainerFacade::getParameter('oxid_esales.shop_url') || $this->getConfigParam('sMallSSLShopURL'));
             if ($this->isAdmin() && !$this->_blIsSsl) {
-                $this->setIsSsl(!is_null(ContainerFacade::getParameter('oxid_shop_admin_url')));
+                $this->setIsSsl(!is_null(ContainerFacade::getParameter('oxid_esales.shop_admin_url')));
             }
         }
 
@@ -701,7 +697,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!$url) {
-            $url = ContainerFacade::getParameter('oxid_shop_url');
+            $url = ContainerFacade::getParameter('oxid_esales.shop_url');
         }
 
         return $url;
@@ -731,7 +727,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $admin = $this->isAdmin();
         }
         if ($admin) {
-            $url = ContainerFacade::getParameter('oxid_shop_admin_url');
+            $url = ContainerFacade::getParameter('oxid_esales.shop_admin_url');
             if (!$url) {
                 return $this->getShopUrl() . $this->getConfigParam('sAdminDir') . '/';
             }
@@ -866,7 +862,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         if ($absolute) {
 
-            return Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), $this->_sOutDir)
+            return Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), $this->_sOutDir)
                 . DIRECTORY_SEPARATOR;
         } else {
 
@@ -913,7 +909,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         if ($absolute) {
 
-            return Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'Application')
+            return Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), 'Application')
                 . DIRECTORY_SEPARATOR;
         } else {
 
@@ -937,9 +933,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if ($nativeImg && !$admin) {
             $url = $this->getShopUrl();
         } else {
-            $url = ContainerFacade::getParameter('oxid_shop_url');
+            $url = ContainerFacade::getParameter('oxid_esales.shop_url');
             if (!$url && $admin) {
-                $url = ContainerFacade::getParameter('oxid_shop_admin_url') . '../';
+                $url = ContainerFacade::getParameter('oxid_esales.shop_admin_url') . '../';
             }
         }
 
@@ -1396,7 +1392,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function isDemoShop()
     {
-        return $this->getConfigParam('blDemoShop');
+        return ContainerFacade::getParameter('oxid_esales.demo_shop_mode');
     }
 
     /**
@@ -1421,7 +1417,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getPackageInfo()
     {
-        $fileName = Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'pkg.info');
+        $fileName = Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), 'pkg.info');
         $rev = @file_get_contents($fileName);
         $rev = str_replace("\n", "<br>", $rev);
 
@@ -1733,7 +1729,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getLogsDir()
     {
-        return Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), 'log');
+        return Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), 'log');
     }
 
     /**
@@ -1755,7 +1751,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopMainUrl()
     {
-        return ContainerFacade::getParameter('oxid_shop_url');
+        return ContainerFacade::getParameter('oxid_esales.shop_url');
     }
 
     /**
@@ -1810,8 +1806,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
-        $exceptionHandler = $this->getExceptionHandler();
-        $exceptionHandler->handleDatabaseException($exception);
+        $this->getExceptionHandler()->handleUncaughtException($exception);
     }
 
     /**

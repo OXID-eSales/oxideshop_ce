@@ -117,7 +117,7 @@ abstract class EmailBuilder
     protected function getEmailOriginMessage()
     {
         $lang = \OxidEsales\Eshop\Core\Registry::getLang();
-        $shopUrl = ContainerFacade::getParameter('oxid_shop_url');
+        $shopUrl = ContainerFacade::getParameter('oxid_esales.shop_url');
 
         return "<br>" . sprintf(
             $lang->translateString(

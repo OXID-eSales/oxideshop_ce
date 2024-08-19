@@ -44,7 +44,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         // automatically redirect to SSL login
         if (!$myConfig->isSsl()) {
-            $adminUrl = ContainerFacade::getParameter('oxid_shop_admin_url');
+            $adminUrl = ContainerFacade::getParameter('oxid_esales.shop_admin_url');
             if ($adminUrl && str_starts_with($adminUrl, 'https://')) {
                 Registry::getUtils()->redirect($adminUrl, false, 302);
             }

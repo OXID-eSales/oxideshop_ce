@@ -538,7 +538,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $aResponse['sort'] = '_' . $this->getSortCol();
         $aResponse['dir'] = $this->getSortDir();
 
-        $debug = ContainerFacade::getParameter('oxid_debug_mode');
+        $debug = ContainerFacade::getParameter('oxid_esales.debug_mode');
         if ($debug) {
             $aResponse['countsql'] = $sCountQ;
         }

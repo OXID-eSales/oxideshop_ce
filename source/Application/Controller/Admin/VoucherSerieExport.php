@@ -67,9 +67,9 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         $myConfig = Registry::getConfig();
 
-        ContainerFacade::getParameter('oxid_shop_admin_url');
-        $url = ContainerFacade::getParameter('oxid_shop_admin_url') ?:
-            ContainerFacade::getParameter('oxid_shop_url') . $myConfig->getConfigParam('sAdminDir');
+        ContainerFacade::getParameter('oxid_esales.shop_admin_url');
+        $url = ContainerFacade::getParameter('oxid_esales.shop_admin_url') ?:
+            ContainerFacade::getParameter('oxid_esales.shop_url') . $myConfig->getConfigParam('sAdminDir');
 
         $url = Registry::getUtilsUrl()->processUrl($url . '/index.php');
 
@@ -101,7 +101,7 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     protected function getExportFilePath()
     {
         return Path::join(
-            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
             'export',
             $this->getExportFileName()
         );

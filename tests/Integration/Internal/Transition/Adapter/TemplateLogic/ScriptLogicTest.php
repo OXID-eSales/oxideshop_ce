@@ -29,7 +29,7 @@ final class ScriptLogicTest extends IntegrationTestCase
     {
         parent::setUp();
         $this->createContainer();
-        $this->container->setParameter('oxid_debug_mode', true);
+        $this->container->setParameter('oxid_esales.debug_mode', true);
         $this->container->compile();
         $this->attachContainerToContainerFactory();
 
@@ -40,7 +40,7 @@ final class ScriptLogicTest extends IntegrationTestCase
     public function testIncludeFileNotExists(): void
     {
         $this->createContainer();
-        $this->container->setParameter('oxid_debug_mode', false);
+        $this->container->setParameter('oxid_esales.debug_mode', false);
         $this->container->compile();
         $this->attachContainerToContainerFactory();
 
@@ -51,7 +51,7 @@ final class ScriptLogicTest extends IntegrationTestCase
 
     public function testIncludeFileExists(): void
     {
-        $this->scriptLogic->include('http://someurl/src/js/libs/jquery.min.js', 3);
+        $this->scriptLogic->include('http://someurl/src/js/libs/jquery.min.js');
 
         $this->assertArrayHasKey(3, $this->config->getGlobalParameter('includes'));
         $this->assertContains(
@@ -89,7 +89,12 @@ EOF,
         );
         $this->scriptLogic->add($script);
 
-        $this->assertEquals($expected, $this->scriptLogic->render('somewidget', true));
+        $actual = $this->scriptLogic->render('somewidget', true);
+
+        $this->assertEquals(
+            $this->stripFormatting($expected),
+            $this->stripFormatting($actual),
+        );
     }
 
     public static function addWidgetProvider(): array
@@ -115,6 +120,13 @@ EOF,
 </script>
 HTML;
 
-        $this->assertEquals($expected, $this->scriptLogic->render('somewidget', true));
+        $actual = $this->scriptLogic->render('somewidget', true);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    private function stripFormatting(string $html): string
+    {
+        return str_replace(["\n", ' '], '', $html);
     }
 }

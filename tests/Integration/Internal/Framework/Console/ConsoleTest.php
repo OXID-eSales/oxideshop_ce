@@ -37,6 +37,6 @@ final class ConsoleTest extends TestCase
 
         $this->runInConsoleAndAssertSuccess('');
 
-        $this->assertEquals($envValue, $this->getParameter('oxid_value'));
+        $this->assertEquals($envValue, $this->getParameter('oxid_esales.value'));
     }
 }

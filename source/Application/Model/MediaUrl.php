@@ -87,7 +87,7 @@ class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function delete($sOXID = null)
     {
         $sFilePath = Path::join(
-            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
             'out',
             'media',
             basename($this->oxmediaurls__oxurl->value)

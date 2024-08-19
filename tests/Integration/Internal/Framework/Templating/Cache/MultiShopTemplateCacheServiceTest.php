@@ -69,7 +69,7 @@ final class MultiShopTemplateCacheServiceTest extends TestCase
 
         $this->container = (new TestContainerFactory())->create();
         $this->container->set(ContextInterface::class, $context);
-        $this->container->setParameter('oxid_build_directory', $this->testFixturesDirectory);
+        $this->container->setParameter('oxid_esales.build_directory', $this->testFixturesDirectory);
         $this->container->autowire(ContextInterface::class, ContextInterface::class);
         $this->container->compile();
     }

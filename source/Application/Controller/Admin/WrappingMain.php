@@ -55,7 +55,7 @@ class WrappingMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         if ($this->getViewConfig()->isAltImageServerConfigured()) {
-            $this->_aViewData["imageUrl"] = ContainerFacade::getParameter('oxid_alternative_image_url');
+            $this->_aViewData["imageUrl"] = ContainerFacade::getParameter('oxid_esales.alternative_image_url');
         }
 
         return "wrapping_main";

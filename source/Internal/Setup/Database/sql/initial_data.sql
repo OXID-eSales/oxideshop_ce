@@ -96,7 +96,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('8563fba1baec73b00.28734905',	1,	'',	'aOrderfolder',	'aarr',	'a:3:{s:15:\"ORDERFOLDER_NEW\";s:7:\"#0000FF\";s:20:\"ORDERFOLDER_FINISHED\";s:7:\"#0A9E18\";s:20:\"ORDERFOLDER_PROBLEMS\";s:7:\"#FF0000\";}'),
 ('8563fba1c39367724.92308656',	1,	'',	'blCheckTemplates',	'bool',	'1'),
 ('8563fba1c39367724.92308656123111',	1,	'',	'sDownloadsDir',	'str',	'out/downloads'),
-('8563fba1c39370d88.58444180',	1,	'',	'blLogChangesInAdmin',	'bool',	''),
 ('8563fba1c393750a0.46170041',	1,	'',	'sUtilModule',	'str',	''),
 ('8563fba1c3937ee60.91079898',	1,	'',	'iMallMode',	'str',	'1'),
 ('8563fba1c39381962.39392958',	1,	'',	'aCacheViews',	'arr',	'a:3:{i:0;s:5:\"start\";i:1;s:5:\"alist\";i:2;s:7:\"details\";}'),

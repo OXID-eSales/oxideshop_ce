@@ -483,7 +483,7 @@ class Utilities extends Core
     public function getSqlDirectory(): string
     {
         return Path::join(
-            ContainerFacade::getParameter('oxid_shop_source_directory'),
+            ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
             self::SETUP_DIRECTORY,
             self::DATABASE_SQL_DIRECTORY
         );

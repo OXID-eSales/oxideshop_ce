@@ -9,15 +9,20 @@
 - Registration of environment variables via Symfony Dotenv Component
 - Bootstrap parameters have been moved from config.inc.php to environment and container parameters
   - Container parameters
-    - `oxid_debug_mode`
-    - `oxid_smtp_debug_mode`
-    - `oxid_multilingual_tables`
-    - `oxid_skip_database_views_usage`
-    - `oxid_multi_shop_article_fields`
-    - `oxid_show_update_views_button`
-    - `oxid_shop_url`
-    - `oxid_shop_admin_url`
-    - `oxid_multi_shop_tables`
+    - `oxid_esales.debug_mode`
+    - `oxid_esales.smtp_debug_mode`
+    - `oxid_esales.multilingual_tables`
+    - `oxid_esales.skip_database_views_usage`
+    - `oxid_esales.multi_shop_article_fields`
+    - `oxid_esales.show_update_views_button`
+    - `oxid_esales.shop_url`
+    - `oxid_esales.shop_admin_url`
+    - `oxid_esales.multi_shop_tables`
+    - `oxid_esales.basket_reservation_cleanup_rate`
+    - `oxid_esales.cron_enabled`
+    - `oxid_esales.user_rights_roles_mode`
+    - `oxid_esales.seo_mode`
+    - `oxid_esales.shop_credit_rating`
 - Interface for storing Symfony Service Container parameters in configuration
 
 ### Changed
@@ -33,6 +38,7 @@
 - Functionality to extend Symfony DIC for environments and shops
 - Method `getAltImageUrl` of PictureHandler will not use ssl parameter anymore
 - `oe:setup:shop` command now fetches parameters from the current environment configuration. All corresponding command-line parameters were removed
+- Updated list of Search Engines (formerly `aRobots` configuration)
 
 ### Removed
 
@@ -79,8 +85,17 @@
   - `sAuthOpenIdRandSource`
   - `aSlaveHosts`
   - `iDebugSlowQueryTime`
+  - `iBasketReservationCleanPerRequest`
+  - `blUseCron`
+  - `blUseRightsRoles`
+  - `blMallSharedBasket`
+  - `blSeoMode`
+  - `iCreditRating`
+- Config parameters `offlineWarningInterval` and `sAdminEmail`, use external application monitoring instead
 - The `ConfigFile` will no longer be used. Please use container parameters to obtain the necessary settings
 - Deprecated class `ModuleVariablesLocator`
 - Redundant `BasicContextInterface` methods
-- related configuration parameter method `isTplBlocksDebugMode` of `ViewConfig` class
+- Related configuration parameter method `isTplBlocksDebugMode` of `ViewConfig` class
 - Deprecated `NamedArgumentsTrait`
+- Deprecated `isEnabledAdminQueryLog` method in ContextInterface. Query logging mode can be fetched directly from container.
+- Deprecated `handleDatabaseException` functionality

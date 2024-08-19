@@ -7,9 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Framework\Module\MetaData\DataMapper;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\DataMapper;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;

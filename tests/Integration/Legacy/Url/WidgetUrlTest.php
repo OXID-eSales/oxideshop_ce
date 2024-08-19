@@ -25,7 +25,7 @@ final class WidgetUrlTest extends IntegrationTestCase
         parent::setUp();
 
         $this->createContainer();
-        $this->container->setParameter('oxid_shop_url', $this->shopUrl);
+        $this->container->setParameter('oxid_esales.shop_url', $this->shopUrl);
         $this->compileContainer();
         $this->attachContainerToContainerFactory();
     }

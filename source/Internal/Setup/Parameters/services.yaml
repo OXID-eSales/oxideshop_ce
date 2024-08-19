@@ -4,5 +4,3 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Setup\Parameters\SetupParametersFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Setup\Parameters\SetupParametersFactory
-    arguments:
-      $optionSetupLanguage: '%option_setup_language%'

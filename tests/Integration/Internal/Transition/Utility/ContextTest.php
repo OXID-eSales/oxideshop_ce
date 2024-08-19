@@ -43,7 +43,7 @@ final class ContextTest extends TestCase
 
     public function testGetLogFilePathWithConfigSetWillReturnStringStartingWithValue(): void
     {
-        $configValue = ContainerFacade::getParameter('oxid_shop_source_directory');
+        $configValue = ContainerFacade::getParameter('oxid_esales.shop_source_directory');
 
         $logFilePath = $this->getContext()->getLogFilePath();
 

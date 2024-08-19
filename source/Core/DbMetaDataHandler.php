@@ -552,7 +552,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 
         $shops = $db->getAll('select * from oxshops');
 
-        $tables = $tables ?: ContainerFacade::getParameter('oxid_multi_shop_tables');
+        $tables = $tables ?: ContainerFacade::getParameter('oxid_esales.multi_shop_tables');
 
         $success = true;
         foreach ($shops as $shopValues) {
@@ -600,7 +600,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     protected function safeGuardAdditionalMultiLanguageTables()
     {
         $maxLang = $this->getCurrentMaxLangId();
-        $multiLanguageTables = ContainerFacade::getParameter('oxid_multilingual_tables');
+        $multiLanguageTables = ContainerFacade::getParameter('oxid_esales.multilingual_tables');
 
         if (!is_array($multiLanguageTables) || empty($multiLanguageTables)) {
             return; //nothing to do

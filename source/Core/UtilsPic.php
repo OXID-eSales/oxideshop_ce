@@ -81,7 +81,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         }
         $removed = $this->removeMasterFile(Path::join($masterImagePath, $filename));
 
-        if (!ContainerFacade::getParameter('oxid_alternative_image_url')) {
+        if (!ContainerFacade::getParameter('oxid_esales.alternative_image_url')) {
             $generatedImagePath = str_replace('/master/', '/generated/', $masterImagePath);
             $files = glob(Path::join($generatedImagePath,'*',$filename));
             if (\is_array($files)) {
@@ -286,7 +286,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
     {
         return Path::makeRelative(
             $path,
-            ContainerFacade::getParameter('oxid_shop_source_directory')
+            ContainerFacade::getParameter('oxid_esales.shop_source_directory')
         );
     }
 }

@@ -176,7 +176,7 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function getShopBasePath()
         {
-            return ContainerFacade::getParameter('oxid_shop_source_directory') . DIRECTORY_SEPARATOR;
+            return ContainerFacade::getParameter('oxid_esales.shop_source_directory') . DIRECTORY_SEPARATOR;
         }
 
         /**

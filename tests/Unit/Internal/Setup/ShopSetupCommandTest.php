@@ -26,7 +26,6 @@ use Prophecy\Argument\Token\TypeToken;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 final class ShopSetupCommandTest extends TestCase
@@ -48,7 +47,7 @@ final class ShopSetupCommandTest extends TestCase
         $commandTester->execute([]);
 
         $this->setupParametersFactory
-            ->create(new TypeToken(InputInterface::class))
+            ->create(new TypeToken(DefaultLanguage::class))
             ->shouldHaveBeenCalledOnce();
         $this->SetupInfrastructureValidator
             ->validate(new TypeToken(SetupParameters::class))
@@ -104,7 +103,7 @@ final class ShopSetupCommandTest extends TestCase
             ->getLanguage()
             ->willReturn(new DefaultLanguage('de'));
         $this->setupParametersFactory
-            ->create(new TypeToken(InputInterface::class))
+            ->create(new TypeToken(DefaultLanguage::class))
             ->willReturn($setupParameters);
     }
 }

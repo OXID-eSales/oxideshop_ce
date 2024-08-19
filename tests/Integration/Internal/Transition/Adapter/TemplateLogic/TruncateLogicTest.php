@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TruncateLogic;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -26,9 +25,9 @@ final class TruncateLogicTest extends TestCase
     #[DataProvider('truncateProvider')]
     public function testTruncate(string $string, string $expected, array $parameters = []): void
     {
-        $length = isset($parameters['length']) ? $parameters['length'] : 80;
-        $suffix = isset($parameters['suffix']) ? $parameters['suffix'] : '...';
-        $breakWords = isset($parameters['breakWords']) ? $parameters['breakWords'] : false;
+        $length = $parameters['length'] ?? 80;
+        $suffix = $parameters['suffix'] ?? '...';
+        $breakWords = $parameters['breakWords'] ?? false;
 
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
@@ -37,16 +36,19 @@ final class TruncateLogicTest extends TestCase
     {
         return [
             [
-                "Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dapibus pulvinar sem vitae.",
-                "Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse..."
+                'Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dapibus pulvinar sem vitae.',
+                'Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse...'
             ],
             [
-                "Duis iaculis &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit lacinia at. Suspendisse dapibus pulvinar sem vitae.",
-                "Duis iaculis &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit lacinia at. Suspendisse..."
+                'Duis iaculis &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit lacinia at. ' .
+                'Suspendisse dapibus pulvinar sem vitae.',
+                'Duis iaculis &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit lacinia at. Suspendisse...'
             ],
             [
-                "&#039;Duis&#039; &#039;iaculis&#039; &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit lacinia at. Suspendisse dapibus pulvinar sem vitae.",
-                "&#039;Duis&#039; &#039;iaculis&#039; &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit lacinia at...."
+                '&#039;Duis&#039; &#039;iaculis&#039; &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; ' .
+                'elit lacinia at. Suspendisse dapibus pulvinar sem vitae.',
+                '&#039;Duis&#039; &#039;iaculis&#039; &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; ' .
+                'elit lacinia at....'
             ],
         ];
     }
@@ -54,9 +56,9 @@ final class TruncateLogicTest extends TestCase
     #[DataProvider('truncateProviderWithLength')]
     public function testTruncateWithLength(string $string, string $expected, array $parameters = []): void
     {
-        $length = isset($parameters['length']) ? $parameters['length'] : 80;
-        $suffix = isset($parameters['suffix']) ? $parameters['suffix'] : '...';
-        $breakWords = isset($parameters['breakWords']) ? $parameters['breakWords'] : false;
+        $length = $parameters['length'] ?? 80;
+        $suffix = $parameters['suffix'] ?? '...';
+        $breakWords = $parameters['breakWords'] ?? false;
 
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
@@ -65,18 +67,18 @@ final class TruncateLogicTest extends TestCase
     {
         return [
             [
-                "Duis iaculis pellentesque felis, et pulvinar elit.",
-                "Duis iaculis...",
+                'Duis iaculis pellentesque felis, et pulvinar elit.',
+                'Duis iaculis...',
                 ['length' => 20]
             ],
             [
-                "Duis iaculis &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit.",
-                "Duis iaculis...",
+                'Duis iaculis &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit.',
+                'Duis iaculis...',
                 ['length' => 20]
             ],
             [
-                "&#039;Duis&#039; &#039;iaculis&#039; &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit.",
-                "&#039;Duis&#039; &#039;iaculis&#039;...",
+                '&#039;Duis&#039; &#039;iaculis&#039; &#039;pellentesque&#039; felis, et &quot;pulvinar&quot; elit.',
+                '&#039;Duis&#039; &#039;iaculis&#039;...',
                 ['length' => 20]
             ],
         ];
@@ -85,9 +87,9 @@ final class TruncateLogicTest extends TestCase
     #[DataProvider('truncateProviderWithSuffix')]
     public function testTruncateWithSuffix(string $string, string $expected, array $parameters = []): void
     {
-        $length = isset($parameters['length']) ? $parameters['length'] : 80;
-        $suffix = isset($parameters['suffix']) ? $parameters['suffix'] : '...';
-        $breakWords = isset($parameters['breakWords']) ? $parameters['breakWords'] : false;
+        $length = $parameters['length'] ?? 80;
+        $suffix = $parameters['suffix'] ?? '...';
+        $breakWords = $parameters['breakWords'] ?? false;
 
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
@@ -96,8 +98,8 @@ final class TruncateLogicTest extends TestCase
     {
         return [
             [
-                "Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dapibus pulvinar sem vitae.",
-                "Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse (...)",
+                'Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dapibus pulvinar sem vitae.',
+                'Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse (...)',
                 ['suffix' => ' (...)']
             ],
         ];
@@ -106,9 +108,9 @@ final class TruncateLogicTest extends TestCase
     #[DataProvider('truncateProviderWithBreakWords')]
     public function testTruncateWithBreakWords(string $string, string $expected, array $parameters = []): void
     {
-        $length = isset($parameters['length']) ? $parameters['length'] : 80;
-        $suffix = isset($parameters['suffix']) ? $parameters['suffix'] : '...';
-        $breakWords = isset($parameters['breakWords']) ? $parameters['breakWords'] : false;
+        $length = $parameters['length'] ?? 80;
+        $suffix = $parameters['suffix'] ?? '...';
+        $breakWords = $parameters['breakWords'] ?? false;
 
         $this->assertEquals($expected, $this->truncateLogic->truncate($string, $length, $suffix, $breakWords));
     }
@@ -117,8 +119,8 @@ final class TruncateLogicTest extends TestCase
     {
         return [
             [
-                "Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dapibus pulvinar sem vitae.",
-                "Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dap...",
+                'Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dapibus pulvinar sem vitae.',
+                'Duis iaculis pellentesque felis, et pulvinar elit lacinia at. Suspendisse dap...',
                 ['breakWords' => true]
             ],
         ];

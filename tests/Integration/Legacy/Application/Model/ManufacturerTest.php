@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Models;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Model;
 
 use OxidEsales\Eshop\Application\Model\Manufacturer;
 use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;

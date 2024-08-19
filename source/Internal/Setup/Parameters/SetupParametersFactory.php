@@ -13,17 +13,15 @@ use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\Databa
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\ShopBaseUrl;
 use OxidEsales\EshopCommunity\Internal\Setup\Language\DefaultLanguage;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use Symfony\Component\Console\Input\InputInterface;
 
-class SetupParametersFactory implements SetupParametersFactoryInterface
+readonly class SetupParametersFactory implements SetupParametersFactoryInterface
 {
     public function __construct(
-        private readonly BasicContextInterface $basicContext,
-        private readonly string $optionSetupLanguage,
+        private BasicContextInterface $basicContext
     ) {
     }
 
-    public function create(InputInterface $input): SetupParameters
+    public function create(DefaultLanguage $language): SetupParameters
     {
         $setupParameters = new SetupParameters();
 
@@ -40,11 +38,7 @@ class SetupParametersFactory implements SetupParametersFactoryInterface
                 $this->basicContext->getShopBaseUrl()
             )
         );
-        $setupParameters->setLanguage(
-            new DefaultLanguage(
-                $input->getOption($this->optionSetupLanguage)
-            )
-        );
+        $setupParameters->setLanguage($language);
 
         return $setupParameters;
     }

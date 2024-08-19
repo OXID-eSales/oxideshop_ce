@@ -28,8 +28,6 @@ interface ContextInterface extends BasicContextInterface
 
     public function isAdmin(): bool;
 
-    public function isEnabledAdminQueryLog(): bool;
-
     public function isShopInDemoMode(): bool;
 
     public function isShopInProductiveMode(): bool;

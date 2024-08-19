@@ -52,7 +52,7 @@ abstract class BaseRegistrator
             $parameters = $this->getFileModificationTime($path);
         }
 
-        if (empty($url) && ContainerFacade::getParameter('oxid_debug_mode')) {
+        if (empty($url) && ContainerFacade::getParameter('oxid_esales.debug_mode')) {
             $error = "{" . static::TAG_NAME . "} resource not found: " . \OxidEsales\Eshop\Core\Str::getStr()->htmlspecialchars($url);
             trigger_error($error, E_USER_WARNING);
         }
@@ -89,7 +89,7 @@ abstract class BaseRegistrator
         $config = Registry::getConfig();
         return str_replace(
             rtrim($config->getCurrentShopUrl(false), '/'),
-            rtrim(ContainerFacade::getParameter('oxid_shop_source_directory'), '/'),
+            rtrim(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), '/'),
             $url
         );
     }

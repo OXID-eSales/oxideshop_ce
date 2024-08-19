@@ -1155,7 +1155,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $config = Registry::getConfig();
 
         $moduleUrl = str_replace(
-            rtrim(ContainerFacade::getParameter('oxid_shop_source_directory'), '/'),
+            rtrim(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), '/'),
             rtrim($config->getCurrentShopUrl(false), '/'),
             $this->getModulePath($sModule, $sFile)
         );
@@ -1208,7 +1208,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function isAltImageServerConfigured()
     {
-        return (bool) ContainerFacade::getParameter('oxid_alternative_image_url');
+        return (bool) ContainerFacade::getParameter('oxid_esales.alternative_image_url');
     }
 
     /**
@@ -1246,7 +1246,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getShopLogo()
     {
         if (is_null($this->_sShopLogo)) {
-            $sLogoImage = ContainerFacade::getParameter('oxid_shop_logo');
+            $sLogoImage = ContainerFacade::getParameter('oxid_esales.shop_logo');
             if (empty($sLogoImage)) {
                 $sLogoImage = "logo_" . strtolower((new Facts())->getEdition()) . ".png";
             }
@@ -1367,7 +1367,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         if (!file_exists($filePath)) {
             $exception = new FileException("Requested file not found for module $moduleId ($filePath)");
-            if (ContainerFacade::getParameter('oxid_debug_mode')) {
+            if (ContainerFacade::getParameter('oxid_esales.debug_mode')) {
                 throw $exception;
             } else {
                 Registry::getLogger()->error($exception->getMessage(), [$exception]);

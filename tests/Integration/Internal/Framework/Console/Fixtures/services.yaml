@@ -1,2 +1,2 @@
 parameters:
-  oxid_value: '%env(defined:OXID_VALUE)%'
+  oxid_esales.value: '%env(defined:OXID_VALUE)%'

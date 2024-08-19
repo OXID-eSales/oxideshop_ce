@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -462,51 +463,50 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     /**
      * Process uploaded files. Returns unique file name, on fail false
      *
-     * @param string $sFileName   form file item name
-     * @param string $sUploadPath RELATIVE (to container parameter oxid_shop_source_directory) path for uploaded file to be copied
-     *
-     * @throws \OxidEsales\Eshop\Core\Exception\StandardException if file is not valid
+     * @param string $filename form file item name
+     * @param string $uploadPath RELATIVE (to container parameter oxid_shop_source_directory) path for uploaded file to be copied
      *
      * @return string
+     * @throws StandardException if file is not valid
      */
-    public function processFile($sFileName, $sUploadPath)
+    public function processFile($filename, $uploadPath)
     {
-        $aFileInfo = $_FILES[$sFileName];
+        $fileInfo = $_FILES[$filename];
 
-        $absoluteUploadPath = Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), $sUploadPath);
+        $absoluteUploadPath = Path::join(ContainerFacade::getParameter('oxid_shop_source_directory'), $uploadPath);
 
         //checking params
-        if (!isset($aFileInfo['name']) || !isset($aFileInfo['tmp_name'])) {
-            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOFILE');
+        if (!isset($fileInfo['name']) || !isset($fileInfo['tmp_name'])) {
+            throw oxNew(StandardException::class, 'EXCEPTION_NOFILE');
         }
 
         //wrong chars in file name?
-        if (!Str::getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $aFileInfo['name'])) {
-            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILENAMEINVALIDCHARS');
+        if (!Str::getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $fileInfo['name'])) {
+            throw oxNew(StandardException::class, 'EXCEPTION_FILENAMEINVALIDCHARS');
         }
 
         // error uploading file ?
-        if (isset($aFileInfo['error']) && $aFileInfo['error']) {
-            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int) $aFileInfo['error']));
+        if (isset($fileInfo['error']) && $fileInfo['error']) {
+            throw oxNew(StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int)$fileInfo['error']));
         }
 
-        $aPathInfo = pathinfo($aFileInfo['name']);
+        $pathInfo = pathinfo($fileInfo['name']);
 
-        $sExt = $aPathInfo['extension'];
-        $sFileName = $aPathInfo['filename'];
+        $extension = $pathInfo['extension'];
+        $filename = $pathInfo['filename'];
 
-        $aAllowedUploadTypes = (array) Registry::getConfig()->getConfigParam('aAllowedUploadTypes');
-        $aAllowedUploadTypes = array_map("strtolower", $aAllowedUploadTypes);
+        $allowedUploadTypes = ContainerFacade::getParameter('oxid_allowed_uploaded_types');
+        $allowedUploadTypes = array_map("strtolower", $allowedUploadTypes);
 
-        if (!in_array(strtolower($sExt), $aAllowedUploadTypes)) {
-            throw oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
+        if (!in_array(strtolower($extension), $allowedUploadTypes)) {
+            throw oxNew(StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 
-        $sFileName = $this->getUniqueFileName($absoluteUploadPath, $sFileName, $sExt);
+        $filename = $this->getUniqueFileName($absoluteUploadPath, $filename, $extension);
 
-        $destination = Path::join($absoluteUploadPath, $sFileName);
-        if ($this->uploadMasterImage($aFileInfo['tmp_name'], $destination)) {
-            return $sFileName;
+        $destination = Path::join($absoluteUploadPath, $filename);
+        if ($this->uploadMasterImage($fileInfo['tmp_name'], $destination)) {
+            return $filename;
         }
 
         return false;

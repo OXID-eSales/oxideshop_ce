@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Support\Helper;
 
 use Codeception\Module;
+use OxidEsales\Codeception\Module\Oxideshop;
 use OxidEsales\Codeception\Module\ProjectConfiguration;
 
 // here you can define custom actions
@@ -29,6 +30,7 @@ final class Acceptance extends Module
             'services' => $services,
         ]);
         $module->dumpProjectConfigurations();
+        $this->getModule(Oxideshop::class)->clearShopCache();
     }
 
     public function restoreProjectConfigurations(): void
@@ -36,5 +38,6 @@ final class Acceptance extends Module
         $module = $this->getModule(ProjectConfiguration::class);
         $module->_resetConfig();
         $module->dumpProjectConfigurations();
+        $this->getModule(Oxideshop::class)->clearShopCache();
     }
 }

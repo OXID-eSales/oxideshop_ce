@@ -769,8 +769,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $wasSentWithinThreshold = false;
 
-        /** @var int $threshold Threshold in seconds */
-        $threshold = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('offlineWarningInterval');
+        $threshold = ContainerFacade::getParameter('oxid_offline_warning_delay');
         if (file_exists($this->offlineWarningTimestampFile)) {
             $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
             $lastSentBefore = time() - $lastSentTimestamp;
@@ -784,7 +783,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Send an offline warning to the shop owner.
-     * Currently an email is sent to the email address configured as 'sAdminEmail' in the eShop config file.
+     * Currently, an email is sent to the email address configured as
+     * 'OXID_OFFLINE_EMAIL_WARNING' in .env file.
      *
      * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
@@ -795,8 +795,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function sendOfflineWarning(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
     {
         $result = false;
-        /** @var  $emailAddress Email address to sent the message to */
-        $emailAddress = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sAdminEmail');
+        $emailAddress = ContainerFacade::getParameter('oxid_offline_email_warning');
 
         if ($emailAddress) {
             /** As we are inside the exception handling process, any further exceptions must be caught */

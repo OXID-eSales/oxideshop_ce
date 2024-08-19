@@ -429,7 +429,7 @@ class FrontendController extends BaseController
      * Returns component names.
      *
      * At the moment it is not possible to override $_aCollectedComponentNames in oxUBase,
-     * so aUserComponentNames was added to config.inc.php file.
+     * so oxid_cacheable_user_components was moved to parameter.yaml file.
      *
      * @return array
      */
@@ -438,7 +438,7 @@ class FrontendController extends BaseController
         if (self::$_aCollectedComponentNames === null) {
             self::$_aCollectedComponentNames = array_merge($this->_aComponentNames, $this->_aUserComponentNames);
 
-            if (($userComponentNames = Registry::getConfig()->getConfigParam('aUserComponentNames'))) {
+            if (($userComponentNames = ContainerFacade::getParameter('oxid_cacheable_user_components'))) {
                 self::$_aCollectedComponentNames = array_merge(self::$_aCollectedComponentNames, $userComponentNames);
             }
 
@@ -472,7 +472,7 @@ class FrontendController extends BaseController
                 // forcing to set no index/follow meta
                 $this->forceNoIndex();
 
-                if (Registry::getConfig()->getConfigParam('blSeoLogging')) {
+                if (ContainerFacade::getParameter('oxid_log_not_seo_urls')) {
                     $shopId = Registry::getConfig()->getShopId();
                     $languageId = Registry::getLang()->getBaseLanguage();
                     $id = md5(strtolower($requestUrl) . $shopId . $languageId);

@@ -6,3 +6,12 @@ parameters:
   oxid_trusted_ips: []
   oxid_session_init_params: []
   oxid_disallow_force_session_id: false
+  oxid_allowed_uploaded_types: [ 'jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mpg', 'mpeg', 'doc', 'xls', 'ppt' ]
+  oxid_log_admin_queries: false
+  oxid_log_not_seo_urls: false
+  oxid_offline_email_warning: '%env(OXID_OFFLINE_EMAIL_WARNING)%'
+  oxid_offline_warning_delay: '%env(OXID_OFFLINE_WARNING_DELAY)%'
+  oxid_search_engine_list: [ 'ahrefs','ahrefsbot','altavista','applebot','archive.org','baidu','bing','bingbot','crawl','curl','facebook','fast','feedbin','fireball','gigabot','google','googlebot','grapeshot','lighthouse','linkedin','mail.ru','msnbot','naver','pingdom','pinterest','robot','ryte','screaming','scrubby','seznam','slurp','sogou','spider','teoma','ultraseek','uptimerobot','yahoo','yandex' ]
+  oxid_cacheable_user_components: []
+  oxid_delete_setup_directory: true
+  oxid_demo_shop_mode: false

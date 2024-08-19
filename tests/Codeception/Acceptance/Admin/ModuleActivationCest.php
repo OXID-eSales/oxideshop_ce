@@ -51,7 +51,7 @@ final class ModuleActivationCest
     public function moduleActivationInDemoMode(AcceptanceTester $I): void
     {
         $I->wantToTest('module activation disabled in demo mode');
-        $I->updateConfigInDatabase('blDemoShop', true, 'bool');
+        $I->updateProjectConfigurations(['oxid_demo_shop_mode' => true], []);
 
         $this->openModuleOverview($I);
 
@@ -65,7 +65,7 @@ final class ModuleActivationCest
         $I->dontSeeElement('#module_activate');
         $I->see(Translator::translate('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'));
 
-        $I->updateConfigInDatabase('blDemoShop', false, 'bool');
+        $I->restoreProjectConfigurations();
     }
 
     private function openModuleOverview(AcceptanceTester $I): void

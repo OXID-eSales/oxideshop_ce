@@ -7,7 +7,7 @@ on:
 jobs:
   oxideshop_ce_71x_nightly:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
       testplan: '~/defaults/7.1.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
@@ -33,7 +33,7 @@ jobs:
 
   oxideshop_ce_72x_nightly:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
       testplan: '~/defaults/7.2.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
@@ -59,7 +59,7 @@ jobs:
 
   oxideshop_ce_80x_nightly:
     if: always()
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
+    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
       testplan: '~/defaults/8.0.x.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'

@@ -29,7 +29,7 @@ final class ConnectionFactoryTest extends TestCase
 
     public function testSqlLoggerWritesExpectedValueToTheLog(): void
     {
-        $this->injectContextMock();
+        $this->setContainerForAdminLog();
         $id = Registry::getUtilsObject()->generateUId();
         $variableName = 'some-variable';
         $variableValue = uniqid('some-value-', true);
@@ -52,18 +52,24 @@ final class ConnectionFactoryTest extends TestCase
 
     private function injectContextMock(): void
     {
-        $this->createContainer();
         $this->replaceService(
             ContextInterface::class,
             $this->createConfiguredMock(
                 ContextInterface::class,
                 [
                     'isAdmin' => true,
-                    'isEnabledAdminQueryLog' => true,
                     'getAdminLogFilePath' => $this->logFile
                 ]
             )
         );
+    }
+
+    private function setContainerForAdminLog(): void
+    {
+        $this->createContainer();
+        $this->injectContextMock();
+        $this->container->setParameter('oxid_log_admin_queries', true);
         $this->compileContainer();
+        $this->attachContainerToContainerFactory();
     }
 }

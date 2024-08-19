@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
+use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
@@ -143,7 +144,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns the difference between stored profiler end time and start time. Works only after stopMonitoring() is called, otherwise returns 0.
+     * Returns the difference between stored profiler end time and start time. Works only after stopMonitoring() is
+     * called, otherwise returns 0.
      *
      * @return double
      */
@@ -642,7 +644,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             Registry::getUtilsView()->addErrorToDisplay($exception);
             $this->process('exceptionError', 'displayExceptionError');
         } else {
-            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
+            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start');
         }
     }
 
@@ -694,13 +696,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                 $this->logException($newException);
             }
         }
-
-        /**
-         * Do not use oxNew here as this code forms already part of the exception handling process and there should at
-         * least shop code called as possible.
-         */
-        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler($debugMode);
-        $exceptionHandler->handleDatabaseException($exception);
+        (new ExceptionHandler($debugMode))->handleUncaughtException($exception);
     }
 
     /**
@@ -768,35 +764,29 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function messageWasSentWithinThreshold()
     {
         $wasSentWithinThreshold = false;
-
-        /** @var int $threshold Threshold in seconds */
-        $threshold = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('offlineWarningInterval');
         if (file_exists($this->offlineWarningTimestampFile)) {
-            $lastSentTimestamp = (int) file_get_contents($this->offlineWarningTimestampFile);
-            $lastSentBefore = time() - $lastSentTimestamp;
-            if ($lastSentBefore < $threshold) {
+            $timeSinceLastWarning = time() - ((int)file_get_contents($this->offlineWarningTimestampFile));
+            if ($timeSinceLastWarning < ((int)getenv('OXID_OFFLINE_WARNING_DELAY'))) {
                 $wasSentWithinThreshold = true;
             }
         }
-
         return $wasSentWithinThreshold;
     }
 
     /**
      * Send an offline warning to the shop owner.
-     * Currently an email is sent to the email address configured as 'sAdminEmail' in the eShop config file.
      *
      * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
      * @param StandardException $exception
      *
      * @return bool Returns true, if the email was sent.
+     * @throws \PHPMailer\PHPMailer\Exception
      */
     protected function sendOfflineWarning(\OxidEsales\Eshop\Core\Exception\StandardException $exception)
     {
         $result = false;
-        /** @var  $emailAddress Email address to sent the message to */
-        $emailAddress = Registry::get(\OxidEsales\Eshop\Core\ConfigFile::class)->getVar('sAdminEmail');
+        $emailAddress = getenv('OXID_OFFLINE_WARNING_EMAIL');
 
         if ($emailAddress) {
             /** As we are inside the exception handling process, any further exceptions must be caught */

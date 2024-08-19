@@ -15,18 +15,19 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 /**
  * @internal
  */
-class DatabaseLoggerFactory implements DatabaseLoggerFactoryInterface
+readonly class DatabaseLoggerFactory implements DatabaseLoggerFactoryInterface
 {
     public function __construct(
-        private readonly ContextInterface $context,
-        private readonly SQLLogger $queryLogger,
-        private readonly SQLLogger $nullLogger
+        private ContextInterface $context,
+        private SQLLogger $queryLogger,
+        private SQLLogger $nullLogger,
+        private bool $logQueriesInAdmin
     ) {
     }
 
     public function getDatabaseLogger(): SQLLogger
     {
-        return $this->context->isAdmin() && $this->context->isEnabledAdminQueryLog()
+        return $this->logQueriesInAdmin && $this->context->isAdmin()
             ? $this->queryLogger
             : $this->nullLogger;
     }

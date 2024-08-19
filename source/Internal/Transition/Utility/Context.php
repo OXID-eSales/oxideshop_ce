@@ -14,7 +14,6 @@ use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
-use OxidEsales\Facts\Config\ConfigFile as FactsConfigFile;
 use PDO;
 use Symfony\Component\Filesystem\Path;
 
@@ -23,11 +22,6 @@ class Context extends BasicContext implements ContextInterface
     public function __construct(private readonly int $shopId)
     {
     }
-
-    /**
-     * @var FactsConfigFile
-     */
-    private $factsConfigFile;
 
     public function getLogLevel(): string
     {
@@ -69,11 +63,6 @@ class Context extends BasicContext implements ContextInterface
     public function isAdmin(): bool
     {
         return $this->isConfigLoaded() ? Registry::getConfig()->isAdmin() : isAdmin();
-    }
-
-    public function isEnabledAdminQueryLog(): bool
-    {
-        return (bool)$this->getFactsConfigFile()->getVar('blLogChangesInAdmin');
     }
 
     public function getAdminLogFilePath(): string
@@ -125,15 +114,6 @@ class Context extends BasicContext implements ContextInterface
         DatabaseProvider::getDb()->setFetchMode(PDO::FETCH_ASSOC);
 
         return $value;
-    }
-
-    private function getFactsConfigFile(): FactsConfigFile
-    {
-        if (!is_a($this->factsConfigFile, FactsConfigFile::class)) {
-            $this->factsConfigFile = new FactsConfigFile();
-        }
-
-        return $this->factsConfigFile;
     }
 
     private function isConfigLoaded(): bool

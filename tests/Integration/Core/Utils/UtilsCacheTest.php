@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Utils;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
-final class UtilsTest extends IntegrationTestCase
+final class UtilsCacheTest extends IntegrationTestCase
 {
     public function testCacheResetShouldNotRemoveCacheFilesFromSubdirectories(): void
     {

@@ -211,39 +211,37 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     /**
      * Sets if current web client is Search Engine.
      *
-     * @param bool   $blIsSe  sets if Search Engine is on
-     * @param string $sClient user browser agent
+     * @param bool $isSearchEngine sets if Search Engine is on
+     * @param string $userAgent user browser agent
      *
      * @return null
      */
-    public function setSearchEngine($blIsSe = null, $sClient = null)
+    public function setSearchEngine($isSearchEngine = null, $userAgent = null)
     {
-        if (isset($blIsSe)) {
-            $this->_blIsSe = $blIsSe;
+        if (isset($isSearchEngine)) {
+            $this->_blIsSe = $isSearchEngine;
 
             return;
         }
-        startProfile("isSearchEngine");
+        startProfile('isSearchEngine');
 
-        $myConfig = Registry::getConfig();
-        $blIsSe = false;
-
+        $isSearchEngine = false;
         if (!(ContainerFacade::getParameter('oxid_debug_mode') && $this->isAdmin())) {
-            $aRobots = $myConfig->getConfigParam('aRobots');
-            $aRobots = is_array($aRobots) ? $aRobots : [];
+            $robots = ContainerFacade::getParameter('oxid_search_engine_list');
+            $robots = \is_array($robots) ? $robots : [];
 
-            $sClient = $sClient ?: strtolower(getenv('HTTP_USER_AGENT'));
-            foreach ($aRobots as $sRobot) {
-                if (strpos($sClient, $sRobot) !== false) {
-                    $blIsSe = true;
+            $userAgent = $userAgent ?: strtolower(getenv('HTTP_USER_AGENT'));
+            foreach ($robots as $robot) {
+                if (str_contains($userAgent, $robot)) {
+                    $isSearchEngine = true;
                     break;
                 }
             }
         }
 
-        $this->_blIsSe = $blIsSe;
+        $this->_blIsSe = $isSearchEngine;
 
-        stopProfile("isSearchEngine");
+        stopProfile('isSearchEngine');
     }
 
     /**

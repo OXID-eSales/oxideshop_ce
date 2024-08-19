@@ -33,6 +33,7 @@
 - Functionality to extend Symfony DIC for environments and shops
 - Method `getAltImageUrl` of PictureHandler will not use ssl parameter anymore
 - `oe:setup:shop` command now fetches parameters from the current environment configuration. All corresponding command-line parameters were removed
+- Updated list of Search Engines (formerly `aRobots` configuration)
 
 ### Removed
 
@@ -84,3 +85,5 @@
 - Redundant `BasicContextInterface` methods
 - related configuration parameter method `isTplBlocksDebugMode` of `ViewConfig` class
 - Deprecated `NamedArgumentsTrait`
+- Deprecated `isEnabledAdminQueryLog` method in ContextInterface. Query logging mode can be fetched directly from container.
+- Deprecated `handleDatabaseException` functionality

@@ -6,3 +6,37 @@ parameters:
   oxid_trusted_ips: []
   oxid_session_init_params: []
   oxid_disallow_force_session_id: false
+  oxid_allowed_uploaded_types:
+    - 'avi'
+    - 'doc'
+    - 'gif'
+    - 'jpg'
+    - 'mp3'
+    - 'mpeg'
+    - 'mpg'
+    - 'pdf'
+    - 'png'
+    - 'ppt'
+    - 'xls'
+  oxid_log_admin_queries: false
+  oxid_log_not_seo_urls: false
+  oxid_search_engine_list:
+    - 'ahrefs'
+    - 'ahrefsbot'
+    - 'applebot'
+    - 'archive.org'
+    - 'baidubot'
+    - 'bingbot'
+    - 'duckduckgo'
+    - 'facebookexternalhit'
+    - 'googlebot'
+    - 'lighthouse'
+    - 'linkedinbot'
+    - 'semrushbot'
+    - 'sistrixcrawler'
+    - 'sogouspider'
+    - 'twitterbot'
+    - 'yandexbot'
+    - 'yesco'
+  oxid_cacheable_user_components: []
+  oxid_demo_shop_mode: false

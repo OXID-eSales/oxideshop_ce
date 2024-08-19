@@ -21,11 +21,6 @@ $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mp
 date_default_timezone_set('Europe/Berlin');
 
 /**
- * Log all modifications performed in Admin
- */
-$this->blLogChangesInAdmin = false;
-
-/**
  * Should requests, coming via stdurl and not redirected to seo url be logged to seologs db table?
  * Note: only active if in productive mode, as the eShop in non productive mode will always log such urls
  */
@@ -33,51 +28,6 @@ $this->blSeoLogging = false;
 
 // Force admin email. Offline warnings are sent with high priority to this address.
 $this->sAdminEmail = '';
-
-// Defines the time interval in seconds warnings are sent during the shop is offline.
-$this->offlineWarningInterval = 60 * 5;
-
-// List of all Search-Engine Robots
-$this->aRobots = array(
-    'ahrefs',
-    'ahrefsbot',
-    'altavista',
-    'applebot',
-    'archive.org',
-    'baidu',
-    'bing',
-    'bingbot',
-    'crawl',
-    'curl',
-    'facebook',
-    'fast',
-    'feedbin',
-    'fireball',
-    'gigabot',
-    'google',
-    'googlebot',
-    'grapeshot',
-    'lighthouse',
-    'linkedin',
-    'mail.ru',
-    'msnbot',
-    'naver',
-    'pingdom',
-    'pinterest',
-    'robot',
-    'ryte',
-    'screaming',
-    'scrubby',
-    'seznam',
-    'slurp',
-    'sogou',
-    'spider',
-    'teoma',
-    'ultraseek',
-    'uptimerobot',
-    'yahoo',
-    'yandex',
-);
 
 /**
  * Works only if basket reservations feature is enabled in admin.

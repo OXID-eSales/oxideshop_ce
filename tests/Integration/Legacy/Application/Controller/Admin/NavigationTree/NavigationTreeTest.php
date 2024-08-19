@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller\Admin\NavigationTree;
 
 use DOMDocument;
 use DOMXPath;

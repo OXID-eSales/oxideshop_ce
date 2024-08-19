@@ -19,7 +19,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private array $shopIds;
     private array $requiredContactFormFields = [];
     private string $adminLogFilePath;
-    private bool $doLogAdminQueries;
     private bool $isAdmin;
     private array $skipLogTags;
     private ?string $adminUserId;
@@ -34,7 +33,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->shopIds = $context->getAllShopIds();
         $this->logFilePath = $context->getLogFilePath();
         $this->adminLogFilePath = $context->getAdminLogFilePath();
-        $this->doLogAdminQueries = $context->isEnabledAdminQueryLog();
         $this->isAdmin = $context->isAdmin();
         $this->adminUserId = null;
         $this->skipLogTags = $context->getSkipLogTags();
@@ -92,16 +90,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
     public function getAdminLogFilePath(): string
     {
         return $this->adminLogFilePath;
-    }
-
-    public function setIsEnabledAdminQueryLog(bool $doLogAdminQueries): void
-    {
-        $this->doLogAdminQueries = $doLogAdminQueries;
-    }
-
-    public function isEnabledAdminQueryLog(): bool
-    {
-        return $this->doLogAdminQueries;
     }
 
     public function isAdmin(): bool

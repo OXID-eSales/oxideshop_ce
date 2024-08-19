@@ -7,16 +7,16 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\Facts\Facts;
 use stdClass;
-use OxidEsales\Eshop\Application\Controller\FrontendController;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use Symfony\Component\Filesystem\Path;
 
 //max integer
@@ -339,10 +339,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         if (is_null($this->getConfigParam('sDefaultLang'))) {
             $this->setConfigParam('sDefaultLang', 0);
-        }
-
-        if (is_null($this->getConfigParam('blLogChangesInAdmin'))) {
-            $this->setConfigParam('blLogChangesInAdmin', false);
         }
 
         if (is_null($this->getConfigParam('blCheckTemplates'))) {
@@ -1396,7 +1392,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function isDemoShop()
     {
-        return $this->getConfigParam('blDemoShop');
+        return ContainerFacade::getParameter('oxid_demo_shop_mode');
     }
 
     /**
@@ -1810,8 +1806,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
-        $exceptionHandler = $this->getExceptionHandler();
-        $exceptionHandler->handleDatabaseException($exception);
+        $this->getExceptionHandler()->handleUncaughtException($exception);
     }
 
     /**

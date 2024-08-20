@@ -13,7 +13,6 @@ jobs:
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
-      use_scheduled_slack_channel: true
       custom_testplan_yaml: |
         global:
           title: '7.1.x-nightly'
@@ -39,7 +38,6 @@ jobs:
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
-      use_scheduled_slack_channel: true
       custom_testplan_yaml: |
         global:
           title: '7.2.x-nightly'
@@ -65,7 +63,6 @@ jobs:
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
-      use_scheduled_slack_channel: true
       custom_testplan_yaml: |
         global:
           title: '8.0.x-nightly'

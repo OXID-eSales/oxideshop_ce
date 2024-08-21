@@ -53,13 +53,11 @@ return [
                 'OXCALCULATEONCE' => 1
             ],
             'oxvouchers' => [
-                [
-                    'OXDATEUSED' => '0000-00-00',
-                    'OXRESERVED' => 0,
-                    'OXVOUCHERNR' => '123456',
-                    'OXVOUCHERSERIEID' => 'testvoucherarticle',
-                    'OXID' => 'testvoucherarticle001'
-                ]
+                'OXDATEUSED' => '0000-00-00',
+                'OXRESERVED' => 0,
+                'OXVOUCHERNR' => '123456',
+                'OXVOUCHERSERIEID' => 'testvoucherarticle',
+                'OXID' => 'testvoucherarticle001'
             ],
             'oxobject2discount' => [
                 'OXID' => 'testvouchertoarticle001',

@@ -170,6 +170,11 @@ final class CheckoutProcessCest
     {
         $I->wantToTest('Article coupon value calculation');
 
+//        $I->haveInDatabase('oxarticles', Fixtures::get('product-10015'));
+//        $I->haveInDatabase('oxvoucherseries', Fixtures::get('testvoucherarticle')['oxvoucherseries']);
+//        $I->haveInDatabase('oxvouchers', Fixtures::get('testvoucherarticle')['oxvouchers']);
+//        $I->haveInDatabase('oxobject2discount', Fixtures::get('testvoucherarticle')['oxobject2discount']);
+//
         $basket = new Basket($I);
 
         $userData = $this->getExistingUserData();
@@ -183,6 +188,8 @@ final class CheckoutProcessCest
 
         $homePage = $I->openShop();
 
+//        $I->wait(300);
+//
         //add Product to basket
         $basket->addProductToBasket($basketItem1['id'], 10);
 

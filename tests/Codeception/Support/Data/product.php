@@ -482,7 +482,7 @@ return [
         'OXMAXDELTIME' => 1,
         'OXDELTIMEUNIT' => 'WEEK',
     ],
-    '10015' => [
+    'product-10015' => [
         'OXID' => '10015',
         'OXSHOPID' => 1,
         'OXPARENTID' => '',
@@ -499,7 +499,7 @@ return [
         'OXUNITQUANTITY' => 0,
         'OXVAT' => 10,
         'OXWEIGHT' => 0,
-        'OXSTOCK' => 0,
+        'OXSTOCK' => 100,
         'OXSTOCKFLAG' => 1,
         'OXSTOCKTEXT' => '',
         'OXNOSTOCKTEXT' => '',

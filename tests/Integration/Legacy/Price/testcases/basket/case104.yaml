@@ -7,5 +7,5 @@ expected:
     articles: { 111: ['1,00', '2,00'] }
     totals: { totalBrutto: '2,40', totalNetto: '2,00', vats: { 20: '0,40' }, delivery: { brutto: '1,32', netto: '1,10', vat: '0,22' }, payment: { brutto: '0,24', netto: '0,20', vat: '0,04' }, grandTotal: '3,96' }
 options:
-    config: { blEnterNetPrice: true, blShowNetPrice: true, blShowVATForDelivery: true, blDeliveryVatOnTop: true, blPaymentVatOnTop: true }
+    config: { blEnterNetPrice: true, blShowNetPrice: true, blShowVATForDelivery: true, blDeliveryVatOnTop: true, blPaymentVatOnTop: true, blShowVATForPayCharge: true }
     activeCurrencyRate: 1

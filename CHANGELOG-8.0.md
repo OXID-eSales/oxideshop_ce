@@ -64,6 +64,21 @@
   - `sShopURL`
   - `sSSLShopURL`
   - `sAdminSSLURL`
+  - `edition`
+  - `blDebugTemplateBlocks`
+  - `aRobotsExcept`
+  - `deactivateSmartyForCmsContent`
+  - `iSmartyPhpHandling`
+  - `blDoNotDisableModuleOnError`
+  - `passwordHashingAlgorithm`
+  - `passwordHashingBcryptCost`
+  - `passwordHashingArgon2MemoryCost`
+  - `passwordHashingArgon2TimeCost`
+  - `passwordHashingArgon2Threads`
+  - `sAuthOpenIdRandSource`
+  - `aSlaveHosts`
+  - `iDebugSlowQueryTime`
 - The `ConfigFile` will no longer be used. Please use container parameters to obtain the necessary settings
 - Deprecated class `ModuleVariablesLocator`
 - Redundant `BasicContextInterface` methods
+- related configuration parameter method `isTplBlocksDebugMode` of `ViewConfig` class

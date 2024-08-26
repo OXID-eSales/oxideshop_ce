@@ -14,12 +14,6 @@ $this->iDebug = 0;
  * See LICENSE file for license details.
  */
 
-/**
- * Force shop edition. Even if enterprise or professional packages exists, shop edition can still be forced here.
- * Possible options: CE|PE|EE or left empty (will be determined automatically).
- */
-$this->edition = '';
-
 // File type whitelist for file upload
 $this->aAllowedUploadTypes = array('jpg', 'gif', 'png', 'pdf', 'mp3', 'avi', 'mpg', 'mpeg', 'doc', 'xls', 'ppt');
 
@@ -36,12 +30,6 @@ $this->blLogChangesInAdmin = false;
  * Note: only active if in productive mode, as the eShop in non productive mode will always log such urls
  */
 $this->blSeoLogging = false;
-
-/**
- * Should template blocks be highlighted in frontend?
- * This is mainly intended for module writers in non productive environment
- */
-$this->blDebugTemplateBlocks = false;
 
 // Force admin email. Offline warnings are sent with high priority to this address.
 $this->sAdminEmail = '';
@@ -91,10 +79,6 @@ $this->aRobots = array(
     'yandex',
 );
 
-
-// Deactivate Static URL's for these Robots
-$this->aRobotsExcept = array();
-
 /**
  * Works only if basket reservations feature is enabled in admin.
  *
@@ -123,9 +107,6 @@ $this->blUseCron = false;
  * This options have no effect on Community/Professional Editions.
  */
 
-//Time limit in ms to be notified about slow queries
-$this->iDebugSlowQueryTime = 20;
-
 /**
  * Enables Rights and Roles engine
  * 0 - off,
@@ -137,12 +118,6 @@ $this->blUseRightsRoles = 3;
 
 // If default 30 seconds is not enougth
 // @set_time_limit(3000);
-
-/**
- * Database master-slave configuration:
- * aSlaveHosts - array of slave hosts: array('localhost', '10.2.3.12')
- */
-$this->aSlaveHosts = null;
 
 // Control the removal of Setup directory
 $this->blDelSetupDir = true;

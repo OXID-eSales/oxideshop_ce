@@ -12,15 +12,14 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
-use OxidEsales\Facts\Edition\EditionSelector;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 class BasicContext implements BasicContextInterface
 {
-    public const COMMUNITY_EDITION = EditionSelector::COMMUNITY;
-    public const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
-    public const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
+    public const COMMUNITY_EDITION = Facts::COMMUNITY;
+    public const PROFESSIONAL_EDITION = Facts::PROFESSIONAL;
+    public const ENTERPRISE_EDITION = Facts::ENTERPRISE;
 
     private $facts;
 

@@ -1090,16 +1090,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * true if blocks javascript code be enabled in templates
-     *
-     * @return bool
-     */
-    public function isTplBlocksDebugMode()
-    {
-        return (bool) Registry::getConfig()->getConfigParam('blDebugTemplateBlocks');
-    }
-
-    /**
      * min length of password
      *
      * @return int

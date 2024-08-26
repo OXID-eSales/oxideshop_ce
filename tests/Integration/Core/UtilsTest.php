@@ -35,6 +35,4 @@ final class UtilsTest extends IntegrationTestCase
         $this->assertFileExists($cachedTestPhpFile);
         $this->assertFileExists($cachedTestTxtFile);
     }
-
-
 }

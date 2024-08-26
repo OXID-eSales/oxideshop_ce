@@ -7,3 +7,7 @@ services:
     arguments:
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
       $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDao
+    public: true

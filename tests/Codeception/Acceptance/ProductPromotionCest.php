@@ -15,30 +15,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class ProductPromotionCest
 {
-    public function _after(AcceptanceTester $I): void
-    {
-        $I->deleteFromDatabase(
-            'oxactions2article',
-            [
-                'OXID' => '97483faa8165859ed57e26f75fb6449d',
-            ]
-        );
-        $I->deleteFromDatabase(
-            'oxactions2article',
-            [
-                'OXID' => '66683faa8165859ed57e26f75fb6449d',
-            ]
-        );
-        $I->deleteFromDatabase(
-            'oxactions2article',
-            [
-                'OXID' => '87483faa8165859ed57e26f75fb6449d',
-            ]
-        );
-        $I->clearShopCache();
-    }
-
-    #[group('testFrontendPromotion', 'testFrontendPromotionNew')]
+    #[Group('testFrontendPromotion', 'testFrontendPromotionNew')]
     public function testFrontendPromotionNew(AcceptanceTester $I): void
     {
         $I->wantToTest('the newest products');
@@ -105,7 +82,7 @@ final class ProductPromotionCest
         );
     }
 
-    #[group('testFrontendPromotion', 'testFrontendPromotionTop')]
+    #[Group('testFrontendPromotion', 'testFrontendPromotionTop')]
     public function testFrontendPromotionTop(AcceptanceTester $I): void
     {
         $I->wantToTest('the Top5 products');
@@ -137,7 +114,7 @@ final class ProductPromotionCest
         $this->checkDetails($I, $productToCheck);
     }
 
-    #[group('testFrontendPromotion', 'testFrontendPromotionBargainItems')]
+    #[Group('testFrontendPromotion', 'testFrontendPromotionBargainItems')]
     public function testFrontendPromotionBargainItems(AcceptanceTester $I): void
     {
         $I->wantToTest('the bargain items');

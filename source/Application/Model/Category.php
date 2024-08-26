@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
 
 /**
  * Category manager.
@@ -565,7 +564,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         if (
             !Registry::getUtils()->seoIsActive() ||
-            (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value)
+            $this->getFieldData('oxextlink')
         ) {
             return $this->getStdLink($iLang);
         }
@@ -636,8 +635,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getBaseStdLink($iLang, $blAddId = true, $blFull = true)
     {
-        if (isset($this->oxcategories__oxextlink) && $this->oxcategories__oxextlink->value) {
-            return $this->oxcategories__oxextlink->value;
+        $externalLink = $this->getFieldData('oxextlink');
+        if ($externalLink) {
+            return $externalLink;
         }
 
         $sUrl = '';
@@ -660,9 +660,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getStdLink($iLang = null, $aParams = [])
     {
-        $extLink = $this->getFieldData('oxextlink');
-        if ($extLink) {
-            return Registry::getUtilsUrl()->processUrl($extLink);
+        $externalLink = $this->getFieldData('oxextlink');
+        if ($externalLink) {
+            return Registry::getUtilsUrl()->processUrl($externalLink);
         }
 
         if ($iLang === null) {
@@ -796,24 +796,24 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     public function getParentCategory()
     {
-        $oCat = null;
+        $category = null;
 
-        // loading only if parent id is not rootid
-        if ($this->oxcategories__oxparentid->value && $this->oxcategories__oxparentid->value != 'oxrootid') {
+        $parentCategoryId = $this->getFieldData('oxparentid');
+        if ($parentCategoryId !== 'oxrootid') {
             // checking if object itself has ref to parent
             if ($this->_oParent) {
-                $oCat = $this->_oParent;
+                $category = $this->_oParent;
             } else {
-                $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-                if (!$oCat->load($this->oxcategories__oxparentid->value)) {
-                    $oCat = null;
+                $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+                if (!$category->load($parentCategoryId)) {
+                    $category = null;
                 } else {
-                    $this->_oParent = $oCat;
+                    $this->_oParent = $category;
                 }
             }
         }
 
-        return $oCat;
+        return $category;
     }
 
     /**
@@ -859,11 +859,12 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
      */
     protected function insert()
     {
-        if ($this->getFieldData('oxparentid') != "oxrootid") {
+        $parentCategoryId = $this->getFieldData('oxparentid');
+        if ($parentCategoryId !== 'oxrootid') {
             // load parent
             $oParent = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             //#M317 check if parent is loaded
-            if (!$oParent->load($this->getFieldData('oxparentid'))) {
+            if (!$oParent->load($parentCategoryId)) {
                 return false;
             }
 
@@ -946,14 +947,15 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         // 3. decreasing oxleft and oxright values of current root tree, where oxleft >= $sOldParentRight+1 , oxright >= $sOldParentRight+1
 
         // did we change position in tree ?
-        if ($this->oxcategories__oxparentid->value != $sOldParentID) {
+        $parentCategoryId = $this->getFieldData('oxparentid');
+        if ($parentCategoryId != $sOldParentID) {
             $sOldParentLeft = $this->oxcategories__oxleft->value;
             $sOldParentRight = $this->oxcategories__oxright->value;
 
             $iTreeSize = $sOldParentRight - $sOldParentLeft + 1;
 
             $sNewRootID = $database->getOne("select oxrootid from oxcategories where oxid = :oxid", [
-                ':oxid' => $this->oxcategories__oxparentid->value
+                ':oxid' => $parentCategoryId
             ]);
 
             //If empty rootID, we set it to categorys oxid
@@ -961,7 +963,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
                 $sNewRootID = $this->getId();
             }
             $sNewParentLeft = $database->getOne("select oxleft from oxcategories where oxid = :oxid", [
-                ':oxid' => $this->oxcategories__oxparentid->value
+                ':oxid' => $parentCategoryId
             ]);
 
             $iMoveAfter = $sNewParentLeft + 1;
@@ -1115,7 +1117,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function isTopCategory()
     {
         if ($this->_blTopCategory == null) {
-            $this->_blTopCategory = $this->oxcategories__oxparentid->value == 'oxrootid';
+            $this->_blTopCategory = $this->getFieldData('oxparentid') === 'oxrootid';
         }
 
         return $this->_blTopCategory;

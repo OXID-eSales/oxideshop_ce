@@ -27,7 +27,7 @@ class CodeceptionParametersProvider
 
         $this->dbConfig = (new DatabaseConfiguration(getenv('OXID_DB_URL')));
         return [
-            'SHOP_URL' => getenv('SHOP_URL') ?: $facts->getShopUrl(),
+            'SHOP_URL' => getenv('OXID_SHOP_BASE_URL') ?: $facts->getShopUrl(),
             'PROJECT_ROOT' => $this->getProjectRoot(),
             'VENDOR_PATH' => $facts->getVendorPath(),
             'DB_NAME' => $this->getDbName(),

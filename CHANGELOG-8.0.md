@@ -18,6 +18,7 @@
     - `oxid_shop_url`
     - `oxid_shop_admin_url`
     - `oxid_multi_shop_tables`
+- Interface for storing Symfony Service Container parameters in configuration
 
 ### Changed
 

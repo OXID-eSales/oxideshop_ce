@@ -23,16 +23,15 @@ final class ContainerBuilderTest extends TestCase
 
     public function testServiceLoadingOrderWithAllConfigsPresent(): void
     {
-        $_POST['shp'] = 2;
         $this->loadEnvFixture(__DIR__, ['OXID_ENV=abc']);
         $context = $this->makeContextStub();
-        $context->setEdition(EditionSelector::ENTERPRISE);
+        $context->setEdition(EditionSelector::COMMUNITY);
 
         $container = (new ContainerBuilder($context))->getContainer();
         $container->compile();
 
         $decoratorChainOutput =
-            'ce.pe.ee.component.module.project_default_env.shop_default_env.project_specific_env.shop_specific_env';
+            'ce.component.module.project_default_env.project_specific_env';
         $this->assertSame(
             $decoratorChainOutput,
             $container->get(ServiceInterface::class)->getNamespace()
@@ -41,15 +40,15 @@ final class ContainerBuilderTest extends TestCase
 
     public function testServiceLoadingOrderWithShopAndNoEnvironmentConfig(): void
     {
-        $_POST['shp'] = 2;
         $context = $this->makeContextStub();
-        $context->setEdition(EditionSelector::ENTERPRISE);
+        $context->setEdition(EditionSelector::COMMUNITY);
 
         $container = (new ContainerBuilder($context))->getContainer();
         $container->compile();
 
+
         $decoratorChainOutput =
-            'ce.pe.ee.component.module.project_default_env.shop_default_env';
+            'ce.component.module.project_default_env';
         $this->assertSame(
             $decoratorChainOutput,
             $container->get(ServiceInterface::class)->getNamespace()
@@ -61,13 +60,13 @@ final class ContainerBuilderTest extends TestCase
         ContainerFactory::resetContainer();
         $this->loadEnvFixture(__DIR__, ['OXID_ENV=abc']);
         $context = $this->makeContextStub();
-        $context->setEdition(EditionSelector::ENTERPRISE);
+        $context->setEdition(EditionSelector::COMMUNITY);
 
         $container = (new ContainerBuilder($context))->getContainer();
         $container->compile();
 
         $decoratorChainOutput =
-            'ce.pe.ee.component.module.project_default_env.project_specific_env';
+            'ce.component.module.project_default_env.project_specific_env';
         $this->assertSame(
             $decoratorChainOutput,
             $container->get(ServiceInterface::class)->getNamespace()
@@ -94,8 +93,6 @@ final class ContainerBuilderTest extends TestCase
     {
         $context = new ContextStub();
         $context->setCommunityEditionSourcePath(__DIR__ . '/Fixtures/Ce');
-        $context->setProfessionalEditionRootPath(__DIR__ . '/Fixtures/Pe');
-        $context->setEnterpriseEditionRootPath(__DIR__ . '/Fixtures/Ee');
         $context->setGeneratedServicesFilePath(__DIR__ . '/Fixtures/var/generated_services.yaml');
         $context->setActiveModuleServicesFilePath(__DIR__ . '/Fixtures/var/active_module_services.yaml');
         $context->setProjectConfigurationDirectory(__DIR__ . '/Fixtures/var/configuration/');

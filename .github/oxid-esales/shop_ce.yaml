@@ -47,7 +47,7 @@ runscript: &runscript
     path: ''
     container:
       # {{ $selenium_options := "-e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome" }}
-      options: '-e XDEBUG_MODE=coverage {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.global.git.default_ref }}" -e GITHUB_REF_NAME="{{ .Data.global.git.default_ref }}"'
+      options: '-e XDEBUG_MODE=coverage {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.global.git.ref }}" -e GITHUB_REF_NAME="{{ .Data.global.git.ref }}"'
   setup:
     <<: *shop
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'

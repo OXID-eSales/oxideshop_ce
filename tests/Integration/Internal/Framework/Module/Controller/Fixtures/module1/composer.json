@@ -1,0 +1,13 @@
+{
+  "name": "oxid-esales/module1",
+  "description": "",
+  "type": "oxideshop-module",
+  "license": [
+    "GPL-3.0"
+  ],
+  "autoload": {
+    "psr-4": {
+      "OxidEsales\\Module1\\": "src/"
+    }
+  }
+}

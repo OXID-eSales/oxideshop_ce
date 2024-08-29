@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass\ControllerPass;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ProjectYamlDao;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
@@ -45,6 +46,8 @@ class ContainerBuilder
         $this->loadEditionServices($symfonyContainer);
         $this->loadModuleServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
+
+        $symfonyContainer->addCompilerPass(new ControllerPass());
 
         return $symfonyContainer;
     }

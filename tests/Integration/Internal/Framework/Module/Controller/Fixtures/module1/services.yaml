@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller\Fixtures\module1\src\Controller\ModuleControllerAsService:
+    tags:
+      - { name: 'oxid.controller', controller_key: 'test_module_controller_as_service' }
+    public: true

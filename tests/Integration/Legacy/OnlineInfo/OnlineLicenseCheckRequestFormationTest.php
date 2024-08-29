@@ -194,6 +194,8 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
 
     private function prepareTestData(): void
     {
+        $this->cleanupServersData();
+
         $shopPath = __DIR__ . DIRECTORY_SEPARATOR;
 
         $this->xmlLog = sprintf('%s/%s.xml', __DIR__, uniqid('request_log_', true));
@@ -249,11 +251,16 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
 
     private function cleanUpTestData(): void
     {
-        DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
+        $this->cleanupServersData();
         $fileSystem = $this->get('oxid_esales.symfony.file_system');
         if ($fileSystem->exists($this->xmlLog)) {
             $fileSystem->remove($this->xmlLog);
         }
+    }
+
+    private function cleanupServersData(): void
+    {
+        DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
     }
 
     private function getActiveAdminCount(): int

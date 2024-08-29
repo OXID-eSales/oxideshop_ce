@@ -6,6 +6,7 @@
 - PHPUnit v11 support
 - Category detail page codeception test
 - Registration of environment variables via .env file
+- Controllers can be registered as DI services
 
 ### Fixed
 - Shop ID resolution considers SSL language URLs
@@ -20,7 +21,7 @@
 - PHPUnit v10 support
 
 ### Deprecated
-- Config parameters from [config.inc.php](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/project/configincphp.html) will be moved to env or container parameters
+- Config parameters from [config.inc.php](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/project/configincphp.html) will be moved to env variables and container parameters
 - Global functions `warningHandler(), dumpVar(), debug()`
 - `ConnectionProviderInterface` will be superseded by `ConnectionFactory` in next version
 - Redundant interfaces `TransactionServiceInterface, FinderFactoryInterface`

@@ -35,6 +35,11 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     public function getClassNameById($classId)
     {
+        $controllers = ContainerFacade::getParameter('oxid.controllers_map');
+        if (array_key_exists($classId, $controllers)) {
+            return $controllers[$classId];
+        }
+
         $className = $this->getClassNameFromShopMap($classId);
 
         if (empty($className)) {
@@ -52,6 +57,11 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
      */
     public function getIdByClassName($className)
     {
+        $controllers = ContainerFacade::getParameter('oxid.controllers_map');
+        if (in_array($className, $controllers)) {
+            return array_search($className, $controllers, true);
+        }
+
         $classId = $this->getClassIdFromShopMap($className);
 
         if (empty($classId)) {

@@ -2,6 +2,8 @@
 # {{ $name := "oxideshop-ce" }}name: {{ $name }}
 
 install: &install
+  matrix: &matrix
+    mysql: &mysql '[ "mysql-5.7", "mysql-8.0", "mysql-8", "mariadb-10", "mariadb-11" ]'
   git:
     sdk_repository: joernott/docker-eshop-sdk
     sdk_ref: support_mysql_and_mariadb
@@ -39,6 +41,7 @@ install_shop_with_modules: *install
 
 runscript: &runscript
   matrix:
+    mysql: *mysql
     script: |
       [
         "shop:~/unit.sh",
@@ -57,10 +60,12 @@ runscript: &runscript
 runslim:
   <<: *runscript
   matrix:
+    mysql: *mysql
     script: '["shop:~/php-cs-report.sh"]'
 
 sonarcloud:
   matrix:
+    mysql: '[ "mysql-5.7" ]'
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
   strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
 

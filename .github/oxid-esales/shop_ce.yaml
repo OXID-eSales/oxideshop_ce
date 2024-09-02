@@ -2,6 +2,9 @@
 # {{ $name := "oxideshop-ce" }}name: {{ $name }}
 
 install: &install
+  git:
+    sdk_repository: joernott/docker-eshop-sdk
+    sdk_ref: support_mysql_and_mariadb
   add_services: 'selenium-chrome-126'
   method: script
   script: 'source/.github/oxid-esales/install.sh'

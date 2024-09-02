@@ -4,6 +4,7 @@
 
 ### Added
 - Translations for Change language and currency
+- New parameter `oxid_esales.email.disable_order_emails` to enable and disable sending order emails
 
 ### Deprecated
 - Filesystem module cache related services and interface will be refactored and some of them will be removed

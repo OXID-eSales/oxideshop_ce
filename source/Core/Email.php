@@ -13,12 +13,14 @@ use OxidEsales\Eshop\Core\DynamicImageGenerator;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Event\AdminModeChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use PHPMailer\PHPMailer\PHPMailer;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -463,6 +465,11 @@ class Email extends PHPMailer
      */
     public function sendOrderEmailToUser($order, $subject = null)
     {
+        if ($this->areOrderEmailsDisabled()) {
+            ContainerFacade::get(LoggerInterface::class)
+                ->notice('Order email not sent to user due to disabled configuration option');
+            return true;
+        }
         // add user defined stuff if there is any
         $order = $this->addUserInfoOrderEMail($order);
 
@@ -514,6 +521,11 @@ class Email extends PHPMailer
      */
     public function sendOrderEmailToOwner($order, $subject = null)
     {
+        if ($this->areOrderEmailsDisabled()) {
+            ContainerFacade::get(LoggerInterface::class)
+                ->notice('Order email not sent to owner due to disabled configuration option');
+            return true;
+        }
         $config = Registry::getConfig();
 
         $shop = $this->getShop();
@@ -2014,5 +2026,11 @@ class Email extends PHPMailer
             ->getContainer()
             ->get(EventDispatcherInterface::class)
             ->dispatch(new AdminModeChangedEvent());
+    }
+
+    private function areOrderEmailsDisabled(): bool
+    {
+        return ContainerFacade::hasParameter('oxid_esales.email.disable_order_emails')
+            && ContainerFacade::getParameter('oxid_esales.email.disable_order_emails');
     }
 }

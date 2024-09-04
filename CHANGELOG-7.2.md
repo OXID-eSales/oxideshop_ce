@@ -7,6 +7,7 @@
 
 ### Deprecated
 - Filesystem module cache related services and interface will be refactored and some of them will be removed
+- `OxidEsales\EshopCommunity\Application\Model\Attribute::_sTitle` property
 
 ### Fixed
 - User registration in the Private Sales mode

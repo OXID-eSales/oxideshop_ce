@@ -36,6 +36,8 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Attribute title
      *
+     * @deprecated since v7.2.0 use 'oxtitle' field of the model instead
+     *
      * @var string
      */
     protected $_sTitle = null;

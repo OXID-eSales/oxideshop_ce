@@ -34,15 +34,6 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     protected $_sActiveValue = null;
 
     /**
-     * Attribute title
-     *
-     * @deprecated since v7.2.0 use 'oxtitle' field of the model instead
-     *
-     * @var string
-     */
-    protected $_sTitle = null;
-
-    /**
      * Attribute values
      *
      * @var array
@@ -212,7 +203,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function setTitle($sTitle)
     {
-        $this->_sTitle = Str::getStr()->htmlspecialchars($sTitle);
+        $this->setFieldData('oxtitle', Str::getStr()->htmlspecialchars($sTitle));
     }
 
     /**
@@ -222,7 +213,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function getTitle()
     {
-        return $this->_sTitle;
+        return $this->getFieldData('oxtitle');
     }
 
     /**

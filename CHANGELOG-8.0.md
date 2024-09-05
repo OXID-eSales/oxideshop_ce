@@ -30,5 +30,6 @@
   translation [#0006426](https://bugs.oxid-esales.com/view.php?id=6426) [PR-953](https://github.com/OXID-eSales/oxideshop_ce/pull/953)
 - Remove deprecated `TemplateCacheService` implementation
 - Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in `BasicContext::getCurrentShopId`
+- Remove deprecated model property `Attribute::_sTitle` [PR-914](https://github.com/OXID-eSales/oxideshop_ce/pull/914)
 - Obsolete caching related functionalities
 - Class OxidEsales\Eshop\Core\Module\ModuleVariablesLocator

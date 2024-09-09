@@ -835,22 +835,22 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getActiveCountry()
     {
-        $sDeliveryCountry = '';
-        $soxAddressId = Registry::getSession()->getVariable('deladrid');
-        if ($soxAddressId) {
-            $oDelAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
-            $oDelAddress->load($soxAddressId);
-            $sDeliveryCountry = $oDelAddress->oxaddress__oxcountryid->value;
+        $deliveryCountryId = '';
+        $deliveryAddressId = Registry::getSession()->getVariable('deladrid');
+        if ($deliveryAddressId) {
+            $deliveryAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
+            $deliveryAddress->load($deliveryAddressId);
+            $deliveryCountryId = $deliveryAddress->getFieldData('oxcountryid');
         } elseif ($this->getId()) {
-            $sDeliveryCountry = $this->oxuser__oxcountryid->value;
+            $deliveryCountryId = $this->getFieldData('oxcountryid');
         } else {
-            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-            if ($oUser->loadActiveUser()) {
-                $sDeliveryCountry = $oUser->oxuser__oxcountryid->value;
+            $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+            if ($user->loadActiveUser()) {
+                $deliveryCountryId = $user->getFieldData('oxcountryid');
             }
         }
 
-        return $sDeliveryCountry;
+        return $deliveryCountryId;
     }
 
     /**

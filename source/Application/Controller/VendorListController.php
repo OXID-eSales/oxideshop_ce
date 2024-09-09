@@ -342,8 +342,8 @@ class VendorListController extends \OxidEsales\Eshop\Application\Controller\Arti
      */
     public function getTitleSuffix()
     {
-        if ($this->getActVendor()->oxvendor__oxshowsuffix->value) {
-            return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->oxshops__oxtitlesuffix->value;
+        if ($this->getActVendor()->getFieldData('oxshowsuffix')) {
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->getFieldData('oxtitlesuffix');
         }
     }
 

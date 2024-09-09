@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
@@ -361,7 +362,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $aFilter = Registry::getRequest()->getRequestEscapedParameter('aFilter');
         if (is_array($aFilter) && count($aFilter)) {
             $aCols = $this->getVisibleColNames();
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = DatabaseProvider::getDb();
             $oStr = Str::getStr();
 
             foreach ($aFilter as $sCol => $sValue) {
@@ -417,7 +418,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function getAll($sQ)
     {
         $aReturn = [];
-        $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sQ);
+        $rs = DatabaseProvider::getDb()->select($sQ);
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
                 $aReturn[] = $rs->fields[0];
@@ -469,7 +470,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         // $sCountCacheKey = md5( $sQ );
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (int) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ);
+        return (int) DatabaseProvider::getMaster()->getOne($sQ);
     }
 
     /**
@@ -482,7 +483,9 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function getDataFields($sQ)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getAll($sQ, false);
+        return DatabaseProvider::getMaster(
+            DatabaseProvider::FETCH_MODE_ASSOC
+        )->getAll($sQ);
     }
 
     /**

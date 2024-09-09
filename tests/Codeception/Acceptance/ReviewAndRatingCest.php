@@ -34,8 +34,6 @@ final class ReviewAndRatingCest
         $detailsPage->loginUserForReview($userData['userLoginName'], $userData['userPassword'])
             ->addReviewAndRating($userReviewText, $userRating)
             ->seeUserProductReviewAndRating(1, $userData['userName'], $userReviewText, $userRating);
-        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
-        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
     }
 
     /**
@@ -84,8 +82,6 @@ final class ReviewAndRatingCest
             $variantReview['text'],
             $variantReview['rating']
         );
-        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
-        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
     }
 
     public function manageUserReviewsInAccountMenu(AcceptanceTester $I): void
@@ -131,15 +127,12 @@ final class ReviewAndRatingCest
         $reviewsPage->dontSeeBottomPaginationElements();
     }
 
-    public function _failed(AcceptanceTester $I): void
-    {
-        $userData = $this->getExistingUserData();
-        $I->deleteFromDatabase('oxreviews', ['OXUSERID' => $userData['userId']]);
-        $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
-    }
-
-    private function prepareReviewDataForProduct(AcceptanceTester $I, string $productId, string $userId, array $review): void
-    {
+    private function prepareReviewDataForProduct(
+        AcceptanceTester $I,
+        string $productId,
+        string $userId,
+        array $review
+    ): void {
         $reviewData = [
             'OXID' => uniqid('test', true),
             'OXOBJECTID' => $productId,

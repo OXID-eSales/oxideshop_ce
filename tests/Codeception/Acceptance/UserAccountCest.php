@@ -182,8 +182,6 @@ final class UserAccountCest
 
     /**
      * @group myAccount
-     *
-     * @after cleanUpUserData
      */
     public function changeUserBillingAddress(AcceptanceTester $I): void
     {
@@ -287,20 +285,6 @@ final class UserAccountCest
             ->selectShippingAddress(1)
             ->deleteShippingAddress(1)
             ->seeNumberOfShippingAddresses(0);
-    }
-
-    public function _after(AcceptanceTester $I): void
-    {
-        $this->cleanUpUserData($I);
-    }
-
-    private function cleanUpUserData(AcceptanceTester $I): void
-    {
-        /** Change Germany and Belgium data to original. */
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f632e04633c9.47194042']);
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f631fc920687.20179984']);
-        $userData = $this->getExistingUserData();
-        $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
     }
 
     private function getExistingUserData()

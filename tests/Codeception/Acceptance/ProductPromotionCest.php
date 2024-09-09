@@ -14,29 +14,6 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class ProductPromotionCest
 {
-    public function _after(AcceptanceTester $I): void
-    {
-        $I->deleteFromDatabase(
-            'oxactions2article',
-            [
-                'OXID' => '97483faa8165859ed57e26f75fb6449d',
-            ]
-        );
-        $I->deleteFromDatabase(
-            'oxactions2article',
-            [
-                'OXID' => '66683faa8165859ed57e26f75fb6449d',
-            ]
-        );
-        $I->deleteFromDatabase(
-            'oxactions2article',
-            [
-                'OXID' => '87483faa8165859ed57e26f75fb6449d',
-            ]
-        );
-        $I->clearShopCache();
-    }
-
     /**
      * @group testFrontendPromotion
      * @group testFrontendPromotionNew

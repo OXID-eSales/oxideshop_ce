@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
-use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
@@ -24,12 +23,9 @@ final class GiftRegistryCest
      */
     public function addProductToUserGiftRegistry(AcceptanceTester $I): void
     {
-        $productNavigation = new ProductNavigation($I);
         $I->wantToTest('if product gift registry functionality is enabled');
 
-        //(Use gift registry) is enabled again
         $I->updateConfigInDatabase('bl_showWishlist', true);
-
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -38,8 +34,8 @@ final class GiftRegistryCest
         ];
         $userData = $this->getExistingUserData();
 
-        //open details page
-        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+        $I->amGoingTo('open details page');
+        $detailsPage = (new ProductNavigation($I))->openProductDetailsPage($productData['id']);
         $I->see($productData['title']);
 
         $detailsPage = $detailsPage->loginUser($userData['userLoginName'], $userData['userPassword']);
@@ -53,17 +49,16 @@ final class GiftRegistryCest
             ->checkGiftRegistryItemCount(1)
             ->closeAccountMenu();
 
-        $userAccountPage = $detailsPage->openAccountPage()->seeItemNumberOnGiftRegistryPanel('1');
-
-        /** @var UserAccount $userAccountPage */
-        $userAccountPage = $userAccountPage->logoutUserInAccountPage()
+        $giftRegistryPage = $detailsPage
+            ->openAccountPage()
+            ->seeItemNumberOnGiftRegistryPanel('1')
+            ->logoutUserInAccountPage()
             ->login($userData['userLoginName'], $userData['userPassword'])
-            ->seeItemNumberOnGiftRegistryPanel('1');
-
-        $giftRegistryPage = $userAccountPage->openGiftRegistryPage()
+            ->seeItemNumberOnGiftRegistryPanel('1')
+            ->openGiftRegistryPage()
             ->seeProductData($productData);
 
-        //open product details page
+        $I->amGoingTo('open details page');
         $detailsPage = $giftRegistryPage->openProductDetailsPage(1);
         $I->see($productData['title'], $detailsPage->productTitle);
 
@@ -76,9 +71,6 @@ final class GiftRegistryCest
         $giftRegistryPage->openAccountMenu()
             ->checkGiftRegistryItemCount(0)
             ->closeAccountMenu();
-
-        $I->deleteFromDatabase('oxuserbaskets', ['oxuserid' => 'testuser']);
-        $I->clearShopCache();
     }
 
     /**

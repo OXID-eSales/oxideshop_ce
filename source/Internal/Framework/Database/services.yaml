@@ -4,7 +4,6 @@ imports:
 parameters:
   oxid_multilingual_tables: []
   oxid_skip_database_views_usage: false
-  oxid_multi_shop_article_fields: []
   oxid_show_update_views_button: true
   oxid_multi_shop_tables: []
 

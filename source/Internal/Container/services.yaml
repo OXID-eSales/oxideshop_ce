@@ -2,7 +2,7 @@ imports:
     - { resource: bootstrap-services.yaml }
 
 parameters:
-    oxid_shop_url: 'http://localhost.local/'
+    oxid_shop_url: '%env(OXID_SHOP_BASE_URL)%'
     oxid_shop_admin_url: null
     oxid_alternative_image_url:
     oxid_shop_logo:

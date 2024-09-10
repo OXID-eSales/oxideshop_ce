@@ -15,7 +15,7 @@
 - Remove unnecessary `<small>` tags from CHF currency
 
 ### Changed
--  
+-  Changed the exported user file name from `Export_recipient_` to `Export_user_recipient_status_` to better reflect the content of the export.
 
 ### Removed
 - Obsolete demo data and images from the `source/out` directory

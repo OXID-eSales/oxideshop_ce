@@ -26,6 +26,7 @@ class Context extends BasicContext implements ContextInterface
      * @var FactsConfigFile
      */
     private $factsConfigFile;
+    private int $shopId;
 
     /**
      * @return string
@@ -58,9 +59,10 @@ class Context extends BasicContext implements ContextInterface
      */
     public function getCurrentShopId(): int
     {
-        $shopIdCalculator = new ShopIdCalculator(new FileCache());
-
-        return (int)$shopIdCalculator->getShopId();
+        if (!isset($this->shopId)) {
+            $this->shopId = (int)(new ShopIdCalculator(new FileCache()))->getShopId();
+        }
+        return $this->shopId;
     }
 
     /**

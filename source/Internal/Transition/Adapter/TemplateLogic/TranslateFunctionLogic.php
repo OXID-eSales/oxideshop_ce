@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\TranslatorI
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 
+use function is_array;
+
 class TranslateFunctionLogic
 {
     /**
@@ -44,7 +46,6 @@ class TranslateFunctionLogic
     public function getTranslation(array $params): string
     {
         $ident = $params['ident'] ?? 'IDENT MISSING';
-        $args = $params['args'] ?? false;
         $suffix = $params['suffix'] ?? 'NO_SUFFIX';
         $translation = $ident;
         $suffixTranslation = $suffix;
@@ -64,7 +65,7 @@ class TranslateFunctionLogic
             $translationFound = true;
         }
         if ($translationFound) {
-            $translation = $this->assignArgumentsToTranslation($translation, $args);
+            $translation = $this->assignArgumentsToTranslation($translation, $params);
             if ($this->isTranslatableSuffix($suffix)) {
                 $translation .= $suffixTranslation;
             }
@@ -88,19 +89,12 @@ class TranslateFunctionLogic
         return !empty($suffix) && $suffix !== 'NO_SUFFIX';
     }
 
-    /**
-     * @param string $translation
-     * @param mixed  $args
-     * @return string
-     */
-    private function assignArgumentsToTranslation(string $translation, $args): string
+    private function assignArgumentsToTranslation(string $translation, array $params): string
     {
-        if ($args) {
-            if (is_array($args)) {
-                $translation = vsprintf($translation, $args);
-            } else {
-                $translation = sprintf($translation, $args);
-            }
+        if (isset($params['args']) && $params['args'] !== false) {
+            $translation = is_array($params['args']) ?
+                vsprintf($translation, $params['args']) :
+                sprintf($translation, $params['args']);
         }
         return $translation;
     }

@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.0.5 - Unreleased
+
+### Fixed
+- Translation argument now properly handles a value of 0
+
 ## v7.0.4 - 2024-03-11
 
 ### Fixed

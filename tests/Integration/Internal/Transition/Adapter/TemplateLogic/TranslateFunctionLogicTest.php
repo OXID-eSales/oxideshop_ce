@@ -35,7 +35,11 @@ final class TranslateFunctionLogicTest extends TestCase
             [['ident' => 'FIRST_NAME', 'suffix' => '_foo'], 'ERROR: Translation for FIRST_NAME_foo not found!'],
             [['ident' => 'FIRST_NAME', 'suffix' => 'LAST_NAME'], 'VornameNachname'],
             [['ident' => 'foo', 'noerror' => true], 'foo'],
-            [['ident' => 'foo', 'noerror' => 'bar'], 'foo']
+            [['ident' => 'foo', 'noerror' => 'bar'], 'foo'],
+            [['ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => 0], 'zzgl. 0% MwSt., Betrag'],
+            [['ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => ''], 'zzgl. % MwSt., Betrag'],
+            [['ident' => 'VAT_PLUS_PERCENT_AMOUNT'], 'zzgl. %s%% MwSt., Betrag'],
+            [['ident' => 'VAT_PLUS_PERCENT_AMOUNT', 'args' => false], 'zzgl. %s%% MwSt., Betrag']
         ];
     }
 

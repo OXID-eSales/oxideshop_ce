@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Controller\ControllerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -872,7 +873,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         Registry::getLogger()->error($displayedException->getMessage(), [$rendererError]);
     }
 
-    private function passSessionErrorsToViewData(BaseController $view, array $viewData): array
+    private function passSessionErrorsToViewData(BaseController|ControllerInterface $view, array $viewData): array
     {
         $errors = $this->getErrors($view->getClassKey());
         if (\is_array($errors) && count($errors)) {

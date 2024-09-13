@@ -9,15 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller\Fixtures\module1\src\Controller;
 
-use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\EshopCommunity\Internal\Framework\Controller\AbstractControllerDecorator;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ControllerInterface;
 
-class ModuleControllerAsService extends FrontendController implements ControllerInterface
+class ModuleControllerDecorator extends AbstractControllerDecorator
 {
-    protected $_sThisTemplate = '@module1/module_controller_as_service';
-
-    public function testFunction(): void
+    public function __construct(protected readonly ControllerInterface $controller)
     {
-        echo 'Function output';
+
+    }
+
+    public function init()
+    {
+        echo "Init Decorator";
+        $this->controller->init();
     }
 }

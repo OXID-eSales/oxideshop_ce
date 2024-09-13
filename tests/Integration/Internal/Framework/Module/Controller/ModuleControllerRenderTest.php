@@ -71,6 +71,16 @@ final class ModuleControllerRenderTest extends TestCase
         $this->assertStringContainsString('Function output', $output);
     }
 
+    public function testControllerDecorator(): void
+    {
+        ob_start();
+        $this->shopControl->start('test_module_controller_as_service', 'testFunction');
+        $output = ob_get_clean();
+
+        $this->assertStringContainsString('module1/module_controller_as_service', $output);
+        $this->assertStringContainsString('Init Decorator', $output);
+    }
+
     private function get(string $serviceId)
     {
         return ContainerFacade::get($serviceId);

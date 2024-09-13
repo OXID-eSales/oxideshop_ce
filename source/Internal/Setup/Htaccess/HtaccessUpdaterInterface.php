@@ -10,5 +10,5 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Htaccess;
 interface HtaccessUpdaterInterface
 {
     /** @param string $url */
-    public function updateRewriteBaseDirective(string $url): void;
+    public function updateRewriteBaseDirective(ShopBaseUrl $shopBaseUrl): void;
 }

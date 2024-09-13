@@ -161,4 +161,9 @@ class BasicContext implements BasicContextInterface
     {
         return getenv('OXID_DB_URL') ?: '';
     }
+
+    public function getShopBaseUrl(): string
+    {
+        return getenv('OXID_SHOP_BASE_URL');
+    }
 }

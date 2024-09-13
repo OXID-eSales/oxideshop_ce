@@ -49,6 +49,8 @@ interface BasicContextInterface
 
     public function getProjectConfigurationDirectory(): string;
 
+    public function getShopBaseUrl(): string;
+
     public function getShopConfigurationDirectory(int $shopId): string;
 
     public function getShopRootPath(): string;

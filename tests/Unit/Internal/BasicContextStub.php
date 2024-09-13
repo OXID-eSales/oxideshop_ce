@@ -37,6 +37,7 @@ class BasicContextStub implements BasicContextInterface
     private string $configurationDirectory;
     protected string $activeModuleServicesFilePath;
     protected string $shopConfigurableServicesFilePath;
+    private string $shopBaseUrl;
 
 
     public function __construct()
@@ -63,6 +64,7 @@ class BasicContextStub implements BasicContextInterface
         $this->activeModuleServicesFilePath = $basicContext->getActiveModuleServicesFilePath($this->getDefaultShopId());
         $this->databaseUrl = $basicContext->getDatabaseUrl();
         $this->projectConfigurationDirectory = $basicContext->getProjectConfigurationDirectory();
+        $this->shopBaseUrl = $basicContext->getShopBaseUrl();
     }
 
     public function getCommunityEditionSourcePath(): string
@@ -223,5 +225,20 @@ class BasicContextStub implements BasicContextInterface
     public function getDatabaseUrl(): string
     {
         return $this->databaseUrl;
+    }
+
+    public function setDatabaseUrl(string $databaseUrl): string
+    {
+        return $this->databaseUrl = $databaseUrl;
+    }
+
+    public function getShopBaseUrl(): string
+    {
+        return $this->shopBaseUrl;
+    }
+
+    public function setShopBaseUrl(string $shopBaseUrl): void
+    {
+        $this->shopBaseUrl = $shopBaseUrl;
     }
 }

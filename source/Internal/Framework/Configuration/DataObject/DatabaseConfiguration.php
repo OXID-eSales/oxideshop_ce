@@ -40,10 +40,20 @@ class DatabaseConfiguration
     public function __construct(private readonly string $databaseUrl)
     {
         $urlComponents = parse_url($this->databaseUrl);
-        if (!$urlComponents || !is_array($urlComponents) || !isset($urlComponents['scheme'])) {
+        if (
+            !$urlComponents ||
+            !is_array($urlComponents) ||
+            !isset($urlComponents['scheme'], self::$driverSchemeAliases[$urlComponents['scheme']]) ||
+            empty($urlComponents['host'])
+        ) {
             throw new InvalidDatabaseConfigurationException("'$this->databaseUrl' is not a valid database URL");
         }
         $this->urlComponents = $urlComponents;
+    }
+
+    public function getScheme(): string
+    {
+        return $this->urlComponents['scheme'];
     }
 
     public function getDriver(): string
@@ -58,12 +68,12 @@ class DatabaseConfiguration
 
     public function getUser(): string
     {
-        return $this->urlComponents['user'];
+        return $this->urlComponents['user'] ?? '';
     }
 
     public function getPass(): string
     {
-        return $this->urlComponents['pass'];
+        return $this->urlComponents['pass'] ?? '';
     }
 
     public function getHost(): string
@@ -73,7 +83,7 @@ class DatabaseConfiguration
 
     public function getPort(): int
     {
-        return $this->urlComponents['port'];
+        return $this->urlComponents['port'] ?? 3306;
     }
 
     public function getName(): string

@@ -9,19 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Directory;
 
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\DirectoryValidator;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\NonExistenceDirectoryException;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\NotAbsolutePathException;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidator;
 use PHPUnit\Framework\TestCase;
 
 final class DirectoryValidatorTest extends TestCase
 {
     private string $shopSourcePath;
+    private BasicContextInterface $basicContext;
 
     protected function setUp(): void
     {
         $this->shopSourcePath = __DIR__ . '/Fixtures/dir-structure/test-folder';
+        $this->basicContext = new BasicContext();
 
         parent::setUp();
     }
@@ -29,28 +33,30 @@ final class DirectoryValidatorTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testDirectoriesExistentAndPermission(): void
     {
-        $directoryValidator = new DirectoryValidator();
-        $directoryValidator->validateDirectory($this->shopSourcePath, $this->shopSourcePath . '/tmp');
+        $directoryValidator = $this->getDirectoryValidator();
+        $directoryValidator->validateDirectory($this->shopSourcePath . '/tmp');
     }
 
     public function testCheckPathIsAbsolute(): void
     {
-        $shopSourcePath  = 'source';
         $shopCompilePath  = 'source/tmp';
 
-        $directoryValidator = new DirectoryValidator();
+        $directoryValidator = $this->getDirectoryValidator();
 
         $this->expectException(NotAbsolutePathException::class);
-        $directoryValidator->checkPathIsAbsolute($shopSourcePath, $shopCompilePath);
+        $directoryValidator->checkPathIsAbsolute($shopCompilePath);
     }
 
     public function testNonExistentDirectories(): void
     {
-        $shopSourcePath  = '/test-folder';
-
-        $directoryValidator = new DirectoryValidator();
+        $directoryValidator = $this->getDirectoryValidator();
 
         $this->expectException(NonExistenceDirectoryException::class);
-        $directoryValidator->validateDirectory($shopSourcePath, $this->shopSourcePath . '/tmp');
+        $directoryValidator->validateDirectory('/notExists/tmp');
+    }
+
+    private function getDirectoryValidator(): DirectoryValidator
+    {
+        return new DirectoryValidator($this->basicContext);
     }
 }

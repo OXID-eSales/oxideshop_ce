@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup\Htaccess;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessUpdater;
+use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\ShopBaseUrl;
 use OxidEsales\EshopCommunity\Internal\Utility\Url\UrlParserInterface;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -22,13 +23,13 @@ final class HtaccessUpdaterTest extends TestCase
 
     public function testUpdateRewriteBaseDirectiveWithUrlPathWillCallDaoWithExpected(): void
     {
-        $url = 'http://some-url.com/some-path';
+        $url = new ShopBaseUrl('http://some-url.com/some-path');
         $urlPath = '/some-path';
         $htaccessDaoFactory = $this->prophesize(HtaccessDaoFactoryInterface::class);
         $htaccessDao = $this->prophesize(HtaccessDaoInterface::class);
         $htaccessDaoFactory->createRootHtaccessDao()->willReturn($htaccessDao);
         $urlParser = $this->prophesize(UrlParserInterface::class);
-        $urlParser->getPathWithoutTrailingSlash($url)->willReturn($urlPath);
+        $urlParser->getPathWithoutTrailingSlash($url->getUrl())->willReturn($urlPath);
 
         (new HtaccessUpdater(
             $htaccessDaoFactory->reveal(),
@@ -40,13 +41,13 @@ final class HtaccessUpdaterTest extends TestCase
 
     public function testUpdateRewriteBaseDirectiveWithEmptyUrlPathWillCallDaoWithExpected(): void
     {
-        $url = 'http://some-url.com/';
+        $url = new ShopBaseUrl('http://some-url.com/');
         $rewriteBaseForEmptyPath = '/';
         $htaccessDaoFactory = $this->prophesize(HtaccessDaoFactoryInterface::class);
         $htaccessDao = $this->prophesize(HtaccessDaoInterface::class);
         $htaccessDaoFactory->createRootHtaccessDao()->willReturn($htaccessDao);
         $urlParser = $this->prophesize(UrlParserInterface::class);
-        $urlParser->getPathWithoutTrailingSlash($url)->willReturn('');
+        $urlParser->getPathWithoutTrailingSlash($url->getUrl())->willReturn('');
 
         (new HtaccessUpdater(
             $htaccessDaoFactory->reveal(),

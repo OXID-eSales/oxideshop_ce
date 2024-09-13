@@ -9,8 +9,5 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Htaccess;
 
 interface HtaccessDaoInterface
 {
-    /**
-     * @param string $rewriteBase
-     */
     public function setRewriteBase(string $rewriteBase): void;
 }

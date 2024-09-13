@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Htaccess;
 
-class HtaccessAccessException extends \Exception
+use Exception;
+
+class HtaccessAccessException extends Exception
 {
 }

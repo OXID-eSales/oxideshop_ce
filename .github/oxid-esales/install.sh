@@ -53,18 +53,13 @@ docker compose "${install_container_method}" -T \
     ${install_container_options} \
     "${install_container_name}" \
     ${OE_CONSOLE} oe:setup:shop \
-    --db-host mysql \
-    --db-port 3306 \
-    --db-name example \
-    --db-user root \
-    --db-password root \
 
 if [ -e vendor/oxid-esales/oxideshop-ce ]; then
     # Handle copying of the config
     if [ -f source/config.inc.php.dist ] && [ -f source/config.inc.php ]; then
         if diff -q source/config.inc.php.dist source/config.inc.php; then
             echo "source/config.inc.php has not been modified"
-            TARGET=source/config.inc.php    
+            TARGET=source/config.inc.php
         else
             echo "Config file is source/config.inc.php"
             CONFIG_FILE=source/config.inc.php

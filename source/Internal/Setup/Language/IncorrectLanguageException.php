@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Language;
 
-class IncorrectLanguageException extends \Exception
+use Exception;
+
+class IncorrectLanguageException extends Exception
 {
 }

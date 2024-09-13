@@ -15,12 +15,11 @@ class HtaccessDaoFactory implements HtaccessDaoFactoryInterface
 {
     private const FILENAME = '.htaccess';
 
-    public function __construct(private BasicContextInterface $basicContext)
+    public function __construct(private readonly BasicContextInterface $basicContext)
     {
     }
 
     /**
-     * @return HtaccessDaoInterface
      * @throws HtaccessAccessException
      */
     public function createRootHtaccessDao(): HtaccessDaoInterface
@@ -29,7 +28,6 @@ class HtaccessDaoFactory implements HtaccessDaoFactoryInterface
     }
 
     /**
-     * @return string
      * @throws HtaccessAccessException
      */
     private function getRootHtaccessPath(): string
@@ -41,6 +39,7 @@ class HtaccessDaoFactory implements HtaccessDaoFactoryInterface
                 sprintf('Root %s file not found or not accessible', self::FILENAME)
             );
         }
+
         return $path;
     }
 }

@@ -1,7 +1,6 @@
 services:
     _defaults:
         autowire: true
-        public: false
 
     OxidEsales\EshopCommunity\Internal\Domain\Admin\Command\CreateUserCommand:
         class: OxidEsales\EshopCommunity\Internal\Domain\Admin\Command\CreateUserCommand

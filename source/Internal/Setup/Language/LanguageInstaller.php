@@ -51,11 +51,7 @@ class LanguageInstaller implements LanguageInstallerInterface
             $settingValue = $languagesSetting->getValue();
 
             foreach ($settingValue as $languageCode => $settingLanguage) {
-                if ($languageCode === $language->getCode()) {
-                    $settingValue[$languageCode]['active'] = 1;
-                } else {
-                    $settingValue[$languageCode]['active'] = 0;
-                }
+                $settingValue[$languageCode]['active'] = $languageCode === $language->getCode() ? 1 : 0;
             }
 
             $languagesSetting->setValue($settingValue);

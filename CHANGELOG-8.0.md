@@ -32,6 +32,7 @@
   unlimited period of time
 - Functionality to extend Symfony DIC for environments and shops
 - Method `getAltImageUrl` of PictureHandler will not use ssl parameter anymore
+- `oe:setup:shop` command now fetches parameters from the current environment configuration. All corresponding command-line parameters were removed
 
 ### Removed
 
@@ -82,3 +83,4 @@
 - Deprecated class `ModuleVariablesLocator`
 - Redundant `BasicContextInterface` methods
 - related configuration parameter method `isTplBlocksDebugMode` of `ViewConfig` class
+- Deprecated `NamedArgumentsTrait`

@@ -16,23 +16,19 @@ class HtaccessUpdater implements HtaccessUpdaterInterface
     private const REWRITE_BASE_FOR_EMPTY_PATH = '/';
 
     public function __construct(
-        private HtaccessDaoFactoryInterface $htaccessDaoFactory,
-        private UrlParserInterface $urlParser
+        private readonly HtaccessDaoFactoryInterface $htaccessDaoFactory,
+        private readonly UrlParserInterface $urlParser
     ) {
     }
 
     /** @inheritDoc */
-    public function updateRewriteBaseDirective(string $url): void
+    public function updateRewriteBaseDirective(ShopBaseUrl $shopBaseUrl): void
     {
         $this->htaccessDaoFactory->createRootHtaccessDao()->setRewriteBase(
-            $this->getRewriteBase($url)
+            $this->getRewriteBase($shopBaseUrl->getUrl())
         );
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
     private function getRewriteBase(string $url): string
     {
         return $this->urlParser->getPathWithoutTrailingSlash($url) ?: self::REWRITE_BASE_FOR_EMPTY_PATH;

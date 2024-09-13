@@ -9,32 +9,30 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Language;
 
+use function in_array;
+
 class DefaultLanguage
 {
-    /**
-     * @var string
-     */
-    private $language;
+    private string $language;
+
+    private array $availableLanguages = ['en', 'de'];
 
     /**
-     * @var string[]
-     */
-    private $availableLanguages = ['en', 'de'];
-
-    /**
-     * @param string $language
      * @throws IncorrectLanguageException
      */
     public function __construct(string $language)
     {
-        if (!in_array($language, $this->availableLanguages)) {
+        if (in_array($language, $this->availableLanguages, true)) {
+            $this->language = $language;
+        } else {
             throw new IncorrectLanguageException(
-                'Invalid language argument: ' . $language
-                . ', available languages: ' . implode(', ', $this->availableLanguages)
+                sprintf(
+                    'Invalid language argument: %s, available languages: %s',
+                    $language,
+                    implode(', ', $this->availableLanguages)
+                )
             );
         }
-
-        $this->language = $language;
     }
 
     public function getCode(): string

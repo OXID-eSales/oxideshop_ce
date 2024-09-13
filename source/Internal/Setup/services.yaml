@@ -1,15 +1,22 @@
 imports:
-    - { resource: Database/services.yaml }
-    - { resource: Directory/services.yaml }
-    - { resource: Htaccess/services.yaml }
-    - { resource: Language/services.yaml }
+  - { resource: Database/services.yaml }
+  - { resource: Directory/services.yaml }
+  - { resource: Htaccess/services.yaml }
+  - { resource: Language/services.yaml }
+  - { resource: Validator/services.yaml }
+  - { resource: Parameters/services.yaml }
+  - { resource: ShopConfiguration/services.yaml }
+
+parameters:
+  option_setup_language: language
 
 services:
-    _defaults:
-        autowire: true
-        public: false
+  _defaults:
+    autowire: true
 
-    OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand:
-        class: OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand
-        tags:
-            - { name: 'console.command', command: 'oe:setup:shop' }
+  OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand:
+    class: OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand
+    tags:
+      - { name: 'console.command', command: 'oe:setup:shop' }
+    arguments:
+      $optionSetupLanguage: '%option_setup_language%'

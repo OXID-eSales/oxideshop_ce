@@ -534,7 +534,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
 
             // current url
             $this->addHost(ContainerFacade::getParameter('oxid_shop_url'), $this->_aHosts);
-            $this->addHost(ContainerFacade::getParameter('oxid_shop_url'), $this->_aHosts);
 
             if ($this->isAdmin()) {
                 $this->addHost(ContainerFacade::getParameter('oxid_shop_admin_url'), $this->_aHosts);

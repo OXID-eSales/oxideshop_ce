@@ -54,16 +54,15 @@ final class DatabaseConfigurationTest extends TestCase
 
     public function testGetParametersWithMinimalUrl(): void
     {
+        $defaultPort = 3306;
         $scheme = 'sqlite';
         $driver = 'pdo_sqlite';
         $username = uniqid('user-', true);
-        $password = uniqid('secret-', true);
         $server = uniqid('server-', true);
         $url = sprintf(
-            '%s://%s:%s@%s',
+            '%s://%s@%s',
             $scheme,
             $username,
-            $password,
             $server
         );
 
@@ -73,8 +72,9 @@ final class DatabaseConfigurationTest extends TestCase
         $this->assertFalse($databaseConfiguration->isSocketConnection());
         $this->assertEquals($driver, $databaseConfiguration->getDriver());
         $this->assertEquals($username, $databaseConfiguration->getUser());
-        $this->assertEquals($password, $databaseConfiguration->getPass());
+        $this->assertEmpty($databaseConfiguration->getPass());
         $this->assertEquals($server, $databaseConfiguration->getHost());
+        $this->assertEquals($defaultPort, $databaseConfiguration->getPort());
     }
 
     public function testWithInvalidUrl(): void
@@ -84,6 +84,33 @@ final class DatabaseConfigurationTest extends TestCase
         $this->expectException(InvalidDatabaseConfigurationException::class);
 
         new DatabaseConfiguration($url);
+    }
+
+    public function testWithInvalidScheme(): void
+    {
+        $url = 'abc://def';
+
+        $this->expectException(InvalidDatabaseConfigurationException::class);
+
+        new DatabaseConfiguration($url);
+    }
+
+    public function testWithUnresolvableHost(): void
+    {
+        $url = 'mysql:abc';
+
+        $this->expectException(InvalidDatabaseConfigurationException::class);
+
+        new DatabaseConfiguration($url);
+    }
+
+    public function testWithUnresolvableUser(): void
+    {
+        $url = 'mysql://abc';
+
+        $databaseConfiguration = new DatabaseConfiguration($url);
+
+        $this->assertEmpty($databaseConfiguration->getUser());
     }
 
     public function testWithSocketConnection(): void

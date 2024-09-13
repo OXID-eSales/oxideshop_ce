@@ -11,8 +11,9 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Setup\Directory;
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NoPermissionDirectoryException;
-use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidator;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\DirectoryValidator;
+use OxidEsales\EshopCommunity\Internal\Setup\Directory\NoPermissionDirectoryException;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\TestCase;
 
 final class DirectoryValidatorTest extends TestCase
@@ -47,12 +48,13 @@ final class DirectoryValidatorTest extends TestCase
     {
         $this->dir->getChild('test-folder/out/pictures/promo')->chmod(0555);
 
-        $directoryValidator = new DirectoryValidator();
+        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context->method('getSourcePath')->willReturn($this->dir->getChild('test-folder')->url());
+        $directoryValidator = new DirectoryValidator($context);
 
         $this->expectException(NoPermissionDirectoryException::class);
 
         $directoryValidator->validateDirectory(
-            $this->dir->getChild('test-folder')->url(),
             $this->dir->getChild('test-folder/tmp')->url()
         );
     }

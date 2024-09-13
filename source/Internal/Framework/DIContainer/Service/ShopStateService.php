@@ -42,7 +42,7 @@ class ShopStateService implements ShopStateServiceInterface
         try {
             $connection = DriverManager::getConnection(['url' => $this->basicContext->getDatabaseUrl()]);
             $connection->exec(
-                sprintf("SELECT 1 FROM `%s` LIMIT 1", $this->basicContext->getConfigTableName())
+                sprintf('SELECT 1 FROM `%s` LIMIT 1', $this->basicContext->getConfigTableName())
             );
             $connection->close();
         } catch (\Throwable) {

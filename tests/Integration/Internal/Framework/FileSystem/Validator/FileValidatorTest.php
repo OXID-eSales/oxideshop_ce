@@ -17,7 +17,6 @@ use Symfony\Component\Filesystem\Path;
 
 final class FileValidatorTest extends IntegrationTestCase
 {
-    private string $dataDirPath = 'tests/Integration/_data';
     private FileValidatorInterface $fileValidator;
 
     public function setUp(): void
@@ -58,6 +57,6 @@ final class FileValidatorTest extends IntegrationTestCase
 
     private function getFilePath(string $fileName): string
     {
-        return Path::join(INSTALLATION_ROOT_PATH, $this->dataDirPath, $fileName);
+        return Path::join(__DIR__, 'Fixtures/images', $fileName);
     }
 }

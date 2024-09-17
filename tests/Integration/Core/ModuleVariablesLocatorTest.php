@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Core\SubShopSpecificFileCache;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
 final class ModuleVariablesLocatorTest extends IntegrationTestCase
 {
@@ -25,6 +26,7 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
         parent::tearDown();
     }
 
+    #[Group('exclude-from-compilation')]
     public function testLocatorReturnsEmptyModuleChainIfSubshopDoesNotExist(): void
     {
         $randomShopId = time();

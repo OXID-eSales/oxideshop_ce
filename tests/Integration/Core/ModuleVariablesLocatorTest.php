@@ -26,9 +26,7 @@ final class ModuleVariablesLocatorTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    /**
-     * @group exclude-from-compilation
-     */
+    #[Group('exclude-from-compilation')]
     public function testLocatorReturnsEmptyModuleChainIfSubshopDoesNotExist(): void
     {
         $randomShopId = time();

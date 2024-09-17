@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServ
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Path;
 
@@ -25,7 +24,9 @@ final class ModuleServicesImporterTest extends IntegrationTestCase
 
     private int $shopId = 1;
 
-    #[Group('exclude-from-compilation')]
+    /**
+     * @group exclude-from-compilation
+     */
     public function testImport(): void
     {
         $moduleDirectory = Path::join(__DIR__, 'Fixtures', 'Module');

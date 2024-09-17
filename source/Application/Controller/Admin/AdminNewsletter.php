@@ -52,7 +52,7 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         ContainerFacade::get(HeaderGeneratorBridgeInterface::class)
             ->generate(
-                'Export_recipients_' . date('Y-m-d') . '.csv'
+                'Export_user_recipient_status_' . date('Y-m-d') . '.csv'
             );
     }
 

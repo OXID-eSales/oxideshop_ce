@@ -119,6 +119,7 @@ $aLang = [
 'EMAIL_ADDRESS'                                               => 'E-Mail-Adresse',
 'ENABLE'                                                      => 'Anzeigen',
 'ENTER_COUPON_NUMBER'                                         => 'Gutscheincode eingeben',
+'APPLY_COUPON_WARNING'                                        => 'Please note that applying a coupon to your shopping basket will not result in a negative balance or any refund of money. If the value of the coupon exceeds the total cost of items in the basket, the remaining coupon value will be void and not redeemable for future use.',
 'ENTER_EMAIL_OR_NAME'                                         => 'E-Mail-Adresse oder Nachname eingeben',
 'ENTER_NEW_PASSWORD'                                          => 'Bitte geben Sie ein neues Passwort ein.',
 'ERROR'                                                       => 'Fehler',

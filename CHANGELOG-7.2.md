@@ -4,6 +4,7 @@
 
 ### Added
 - Translations for Change language and currency
+- Applying multiple vouchers will not reduce the basket value below zero
 
 ### Deprecated
 - Filesystem module cache related services and interface will be refactored and some of them will be removed

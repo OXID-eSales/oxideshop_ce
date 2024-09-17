@@ -770,11 +770,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $dVoucher = $oVoucherPrice->getBruttoPrice();
         $dProduct = $oProductTotal->getBruttoPrice();
 
-        if ($dVoucher > $dProduct) {
-            return $dProduct;
-        }
-
-        return $dVoucher;
+        return min($dPrice, $dVoucher, $dProduct);
     }
 
     /**
@@ -811,7 +807,7 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         $dProduct = $oProductTotal->getBruttoPrice();
         $dVoucher = $oDiscount->getAbsValue($dProduct);
 
-        return ($dVoucher > $dProduct) ? $dProduct : $dVoucher;
+        return min($dPrice, $dVoucher, $dProduct);
     }
 
     /**

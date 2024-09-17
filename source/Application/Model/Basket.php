@@ -287,6 +287,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected $_sCardMessage = '';
 
+    private bool $voucherExceeded = false;
+
     /**
      * Enables or disable saving to data base
      *
@@ -1095,6 +1097,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
                         // assigning real voucher discount value as this is the only place where real value is calculated
                         $dVoucherdiscount = $oVoucher->getDiscountValue($dPrice);
+
+                        $this->voucherExceeded = $dVoucherdiscount < $oVoucher->getDiscount();
 
                         if ($dVoucherdiscount > 0) {
                             $dVatPart = ($dPrice - $dVoucherdiscount) / $dPrice * 100;
@@ -2912,7 +2916,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns price list object of not discounted products
      *
-     * @return \OxidEsales\Eshop\Core\PriceList in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine plugin
+     * @return \OxidEsales\Eshop\Core\PriceList in v4.8/5.1 on 2013-10-14; for formatting use oxPrice template engine
+     *                                          plugin
      */
     public function getNotDiscountProductsPrice()
     {
@@ -3023,5 +3028,10 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     public function getMinOrderPrice()
     {
         return \OxidEsales\Eshop\Core\Price::getPriceInActCurrency(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iMinOrderPrice'));
+    }
+
+    public function isVoucherExceeded(): bool
+    {
+        return $this->voucherExceeded;
     }
 }

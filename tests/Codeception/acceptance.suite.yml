@@ -15,7 +15,7 @@ modules:
             browser: '%BROWSER%'
             port: '%SELENIUM_SERVER_PORT%'
             host: '%SELENIUM_SERVER_HOST%'
-            window_size: maximize
+            window_size: 2000x2000
             clear_cookies: true
             restart: true
             capabilities:

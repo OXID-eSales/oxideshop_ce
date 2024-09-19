@@ -1,23 +1,23 @@
-name: Nightly runs
+name: Weekly MariaDB runs
 
 on:
   schedule:
-    - cron: '17 23 * * 1-5'
+    - cron: '17 23 * * 6'
 
 jobs:
   oxideshop_ce_71x_nightly:
     if: always()
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/7.1.x.yaml,~/defaults/php8.1_8.2_mysql8.0_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
+      testplan: '~/defaults/7.1.x.yaml,~/defaults/php8.1_8.2_mariadb11_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
       custom_testplan_yaml: |
         global:
-          title: '7.1.x-nightly'
+          title: '7.1.x-mariadb-weekly'
         finish:
-          slack_title: 'Nightly Shop CE 7.1.x on {{ .Github.Repository }}'
+          slack_title: 'Weekly Shop CE 7.1.x/MariaDB on {{ .Github.Repository }}'
       use_scheduled_slack_channel: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
@@ -34,15 +34,15 @@ jobs:
     if: always()
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/7.2.x.yaml,~/defaults/php8.2_8.3_mysql8.0_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
+      testplan: '~/defaults/7.2.x.yaml,~/defaults/php8.2_8.3_mariadb11_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
       custom_testplan_yaml: |
         global:
-          title: '7.2.x-nightly'
+          title: '7.2.x-mariadb-weekly'
         finish:
-          slack_title: 'Nightly Shop CE 7.2.x on {{ .Github.Repository }}'  
+          slack_title: 'Weekly Shop CE 7.2.x/MariaDB on {{ .Github.Repository }}'  
       use_scheduled_slack_channel: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
@@ -59,15 +59,15 @@ jobs:
     if: always()
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/8.0.x.yaml,~/defaults/php8.2_8.3_mysql8.0_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
+      testplan: '~/defaults/8.0.x.yaml,~/defaults/php8.2_8.3_mariadb11_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
       custom_testplan_yaml: |
         global:
-          title: '8.0.x-nightly'
+          title: '8.0.x-mariadb-weekly'
         finish:
-          slack_title: 'Nightly Shop CE 8.0.x on {{ .Github.Repository }}'
+          slack_title: 'Weekly Shop CE 8.0.x/MariaDB on {{ .Github.Repository }}'
       use_scheduled_slack_channel: true
     secrets:
       DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}

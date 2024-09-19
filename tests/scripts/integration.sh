@@ -73,7 +73,12 @@ EOF
 
 init
 
-"${PHPUNIT}" -c "${XML_FILE}" --bootstrap "${BOOTSTRAP}" --coverage-clover="${COVERAGE_FILE}" "${SUITE}" 2>&1 \
+"${PHPUNIT}" \
+    -c "${XML_FILE}" \
+    --bootstrap "${BOOTSTRAP}" \
+    --coverage-clover="${COVERAGE_FILE}" \
+    ${INTEGRATION_OPTIONS} \
+    "${SUITE}" 2>&1 \
 | tee "${LOG_FILE}"
 RESULT=$?
 echo "phpunit exited with error code ${RESULT}"

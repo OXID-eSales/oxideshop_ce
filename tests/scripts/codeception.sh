@@ -89,9 +89,8 @@ RESULT=$?
 echo "Codecept build exited with error code ${RESULT}"
 "${CODECEPT}" run "${SUITE}" \
     -c "${ABSOLUTE_PATH}/${TESTDIR}/codeception.yml" \
-    --ext DotReporter \
+    ${CODECEPTION_OPTIONS} \
     -o "paths: output: ${OUTPUT_DIR}" 2>&1 \
-    --skip-group flow_theme \
 | tee "${LOG_FILE}"
 RESULT=$?
 echo "Codecept run exited with error code ${RESULT}"

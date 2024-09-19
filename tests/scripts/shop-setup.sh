@@ -104,7 +104,7 @@ RESULT=$?
 echo "codecept build exited with error code ${RESULT}"
 "${CODECEPT}" run "${SUITE}" \
     -c "${ABSOLUTE_PATH}/${TESTDIR}/codeception.yml" \
-    --ext DotReporter \
+    ${SHOP_SETUP_OPTIONS} \
     -o "paths: output: ${OUTPUT_DIR}" 2>&1 \
 | tee "${LOG_FILE}"
 RESULT=$?

@@ -63,5 +63,5 @@ sonarcloud:
   strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
 
 finish:
-  slack_title: 'Shop CE ({{ .Data.install.git.shop_ref }}) by {{ .Github.Actor }}'
+  slack_title: 'Shop CE ({{ .Data.global.git.ref }}) by {{ .Github.Actor }}'
   slack_compact: true

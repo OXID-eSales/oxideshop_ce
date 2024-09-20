@@ -11,7 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Controller;
 
 abstract class AbstractControllerDecorator implements ControllerInterface
 {
-    protected readonly ControllerInterface $controller;
+    public function __construct(
+        protected readonly ControllerInterface $controller,
+    ) {
+    }
 
     public function init()
     {

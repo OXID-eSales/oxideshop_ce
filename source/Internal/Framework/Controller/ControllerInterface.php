@@ -27,8 +27,6 @@ interface ControllerInterface
 
     public function render();
 
-    public function getLink($languageId = null);
-
     public function getClassKey();
 
     public function getViewData();

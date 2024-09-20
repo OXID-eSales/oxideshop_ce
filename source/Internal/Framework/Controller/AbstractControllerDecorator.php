@@ -38,12 +38,6 @@ abstract class AbstractControllerDecorator implements ControllerInterface
         return $this->controller->getIsCallForCache();
     }
 
-
-    public function getLink($languageId = null)
-    {
-        return $this->controller->getLink($languageId);
-    }
-
     public function getClassKey()
     {
         return $this->controller->getClassKey();

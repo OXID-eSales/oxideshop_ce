@@ -45,6 +45,13 @@ install:
         },
         "minimum-stability": "dev",
       }
+  custom_script_container:
+    echo "*************** old ********************"
+    cat /usr/local/etc/php/conf.d/xdebug.ini
+    sed -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' -i.backup /usr/local/etc/php/conf.d/xdebug.ini
+    sed -e 's|^xdebug\.remote_host.* =(.*)$|xdebug.client_host = \1|' -i.backup /usr/local/etc/php/conf.d/xdebug.ini
+    echo "*************** new ********************"
+    cat /usr/local/etc/php/conf.d/xdebug.ini
   output:
     files: |
       docker-compose.yml
@@ -67,7 +74,7 @@ runscript: &runscript
     path: 'vendor/oxid-esales/oxideshop-ce'
     container:
       # {{ $selenium_options := "-e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome" }}
-      options: '-e XDEBUG_MODE=coverage -e CODECEPTION_OPTIONS="--ext DotReporter --skip-group flow_theme" {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.global.git.default_ref }}" -e GITHUB_REF_NAME="{{ .Data.global.git.default_ref }}"'
+      options: '-e XDEBUG_MODE=coverage -e CODECEPTION_OPTIONS="--ext DotReporter --skip-group flow_theme" {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.install.git.ref }}" -e GITHUB_REF_NAME="{{ .Data.install.git.ref }}"'
   setup:
     <<: *shop
     load_shop: '{{ .Data.install.cache.prepared_shop_prefix }}'

@@ -1,8 +1,5 @@
-# {{ $org := "oxid-esales" }}organisation: {{ $org }}
-# {{ $name := "oxideshop-ce" }}name: {{ $name }}
-
 install: &install
-  add_services: 'selenium-chrome-126'
+  # Remove the next line after the release of v5
   method: script
   script: 'source/.github/oxid-esales/install.sh'
   cache:
@@ -17,9 +14,9 @@ install: &install
             "ddoe/*": "source"
           },
           "require": {
-            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
-            "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-            "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/twig-component": "{{ .Data.install.composer.dev_ref }}",
+            "oxid-esales/twig-admin-theme": "{{ .Data.install.composer.dev_ref }}",
+            "oxid-esales/apex-theme": "{{ .Data.install.composer.dev_ref }}",
             "twig/twig": "v3.8.0"
           }
       }
@@ -50,7 +47,7 @@ runscript: &runscript
       options: '-e XDEBUG_MODE=coverage -e CODECEPTION_OPTIONS="--ext DotReporter --skip-group flow_theme" {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.global.git.shop_ref }}" -e GITHUB_REF_NAME="{{ .Data.global.git.shop_ref }}"'
   setup:
     <<: *shop
-    load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
+    load_shop: '{{ .Data.install.cache.prepared_shop_prefix }}'
 
 runslim:
   <<: *runscript
@@ -60,8 +57,8 @@ runslim:
 sonarcloud:
   matrix:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
-  strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
+  strip_path: '/var/www/vendor/oxid-esales/oxideshop-ce/'
 
 finish:
-  slack_title: 'Shop CE ({{ .Data.global.git.ref }}) by {{ .Github.Actor }}'
+  slack_title: 'Shop CE ({{ .Data.install.git.ref }}) by {{ .Github.Actor }}'
   slack_compact: true

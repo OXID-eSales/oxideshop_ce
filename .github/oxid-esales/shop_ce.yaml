@@ -44,7 +44,7 @@ runscript: &runscript
     custom_script_container: |
       # Only needed for php 8.0 / shop 7.0.x
       sed -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' /usr/local/etc/php/conf.d/xdebug.ini >/tmp/xdebug.ini
-      sed -e 's|^xdebug\.remote_host.*=\(.*\)$|xdebug.client_host = \1|' /tmp/xdebug.ini
+      sed -e 's|^xdebug\.remote_host.*=\(.*\)$|xdebug.client_host = \1|' -i.backup /tmp/xdebug.ini
       sudo cp /tmp/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
   setup:
     <<: *shop

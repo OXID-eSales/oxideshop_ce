@@ -43,7 +43,7 @@ install:
                 "OxidEsales\\EshopCommunity\\Tests\\": "./vendor/oxid-esales/oxideshop-ce/tests"
             }
         },
-        "minimum-stability": "dev",
+        "minimum-stability": "dev"
       }
   custom_script_container: |
     echo "*************** old ********************"

@@ -1,6 +1,4 @@
 install: &install
-  # Remove the next line after the release of v5
-  method: script
   script: 'source/.github/oxid-esales/install.sh'
   cache:
     prepared_shop: true

@@ -1,6 +1,4 @@
 install:
-  # Remove the next line after the release of v5
-  method: script
   cache:
     prepared_shop: true
   composer:

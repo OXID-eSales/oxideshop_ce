@@ -18,6 +18,13 @@ install: &install
             "twig/twig": "v3.8.0"
           }
       }
+  custom_script_container:
+    echo "*************** old ********************"
+    cat /usr/local/etc/php/conf.d/xdebug.ini
+    sed -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' -i.backup /usr/local/etc/php/conf.d/xdebug.ini
+    sed -e 's|^xdebug\.remote_host.* =(.*)$|xdebug.client_host = \1|' -i.backup /usr/local/etc/php/conf.d/xdebug.ini
+    echo "*************** new ********************"
+    cat /usr/local/etc/php/conf.d/xdebug.ini
   output:
     files: |
       docker-compose.yml
@@ -26,8 +33,6 @@ install: &install
       source/source/config.inc.php
       source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
       data/php/logs/error_log.txt
-
-install_shop_with_modules: *install
 
 runscript: &runscript
   matrix:

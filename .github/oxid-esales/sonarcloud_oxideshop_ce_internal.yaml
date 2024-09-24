@@ -3,8 +3,8 @@ sonarcloud:
   strip_path: '/var/www/vendor/oxid-esales/oxideshop-ce/'
   project_key: 'OXID-eSales_oxideshop_ce_internal'
   project_name: 'oxideshop_ce_internal'
-  parameters: |
-    -Dsonar.language=php \
-    -Dsonar.scm.provider=git \
-    -Dsonar.sources=source/Internal \
+  parameters: >
+    -Dsonar.language=php
+    -Dsonar.scm.provider=git
+    -Dsonar.sources=source/Internal
     -Dsonar.tests=tests

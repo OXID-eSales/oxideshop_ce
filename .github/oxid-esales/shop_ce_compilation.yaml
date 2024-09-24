@@ -19,7 +19,7 @@ install:
             "oxid-esales/twig-component": "{{ .Data.install.composer.dev_ref }}",
             "oxid-esales/twig-admin-theme": "{{ .Data.install.composer.dev_ref }}",
             "oxid-esales/apex-theme": "{{ .Data.install.composer.dev_ref }}",
-            "oxid-esales/oxideshop-ce": "{{ .Data.install.composer.safe_ref_name }}"
+            "oxid-esales/oxideshop-ce": "{{ .Data.install.composer.ref_name }}"
         },
         "require-dev": {
             "codeception/codeception": "^5.0",

@@ -50,7 +50,7 @@ install:
     cat /usr/local/etc/php/conf.d/xdebug.ini
     sed -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' /usr/local/etc/php/conf.d/xdebug.ini >/tmp/xdebug.ini
     sed -e 's|^xdebug\.remote_host.*=\(.*\)$|xdebug.client_host = \1|' /tmp/xdebug.ini
-    cp /tmp/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+    sudo cp /tmp/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
     echo "*************** new ********************"
     cat /usr/local/etc/php/conf.d/xdebug.ini
   output:

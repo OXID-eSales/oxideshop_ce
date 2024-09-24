@@ -45,7 +45,7 @@ install:
         },
         "minimum-stability": "dev",
       }
-  custom_script_container:
+  custom_script_container: |
     echo "*************** old ********************"
     cat /usr/local/etc/php/conf.d/xdebug.ini
     sed -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' -i.backup /usr/local/etc/php/conf.d/xdebug.ini

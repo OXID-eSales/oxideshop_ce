@@ -5,6 +5,7 @@ install:
     transform: |
       {
         "config": {
+            "github-protocols": ["https"],
             "allow-plugins": {
                 "oxid-esales/oxideshop-composer-plugin": true,
                 "oxid-esales/oxideshop-unified-namespace-generator": true
@@ -43,7 +44,10 @@ install:
                 "OxidEsales\\EshopCommunity\\Tests\\": "./vendor/oxid-esales/oxideshop-ce/tests"
             }
         },
-        "minimum-stability": "dev"
+        "minimum-stability": "dev",
+        "bin":[
+            "bin/oe-console"
+        ]
       }
   output:
     files: |
@@ -63,16 +67,19 @@ runscript: &runscript
         "shop:~/codeception.sh",
         "setup:~/shop-setup.sh"
       ]
+  container:
+    # {{ $default_options := "-e XDEBUG_MODE=coverage -e THEME_ID=apex" }}
+    # {{ $selenium_options := "-e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome" }}
+    options: '-e CODECEPTION_OPTIONS="--ext DotReporter --skip-group flow_theme" {{ $default_options}} {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.install.git.ref }}" -e GITHUB_REF_NAME="{{ .Data.install.git.ref }}"'
+  custom_script_container: |
+    # Only needed for php 8.0 / shop 7.0.x
+    sudo sed \
+      -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' \
+      -e 's|^xdebug\.remote_host.*=\(.*\)$|xdebug.client_host = \1|' \
+      -i.backup /usr/local/etc/php/conf.d/xdebug.ini
   shop: &shop
     path: 'vendor/oxid-esales/oxideshop-ce'
-    container:
-      # {{ $selenium_options := "-e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome" }}
-      options: '-e XDEBUG_MODE=coverage -e CODECEPTION_OPTIONS="--ext DotReporter --skip-group flow_theme" {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.install.git.ref }}" -e GITHUB_REF_NAME="{{ .Data.install.git.ref }}"'
-    custom_script_container: |
-      # Only needed for php 8.0 / shop 7.0.x
-      sed -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' /usr/local/etc/php/conf.d/xdebug.ini >/tmp/xdebug.ini
-      sed -e 's|^xdebug\.remote_host.*=\(.*\)$|xdebug.client_host = \1|' -i.backup /tmp/xdebug.ini
-      sudo cp /tmp/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+    workdir: 'vendor/oxid-esales/oxideshop-ce'
   setup:
     <<: *shop
     load_shop: '{{ .Data.install.cache.prepared_shop_prefix }}'

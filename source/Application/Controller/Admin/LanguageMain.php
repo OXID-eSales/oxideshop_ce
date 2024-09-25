@@ -380,15 +380,9 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         //creating new multilingual fields with new id over whole DB
         $oDbMeta = oxNew(\OxidEsales\Eshop\Core\DbMetaDataHandler::class);
 
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $db->startTransaction();
         try {
             $oDbMeta->addNewLangToDb();
-            $db->commitTransaction();
         } catch (Exception $oEx) {
-            if (!$oEx instanceof \PDOException) {
-                $db->rollbackTransaction();
-            }
             //show warning
             $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
             $oEx->setMessage('LANGUAGE_ERROR_ADDING_MULTILANG_FIELDS');

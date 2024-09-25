@@ -1,6 +1,8 @@
 install:
   cache:
     prepared_shop: true
+  container:
+    options: '-e ESHOP_BOOTSTRAP_PATH=vendor/oxid-esales/oxideshop-ce/source/bootstrap.php'
   composer:
     transform: |
       {

@@ -2,6 +2,9 @@
 
 ## v7.0.5 - Unreleased
 
+### Added
+- Shop id will be stored in context as a private property
+
 ### Fixed
 - Translation argument now properly handles a value of 0
 

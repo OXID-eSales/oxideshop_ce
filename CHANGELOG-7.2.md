@@ -14,9 +14,11 @@
 - New item in basket message display [#0007548](https://bugs.oxid-esales.com/view.php?id=7548) [PR-964](https://github.com/OXID-eSales/oxideshop_ce/pull/964)
 - Multiple language creation [#0007683](https://bugs.oxid-esales.com/view.php?id=7683)
 - Remove unnecessary `<small>` tags from CHF currency
+- Existing sessions should be destroyed on password change [#0007324](https://bugs.oxid-esales.com/view.php?id=7324)
 
 ### Changed
--  Changed the exported user file name from `Export_recipient_` to `Export_user_recipient_status_` to better reflect the content of the export.
+- Changed the exported user file name from `Export_recipient_` to `Export_user_recipient_status_` to better reflect the content of the export.
+- User needs to log in again after changing his password
 
 ### Removed
 - Obsolete demo data and images from the `source/out` directory

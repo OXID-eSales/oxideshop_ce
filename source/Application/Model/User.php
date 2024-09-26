@@ -1405,10 +1405,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function login($userName, $password, $setSessionCookie = false)
     {
-        $isLoginAttemptToAdminBackend = $this->isAdmin();
+        $isAdmin = $this->isAdmin();
 
         $cookie = Registry::getUtilsServer()->getOxCookie();
-        if ($cookie === null && $isLoginAttemptToAdminBackend) {
+        if ($cookie === null && $isAdmin) {
             throw oxNew(CookieException::class, 'ERROR_MESSAGE_COOKIE_NOCOOKIE');
         }
 
@@ -1416,13 +1416,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $shopId = $config->getShopId();
 
         /** New authentication mechanism */
-        $passwordHashFromDatabase = $this->getPasswordHashFromDatabase($userName, $shopId, $isLoginAttemptToAdminBackend);
+        $passwordHash = $this->getPasswordHashFromDatabase($userName, $shopId, $isAdmin);
         $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-        if ($password && !$this->isLoaded()) {
-            $userIsAuthenticated = $passwordServiceBridge->verifyPassword($password, $passwordHashFromDatabase);
-            if ($userIsAuthenticated) {
-                $this->loadAuthenticatedUser($userName, $shopId);
-            }
+        if ($password && !$this->isLoaded() && $this->verifyHash($password, $passwordHash)) {
+            $this->loadAuthenticatedUser($userName, $shopId);
         }
 
         /** Old authentication + authorization */
@@ -1433,10 +1430,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         /** If needed, store a rehashed password with the authenticated user */
         if ($password && $this->isLoaded()) {
             $passwordNeedsRehash = $this->isOutdatedPasswordHashAlgorithmUsed ||
-                                   $passwordServiceBridge->passwordNeedsRehash($passwordHashFromDatabase);
+                                   $passwordServiceBridge->passwordNeedsRehash($passwordHash);
             if ($passwordNeedsRehash) {
-                $generatedPasswordHash = $this->hashPassword($password);
-                $this->oxuser__oxpassword = new Field($generatedPasswordHash, Field::T_RAW);
+                $passwordHash = $this->getHash($password);
+                $this->oxuser__oxpassword = new Field($passwordHash, Field::T_RAW);
                 /** The use of a salt is deprecated and an empty salt will be stored */
                 $this->oxuser__oxpasssalt = new Field('');
                 $this->save();
@@ -1456,11 +1453,9 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         //resetting active user
         $this->setUser(null);
 
-        if ($isLoginAttemptToAdminBackend) {
-            Registry::getSession()->setVariable('auth', $this->oxuser__oxid->value);
-        } else {
-            Registry::getSession()->setVariable('usr', $this->oxuser__oxid->value);
-        }
+        $userIdParameter = $isAdmin ? 'auth' : 'usr';
+        Registry::getSession()->setVariable($userIdParameter, $this->getFieldData('oxid'));
+        Registry::getSession()->setVariable('login-token', $this->getHash($passwordHash));
 
         // cookie must be set ?
         if ($setSessionCookie && $config->getConfigParam('blShowRememberMe')) {
@@ -1523,17 +1518,14 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function logout()
     {
-        // deleting session info
         Registry::getSession()->deleteVariable('usr'); // for front end
         Registry::getSession()->deleteVariable('auth'); // for back end
         Registry::getSession()->deleteVariable('dynvalue');
         Registry::getSession()->deleteVariable('paymentid');
-        // Registry::getSession()->deleteVariable( 'deladrid' );
+        Registry::getSession()->deleteVariable('login-token');
 
-        // delete cookie
-        Registry::getUtilsServer()->deleteUserCookie(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopID());
+        Registry::getUtilsServer()->deleteUserCookie(Registry::getConfig()->getShopID());
 
-        // unsetting global user
         $this->setUser(null);
 
         return true;
@@ -1551,53 +1543,36 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     }
 
     /**
-     * Loads active user object. If
-     * user is not available - returns false.
-     *
-     * @param bool $blForceAdmin (default false)
+     * @param bool $blForceAdmin
      *
      * @return bool
      */
     public function loadActiveUser($blForceAdmin = false)
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        $blAdmin = $this->isAdmin() || $blForceAdmin;
-
-        // first - checking session info
-        $sUserID = $blAdmin ? Registry::getSession()->getVariable('auth') : Registry::getSession()->getVariable('usr');
+        $isAdmin = $this->isAdmin() || $blForceAdmin;
+        $userIdParameter = $isAdmin ? 'auth' : 'usr';
+        $userId = Registry::getSession()->getVariable($userIdParameter);
 
         // trying automatic login (by 'remember me' cookie)
-        $blFoundInCookie = false;
-        if (!$sUserID && !$blAdmin && $oConfig->getConfigParam('blShowRememberMe')) {
-            $sUserID = $this->getCookieUserId();
-            $blFoundInCookie = $sUserID ? true : false;
+        $isUserIdInCookie = false;
+        if (!$userId && !$isAdmin && Registry::getConfig()->getConfigParam('blShowRememberMe')) {
+            $userId = $this->getCookieUserId();
+            $isUserIdInCookie = (bool)$userId;
         }
-
-        // checking user results
-        if ($sUserID) {
-            if ($this->load($sUserID)) {
-                // storing into session
-                if ($blAdmin) {
-                    Registry::getSession()->setVariable('auth', $sUserID);
-                } else {
-                    Registry::getSession()->setVariable('usr', $sUserID);
-                }
-
-                // marking the way user was loaded
-                $this->_blLoadedFromCookie = $blFoundInCookie;
-
-                return true;
-            }
-        } else {
-            // no user
-            if ($blAdmin) {
-                Registry::getSession()->deleteVariable('auth');
-            } else {
-                Registry::getSession()->deleteVariable('usr');
-            }
-
+        if (!$userId) {
+            Registry::getSession()->deleteVariable($userIdParameter);
             return false;
+        }
+        if ($this->load($userId)) {
+            $loginToken = (string)Registry::getSession()->getVariable('login-token');
+            $passwordHash = (string)$this->getFieldData('oxpassword');
+            if ($loginToken && !$this->verifyHash($passwordHash, $loginToken)) {
+                $this->logout();
+                return false;
+            }
+            Registry::getSession()->setVariable($userIdParameter, $userId);
+            $this->_blLoadedFromCookie = $isUserIdInCookie;
+            return true;
         }
     }
 
@@ -1612,7 +1587,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $sShopID = $oConfig->getShopId();
         if (($sSet = Registry::getUtilsServer()->getUserCookie($sShopID))) {
-            $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $aData = explode('@@@', $sSet);
             $sUser = $aData[0];
@@ -1622,7 +1596,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $rs = $oDb->select($sSelect);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {
-                    if ($passwordServiceBridge->verifyPassword($rs->fields[1] . static::USER_COOKIE_SALT, $sPWD)) {
+                    if ($this->verifyHash($rs->fields[1] . static::USER_COOKIE_SALT, $sPWD)) {
                         // found
                         $sUserID = $rs->fields[0];
                         break;
@@ -1999,34 +1973,21 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         return $oHasher->hash($sPassword, $sSalt);
     }
+
     /**
-     * Sets new password for user ( save is not called)
+     * Sets new password for user (save is not called)
      *
-     * @param string $password password
+     * @param string $password
      */
     public function setPassword($password = null)
     {
-        if (empty($password)) {
-            $passwordHash = '';
-        } else {
-            $passwordHash = $this->hashPassword($password);
-        }
-
-        $this->oxuser__oxpassword = new \OxidEsales\Eshop\Core\Field($passwordHash, \OxidEsales\Eshop\Core\Field::T_RAW);
-        $this->oxuser__oxpasssalt = new \OxidEsales\Eshop\Core\Field('');
+        $this->oxuser__oxpassword = new Field(
+            empty($password) ? '' : $this->getHash($password),
+            Field::T_RAW
+        );
+        $this->oxuser__oxpasssalt = new Field('');
     }
 
-    /**
-     * @param string $password
-     *
-     * @return string
-     */
-    private function hashPassword(string $password): string
-    {
-        $passwordServiceBridge = $this->getContainer()->get(PasswordServiceBridgeInterface::class);
-
-        return $passwordServiceBridge->hash($password);
-    }
 
     /**
      * Checks if user entered password is the same as old
@@ -2722,5 +2683,19 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             ->getContainer()
             ->get(RandomTokenGeneratorBridgeInterface::class)
             ->getAlphanumericToken(32);
+    }
+
+    private function getHash(string $password): string
+    {
+        return $this->getContainer()
+            ->get(PasswordServiceBridgeInterface::class)
+            ->hash($password);
+    }
+
+    private function verifyHash(string $password, string $hash): string
+    {
+        return $this->getContainer()
+            ->get(PasswordServiceBridgeInterface::class)
+            ->verifyPassword($password, $hash);
     }
 }

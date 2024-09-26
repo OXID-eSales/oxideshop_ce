@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
 use Codeception\Attribute\Group;
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\DataObject\AdminUser;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserAddresses;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserExtendedInfo;
@@ -172,6 +173,28 @@ final class UserCest
 
         $adminUsersPage->editExtendedInfo($userOriginalExtendedInfo)
             ->seeUserExtendedInformation($userOriginalExtendedInfo);
+    }
+
+    #[Group('session')]
+    public function updatePassword(AcceptanceTester $I): void
+    {
+        $I->wantToTest('that admin can update his own password');
+        $newPass = uniqid('new-pass-', true);
+        $userData = Fixtures::get('adminUser');
+        $adminLoginPage = $I->openAdmin();
+        $I->amGoingTo('log the existing admin in, find him in the list and update his password');
+        $adminLoginPage
+            ->login($userData['userLoginName'], $userData['userPassword'])
+            ->openUsers()
+            ->findByUserName($userData['userId'])
+            ->updatePassword($newPass);
+
+        $I->amGoingTo('send any page request after password change');
+        $I->reloadPage();
+
+        $I->expect('that admin is logged out but can log in with the new pass');
+        $adminLoginPage->seeLoginForm()
+            ->login($userData['userLoginName'], $newPass);
     }
 
     private function createAdminTestUser(

@@ -11,29 +11,31 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Controller;
 
 interface ControllerInterface
 {
-    public function setClassKey($classKey);
-
-    public function setFncName($sFncName);
-
-    public function setViewParameters($aParams = null);
-
     public function init();
-
-    public function getFncName();
-
-    public function executeFunction($function);
-
-    public function getIsCallForCache();
 
     public function render();
 
+    public function executeFunction($function);
+
+    public function setClassKey($classKey);
+
     public function getClassKey();
 
-    public function getViewData();
+    public function setFncName($fncName);
+
+    public function getFncName();
+
+    public function setViewParameters($params = null);
+
+    public function getViewParameter($key);
 
     public function setViewData($viewData = null);
+
+    public function getViewData();
 
     public function getViewId();
 
     public function getCharSet();
+
+    public function getIsCallForCache();
 }

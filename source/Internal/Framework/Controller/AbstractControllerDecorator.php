@@ -71,13 +71,18 @@ abstract class AbstractControllerDecorator implements ControllerInterface
         $this->controller->setClassKey($classKey);
     }
 
-    public function setFncName($sFncName)
+    public function setFncName($fncName)
     {
-        $this->controller->setFncName($sFncName);
+        $this->controller->setFncName($fncName);
     }
 
-    public function setViewParameters($aParams = null)
+    public function setViewParameters($params = null)
     {
-        $this->controller->setViewParameters($aParams);
+        $this->controller->setViewParameters($params);
+    }
+
+    public function getViewParameter($key)
+    {
+        return $this->controller->getViewParameter($key);
     }
 }

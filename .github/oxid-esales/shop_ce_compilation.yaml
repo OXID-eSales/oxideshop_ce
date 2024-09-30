@@ -23,7 +23,7 @@ install:
         "require": {
             "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
             "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-            "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/apex-theme": "dev-b-7.2.x-fix-price-format",
             "{{ $org }}/{{ $name }}": "{{ .Data.global.composer.ref_name }}"
         },
         "require-dev": {

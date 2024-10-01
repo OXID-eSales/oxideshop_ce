@@ -138,14 +138,16 @@ $aLang = [
 'ERROR_MESSAGE_INPUT_NOVALIDEMAIL'                            => 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
 'ERROR_MESSAGE_INVITE_INCORRECTEMAILADDRESS'                  => 'Ungültige E-Mail-Adresse. Bitte überprüfen Sie die E-Mail-Adressen.',
 'ERROR_MESSAGE_MANDATES_EXCEEDED'                             => 'Die Anzahl der lizenzierten Mandanten ist überschritten. Tragen Sie bitte im Shop Admin einen gültigen Lizenzschlüssel ein oder kontaktieren Sie',
-'FOR_MORE_INFORMATION'                                        => 'für mehr Informationen.',
+'FOR_MORE_INFORMATION'                                        => 'für mehr Informationen.',//
 'ERROR_MESSAGE_NOFILE'                                        => 'Keine Datei hochgeladen',
 'EXCEPTION_NOTALLOWEDTYPE'                                    => 'Verbotener Dateityp. Bitte config.inc.php anpassen, um diesen Dateityp zu erlauben.',
 'ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'                         => 'Der Lagerbestand dieses Artikels ist nicht ausreichend! Verfügbar',
 'ERROR_MESSAGE_OXID_ESALES'                                   => 'OXID eSales',
 'ERROR_MESSAGE_OXID_SHOP_ERROR'                               => 'OXID eShop Fehler',
 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'                         => 'Fehler: Die Passwörter stimmen nicht überein.',
+// @deprecated will be removed in next major
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
+// END deprecated
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'Diese Seite ist nicht mehr gültig. Bitte benutzen Sie die Funktion "Passwort vergessen?" erneut.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Fehler: Ihr Passwort ist zu kurz.',
 'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'Bewertung und Sterne-Rating konnten nicht gelöscht werden',
@@ -365,7 +367,7 @@ $aLang = [
 'PAGE'                                                        => 'Seite',
 'PASSWORD'                                                    => 'Passwort',
 'PASSWORD_CHANGED'                                            => 'Ihr Passwort wurde erfolgreich geändert.',
-'PASSWORD_WAS_SEND_TO'                                        => 'Passwort wurde verschickt an',
+'PASSWORD_WAS_SEND_TO'                                        => 'Bei bestehender Registrierung erhalten Sie eine E-Mail mit einem Link zur Passwortvergabe an',
 'PAY'                                                         => 'Bezahlen',
 'PAYMENT_INFORMATION'                                         => 'Bezahlinformation',
 'PAYMENT_METHOD'                                              => 'Zahlungsart',

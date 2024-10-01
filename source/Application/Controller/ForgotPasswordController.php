@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -30,7 +31,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
      *
      * @var string
      */
-    protected $_sForgotEmail = null;
+    protected $_sForgotEmail;
 
     /**
      * Current view search engine indexing state
@@ -43,8 +44,10 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
      * Update link expiration status
      *
      * @var bool
+     *
+     * @deprecated property will be removed in next major
      */
-    protected $_blUpdateLinkStatus = null;
+    protected $_blUpdateLinkStatus;
 
     /**
      * Sign if to load and show bargain action
@@ -54,27 +57,17 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     protected $_blBargainAction = true;
 
     /**
-     * Executes oxemail::SendForgotPwdEmail() and sends login
-     * password to user according to login name (email).
-     *
-     * Template variables:
-     * <b>sendForgotMail</b>
+     * Executes Email::sendForgotPwdEmail() to send "forgot password" email to user
      */
     public function forgotPassword()
     {
-        $sEmail = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
-        $this->_sForgotEmail = $sEmail;
-        $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
-
-        // problems sending passwd reminder ?
-        $iSuccess = false;
-        if ($sEmail) {
-            $iSuccess = $oEmail->sendForgotPwdEmail($sEmail);
-        }
-        if ($iSuccess !== true) {
-            $sError = ($iSuccess === false) ? 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID' : 'MESSAGE_NOT_ABLE_TO_SEND_EMAIL';
-            Registry::getUtilsView()->addErrorToDisplay($sError);
-            $this->_sForgotEmail = false;
+        $this->_sForgotEmail = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+        if ($this->_sForgotEmail) {
+            $result = oxNew(Email::class)->sendForgotPwdEmail($this->_sForgotEmail);
+            if ($result === -1) {
+                Registry::getUtilsView()->addErrorToDisplay('MESSAGE_NOT_ABLE_TO_SEND_EMAIL');
+                $this->_sForgotEmail = false;
+            }
         }
     }
 

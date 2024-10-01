@@ -100,24 +100,24 @@ final class UserAccountCest
         $I->wantToTest('user password reminder in my account navigation');
 
         $userData = $this->getExistingUserData();
-
         $startPage = $I->openShop();
 
-        //open password reminder page in account menu popup
         $passwordReminderPage = $startPage->openUserPasswordReminderPage();
         $I->see(Translator::translate('HAVE_YOU_FORGOTTEN_PASSWORD'));
 
-        //enter not existing email
-        $passwordReminderPage = $passwordReminderPage->resetPassword('not_existing_user@oxid-esales.dev');
-        $I->see(Translator::translate('ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'));
+        $I->amGoingTo('reset password with invalid email format');
+        $passwordReminderPage->resetPassword('wrongEmail');
+        $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
 
-        //enter existing email
-        $passwordReminderPage = $passwordReminderPage->resetPassword($userData['userLoginName']);
+        $I->amGoingTo('reset password with existing user email');
+        $passwordReminderPage->resetPassword($userData['userLoginName']);
         $I->see(Translator::translate('PASSWORD_WAS_SEND_TO') . ' ' . $userData['userLoginName']);
 
-        //open password reminder page in main user account page
-        $passwordReminderPage->openUserPasswordReminderPage();
-        $I->see(Translator::translate('HAVE_YOU_FORGOTTEN_PASSWORD'));
+        $I->amGoingTo('reset password with non-existing user email');
+        $nonExistingEmail = 'not_existing_user@oxid-esales.dev';
+        $startPage->openUserPasswordReminderPage()
+            ->resetPassword($nonExistingEmail);
+        $I->see(Translator::translate('PASSWORD_WAS_SEND_TO') . ' ' . $nonExistingEmail);
     }
 
     /**

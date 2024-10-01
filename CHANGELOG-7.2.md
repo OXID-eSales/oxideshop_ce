@@ -15,6 +15,7 @@
 - Multiple language creation [#0007683](https://bugs.oxid-esales.com/view.php?id=7683)
 - Remove unnecessary `<small>` tags from CHF currency
 - Existing sessions should be destroyed on password change [#0007324](https://bugs.oxid-esales.com/view.php?id=7324)
+- Forgot password message
 
 ### Changed
 - Changed the exported user file name from `Export_recipient_` to `Export_user_recipient_status_` to better reflect the content of the export.

@@ -48,10 +48,12 @@ final class UserAccountCest
 
         $userData = $this->getExistingUserData();
         $userName = $userData['userLoginName'];
-        $userPassword = $userData['userPassword'];
+        $oldPass = $userData['userPassword'];
+        $newPass = 'someNewPassword123';
+        $invalidPass = 'pass';
 
         $startPage = $I->openShop()
-            ->loginUser($userName, $userPassword);
+            ->loginUser($userName, $oldPass);
         $I->dontSee(Translator::translate('LOGIN'));
 
         $accountPage = $startPage->openAccountPage()->seePageOpened()->seeUserAccount($userData);
@@ -59,29 +61,34 @@ final class UserAccountCest
         $changePasswordPage = $accountPage->openChangePasswordPage();
 
         //entered not matching new passwords
-        $changePasswordPage->fillPasswordFields($userPassword, 'user1user', 'useruser');
+        $changePasswordPage->fillPasswordFields($oldPass, $newPass, $oldPass);
         $I->see(Translator::translate('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'));
 
         //new pass is too short
-        $changePasswordPage->changePassword($userPassword, 'user', 'user');
+        $changePasswordPage->changePassword($oldPass, $invalidPass, $invalidPass);
         $I->see(Translator::translate('ERROR_MESSAGE_PASSWORD_TOO_SHORT'));
 
         //correct new pass
-        $changePasswordPage->changePassword($userPassword, 'user1user', 'user1user');
+        $changePasswordPage->changePassword($oldPass, $newPass, $newPass);
         $I->see(Translator::translate('MESSAGE_PASSWORD_CHANGED'));
 
-        $loginPage = $changePasswordPage->openAccountPage()->logoutUserInAccountPage();
+        $I->reloadPage();
+        $startPage->seeUserLoggedOut();
 
         // try to login with old password
-        $loginPage = $loginPage->loginWithError($userName, $userPassword);
+        $I->openShop()
+            ->loginUser($userName, $oldPass);
         $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'));
 
         // try to login with new password
-        $changePasswordPage = $loginPage->login($userName, 'user1user')->openChangePasswordPage();
+        $changePasswordPage = $I->openShop()
+            ->loginUser($userName, $newPass)
+            ->openUserAccountPage()
+            ->openChangePasswordPage();
         $I->dontSee(Translator::translate('LOGIN'));
 
         //reset new pass to old one
-        $changePasswordPage->changePassword('user1user', $userPassword, $userPassword);
+        $changePasswordPage->changePassword($newPass, $oldPass, $oldPass);
         $I->see(Translator::translate('MESSAGE_PASSWORD_CHANGED'));
     }
 
@@ -177,8 +184,6 @@ final class UserAccountCest
 
     /**
      * @group myAccount
-     *
-     * @after cleanUpUserData
      */
     public function changeUserBillingAddress(AcceptanceTester $I): void
     {
@@ -282,20 +287,6 @@ final class UserAccountCest
             ->selectShippingAddress(1)
             ->deleteShippingAddress(1)
             ->seeNumberOfShippingAddresses(0);
-    }
-
-    public function _after(AcceptanceTester $I): void
-    {
-        $this->cleanUpUserData($I);
-    }
-
-    private function cleanUpUserData(AcceptanceTester $I): void
-    {
-        /** Change Germany and Belgium data to original. */
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f632e04633c9.47194042']);
-        $I->updateInDatabase('oxcountry', ['oxvatstatus' => 1], ['OXID' => 'a7c40f631fc920687.20179984']);
-        $userData = $this->getExistingUserData();
-        $I->deleteFromDatabase('oxaddress', ['OXUSERID' => $userData['userId']]);
     }
 
     private function getExistingUserData()

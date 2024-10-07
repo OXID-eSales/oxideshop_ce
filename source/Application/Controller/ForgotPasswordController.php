@@ -165,8 +165,6 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
     }
 
     /**
-     * Template variable getter. Returns searched article list
-     *
      * @return string
      */
     public function getForgotEmail()

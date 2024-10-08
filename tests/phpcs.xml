@@ -10,4 +10,7 @@
     <arg name="parallel" value="75"/>
     <arg name="extensions" value="php"/>
     <rule ref="PSR12"/>
+    <rule ref="PSR2.Methods.MethodDeclaration.Underscore">
+        <exclude-pattern>*tests/Codeception/.*$</exclude-pattern>
+    </rule>
 </ruleset>

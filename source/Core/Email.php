@@ -455,6 +455,11 @@ class Email extends PHPMailer
      */
     public function sendOrderEmailToUser($order, $subject = null)
     {
+        if ($this->areOrderEmailsDisabled()) {
+            ContainerFacade::get(LoggerInterface::class)
+                ->notice('Order email not sent to user due to disabled configuration option');
+            return true;
+        }
         // add user defined stuff if there is any
         $order = $this->addUserInfoOrderEMail($order);
 
@@ -506,6 +511,11 @@ class Email extends PHPMailer
      */
     public function sendOrderEmailToOwner($order, $subject = null)
     {
+        if ($this->areOrderEmailsDisabled()) {
+            ContainerFacade::get(LoggerInterface::class)
+                ->notice('Order email not sent to owner due to disabled configuration option');
+            return true;
+        }
         $config = Registry::getConfig();
 
         $shop = $this->getShop();
@@ -2007,5 +2017,11 @@ class Email extends PHPMailer
             ->dispatch(
                 new AdminModeChangedEvent()
             );
+    }
+
+    private function areOrderEmailsDisabled(): bool
+    {
+        return ContainerFacade::hasParameter('oxid_esales.email.disable_order_emails')
+            && ContainerFacade::getParameter('oxid_esales.email.disable_order_emails');
     }
 }

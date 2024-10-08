@@ -145,7 +145,9 @@ $aLang = [
 'ERROR_MESSAGE_OXID_ESALES'                                   => 'OXID eSales',
 'ERROR_MESSAGE_OXID_SHOP_ERROR'                               => 'OXID eShop error',
 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'                         => 'Error: passwords don\'t match.',
+// @deprecated will be removed in next major
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Please enter a valid e-mail address!',
+// END deprecated
 'ERROR_MESSAGE_PASSWORD_LINK_EXPIRED'                         => 'This page is expired. Please use the function "Forgot password?" once again.',
 'ERROR_MESSAGE_PASSWORD_TOO_SHORT'                            => 'Error: your password is too short.',
 'ERROR_REVIEW_AND_RATING_NOT_DELETED'                         => 'The review and the star rating could not be deleted',
@@ -360,7 +362,7 @@ $aLang = [
 'PAGE'                                                        => 'Page',
 'PASSWORD'                                                    => 'Password',
 'PASSWORD_CHANGED'                                            => 'Your password was changed successfully.',
-'PASSWORD_WAS_SEND_TO'                                        => 'Password was sent to',
+'PASSWORD_WAS_SEND_TO'                                        => 'If you have registered, you will receive an e-mail with a link to the password assignment to',
 'PAY'                                                         => 'Pay',
 'PAYMENT_INFORMATION'                                         => 'Payment information',
 'PAYMENT_METHOD'                                              => 'Payment method',

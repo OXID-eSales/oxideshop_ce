@@ -17,10 +17,10 @@ install: &install
             "ddoe/*": "source"
           },
           "require": {
-            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
-            "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/twig-component": "dev-b-7.2.x-fix-page-layout-OXDEV-8275",
+            "oxid-esales/twig-admin-theme": "dev-b-7.2.x-fix-page-layout-OXDEV-8275",
             "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
-            "twig/twig": "v3.8.0"
+            "twig/twig": "^3.14"
           }
       }
   output:

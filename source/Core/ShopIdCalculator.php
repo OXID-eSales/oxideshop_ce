@@ -66,7 +66,7 @@ class ShopIdCalculator
         $sSelect = "
             SELECT oxshopid, oxvarname, oxvarvalue
             FROM oxconfig
-            WHERE oxvarname IN ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')";
+            WHERE oxvarname IN ('aLanguageURLs','aLanguageSSLURLs','sMallShopURL','sMallSSLShopURL')";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
@@ -78,7 +78,7 @@ class ShopIdCalculator
                 $sVar = $oRs->fields[1];
                 $sURL = $oRs->fields[2];
 
-                if ($sVar == 'aLanguageURLs') {
+                if ($sVar == 'aLanguageURLs' || $sVar === 'aLanguageSSLURLs') {
                     $aUrls = unserialize($sURL);
                     if (is_array($aUrls) && count($aUrls)) {
                         $aUrls = array_filter($aUrls);

@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.1.1 - Unreleased
+## v7.1.1 - 2024-10-14
 
 ### Deprecated
 - Deprecated the `BasicContextInterface::getCurrentShopId`. Use the `ContextInterface::getCurrentShopId` instead.

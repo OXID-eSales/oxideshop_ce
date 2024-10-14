@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.2.0 - unreleased
+## v7.2.0 - 2024-10-14
 
 ### Added
 - Translations for Change language and currency

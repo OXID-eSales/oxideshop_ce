@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.0.5 - Unreleased
+## v7.0.5 - 2024-10-08
 
 ### Added
 - Shop id will be stored in context as a private property

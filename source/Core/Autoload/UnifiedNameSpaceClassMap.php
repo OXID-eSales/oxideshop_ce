@@ -2859,6 +2859,12 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
+    'OxidEsales\Eshop\Core\RandomNumberGenerator'                                => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Core\RandomNumberGenerator::class,
+        'isAbstract'       => false,
+        'isInterface'      => false,
+        'isDeprecated'     => false
+    ],
     'OxidEsales\Eshop\Core\Registry'                                             => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Registry::class,
         'isAbstract'       => false,

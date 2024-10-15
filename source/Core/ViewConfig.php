@@ -747,7 +747,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getPopupIdentRand()
     {
         if (($sValue = $this->getViewConfigParam('popupidentrand')) === null) {
-            $sValue = md5(time());
+            $sValue = Registry::getUtilsObject()->generateUId();
             $this->setViewConfigParam('popupidentrand', $sValue);
         }
 

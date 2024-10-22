@@ -68,11 +68,7 @@ class ExceptionHandler
     }
 
     /**
-     * Report the exception and in case that iDebug is not set, redirect to maintenance page.
-     * Special methods are used here as the normal exception handling routines always need a database connection and
-     * this would create a loop.
-     *
-     * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception Exception to handle
+     * @deprecated method will be removed in next major, use handleUncaughtException directly
      */
     public function handleDatabaseException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
@@ -81,7 +77,7 @@ class ExceptionHandler
 
 
     /**
-     * Exit the application with error status 1
+     * @deprecated method will be removed in next major, use PHP function directly
      */
     protected function exitApplication()
     {

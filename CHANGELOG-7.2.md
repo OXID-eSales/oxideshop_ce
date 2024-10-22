@@ -15,6 +15,8 @@
 - The `getSslShopUrl` method will be deprecated and replaced by `getShopUrl`, which will now support SSL exclusively
 - The configFile for a setup will be replaced by container parameters
 - The use of ssl parameter in `getAltImageUrl` method of PictureHandler will be deleted in next major version
+- Method `isEnabledAdminQueryLog()` of ContextInterface
+- `handleDatabaseException` functionality
 
 ### Fixed
 - User registration in the Private Sales mode

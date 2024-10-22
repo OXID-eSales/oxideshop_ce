@@ -31,6 +31,8 @@ interface ContextInterface extends BasicContextInterface
     public function getRequiredContactFormFields(): array;
 
     /**
+     * @deprecated method will be removed in next major version
+     *
      * @return bool
      */
     public function isEnabledAdminQueryLog(): bool;

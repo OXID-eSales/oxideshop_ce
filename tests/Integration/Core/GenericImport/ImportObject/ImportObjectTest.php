@@ -16,11 +16,13 @@ use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\Accessories2Articl
 use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\Article;
 use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ArticleExtends;
 use OxidEsales\EshopCommunity\Core\Registry;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
 use function array_map;
 use function sort;
 
+#[RunTestsInSeparateProcesses]
 final class ImportObjectTest extends TestCase
 {
     public function setUp(): void
@@ -37,7 +39,6 @@ final class ImportObjectTest extends TestCase
         Registry::getConfig()->setAdminMode(false);
     }
 
-    /**  @runInSeparateProcess   */
     public function testGetFields(): void
     {
         $model = oxNew(Product::class);
@@ -53,7 +54,6 @@ final class ImportObjectTest extends TestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
     public function testGetFieldsWithImportObjectAndI18nAsShopObjectName(): void
     {
         $model = oxNew(MultiLanguageModel::class);
@@ -70,7 +70,6 @@ final class ImportObjectTest extends TestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
     public function testGetFieldsWithImportObjectAndEmptyShopObjectName(): void
     {
         $model = oxNew(BaseModel::class);

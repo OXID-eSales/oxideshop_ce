@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Page\Home;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
@@ -37,10 +38,7 @@ final class ProductPromotionCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group testFrontendPromotion
-     * @group testFrontendPromotionNew
-     */
+    #[group('testFrontendPromotion', 'testFrontendPromotionNew')]
     public function testFrontendPromotionNew(AcceptanceTester $I): void
     {
         $I->wantToTest('the newest products');
@@ -107,10 +105,7 @@ final class ProductPromotionCest
         );
     }
 
-    /**
-     * @group testFrontendPromotion
-     * @group testFrontendPromotionTop
-     */
+    #[group('testFrontendPromotion', 'testFrontendPromotionTop')]
     public function testFrontendPromotionTop(AcceptanceTester $I): void
     {
         $I->wantToTest('the Top5 products');
@@ -142,10 +137,7 @@ final class ProductPromotionCest
         $this->checkDetails($I, $productToCheck);
     }
 
-    /**
-     * @group testFrontendPromotion
-     * @group testFrontendPromotionBargainItems
-     */
+    #[group('testFrontendPromotion', 'testFrontendPromotionBargainItems')]
     public function testFrontendPromotionBargainItems(AcceptanceTester $I): void
     {
         $I->wantToTest('the bargain items');

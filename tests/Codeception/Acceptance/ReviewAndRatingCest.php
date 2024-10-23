@@ -9,17 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Page\Account\MyReviews;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('myAccount', 'reviewAndRatings')]
 final class ReviewAndRatingCest
 {
-    /**
-     * @group myAccount
-     * @group reviewAndRatings
-     */
     public function addUserReviewAndRatingForProduct(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -38,10 +36,6 @@ final class ReviewAndRatingCest
         $I->deleteFromDatabase('oxratings', ['OXUSERID' => $userData['userId']]);
     }
 
-    /**
-     * @group myAccount
-     * @group reviewAndRatings
-     */
     public function addUserReviewAndRatingForProductWithVariants(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);

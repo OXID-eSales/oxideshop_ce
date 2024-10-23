@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TruncateLogic;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TruncateLogicTest extends TestCase
@@ -21,9 +22,7 @@ class TruncateLogicTest extends TestCase
         $this->truncateLogic = new TruncateLogic();
     }
 
-    /**
-     * @dataProvider truncateProvider
-     */
+    #[DataProvider('truncateProvider')]
     public function testTruncate(string $string, string $expected, array $parameters = []): void
     {
         $length = isset($parameters['length']) ? $parameters['length'] : 80;
@@ -54,9 +53,7 @@ class TruncateLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider truncateProviderWithLength
-     */
+    #[DataProvider('truncateProviderWithLength')]
     public function testTruncateWithLength(string $string, string $expected, array $parameters = []): void
     {
         $length = isset($parameters['length']) ? $parameters['length'] : 80;
@@ -87,9 +84,7 @@ class TruncateLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider truncateProviderWithSuffix
-     */
+    #[DataProvider('truncateProviderWithSuffix')]
     public function testTruncateWithSuffix(string $string, string $expected, array $parameters = []): void
     {
         $length = isset($parameters['length']) ? $parameters['length'] : 80;
@@ -110,9 +105,7 @@ class TruncateLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider truncateProviderWithBreakWords
-     */
+    #[DataProvider('truncateProviderWithBreakWords')]
     public function testTruncateWithBreakWords(string $string, string $expected, array $parameters = []): void
     {
         $length = isset($parameters['length']) ? $parameters['length'] : 80;

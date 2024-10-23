@@ -12,12 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('admin')]
+#[Group('admin', 'diagnostic_tool')]
 final class ServiceDiagnosticToolCest
 {
-    /**
-     * @group diagnostic-tool
-     */
     public function functionalityDiagnosticTools(AcceptanceTester $I): void
     {
         $I->wantToTest('functionality of diagnostic tools');

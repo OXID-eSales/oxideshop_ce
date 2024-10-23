@@ -15,10 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleDependencies;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleDependencyResolver;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @group module-dependency
- */
+#[group('module-dependency')]
 final class ModuleDependencyResolverTest extends IntegrationTestCase
 {
     public function testIndependentModuleDoesNotHaveUnresolvedModuleDependenciesDuringActivationProcess(): void

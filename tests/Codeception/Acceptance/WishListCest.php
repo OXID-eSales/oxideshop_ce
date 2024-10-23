@@ -9,18 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('myAccount', 'wishList')]
 final class WishListCest
 {
-    /**
-     * @group myAccount
-     * @group wishList
-     */
     public function addProductToUserWishList(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -69,10 +67,6 @@ final class WishListCest
         $wishListPage->checkWishListItemCount(0);
     }
 
-    /**
-     * @group myAccount
-     * @group wishList
-     */
     public function addVariantToUserWishList(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -121,10 +115,6 @@ final class WishListCest
         $I->see(Translator::translate('WISH_LIST_EMPTY'));
     }
 
-    /**
-     * @group myAccount
-     * @group wishList
-     */
     public function testWishlistInTheCartForALoggedInUser(AcceptanceTester $I): void
     {
         $I->wantToTest('if a logged-in user can move a product from the basket to the wishlist');
@@ -155,10 +145,6 @@ final class WishListCest
             ->seeProductData($productData);
     }
 
-    /**
-     * @group myAccount
-     * @group wishList
-     */
     public function testWishlistInTheCartForANonLoggedInUser(AcceptanceTester $I): void
     {
         $I->wantToTest('if a non-logged-in user redirected to the login page after click on the star');

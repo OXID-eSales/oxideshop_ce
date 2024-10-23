@@ -18,10 +18,11 @@ use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
-/**
- * @group manufacturer
- */
+#[group('manufacturer'), RunTestsInSeparateProcesses]
 class ManufacturerPictureTest extends IntegrationTestCase
 {
     private string $oxid = 'manufacturerId1';
@@ -41,7 +42,6 @@ class ManufacturerPictureTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    /**  @runInSeparateProcess   */
     public function testRender(): void
     {
         $view = oxNew(ManufacturerPicture::class);
@@ -49,7 +49,6 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertEquals('manufacturer_picture', $view->render());
     }
 
-    /**  @runInSeparateProcess   */
     public function testSaveShouldThrowAnExceptionInDemoShopMode(): void
     {
         $config = $this->createPartialMock(Config::class, ["isDemoShop"]);
@@ -67,7 +66,6 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertInstanceOf(ExceptionToDisplay::class, $exception);
     }
 
-    /**  @runInSeparateProcess   */
     public function testItShouldSaveImages(): void
     {
         $manufacturer = oxNew(Manufacturer::class);
@@ -89,7 +87,6 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertSame('test-promotion-icon.jpg', $loadManufacturer->oxmanufacturers__oxpromotion_icon->getRawValue());
     }
 
-    /**  @runInSeparateProcess   */
     public function testDeleteShouldThrowAnExceptionInDemoShopMode(): void
     {
         $config = $this->createPartialMock(Config::class, ["isDemoShop"]);
@@ -107,10 +104,7 @@ class ManufacturerPictureTest extends IntegrationTestCase
         $this->assertInstanceOf(ExceptionToDisplay::class, $exception);
     }
 
-    /**
-     * @runInSeparateProcess
-     * @dataProvider provideImageData
-     */
+    #[DataProvider('provideImageData')]
     public function testDeleteShouldRemoveOnlyOneImageValueFromDb(string $expected, string $imageFieldName): void
     {
         $this->setupManufacturer();

@@ -20,9 +20,7 @@ use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 use OxidEsales\Facts\Facts;
 
-/**
- * @group basketfrontend
- */
+#[group('basketfrontend')]
 final class CheckoutProcessCest
 {
     public function _before(AcceptanceTester $I): void
@@ -166,9 +164,7 @@ final class CheckoutProcessCest
         $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
-    /**
-     * @group todo_add_clean_cache_after_database_update
-     */
+    #[group('todo_add_clean_cache_after_database_update')]
     public function buyOutOfStockNotBuyableProductDuringOrder(AcceptanceTester $I): void
     {
         $basket = new Basket($I);

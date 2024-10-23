@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class FlowThemeCest
 {
-    /**
-     * @group flow_theme
-     */
+    #[group('flow_theme')]
     public function selectMultidimensionalVariantsInLists(AcceptanceTester $I): void
     {
         $I->markTestSkipped('make it work with APEX or remove');
@@ -43,11 +42,7 @@ final class FlowThemeCest
         $detailsPage->seeProductData($productData);
     }
 
-    /**
-     * @group product
-     * @group priceAlarm
-     * @group flow_theme
-     */
+    #[group('flow_theme', 'product', 'priceAlarm')]
     public function sendProductPriceAlert(AcceptanceTester $I): void
     {
         $I->markTestSkipped('make it work with APEX or remove');
@@ -76,11 +71,7 @@ final class FlowThemeCest
         $I->see($productData['title']);
     }
 
-    /**
-     * @group product
-     * @group priceAlarm
-     * @group flow_theme
-     */
+    #[group('flow_theme', 'product', 'priceAlarm')]
     public function disableProductPriceAlert(AcceptanceTester $I): void
     {
         $I->markTestSkipped('make it work with APEX or remove');

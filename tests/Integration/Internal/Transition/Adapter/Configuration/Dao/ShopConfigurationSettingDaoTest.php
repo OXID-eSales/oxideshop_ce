@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * @internal
@@ -22,9 +23,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 class ShopConfigurationSettingDaoTest extends IntegrationTestCase
 {
 
-    /**
-     * @dataProvider settingValueDataProvider
-     */
+    #[DataProvider('settingValueDataProvider')]
     public function testSave(string $name, string $type, $value)
     {
         $settingDao = $this->getConfigurationSettingDao();
@@ -55,9 +54,8 @@ class ShopConfigurationSettingDaoTest extends IntegrationTestCase
 
     /**
      * Checks if DAO is compatible with OxidEsales\Eshop\Core\Config
-     *
-     * @dataProvider settingValueDataProvider
      */
+    #[DataProvider('settingValueDataProvider')]
     public function testBackwardsCompatibility(string $name, string $type, $value)
     {
         $settingDao = $this->getConfigurationSettingDao();

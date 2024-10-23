@@ -12,12 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('admin')]
+#[Group('admin', 'exclude_from_compilation')]
 final class NewCMSCreationCest
 {
-    /**
-     * @group exclude_from_compilation
-     */
     public function newCMSCreation(AcceptanceTester $I): void
     {
         $I->wantToTest('Create a new CMS and check if it is saved in database');

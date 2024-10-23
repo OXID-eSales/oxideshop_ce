@@ -55,7 +55,7 @@
         "oxid-esales/developer-tools": "dev-b-7.3.x",
         "oxid-esales/oxideshop-ide-helper": "dev-b-7.3.x",
         "phpspec/prophecy-phpunit": "^v2.0.1",
-        "phpunit/phpunit": "^10.4",
+        "phpunit/phpunit": "^11.4",
         "squizlabs/php_codesniffer": "^3.5.4"
     },
     "minimum-stability": "dev",

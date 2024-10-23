@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataPro
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class MetaDataProviderTest extends TestCase
@@ -58,9 +59,7 @@ class MetaDataProviderTest extends TestCase
         $metaDataProvider->getData(__DIR__);
     }
 
-    /**
-     * @dataProvider missingMetaDataVariablesDataProvider
-     */
+    #[DataProvider('missingMetaDataVariablesDataProvider')]
     public function testGetDataThrowsExceptionOnMissingMetaDataVariables(string $metaDataContent)
     {
         $this->expectException(InvalidMetaDataException::class);

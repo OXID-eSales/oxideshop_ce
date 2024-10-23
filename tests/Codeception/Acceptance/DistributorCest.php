@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Page\Lists\DistributorList;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('manufacturer')]
 final class DistributorCest
 {
-    /**
-     * @group manufacturer
-     */
     public function checkDistributorList(AcceptanceTester $I): void
     {
         $I->wantToTest('distributor functionality and product list navigation');

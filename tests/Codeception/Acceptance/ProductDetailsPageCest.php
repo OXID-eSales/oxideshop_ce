@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
@@ -16,11 +17,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class ProductDetailsPageCest
 {
-    /**
-     * @group main
-     * @group product
-     * @group productVariants
-     */
+    #[group('main', 'product', 'productVariants')]
     public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -117,10 +114,7 @@ final class ProductDetailsPageCest
         $detailsPage->seeMiniBasketContains([$basketItem], '50,00 €', '2');
     }
 
-    /**
-     * @group product
-     * @group search
-     */
+    #[group('product', 'search')]
     public function navigateInDetailsPage(AcceptanceTester $I): void
     {
         $I->wantToTest('product navigation in details page');
@@ -156,9 +150,7 @@ final class ProductDetailsPageCest
         $detailsPage->seeOnBreadCrumb($breadCrumb);
     }
 
-    /**
-     * @group product
-     */
+    #[group('product')]
     public function detailsPageInformation(AcceptanceTester $I): void
     {
         $I->wantToTest('product information in details page');
@@ -200,10 +192,7 @@ final class ProductDetailsPageCest
             ->seeAttributeValue('attr value 12 [EN] šÄßüл', 3);
     }
 
-    /**
-     * @group product
-     * @group productVariants
-     */
+    #[group('product', 'productVariants')]
     public function selectProductVariant(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -264,6 +253,7 @@ final class ProductDetailsPageCest
             ->seeMiniBasketContains([$basketItemToCheck1, $basketItemToCheck2], '366,00 €', '6');
     }
 
+    #[group('product', 'productVariants')]
     public function selectProductVariantsWithSelectionLists(AcceptanceTester $I): void
     {
         $I->wantToTest('add to cart with product variant/selection list combinations');
@@ -300,10 +290,7 @@ final class ProductDetailsPageCest
         ->seeBasketContainsSelectionList($selectionListsTitle, $selectionList3Value, 2);
     }
 
-    /**
-     * @group product
-     * @group accessories
-     */
+    #[group('product', 'accessories')]
     public function checkProductAccessories(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -335,10 +322,7 @@ final class ProductDetailsPageCest
             ->seeProductData($accessoryData);
     }
 
-    /**
-     * @group product
-     * @group similarProducts
-     */
+    #[group('product', 'similarProducts')]
     public function checkSimilarProducts(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -372,10 +356,7 @@ final class ProductDetailsPageCest
             ->seeSimilarProductData($productData, 1);
     }
 
-    /**
-     * @group product
-     * @group crossSelling
-     */
+    #[group('product', 'crossSelling')]
     public function checkProductCrossSelling(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -408,10 +389,7 @@ final class ProductDetailsPageCest
             ->seeProductData($crossSellingProductData);
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     */
+    #[group('product', 'productPrice')]
     public function checkProductPriceA(AcceptanceTester $I): void
     {
         $I->wantToTest('product price A');
@@ -483,10 +461,7 @@ final class ProductDetailsPageCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     */
+    #[group('product', 'productPrice')]
     public function checkProductPriceC(AcceptanceTester $I): void
     {
         $I->wantToTest('product price C and amount price discount added to this price');
@@ -541,10 +516,7 @@ final class ProductDetailsPageCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     */
+    #[group('product', 'productPrice')]
     public function checkProductPriceB(AcceptanceTester $I): void
     {
         $I->wantToTest('product price B');
@@ -590,11 +562,7 @@ final class ProductDetailsPageCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group product
-     * @group productPrice
-     * @group productAmountPrice
-     */
+    #[group('product', 'productPrice', 'productAmountPrice')]
     public function checkProductAmountPrice(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);

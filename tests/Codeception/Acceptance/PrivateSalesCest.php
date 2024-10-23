@@ -9,20 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\After;
+use Codeception\Attribute\Depends;
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\PrivateSales\Login;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('privateSales')]
 final class PrivateSalesCest
 {
-    /**
-     * @group privateSales
-     *
-     * @after disablePrivateSales
-     * @fails disablePrivateSales
-     */
+    #[after('disablePrivateSales'), Depends('disablePrivateSales')]
     public function sendInvitationEmail(AcceptanceTester $I): void
     {
         $I->wantToTest('invitations functionality of the private sales.');
@@ -55,12 +54,7 @@ final class PrivateSalesCest
         $I->deleteFromDatabase('oxacceptedterms', ['oxuserid' => 'testuser']);
     }
 
-    /**
-     * @group privateSales
-     *
-     * @after disablePrivateSales
-     * @fails disablePrivateSales
-     */
+    #[after('disablePrivateSales'), Depends('disablePrivateSales')]
     public function registerAndLogin(AcceptanceTester $I): void
     {
         $I->wantToTest('registration and login functionality of the private sales.');

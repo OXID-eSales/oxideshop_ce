@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\Eshop\Core\UtilsServer;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 final class SessionTest extends TestCase
@@ -23,7 +24,7 @@ final class SessionTest extends TestCase
         unset($_POST);
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testGetSidFromRequestWithForceSidInRequestAndDisabledConfig(): void
     {
         Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
@@ -37,7 +38,7 @@ final class SessionTest extends TestCase
         $this->assertNotEquals($sessionId, $sid);
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testProcessUrlWithDefaultConfig(): void
     {
         $sessionId = uniqid('session-id-', true);
@@ -50,7 +51,7 @@ final class SessionTest extends TestCase
         $this->assertStringContainsString("force_sid=$sessionId", $processedUrl);
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testProcessUrlWithDisabledConfig(): void
     {
         Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
@@ -64,7 +65,7 @@ final class SessionTest extends TestCase
         $this->assertStringNotContainsString($sessionId, $processedUrl);
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testAllowSessionStartWithSidInRequestAndDefaultConfig(): void
     {
         $utilsSever = $this->createMock(UtilsServer::class);
@@ -79,7 +80,7 @@ final class SessionTest extends TestCase
         $session->regenerateSessionId();
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testAllowSessionStartWithSidInRequestAndDisabledConfig(): void
     {
         Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
@@ -95,7 +96,7 @@ final class SessionTest extends TestCase
         $session->regenerateSessionId();
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testAllowSessionStartWithForceSidInRequestAndDefaultConfig(): void
     {
         $utilsSever = $this->createMock(UtilsServer::class);
@@ -110,7 +111,7 @@ final class SessionTest extends TestCase
         $session->regenerateSessionId();
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testAllowSessionStartWithForceSidInRequestAndDisabledConfig(): void
     {
         Registry::getConfig()->setConfigParam('disallowForceSessionIdInRequest', true);
@@ -126,7 +127,7 @@ final class SessionTest extends TestCase
         $session->regenerateSessionId();
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testSidNeededForDifferentUrls(): void
     {
         $session = oxNew(Session::class);
@@ -140,7 +141,7 @@ final class SessionTest extends TestCase
         $this->assertTrue($session->isSidNeeded('https://myshop.abc'));
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testSidNotNeededForTheSameUrl(): void
     {
         $session = oxNew(Session::class);

@@ -20,7 +20,7 @@ class ServicesCommandsProviderTest extends TestCase
     {
         $container = new Container();
         $container->setParameter('console.command.ids', ['test.service']);
-        $testableCommand = $this->getMockForAbstractClass(Command::class);
+        $testableCommand = $this->createMock(Command::class);
         $container->set('test.service', $testableCommand);
 
         $provider = new ServicesCommandsProvider($container);

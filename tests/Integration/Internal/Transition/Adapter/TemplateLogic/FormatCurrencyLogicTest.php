@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatCurrencyLogic;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class FormatCurrencyLogicTest extends IntegrationTestCase
 {
@@ -28,9 +29,8 @@ class FormatCurrencyLogicTest extends IntegrationTestCase
      * @param string     $format
      * @param string|int $value
      * @param string     $expected
-     *
-     * @dataProvider numberFormatProvider
      */
+    #[DataProvider('numberFormatProvider')]
     public function testNumberFormat($format, $value, $expected)
     {
         $this->assertEquals($expected, $this->numberFormatLogic->numberFormat($format, $value));

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Info\NewsletterSubscription;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
@@ -24,7 +25,8 @@ final class NewsletterCest
 
         $I->seeInField($newsletterPage->userEmail, $email);
     }
-    /** @group subscribe_without_user_name */
+
+    #[group('subscribe_without_user_name')]
     public function subscribeWithoutUsername(AcceptanceTester $I): void
     {
         $I->wantToTest('Skipping newsletter username');

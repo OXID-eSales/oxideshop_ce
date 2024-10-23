@@ -14,10 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\DependencyValidationException;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\Group;
 
-/**
- * @group module-dependency
- */
+#[group('module-dependency')]
 final class ModuleDependencyActivationTest extends IntegrationTestCase
 {
     private int $shopId = 1;

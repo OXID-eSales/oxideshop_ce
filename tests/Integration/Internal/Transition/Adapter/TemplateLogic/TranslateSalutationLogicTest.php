@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class TranslateSalutationLogic
@@ -33,8 +34,8 @@ class TranslateSalutationLogicTest extends IntegrationTestCase
      * @param int    $languageId
      * @param string $expected
      *
-     * @dataProvider translateSalutationProvider
      */
+    #[DataProvider('translateSalutationProvider')]
     public function testTranslateSalutation(string $ident, int $languageId, string $expected): void
     {
         $translateSalutationLogic = new TranslateSalutationLogic($this->getTranslator($languageId));

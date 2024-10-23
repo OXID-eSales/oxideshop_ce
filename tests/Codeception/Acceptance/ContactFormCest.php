@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\DataObject\ContactData;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('ContactForm')]
 final class ContactFormCest
 {
-    /**
-     * @group ContactForm
-     */
     public function contactForm(AcceptanceTester $I): void
     {
         $I->wantToTest('contact form with default required fields');
@@ -44,9 +43,6 @@ final class ContactFormCest
         $I->see(Translator::translate('THANK_YOU'));
     }
 
-    /**
-     * @group ContactForm
-     */
     public function contactFormConfigured(AcceptanceTester $I): void
     {
         $I->wantToTest('contact form with custom required fields');

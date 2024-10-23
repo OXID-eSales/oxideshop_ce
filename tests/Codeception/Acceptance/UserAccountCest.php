@@ -17,9 +17,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class UserAccountCest
 {
-    /**
-     * @group myAccount
-     */
+    #[group('myAccount')]
     public function loginUserInFrontend(AcceptanceTester $I): void
     {
         $I->wantToTest('user login (popup in top of the page)');
@@ -39,9 +37,7 @@ final class UserAccountCest
         $startPage->openAccountPage()->seePageOpened()->seeUserAccount($userData);
     }
 
-    /**
-     * @group myAccount
-     */
+    #[group('myAccount')]
     public function changeUserAccountPassword(AcceptanceTester $I): void
     {
         $I->wantTo('change user password in my account navigation');
@@ -92,9 +88,7 @@ final class UserAccountCest
         $I->see(Translator::translate('MESSAGE_PASSWORD_CHANGED'));
     }
 
-    /**
-     * @group myAccount
-     */
+    #[group('myAccount')]
     public function sendUserPasswordReminder(AcceptanceTester $I): void
     {
         $I->wantToTest('user password reminder in my account navigation');
@@ -120,9 +114,7 @@ final class UserAccountCest
         $I->see(Translator::translate('PASSWORD_WAS_SEND_TO') . ' ' . $nonExistingEmail);
     }
 
-    /**
-     * @group myAccount
-     */
+    #[group('myAccount')]
     public function changeUserEmailInBillingAddress(AcceptanceTester $I): void
     {
         $I->wantTo('change user email in my account');
@@ -157,9 +149,7 @@ final class UserAccountCest
             ->logoutUser();
     }
 
-    /**
-     * @group myAccount
-     */
+    #[group('myAccount')]
     public function subscribeNewsletterInUserAccount(AcceptanceTester $I): void
     {
         $start = new Start($I);
@@ -182,9 +172,7 @@ final class UserAccountCest
             ->seeNewsletterUnSubscribed();
     }
 
-    /**
-     * @group myAccount
-     */
+    #[group('myAccount')]
     public function changeUserBillingAddress(AcceptanceTester $I): void
     {
         $start = new Start($I);

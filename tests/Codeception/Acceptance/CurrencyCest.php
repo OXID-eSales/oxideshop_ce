@@ -9,13 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('currency_test')]
 final class CurrencyCest
 {
-    /**
-     * @group currency_test
-     */
     public function testCurrencySwitch(AcceptanceTester $I): void
     {
         $I->wantToTest('currency switching');

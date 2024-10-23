@@ -9,14 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('category_product_list')]
 final class CategoryProductListCest
 {
-    /**
-     * @group category_product_list
-     */
     public function filterAndNavigateThroughCategoryList(AcceptanceTester $I): void
     {
         $I->wantToTest('category product list filter functionality');
@@ -59,9 +58,6 @@ final class CategoryProductListCest
         $I->dontSeeElement($productList->resetListFilter);
     }
 
-    /**
-     * @group category_product_list
-     */
     public function sortAndNavigateThroughCategoryList(AcceptanceTester $I): void
     {
         $I->wantToTest('category product list sorting');
@@ -99,9 +95,6 @@ final class CategoryProductListCest
         $I->dontSee(Translator::translate('SORT_BY'));
     }
 
-    /**
-     * @group category_product_list
-     */
     public function navigateThroughPriceCategoryList(AcceptanceTester $I): void
     {
         $I->wantToTest('price category functionality');

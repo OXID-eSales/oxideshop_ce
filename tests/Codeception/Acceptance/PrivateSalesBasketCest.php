@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
@@ -90,7 +91,7 @@ final class PrivateSalesBasketCest
         $I->dontSee(Translator::translate('ROOT_CATEGORY_CHANGED'));
     }
 
-    /** @group private_shopping_basket_expiration */
+    #[group('private_shopping_basket_expiration')]
     public function testPrivateShoppingBasketExpiration(AcceptanceTester $I): void
     {
         $I->wantToTest('private basket reservation expiration');

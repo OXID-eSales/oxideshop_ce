@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidM
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ServicesYamlValidator;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
@@ -45,9 +46,7 @@ class ServicesYamlValidatorTest extends TestCase
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testValidateNoServicesYaml(): void
     {
         $this->moduleConfiguration->setModuleSource('.');
@@ -58,9 +57,7 @@ class ServicesYamlValidatorTest extends TestCase
         $this->validator->validate($this->moduleConfiguration, 1);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testWithCorrectServiceYaml(): void
     {
         $this->moduleConfiguration->setModuleSource('Working');

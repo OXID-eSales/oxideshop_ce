@@ -9,18 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Account\UserAccount;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('myAccount', 'giftRegistry')]
 final class GiftRegistryCest
 {
-    /**
-     * @group myAccount
-     * @group giftRegistry
-     */
     public function addProductToUserGiftRegistry(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -80,10 +78,6 @@ final class GiftRegistryCest
         $I->clearShopCache();
     }
 
-    /**
-     * @group myAccount
-     * @group giftRegistry
-     */
     public function makeUserGiftRegistryPublic(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -150,10 +144,6 @@ final class GiftRegistryCest
         $I->see(Translator::translate('GIFT_REGISTRY_EMPTY'));
     }
 
-    /**
-     * @group myAccount
-     * @group giftRegistry
-     */
     public function disableUserGiftRegistry(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);

@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\ScriptLogic;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ScriptLogicTest extends TestCase
@@ -74,9 +75,7 @@ class ScriptLogicTest extends TestCase
         $this->config->setGlobalParameter('scripts_dynamic', $scripts);
     }
 
-    /**
-     * @dataProvider addWidgetProvider
-     */
+    #[DataProvider('addWidgetProvider')]
     public function testRenderAddWidget(string $script, string $output): void
     {
         $scripts = $this->config->getGlobalParameter('scripts');

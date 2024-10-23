@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class FormatPriceLogicTest extends TestCase
@@ -29,9 +30,8 @@ class FormatPriceLogicTest extends TestCase
     /**
      * @param array  $params
      * @param string $expected
-     *
-     * @dataProvider getFormatPriceProvider
      */
+    #[DataProvider('getFormatPriceProvider')]
     public function testFormatPrice(array $params, string $expected): void
     {
         $price = $this->formatPriceLogic->formatPrice($params);
@@ -55,9 +55,8 @@ class FormatPriceLogicTest extends TestCase
     /**
      * @param mixed  $inputPrice
      * @param string $expected
-     *
-     * @dataProvider getCalculatePriceProvider
      */
+    #[DataProvider('getCalculatePriceProvider')]
     public function testCalculatePrice($inputPrice, string $expected): void
     {
         $params['price'] = $inputPrice;
@@ -91,9 +90,7 @@ class FormatPriceLogicTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getFormattedPriceProvider
-     */
+    #[DataProvider('getFormattedPriceProvider')]
     public function testGetFormattedPrice($currency, int $price, string $expected): void
     {
         $params['currency'] = $currency;

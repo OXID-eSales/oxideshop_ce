@@ -17,7 +17,7 @@ install: &install
             "ddoe/*": "source"
           },
           "require": {
-            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/twig-component": "dev-b-7.3.x-update-phpunit-dependency-OXDEV-7947",
             "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
             "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
             "twig/twig": "^3.14"

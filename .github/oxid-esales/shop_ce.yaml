@@ -19,7 +19,8 @@ install: &install
           "require": {
             "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
             "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-            "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}"
+            "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}",
+            "twig/twig": "^3.14"
           }
       }
   output:

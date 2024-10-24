@@ -25,7 +25,7 @@ on:
           - 'PHP8.2/MySQL8.0'
           - 'PHP8.3/MySQL5.7'
           - 'PHP8.3/MySQL8.0'
-        default: 'PHP8.1/MySQL5.7'
+        default: 'PHP8.2/MySQL8.0'
       custom_testplan:
         type: string
         description: 'Custom testplan'

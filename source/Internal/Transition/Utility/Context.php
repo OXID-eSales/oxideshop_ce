@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\FileCache;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
@@ -60,7 +61,7 @@ class Context extends BasicContext implements ContextInterface
     public function getCurrentShopId(): int
     {
         if (!isset($this->shopId)) {
-            $this->shopId = (int)(new ShopIdCalculator(new FileCache()))->getShopId();
+            $this->shopId = (int)(new ShopIdCalculator(new FileCache(), new UtilsServer()))->getShopId();
         }
         return $this->shopId;
     }

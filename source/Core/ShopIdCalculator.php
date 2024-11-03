@@ -13,8 +13,8 @@ class ShopIdCalculator
     private static array $urlMap;
 
     public function __construct(
-        private FileCache $variablesCache,
-        private ?UtilsServer $utilsServer = null
+        private readonly FileCache $variablesCache,
+        private readonly UtilsServer $utilsServer
     ) {
     }
 
@@ -29,7 +29,7 @@ class ShopIdCalculator
             return self::$urlMap;
         }
 
-        $map = $this->getVariablesCache()->getFromCache('urlMap');
+        $map = $this->variablesCache->getFromCache('urlMap');
         if ($map !== null) {
             self::$urlMap = $map;
             return $map;
@@ -64,22 +64,14 @@ class ShopIdCalculator
             }
         }
 
-        $this->getVariablesCache()->setToCache('urlMap', $map);
+        $this->variablesCache->setToCache('urlMap', $map);
         self::$urlMap = $map;
 
         return $map;
     }
 
-    protected function getVariablesCache(): FileCache
-    {
-        return $this->variablesCache;
-    }
-
     protected function getUtilsServer(): UtilsServer
     {
-        if (!$this->utilsServer) {
-            $this->utilsServer = new UtilsServer();
-        }
         return $this->utilsServer;
     }
 }

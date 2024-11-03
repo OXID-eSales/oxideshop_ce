@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Container;
 
 use OxidEsales\Eshop\Core\FileCache;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\FilesystemContainerCache;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
@@ -100,7 +100,7 @@ class ContainerFactory
 
     private static function getShopId(): int
     {
-        $shopIdCalculator = new ShopIdCalculator(new FileCache());
+        $shopIdCalculator = new ShopIdCalculator(new FileCache(), new UtilsServer());
 
         return (int) $shopIdCalculator->getShopId();
     }

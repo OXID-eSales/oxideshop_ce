@@ -13,6 +13,7 @@ use DOMDocument;
 use DOMXPath;
 use oxfield;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
@@ -21,6 +22,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Container\ContainerInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 final class NavigationTreeTest extends IntegrationTestCase
 {
@@ -115,9 +118,50 @@ final class NavigationTreeTest extends IntegrationTestCase
         $this->installModuleFixture('module1');
         $this->activateModule('module1');
 
-        $attributeValue = $this->getTestedAttributeValue($this->getNavigationTree() ->getDomXml());
+        $attributeValue = $this->getTestedAttributeValue($this->getNavigationTree()->getDomXml());
 
         $this->assertSame(self::EXISTING_XML_ELEMENTS_ATTRIBUTE_VALUE_CHANGED, $attributeValue);
+    }
+
+    public function testGetDomXml(): void
+    {
+        $utils = Registry::getUtils();
+        $language = Registry::getLang();
+        $cache = ContainerFacade::get(TagAwareCacheInterface::class);
+        $navigationTree = $this->getNavigationTree();
+
+        $templateLanguageCode = $language->getLanguageArray()[$language->getTplLanguage()]->abbr;
+        $cacheName = 'shop_menu_cache_' . $templateLanguageCode;
+
+        $this->assertEmpty($cache->get($cacheName, function (ItemInterface $item): ?string {
+            return $item->get();
+        }));
+        $cache->delete($cacheName);
+
+        $navigationTree->getDomXml();
+
+        $this->assertNotEmpty(
+            $cache->get(
+                $cacheName,
+                fn(ItemInterface $item): array => $item->get()
+            )
+        );
+
+        $cache->delete($cacheName);
+        $testXml = '<OX><item>Test</item></OX>';
+        $cache->get($cacheName, function () use ($testXml): array {
+            return [
+                'creation_time' => time(),
+                'menu_dom' => $testXml
+            ];
+        });
+
+        $navigationTree = $this->getNavigationTree();
+        $cachedMenuContent = $navigationTree->getDomXml();
+
+        $this->assertXmlStringEqualsXmlString($testXml, $cachedMenuContent->saveXML());
+
+        $cache->delete($cacheName);
     }
 
     protected function get(string $class)

@@ -12,7 +12,10 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
+use Psr\Cache\CacheItemPoolInterface;
 use stdClass;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Component\Filesystem\Path;
 
 use function is_array;
@@ -383,66 +386,9 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Generates php file, which could later be loaded as include instead of parsed data.
-     * Currently this method supports simple arrays only.
+     * @deprecated will be removed in next major version
      *
-     * @param string $sKey      Cache key
-     * @param mixed  $mContents Cache contents. At this moment only simple array type is supported.
-     */
-    public function toPhpFileCache($sKey, $mContents)
-    {
-        //only simple arrays are supported
-        if (is_array($mContents) && ($sCachePath = $this->getCacheFilePath($sKey, false, 'php'))) {
-            // setting meta
-            $this->setCacheMeta($sKey, ["serialize" => false, "cachepath" => $sCachePath]);
-
-            // caching..
-            $this->toFileCache($sKey, $mContents);
-        }
-    }
-
-    /**
-     * Includes cached php file and loads stored contents.
-     *
-     * @param string $sKey Cache key.
-     *
-     * @return null
-     */
-    public function fromPhpFileCache($sKey)
-    {
-        // setting meta
-        $this->setCacheMeta($sKey, ["include" => true, "cachepath" => $this->getCacheFilePath($sKey, false, 'php')]);
-
-        return $this->fromFileCache($sKey);
-    }
-
-    /**
-     * If available returns cache meta data array
-     *
-     * @param string $sKey meta data/cache key
-     *
-     * @return mixed
-     */
-    public function getCacheMeta($sKey)
-    {
-        return isset($this->_aFileCacheMeta[$sKey]) ? $this->_aFileCacheMeta[$sKey] : false;
-    }
-
-    /**
-     * Saves cache meta data (information)
-     *
-     * @param string $sKey  meta data/cache key
-     * @param array  $aMeta meta data array
-     */
-    public function setCacheMeta($sKey, $aMeta)
-    {
-        // cache meta data
-        $this->_aFileCacheMeta[$sKey] = $aMeta;
-    }
-
-    /**
      * Adds contents to cache contents by given key. Returns true on success.
-     * All file caches are supposed to be written once by commitFileCache() method.
      *
      * @param string $sKey      Cache key
      * @param mixed  $mContents Contents to cache
@@ -452,21 +398,19 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function toFileCache($sKey, $mContents, $iTtl = 0)
     {
-        $aCacheData['content'] = $mContents;
-        $aMeta = $this->getCacheMeta($sKey);
+        $cache = ContainerFacade::get(CacheItemPoolInterface::class);
+        $cacheItem = $cache->getItem($sKey)->set($mContents);
         if ($iTtl) {
-            $aCacheData['ttl'] = $iTtl;
-            $aCacheData['timestamp'] = Registry::getUtilsDate()->getTime();
+            $cacheItem->expiresAfter($iTtl);
         }
-        $this->_aFileCacheContents[$sKey] = $aCacheData;
+        $cache->save($cacheItem);
 
-        // looking for cache meta
-        $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
-
-        return (bool) $this->lockFile($sCachePath, $sKey);
+        return true;
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Fetches contents from file cache.
      *
      * @param string $sKey Cache key
@@ -475,244 +419,45 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function fromFileCache($sKey)
     {
-        if (!array_key_exists($sKey, $this->_aFileCacheContents)) {
-            $aMeta = $this->getCacheMeta($sKey);
-            $sCachePath = isset($aMeta["cachepath"]) ? $aMeta["cachepath"] : $this->getCacheFilePath($sKey);
-
-            clearstatcache();
-            if (is_readable($sCachePath)) {
-                $this->lockFile($sCachePath, $sKey, LOCK_SH);
-
-                $blInclude = isset($aMeta["include"]) ? $aMeta["include"] : false;
-                $sRes = $blInclude ? $this->includeFile($sCachePath) : $this->readFile($sCachePath);
-
-                if (isset($sRes['ttl']) && $sRes['ttl'] != 0) {
-                    $iTimestamp = $sRes['timestamp'];
-                    $iTtl = $sRes['ttl'];
-
-                    $iTime = Registry::getUtilsDate()->getTime();
-                    if ($iTime > $iTimestamp + $iTtl) {
-                        return null;
-                    }
-                }
-
-                $this->_aFileCacheContents[$sKey] = $sRes;
-
-                $this->releaseFile($sKey, LOCK_SH);
-            }
+        $cache = ContainerFacade::get(CacheItemPoolInterface::class);
+        if ($cache->hasItem($sKey)) {
+            $cacheItem = $cache->getItem($sKey);
+            return $cacheItem->get();
         }
 
-        return isset($this->_aFileCacheContents[$sKey]) ? $this->_aFileCacheContents[$sKey]['content'] : null;
+        return null;
     }
 
     /**
-     * Reads and returns cache file contents
-     *
-     * @param string $sFilePath cache fiel path
-     *
-     * @return string
+     * @deprecated will be removed in next major version
      */
-    protected function readFile($sFilePath)
+    public function oxResetFileCache()
     {
-        $sRes = file_get_contents($sFilePath);
-
-        return $sRes ? unserialize($sRes) : null;
+        $cache = ContainerFacade::get(CacheItemPoolInterface::class);
+        $cache->clear();
     }
 
     /**
-     * Includes cache file
+     * @deprecated will be removed in next major version
      *
-     * @param string $sFilePath cache file path
-     *
-     * @return mixed
-     */
-    protected function includeFile($sFilePath)
-    {
-        $_aCacheContents = null;
-        include $sFilePath;
-
-        return $_aCacheContents;
-    }
-
-    /**
-     * Serializes or writes php array for class file cache
-     *
-     * @param string $sKey      cache key
-     * @param mixed  $mContents cache data
-     *
-     * @return mixed
-     */
-    protected function processCache($sKey, $mContents)
-    {
-        // looking for cache meta
-        $aCacheMeta = $this->getCacheMeta($sKey);
-        $blSerialize = isset($aCacheMeta["serialize"]) ? $aCacheMeta["serialize"] : true;
-
-        if ($blSerialize) {
-            $mContents = serialize($mContents);
-        } else {
-            $mContents = "<?php\n//automatically generated file\n//" . date("Y-m-d H:i:s") . "\n\n\$_aCacheContents = " . var_export($mContents, true) . "\n?>";
-        }
-
-        return $mContents;
-    }
-
-    /**
-     * Writes all cache contents to file at once. This method was introduced due to possible
-     * race conditions. Cache is cleaned up after commit
-     */
-    public function commitFileCache()
-    {
-        if (!empty($this->_aLockedFileHandles[LOCK_EX])) {
-            startProfile("!__SAVING CACHE__! (warning)");
-            foreach ($this->_aLockedFileHandles[LOCK_EX] as $sKey => $rHandle) {
-                if ($rHandle !== false && isset($this->_aFileCacheContents[$sKey])) {
-                    // #0002931A truncate file once more before writing
-                    ftruncate($rHandle, 0);
-
-                    // writing cache
-                    fwrite($rHandle, $this->processCache($sKey, $this->_aFileCacheContents[$sKey]));
-
-                    // releasing locks
-                    $this->releaseFile($sKey);
-                }
-            }
-
-            stopProfile("!__SAVING CACHE__! (warning)");
-
-            //empty buffer
-            $this->_aFileCacheContents = [];
-        }
-    }
-
-    /**
-     * Locks cache file and returns its handle on success or false on failure
-     *
-     * @param string $sFilePath name of file to lock
-     * @param string $sIdent    lock identifier
-     * @param int    $iLockMode lock mode - LOCK_EX/LOCK_SH
-     *
-     * @return mixed lock file resource or false on error
-     */
-    protected function lockFile($sFilePath, $sIdent, $iLockMode = LOCK_EX)
-    {
-        $rHandle = isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) ? $this->_aLockedFileHandles[$iLockMode][$sIdent] : null;
-        if ($rHandle === null) {
-            $blLocked = false;
-            $rHandle = @fopen($sFilePath, "a+");
-
-            if ($rHandle !== false) {
-                if (flock($rHandle, $iLockMode | LOCK_NB)) {
-                    if ($iLockMode === LOCK_EX) {
-                        // truncate file
-                        $blLocked = ftruncate($rHandle, 0);
-                    } else {
-                        // move to a start position
-                        $blLocked = fseek($rHandle, 0) === 0;
-                    }
-                }
-
-                // on failure - closing and setting false..
-                if (!$blLocked) {
-                    fclose($rHandle);
-                    $rHandle = false;
-                }
-            }
-
-            // in case system does not support file locking
-            if (!$blLocked && $iLockMode === LOCK_EX) {
-                // clearing on first call
-                if (count($this->_aLockedFileHandles) == 0) {
-                    clearstatcache();
-                }
-
-                // start a blank file to inform other processes we are dealing with it.
-                if (!(file_exists($sFilePath) && !filesize($sFilePath) && abs(time() - filectime($sFilePath) < 40))) {
-                    $rHandle = @fopen($sFilePath, "w");
-                }
-            }
-
-            $this->_aLockedFileHandles[$iLockMode][$sIdent] = $rHandle;
-        }
-
-        return $rHandle;
-    }
-
-    /**
-     * Releases file lock and returns release state
-     *
-     * @param string $sIdent    lock ident
-     * @param int    $iLockMode lock mode
-     *
-     * @return bool
-     */
-    protected function releaseFile($sIdent, $iLockMode = LOCK_EX)
-    {
-        $blSuccess = true;
-        if (
-            isset($this->_aLockedFileHandles[$iLockMode][$sIdent]) &&
-            $this->_aLockedFileHandles[$iLockMode][$sIdent] !== false
-        ) {
-            // release the lock and close file
-            $blSuccess = flock($this->_aLockedFileHandles[$iLockMode][$sIdent], LOCK_UN) &&
-                         fclose($this->_aLockedFileHandles[$iLockMode][$sIdent]);
-            unset($this->_aLockedFileHandles[$iLockMode][$sIdent]);
-        }
-
-        return $blSuccess;
-    }
-
-    /**
-     * Removes most files stored in cache (default 'tmp') folder. Some files
-     * e.g. table files names description, are left. Excluded cache file name
-     * patterns are defined in \OxidEsales\Eshop\Core\Utils::_sPermanentCachePattern parameter
-     */
-    public function oxResetFileCache(bool $includePermanentCache = false)
-    {
-        $cacheFilePath = $this->getCacheFilePath(null, true);
-        $files = $cacheFilePath ?? glob($cacheFilePath . '*');
-        if (is_array($files)) {
-            if (!$includePermanentCache) {
-                // delete all the files, except cached tables field names
-                $files = preg_grep($this->_sPermanentCachePattern, $files, PREG_GREP_INVERT);
-            }
-
-            foreach ($files as $file) {
-                @unlink($file);
-            }
-        }
-    }
-
-    /**
      * Removes language constant cache
      */
     public function resetLanguageCache()
     {
-        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
-        if (is_array($aFiles)) {
-            // delete all language cache files
-            $sPattern = $this->_sLanguageCachePattern;
-            $aFiles = preg_grep($sPattern, $aFiles);
-            foreach ($aFiles as $sFile) {
-                @unlink($sFile);
-            }
-        }
+
+        $cache = ContainerFacade::get(TagAwareCacheInterface::class);
+        $cache->invalidateTags(['oxid_esales.cache.language']);
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Removes admin menu cache
      */
     public function resetMenuCache()
     {
-        $aFiles = glob($this->getCacheFilePath(null, true) . '*');
-        if (is_array($aFiles)) {
-            // delete all menu cache files
-            $sPattern = $this->_sMenuCachePattern;
-            $aFiles = preg_grep($sPattern, $aFiles);
-            foreach ($aFiles as $sFile) {
-                @unlink($sFile);
-            }
-        }
+        $cache = ContainerFacade::get(TagAwareCacheInterface::class);
+        $cache->invalidateTags(['oxid_esales.cache.menu']);
     }
 
     /**
@@ -988,7 +733,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     {
         $session = Registry::getSession();
         $session->freeze();
-        $this->commitFileCache();
 
         ContainerFacade::dispatch(new ApplicationExitEvent());
 
@@ -1179,76 +923,33 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns full path (including file name) to cache file
-     *
-     * @param string $sCacheName cache file name
-     * @param bool   $blPathOnly if TRUE, name parameter will be ignored and only cache folder will be returned (default FALSE)
-     * @param string $sExtension cache file extension
-     *
-     * @return string
-     */
-    public function getCacheFilePath($sCacheName, $blPathOnly = false, $sExtension = 'txt')
-    {
-        $versionPrefix = $this->getEditionCacheFilePrefix();
-
-        $sPath = realpath(ContainerFacade::getParameter('oxid_esales.build_directory'));
-
-        if (!$sPath) {
-            return false;
-        }
-
-        return $blPathOnly ? "{$sPath}/" : "{$sPath}/ox{$versionPrefix}c_{$sCacheName}." . $sExtension;
-    }
-
-    /**
-     * Get current edition prefix
-     * @return string
-     */
-    public function getEditionCacheFilePrefix()
-    {
-        return '';
-    }
-
-    /**
-     * Tries to load lang cache array from cache file
-     *
-     * @param string $sCacheName cache file name
+     * @deprecated will be removed in next major version
      *
      * @return array
      */
-    public function getLangCache($sCacheName)
+    public function getLangCache($cacheName)
     {
-        $aLangCache = null;
-        $sFilePath = $this->getCacheFilePath($sCacheName);
-        if (file_exists($sFilePath) && is_readable($sFilePath)) {
-            include $sFilePath;
+        $cache = ContainerFacade::get(CacheItemPoolInterface::class);
+        if (!$cache->hasItem($cacheName)) {
+            return null;
         }
 
-        return $aLangCache;
+        return $cache->getItem($cacheName)->get();
     }
 
     /**
-     * Writes language array to file cache
-     *
-     * @param string $sCacheName name of cache file
-     * @param array  $aLangCache language array
-     *
-     * @return null
+     * @deprecated will be removed in next major version
      */
-    public function setLangCache($sCacheName, $aLangCache)
+    public function setLangCache($cacheName, $langCache)
     {
-        $sCache = "<?php\n\$aLangCache = " . var_export($aLangCache, true) . ";\n?>";
-        $sFileName = $this->getCacheFilePath($sCacheName);
+        $cache = ContainerFacade::get(TagAwareCacheInterface::class);
+        $cache->get($cacheName, function (ItemInterface $item) use ($langCache) {
+            $item->tag('oxid_esales.cache.language');
 
-        $tmpFile = Path::join(
-            ContainerFacade::getParameter('oxid_esales.build_directory'),
-            basename($sFileName) . uniqid('.temp', true) . '.txt'
-        );
-        $blRes = file_put_contents($tmpFile, $sCache, LOCK_EX);
+            return $langCache;
+        });
 
-        rename($tmpFile, $sFileName);
-
-        return $blRes;
+        return true;
     }
 
     /**

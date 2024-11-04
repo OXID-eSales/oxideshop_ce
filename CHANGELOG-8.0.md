@@ -8,6 +8,11 @@
 - Support PSR caching interface, related functionalities and applied them on module cache.
 - Registration of environment variables via Symfony Dotenv Component
 - Interface for storing Symfony Service Container parameters in configuration
+- Support Symfony caching interface with tags
+
+### Deprecated
+
+- `Utils` methods for managing cache will be replaced by using Symfony cache directly
 
 ### Changed
 
@@ -25,6 +30,8 @@
   All corresponding command-line parameters were removed
 - Updated list of Search Engines (formerly `aRobots` configuration)
 - Browser-based application setup was discontinued. Only console-based setup is available
+- Replace file caching in `Utils` with Symfony cache
+- Removed $includePermanentCache parameter from `oxResetFileCache` method, all cache files are now cleared without exclusions.
 
 ### Removed
 
@@ -57,3 +64,4 @@
 - Deprecated `handleDatabaseException` functionality
 - Dependency on `oxideshop-facts` component
 - `FileCache` and `SubShopSpecificFileCache` classes. Use `ContextInterface::getCurrentShopId()` instead
+- Legacy file-based caching methods from `Utils` class

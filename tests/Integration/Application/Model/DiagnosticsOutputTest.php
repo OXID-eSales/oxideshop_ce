@@ -26,11 +26,7 @@ final class DiagnosticsOutputTest extends TestCase
         $contentLength = strlen($content);
 
         $utils = $this->getUtils();
-        $cacheFilePath = $utils->getCacheFilePath($this->key);
-        file_put_contents(
-            $cacheFilePath,
-            serialize(['content' => $content])
-        );
+        $utils->toFileCache($this->key, $content);
         $diagnostics = new DiagnosticsOutput();
         ob_start();
         $diagnostics->downloadResultFile($this->key);
@@ -73,7 +69,7 @@ final class DiagnosticsOutputTest extends TestCase
     {
         $utils = $this->getUtils();
         $content = 'some-content-123';
-        file_put_contents($utils->getCacheFilePath($this->key), serialize(['content' => $content]));
+        $utils->toFileCache($this->key, $content);
 
         $this->expectOutputString($content);
 

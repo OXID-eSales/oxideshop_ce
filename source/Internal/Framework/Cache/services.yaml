@@ -1,5 +1,5 @@
 imports:
-  - { resource: Pool/services.yaml }
+  - { resource: Adapter/services.yaml }
   - { resource: Command/services.yaml }
 
 services:

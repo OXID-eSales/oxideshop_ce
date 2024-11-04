@@ -15,6 +15,8 @@ use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use stdClass;
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 /**
  * Language related utility class
@@ -724,7 +726,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aLangFiles = [];
 
         if ($sCustomTheme) {
-            $customThemePath = $sAppDir . 'views/' . $sCustomTheme .'/';
+            $customThemePath = $sAppDir . 'views/' . $sCustomTheme . '/';
             $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
         }
 
@@ -893,29 +895,20 @@ class Language extends \OxidEsales\Eshop\Core\Base
         return "langcache_" . ((int) $blAdmin) . "_{$iLang}_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . $sLangFilesIdent;
     }
 
-    /**
-     * Returns language cache array
-     *
-     * @param bool  $blAdmin    admin or not [optional]
-     * @param int   $iLang      current language id [optional]
-     * @param array $aLangFiles language files to load [optional]
-     *
-     * @return array
-     */
     protected function getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null)
     {
-        $myUtils = Registry::getUtils();
-
         $sCacheName = $this->getLangFileCacheName($blAdmin, $iLang, $aLangFiles);
-        $aLangCache = $myUtils->getLangCache($sCacheName);
-        if (!$aLangCache && $aLangFiles === null) {
-            if ($blAdmin) {
-                $aLangFiles = $this->getAdminLangFilesPathArray($iLang);
-            } else {
-                $aLangFiles = $this->getLangFilesPathArray($iLang);
+
+        $cache = ContainerFacade::get(TagAwareCacheInterface::class);
+        $aLangCache = $cache->get($sCacheName, function (ItemInterface $item) use ($aLangFiles, $blAdmin, $iLang): array {
+            $item->tag('oxid_esales.cache.language');
+            if ($aLangFiles === null) {
+                if ($blAdmin) {
+                    $aLangFiles = $this->getAdminLangFilesPathArray($iLang);
+                } else {
+                    $aLangFiles = $this->getLangFilesPathArray($iLang);
+                }
             }
-        }
-        if (!$aLangCache && $aLangFiles) {
             $aLangCache = [];
             $sBaseCharset = $this->getTranslationsExpectedEncoding();
             $aLang = [];
@@ -941,9 +934,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
             // special character replacement list
             $aLangCache['_aSeoReplaceChars'] = $aLangSeoReplaceChars;
 
-            //save to cache
-            $myUtils->setLangCache($sCacheName, $aLangCache);
-        }
+            return $aLangCache;
+        });
 
         return $aLangCache;
     }

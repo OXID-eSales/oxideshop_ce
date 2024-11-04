@@ -14,6 +14,8 @@ use OxidEsales\Eshop\Core\Base;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use stdClass;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class NavigationTree extends Base
 {
@@ -393,60 +395,38 @@ class NavigationTree extends Base
         return $cacheContents;
     }
 
-    /**
-     * get initial dom, not modified by init method
-     *
-     * @return DOMDocument
-     */
     protected function getInitialDom()
     {
-        if ($this->_oInitialDom === null) {
-            $myOxUtlis = \OxidEsales\Eshop\Core\Registry::getUtils();
-
-            if (is_array($filesToLoad = $this->getMenuFiles())) {
-                // now checking if xml files are newer than cached file
-                $reload = false;
-                $templateLanguageCode = $this->getTemplateLanguageCode();
-
-                $shopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveShop()->getShopId();
-                $cacheName = 'menu_' . $templateLanguageCode . $shopId . '_xml';
-                $cacheFile = $myOxUtlis->getCacheFilePath($cacheName);
-                $cacheContents = $myOxUtlis->fromFileCache($cacheName);
-                if ($cacheContents && file_exists($cacheFile) && ($cacheModTime = filemtime($cacheFile))) {
-                    foreach ($filesToLoad as $dynPath) {
-                        if ($cacheModTime < filemtime($dynPath)) {
-                            $reload = true;
-                        }
-                    }
-                } else {
-                    $reload = true;
-                }
-
-                $this->_oInitialDom = new DOMDocument();
-                if ($reload) {
-                    // fully reloading and building pathes
-                    $this->_oInitialDom->appendChild(new DOMElement('OX'));
-
-                    foreach ($filesToLoad as $dynPath) {
-                        $this->loadFromFile($dynPath, $this->_oInitialDom);
-                    }
-
-                    // adds links to menu items
-                    $this->addLinks($this->_oInitialDom);
-
-                    // writing to cache
-                    $myOxUtlis->toFileCache($cacheName, $this->_oInitialDom->saveXML());
-                } else {
-                    $cacheContents = $this->processCachedFile($cacheContents);
-                    // loading from cached file
-                    $this->_oInitialDom->preserveWhiteSpace = false;
-                    $this->_oInitialDom->loadXML($cacheContents);
-                }
-
-                // add session params
-                $this->sessionizeLocalUrls($this->_oInitialDom);
-            }
+        if ($this->_oInitialDom !== null) {
+            return $this->_oInitialDom;
         }
+
+        $filesToLoad = $this->getMenuFiles();
+        if (!is_array($filesToLoad)) {
+            return null;
+        }
+
+        $templateLanguageCode = $this->getTemplateLanguageCode();
+        $cacheName = 'shop_menu_cache_' . $templateLanguageCode;
+        $cache = ContainerFacade::get(TagAwareCacheInterface::class);
+
+        if ($this->isMenuCacheOutdated($cache, $cacheName, $filesToLoad)) {
+            $cache->delete($cacheName);
+        }
+
+        $cacheContents = $cache->get($cacheName, function (ItemInterface $item) use ($filesToLoad): array {
+            $item->tag('oxid_esales.cache.menu');
+            return [
+                'creation_time' => time(),
+                'menu_dom' => $this->generateInitialMenuDomXml($filesToLoad)
+            ];
+        });
+
+        $this->_oInitialDom = new DOMDocument();
+        $this->_oInitialDom->preserveWhiteSpace = false;
+        $this->_oInitialDom->loadXML($cacheContents['menu_dom']);
+
+        $this->sessionizeLocalUrls($this->_oInitialDom);
 
         return $this->_oInitialDom;
     }
@@ -642,5 +622,37 @@ class NavigationTree extends Base
      */
     protected function onGettingDomXml()
     {
+    }
+
+    private function isMenuCacheOutdated($cache, string $cacheName, array $filesToLoad): bool
+    {
+        $cacheItem = $cache->getItem($cacheName);
+
+        if (!$cacheItem->isHit()) {
+            return true;
+        }
+
+        $cacheCreationTime = $cacheItem->get()['creation_time'];
+        foreach ($filesToLoad as $filePath) {
+            if ($cacheCreationTime < filemtime($filePath)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function generateInitialMenuDomXml(array $filesToLoad): string
+    {
+        $initialDom = new DOMDocument();
+        $initialDom->appendChild(new DOMElement('OX'));
+
+        foreach ($filesToLoad as $filePath) {
+            $this->loadFromFile($filePath, $initialDom);
+        }
+
+        $this->addLinks($initialDom);
+
+        return $initialDom->saveXML();
     }
 }

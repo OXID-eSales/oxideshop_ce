@@ -1020,7 +1020,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         // TODO: implement logic to log missing paths
 
-        // to cache
         Registry::getUtils()->toStaticCache($cacheKey, $return);
 
         return $return;

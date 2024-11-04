@@ -77,4 +77,4 @@ ini_set('url_rewriter.tags', '');
 
 (new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
 
-date_default_timezone_set(getenv('OXID_DEFAULT_TIMEZONE'));
+date_default_timezone_set(getenv('OXID_DEFAULT_TIMEZONE') ?: 'Europe/Berlin');

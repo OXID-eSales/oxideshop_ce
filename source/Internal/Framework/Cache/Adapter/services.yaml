@@ -1,0 +1,18 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\FilesystemTagAwareAdapterFactory
+
+  Symfony\Component\Cache\Adapter\TagAwareAdapterInterface:
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface', 'create']
+    arguments: ['@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getCurrentShopId()']
+
+  Psr\Cache\CacheItemPoolInterface:
+    alias: Symfony\Component\Cache\Adapter\TagAwareAdapterInterface
+    public: true
+
+  Symfony\Contracts\Cache\TagAwareCacheInterface:
+    alias: Symfony\Component\Cache\Adapter\TagAwareAdapterInterface
+    public: true

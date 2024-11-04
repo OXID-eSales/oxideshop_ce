@@ -74,9 +74,6 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
         if (isset($session)) {
             $session->freeze();
         }
-
-        //commit file cache
-        \OxidEsales\Eshop\Core\Registry::getUtils()->commitFileCache();
     }
 
     /**

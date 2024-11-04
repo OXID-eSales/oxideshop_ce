@@ -7,104 +7,79 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-/**
- * Calculates Shop id from request data or shop url.
- *
- * @internal Do not make a module extension for this class.
- */
 class ShopIdCalculator
 {
-    /** Shop id which is used for CE/PE eShops. */
-    const BASE_SHOP_ID = 1;
+    public const BASE_SHOP_ID = 1;
+    private static array $urlMap;
 
-    /** @var array */
-    private static $urlMap;
-
-    /** @var FileCache */
-    private $variablesCache;
-
-    /**
-     * @param FileCache $variablesCache
-     */
-    public function __construct($variablesCache)
-    {
-        $this->variablesCache = $variablesCache;
+    public function __construct(
+        private FileCache $variablesCache,
+        private ?UtilsServer $utilsServer = null
+    ) {
     }
 
-    /**
-     * Returns active shop id. This method works independently from other classes.
-     *
-     * @return string
-     */
-    public function getShopId()
+    public function getShopId(): int
     {
-        return static::BASE_SHOP_ID;
+        return self::BASE_SHOP_ID;
     }
 
-    /**
-     * Returns shop url to id map from config.
-     *
-     * @return array
-     */
-    protected function getShopUrlMap()
+    protected function getShopUrlMap(): array
     {
-        //get from static cache
-        if (isset(self::$urlMap)) {
+        if (!empty(self::$urlMap)) {
             return self::$urlMap;
         }
 
-        //get from file cache
-        $aMap = $this->getVariablesCache()->getFromCache("urlMap");
-        if (!is_null($aMap)) {
-            self::$urlMap = $aMap;
-
-            return $aMap;
+        $map = $this->getVariablesCache()->getFromCache('urlMap');
+        if ($map !== null) {
+            self::$urlMap = $map;
+            return $map;
         }
 
-        $aMap = [];
-
-        $sSelect = "
+        $map = [];
+        $select = "
             SELECT oxshopid, oxvarname, oxvarvalue
             FROM oxconfig
-            WHERE oxvarname IN ('aLanguageURLs','aLanguageSSLURLs','sMallShopURL','sMallSSLShopURL')";
+            WHERE oxvarname IN ('aLanguageURLs','aLanguageSSLURLs','sMallShopURL','sMallSSLShopURL')
+        ";
 
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $oRs = $masterDb->select($sSelect);
+        $result = DatabaseProvider::getMaster()->select($select);
+        if ($result?->count() > 0) {
+            while (!$result->EOF) {
+                $shopId = (int)$result->fields[0];
+                $varName = $result->fields[1];
+                $url = $result->fields[2];
 
-        if ($oRs && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $iShp = (int) $oRs->fields[0];
-                $sVar = $oRs->fields[1];
-                $sURL = $oRs->fields[2];
-
-                if ($sVar == 'aLanguageURLs' || $sVar === 'aLanguageSSLURLs') {
-                    $aUrls = unserialize($sURL);
-                    if (is_array($aUrls) && count($aUrls)) {
-                        $aUrls = array_filter($aUrls);
-                        $aUrls = array_fill_keys($aUrls, $iShp);
-                        $aMap = array_merge($aMap, $aUrls);
+                if ($varName === 'aLanguageURLs' || $varName === 'aLanguageSSLURLs') {
+                    $urls = unserialize($url, ['allowed_classes' => false]);
+                    if (is_array($urls) && !empty($urls)) {
+                        $urls = array_filter($urls);
+                        $urls = array_fill_keys($urls, $shopId);
+                        $map = array_merge($map, $urls);
                     }
-                } elseif ($sURL) {
-                    $aMap[$sURL] = $iShp;
+                } elseif ($url) {
+                    $map[$url] = $shopId;
                 }
 
-                $oRs->fetchRow();
+                $result->fetchRow();
             }
         }
 
-        //save to cache
-        $this->getVariablesCache()->setToCache("urlMap", $aMap);
-        self::$urlMap = $aMap;
+        $this->getVariablesCache()->setToCache('urlMap', $map);
+        self::$urlMap = $map;
 
-        return $aMap;
+        return $map;
     }
 
-    /**
-     * @return FileCache
-     */
-    protected function getVariablesCache()
+    protected function getVariablesCache(): FileCache
     {
         return $this->variablesCache;
+    }
+
+    protected function getUtilsServer(): UtilsServer
+    {
+        if (!$this->utilsServer) {
+            $this->utilsServer = new UtilsServer();
+        }
+        return $this->utilsServer;
     }
 }

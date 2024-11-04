@@ -9,7 +9,7 @@ modules:
             browser: '%BROWSER%'
             port: '%SELENIUM_SERVER_PORT%'
             host: '%SELENIUM_SERVER_HOST%'
-            window_size: 2000x2000
+            window_size: maximize
             clear_cookies: true
             restart: true
             capabilities:
@@ -23,6 +23,7 @@ modules:
             mysql_config: '%MYSQL_CONFIG_PATH%'
             db_name: '%DB_NAME%'
             out_directory_fixtures: '%OUT_DIRECTORY_FIXTURES%'
+            out_directory: '%OUT_DIRECTORY%'
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
             user: '%DB_USERNAME%'

@@ -7,22 +7,6 @@
 - Set custom product low stock label [#0004401](https://bugs.oxid-esales.com/view.php?id=4401)
 - Support PSR caching interface, related functionalities and applied them on module cache.
 - Registration of environment variables via Symfony Dotenv Component
-- Bootstrap parameters have been moved from config.inc.php to environment and container parameters
-  - Container parameters
-    - `oxid_esales.debug_mode`
-    - `oxid_esales.smtp_debug_mode`
-    - `oxid_esales.multilingual_tables`
-    - `oxid_esales.skip_database_views_usage`
-    - `oxid_esales.multi_shop_article_fields`
-    - `oxid_esales.show_update_views_button`
-    - `oxid_esales.shop_url`
-    - `oxid_esales.shop_admin_url`
-    - `oxid_esales.multi_shop_tables`
-    - `oxid_esales.basket_reservation_cleanup_rate`
-    - `oxid_esales.cron_enabled`
-    - `oxid_esales.user_rights_roles_mode`
-    - `oxid_esales.seo_mode`
-    - `oxid_esales.shop_credit_rating`
 - Interface for storing Symfony Service Container parameters in configuration
 
 ### Changed
@@ -37,8 +21,10 @@
   unlimited period of time
 - Functionality to extend Symfony DIC for environments and shops
 - Method `getAltImageUrl` of PictureHandler will not use ssl parameter anymore
-- `oe:setup:shop` command now fetches parameters from the current environment configuration. All corresponding command-line parameters were removed
+- `oe:setup:shop` command now fetches parameters from the current environment configuration.
+  All corresponding command-line parameters were removed
 - Updated list of Search Engines (formerly `aRobots` configuration)
+- Browser-based application setup was discontinued. Only console-based setup is available
 
 ### Removed
 
@@ -52,50 +38,21 @@
 - `PAYMENT_INFO_OFF`
   translation [#0006426](https://bugs.oxid-esales.com/view.php?id=6426) [PR-953](https://github.com/OXID-eSales/oxideshop_ce/pull/953)
 - Remove deprecated `TemplateCacheService` implementation
-- Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in `BasicContext::getCurrentShopId`
+- Remove deprecated `BasicContextInterface::getCurrentShopId` and its basic implementation in
+  `BasicContext::getCurrentShopId`
 - Remove deprecated model property `Attribute::_sTitle` [PR-914](https://github.com/OXID-eSales/oxideshop_ce/pull/914)
 - Obsolete caching related functionalities
 - Methods in deprecated `Database` and `DatabaseProvider`, related to configuration management
 - Redundant interfaces `TransactionServiceInterface`, `FinderFactoryInterface`
 - `ConnectionProviderInterface::get()` was superseded by `ConnectionFactory::create()`
 - Deprecated global functions `warningHandler(), dumpVar(), debug()`
-- Config parameters 
-  - `sShopDir`
-  - `sCompileDir`
-  - `sLogLevel`
-  - `iDebug`
-  - `aMultishopArticleFields`
-  - `aMultiLangTables`
-  - `blShowUpdateViews`
-  - `blSkipViewUsage`
-  - `sShopURL`
-  - `sSSLShopURL`
-  - `sAdminSSLURL`
-  - `edition`
-  - `blDebugTemplateBlocks`
-  - `aRobotsExcept`
-  - `deactivateSmartyForCmsContent`
-  - `iSmartyPhpHandling`
-  - `blDoNotDisableModuleOnError`
-  - `passwordHashingAlgorithm`
-  - `passwordHashingBcryptCost`
-  - `passwordHashingArgon2MemoryCost`
-  - `passwordHashingArgon2TimeCost`
-  - `passwordHashingArgon2Threads`
-  - `sAuthOpenIdRandSource`
-  - `aSlaveHosts`
-  - `iDebugSlowQueryTime`
-  - `iBasketReservationCleanPerRequest`
-  - `blUseCron`
-  - `blUseRightsRoles`
-  - `blMallSharedBasket`
-  - `blSeoMode`
-  - `iCreditRating`
-- Config parameters `offlineWarningInterval` and `sAdminEmail`, use external application monitoring instead
-- The `ConfigFile` will no longer be used. Please use container parameters to obtain the necessary settings
+- Superseded and obsolete `config.inc.php` parameters
+- Obsolete `ConfigFile` class and functionality for `config.inc.php` management
 - Deprecated class `ModuleVariablesLocator`
 - Redundant `BasicContextInterface` methods
 - Related configuration parameter method `isTplBlocksDebugMode` of `ViewConfig` class
 - Deprecated `NamedArgumentsTrait`
-- Deprecated `isEnabledAdminQueryLog` method in ContextInterface. Query logging mode can be fetched directly from container.
+- Deprecated `isEnabledAdminQueryLog` method in ContextInterface. Query logging mode can be fetched directly from
+  container.
 - Deprecated `handleDatabaseException` functionality
+- Dependency on `oxideshop-facts` component

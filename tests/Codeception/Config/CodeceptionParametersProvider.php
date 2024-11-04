@@ -11,9 +11,12 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Config;
 
 use OxidEsales\Codeception\Module\Database;
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionDirectoriesLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectDirectoriesLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
-use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 class CodeceptionParametersProvider
@@ -22,14 +25,13 @@ class CodeceptionParametersProvider
 
     public function getParameters(): array
     {
-        $facts = new Facts();
         $this->loadEnvironmentVariables();
 
         $this->dbConfig = (new DatabaseConfiguration(getenv('OXID_DB_URL')));
         return [
-            'SHOP_URL' => getenv('OXID_SHOP_BASE_URL') ?: $facts->getShopUrl(),
+            'SHOP_URL' => getenv('OXID_SHOP_BASE_URL'),
             'PROJECT_ROOT' => $this->getProjectRoot(),
-            'VENDOR_PATH' => $facts->getVendorPath(),
+            'VENDOR_PATH' => (new ProjectDirectoriesLocator())->getVendorPath(),
             'DB_NAME' => $this->getDbName(),
             'DB_USERNAME' => $this->getDbUser(),
             'DB_PASSWORD' => $this->getDbPass(),
@@ -37,6 +39,7 @@ class CodeceptionParametersProvider
             'DB_PORT' => $this->getDbPort(),
             'DUMP_PATH' => $this->getTestDataDumpFilePath(),
             'FIXTURES_PATH' => $this->getTestFixtureSqlFilePath(),
+            'OUT_DIRECTORY' => (new ProjectDirectoriesLocator())->getOutPath(),
             'OUT_DIRECTORY_FIXTURES' => $this->getOutDirectoryFixturesPath(),
             'MYSQL_CONFIG_PATH' => $this->generateMysqlStarUpConfigurationFile(),
             'SELENIUM_SERVER_PORT' => getenv('SELENIUM_SERVER_PORT') ?: '4444',
@@ -74,21 +77,20 @@ class CodeceptionParametersProvider
         );
     }
 
-    private function getShopSuitePath(): string
-    {
-        $testSuitePath = (string)getenv('TEST_SUITE');
-        if ($testSuitePath === '' || $testSuitePath === '0') {
-            $testSuitePath = Path::join($this->getProjectRoot(), 'tests');
-        }
-        return $testSuitePath;
-    }
-
     private function getShopTestPath(): string
     {
-        $facts = new Facts();
-        return $facts->isEnterprise()
-            ? $facts->getEnterpriseEditionRootPath() . '/Tests'
-            : $this->getShopSuitePath();
+        try {
+            $testsPath = Path::join(
+                (new EditionDirectoriesLocator())->getEditionRootPath(Edition::Enterprise),
+                'Tests'
+            );
+        } catch (DirectoryNotExistentException) {
+            $testsPath = Path::join(
+                $this->getProjectRoot(),
+                'tests'
+            );
+        }
+        return $testsPath;
     }
 
     private function generateMysqlStarUpConfigurationFile(): string

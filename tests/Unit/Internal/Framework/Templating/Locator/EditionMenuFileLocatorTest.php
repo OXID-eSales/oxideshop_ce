@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Templating\Loc
 
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
@@ -59,10 +60,10 @@ final class EditionMenuFileLocatorTest extends TestCase
     private function getContext(string $edition): BasicContextStub
     {
         $context = new BasicContextStub();
-        $context->setEdition($edition);
-        $context->setSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathCE');
-        $context->setProfessionalEditionRootPath($this->vfsStreamDirectory->url() . '/testSourcePathPE');
-        $context->setEnterpriseEditionRootPath($this->vfsStreamDirectory->url() . '/testSourcePathEE');
+        $context->setEdition(Edition::from($edition));
+        $context->setCommunityEditionSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathCE');
+        $context->setProfessionalEditionSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathPE');
+        $context->setEnterpriseEditionSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathEE');
 
         return $context;
     }

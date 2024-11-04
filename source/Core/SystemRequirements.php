@@ -270,17 +270,7 @@ class SystemRequirements
     public function checkServerPermissions($path = null, $minPerm = 777)
     {
         clearstatcache();
-        $path = $path ? $path : getShopBasePath();
-        // special config file check
-        $configFilePath = $path . "config.inc.php";
-        if (
-            !is_readable($configFilePath) ||
-            ($this->isAdmin() && is_writable($configFilePath)) ||
-            (!$this->isAdmin() && !is_writable($configFilePath))
-        ) {
-            return 0;
-        }
-
+        $path = $path ?: getShopBasePath();
         $modStat = 2;
         $permissionIssues = $this->getPermissionIssuesList($path, $minPerm);
         if (count($permissionIssues['missing']) + count($permissionIssues['not_writable'])) {
@@ -355,7 +345,6 @@ class SystemRequirements
 
     /**
      * returns host, port, base dir, ssl information as associative array, false on error
-     * takes this info from eShop config.inc.php (via oxConfig class)
      *
      * @return array
      */
@@ -365,7 +354,7 @@ class SystemRequirements
         if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sslShopURL, $shopUrlComponents)) {
             $host = $shopUrlComponents[2];
             $port = (int) $shopUrlComponents[4];
-            $ssl = (strtolower($shopUrlComponents[1]) == 'https://');
+            $ssl = (strtolower($shopUrlComponents[1]) === 'https://');
             if (!$port) {
                 $port = $ssl ? 443 : 80;
             }

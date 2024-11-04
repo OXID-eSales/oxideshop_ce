@@ -250,12 +250,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     public function informationSendingToOxidConfigurable()
     {
-        $facts = new \OxidEsales\Facts\Facts();
-        if (!$facts->isCommunity()) {
-            return false;
-        }
-
-        return true;
+        return !Registry::getConfig()->getEdition()->isCommunityEdition();
     }
 
     /**

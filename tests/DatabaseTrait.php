@@ -11,7 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests;
 
 use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Core\DatabaseProvider;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionDirectoriesLocator;
 use ReflectionClass;
 
 trait DatabaseTrait
@@ -38,9 +39,9 @@ trait DatabaseTrait
     public function setupShopDatabase(): void
     {
         exec(
-            sprintf(
+            \sprintf(
                 '%s/bin/oe-console oe:database:reset --force',
-                (new Facts())->getCommunityEditionRootPath()
+                (new EditionDirectoriesLocator())->getEditionRootPath(Edition::Community)
             )
         );
     }

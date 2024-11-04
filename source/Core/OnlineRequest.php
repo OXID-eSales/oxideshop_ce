@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Facts\Facts;
-
 /**
  * Online check base request class.
  *
@@ -58,16 +56,12 @@ class OnlineRequest
      */
     public $productId = 'eShop';
 
-    /**
-     * Class constructor, initiates public class parameters.
-     */
     public function __construct()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
         $this->clusterId = $this->getClusterId();
-        $this->edition = (new Facts())->getEdition();
+        $this->edition = \OxidEsales\Eshop\Core\Registry::getConfig()->getEdition()->value;
         $this->version = ShopVersion::getVersion();
-        $this->shopUrl = $oConfig->getShopUrl();
+        $this->shopUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
     }
 
     /**

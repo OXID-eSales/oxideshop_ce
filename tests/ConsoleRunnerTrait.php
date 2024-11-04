@@ -13,12 +13,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use RuntimeException;
 use Symfony\Component\Process\Process;
 
+use function sprintf;
+
 trait ConsoleRunnerTrait
 {
     public function runInConsole(string $command): Process
     {
         $process = Process::fromShellCommandline(
-            "{$this->getPathToConsoleScript()} {$command}"
+            "{$this->getPathToConsoleScript()} $command"
         );
         $process->run();
 

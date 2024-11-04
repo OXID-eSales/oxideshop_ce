@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Doctrine\DBAL\DriverManager;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 
 use function array_fill_keys;
@@ -40,7 +39,7 @@ class ShopIdCalculator
         }
 
         $urlMap = $this->variablesCache->getFromCache('urlMap');
-        if ($urlMap !== null) {
+        if (is_array($urlMap)) {
             self::$urlMap = $urlMap;
 
             return $urlMap;
@@ -52,7 +51,7 @@ class ShopIdCalculator
             $variableName = $row['oxvarname'];
             $urlValues = $row['oxvarvalue'];
 
-            if ($variableName === 'aLanguageURLs') {
+            if ($variableName === 'aLanguageURLs' || $variableName === 'aLanguageSSLURLs') {
                 $urls = unserialize($urlValues, ['allowed_classes' => false]);
                 if (is_array($urls) && count($urls)) {
                     $urls = array_filter($urls);
@@ -76,7 +75,7 @@ class ShopIdCalculator
             ->prepare(
                 "SELECT oxshopid, oxvarname, oxvarvalue
                 FROM oxconfig
-                WHERE oxvarname IN ('aLanguageURLs','sMallShopURL','sMallSSLShopURL')"
+                WHERE oxvarname IN ('aLanguageURLs', 'aLanguageSSLURLs', 'sMallShopURL','sMallSSLShopURL')"
             );
         $statement->execute();
 

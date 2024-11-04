@@ -20,7 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\Facts\Facts;
 use Psr\Container\ContainerInterface;
 use SimpleXMLElement;
 use Throwable;
@@ -103,7 +102,7 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
     private function prepareTestData(): void
     {
         $this->xmlLog = sprintf('%s/%s.xml', __DIR__, uniqid('request_log_', true));
-        $this->edition = (new Facts())->getEdition();
+        $this->edition = Registry::getConfig()->getEdition()->value;
         $this->shopVersion = ShopVersion::getVersion();
         $this->shopUrl = Registry::getConfig()->getShopUrl();
         $this->clusterId = uniqid('cluster-', true);

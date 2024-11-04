@@ -10,52 +10,43 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
 
 class BasicContextStub implements BasicContextInterface
 {
-    private string $communityEditionSourcePath;
+    private string $ceSourcePath;
+    private string $peSourcePath;
+    private string $eeSourcePath;
     private string $containerCacheFilePath;
-    private string $edition;
-    private string $enterpriseEditionRootPath;
+    private Edition $edition;
     private string $generatedServicesFilePath;
-    private string $professionalEditionRootPath;
     private string $sourcePath;
     private string $shopRootPath;
-    private string $configFilePath;
     private string $projectConfigurationDirectory;
     private array $backwardsCompatibilityClassMap;
-    private Facts $facts;
     private string $outPath;
     private string $vendorPath;
     private string $composerVendorName;
     private string $cacheDirectory;
     private string $moduleCacheDirectory;
     private string $databaseUrl;
-    private string $configurationDirectory;
     protected string $activeModuleServicesFilePath;
     protected string $shopConfigurableServicesFilePath;
     private string $shopBaseUrl;
-
 
     public function __construct()
     {
         /** @var BasicContextInterface $basicContext */
         $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
 
-        $this->communityEditionSourcePath = $basicContext->getCommunityEditionSourcePath();
         $this->containerCacheFilePath = $basicContext->getContainerCacheFilePath($this->getDefaultShopId());
         $this->edition = $basicContext->getEdition();
-        $this->enterpriseEditionRootPath = $basicContext->getEnterpriseEditionRootPath();
         $this->generatedServicesFilePath = $basicContext->getGeneratedServicesFilePath();
-        $this->professionalEditionRootPath = $basicContext->getProfessionalEditionRootPath();
         $this->sourcePath = $basicContext->getSourcePath();
-        $this->configFilePath = $basicContext->getConfigFilePath();
         $this->shopRootPath = $basicContext->getShopRootPath();
         $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
-        $this->facts = $basicContext->getFacts();
         $this->outPath = $basicContext->getOutPath();
         $this->vendorPath = $basicContext->getVendorPath();
         $this->composerVendorName = $basicContext->getComposerVendorName();
@@ -67,39 +58,19 @@ class BasicContextStub implements BasicContextInterface
         $this->shopBaseUrl = $basicContext->getShopBaseUrl();
     }
 
-    public function getCommunityEditionSourcePath(): string
-    {
-        return $this->communityEditionSourcePath;
-    }
-
-    public function setCommunityEditionSourcePath(string $communityEditionSourcePath): void
-    {
-        $this->communityEditionSourcePath = $communityEditionSourcePath;
-    }
-
     public function getContainerCacheFilePath(int $shopId): string
     {
         return $this->containerCacheFilePath;
     }
 
-    public function getEdition(): string
+    public function getEdition(): Edition
     {
         return $this->edition;
     }
 
-    public function setEdition(string $edition): void
+    public function setEdition(Edition $edition): void
     {
         $this->edition = $edition;
-    }
-
-    public function getEnterpriseEditionRootPath(): string
-    {
-        return $this->enterpriseEditionRootPath;
-    }
-
-    public function setEnterpriseEditionRootPath(string $enterpriseEditionRootPath): void
-    {
-        $this->enterpriseEditionRootPath = $enterpriseEditionRootPath;
     }
 
     public function getGeneratedServicesFilePath(): string
@@ -110,16 +81,6 @@ class BasicContextStub implements BasicContextInterface
     public function setGeneratedServicesFilePath(string $generatedServicesFilePath): void
     {
         $this->generatedServicesFilePath = $generatedServicesFilePath;
-    }
-
-    public function getProfessionalEditionRootPath(): string
-    {
-        return $this->professionalEditionRootPath;
-    }
-
-    public function setProfessionalEditionRootPath(string $professionalEditionRootPath): void
-    {
-        $this->professionalEditionRootPath = $professionalEditionRootPath;
     }
 
     public function getSourcePath(): string
@@ -142,11 +103,6 @@ class BasicContextStub implements BasicContextInterface
         return [$this->getDefaultShopId()];
     }
 
-    public function getFacts(): Facts
-    {
-        return $this->facts;
-    }
-
     public function getBackwardsCompatibilityClassMap(): array
     {
         return $this->backwardsCompatibilityClassMap;
@@ -160,11 +116,6 @@ class BasicContextStub implements BasicContextInterface
     public function setProjectConfigurationDirectory(string $projectConfigurationDirectory): void
     {
         $this->projectConfigurationDirectory = $projectConfigurationDirectory;
-    }
-
-    public function getConfigFilePath(): string
-    {
-        return $this->configFilePath;
     }
 
     public function getConfigTableName(): string
@@ -185,6 +136,11 @@ class BasicContextStub implements BasicContextInterface
     public function getVendorPath(): string
     {
         return $this->vendorPath;
+    }
+
+    public function setVendorPath(string $path): void
+    {
+        $this->vendorPath = $path;
     }
 
     public function getComposerVendorName(): string
@@ -240,5 +196,30 @@ class BasicContextStub implements BasicContextInterface
     public function setShopBaseUrl(string $shopBaseUrl): void
     {
         $this->shopBaseUrl = $shopBaseUrl;
+    }
+
+    public function getEditionSourcePath(Edition $edition): string
+    {
+        $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
+        return match ($edition) {
+            Edition::Community => $this->ceSourcePath ?? $basicContext->getEditionSourcePath(Edition::Community),
+            Edition::Professional => $this->peSourcePath ?? $basicContext->getEditionSourcePath(Edition::Professional),
+            Edition::Enterprise => $this->eeSourcePath ?? $basicContext->getEditionSourcePath(Edition::Enterprise),
+        };
+    }
+
+    public function setCommunityEditionSourcePath(string $path): void
+    {
+        $this->ceSourcePath = $path;
+    }
+
+    public function setProfessionalEditionSourcePath(string $path): void
+    {
+        $this->peSourcePath = $path;
+    }
+
+    public function setEnterpriseEditionSourcePath(string $path): void
+    {
+        $this->eeSourcePath = $path;
     }
 }

@@ -10,88 +10,33 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
-/**
- * Class EditionMenuFileLocator
- * @package OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator
- */
 class EditionMenuFileLocator implements NavigationFileLocatorInterface
 {
-    /**
-     * @var string
-     */
-    private $themeName;
-
-    /**
-     * @var string
-     */
-    private $fileName = 'menu.xml';
+    private string $themeName;
+    private string $fileName = 'menu.xml';
 
     public function __construct(
         AdminThemeBridgeInterface $adminThemeBridge,
-        private BasicContextInterface $context,
-        private Filesystem $fileSystem
+        private readonly BasicContextInterface $context,
+        private readonly Filesystem $fileSystem
     ) {
         $this->themeName = $adminThemeBridge->getActiveTheme();
     }
 
-    /**
-     * Returns a full path for a given file name.
-     *
-     * @return array An array of file paths
-     *
-     * @throws \Exception
-     */
     public function locate(): array
     {
-        $filePath = $this->getMenuFileDirectory() . DIRECTORY_SEPARATOR . $this->fileName;
-        return $this->validateFile($filePath);
-    }
+        $filePath = Path::join(
+            $this->context->getEditionSourcePath($this->context->getEdition()),
+            'Application',
+            'views',
+            $this->themeName,
+            $this->fileName,
+        );
 
-    /**
-     * @return string
-     *
-     * @throws \Exception
-     */
-    private function getMenuFileDirectory(): string
-    {
-        return $this->getEditionsRootPaths() . DIRECTORY_SEPARATOR .
-            'Application' . DIRECTORY_SEPARATOR .
-            'views' . DIRECTORY_SEPARATOR .
-            $this->themeName;
-    }
-
-    /**
-     * @return string
-     *
-     * @throws \Exception
-     */
-    private function getEditionsRootPaths(): string
-    {
-        $editionPath = $this->context->getSourcePath();
-        if ($this->context->getEdition() === BasicContext::PROFESSIONAL_EDITION) {
-            $editionPath = $this->context->getProfessionalEditionRootPath();
-        } elseif ($this->context->getEdition() === BasicContext::ENTERPRISE_EDITION) {
-            $editionPath = $this->context->getEnterpriseEditionRootPath();
-        }
-
-        return $editionPath;
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return array
-     */
-    private function validateFile(string $file): array
-    {
-        $existingFiles = [];
-        if ($this->fileSystem->exists($file)) {
-            $existingFiles[] = $file;
-        }
-        return $existingFiles;
+        return $this->fileSystem->exists($filePath) ? [$filePath] : [];
     }
 }

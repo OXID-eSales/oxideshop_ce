@@ -10,8 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\Facts\Facts;
-use Symfony\Component\Filesystem\Path;
 
 /**
  * Administrator GUI navigation manager class.
@@ -162,12 +160,14 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $oSysReq = oxNew(\OxidEsales\Eshop\Core\SystemRequirements::class);
             if (!$oSysReq->getSysReqStatus()) {
                 $messages['warning'] = Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE');
-                $messages['warning'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
+                $messages['warning'] .= '<a href="?cl=sysreq&amp;stoken=' .
+                    $session->getSessionChallengeToken() . '" target="basefrm">';
                 $messages['warning'] .= Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
             }
         } else {
             $messages['message'] = Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE_INACTIVE');
-            $messages['message'] .= '<a href="?cl=sysreq&amp;stoken=' . $session->getSessionChallengeToken() . '" target="basefrm">';
+            $messages['message'] .= '<a href="?cl=sysreq&amp;stoken=' .
+                $session->getSessionChallengeToken() . '" target="basefrm">';
             $messages['message'] .= Registry::getLang()->translateString('NAVIGATION_SYSREQ_MESSAGE2') . '</a>';
         }
 
@@ -176,26 +176,6 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             if ($sVersionNotice = $this->checkVersion()) {
                 $messages['message'] .= $sVersionNotice;
             }
-        }
-
-
-        // check if setup dir is deleted
-        if (
-            file_exists(
-                Path::join(
-                    ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
-                    'Setup',
-                    'index.php'
-                )
-            )
-        ) {
-            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_DIRNOTDELETED_WARNING');
-        }
-
-        // check if config file is writable
-        $sConfPath = Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), 'config.inc.php');
-        if (!is_readable($sConfPath) || is_writable($sConfPath)) {
-            $messages['warning'] .= ((!empty($messages['warning'])) ? "<br>" : '') . Registry::getLang()->translateString('SETUP_CONFIGPERMISSIONS_WARNING');
         }
 
         return $messages;
@@ -208,13 +188,12 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
      */
     protected function checkVersion()
     {
-        $edition = (new Facts())->getEdition();
-        $query = 'https://admin.oxid-esales.com/' . $edition . '/onlinecheck.php?getlatestversion';
+        $query = 'https://admin.oxid-esales.com/' . $this->getShopEdition() . '/onlinecheck.php?getlatestversion';
         $latestVersion = Registry::getUtilsFile()->readRemoteFileAsString($query);
         if ($latestVersion) {
             $currentVersion = ShopVersion::getVersion();
             if (version_compare($currentVersion, $latestVersion, '<')) {
-                return sprintf(
+                return \sprintf(
                     Registry::getLang()->translateString('NAVIGATION_NEW_VERSION_AVAILABLE'),
                     $currentVersion,
                     $latestVersion

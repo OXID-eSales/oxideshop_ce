@@ -17,12 +17,10 @@ use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\Article;
 use OxidEsales\EshopCommunity\Core\GenericImport\ImportObject\ArticleExtends;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 use function array_map;
 use function sort;
 
-#[RunTestsInSeparateProcesses]
 final class ImportObjectTest extends IntegrationTestCase
 {
     public function setUp(): void

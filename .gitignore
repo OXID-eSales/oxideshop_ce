@@ -1,6 +1,3 @@
-# Shop configuration
-/source/config.inc.php
-
 # Log
 !/source/log/
 /source/log/*

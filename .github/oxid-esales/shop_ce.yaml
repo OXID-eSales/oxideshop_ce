@@ -27,8 +27,6 @@ install: &install
       docker-compose.yml
       source/composer.json*
       source/composer.lock
-      source/source/config.inc.php
-      source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
       data/php/logs/error_log.txt
 
 install_shop_with_modules: *install

@@ -11,19 +11,19 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionDirectoriesLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionPaths;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionResolver;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectDirectoriesLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
-use OxidEsales\Facts\Facts;
 use Symfony\Component\Filesystem\Path;
+use function sprintf;
 
 class BasicContext implements BasicContextInterface
 {
-    public const COMMUNITY_EDITION = Facts::COMMUNITY;
-    public const PROFESSIONAL_EDITION = Facts::PROFESSIONAL;
-    public const ENTERPRISE_EDITION = Facts::ENTERPRISE;
-
-    private $facts;
-
     private string $projectRoot;
+    private Edition $edition;
 
     public function getContainerCacheFilePath(int $shopId): string
     {
@@ -44,37 +44,27 @@ class BasicContext implements BasicContextInterface
         return Path::join($this->getShopConfigurationDirectory($shopId), 'active_module_services.yaml');
     }
 
+    public function getEditionSourcePath(Edition $edition): string
+    {
+        return (new EditionDirectoriesLocator())->getEditionSourcePath($edition);
+    }
+
     public function getSourcePath(): string
     {
         return Path::join($this->getShopRootPath(), 'source');
     }
 
-    /**
-     * @throws \Exception
-     */
-    public function getEdition(): string
+    public function getEdition(): Edition
     {
-        return $this->getFacts()->getEdition();
-    }
-
-    public function getCommunityEditionSourcePath(): string
-    {
-        return $this->getFacts()->getCommunityEditionSourcePath();
-    }
-
-    public function getProfessionalEditionRootPath(): string
-    {
-        return $this->getFacts()->getProfessionalEditionRootPath();
+        if (!isset($this->edition)) {
+            $this->edition = (new EditionResolver())->getEdition();
+        }
+        return $this->edition;
     }
 
     public function getOutPath(): string
     {
-        return $this->getFacts()->getOutPath();
-    }
-
-    public function getEnterpriseEditionRootPath(): string
-    {
-        return $this->getFacts()->getEnterpriseEditionRootPath();
+        return (new ProjectDirectoriesLocator())->getOutPath();
     }
 
     public function getDefaultShopId(): int
@@ -118,17 +108,12 @@ class BasicContext implements BasicContextInterface
 
     public function getVendorPath(): string
     {
-        return $this->getFacts()->getVendorPath();
+        return (new ProjectDirectoriesLocator())->getVendorPath();
     }
 
     public function getComposerVendorName(): string
     {
-        return $this->getFacts()::COMPOSER_VENDOR_OXID_ESALES;
-    }
-
-    public function getConfigFilePath(): string
-    {
-        return $this->getSourcePath() . '/config.inc.php';
+        return (EditionPaths::Community)->getVendorFolderName();
     }
 
     public function getConfigTableName(): string
@@ -147,14 +132,6 @@ class BasicContext implements BasicContextInterface
             $this->getCacheDirectory(),
             'modules'
         );
-    }
-
-    public function getFacts(): Facts
-    {
-        if ($this->facts === null) {
-            $this->facts = new Facts();
-        }
-        return $this->facts;
     }
 
     public function getDatabaseUrl(): string

@@ -5,38 +5,11 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Request;
-
-if (!defined('ESHOP_CONFIG_FILE')) {
-    define('ESHOP_CONFIG_FILE', 'config.inc.php');
-}
-
-if (!function_exists('redirectIfShopNotConfigured')) {
-    /**
-     * @return null
-     */
-    function redirectIfShopNotConfigured()
-    {
-        $configFileName = __DIR__ . DIRECTORY_SEPARATOR . ESHOP_CONFIG_FILE;
-
-        if (file_exists($configFileName) && strpos(file_get_contents($configFileName), '<dbHost') === false) {
-            return;
-        }
-
-        $message = sprintf(
-            "Config file '%s' is not updated! Please navigate to '/Setup' or update '%s' manually.",
-            ESHOP_CONFIG_FILE,
-            ESHOP_CONFIG_FILE
-        );
-
-        header("HTTP/1.1 302 Found");
-        header("Location: Setup/index.php");
-        header("Connection: close");
-
-        die($message);
-    }
-}
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use Psr\Log\LoggerInterface;
 
 if (!function_exists('getShopBasePath')) {
     /**
@@ -128,9 +101,7 @@ if (!function_exists('getLangTableIdx')) {
         //#0002718 min language count per table 2
         $iLangPerTable = ($iLangPerTable > 1) ? $iLangPerTable : 8;
 
-        $iTableIdx = (int) ($iLangId / $iLangPerTable);
-
-        return $iTableIdx;
+        return (int) ($iLangId / $iLangPerTable);
     }
 }
 
@@ -147,9 +118,9 @@ if (!function_exists('getLangTableName')) {
     function getLangTableName($sTable, $iLangId)
     {
         $iTableIdx = getLangTableIdx($iLangId);
-        if ($iTableIdx && in_array($sTable, Registry::getLang()->getMultiLangTables())) {
-            $sLangTableSuffix = Registry::getConfig()->getConfigParam("sLangTableSuffix");
-            $sLangTableSuffix = $sLangTableSuffix ? $sLangTableSuffix : "_set";
+        if ($iTableIdx && in_array($sTable, Registry::getLang()->getMultiLangTables(), true)) {
+            $sLangTableSuffix = Registry::getConfig()->getConfigParam('sLangTableSuffix');
+            $sLangTableSuffix = $sLangTableSuffix ?: '_set';
 
             $sTable .= $sLangTableSuffix . $iTableIdx;
         }
@@ -158,33 +129,14 @@ if (!function_exists('getLangTableName')) {
     }
 }
 
-if (!function_exists('getRequestUrl')) {
-    /**
-     * Returns request url, which was executed to render current page view
-     *
-     * @param string $sParams     Parameters to object
-     * @param bool   $blReturnUrl If return url
-     *
-     * @deprecated since v6.0.0 (2016-05-16); Use OxidEsales\Eshop\Core\Request::getRequestUrl().
-     *
-     * @return string
-     */
-    function getRequestUrl($sParams = '', $blReturnUrl = false)
-    {
-        return Registry::get(Request::class)->getRequestUrl($sParams, $blReturnUrl);
-    }
-}
-
 if (!function_exists('getLogger')) {
     /**
      * Returns the Logger
      *
-     * @return \Psr\Log\LoggerInterface
+     * @return LoggerInterface
      */
     function getLogger()
     {
-        $container = \OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getContainer();
-
-        return $container->get(\Psr\Log\LoggerInterface::class);
+        return ContainerFactory::getInstance()->getContainer()->get(LoggerInterface::class);
     }
 }

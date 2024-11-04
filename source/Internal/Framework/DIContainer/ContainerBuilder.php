@@ -12,9 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 use OxidEsales\Eshop\Core\FileCache;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\Eshop\Core\UtilsServer;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
@@ -45,7 +45,10 @@ class ContainerBuilder
         $this->containerBuilder = new SymfonyContainerBuilder();
 
         $this->containerBuilder->setParameter('oxid_esales.current_shop_id', $this->shopId);
-        $this->containerBuilder->setParameter('oxid_esales.shop_source_directory', $this->basicContext->getSourcePath());
+        $this->containerBuilder->setParameter(
+            'oxid_esales.shop_source_directory',
+            $this->basicContext->getSourcePath()
+        );
 
         $this->containerBuilder->addCompilerPass(new RegisterListenersPass());
         $this->containerBuilder->addCompilerPass(new AddConsoleCommandPass());
@@ -71,17 +74,17 @@ class ContainerBuilder
     private function getEditionsRootPaths(): array
     {
         return match ($this->basicContext->getEdition()) {
-            BasicContext::COMMUNITY_EDITION => [
-                $this->basicContext->getCommunityEditionSourcePath(),
+            Edition::Community => [
+                $this->basicContext->getEditionSourcePath(Edition::Community),
             ],
-            BasicContext::PROFESSIONAL_EDITION => [
-                $this->basicContext->getCommunityEditionSourcePath(),
-                $this->basicContext->getProfessionalEditionRootPath()
+            Edition::Professional => [
+                $this->basicContext->getEditionSourcePath(Edition::Community),
+                $this->basicContext->getEditionSourcePath(Edition::Professional),
             ],
-            BasicContext::ENTERPRISE_EDITION => [
-                $this->basicContext->getCommunityEditionSourcePath(),
-                $this->basicContext->getProfessionalEditionRootPath(),
-                $this->basicContext->getEnterpriseEditionRootPath(),
+            Edition::Enterprise => [
+                $this->basicContext->getEditionSourcePath(Edition::Community),
+                $this->basicContext->getEditionSourcePath(Edition::Professional),
+                $this->basicContext->getEditionSourcePath(Edition::Enterprise),
             ],
         };
     }

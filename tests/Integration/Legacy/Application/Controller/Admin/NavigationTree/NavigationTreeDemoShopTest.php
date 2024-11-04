@@ -102,7 +102,7 @@ class NavigationTreeDemoShopTest extends IntegrationTestCase
             $this->get(AdminThemeBridgeInterface::class)->getActiveTheme()
         );
 
-        $edition = strtolower($context->getEdition());
+        $edition = strtolower($context->getEdition()->value);
         $menuFilePath = Path::join($adminViewsDirectory, "menu_$edition.xml");
 
         if (file_exists($menuFilePath)) {

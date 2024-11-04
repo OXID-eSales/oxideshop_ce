@@ -43,16 +43,6 @@ function init() {
         fi
     fi
 
-    BOOTSTRAP="/var/www/source/bootstrap.php"
-    if [ ! -f "${BOOTSTRAP}" ]; then
-        BOOTSTRAP="/var/www/vendor/oxid-esales/oxideshop-ce/tests/bootstrap.php"
-        if [ ! -f "${BOOTSTRAP}" ]; then
-            echo -e "\033[0;31mCould not find bootstrap.php in /var/www/tests or /var/www/oxid-esales/oxideshop-ce/tests\033[0m"
-            find /var/www -iname "bootstrap.php"
-            exit 1
-        fi
-    fi
-
     XML_FILE="${ABSOLUTE_PATH}/phpunit.xml"
     COVERAGE_FILE="${REPORT_DIR}/coverage_phpunit_unit.xml"
 
@@ -62,7 +52,6 @@ function init() {
         Output directory: ${OUTPUT_DIR}
         Report directory: ${REPORT_DIR}
         Suite: ${SUITE}
-        Bootstrap: ${BOOTSTRAP}
         Config: ${XML_FILE}
         Phpunit: ${PHPUNIT}
         Coverage: ${COVERAGE_FILE}
@@ -75,7 +64,6 @@ init
 
 "${PHPUNIT}" \
     -c "${XML_FILE}" \
-    --bootstrap "${BOOTSTRAP}" \
     --coverage-clover="${COVERAGE_FILE}" \
     ${UNIT_OPTIONS} \
     "${SUITE}" 2>&1 \

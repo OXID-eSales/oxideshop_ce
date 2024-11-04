@@ -11,10 +11,8 @@ use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Core\Exception\ShopException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\Facts\Facts;
 
 /**
  * View config data access class. Keeps most
@@ -82,11 +80,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
             $blAddStartCl = $this->isStartClassRequired();
             if ($blAddStartCl) {
-                $baseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-                $sValue = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($this->getSelfLink() . 'cl=start', $baseLanguage);
-                $sValue = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
+                $baseLanguage = Registry::getLang()->getBaseLanguage();
+                $sValue = Registry::getSeoEncoder()->getStaticUrl($this->getSelfLink() . 'cl=start', $baseLanguage);
+                $sValue = Registry::getUtilsUrl()->appendUrl(
                     $sValue,
-                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->getBaseAddUrlParams()
+                    Registry::getUtilsUrl()->getBaseAddUrlParams()
                 );
                 $sValue = Str::getStr()->preg_replace('/(\?|&(amp;)?)$/', '', $sValue);
             }
@@ -108,9 +106,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     protected function isStartClassRequired()
     {
-        $baseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
+        $baseLanguage = Registry::getLang()->getBaseLanguage();
         $shopConfig = Registry::getConfig();
-        $isSeoActive = \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive();
+        $isSeoActive = Registry::getUtils()->seoIsActive();
 
         return $isSeoActive && ($baseLanguage != $shopConfig->getConfigParam('sDefaultLang'));
     }
@@ -361,11 +359,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getHiddenSid()
     {
         if (($sValue = $this->getViewConfigParam('hiddensid')) === null) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             $sValue = $session->hiddenSid();
 
             // appending language info to form
-            if (($sLang = \OxidEsales\Eshop\Core\Registry::getLang()->getFormLang())) {
+            if (($sLang = Registry::getLang()->getFormLang())) {
                 $sValue .= "\n{$sLang}";
             }
 
@@ -715,7 +713,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getRemoteAddress()
     {
         if (($sValue = $this->getViewConfigParam('ip')) === null) {
-            $sValue = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress();
+            $sValue = Registry::getUtilsServer()->getRemoteAddress();
             $this->setViewConfigParam('ip', $sValue);
         }
 
@@ -794,7 +792,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getNrOfCatArticles()
     {
-        $sListType = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ldtype');
+        $sListType = Registry::getSession()->getVariable('ldtype');
 
         if (is_null($sListType)) {
             $sListType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
@@ -880,11 +878,13 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         $sValue = $this->getViewConfigParam('lang');
         if ($sValue === null) {
-            $languageService = \OxidEsales\Eshop\Core\Registry::getLang();
-            $request = \OxidEsales\Eshop\Core\Registry::getRequest();
+            $languageService = Registry::getLang();
+            $request = Registry::getRequest();
 
             $iLang = $request->getRequestParameter('lang');
-            $sValue = ($iLang !== null) ? $languageService->validateLanguage($iLang) : $languageService->getBaseLanguage();
+            $sValue = ($iLang !== null) ?
+                $languageService->validateLanguage($iLang) :
+                $languageService->getBaseLanguage();
             $this->setViewConfigParam('lang', $sValue);
         }
 
@@ -898,7 +898,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getActLanguageAbbr()
     {
-        return \OxidEsales\Eshop\Core\Registry::getLang()->getLanguageAbbr($this->getActLanguageId());
+        return Registry::getLang()->getLanguageAbbr($this->getActLanguageId());
     }
 
     /**
@@ -1037,7 +1037,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getRemoteAccessToken()
     {
-        return \OxidEsales\Eshop\Core\Registry::getSession()->getRemoteAccessToken();
+        return Registry::getSession()->getRemoteAccessToken();
     }
 
     /**
@@ -1082,7 +1082,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getBasketTimeLeft()
     {
         if (!isset($this->_dBasketTimeLeft)) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             $this->_dBasketTimeLeft = $session->getBasketReservations()->getTimeLeft();
         }
 
@@ -1096,7 +1096,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getPasswordLength()
     {
-        return \OxidEsales\Eshop\Core\Registry::getInputValidator()->getPasswordLength();
+        return Registry::getInputValidator()->getPasswordLength();
     }
 
     /**
@@ -1128,7 +1128,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getModulePath(string $moduleId, string $filePath = ''): string
     {
-        if (!$filePath || ($filePath[0] != '/')) {
+        if (!$filePath || ($filePath[0] !== '/')) {
             $filePath = '/' . $filePath;
         }
 
@@ -1198,7 +1198,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function showSelectListsInList()
     {
-        return $this->showSelectLists() && (bool) Registry::getConfig()->getConfigParam('bl_perfLoadSelectListsInAList');
+        return $this->showSelectLists() && Registry::getConfig()->getConfigParam('bl_perfLoadSelectListsInAList');
     }
 
     /**
@@ -1245,12 +1245,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopLogo()
     {
-        if (is_null($this->_sShopLogo)) {
+        if ($this->_sShopLogo === null) {
             $sLogoImage = ContainerFacade::getParameter('oxid_esales.shop_logo');
             if (empty($sLogoImage)) {
-                $sLogoImage = "logo_" . strtolower((new Facts())->getEdition()) . ".png";
+                $sLogoImage = 'logo_' . strtolower(Registry::getConfig()->getEdition()->value) . '.png';
             }
-
             $this->setShopLogo($sLogoImage);
         }
 
@@ -1274,8 +1273,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getSessionChallengeToken()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getSession()->isSessionStarted()) {
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        if (Registry::getSession()->isSessionStarted()) {
+            $session = Registry::getSession();
             $sessionChallengeToken = $session->getSessionChallengeToken();
         } else {
             $sessionChallengeToken = "";
@@ -1307,7 +1306,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getEdition()
     {
-        return (new Facts())->getEdition();
+        return Registry::getConfig()->getEdition()->value;
     }
 
     /**
@@ -1369,9 +1368,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $exception = new FileException("Requested file not found for module $moduleId ($filePath)");
             if (ContainerFacade::getParameter('oxid_esales.debug_mode')) {
                 throw $exception;
-            } else {
-                Registry::getLogger()->error($exception->getMessage(), [$exception]);
             }
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
     }
 }

@@ -7,8 +7,6 @@
 
 declare(strict_types=1);
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
 use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
@@ -22,8 +20,6 @@ define('OX_BASE_PATH', Path::join(INSTALLATION_ROOT_PATH, 'source') . DIRECTORY_
 require VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
 spl_autoload_register([ModuleAutoload::class, 'autoload']);
-
-Registry::set(ConfigFile::class, new ConfigFile(Path::join(OX_BASE_PATH, 'config.inc.php')));
 
 require_once Path::join(OX_BASE_PATH, 'oxfunctions.php');
 require_once Path::join(OX_BASE_PATH, 'overridablefunctions.php');

@@ -25,7 +25,6 @@ use OxidEsales\Eshop\Core\UtilsDate;
 use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\Facts\Facts;
 use SimpleXMLElement;
 
 final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
@@ -194,13 +193,11 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
 
     private function prepareTestData(): void
     {
-        $shopPath = __DIR__ . DIRECTORY_SEPARATOR;
-
-        $this->xmlLog = sprintf('%s/%s.xml', __DIR__, uniqid('request_log_', true));
+        $this->xmlLog = \sprintf('%s/%s.xml', __DIR__, uniqid('request_log_', true));
         $this->licenseKeyExisting = uniqid('license-', true);
         $this->licenseKeyNew = uniqid('license-', true);
         $this->clusterId = uniqid('cluster-', true);
-        $this->edition = (new Facts())->getEdition();
+        $this->edition = Registry::getConfig()->getEdition()->value;
         $this->shopVersion = ShopVersion::getVersion();
         $this->shopUrl = Registry::getConfig()->getShopUrl();
         $this->timestamp = Registry::getUtilsDate()->getTime();

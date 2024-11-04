@@ -11,7 +11,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
-use OxidEsales\Facts\Facts;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -633,7 +632,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base
      */
     public function getShopEdition()
     {
-        return (new Facts())->getEdition();
+        return Registry::getConfig()->getEdition()->value;
     }
 
     /**

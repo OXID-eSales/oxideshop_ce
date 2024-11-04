@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use function sprintf;
+
 class DateFormatHelper
 {
     /**
@@ -21,11 +23,11 @@ class DateFormatHelper
         $winFormatReplace = ['%m/%d/%y', '%b', "\n", '%I:%M:%S %p', '%H:%M', "\t", '%H:%M:%S'];
         if (str_contains($format, '%e')) {
             $winFormatSearch[] = '%e';
-            $winFormatReplace[] = sprintf('%\' 2d', date('j', $timestamp));
+            $winFormatReplace[] = sprintf("%' 2d", date('j', $timestamp));
         }
         if (str_contains($format, '%l')) {
             $winFormatSearch[] = '%l';
-            $winFormatReplace[] = sprintf('%\' 2d', date('h', $timestamp));
+            $winFormatReplace[] = sprintf("%' 2d", date('g', $timestamp));
         }
 
         return str_replace($winFormatSearch, $winFormatReplace, $format);

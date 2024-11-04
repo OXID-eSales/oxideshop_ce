@@ -22,7 +22,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\Facts\Facts;
 use oxOnlineModulesNotifierRequest;
 use oxOnlineModuleVersionNotifierCaller;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -84,7 +83,7 @@ final class OnlineModuleNotifierTest extends IntegrationTestCase
         $request = oxNew(OnlineModulesNotifierRequest::class);
 
         $shopUrl = Registry::getConfig()->getShopUrl();
-        $request->edition = (new Facts())->getEdition();
+        $request->edition = Registry::getConfig()->getEdition()->value;
         $request->version = ShopVersion::getVersion();
         $request->shopUrl = $shopUrl;
         $request->pVersion = '1.1';

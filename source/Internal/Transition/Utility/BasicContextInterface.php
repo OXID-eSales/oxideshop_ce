@@ -7,7 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException;
 
 interface BasicContextInterface
 {
@@ -19,11 +20,7 @@ interface BasicContextInterface
 
     public function getCacheDirectory(): string;
 
-    public function getCommunityEditionSourcePath(): string;
-
     public function getComposerVendorName(): string;
-
-    public function getConfigFilePath(): string;
 
     public function getConfigTableName(): string;
 
@@ -33,19 +30,18 @@ interface BasicContextInterface
 
     public function getDefaultShopId(): int;
 
-    public function getEdition(): string;
+    public function getEdition(): Edition;
 
-    public function getEnterpriseEditionRootPath(): string;
-
-    public function getFacts(): Facts;
+    /**
+     * @throws DirectoryNotExistentException
+     */
+    public function getEditionSourcePath(Edition $edition): string;
 
     public function getGeneratedServicesFilePath(): string;
 
     public function getModuleCacheDirectory(): string;
 
     public function getOutPath(): string;
-
-    public function getProfessionalEditionRootPath(): string;
 
     public function getProjectConfigurationDirectory(): string;
 

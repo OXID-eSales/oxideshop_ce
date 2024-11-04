@@ -13,9 +13,10 @@ use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
-use OxidEsales\Facts\Facts;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
 use Symfony\Component\Filesystem\Path;
 
@@ -33,14 +34,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @var OxidStartController
      */
-    private $_oStart = null;
+    private $_oStart;
 
     /**
      * Active shop object.
      *
      * @var object
      */
-    protected $_oActShop = null;
+    protected $_oActShop;
 
     /**
      * Active Views object array. Object has setters/getters for these properties:
@@ -231,8 +232,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function initVars($shopId)
     {
-        $this->loadVarsFromFile();
-
         $this->setDefaults();
 
         $configLoaded = $this->loadVarsFromDb($shopId);
@@ -263,8 +262,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if (defined('OX_ADMIN_DIR')) {
             $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
         }
-
-        $this->loadVarsFromFile();
     }
 
     /**
@@ -322,17 +319,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Loads vars from default config file
-     */
-    protected function loadVarsFromFile()
-    {
-        //config variables from config.inc.php takes priority over the ones loaded from db
-        include getShopBasePath() . '/config.inc.php';
-
-        $this->loadCustomConfig();
-    }
-
-    /**
      * Set important defaults.
      */
     protected function setDefaults()
@@ -358,17 +344,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         $this->setConfigParam('sCoreDir', __DIR__ . DIRECTORY_SEPARATOR);
-    }
-
-    /**
-     * Loads vars from custom config file
-     */
-    protected function loadCustomConfig()
-    {
-        $custConfig = getShopBasePath() . '/cust_config.inc.php';
-        if (is_readable($custConfig)) {
-            include $custConfig;
-        }
     }
 
     /**
@@ -448,7 +423,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         switch ($varType) {
             case 'arr':
             case 'aarr':
-                $this->setConfigParam($varName, unserialize($varVal));
+                $this->setConfigParam($varName, unserialize($varVal, ['allowed_classes' => false]));
                 break;
             case 'bool':
                 $this->setConfigParam($varName, ($varVal == 'true' || $varVal == '1'));
@@ -529,11 +504,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getGlobalParameter($name)
     {
-        if (isset($this->_aGlobalParams[$name])) {
-            return $this->_aGlobalParams[$name];
-        } else {
-            return null;
-        }
+        return $this->_aGlobalParams[$name] ?? null;
     }
 
     /**
@@ -1395,19 +1366,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return ContainerFacade::getParameter('oxid_esales.demo_shop_mode');
     }
 
+    public function getEdition(): Edition
+    {
+        return ContainerFacade::get(BasicContextInterface::class)->getEdition();
+    }
+
     /**
      * Returns full eShop edition name
-     *
-     * @return string
      */
-    public function getFullEdition()
+    public function getFullEdition(): string
     {
-        $edition = (new Facts())->getEdition();
-        if ($edition == "CE") {
-            $edition = "Community Edition";
-        }
-
-        return $edition;
+        return $this->getEdition()->getFullEditionName();
     }
 
     /**
@@ -1890,9 +1859,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function getExceptionHandler()
     {
-        $exceptionHandler = new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
-
-        return $exceptionHandler;
+        return new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
     }
 
     /**

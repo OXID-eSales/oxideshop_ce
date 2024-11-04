@@ -7,9 +7,7 @@
 
 declare(strict_types=1);
 
-use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
 use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
@@ -58,8 +56,6 @@ require_once VENDOR_PATH . 'autoload.php';
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
 spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
-Registry::set(ConfigFile::class, new ConfigFile(OX_BASE_PATH . 'config.inc.php'));
-
 /** Set exception handler before including modules/functions.php, so it can be overwritten by shop operators. */
 set_exception_handler(
     [
@@ -80,3 +76,5 @@ ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
 
 (new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
+
+date_default_timezone_set(getenv('OXID_DEFAULT_TIMEZONE'));

@@ -51,11 +51,6 @@ runscript: &runscript
     <<: *shop
     load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
 
-runslim:
-  <<: *runscript
-  matrix:
-    script: '["shop:~/php-cs-report.sh"]'
-
 sonarcloud:
   matrix:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'

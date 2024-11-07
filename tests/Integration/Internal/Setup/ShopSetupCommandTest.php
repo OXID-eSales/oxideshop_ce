@@ -26,6 +26,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\ShopSetupCommand;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -68,9 +69,7 @@ final class ShopSetupCommandTest extends TestCase
         $this->commandTester = new CommandTester($this->createCommand());
     }
 
-    /**
-     * @dataProvider missingOptionsDataProvider
-     */
+    #[DataProvider('missingOptionsDataProvider')]
     public function testExecuteWithMissingArgs(string $command): void
     {
         $options = [

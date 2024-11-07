@@ -13,9 +13,9 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('search')]
 final class SearchCest
 {
-    #[Group('search')]
     public function searchAndNavigateInProductList(AcceptanceTester $I): void
     {
         $I->wantToTest('if sorting, paging and navigation is working correctly in search list');

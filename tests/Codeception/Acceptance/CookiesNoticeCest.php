@@ -9,13 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('cookieNotice')]
 final class CookiesNoticeCest
 {
-    /**
-     * @group cookieNotice
-     */
     public function testCookieNoticeAccept(AcceptanceTester $I): void
     {
         $I->wantToTest('accept cookie functionality');
@@ -34,9 +33,6 @@ final class CookiesNoticeCest
             ->dontSeeCookieNotice();
     }
 
-    /**
-     * @group cookieNotice
-     */
     public function testCookieNoticeReject(AcceptanceTester $I): void
     {
         $I->wantToTest('reject cookie functionality');

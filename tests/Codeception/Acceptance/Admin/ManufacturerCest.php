@@ -13,12 +13,9 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Admin\DataObject\Manufacturer;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('admin')]
+#[Group('admin', 'manufacturer')]
 final class ManufacturerCest
 {
-    /**
-     * @group manufacturer
-     */
     public function createManufacturer(AcceptanceTester $I): void
     {
         $I->wantToTest('create and read for manufacturer form');
@@ -32,9 +29,6 @@ final class ManufacturerCest
         $mainManufacturerPage->seeManufacturer($manufacturerData);
     }
 
-    /**
-     * @group manufacturer
-     */
     public function openPictureTab(AcceptanceTester $I): void
     {
         $I->wantToTest('load demo manufacturer and read picture data');

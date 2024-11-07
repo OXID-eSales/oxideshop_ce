@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class CMSPageChangeIdentCest
@@ -26,9 +27,7 @@ final class CMSPageChangeIdentCest
         );
     }
 
-    /**
-     * @group todo_add_clean_cache_after_database_update
-     */
+    #[group('todo_add_clean_cache_after_database_update')]
     public function CMSPageChangeIdent(AcceptanceTester $I): void
     {
         $I->clearShopCache();

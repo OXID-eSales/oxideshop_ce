@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\Translat
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Translator\LegacyTemplateTranslator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\PhpUnit\ProphecyTrait;
 
 class TranslateLogicTest extends IntegrationTestCase
@@ -38,9 +39,8 @@ class TranslateLogicTest extends IntegrationTestCase
      * @param string $ident
      * @param int    $languageId
      * @param string $result
-     *
-     * @dataProvider provider
      */
+    #[DataProvider('provider')]
     public function testSimpleAssignments($ident, $languageId, $result)
     {
         $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
@@ -63,9 +63,7 @@ class TranslateLogicTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @dataProvider withArgumentsProvider
-     */
+    #[DataProvider('withArgumentsProvider')]
     public function testAssignmentsWithArguments(string $ident, int $languageId, $arguments, string $result): void
     {
         $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
@@ -89,9 +87,7 @@ class TranslateLogicTest extends IntegrationTestCase
         ];
     }
 
-    /**
-     * @dataProvider missingTranslationProviderFrontend
-     */
+    #[DataProvider('missingTranslationProviderFrontend')]
     public function testTranslateFrontend_isMissingTranslation(
         bool $isProductiveMode,
         string $ident,

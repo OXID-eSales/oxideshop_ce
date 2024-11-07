@@ -5,6 +5,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Directory;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NonExistenceDirectoryException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Exception\NotAbsolutePathException;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\Service\DirectoryValidator;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 final class DirectoryValidatorTest extends TestCase
@@ -19,9 +20,7 @@ final class DirectoryValidatorTest extends TestCase
         parent::setUp();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testDirectoriesExistentAndPermission(): void
     {
         $directoryValidator = new DirectoryValidator();

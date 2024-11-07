@@ -12,12 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('admin')]
+#[Group('admin', 'update_sql_tool')]
 final class UpdateSQLToolCest
 {
-    /**
-     * @group update_sql_tool
-     */
     public function updateSQLTool(AcceptanceTester $I): void
     {
         $I->wantToTest('Update SQL Tool page is functioning');

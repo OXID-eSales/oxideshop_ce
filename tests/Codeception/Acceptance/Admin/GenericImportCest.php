@@ -12,12 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('admin')]
+#[Group('admin', 'genericImport')]
 final class GenericImportCest
 {
-    /**
-     * @group genericImport
-     */
     public function testGenericImportWithHeaders(AcceptanceTester $I): void
     {
         $I->wantToTest('Generic Import for file with CSV header');
@@ -45,9 +42,6 @@ final class GenericImportCest
         $I->seeInField($mainProductPage->longDescriptionInput, 'long desc EN with header');
     }
 
-    /**
-     * @group genericImport
-     */
     public function testGenericImportNoHeaders(AcceptanceTester $I): void
     {
         $I->wantToTest('Generic Import for file without CSV header');

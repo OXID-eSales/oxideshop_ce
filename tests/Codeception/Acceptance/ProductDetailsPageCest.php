@@ -257,6 +257,7 @@ final class ProductDetailsPageCest
             ->seeMiniBasketContains([$basketItemToCheck1, $basketItemToCheck2], '366,00 €', '6');
     }
 
+    #[group('product', 'productVariants')]
     public function selectProductVariantsWithSelectionLists(AcceptanceTester $I): void
     {
         $I->wantToTest('add to cart with product variant/selection list combinations');

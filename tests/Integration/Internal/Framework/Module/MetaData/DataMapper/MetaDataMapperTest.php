@@ -12,15 +12,14 @@ namespace OxidEsales\EshopCommunity\Test\Integration\Internal\Framework\Module\M
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class MetaDataMapperTest extends TestCase
 {
     use ContainerTrait;
 
-    /**
-     * @dataProvider missingMetaDataKeysDataProvider
-     */
+    #[DataProvider('missingMetaDataKeysDataProvider')]
     public function testFromDataWillThrowExceptionOnInvalidParameterFormat(array $invalidData): void
     {
         $this->expectException(\InvalidArgumentException::class);

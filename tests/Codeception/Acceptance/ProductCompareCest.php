@@ -7,16 +7,15 @@
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[group('myAccount')]
 final class ProductCompareCest
 {
-    /**
-     * @group myAccount
-     */
     public function enableProductCompare(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -57,9 +56,6 @@ final class ProductCompareCest
             ->checkCompareListItemCount(0);
     }
 
-    /**
-     * @group myAccount
-     */
     public function addProductToUserCompareList(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);
@@ -150,9 +146,6 @@ final class ProductCompareCest
         $I->see(Translator::translate('MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'));
     }
 
-    /**
-     * @group myAccount
-     */
     public function disableProductCompare(AcceptanceTester $I): void
     {
         $productNavigation = new ProductNavigation($I);

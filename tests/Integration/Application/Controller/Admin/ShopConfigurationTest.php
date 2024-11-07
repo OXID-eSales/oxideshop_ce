@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\Sho
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 final class ShopConfigurationTest extends TestCase
@@ -63,7 +64,7 @@ final class ShopConfigurationTest extends TestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testUnserializeConfVar(): void
     {
         $value = ['a' => 'test'];
@@ -82,7 +83,7 @@ final class ShopConfigurationTest extends TestCase
         );
     }
 
-    /**  @runInSeparateProcess   */
+    #[RunInSeparateProcess]
     public function testUnserializeConfVarNestedArray(): void
     {
         $value = ['a' => ['b' => 'test']];

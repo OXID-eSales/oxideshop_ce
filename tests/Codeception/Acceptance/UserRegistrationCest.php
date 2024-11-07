@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\Start;
@@ -18,10 +19,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class UserRegistrationCest
 {
-    /**
-     * @group main
-     * @group registration
-     */
+    #[group('main','registration')]
     public function registerStandardUserInFrontend(AcceptanceTester $I): void
     {
         $userRegistration = new UserRegistration($I);
@@ -42,9 +40,7 @@ final class UserRegistrationCest
         $this->checkUserBillingData($I, $userLoginData, $userData, $addressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function registerUserForNewsletterAndShop(AcceptanceTester $I): void
     {
         $userRegistration = new UserRegistration($I);
@@ -75,9 +71,7 @@ final class UserRegistrationCest
         $this->checkUserBillingData($I, $userLoginData, $userData, $addressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function createBasketUserAccountWithoutRegistration(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -123,9 +117,7 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function registerBasketUserAccount(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -164,9 +156,7 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function createBasketUserAccountWithoutRegistrationTwice(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -220,9 +210,7 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function createBasketUserAccountWithoutAndWithRegistration(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -278,9 +266,7 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function registerBasketUserAccountTwiceWithWrongPassword(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -327,9 +313,7 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function registerBasketUserAccountAndNewsletter(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -371,9 +355,7 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    /**
-     * @group registration
-     */
+    #[group('registration')]
     public function registerBasketUserAccountTwice(AcceptanceTester $I): void
     {
         $basket = new Basket($I);

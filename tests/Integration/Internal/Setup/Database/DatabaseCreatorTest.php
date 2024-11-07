@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreator;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
 use OxidEsales\Facts\Config\ConfigFile;
 use PDO;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 class DatabaseCreatorTest extends TestCase
@@ -42,9 +43,7 @@ class DatabaseCreatorTest extends TestCase
         parent::tearDown();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCreateDatabase(): void
     {
         $this->databaseCreator->createDatabase(

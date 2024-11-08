@@ -9,6 +9,9 @@
 ### Fixed
 - Shop ID resolution considers SSL language URLs
 
+### Changed
+- Raised minimum required version of Symfony components to 6.4
+
 ### Removed
 - PHPUnit v10 support
 

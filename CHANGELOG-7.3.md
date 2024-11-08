@@ -10,3 +10,6 @@
 
 ### Removed
 - PHPUnit v10 support
+
+### Changed
+- Set the default value of blSkipDebitOldBankInfo to true

@@ -4,6 +4,7 @@
 
 ### Added
 - PHPUnit v11 support
+- Category detail page codeception test
 
 ### Fixed
 - Shop ID resolution considers SSL language URLs

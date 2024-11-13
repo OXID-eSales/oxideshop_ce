@@ -54,6 +54,7 @@ $aLang = [
 'BARGAIN'                                                     => 'Bargain',
 'BARGAIN_PRODUCTS'                                            => 'Bargain products',
 'BASKET_EMPTY'                                                => 'The shopping cart is empty.',
+'BASKET_ITEMS_CHANGED_ERROR'                                  => 'The shopping cart items have been changed.',
 'BIC'                                                         => 'BIC',
 'BILLING_ADDRESS'                                             => 'Billing address',
 'BILLING_SHIPPING_SETTINGS'                                   => 'Billing and shipping addresses',

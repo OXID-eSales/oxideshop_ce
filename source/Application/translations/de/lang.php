@@ -54,6 +54,7 @@ $aLang = [
 'BARGAIN'                                                     => 'Schnäppchen',
 'BARGAIN_PRODUCTS'                                            => 'Die besten Schnäppchen des Shops',
 'BASKET_EMPTY'                                                => 'Der Warenkorb ist leer.',
+'BASKET_ITEMS_CHANGED_ERROR'                                  => 'Die Warenkorbartikel wurden geändert.',
 'BIC'                                                         => 'BIC',
 'BILLING_ADDRESS'                                             => 'Rechnungsadresse',
 'BILLING_SHIPPING_SETTINGS'                                   => 'Rechnungs- und Lieferadressen',

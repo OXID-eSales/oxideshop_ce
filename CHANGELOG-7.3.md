@@ -13,6 +13,7 @@
 ### Changed
 - Raised minimum required version of Symfony components to 6.4
 - Set the default value of blSkipDebitOldBankInfo to true
+- Add to basket does not force a refresh of order confirmation step [#0007254](https://bugs.oxid-esales.com/view.php?id=7254)
 
 ### Removed
 - PHPUnit v10 support

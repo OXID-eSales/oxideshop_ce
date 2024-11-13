@@ -117,36 +117,60 @@ final class UserAccountCest
     #[group('myAccount')]
     public function changeUserEmailInBillingAddress(AcceptanceTester $I): void
     {
-        $I->wantTo('change user email in my account');
+        $I->wantToTest('changing user email address in my account billing information');
 
         $userData = $this->getExistingUserData();
+        $guestUserData = $this->getExistingGuestUserData();
+        $adminUserData = $this->getAdminUserData();
+        $newEmail = 'example02@oxid-esales.dev';
 
+        $I->amGoingTo('login to shop and navigate to billing address form');
         $userAddressPage = $I->openShop()
             ->loginUser($userData['userLoginName'], $userData['userPassword'])
             ->openAccountPage()
             ->openUserAddressPage()
             ->openUserBillingAddressForm();
+
+        $I->expect('to see default country and state selections');
         $I->see('Germany', $userAddressPage->billCountryId);
         $I->see(Translator::translate('PLEASE_SELECT_STATE'), $userAddressPage->billStateId);
 
-        //change user password
-        $userAddressPage = $userAddressPage->changeEmail('example02@oxid-esales.dev', $userData['userPassword']);
+        $I->amGoingTo('try to change email to an existing guest user email');
+        $userAddressPage->changeEmail($guestUserData['userLoginName'], $userData['userPassword']);
+        $I->expect('to see an error message about existing user');
+        $I->see(Translator::translate('ERROR_MESSAGE_USER_USEREXISTS'));
 
+        $I->amGoingTo('try to change email to an existing admin email');
+        $userAddressPage->openUserBillingAddressForm()
+            ->changeEmail($adminUserData['userLoginName'], $userData['userPassword']);
+        $I->expect('to see an error message about existing user');
+        $I->see(Translator::translate('ERROR_MESSAGE_USER_USEREXISTS'));
+
+        $I->amGoingTo('change user email to a new valid email address');
+        $userAddressPage = $userAddressPage->openUserBillingAddressForm()
+            ->changeEmail($newEmail, $userData['userPassword']);
+        $I->expect('not to see any error messages');
+        $I->dontSee(Translator::translate('ERROR_MESSAGE_USER_USEREXISTS'));
         $I->dontSee(Translator::translate('COMPLETE_MARKED_FIELDS'));
-        $userAddressPage = $userAddressPage->logoutUser();
 
-        //try to login with old and new email address
+        $I->amGoingTo('logout and try to login with the old email address');
+        $userAddressPage = $userAddressPage->logoutUser();
         $userAddressPage->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $I->expect('to see login form and error message');
         $I->see(Translator::translate('LOGIN'));
         $I->see(Translator::translate('ERROR_MESSAGE_USER_NOVALIDLOGIN'), $userAddressPage->badLoginError);
-        //login with new email address
-        $userAddressPage->loginUser('example02@oxid-esales.dev', $userData['userPassword']);
+
+        $I->amGoingTo('login with the new email address');
+        $userAddressPage->loginUser($newEmail, $userData['userPassword']);
+        $I->expect('to be logged in successfully');
         $I->dontSee(Translator::translate('LOGIN'));
 
-        //change password back to original
+        $I->amGoingTo('change the email back to the original one');
         $userAddressPage->openUserBillingAddressForm()
             ->changeEmail('example_test@oxid-esales.dev', $userData['userPassword'])
             ->logoutUser();
+        $I->expect('to be logged out');
+        $I->see(Translator::translate('LOGIN'));
     }
 
     #[group('myAccount')]
@@ -280,6 +304,16 @@ final class UserAccountCest
     private function getExistingUserData()
     {
         return Fixtures::get('existingUser');
+    }
+
+    private function getExistingGuestUserData(): array
+    {
+        return Fixtures::get('existingGuestUser');
+    }
+
+    private function getAdminUserData(): array
+    {
+        return Fixtures::get('adminUser');
     }
 
     private function getUserData(string $userId): array

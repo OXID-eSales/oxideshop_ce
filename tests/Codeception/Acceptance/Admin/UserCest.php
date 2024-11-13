@@ -14,6 +14,7 @@ use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\DataObject\AdminUser;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserAddresses;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserExtendedInfo;
+use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 #[Group('admin')]
@@ -195,6 +196,39 @@ final class UserCest
         $I->expect('that admin is logged out but can log in with the new pass');
         $adminLoginPage->seeLoginForm()
             ->login($userData['userLoginName'], $newPass);
+    }
+
+    public function testChangeUserEmail(AcceptanceTester $I): void
+    {
+        $I->wantToTest('changing user email addresses with validation in admin');
+
+        $userData = Fixtures::get('existingUser');
+        $guestUserData = Fixtures::get('existingGuestUser');
+        $adminUserData = Fixtures::get('adminUser');
+        $newEmail = 'example02@oxid-esales.dev';
+
+        $I->amGoingTo('login as admin and find the test user');
+        $adminUsersPage = $I->loginAdmin()
+            ->openUsers()
+            ->findByUserName($userData['userLoginName']);
+
+        $I->amGoingTo('try to change email to an existing guest user email');
+        $adminUsersPage->updateUsername($guestUserData['userLoginName']);
+        $I->expect('to see an error message about existing user');
+        $I->see(Translator::translate('EXCEPTION_USER_USEREXISTS'));
+
+        $I->amGoingTo('try to change email to an existing admin email');
+        $adminUsersPage->updateUsername($adminUserData['userLoginName']);
+        $I->expect('to see an error message about existing user');
+        $I->see(Translator::translate('EXCEPTION_USER_USEREXISTS'));
+
+        $I->amGoingTo('change user email to a new valid email address');
+        $adminUsersPage->updateUsername($newEmail);
+        $I->expect('not to see any error message');
+        $I->dontSee(Translator::translate('EXCEPTION_USER_USEREXISTS'));
+
+        $I->amGoingTo('change the email back to the original one');
+        $adminUsersPage->updateUsername($userData['userLoginName']);
     }
 
     private function createAdminTestUser(

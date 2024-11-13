@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 use Exception;
@@ -26,7 +27,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         parent::render();
 
         // malladmin stuff
-        $oAuthUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        $oAuthUser = oxNew(User::class);
         $oAuthUser->loadAdminUser();
         $blisMallAdmin = $oAuthUser->oxuser__oxrights->value == "malladmin";
 
@@ -52,7 +53,7 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+            $oUser = oxNew(User::class);
             $oUser->load($soxId);
             $this->_aViewData["edit"] = $oUser;
 
@@ -102,31 +103,30 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     {
         parent::save();
 
-        //allow admin information edit only for MALL admins
         $soxId = $this->getEditObjectId();
         if ($this->allowAdminEdit($soxId)) {
             $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
-            // checkbox handling
             if (!isset($aParams['oxuser__oxactive'])) {
                 $aParams['oxuser__oxactive'] = 0;
             }
 
-            $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+            $oUser = oxNew(User::class);
             if ($soxId != "-1") {
                 $oUser->load($soxId);
             } else {
                 $aParams['oxuser__oxid'] = null;
             }
 
-            //setting new password
             if (($sNewPass = Registry::getRequest()->getRequestEscapedParameter("newPassword"))) {
                 $oUser->setPassword($sNewPass);
             }
 
-            //FS#2167 V checks for already used email
-
-            if (isset($aParams['oxuser__oxusername']) && $oUser->checkIfEmailExists($aParams['oxuser__oxusername'])) {
+            if (
+                isset($aParams['oxuser__oxusername'])
+                && ($aParams['oxuser__oxusername'] !== $oUser->getRawFieldData('oxusername'))
+                && $oUser->isEmailInUse($aParams['oxuser__oxusername'])
+            ) {
                 $this->_sSaveError = 'EXCEPTION_USER_USEREXISTS';
 
                 return;
@@ -134,18 +134,15 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
 
             $oUser->assign($aParams);
 
-            //seting shop id for ONLY for new created user
             if ($soxId == "-1") {
                 $this->onUserCreation($oUser);
             }
 
-            // A. changing field type to save birth date correctly
             $oUser->oxuser__oxbirthdate->fldtype = 'char';
 
             try {
                 $oUser->save();
 
-                // set oxid if inserted
                 $this->setEditObjectId($oUser->getId());
             } catch (Exception $oExcp) {
                 $this->_sSaveError = $oExcp->getMessage();
@@ -168,9 +165,9 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
     /**
      * Additional actions on user creation.
      *
-     * @param \OxidEsales\Eshop\Application\Model\User $user
+     * @param User $user
      *
-     * @return \OxidEsales\Eshop\Application\Model\User
+     * @return User
      */
     protected function onUserCreation($user)
     {

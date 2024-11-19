@@ -19,7 +19,6 @@ use Psr\Log\LoggerInterface;
  * similar products, top offer articles.
  * OXID eShop -> SHOPPING CART.
  */
-#[\AllowDynamicProperties]
 class BasketController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
@@ -301,13 +300,9 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
         if (!$this->getViewConfig()->getShowGiftWrapping()) {
             return false;
         }
-
-        if ($this->_iWrapCnt === null) {
-            $this->_iWrapCnt = 0;
-
-            $oWrap = oxNew(Wrapping::class);
-            $this->_iWrapCnt += $oWrap->getWrappingCount('WRAP');
-            $this->_iWrapCnt += $oWrap->getWrappingCount('CARD');
+        if (!isset($this->_iWrapCnt)) {
+            $wrapping = oxNew(Wrapping::class);
+            $this->_iWrapCnt = $wrapping->getWrappingCount('WRAP') + $wrapping->getWrappingCount('CARD');
         }
 
         return (bool) $this->_iWrapCnt;

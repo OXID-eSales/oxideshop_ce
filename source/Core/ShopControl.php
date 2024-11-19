@@ -666,6 +666,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major, standard execution handling will be used.
+     *
      * Handle database exceptions
      * There is still space for improving this as a similar exception handling for database exceptions may be done in
      * \OxidEsales\EshopCommunity\Core\Config::init() and the current method may not be executed
@@ -732,6 +734,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major, standard execution handling will be used.
+     *
      * Notify the shop owner about database connection problems.
      *
      * This method forms part of the exception handling process. Any further exceptions must be caught.
@@ -757,6 +761,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major, standard execution handling will be used.
+     *
      * Return true, if a message was already sent within a given threshold.
      *
      * This method forms part of the exception handling process. Any further exceptions must be caught.
@@ -781,6 +787,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major, standard execution handling will be used.
+     *
      * Send an offline warning to the shop owner.
      * Currently an email is sent to the email address configured as 'sAdminEmail' in the eShop config file.
      *

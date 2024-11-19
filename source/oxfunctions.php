@@ -27,6 +27,7 @@ function isAdmin()
  *
  * @param int    $iErrorNr   error number
  * @param string $sErrorText error message
+ * @deprecated function will be removed in next major
  */
 function warningHandler($iErrorNr, $sErrorText)
 {
@@ -39,6 +40,7 @@ function warningHandler($iErrorNr, $sErrorText)
  *
  * @param mixed $mVar     variable
  * @param bool  $blToFile marker to write log info to file (must be true to log)
+ * @deprecated function will be removed in next major
  */
 function dumpVar($mVar, $blToFile = false)
 {
@@ -59,6 +61,7 @@ function dumpVar($mVar, $blToFile = false)
  * prints anything given into a file, for debugging
  *
  * @param mixed $mVar variable to debug
+ * @deprecated function will be removed in next major
  */
 function debug($mVar)
 {

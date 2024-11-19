@@ -34,8 +34,8 @@ final class InputValidatorTest extends IntegrationTestCase
     {
         $testValues = [
             'lsbankname' => 'Bank name',
-            'lsblz' => '12345678',
-            'lsktonr' => '123456',
+            'lsblz' => 'DEDEDEFF',
+            'lsktonr' => 'DE55200800000770876200',
             'lsktoinhaber' => 'Hans Mustermann',
         ];
 

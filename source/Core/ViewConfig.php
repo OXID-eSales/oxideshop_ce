@@ -1097,6 +1097,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * true if blocks javascript code be enabled in templates
      *
      * @return bool
+     *
+     * @deprecated function will be removed in next major version
      */
     public function isTplBlocksDebugMode()
     {

@@ -3,6 +3,8 @@
 # {{ $repo := "OXID-eSales/oxideshop_ce" }}repo: {{ $repo }}
 
 install:
+  git:
+    sdk_ref: b-8.0.x
   method: script
   cache:
     prepared_shop: true

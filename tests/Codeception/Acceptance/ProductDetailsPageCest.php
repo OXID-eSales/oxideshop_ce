@@ -595,6 +595,39 @@ final class ProductDetailsPageCest
             ->seeAmountPrices($amountPrices);
     }
 
+    #[group('product')]
+    public function popupWhenExceedingStockAvailability(AcceptanceTester $I): void
+    {
+        $I->wantToTest('popup is show when exceeding stock availability');
+
+        $productNavigation = new ProductNavigation($I);
+
+        $productId = '1000';
+
+        $I->updateConfigInDatabase('iNewBasketItemMessage', '2', 'str');
+
+        // making product out of stock now
+        $I->updateInDatabase('oxarticles', ['oxstock' => '1', 'oxstockflag' => '2'], ['oxid' => $productId]);
+
+        //open details page
+        $productNavigation
+            ->openProductDetailsPage($productId)
+            ->addProductToBasket(2);
+
+        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
+
+        //assert product in basket
+        $basketItem = [
+            'id' => $productId,
+            'title' => 'Test product 0 [EN] šÄßüл',
+            'totalPrice' => '50,00 €',
+            'amount' => 1
+        ];
+
+        $basketPage = $I->openShop()->openBasket();
+        $basketPage->seeBasketContains([$basketItem], '50,00 €');
+    }
+
     private function getExistingUserData()
     {
         return Fixtures::get('existingUser');

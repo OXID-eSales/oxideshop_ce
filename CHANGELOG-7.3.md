@@ -13,6 +13,7 @@
 - Email existence check when changing from user to guest email [#0006860](https://bugs.oxid-esales.com/view.php?id=6860)
 - Shipping costs calculation in cart and checkout after login [#0007682](https://bugs.oxid-esales.com/view.php?id=7682)
 - Order totals display in admin with non-default base currency [#0005922](https://bugs.oxid-esales.com/view.php?id=5922)
+- An exception is thrown if a product is deleted while someone has it in their basket [0007391](https://bugs.oxid-esales.com/view.php?id=7391)
 
 ### Changed
 - Raised minimum required version of Symfony components to 6.4

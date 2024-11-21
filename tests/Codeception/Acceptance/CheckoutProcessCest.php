@@ -897,6 +897,32 @@ final class CheckoutProcessCest
         $I->dontSee(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
     }
 
+    public function testCheckoutWithDeletedProduct(AcceptanceTester $I): void
+    {
+        $I->wantToTest('checkout will refresh basket items when a product is deleted by admin');
+        $user = Fixtures::get('existingUser');
+        $product = Fixtures::get('product-1000');
+
+        $I->amGoingTo('add a product and go through till the last order step');
+        $I->openShop()
+            ->loginUser(
+                $user['userLoginName'],
+                $user['userPassword']
+            );
+        $basket = new Basket($I);
+        $basket->addProductToBasket($product['OXID'], 1);
+        $orderCheckout = $basket->openMiniBasket()->openCheckout()->goToNextStep();
+
+        $I->deleteFromDatabase('oxarticles', ['OXID' => $product['OXID']]);
+
+        $I->amGoingTo('try to submit an order and make sure I see the warning');
+        $orderCheckout->submitOrder();
+        $I->see(sprintf(
+            Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST'),
+            $product['OXTITLE_1']
+        ));
+    }
+
     private function getExistingUserData(): array
     {
         return Fixtures::get('existingUser');

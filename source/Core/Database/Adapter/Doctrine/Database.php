@@ -649,7 +649,11 @@ class Database implements DatabaseInterface
         if ($this->doesStatementProduceOutput($query)) {
             $result = $statement->fetchAll();
         } else {
-            Registry::getLogger()->warning('Given statement does not produce output and was not executed', [debug_backtrace()]);
+            Registry::getLogger()
+                ->warning(
+                    'Given statement does not produce output and was not executed',
+                    [debug_backtrace()]
+                );
         }
 
         return $result;

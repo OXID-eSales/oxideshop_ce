@@ -346,29 +346,28 @@ class SystemRequirements
     /**
      * returns host, port, base dir, ssl information as associative array, false on error
      *
-     * @return array
+     * @return array|false
      */
     protected function getShopSSLHostInfoFromConfig()
     {
         $sslShopURL = ContainerFacade::getParameter('oxid_esales.shop_url');
-        if (preg_match('#^(https?://)?([^/:]+)(:([0-9]+))?(/.*)?$#i', $sslShopURL, $shopUrlComponents)) {
-            $host = $shopUrlComponents[2];
-            $port = (int) $shopUrlComponents[4];
-            $ssl = (strtolower($shopUrlComponents[1]) === 'https://');
-            if (!$port) {
-                $port = $ssl ? 443 : 80;
-            }
-            $script = rtrim($shopUrlComponents[5], '/') . '/';
-
-            return [
-                'host' => $host,
-                'port' => $port,
-                'dir'  => $script,
-                'ssl'  => $ssl,
-            ];
+        if (!preg_match('#^(https?://)?([^/:]+)(:(\d+))?(/.*)?$#i', $sslShopURL, $shopUrlComponents)) {
+            return false;
         }
+        $host = $shopUrlComponents[2];
+        $port = (int)$shopUrlComponents[4];
+        $ssl = (strtolower($shopUrlComponents[1]) === 'https://');
+        if (!$port) {
+            $port = $ssl ? 443 : 80;
+        }
+        $script = rtrim($shopUrlComponents[5], '/') . '/';
 
-        return false;
+        return [
+            'host' => $host,
+            'port' => $port,
+            'dir' => $script,
+            'ssl' => $ssl,
+        ];
     }
 
     /**

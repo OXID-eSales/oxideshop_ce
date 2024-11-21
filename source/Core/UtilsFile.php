@@ -464,7 +464,8 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      * Process uploaded files. Returns unique file name, on fail false
      *
      * @param string $filename form file item name
-     * @param string $uploadPath RELATIVE (to container parameter oxid_shop_source_directory) path for uploaded file to be copied
+     * @param string $uploadPath RELATIVE (to container parameter oxid_shop_source_directory)
+     * path for uploaded file to be copied
      *
      * @return string
      * @throws StandardException if file is not valid
@@ -473,7 +474,10 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
     {
         $fileInfo = $_FILES[$filename];
 
-        $absoluteUploadPath = Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), $uploadPath);
+        $absoluteUploadPath = Path::join(
+            ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
+            $uploadPath
+        );
 
         //checking params
         if (!isset($fileInfo['name']) || !isset($fileInfo['tmp_name'])) {
@@ -498,7 +502,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         $allowedUploadTypes = ContainerFacade::getParameter('oxid_esales.allowed_uploaded_types');
         $allowedUploadTypes = array_map("strtolower", $allowedUploadTypes);
 
-        if (!in_array(strtolower($extension), $allowedUploadTypes)) {
+        if (!\in_array(strtolower($extension), $allowedUploadTypes, true)) {
             throw oxNew(StandardException::class, 'EXCEPTION_NOTALLOWEDTYPE');
         }
 

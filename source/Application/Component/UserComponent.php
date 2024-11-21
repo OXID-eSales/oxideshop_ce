@@ -326,32 +326,21 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * Deletes user information from session:<br>
-     * "usr", "dynvalue", "paymentid"<br>
-     * also deletes cookie, unsets \OxidEsales\Eshop\Core\Config::oUser,
-     * oxcmp_user::oUser, forces basket to recalculate.
-     *
-     * @return null
+     * @return string|void
      */
     public function logout()
     {
-        $myConfig = Registry::getConfig();
-        $oUser = oxNew(User::class);
-
-        if ($oUser->logout()) {
+        if (oxNew(User::class)->logout()) {
             $this->setLoginStatus(USER_LOGOUT);
-
-            // finalizing ..
             $this->afterLogout();
-
             $this->resetPermissions();
-
             if ($this->getParent()->isEnabledPrivateSales()) {
                 return 'account';
             }
-
-            // redirecting if user logs out in SSL mode
-            if (Registry::getRequest()->getRequestEscapedParameter('redirect') && ContainerFacade::getParameter('oxid_esales.shop_url')) {
+            if (
+                ContainerFacade::getParameter('oxid_esales.shop_url') &&
+                Registry::getRequest()->getRequestEscapedParameter('redirect')
+            ) {
                 Registry::getUtils()->redirect($this->getLogoutLink());
             }
         }

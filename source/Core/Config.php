@@ -573,18 +573,24 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $httpsServerVar = $myUtilsServer->getServerVar('HTTPS');
 
         $this->setIsSsl();
-        if (isset($httpsServerVar) && ($httpsServerVar === 'on' || $httpsServerVar === 'ON' || $httpsServerVar == '1')) {
-            $this->setIsSsl(ContainerFacade::getParameter('oxid_esales.shop_url') || $this->getConfigParam('sMallSSLShopURL'));
-            if ($this->isAdmin() && !$this->_blIsSsl) {
-                $this->setIsSsl(!is_null(ContainerFacade::getParameter('oxid_esales.shop_admin_url')));
+        if ($httpsServerVar === 'on' || $httpsServerVar === 'ON' || $httpsServerVar == '1') {
+            $this->setIsSsl(
+                ContainerFacade::getParameter('oxid_esales.shop_url') || $this->getConfigParam('sMallSSLShopURL')
+            );
+            if (!$this->_blIsSsl && $this->isAdmin()) {
+                $this->setIsSsl(
+                    ContainerFacade::getParameter('oxid_esales.shop_admin_url') !== null
+                );
             }
         }
 
         //additional special handling for profihost customers
         if (
             isset($serverVars['HTTP_X_FORWARDED_SERVER']) &&
-            (strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'ssl') !== false ||
-             strpos($serverVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de') !== false)
+            (
+                str_contains($serverVars['HTTP_X_FORWARDED_SERVER'], 'ssl') ||
+                str_contains($serverVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de')
+            )
         ) {
             $this->setIsSsl(true);
         }

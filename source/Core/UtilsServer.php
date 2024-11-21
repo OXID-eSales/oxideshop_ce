@@ -57,8 +57,16 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    public function setOxCookie($sName, $sValue = "", $iExpire = 0, $sPath = '/', $sDomain = null, $blToSession = true, $blSecure = false, $blHttpOnly = true)
-    {
+    public function setOxCookie(
+        $sName,
+        $sValue = "",
+        $iExpire = 0,
+        $sPath = '/',
+        $sDomain = null,
+        $blToSession = true,
+        $blSecure = false,
+        $blHttpOnly = true
+    ) {
         if ($blToSession && !$this->isAdmin()) {
             $this->saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
@@ -135,7 +143,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         if ($this->mustSaveToSession()) {
             $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
 
-            $aSessionCookies = (array)\OxidEsales\Eshop\Core\Registry::getSession()->getVariable($this->_sSessionCookiesName);
+            $aSessionCookies = (array)Registry::getSession()->getVariable($this->_sSessionCookiesName);
             $aSessionCookies[$this->getSessionCookieKey(false)][$sName] = $aCookieData;
 
             Registry::getSession()->setVariable($this->_sSessionCookiesName, $aSessionCookies);
@@ -147,18 +155,25 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      */
     public function loadSessionCookies()
     {
-        if (($aSessionCookies = Registry::getSession()->getVariable($this->_sSessionCookiesName))) {
+        $sessionCookies = Registry::getSession()->getVariable($this->_sSessionCookiesName);
+        if ($sessionCookies) {
             $sKey = $this->getSessionCookieKey(true);
-            if (isset($aSessionCookies[$sKey])) {
+            if (isset($sessionCookies[$sKey])) {
                 // writing session data to cookies
-                foreach ($aSessionCookies[$sKey] as $sName => $aCookieData) {
-                    $this->setOxCookie($sName, $aCookieData['value'], $aCookieData['expire'], $aCookieData['path'], $aCookieData['domain'], false);
+                foreach ($sessionCookies[$sKey] as $sName => $aCookieData) {
+                    $this->setOxCookie(
+                        $sName,
+                        $aCookieData['value'],
+                        $aCookieData['expire'],
+                        $aCookieData['path'],
+                        $aCookieData['domain'],
+                        false
+                    );
                     $this->_sSessionCookies[$sName] = $aCookieData['value'];
                 }
-
                 // cleanup
-                unset($aSessionCookies[$sKey]);
-                Registry::getSession()->setVariable($this->_sSessionCookiesName, $aSessionCookies);
+                unset($sessionCookies[$sKey]);
+                Registry::getSession()->setVariable($this->_sSessionCookiesName, $sessionCookies);
             }
         }
     }
@@ -253,22 +268,33 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         return $sValue;
     }
 
-    public function setUserCookie($userName, $passwordHash, $shopId = null, $timeout = 31536000, $salt = User::USER_COOKIE_SALT)
-    {
+    public function setUserCookie(
+        $userName,
+        $passwordHash,
+        $shopId = null,
+        $timeout = 31536000,
+        $salt = User::USER_COOKIE_SALT
+    ) {
         $myConfig = Registry::getConfig();
         $shopId = $shopId ?? $myConfig->getShopId();
         $sslUrl = $myConfig->getShopUrl();
-        if (stripos($sslUrl, 'https') === 0) {
-            $ssl = true;
-        } else {
-            $ssl = false;
-        }
-
         $passwordServiceBridge = ContainerFacade::get(PasswordServiceBridgeInterface::class);
 
         $this->_aUserCookie[$shopId] = $userName . '@@@' .  $passwordServiceBridge->hash($passwordHash . $salt);
-        $this->setOxCookie('oxid_' . $shopId, $this->_aUserCookie[$shopId], Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, $ssl);
-        $this->setOxCookie('oxid_' . $shopId . '_autologin', '1', Registry::getUtilsDate()->getTime() + $timeout, '/', null, true, false);
+        $this->setOxCookie(
+            'oxid_' . $shopId,
+            $this->_aUserCookie[$shopId],
+            Registry::getUtilsDate()->getTime() + $timeout,
+            '/',
+            null,
+            true,
+            strncasecmp($sslUrl, 'https', 5) === 0
+        );
+        $this->setOxCookie(
+            'oxid_' . $shopId . '_autologin',
+            '1',
+            Registry::getUtilsDate()->getTime() + $timeout
+        );
     }
 
     public function deleteUserCookie($shopId = null)
@@ -276,15 +302,21 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $myConfig = Registry::getConfig();
         $shopId = (!$shopId) ? Registry::getConfig()->getShopId() : $shopId;
         $sslUrl = $myConfig->getShopUrl();
-        if (stripos($sslUrl, 'https') === 0) {
-            $ssl = true;
-        } else {
-            $ssl = false;
-        }
-
         $this->_aUserCookie[$shopId] = '';
-        $this->setOxCookie('oxid_' . $shopId, '', Registry::getUtilsDate()->getTime() - 3600, '/', null, true, $ssl);
-        $this->setOxCookie('oxid_' . $shopId . '_autologin', '0', Registry::getUtilsDate()->getTime() - 3600, '/', null, true, false);
+        $this->setOxCookie(
+            'oxid_' . $shopId,
+            '',
+            Registry::getUtilsDate()->getTime() - 3600,
+            '/',
+            null,
+            true,
+            strncasecmp($sslUrl, 'https', 5) === 0
+        );
+        $this->setOxCookie(
+            'oxid_' . $shopId . '_autologin',
+            '0',
+            Registry::getUtilsDate()->getTime() - 3600
+        );
     }
 
     /**
@@ -301,7 +333,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         // check for SSL connection
         if (!$myConfig->isSsl() && $this->getOxCookie('oxid_' . $sShopId . '_autologin') == '1') {
             $sslUrl = rtrim($myConfig->getShopUrl(), '/') . $_SERVER['REQUEST_URI'];
-            if (stripos($sslUrl, 'https') === 0) {
+            if (strncasecmp($sslUrl, 'https', 5) === 0) {
                 Registry::getUtils()->redirect($sslUrl, true, 302);
             }
         }
@@ -351,7 +383,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isCurrentUrl($sURL)
     {
         // Missing protocol, cannot proceed, assuming true.
-        if (!$sURL || (strpos($sURL, "http") !== 0)) {
+        if (!$sURL || (strncmp($sURL, 'http', 4) !== 0)) {
             return true;
         }
 

@@ -363,8 +363,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
             $sValue = $session->hiddenSid();
 
             // appending language info to form
-            if (($sLang = Registry::getLang()->getFormLang())) {
-                $sValue .= "\n{$sLang}";
+            $language = Registry::getLang()->getFormLang();
+            if ($language) {
+                $sValue .= "\n{$language}";
             }
 
             $sValue .= $this->getAdditionalRequestParameters();

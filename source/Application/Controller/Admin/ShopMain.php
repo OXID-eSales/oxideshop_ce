@@ -204,10 +204,14 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
             }
         }
 
-        $inheritAll = $shop->oxshops__oxisinherited->value ? "true" : "false";
-        $multiShopTables = ContainerFacade::getParameter('oxid_esales.multi_shop_tables');
-        foreach ($multiShopTables as $multiShopTable) {
-            $config->saveShopConfVar("bool", 'blMallInherit_' . strtolower($multiShopTable), $inheritAll, $shop->oxshops__oxid->value);
+        $inheritAll = $shop->getFieldData('oxisinherited') ? 'true' : 'false';
+        foreach (ContainerFacade::getParameter('oxid_esales.multi_shop_tables') as $multiShopTable) {
+            $config->saveShopConfVar(
+                'bool',
+                'blMallInherit_' . strtolower($multiShopTable),
+                $inheritAll,
+                $shop->getId()
+            );
         }
     }
 

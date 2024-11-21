@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Price;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
@@ -16,6 +17,8 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
 use stdClass;
+
+use function rawurlencode;
 
 // view indexing state for search engines:
 define('VIEW_INDEXSTATE_INDEX', 0); //  index without limitations
@@ -30,6 +33,19 @@ define('VIEW_INDEXSTATE_NOINDEXFOLLOW', 2); //  no index / follow
 #[\AllowDynamicProperties]
 class FrontendController extends BaseController
 {
+    private const SEARCH_PARAM = 'searchparam';
+    private const SEARCH_CATEGORY_ID = 'searchcnid';
+    private const SEARCH_VENDOR = 'searchvendor';
+    private const SEARCH_MANUFACTURER = 'searchmanufacturer';
+    private const CATEGORY_ID = 'cnid';
+    private const MANUFACTURER_ID = 'mnid';
+    private const SEARCH_RECOMMENDATION = 'searchrecomm';
+    private const RECOMMENDATION_ID = 'recommid';
+    private const ACTIVE_PRODUCT_ID = 'anid';
+    private const LOAD_ID = 'oxloadid';
+    private const PAGE = 'page';
+    private const TEMPLATE = 'tpl';
+    private const PAGE_NUMBER = 'pgNr';
     /**
      * Characters which should be removed while preparing meta keywords
      *
@@ -1109,7 +1125,7 @@ class FrontendController extends BaseController
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         } elseif (Registry::getRequest()->getRequestEscapedParameter('cur')) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXNOFOLLOW;
-        } elseif (0 < Registry::getRequest()->getRequestEscapedParameter('pgNr')) {
+        } elseif (0 < Registry::getRequest()->getRequestEscapedParameter(self::PAGE_NUMBER)) {
             $this->_iViewIndexState = VIEW_INDEXSTATE_NOINDEXFOLLOW;
         } else {
             switch (Registry::getRequest()->getRequestEscapedParameter('fnc')) {
@@ -1243,7 +1259,7 @@ class FrontendController extends BaseController
 
             // some special cases
             $meta = str_replace(' ,', ',', $meta);
-            $pattern = ["/,[\s\+\-\*]*,/", "/\s+,/"];
+            $pattern = ["/,[\s+\-*]*,/", "/\s+,/"];
             $meta = $stringModifier->preg_replace($pattern, ',', $meta);
             $meta = Registry::getUtilsString()->minimizeTruncateString($meta, $length);
             $meta = $stringModifier->htmlspecialchars($meta);
@@ -1320,23 +1336,26 @@ class FrontendController extends BaseController
     public function getNavigationParams()
     {
         $config = Registry::getConfig();
-        $params['cnid'] = $this->getCategoryId();
-        $params['mnid'] = Registry::getRequest()->getRequestEscapedParameter('mnid');
+        $params[self::CATEGORY_ID] = $this->getCategoryId();
+        $params[self::MANUFACTURER_ID] = Registry::getRequest()->getRequestEscapedParameter(self::MANUFACTURER_ID);
 
         $params['listtype'] = $this->getListType();
         $params['ldtype'] = $this->getCustomListDisplayType();
         $params['actcontrol'] = $this->getClassKey();
 
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-        $params['recommid'] = Registry::getRequest()->getRequestEscapedParameter('recommid');
+        $params[self::RECOMMENDATION_ID] = Registry::getRequest()->getRequestEscapedParameter(self::RECOMMENDATION_ID);
 
-        $params['searchrecomm'] = Registry::getRequest()->getRequestEscapedParameter('searchrecomm');
+        $params[self::SEARCH_RECOMMENDATION] = Registry::getRequest()
+            ->getRequestEscapedParameter(self::SEARCH_RECOMMENDATION);
         // END deprecated
-        $params['searchparam'] = Registry::getRequest()->getRequestEscapedParameter('searchparam');
+        $params[self::SEARCH_PARAM] = Registry::getRequest()->getRequestEscapedParameter(self::SEARCH_PARAM);
 
-        $params['searchvendor'] = Registry::getRequest()->getRequestEscapedParameter('searchvendor');
-        $params['searchcnid'] = Registry::getRequest()->getRequestEscapedParameter('searchcnid');
-        $params['searchmanufacturer'] = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer');
+        $params[self::SEARCH_VENDOR] = Registry::getRequest()->getRequestEscapedParameter(self::SEARCH_VENDOR);
+        $params[self::SEARCH_CATEGORY_ID] = Registry::getRequest()
+            ->getRequestEscapedParameter(self::SEARCH_CATEGORY_ID);
+        $params[self::SEARCH_MANUFACTURER] = Registry::getRequest()
+            ->getRequestEscapedParameter(self::SEARCH_MANUFACTURER);
 
         $params = array_merge($params, $this->getViewConfig()->getAdditionalNavigationParameters());
 
@@ -1473,7 +1492,6 @@ class FrontendController extends BaseController
     {
         $result = '';
         $listType = $this->getListType();
-        $config = Registry::getConfig();
 
         switch ($listType) {
             default:
@@ -1481,18 +1499,10 @@ class FrontendController extends BaseController
                 break;
             case 'search':
                 $result .= "&amp;listtype={$listType}";
-                if ($searchParamForLink = Registry::getRequest()->getRequestParameter('searchparam')) {
-                    $result .= "&amp;searchparam=" . rawurlencode($searchParamForLink);
-                }
-                if (($var = Registry::getRequest()->getRequestParameter('searchcnid'))) {
-                    $result .= '&amp;searchcnid=' . rawurlencode(rawurldecode($var));
-                }
-                if (($var = Registry::getRequest()->getRequestParameter('searchvendor'))) {
-                    $result .= '&amp;searchvendor=' . rawurlencode(rawurldecode($var));
-                }
-                if (($var = Registry::getRequest()->getRequestParameter('searchmanufacturer'))) {
-                    $result .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($var));
-                }
+                $result .= $this->appendUnescapedEncodedValue(self::SEARCH_PARAM);
+                $result .= $this->appendUnescapedValue(self::SEARCH_CATEGORY_ID);
+                $result .= $this->appendUnescapedValue(self::SEARCH_VENDOR);
+                $result .= $this->appendUnescapedValue(self::SEARCH_MANUFACTURER);
                 break;
         }
 
@@ -1594,7 +1604,7 @@ class FrontendController extends BaseController
             'deleteReviewAndRating',
         ];
 
-        if (in_array($function, $forbiddenFunctions)) {
+        if (\in_array($function, $forbiddenFunctions, true)) {
             $function = '';
         }
 
@@ -1603,60 +1613,26 @@ class FrontendController extends BaseController
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('cnid')) {
-            $url .= "&amp;cnid={$value}";
-        }
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('mnid')) {
-            $url .= "&amp;mnid={$value}";
-        }
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('anid')) {
-            $url .= "&amp;anid={$value}";
-        }
-
-        if ($page = Registry::getRequest()->getRequestEscapedParameter('page')) {
-            $url .= "&amp;page=" . basename($page);
-        }
-
-        if ($tpl = Registry::getRequest()->getRequestEscapedParameter('tpl')) {
-            $url .= "&amp;tpl=" . basename($tpl);
-        }
-
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('oxloadid')) {
-            $url .= "&amp;oxloadid={$value}";
-        }
-
-        $pageNumber = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
+        $url .= $this->appendValue(self::CATEGORY_ID);
+        $url .= $this->appendValue(self::MANUFACTURER_ID);
+        $url .= $this->appendValue(self::ACTIVE_PRODUCT_ID);
+        $url .= $this->appendBasenameValue(self::PAGE);
+        $url .= $this->appendBasenameValue(self::TEMPLATE);
+        $url .= $this->appendValue(self::LOAD_ID);
         // don't include page number for navigation
         // it will be done in \OxidEsales\Eshop\Application\Controller\FrontendController::generatePageNavigation
-        if ($addPageNumber && $pageNumber > 0) {
-            $url .= "&amp;pgNr={$pageNumber}";
+        if ($addPageNumber) {
+            $url .= $this->appendValue(self::PAGE_NUMBER);
         }
-
         // #1184M - specialchar search
-        if ($searchParam = Registry::getRequest()->getRequestParameter('searchparam')) {
-            $url .= "&amp;searchparam=" . rawurlencode($searchParam);
-        }
-
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchcnid')) {
-            $url .= "&amp;searchcnid={$value}";
-        }
-
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchvendor')) {
-            $url .= "&amp;searchvendor={$value}";
-        }
-
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer')) {
-            $url .= "&amp;searchmanufacturer={$value}";
-        }
-
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('searchrecomm')) {
-            $url .= "&amp;searchrecomm={$value}";
-        }
+        $url .= $this->appendUnescapedEncodedValue(self::SEARCH_PARAM);
+        $url .= $this->appendValue(self::SEARCH_CATEGORY_ID);
+        $url .= $this->appendValue(self::SEARCH_VENDOR);
+        $url .= $this->appendValue(self::SEARCH_MANUFACTURER);
+        $url .= $this->appendValue(self::SEARCH_RECOMMENDATION);
 
         // @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('recommid')) {
-            $url .= "&amp;recommid={$value}";
-        }
+        $url .= $this->appendValue(self::RECOMMENDATION_ID);
         // END deprecated
 
         $url .= $this->getViewConfig()->addRequestParameters();
@@ -1676,32 +1652,19 @@ class FrontendController extends BaseController
 
         // #921 S
         $forbiddenFunctions = ['tobasket', 'login_noredirect', 'addVoucher'];
-        if (in_array($function, $forbiddenFunctions)) {
+        if (\in_array($function, $forbiddenFunctions, true)) {
             $function = '';
         }
-
         // #680
         $url = "cl={$class}";
         if ($function) {
             $url .= "&amp;fnc={$function}";
         }
 
-        if ($page = Registry::getRequest()->getRequestEscapedParameter('page')) {
-            $url .= "&amp;page=" . basename($page);
-        }
-
-        if ($tpl = Registry::getRequest()->getRequestEscapedParameter('tpl')) {
-            $url .= "&amp;tpl=" . basename($tpl);
-        }
-
-        if ($value = Registry::getRequest()->getRequestEscapedParameter('oxloadid')) {
-            $url .= "&amp;oxloadid={$value}";
-        }
-
-        $pageNumber = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
-        if ($pageNumber > 0) {
-            $url .= "&amp;pgNr={$pageNumber}";
-        }
+        $url .= $this->appendBasenameValue(self::PAGE);
+        $url .= $this->appendBasenameValue(self::TEMPLATE);
+        $url .= $this->appendValue(self::LOAD_ID);
+        $url .= $this->appendValue(self::PAGE_NUMBER);
 
         return $url;
     }
@@ -1768,7 +1731,7 @@ class FrontendController extends BaseController
     {
         if ($this->_oActiveRecommList === null) {
             $this->_oActiveRecommList = false;
-            if ($recommendationListId = Registry::getRequest()->getRequestEscapedParameter('recommid')) {
+            if ($recommendationListId = Registry::getRequest()->getRequestEscapedParameter(self::RECOMMENDATION_ID)) {
                 $this->_oActiveRecommList = oxNew(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
                 $this->_oActiveRecommList->load($recommendationListId);
             }
@@ -1884,24 +1847,12 @@ class FrontendController extends BaseController
             $this->_sAdditionalParams .= 'cl=' . Registry::getConfig()->getTopActiveView()->getClassKey();
 
             // #1834M - special char search
-            if ($searchParam = Registry::getRequest()->getRequestParameter('searchparam')) {
-                $this->_sAdditionalParams .= "&amp;searchparam=" . rawurlencode($searchParam);
-            }
-            if (($value = Registry::getRequest()->getRequestEscapedParameter('searchcnid'))) {
-                $this->_sAdditionalParams .= '&amp;searchcnid=' . rawurlencode(rawurldecode($value));
-            }
-            if (($value = Registry::getRequest()->getRequestEscapedParameter('searchvendor'))) {
-                $this->_sAdditionalParams .= '&amp;searchvendor=' . rawurlencode(rawurldecode($value));
-            }
-            if (($value = Registry::getRequest()->getRequestEscapedParameter('searchmanufacturer'))) {
-                $this->_sAdditionalParams .= '&amp;searchmanufacturer=' . rawurlencode(rawurldecode($value));
-            }
-            if (($value = Registry::getRequest()->getRequestEscapedParameter('cnid'))) {
-                $this->_sAdditionalParams .= '&amp;cnid=' . rawurlencode(rawurldecode($value));
-            }
-            if (($value = Registry::getRequest()->getRequestEscapedParameter('mnid'))) {
-                $this->_sAdditionalParams .= '&amp;mnid=' . rawurlencode(rawurldecode($value));
-            }
+            $this->_sAdditionalParams .= $this->appendUnescapedEncodedValue(self::SEARCH_PARAM);
+            $this->_sAdditionalParams .= $this->appendValue(self::SEARCH_CATEGORY_ID);
+            $this->_sAdditionalParams .= $this->appendValue(self::SEARCH_VENDOR);
+            $this->_sAdditionalParams .= $this->appendValue(self::SEARCH_MANUFACTURER);
+            $this->_sAdditionalParams .= $this->appendValue(self::CATEGORY_ID);
+            $this->_sAdditionalParams .= $this->appendValue(self::MANUFACTURER_ID);
 
             $this->_sAdditionalParams .= $this->getViewConfig()->getAdditionalParameters();
         }
@@ -2142,7 +2093,7 @@ class FrontendController extends BaseController
     public function getActPage()
     {
         if ($this->_iActPage === null) {
-            $this->_iActPage = (int) Registry::getRequest()->getRequestEscapedParameter('pgNr');
+            $this->_iActPage = (int) Registry::getRequest()->getRequestEscapedParameter(self::PAGE_NUMBER);
             $this->_iActPage = ($this->_iActPage < 0) ? 0 : $this->_iActPage;
         }
 
@@ -2163,7 +2114,7 @@ class FrontendController extends BaseController
         // and we still need some object to mount navigation info
         if ($this->_oActVendor === null) {
             $this->_oActVendor = false;
-            $vendorId = Registry::getRequest()->getRequestEscapedParameter('cnid');
+            $vendorId = Registry::getRequest()->getRequestEscapedParameter(self::CATEGORY_ID);
             $vendorId = $vendorId ? str_replace('v_', '', $vendorId) : $vendorId;
             $vendor = oxNew(\OxidEsales\Eshop\Application\Model\Vendor::class);
             if ($vendor->load($vendorId)) {
@@ -2188,7 +2139,7 @@ class FrontendController extends BaseController
         // and we still need some object to mount navigation info
         if ($this->_oActManufacturer === null) {
             $this->_oActManufacturer = false;
-            $manufacturerId = Registry::getRequest()->getRequestEscapedParameter('mnid');
+            $manufacturerId = Registry::getRequest()->getRequestEscapedParameter(self::MANUFACTURER_ID);
             $manufacturer = oxNew(\OxidEsales\Eshop\Application\Model\Manufacturer::class);
             if ($manufacturer->load($manufacturerId)) {
                 $this->_oActManufacturer = $manufacturer;
@@ -2361,7 +2312,7 @@ class FrontendController extends BaseController
     public function getMinOrderPrice()
     {
         if ($this->_sMinOrderPrice === null && $this->isLowOrderPrice()) {
-            $minOrderPrice = \OxidEsales\Eshop\Core\Price::getPriceInActCurrency(Registry::getConfig()->getConfigParam('iMinOrderPrice'));
+            $minOrderPrice = Price::getPriceInActCurrency(Registry::getConfig()->getConfigParam('iMinOrderPrice'));
             $this->_sMinOrderPrice = Registry::getLang()->formatCurrency($minOrderPrice);
         }
 
@@ -3017,5 +2968,33 @@ class FrontendController extends BaseController
     private function replaceDoubleQuotesWithHTMLCharacters(string $title): string
     {
         return str_replace('"', '&quot;', $title);
+    }
+
+    private function appendValue(string $param): string
+    {
+        $value = Registry::getRequest()->getRequestEscapedParameter($param);
+
+        return $value ? "&amp;$param=$value" : '';
+    }
+
+    private function appendBasenameValue(string $param): string
+    {
+        $value = Registry::getRequest()->getRequestEscapedParameter($param);
+
+        return $value ? "&amp;$param=" . basename($value) : '';
+    }
+
+    private function appendUnescapedEncodedValue(string $param): string
+    {
+        $value = Registry::getRequest()->getRequestParameter($param);
+
+        return $value ? "&amp;$param=" . rawurlencode($value) : '';
+    }
+
+    private function appendUnescapedValue(string $param): string
+    {
+        $value = Registry::getRequest()->getRequestParameter($param);
+
+        return $value ? "&amp;$param=$value" : '';
     }
 }

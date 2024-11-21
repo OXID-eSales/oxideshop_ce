@@ -102,8 +102,9 @@ final class ProjectYamlImportServiceTest extends TestCase
         $this->getImportService()->removeNonExistingImports();
 
         $imports = $this->getDao()->loadProjectConfigFile()->getImportFileNames();
+
         $this->assertCount(1, $imports);
-        $this->assertEquals($imports[0], $path);
+        $this->assertEquals($path, $imports[0]);
     }
 
     private function getFixturePath(string $dir): string

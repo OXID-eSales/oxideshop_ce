@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use Symfony\Component\Filesystem\Path;
@@ -168,34 +169,39 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     public function exportVouchers($iStart)
     {
-        $iExported = false;
-
-        if ($oSerie = $this->getVoucherSerie()) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-
-            $sSelect = "select oxvouchernr from oxvouchers where oxvoucherserieid = :oxvoucherserieid";
-            $rs = $oDb->selectLimit($sSelect, $this->iExportPerTick, $iStart, [
-                ':oxvoucherserieid' => $oSerie->getId()
-            ]);
-
-            if (!$rs->EOF) {
-                $iExported = 0;
-
-                // writing header text
-                if ($iStart == 0) {
-                    $this->write(Registry::getLang()->translateString("VOUCHERSERIE_MAIN_VOUCHERSTATISTICS", Registry::getLang()->getTplLanguage(), true));
-                }
-            }
-
-            // writing vouchers..
-            while (!$rs->EOF) {
-                $this->write(current($rs->fields));
-                $iExported++;
-                $rs->fetchRow();
-            }
+        $voucherSerie = $this->getVoucherSerie();
+        if (!$voucherSerie) {
+            return false;
+        }
+        $resultSet = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)
+            ->selectLimit(
+                'select oxvouchernr from oxvouchers where oxvoucherserieid = :oxvoucherserieid',
+                $this->iExportPerTick,
+                $iStart,
+                [':oxvoucherserieid' => $voucherSerie->getId()]
+            );
+        if ($resultSet->EOF) {
+            return false;
+        }
+        $exportedVouchersCount = 0;
+        // writing header text
+        if ($iStart == 0) {
+            $this->write(
+                Registry::getLang()->translateString(
+                    'VOUCHERSERIE_MAIN_VOUCHERSTATISTICS',
+                    Registry::getLang()->getTplLanguage(),
+                    true
+                )
+            );
+        }
+        // writing vouchers..
+        while (!$resultSet->EOF) {
+            $this->write(current($resultSet->fields));
+            $exportedVouchersCount++;
+            $resultSet->fetchRow();
         }
 
-        return $iExported;
+        return $exportedVouchersCount;
     }
 
     /**

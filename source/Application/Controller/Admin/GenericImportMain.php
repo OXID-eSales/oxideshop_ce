@@ -278,21 +278,17 @@ class GenericImportMain extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function getUploadedCsvFilePath()
     {
-        //try to get uploaded csv file path
-        if ($this->_sCsvFilePath !== null) {
-            return $this->_sCsvFilePath;
-        } elseif ($this->_sCsvFilePath = Registry::getSession()->getVariable('sCsvFilePath')) {
+        $this->_sCsvFilePath ??= Registry::getSession()->getVariable('sCsvFilePath');
+        if ($this->_sCsvFilePath) {
             return $this->_sCsvFilePath;
         }
-
-        $oConfig = Registry::getConfig();
-        $aFile = $oConfig->getUploadedFile('csvfile');
-        if (isset($aFile['name']) && $aFile['name']) {
+        $upload = Registry::getConfig()->getUploadedFile('csvfile');
+        if (isset($upload['name']) && $upload['name']) {
             $this->_sCsvFilePath = Path::join(
                 ContainerFacade::getParameter('oxid_esales.build_directory'),
-                basename($aFile['tmp_name'])
+                basename($upload['tmp_name'])
             );
-            move_uploaded_file($aFile['tmp_name'], $this->_sCsvFilePath);
+            move_uploaded_file($upload['tmp_name'], $this->_sCsvFilePath);
             Registry::getSession()->setVariable('sCsvFilePath', $this->_sCsvFilePath);
 
             return $this->_sCsvFilePath;

@@ -43,7 +43,7 @@ final class ProductStatusTestCest
             'oxarticles',
             [
                 'OXACTIVE' => false,
-                'OXACTIVEFROM' => (new DateTime())->modify('-1 day')->format('Y-m-d 00:00:00'),
+                'OXACTIVEFROM' => (new DateTime())->modify('-1 day')->format('Y-m-d H:i:s'),
                 'OXACTIVETO' => '0000-00-00 00:00:00'
             ],
             [
@@ -63,7 +63,7 @@ final class ProductStatusTestCest
             [
                 'OXACTIVE' => false,
                 'OXACTIVEFROM' => '0000-00-00 00:00:00',
-                'OXACTIVETO' => (new DateTime())->modify('+1 day')->format('Y-m-d 00:00:00')
+                'OXACTIVETO' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
             ],
             [
                 'OXID' => $this->productID
@@ -87,7 +87,7 @@ final class ProductStatusTestCest
             'oxarticles',
             [
                 'OXACTIVE' => false,
-                'OXACTIVEFROM' => (new DateTime())->modify('+1 day')->format('Y-m-d 00:00:00'),
+                'OXACTIVEFROM' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s'),
                 'OXACTIVETO' => '0000-00-00 00:00:00'
             ],
             [
@@ -107,7 +107,7 @@ final class ProductStatusTestCest
             [
                 'OXACTIVE' => false,
                 'OXACTIVEFROM' => '0000-00-00 00:00:00',
-                'OXACTIVETO' => (new DateTime())->modify('-1 day')->format('Y-m-d 00:00:00')
+                'OXACTIVETO' => (new DateTime())->modify('-1 day')->format('Y-m-d H:i:s')
             ],
             [
                 'OXID' => $this->productID

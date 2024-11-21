@@ -47,8 +47,8 @@ final class DownloadableProductCest
                 'OXDOWNLOADEXPIRATIONTIME' => 24,
                 'OXLINKEXPIRATIONTIME' => 240,
                 'OXRESETCOUNT' => 0,
-                'OXVALIDUNTIL' => (new DateTime())->modify('+1 week')->format('Y-m-d 00:00:00'),
-                'OXTIMESTAMP' => (new DateTime())->format('Y-m-d 00:00:00')
+                'OXVALIDUNTIL' => (new DateTime())->modify('+1 week')->format('Y-m-d H:i:s'),
+                'OXTIMESTAMP' => (new DateTime())->format('Y-m-d H:i:s')
             ]
         );
 

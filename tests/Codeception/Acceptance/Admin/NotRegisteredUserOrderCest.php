@@ -52,7 +52,7 @@ final class NotRegisteredUserOrderCest
                 'OXID' => 'NotRegisteredOrderId',
                 'OXSHOPID' => 1,
                 'OXUSERID' => 'NotRegisteredUserId',
-                'OXORDERDATE' => (new DateTime())->format('Y-m-d 00:00:00'),
+                'OXORDERDATE' => (new DateTime())->format('Y-m-d H:i:s'),
                 'OXORDERNR' => 2,
                 'OXBILLEMAIL' => 'example01@oxid-esales.dev',
                 'OXBILLFNAME' => 'name',
@@ -69,7 +69,7 @@ final class NotRegisteredUserOrderCest
                 'OXTRANSSTATUS' => 'OK',
                 'OXFOLDER' => 'ORDERFOLDER_NEW',
                 'OXDELTYPE' => 'oxidstandard',
-                'OXTIMESTAMP' => (new DateTime())->format('Y-m-d 00:00:00')
+                'OXTIMESTAMP' => (new DateTime())->format('Y-m-d H:i:s')
             ]
         );
 
@@ -90,7 +90,7 @@ final class NotRegisteredUserOrderCest
                 'OXVAT' => 19,
                 'OXSTOCK' => 5,
                 'OXINSERT' => '2008-02-04',
-                'OXTIMESTAMP' => (new DateTime())->format('Y-m-d 00:00:00'),
+                'OXTIMESTAMP' => (new DateTime())->format('Y-m-d H:i:s'),
                 'OXSEARCHKEYS' => 'šÄßüл1002',
                 'OXISSEARCH' => 1,
                 'OXORDERSHOPID' => 1

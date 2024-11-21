@@ -23,6 +23,7 @@ final class ProductListStatusTestCest
         $I->updateConfigInDatabase('blUseTimeCheck', true, 'bool');
     }
 
+    #[Group('abc')]
     public function checkProductsStatuses(AcceptanceTester $I): void
     {
         $I->wantToTest('Product statuses by time range');
@@ -36,8 +37,8 @@ final class ProductListStatusTestCest
             'oxarticles',
             [
                 'OXACTIVE' => false,
-                'OXACTIVEFROM' => (new DateTime())->modify('-1 day')->format('Y-m-d 00:00:00'),
-                'OXACTIVETO' => (new DateTime())->modify('+1 day')->format('Y-m-d 00:00:00')
+                'OXACTIVEFROM' => (new DateTime())->modify('-1 day')->format('Y-m-d H:i:s'),
+                'OXACTIVETO' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s')
             ],
             [
                 'OXID' => $this->productID
@@ -57,8 +58,8 @@ final class ProductListStatusTestCest
             'oxarticles',
             [
                 'OXACTIVE' => false,
-                'OXACTIVEFROM' => (new DateTime())->modify('+1 day')->format('Y-m-d 00:00:00'),
-                'OXACTIVETO' => (new DateTime())->modify('+2 day')->format('Y-m-d 00:00:00')
+                'OXACTIVEFROM' => (new DateTime())->modify('+1 day')->format('Y-m-d H:i:s'),
+                'OXACTIVETO' => (new DateTime())->modify('+2 day')->format('Y-m-d H:i:s')
             ],
             [
                 'OXID' => $this->productID

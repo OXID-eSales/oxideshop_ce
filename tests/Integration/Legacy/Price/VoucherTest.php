@@ -190,9 +190,9 @@ final class VoucherTest extends IntegrationTestCase
     private function createVoucherSeries(string $seriesId, int $discount, bool $calculateOnce): void
     {
         $startDate = (new DateTime())->modify('-1 day')
-            ->format('Y-m-d 00:00:00');
+            ->format('Y-m-d H:i:s');
         $endDate = (new DateTime())->modify('+1 day')
-            ->format('Y-m-d 00:00:00');
+            ->format('Y-m-d H:i:s');
 
         $voucherSeries = oxNew(VoucherSerie::class);
         $voucherSeries->setId($seriesId);

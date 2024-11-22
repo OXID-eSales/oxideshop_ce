@@ -7,12 +7,14 @@
 
 declare(strict_types=1);
 
-namespace Acceptance;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
 use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use DateTime;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
+
+use function sprintf;
 
 #[Group('product')]
 final class ProductStatusTestCest

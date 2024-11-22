@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;

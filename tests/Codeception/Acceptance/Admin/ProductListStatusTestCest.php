@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace Acceptance\Admin;
+namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
 use Codeception\Attribute\Group;
 use DateTime;
@@ -23,7 +23,6 @@ final class ProductListStatusTestCest
         $I->updateConfigInDatabase('blUseTimeCheck', true, 'bool');
     }
 
-    #[Group('abc')]
     public function checkProductsStatuses(AcceptanceTester $I): void
     {
         $I->wantToTest('Product statuses by time range');

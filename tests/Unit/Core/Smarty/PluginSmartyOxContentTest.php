@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidTestCase;
 use oxTestModules;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\Test\TestLogger;
 use Smarty;
 
 $filePath = Registry::getConfig()->getConfigParam('sShopDir') . 'Core/Smarty/Plugin/function.oxcontent.php';
@@ -97,5 +98,24 @@ final class PluginSmartyOxContentTest extends OxidTestCase
         $oSmarty->expects($this->once())->method('assign')->with($this->equalTo(true));
 
         smarty_function_oxcontent($aParams, $oSmarty);
+    }
+
+    public function testWithBrokenContent(): void
+    {
+        $sShopId = ShopIdCalculator::BASE_SHOP_ID;
+        $aParams['oxid'] = 'f41427a099a603773.44301043';
+        $aParams['assign'] = false;
+
+        $logger = new TestLogger();
+        \OxidEsales\Eshop\Core\Registry::set('logger', $logger);
+
+        /** @var MockObject|Smarty $oSmarty */
+        $oSmarty = $this->createPartialMock("smarty", ['fetch']);
+        $oSmarty->expects($this->once())
+            ->method('fetch')
+            ->with($this->equalTo('ox:f41427a099a603773.44301043oxcontent0' . $sShopId))
+            ->willThrowException(new \Error('fetch failed'));
+
+        $this->assertEmpty(smarty_function_oxcontent($aParams, $oSmarty));
     }
 }

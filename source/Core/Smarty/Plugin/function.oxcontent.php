@@ -55,7 +55,12 @@ function smarty_function_oxcontent($params, &$smarty)
                     Registry::getLang()->getBaseLanguage(),
                     Registry::getConfig()->getShopId()
                 );
-                $text = $smarty->fetch($resourceName);
+                try {
+                    $text = $smarty->fetch($resourceName);
+                } catch (\Throwable $error) {
+                    Registry::getLogger()->error($error->getMessage(), [$error]);
+                    $text = '';
+                }
                 $smarty->compile_check = Registry::getConfig()->getConfigParam('blCheckTemplates');
             }
         }

@@ -41,7 +41,7 @@ class ContainerBuilder
 
     public function getContainer(): SymfonyContainerBuilder
     {
-        $this->shopId = (new ShopIdCalculator(new FileCache(), new UtilsServer()))->getShopId();
+        $this->shopId = (new ShopIdCalculator(new UtilsServer()))->getShopId();
         $this->containerBuilder = new SymfonyContainerBuilder();
 
         $this->containerBuilder->setParameter('oxid_esales.current_shop_id', $this->shopId);

@@ -77,7 +77,7 @@ class ContainerFactory
     private static function getShopId(): int
     {
         if (!isset(self::$shopId)) {
-            self::$shopId = (new ShopIdCalculator(new FileCache(), new UtilsServer()))->getShopId();
+            self::$shopId = (new ShopIdCalculator(new UtilsServer()))->getShopId();
         }
         return self::$shopId;
     }

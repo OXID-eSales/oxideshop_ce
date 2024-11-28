@@ -56,3 +56,4 @@
   container.
 - Deprecated `handleDatabaseException` functionality
 - Dependency on `oxideshop-facts` component
+- `FileCache` and `SubShopSpecificFileCache` classes. Use `ContextInterface::getCurrentShopId()` instead

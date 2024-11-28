@@ -22,7 +22,6 @@ class ShopIdCalculator
     private static array $urlMap;
 
     public function __construct(
-        private readonly \OxidEsales\Eshop\Core\FileCache $variablesCache,
         private readonly \OxidEsales\Eshop\Core\UtilsServer $utilsServer,
     ) {
     }
@@ -36,13 +35,6 @@ class ShopIdCalculator
     {
         if (isset(self::$urlMap)) {
             return self::$urlMap;
-        }
-
-        $urlMap = $this->variablesCache->getFromCache('urlMap');
-        if (is_array($urlMap)) {
-            self::$urlMap = $urlMap;
-
-            return $urlMap;
         }
 
         $urlMap = [];
@@ -62,7 +54,6 @@ class ShopIdCalculator
                 $urlMap[$urlValues] = $shopId;
             }
         }
-        $this->variablesCache->setToCache('urlMap', $urlMap);
         self::$urlMap = $urlMap;
 
         return $urlMap;

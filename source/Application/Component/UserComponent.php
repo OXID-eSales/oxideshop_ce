@@ -643,59 +643,60 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         if (!$user) {
             return;
         }
+
+        $currentEmail = $user->getFieldData('oxusername');
+        $password = $user->getFieldData('oxpassword');
         $shippingAddress = $this->getShippingAddress();
         $billingAddress = $this->getBillingAddress();
+        $newEmail = $billingAddress['oxuser__oxusername'] ?? '';
 
-        $username = $user->getFieldData('oxusername');
-        $password = $user->getFieldData('oxpassword');
         try {
-            $newName = $billingAddress['oxuser__oxusername'] ?? '';
-            if (
-                $this->isGuestUser($user)
-                && $this->isUserNameUpdated($user->oxuser__oxusername->value ?? '', $newName)
-            ) {
-                $this->deleteExistingGuestUser($newName);
+            $isUsernameUpdated = $this->isUserNameUpdated($currentEmail ?? '', $newEmail);
+            if ($isUsernameUpdated && $this->isGuestUser($user)) {
+                $this->deleteExistingGuestUser($newEmail);
             }
-            $user->changeUserData($username, $password, $password, $billingAddress, $shippingAddress);
+            if (
+                !$this->isGuestUser($user)
+                && $isUsernameUpdated
+                && $user->isEmailInUse($newEmail)
+            ) {
+                Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_USER_USEREXISTS');
+                return false;
+            }
+            $user->changeUserData($currentEmail, $password, $password, $billingAddress, $shippingAddress);
 
             $isSubscriptionRequested = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed');
-            $userSubscriptionStatus = $isSubscriptionRequested
-                ?? $user->getNewsSubscription()->getOptInStatus();
-            // check if email address changed, if so, force check newsletter subscription settings.
-            $billingUsername = $billingAddress['oxuser__oxusername'] ?? null;
-            $forceSubscriptionCheck = ($billingUsername !== null && $billingUsername !== $username);
+            $userSubscriptionStatus = $isSubscriptionRequested ?? $user->getNewsSubscription()->getOptInStatus();
             $isSubscriptionEmailRequested = Registry::getConfig()->getConfigParam('blOrderOptInEmail');
+
             $this->_blNewsSubscriptionStatus = $user->setNewsSubscription(
                 $userSubscriptionStatus,
                 $isSubscriptionEmailRequested,
-                $forceSubscriptionCheck
+                $isUsernameUpdated
             );
+
+            $this->resetPermissions();
+
+            $orderRemark = Registry::getRequest()->getRequestParameter('order_remark', true);
+            if ($orderRemark) {
+                $session->setVariable('ordrem', $orderRemark);
+            } else {
+                $session->deleteVariable('ordrem');
+            }
+
+            if ($basket = $session->getBasket()) {
+                $basket->setBasketUser(null);
+                $basket->onUpdate();
+            }
+
+            return true;
         } catch (UserException | ConnectionException | InputException $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception, false, true);
-
             return;
         } catch (\Throwable) {
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_USER_UPDATE_FAILED', false, true);
             return false;
         }
-
-        $this->resetPermissions();
-
-        // order remark
-        $orderRemark = Registry::getRequest()->getRequestParameter('order_remark', true);
-
-        if ($orderRemark) {
-            $session->setVariable('ordrem', $orderRemark);
-        } else {
-            $session->deleteVariable('ordrem');
-        }
-
-        if ($basket = $session->getBasket()) {
-            $basket->setBasketUser(null);
-            $basket->onUpdate();
-        }
-
-        return true;
     }
 
     /**

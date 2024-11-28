@@ -20,6 +20,7 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 /**
  * User manager.
@@ -1711,53 +1712,76 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     /**
      * Checks for already used email
      *
-     * @param string $sEmail user email/login
+     * @param string $email user email/login
      *
      * @return bool
      */
-    public function checkIfEmailExists($sEmail)
+    public function checkIfEmailExists($email)
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
-        $iShopId = $myConfig->getShopId();
-        $blExists = false;
-
-        $sQ = 'select oxshopid, oxrights, oxpassword from oxuser where oxusername = :oxusername';
-        $params = [
-            ':oxusername' => (string) $sEmail
-        ];
-        if (($sOxid = $this->getId())) {
-            $sQ .= " and oxid <> :notoxid";
-            $params[':notoxid'] = $sOxid;
+        if (!$email) {
+            return false;
         }
-        $oRs = $masterDb->select($sQ, $params);
-        if ($oRs != false && $oRs->count() > 0) {
-            if ($this->_blMallUsers) {
-                $blExists = true;
-                if ($oRs->fields[1] == 'user' && !$oRs->fields[2]) {
-                    // password is not set - allow to override
-                    $blExists = false;
-                }
-            } else {
-                $blExists = false;
-                while (!$oRs->EOF) {
-                    if ($oRs->fields[1] != 'user') {
-                        // exists admin with same login - must not allow
-                        $blExists = true;
-                        break;
-                    } elseif ($oRs->fields[0] == $iShopId && $oRs->fields[2]) {
-                        // exists same login (with password) in same shop
-                        $blExists = true;
-                        break;
-                    }
 
-                    $oRs->fetchRow();
-                }
+        $config = Registry::getConfig();
+        $masterDb = DatabaseProvider::getMaster();
+        $shopId = $config->getShopId();
+
+        $query = 'SELECT oxshopid, oxrights, oxpassword FROM oxuser WHERE oxusername = :oxusername';
+        $params = [':oxusername' => (string) $email];
+
+        if ($id = $this->getId()) {
+            $query .= " AND oxid <> :notoxid";
+            $params[':notoxid'] = $id;
+        }
+
+        $result = $masterDb->select($query, $params);
+
+        if (!$result || $result->count() === 0) {
+            return false;
+        }
+
+        if ($this->_blMallUsers) {
+            if ($result->fields[1] === 'user' && !$result->fields[2]) {
+                return false; // No password set - allow override
             }
+            return true;
         }
 
-        return $blExists;
+        while (!$result->EOF) {
+            if ($result->fields[1] !== 'user') {
+                return true; // Admin user exists
+            }
+
+            if ($result->fields[0] == $shopId && ($result->fields[2])) {
+                return true; // User exists in same shop with password
+            }
+
+            $result->fetchRow();
+        }
+
+        return false;
+    }
+
+    public function isEmailInUse(string $email): bool
+    {
+        $queryBuilder = ContainerFacade::get(QueryBuilderFactoryInterface::class)->create();
+        $queryBuilder
+            ->select('1')
+            ->from('oxuser')
+            ->where('oxusername = :email')
+            ->andWhere('oxshopid = :shopId')
+            ->setParameters([
+                'email' => $email,
+                'shopId' => Registry::getConfig()->getShopId()
+            ]);
+
+        if ($this->getId()) {
+            $queryBuilder
+                ->andWhere('oxid != :currentUserId')
+                ->setParameter('currentUserId', $this->getId());
+        }
+
+        return (bool) $queryBuilder->execute()->fetchOne();
     }
 
     /**

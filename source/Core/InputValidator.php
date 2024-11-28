@@ -10,7 +10,9 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Exception\ArticleInputException;
+use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
+use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -107,24 +109,28 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     public function checkLogin($user, $login, $invAddress)
     {
-        $login = (isset($invAddress['oxuser__oxusername'])) ? $invAddress['oxuser__oxusername'] : $login;
+        $login = (isset($invAddress['oxuser__oxusername']))
+            ? $invAddress['oxuser__oxusername']
+            : $login;
 
-        // check only for users with password during registration
-        // if user wants to change user name - we must check if passwords are ok before changing
-        if (isset($user->oxuser__oxpassword->value) && $user->oxuser__oxpassword->value && $login != $user->oxuser__oxusername->value) {
-            // on this case password must be taken directly from request
-            $newPassword = (isset($invAddress['oxuser__oxpassword']) && $invAddress['oxuser__oxpassword']) ? $invAddress['oxuser__oxpassword'] : Registry::getRequest()->getRequestEscapedParameter('user_password');
+        if (
+            isset($user->oxuser__oxpassword->value) &&
+            $user->oxuser__oxpassword->value &&
+            $login != $user->oxuser__oxusername->value
+        ) {
+            $newPassword = (isset($invAddress['oxuser__oxpassword']) && $invAddress['oxuser__oxpassword'])
+                ? $invAddress['oxuser__oxpassword']
+                : Registry::getRequest()->getRequestEscapedParameter('user_password');
+
             if (!$newPassword) {
-                // 1. user forgot to enter password
-                $exception = oxNew(\OxidEsales\Eshop\Core\Exception\InputException::class);
-                $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
+                $message = Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
+                $exception = oxNew(InputException::class, $message);
 
                 return $this->addValidationError("oxuser__oxpassword", $exception);
             } else {
-                // 2. entered wrong password
                 if (!$user->isSamePassword($newPassword)) {
-                    $exception = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
-                    $exception->setMessage(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'));
+                    $message = Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
+                    $exception = oxNew(UserException::class, $message);
 
                     return $this->addValidationError("oxuser__oxpassword", $exception);
                 }
@@ -132,9 +138,8 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($user->checkIfEmailExists($login)) {
-            //if exists then we do not allow to do that
-            $exception = oxNew(\OxidEsales\Eshop\Core\Exception\UserException::class);
-            $exception->setMessage(sprintf(\OxidEsales\Eshop\Core\Registry::getLang()->translateString('ERROR_MESSAGE_USER_USEREXISTS'), $login));
+            $message = Registry::getLang()->translateString('ERROR_MESSAGE_USER_USEREXISTS');
+            $exception = oxNew(UserException::class, $message);
 
             return $this->addValidationError("oxuser__oxusername", $exception);
         }

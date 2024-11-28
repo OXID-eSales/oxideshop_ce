@@ -15,6 +15,13 @@ return [
         'userName' => 'UserNamešÄßüл',
         'userLastName' => 'UserSurnamešÄßüл',
     ],
+    'existingGuestUser' => [
+        'userId' => 'testguest',
+        'userLoginName' => 'example_guest@oxid-esales.dev',
+        'userPassword' => '',
+        'userName' => 'UserNamešÄßüл',
+        'userLastName' => 'UserSurnamešÄßüл',
+    ],
     'adminUser' => [
         'userId' => 'admin',
         'userLoginName' => 'admin@myoxideshop.com',

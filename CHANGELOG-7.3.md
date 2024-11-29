@@ -12,12 +12,10 @@
 
 ### Changed
 - Raised minimum required version of Symfony components to 6.4
+- Set the default value of blSkipDebitOldBankInfo to true
 
 ### Removed
 - PHPUnit v10 support
-
-### Changed
-- Set the default value of blSkipDebitOldBankInfo to true
 
 ### Deprecated
 - Config parameters from [config.inc.php](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/project/configincphp.html) will be moved to env or container parameters
@@ -29,3 +27,4 @@
 - The use of SSL parameter in `getAltImageUrl` method of PictureHandler will be deleted in next major version
 - Method `isEnabledAdminQueryLog()` of ContextInterface
 - `handleDatabaseException` functionality
+- `FileCache` and `SubShopSpecificFileCache` classes 

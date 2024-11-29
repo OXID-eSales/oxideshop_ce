@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Core;
  * Cache for storing module variables selected from database.
  *
  * @internal Do not make a module extension for this class.
+ * @deprecated since v7.3.0. This class will be removed in version 8.0.
  */
 class SubShopSpecificFileCache extends \OxidEsales\Eshop\Core\FileCache
 {

@@ -385,6 +385,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Generates php file, which could later be loaded as include instead of parsed data.
      * Currently this method supports simple arrays only.
      *
@@ -404,6 +406,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Includes cached php file and loads stored contents.
      *
      * @param string $sKey Cache key.
@@ -419,6 +423,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * If available returns cache meta data array
      *
      * @param string $sKey meta data/cache key
@@ -431,6 +437,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Saves cache meta data (information)
      *
      * @param string $sKey  meta data/cache key
@@ -508,6 +516,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Reads and returns cache file contents
      *
      * @param string $sFilePath cache fiel path
@@ -522,6 +532,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Includes cache file
      *
      * @param string $sFilePath cache file path
@@ -537,6 +549,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Serializes or writes php array for class file cache
      *
      * @param string $sKey      cache key
@@ -560,6 +574,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Writes all cache contents to file at once. This method was introduced due to possible
      * race conditions. Cache is cleaned up after commit
      */
@@ -588,6 +604,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Locks cache file and returns its handle on success or false on failure
      *
      * @param string $sFilePath name of file to lock
@@ -641,6 +659,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Releases file lock and returns release state
      *
      * @param string $sIdent    lock ident
@@ -1192,6 +1212,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Returns full path (including file name) to cache file
      *
      * @todo: test
@@ -1216,6 +1238,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Get current edition prefix
      * @return string
      */

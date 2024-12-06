@@ -58,7 +58,8 @@
         "phpunit/phpunit": "^11.4",
         "squizlabs/php_codesniffer": "^3.5.4",
         "symfony/browser-kit": "^6.4",
-        "symfony/http-client": "^6.4"
+        "symfony/http-client": "^6.4",
+        "symplify/easy-coding-standard": "^12.3"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
@@ -94,10 +95,12 @@
     },
     "scripts": {
         "post-install-cmd": [
-            "@oe:ide-helper:generate"
+            "@oe:ide-helper:generate",
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || ./.git-hooks/symlink.sh"
         ],
         "post-update-cmd": [
-            "@oe:ide-helper:generate"
+            "@oe:ide-helper:generate",
+            "[ $COMPOSER_DEV_MODE -eq 0 ] || ./.git-hooks/symlink.sh"
         ],
         "oe:ide-helper:generate": [
             "if [ -f ./vendor/bin/oe-eshop-ide_helper ]; then oe-eshop-ide_helper; fi"

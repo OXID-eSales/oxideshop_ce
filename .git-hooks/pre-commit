@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+# get bash colors and styles here:
+# http://misc.flogisoft.com/bash/tip_colors_and_formatting
+style_reset='\e[0m'
+style_red='\e[31m'
+style_green='\e[32m'
+style_bold='\e[1m'
+style_underline='\e[4m'
+style_dim='\e[2m'
+
+function __run() #(step, name, cmd)
+{
+    local output exitcode
+
+    printf "[%s] %-20s" "$1" "$2"
+    output=$(eval "$3" 2>&1)
+    exitcode=$?
+
+    if [[ 0 == "$exitcode" || 130 == "$exitcode" ]]; then
+        echo -e " ${style_green}OK!${style_reset}"
+    else
+        echo -e " ${style_red}ERROR!${style_reset}"
+        echo -e "\n${style_bold}Git commit was interrupted!${style_reset}"
+        echo -e "${style_underline}$2${style_reset} run failed:"
+        echo -e "${style_dim}$3${style_reset}${style_bold}$output${style_reset}\n"
+        echo -e "Fix all the reported issues and try again. Or run commit command with \"--no-verify\" option to skip all configured pre-commit hooks."
+        exit 1
+    fi
+}
+
+php="docker-compose exec -T php php"
+internalDir="source/Internal"
+testsDir="tests/"
+
+modified="git diff --cached --name-only --diff-filter=ACM | grep '.php$'"
+ecs="${php} vendor/bin/ecs check ${internalDir} ${testsDir}  --no-diffs --no-progress-bar"
+
+echo -e "Running pre-commit hooks:"
+__run "1/2" "PHP lint" "${modified} | xargs -r ${php} -l"
+__run "2/2" "Easy Coding Standard" "${ecs}"

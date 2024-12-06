@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules;
 
-use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\OnlineModulesNotifierRequest;
 use OxidEsales\Eshop\Core\OnlineModuleVersionNotifier;
 use OxidEsales\Eshop\Core\OnlineModuleVersionNotifierCaller;
@@ -22,9 +21,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use oxOnlineModulesNotifierRequest;
-use oxOnlineModuleVersionNotifierCaller;
-use PHPUnit\Framework\MockObject\MockObject;
 use StdClass;
 use Throwable;
 
@@ -40,7 +36,6 @@ final class OnlineModuleNotifierTest extends IntegrationTestCase
 
         $this->installedModules = [];
         $this->backupVarDirectory();
-        $this->truncateDatabase();
     }
 
     public function tearDown(): void
@@ -62,7 +57,6 @@ final class OnlineModuleNotifierTest extends IntegrationTestCase
 
         $this->installModule('with_everything');
 
-        /** @var oxOnlineModuleVersionNotifierCaller|MockObject $oCaller */
         $oCaller = $this->getMockBuilder(OnlineModuleVersionNotifierCaller::class)->disableOriginalConstructor()
             ->getMock();
         $oCaller->expects($this->once())
@@ -73,12 +67,7 @@ final class OnlineModuleNotifierTest extends IntegrationTestCase
         $oNotifier->versionNotify();
     }
 
-    /**
-     * Returns formed request which should be returned during testing.
-     *
-     * @return oxOnlineModulesNotifierRequest
-     */
-    private function getExpectedRequest()
+    private function getExpectedRequest(): OnlineModulesNotifierRequest
     {
         $request = oxNew(OnlineModulesNotifierRequest::class);
 
@@ -144,11 +133,6 @@ final class OnlineModuleNotifierTest extends IntegrationTestCase
             ->uninstall(
                 new OxidEshopPackage(__DIR__ . '/TestData/modules/' . $moduleId)
             );
-    }
-
-    private function truncateDatabase(): void
-    {
-        DatabaseProvider::getDb()->execute('DELETE FROM `oxconfigdisplay`');
     }
 
     public function get(string $serviceId)

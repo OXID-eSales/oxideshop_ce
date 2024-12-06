@@ -35,12 +35,11 @@ use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+
 use function Symfony\Component\String\u;
 
 /**
  * Test, that the inheritance of modules and the shop works as expected.
- *
- * See also OxidEsales\EshopCommunity\Tests\Integration\Modules\BCModuleInheritanceTest
  *
  * Below, there are listed all possible combinations which are possible. You have to read the tables as follows:
  * E.g. Test Case 1.1 is: A "plain module class" "extends via PHP" a "Plain shop class"
@@ -61,10 +60,10 @@ use function Symfony\Component\String\u;
  * +--------------------------------------------------------------+--------------------+-------------------------+
  * |                       extends via PHP                        | plain module class | namespaced module class |
  * +--------------------------------------------------------------+--------------------+-------------------------+
- * | plain module class which extends an other class              |                2.1 |                     2.3 |
- * | namespaced module class which extends an other class         |                2.2 |                     2.4 |
+ * | plain module class which extends another class               |                2.1 |                     2.3 |
+ * | namespaced module class which extends another class          |                2.2 |                     2.4 |
  * | plain module class which chain extends a shop class          |                2.5 |                     2.7 |
- * | namespaced module class which does not extend an other class |                2.6 |                     2.8 |
+ * | namespaced module class which does not extend another class  |                2.6 |                     2.8 |
  * +--------------------------------------------------------------+--------------------+-------------------------+
  *
  * Together with "2. Simple extending module classes from other modules" we implemented some other test cases.
@@ -102,9 +101,6 @@ final class ModuleInheritanceTest extends IntegrationTestCase
 {
     use FilesystemTrait;
 
-    /**
-     * @var ContainerBuilder
-     */
     private ContainerInterface $container;
 
     public function setUp(): void
@@ -170,7 +166,8 @@ final class ModuleInheritanceTest extends IntegrationTestCase
     /**
      * This test covers PHP inheritance between module classes.
      *
-     * The tested module class extends the other module class directly like '<module anotherclass> extends <module class>'
+     * The tested module class extends the other module class directly
+     * like '<module anotherclass> extends <module class>'
      * or '<moduleA class> extends <moduleB class>'
      * In this case the parent class of the module class must be the parent module class as instantiated with oxNew
      *
@@ -252,7 +249,7 @@ final class ModuleInheritanceTest extends IntegrationTestCase
         return [
             'case_1_6' => [
                 'moduleToActivate' => ['Vendor1/ModuleInheritance16'],
-                'moduleClassName' => \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance16\MyClass::class,
+                'moduleClassName' => TestDataInheritance\modules\Vendor1\ModuleInheritance16\MyClass::class,
                 'shopClassNames' => [\OxidEsales\EshopCommunity\Application\Model\Article::class, 'oxArticle'],
             ],
             'case_1_7' => [
@@ -316,7 +313,7 @@ final class ModuleInheritanceTest extends IntegrationTestCase
             'case_2_8' => [
                 // Test case 2.8 namespaced module_2 extends namespaced module_1
                 'modulesToActivate' => ['Vendor1/ModuleInheritance28a', 'Vendor2/ModuleInheritance28b'],
-                'moduleClassName' => \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance28b\MyClass::class,
+                'moduleClassName' => TestDataInheritance\modules\Vendor2\ModuleInheritance28b\MyClass::class,
                 'shopClassNames' => [
                     MyClass::class,
                 ],

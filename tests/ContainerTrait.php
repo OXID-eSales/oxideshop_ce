@@ -92,7 +92,7 @@ trait ContainerTrait
     private function attachContainerToContainerFactory(): void
     {
         if (!$this->container->isCompiled()) {
-            $this->container->compile();
+            $this->compileContainer();
         }
         $reflectionClass = new ReflectionClass(ContainerFactory::getInstance());
         $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');

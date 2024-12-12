@@ -5,6 +5,7 @@
 ### Added
 - PHPUnit v11 support
 - Category detail page codeception test
+- Registration of environment variables via .env file
 
 ### Fixed
 - Shop ID resolution considers SSL language URLs

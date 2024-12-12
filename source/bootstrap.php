@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
+
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
 define('OX_LOG_FILE', OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'oxideshop.log');
@@ -219,3 +221,5 @@ ini_set('session.name', 'sid');
 ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
+
+(new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();

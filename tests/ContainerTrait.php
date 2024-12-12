@@ -11,7 +11,10 @@ namespace OxidEsales\EshopCommunity\Tests;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use ReflectionClass;
+use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Filesystem\Path;
 use UnitEnum;
 
 /**
@@ -72,5 +75,11 @@ trait ContainerTrait
         $reflectionClass = new ReflectionClass(ContainerFactory::getInstance());
         $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
         $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
+    }
+
+    private function loadYamlFixture(string $fixtureDir): void
+    {
+        $loader = new YamlFileLoader($this->container, new FileLocator(__DIR__));
+        $loader->load(Path::join($fixtureDir, 'services.yaml'));
     }
 }

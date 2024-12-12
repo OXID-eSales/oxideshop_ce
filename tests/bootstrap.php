@@ -8,6 +8,7 @@ require VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\Registry;
 use \Symfony\Component\Filesystem\Path;
+use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 
 # Yes, adding a directory separator is stupid, but that's how the code expects it
 define('OX_BASE_PATH', Path::join(INSTALLATION_ROOT_PATH, 'source') . DIRECTORY_SEPARATOR);
@@ -41,3 +42,5 @@ require_once Path::join(OX_BASE_PATH, 'overridablefunctions.php');
 // Configure Registry
 $configFile = new ConfigFile(Path::join(OX_BASE_PATH, 'config.inc.php'));
 Registry::set(ConfigFile::class, $configFile);
+
+(new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();

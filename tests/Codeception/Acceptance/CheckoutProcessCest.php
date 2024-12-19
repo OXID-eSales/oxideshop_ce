@@ -825,6 +825,77 @@ final class CheckoutProcessCest
         $orderCheckout->submitOrderSuccessfully();
     }
 
+    public function testWarningAboutBasketChanges(AcceptanceTester $I): void
+    {
+        $I->wantToTest('user sees warning before submitting an order if his cart was modified from another session');
+        $user = Fixtures::get('existingUser');
+        $product1 = Fixtures::get('product-1000');
+        $product2 = Fixtures::get('product-1001');
+
+        $I->amGoingTo('add a product and go through till the last order step');
+        $I->openShop()
+            ->loginUser(
+                $user['userLoginName'],
+                $user['userPassword']
+            );
+        $basket = new Basket($I);
+        $basket->addProductToBasket($product1['OXID'], 1);
+        $orderCheckout = $basket->openMiniBasket()->openCheckout()->goToNextStep();
+
+        $I->amGoingTo('add one more product to existing basket in another session (browser tab)');
+        $I->openNewTab();
+        $I->openShop();
+        (new Basket($I))->addProductToBasket($product2['OXID'], 1);
+
+        $I->amGoingTo('go back to the initial session (tab)');
+        $I->closeTab();
+
+        $I->amGoingTo('try to submit an order and make sure I see the warning');
+        $orderCheckout->submitOrder();
+        $I->see($product1['OXTITLE_1']);
+        $I->see($product2['OXTITLE_1']);
+        $I->see(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
+
+        $I->amGoingTo('confirm that order can be submitted after the warning was shown');
+        $orderCheckout->submitOrderSuccessfully();
+    }
+
+    public function testWarningAboutBasketChangesWithEmptyBasket(AcceptanceTester $I): void
+    {
+        $I->wantToTest('card-modified-warning-message behaviour when cart was emptied from another session');
+        $user = Fixtures::get('existingUser');
+        $product = Fixtures::get('product-1000');
+
+        $I->amGoingTo('add a product and go through till the last order step');
+        $I->openShop()
+            ->loginUser(
+                $user['userLoginName'],
+                $user['userPassword']
+            );
+        $basket = new Basket($I);
+        $basket->addProductToBasket($product['OXID'], 1);
+        $orderCheckout = $basket->openMiniBasket()->openCheckout()->goToNextStep();
+
+        $I->amGoingTo('remove that product from basket in another session (browser tab)');
+        $I->openNewTab();
+        $I->openShop();
+        (new Basket($I))->openMiniBasket()
+            ->openBasketDisplay()
+            ->updateProductAmount(0);
+
+        $I->amGoingTo('go back to the initial session (tab)');
+        $I->closeTab();
+
+        $I->amGoingTo('try to submit an order and make sure I see the warning');
+        $orderCheckout->submitOrder();
+        $I->see(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
+        $I->see(Translator::translate('BASKET_EMPTY'));
+
+        $I->amGoingTo('confirm that warning is gone after page reload');
+        $I->reloadPage();
+        $I->dontSee(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
+    }
+
     private function getExistingUserData(): array
     {
         return Fixtures::get('existingUser');

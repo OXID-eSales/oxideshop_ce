@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+/**
+ * @deprecated will be removed in next major version
+ */
 class DateFormatHelper
 {
     /**

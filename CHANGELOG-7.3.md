@@ -34,3 +34,4 @@
 - Related Methods for managing cache files in Utils will be deleted in next major version
 - Parameter `includePermanentCache` of the method `Utils:oxResetFileCache()`
 - The interface `CacheConnectorInterface`
+- The helper `DateFormatHelper` will be removed in next major version

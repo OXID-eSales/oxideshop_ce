@@ -42,10 +42,4 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InputHelpLogic:
 
-  OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\DateFormatHelper:
-    deprecated:
-      package: 'oxid-esales/oxideshop-ce'
-      version: '7.3.0'
-      message: 'The "%service_id%" service is deprecated.'
-
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\InsertNewBasketItemLogicTwig:

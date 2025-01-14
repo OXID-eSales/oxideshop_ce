@@ -36,9 +36,9 @@ final class CsvFileGeneratorTest extends TestCase
 
     public function tearDown(): void
     {
-        parent::tearDown();
-
         $this->filesystem->remove($this->filename);
+
+        parent::tearDown();
     }
 
     public function testGenerateIfDataExists(): void

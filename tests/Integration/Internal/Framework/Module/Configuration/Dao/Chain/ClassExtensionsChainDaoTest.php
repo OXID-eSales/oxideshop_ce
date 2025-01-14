@@ -12,9 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\ClassExtensionsChainDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ClassExtensionsChainDaoTest extends TestCase
+final class ClassExtensionsChainDaoTest extends IntegrationTestCase
 {
     use ContainerTrait;
 

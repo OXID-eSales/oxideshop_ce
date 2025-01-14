@@ -34,9 +34,9 @@ final class ViewTest extends TestCase
 
     public function tearDown(): void
     {
-        parent::tearDown();
-
         $this->setupShopDatabase();
+
+        parent::tearDown();
     }
 
     public function testMultilanguageViewsAddLanguagesAfterAddingProduct(): void

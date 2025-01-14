@@ -19,6 +19,8 @@ final class TruncateLogicTest extends TestCase
 
     public function setup(): void
     {
+        parent::setUp();
+
         $this->truncateLogic = new TruncateLogic();
     }
 

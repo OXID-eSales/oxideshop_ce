@@ -24,16 +24,7 @@ final class ModuleListTest extends IntegrationTestCase
 {
     public function setUp(): void
     {
-        $this->getContainer()
-            ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
-            ->generate();
-
         parent::setUp();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
 
         $this->getContainer()
             ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')

@@ -19,31 +19,15 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ModulePackageInstallerTest extends TestCase
+final class ModulePackageInstallerTest extends IntegrationTestCase
 {
     use ContainerTrait;
-    use FilesystemTrait;
 
-    private $modulePackagePath = __DIR__ . '/Fixtures/test-module-package-installation';
+    private string $modulePackagePath = __DIR__ . '/Fixtures/test-module-package-installation';
     private string $packageName = 'test-module-package-installation';
     private string $moduleId = 'testModule';
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->backupVarDirectory();
-    }
-
-    public function tearDown(): void
-    {
-        $this->restoreVarDirectory();
-
-        parent::tearDown();
-    }
 
     public function testModuleNotInstalledByDefault(): void
     {

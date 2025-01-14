@@ -20,10 +20,7 @@ final class PaymentRDFaTest extends IntegrationTestCase
     use ContainerTrait;
 
     private string $paymentId;
-
     private string $descriptionInDefaultLanguage = 'description-in-default-language';
-
-    private string $descriptionInLanguage1 = 'description-in-lang-1';
 
     public function setUp(): void
     {

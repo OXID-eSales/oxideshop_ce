@@ -28,8 +28,8 @@ final class ModuleConfigurationTest extends IntegrationTestCase
 
     public function setUp(): void
     {
-        $this->installTestModule();
         parent::setUp();
+        $this->installTestModule();
     }
 
     public function tearDown(): void

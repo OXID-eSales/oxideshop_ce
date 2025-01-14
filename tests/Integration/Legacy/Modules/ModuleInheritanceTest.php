@@ -19,7 +19,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_chain_extension_3_1\vendor_1_module_3_1_myclass;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\ContentController as ModuleContentController;
@@ -35,7 +34,6 @@ use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use function Symfony\Component\String\u;
 
 /**
@@ -99,21 +97,17 @@ use function Symfony\Component\String\u;
  */
 final class ModuleInheritanceTest extends IntegrationTestCase
 {
-    use FilesystemTrait;
-
     private ContainerInterface $container;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->backupVarDirectory();
         $this->container = ContainerFactory::getInstance()->getContainer();
     }
 
     public function tearDown(): void
     {
-        $this->restoreVarDirectory();
         $this->container->get(ShopCacheCleanerInterface::class)->clear(1);
 
         parent::tearDown();

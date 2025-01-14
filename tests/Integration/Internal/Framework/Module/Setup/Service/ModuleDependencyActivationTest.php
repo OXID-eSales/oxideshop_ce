@@ -29,11 +29,11 @@ final class ModuleDependencyActivationTest extends IntegrationTestCase
 
     public function setup(): void
     {
+        parent::setUp();
+
         $moduleInstaller = $this->get(ModuleInstallerInterface::class);
         $moduleInstaller->install(new OxidEshopPackage($this->testDependentModulePath));
         $moduleInstaller->install(new OxidEshopPackage($this->testModuleWithDependencyPath));
-
-        parent::setUp();
     }
 
     public function tearDown(): void

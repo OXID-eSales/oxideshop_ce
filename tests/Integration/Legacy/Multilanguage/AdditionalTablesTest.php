@@ -26,9 +26,9 @@ final class AdditionalTablesTest extends TestCase
 
     public function tearDown(): void
     {
-        parent::tearDown();
-
         $this->setupShopDatabase();
+
+        parent::tearDown();
     }
 
     public function testCreateLanguagesAfterAdditionalTable(): void

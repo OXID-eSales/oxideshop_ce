@@ -32,9 +32,9 @@ final class ImportObjectTest extends IntegrationTestCase
 
     public function tearDown(): void
     {
-        parent::setUp();
-
         Registry::getConfig()->setAdminMode(false);
+
+        parent::tearDown();
     }
 
     public function testGetFields(): void

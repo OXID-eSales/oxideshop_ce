@@ -20,6 +20,8 @@ final class FilesystemContainerCacheTest extends TestCase
     public function tearDown(): void
     {
         $this->get(ContainerCacheInterface::class)->invalidate(2);
+
+        parent::tearDown();
     }
 
     public function testContainerCacheInvalidation(): void

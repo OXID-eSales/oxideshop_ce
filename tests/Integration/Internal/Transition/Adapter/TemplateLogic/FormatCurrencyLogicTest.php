@@ -19,8 +19,8 @@ final class FormatCurrencyLogicTest extends IntegrationTestCase
 
     public function setUp(): void
     {
-        $this->numberFormatLogic = new FormatCurrencyLogic();
         parent::setUp();
+        $this->numberFormatLogic = new FormatCurrencyLogic();
     }
 
     #[DataProvider('numberFormatProvider')]

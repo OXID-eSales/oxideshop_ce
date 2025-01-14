@@ -34,10 +34,10 @@ final class SeoEncoderCategoryTest extends IntegrationTestCase
 
     public function setUp(): void
     {
+        parent::setUp();
+
         $this->replaceContainerInstance();
         $this->resetDatabaseProvider();
-
-        parent::setUp();
     }
 
     public function testOnDeleteCategoryWillSetDependantRecordsToExpired(): void

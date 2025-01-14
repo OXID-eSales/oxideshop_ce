@@ -13,33 +13,16 @@ use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ComponentInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ComponentInstallerTest extends TestCase
+final class ComponentInstallerTest extends IntegrationTestCase
 {
     use ContainerTrait;
-    use FilesystemTrait;
 
     private string $servicesFilePath = 'Fixtures/services.yaml';
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->backupVarDirectory();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->restoreVarDirectory();
-    }
 
     public function testInstall(): void
     {

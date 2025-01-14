@@ -21,44 +21,36 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
     private string $fixtureDirectory = __DIR__ . '/Fixtures';
 
-    private string $themeId = 'testTheme';
+    private string $initialThemeId = 'some-theme-id';
+    private string $newThemeId = 'testTheme';
     private array $originalConfig;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->saveOriginalConfig();
         $this->setShopFixtures();
-    }
-
-    public function tearDown(): void
-    {
-        $this->restoreOriginalConfig();
-        parent::tearDown();
     }
 
     public function testThemeActivationOnSuccess(): void
     {
-        $arguments = ['theme-id' => $this->themeId];
+        $this->createCommandTester()
+            ->execute(
+                ['theme-id' => $this->newThemeId]
+            );
 
-        $themeActivateCommand = $this->getCommandObject();
-        $commandTester = new CommandTester($themeActivateCommand);
-
-        $commandTester->execute($arguments);
-        $this->assertSame($this->themeId, $this->getActiveTheme());
+        $this->assertSame($this->newThemeId, $this->getActiveTheme());
     }
 
     public function testThemeAlreadyActivated(): void
     {
-        $arguments = ['theme-id' => $this->themeId];
+        $arguments = ['theme-id' => $this->newThemeId];
+        $commandTester = $this->createCommandTester();
 
-        $themeActivateCommand = $this->getCommandObject();
-        $commandTester = new CommandTester($themeActivateCommand);
         $commandTester->execute($arguments);
-        $commandTester->execute($arguments); //running twice is important
+        $commandTester->execute($arguments);
 
         $this->assertStringContainsString(
-            sprintf('Theme - "%s" is already active.', $this->themeId),
+            \sprintf('Theme - "%s" is already active.', $this->newThemeId),
             $commandTester->getDisplay()
         );
     }
@@ -66,23 +58,15 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     public function testNonExistingThemeActivation(): void
     {
         $nonExistingThemeId = 'some-theme-id';
-        $arguments = ['theme-id' => $nonExistingThemeId];
+        $commandTester = $this->createCommandTester();
 
-        $themeActivateCommand = $this->getCommandObject();
-        $commandTester = new CommandTester($themeActivateCommand);
-        $commandTester->execute($arguments);
+        $commandTester->execute(['theme-id' => $nonExistingThemeId]);
 
         $this->assertStringContainsString(
             sprintf('Theme - "%s" not found.', $nonExistingThemeId),
             $commandTester->getDisplay()
         );
-
-        $this->assertSame('absolute-dummy-value', $this->getActiveTheme());
-    }
-
-    private function getCommandObject(): ThemeActivateCommand
-    {
-        return $this->get(ThemeActivateCommand::class);
+        $this->assertSame($this->initialThemeId, $this->getActiveTheme());
     }
 
     private function getActiveTheme(): string
@@ -93,7 +77,7 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     private function setShopFixtures(): void
     {
         Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sTheme', 'absolute-dummy-value');
+        Registry::getConfig()->setConfigParam('sTheme', $this->initialThemeId);
 
         $this->createContainer();
         $this->container->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
@@ -101,16 +85,8 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         $this->attachContainerToContainerFactory();
     }
 
-    private function saveOriginalConfig(): void
+    private function createCommandTester(): CommandTester
     {
-        $this->originalConfig = [
-            'sTheme' => Registry::getConfig()->getConfigParam('sTheme')
-        ];
-    }
-
-    private function restoreOriginalConfig(): void
-    {
-        Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sTheme', $this->originalConfig['sTheme']);
+        return new CommandTester($this->get(ThemeActivateCommand::class));
     }
 }

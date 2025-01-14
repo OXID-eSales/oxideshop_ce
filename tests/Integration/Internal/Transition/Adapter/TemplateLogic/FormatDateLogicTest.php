@@ -19,8 +19,8 @@ final class FormatDateLogicTest extends TestCase
 
     public function setUp(): void
     {
-        $this->formDateLogic = new FormatDateLogic();
         parent::setUp();
+        $this->formDateLogic = new FormatDateLogic();
     }
 
     public function testFormdateWithEmptyValue(): void

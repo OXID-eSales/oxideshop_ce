@@ -17,46 +17,60 @@ use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
-class LanguageTest extends IntegrationTestCase
+use function sprintf;
+
+final class LanguageTest extends IntegrationTestCase
 {
-    public function testTranslateCachedString(): void
+    public function setUp(): void
     {
-        $stringToTranslate = uniqid();
-        $cache = ContainerFacade::get(TagAwareCacheInterface::class);
+        parent::setUp();
+
+        ContainerFacade::get(TagAwareCacheInterface::class)->invalidateTags(['oxid_esales.cache.language']);
+    }
+
+    public function tearDown(): void
+    {
+        ContainerFacade::get(TagAwareCacheInterface::class)->invalidateTags(['oxid_esales.cache.language']);
+
+        parent::tearDown();
+    }
+
+    public function testTranslateStringWithMissingTranslation(): void
+    {
+        $translationKey = uniqid('some-key-', true);
+        $language = new Language();
         $logger = $this->createMock(LoggerInterface::class);
         Registry::set('logger', $logger);
 
-        $config = Registry::getConfig();
-
         $logger->expects($this->once())
             ->method('warning')
-            ->with(sprintf('translation for %s not found', $stringToTranslate), $this->anything());
+            ->with(sprintf('translation for %s not found', $translationKey), $this->anything());
 
+        $translation = $language->translateString($translationKey, $language->getBaseLanguage());
+
+        $this->assertEquals($translationKey, $translation);
+    }
+
+    public function testTranslateStringWithTranslationInCache(): void
+    {
+        $translationKey = uniqid('some-key-', true);
+        $cachedTranslation = 'some-translation';
         $language = new Language();
-        $translatedString = $language->translateString($stringToTranslate, $language->getBaseLanguage());
-
-        $this->assertEquals($stringToTranslate, $translatedString);
-
-        $cache->invalidateTags(['oxid_esales.cache.language']);
-
-        $langCacheName = sprintf(
+        $cacheKey = sprintf(
             'langcache_%d_%s_%d_%s_default',
-            $config->isAdmin(),
+            Registry::getConfig()->isAdmin(),
             $language->getBaseLanguage(),
-            $config->getShopId(),
-            $config->getConfigParam('sTheme')
+            Registry::getConfig()->getShopId(),
+            Registry::getConfig()->getConfigParam('sTheme')
         );
+        ContainerFacade::get(TagAwareCacheInterface::class)
+            ->get($cacheKey, function (ItemInterface $item) use ($translationKey, $cachedTranslation) {
+                $item->tag('oxid_esales.cache.language');
+                return [$translationKey => $cachedTranslation];
+            });
 
-        $cache->get($langCacheName, function (ItemInterface $item) use ($stringToTranslate) {
-            $item->tag('oxid_esales.cache.language');
-            return [$stringToTranslate => 'translated value'];
-        });
+        $translation = $language->translateString($translationKey, $language->getBaseLanguage());
 
-        $language = new Language();
-        $translatedString = $language->translateString($stringToTranslate, $language->getBaseLanguage());
-
-        $this->assertEquals('translated value', $translatedString);
-
-        $cache->invalidateTags(['oxid_esales.cache.language']);
+        $this->assertEquals($cachedTranslation, $translation);
     }
 }

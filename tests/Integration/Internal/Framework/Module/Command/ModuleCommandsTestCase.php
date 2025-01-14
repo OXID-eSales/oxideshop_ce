@@ -12,12 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Path;
 
-class ModuleCommandsTestCase extends TestCase
+class ModuleCommandsTestCase extends IntegrationTestCase
 {
     protected string $modulesPath = __DIR__ . '/Fixtures/modules/';
 

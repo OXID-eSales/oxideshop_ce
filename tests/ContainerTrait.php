@@ -65,7 +65,6 @@ trait ContainerTrait
     private function compileContainer(): void
     {
         $this->container->compile(true);
-        $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
     }
 
     private function loadYamlFixture(string $fixtureDir): void

@@ -11,12 +11,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
-use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class ModuleTemplateExtensionChainTest extends TestCase
+final class ModuleTemplateExtensionChainTest extends IntegrationTestCase
 {
     private ShopConfigurationDaoInterface $shopConfigurationDao;
     private int $shopId = 1;

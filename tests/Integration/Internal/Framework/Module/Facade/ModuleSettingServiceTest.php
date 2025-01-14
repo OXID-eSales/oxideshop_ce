@@ -15,11 +15,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 use function Symfony\Component\String\u;
 
-final class ModuleSettingServiceTest extends TestCase
+final class ModuleSettingServiceTest extends IntegrationTestCase
 {
     use ContainerTrait;
 

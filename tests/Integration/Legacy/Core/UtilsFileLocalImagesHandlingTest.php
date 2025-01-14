@@ -42,8 +42,8 @@ final class UtilsFileLocalImagesHandlingTest extends IntegrationTestCase
 
     public function tearDown(): void
     {
-        parent::tearDown();
         $this->clearTestDirectories();
+        parent::tearDown();
     }
 
     public function testProcessFilesWillCopyFile(): void

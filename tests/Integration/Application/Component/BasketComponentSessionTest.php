@@ -20,21 +20,12 @@ final class BasketComponentSessionTest extends IntegrationTestCase
 {
     private string $articleId = '1000';
 
-    private bool $configBlUseStock;
-
     public function setUp(): void
     {
         parent::setUp();
-        $this->configBlUseStock = Registry::getConfig()->getConfigParam('blUseStock');
         Registry::getConfig()->setConfigParam('blUseStock', false);
         Registry::getSession()->setVariable('aLastcall', []);
         $this->createTestProduct();
-    }
-
-    public function tearDown(): void
-    {
-        Registry::getConfig()->setConfigParam('blUseStock', $this->configBlUseStock);
-        parent::tearDown();
     }
 
     public function testChangingBasketWhenSessionChallengeValidationNotPassed(): void

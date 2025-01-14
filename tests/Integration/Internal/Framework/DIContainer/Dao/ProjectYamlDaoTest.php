@@ -43,9 +43,9 @@ final class ProjectYamlDaoTest extends TestCase
 
     public function tearDown(): void
     {
-        parent::tearDown();
-
         (new Filesystem())->remove($this->tmpFixture);
+
+        parent::tearDown();
     }
 
     public function testLadProjectConfigFileWillWorkWithEmptyFile(): void

@@ -23,8 +23,8 @@ final class ConnectionFactoryTest extends TestCase
 
     public function tearDown(): void
     {
-        parent::tearDown();
         unlink($this->logFile);
+        parent::tearDown();
     }
 
     public function testSqlLoggerWritesExpectedValueToTheLog(): void

@@ -15,10 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProvid
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
-final class ModulesDataProviderTest extends TestCase
+final class ModulesDataProviderTest extends IntegrationTestCase
 {
     use ContainerTrait;
 

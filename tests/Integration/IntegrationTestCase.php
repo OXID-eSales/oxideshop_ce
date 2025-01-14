@@ -11,23 +11,27 @@ namespace OxidEsales\EshopCommunity\Tests\Integration;
 
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
 use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
 {
     use ContainerTrait;
     use DatabaseTrait;
+    use FilesystemTrait;
 
     public function setUp(): void
     {
         parent::setUp();
 
+        $this->backupVarDirectory();
         $this->beginTransaction();
     }
 
     public function tearDown(): void
     {
         $this->rollBackTransaction();
+        $this->restoreVarDirectory();
 
         parent::tearDown();
     }

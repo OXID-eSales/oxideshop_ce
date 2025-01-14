@@ -30,18 +30,9 @@ final class OnlineModuleNotifierTest extends IntegrationTestCase
 
     private array $installedModules = [];
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->installedModules = [];
-        $this->backupVarDirectory();
-    }
-
     public function tearDown(): void
     {
         $this->uninstallTestedModules();
-        $this->restoreVarDirectory();
         $this->get(ShopCacheCleanerInterface::class)->clear(1);
 
         parent::tearDown();

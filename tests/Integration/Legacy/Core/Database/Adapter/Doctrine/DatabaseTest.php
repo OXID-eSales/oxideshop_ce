@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapt
 
 use Exception;
 use InvalidArgumentException;
-use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine\ResultSet;
 use OxidEsales\EshopCommunity\Core\Exception\DatabaseErrorException;

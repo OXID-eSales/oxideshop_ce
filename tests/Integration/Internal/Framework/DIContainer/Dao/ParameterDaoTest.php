@@ -12,28 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\DIConta
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
-final class ParameterDaoTest extends TestCase
+final class ParameterDaoTest extends IntegrationTestCase
 {
     use ContainerTrait;
-    use FilesystemTrait;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->backupVarDirectory();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->restoreVarDirectory();
-    }
 
     public function testAddWithMultipleParameters(): void
     {

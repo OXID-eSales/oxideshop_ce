@@ -15,7 +15,6 @@ use oxDb;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 
@@ -28,8 +27,6 @@ use ReflectionClass;
  */
 abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplementationBase
 {
-    use ContainerTrait;
-
     /**
      * The data provider for the method testGetAllForAllFetchModes.
      *

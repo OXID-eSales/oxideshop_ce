@@ -12,13 +12,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentWithOrphanSettingEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Path;
 
-final class ShopEnvironmentMisconfigurationEventSubscriberTest extends TestCase
+final class ShopEnvironmentMisconfigurationEventSubscriberTest extends IntegrationTestCase
 {
     use ContainerTrait;
 

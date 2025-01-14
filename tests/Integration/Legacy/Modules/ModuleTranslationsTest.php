@@ -15,27 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class ModuleTranslationsTest extends IntegrationTestCase
 {
-    use FilesystemTrait;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->backupVarDirectory();
-    }
-
-    public function tearDown(): void
-    {
-        $this->restoreVarDirectory();
-
-        parent::tearDown();
-    }
-
     public function testTranslation(): void
     {
         $this->get(ModuleInstallerInterface::class)

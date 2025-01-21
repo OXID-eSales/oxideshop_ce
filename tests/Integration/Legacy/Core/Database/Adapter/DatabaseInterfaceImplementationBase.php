@@ -82,18 +82,18 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
 
     public static function tearDownAfterClass(): void
     {
-        self::getDatabaseHandler()->exec('DROP TABLE ' . self::TABLE_NAME . ';');
+        self::getDatabaseHandler()->exec('DROP TABLE IF EXISTS ' . self::TABLE_NAME . ';');
 
         parent::tearDownAfterClass();
     }
 
     public function setUp(): void
     {
+        parent::setUp();
+
         /** Set a user-defined error handler in order to handle errors triggered with trigger_error */
         $this->errors = [];
         set_error_handler($this->errorHandler(...));
-
-        parent::setUp();
 
         $this->initializeDatabase();
         $this->truncateTestTable();

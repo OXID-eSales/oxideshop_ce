@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Env;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\EnvTrait;
 use PHPUnit\Framework\TestCase;
@@ -41,9 +42,20 @@ final class EnvLoaderTest extends TestCase
 
     public function testApplicationEnvironmentIsDefined(): void
     {
+        $this->loadEnvFixture($this->fixtures, ["key=value"]);
+
         $currentEnvironment = getenv($this->appEnvKey);
 
         $this->assertNotEmpty($currentEnvironment);
+    }
+
+    public function testLoadNonExistentEnvironmentFile(): void
+    {
+        $dotenvLoader = new DotenvLoader('non-existent-path');
+
+        $this->expectNotToPerformAssertions();
+
+        $dotenvLoader->loadEnvironmentVariables();
     }
 
     public function testApplicationEnvironmentCanBeRedefined(): void

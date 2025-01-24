@@ -1707,12 +1707,6 @@ return [
         'isInterface'      => true,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Model\Contract\CacheConnectorInterface'        => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Contract\CacheConnectorInterface::class,
-        'isAbstract'       => false,
-        'isInterface'      => true,
-        'isDeprecated'     => true
-    ],
     'OxidEsales\Eshop\Application\Model\Country'                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Country::class,
         'isAbstract'       => false,

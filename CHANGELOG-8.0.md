@@ -65,3 +65,4 @@
 - Dependency on `oxideshop-facts` component
 - `FileCache` and `SubShopSpecificFileCache` classes. Use `ContextInterface::getCurrentShopId()` instead
 - Legacy file-based caching methods from `Utils` class
+- Remove deprecated Interface `CacheConnectorInterface`

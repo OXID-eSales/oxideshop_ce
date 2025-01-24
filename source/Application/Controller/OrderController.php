@@ -128,50 +128,53 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Executes parent::render(), if basket is empty - redirects to main page
-     * and exits the script (\OxidEsales\Eshop\Application\Model\Order::validateOrder()). Loads and passes payment
-     * info to template engine. Refreshes basket articles info by additionally loading
-     * each article object (\OxidEsales\Eshop\Application\Model\Order::getProdFromBasket()), adds customer
-     * addressing/delivering data (\OxidEsales\Eshop\Application\Model\Order::getDelAddressInfo()) and delivery sets
-     * info (\OxidEsales\Eshop\Application\Model\Order::getShipping()).
-     *
-     * @return string Returns name of template to render order::_sThisTemplate
+     * @inheritdoc
      */
     public function render()
     {
         if ($this->getIsOrderStep()) {
-            $oBasket = $this->getBasket();
-            $myConfig = Registry::getConfig();
-            $session = Registry::getSession();
-
-            if ($myConfig->getConfigParam('blPsBasketReservationEnabled')) {
-                $session->getBasketReservations()->renewExpiration();
-                if (!$oBasket || ($oBasket && !$oBasket->getProductsCount())) {
-                    Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', true, 302);
+            $basket = $this->getBasket();
+            if (Registry::getConfig()->getConfigParam('blPsBasketReservationEnabled')) {
+                Registry::getSession()->getBasketReservations()->renewExpiration();
+                if (!$basket || ($basket && !$basket->getProductsCount())) {
+                    Registry::getUtils()->redirect(
+                        Registry::getConfig()->getShopHomeUrl() . 'cl=basket',
+                        true,
+                        302
+                    );
                 }
             }
 
-            // can we proceed with ordering ?
-            $oUser = $this->getUser();
-            if (!$oUser && ($oBasket && $oBasket->getProductsCount() > 0)) {
-                Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=basket', false, 302);
-            } elseif (!$oBasket || !$oUser || ($oBasket && !$oBasket->getProductsCount())) {
-                Registry::getUtils()->redirect($myConfig->getShopHomeUrl(), false, 302);
+            $user = $this->getUser();
+            if (!$user && ($basket && $basket->getProductsCount() > 0)) {
+                Registry::getUtils()->redirect(
+                    Registry::getConfig()->getShopHomeUrl() . 'cl=basket',
+                    false,
+                    302
+                );
+            } elseif (!$basket || !$user || ($basket && !$basket->getProductsCount())) {
+                Registry::getUtils()->redirect(
+                    Registry::getConfig()->getShopHomeUrl(),
+                    false,
+                    302
+                );
             }
 
-            // payment is set ?
             if (!$this->getPayment()) {
-                // redirecting to payment step on error ..
-                Registry::getUtils()->redirect($myConfig->getShopCurrentURL() . '&cl=payment', true, 302);
+                Registry::getUtils()->redirect(
+                    Registry::getConfig()->getShopCurrentURL() . '&cl=payment',
+                    true,
+                    302
+                );
             }
         }
 
         $this->_aViewData['basketSummaryHash'] = $this->getBasketSummaryHash();
+
         parent::render();
 
-        // reload blocker
-        if (!$session->getVariable('sess_challenge')) {
-            $session->setVariable('sess_challenge', $this->getUtilsObjectInstance()->generateUID());
+        if (!Registry::getSession()->getVariable('sess_challenge')) {
+            Registry::getSession()->setVariable('sess_challenge', $this->getUtilsObjectInstance()->generateUID());
         }
 
         return $this->_sThisTemplate;

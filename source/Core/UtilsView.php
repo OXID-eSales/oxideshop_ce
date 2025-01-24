@@ -689,11 +689,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $templateBlocksToExchange = $this->formListOfDuplicatedBlocks($activeBlockTemplates);
 
-        if ($templateBlocksToExchange['theme']) {
+        if ($templateBlocksToExchange['theme'] ?? false) {
             $templateBlocks = $this->removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange);
         }
 
-        if ($templateBlocksToExchange['custom_theme']) {
+        if ($templateBlocksToExchange['custom_theme'] ?? false) {
             $templateBlocks = $this->removeParentBlocks($templateBlocks, $templateBlocksToExchange);
         }
 
@@ -812,7 +812,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         foreach ($blockTemplates as $activeBlockTemplate) {
             try {
-                if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
+                if (array_key_exists($activeBlockTemplate['OXBLOCKNAME'], $templateBlocksWithContent) && !is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
                     $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = [];
                 }
                 $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Smarty\ErrorHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
 
 /**
@@ -62,10 +63,18 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
         foreach ($context as $key => $value) {
             $this->engine->assign($key, $value);
         }
+
+        $errorHandler = new ErrorHandler();
+        $errorHandler->activate();
         if (isset($context['oxEngineTemplateId'])) {
-            return $this->engine->fetch($name, $context['oxEngineTemplateId']);
+            $return = $this->engine->fetch($name, $context['oxEngineTemplateId']);
+        } else {
+            $return = $this->engine->fetch($name);
         }
-        return $this->engine->fetch($name);
+
+        $errorHandler->deactivate();
+
+        return $return;
     }
 
     /**

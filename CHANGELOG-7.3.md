@@ -33,3 +33,4 @@
 - `FileCache` and `SubShopSpecificFileCache` classes 
 - Related Methods for managing cache files in Utils will be deleted in next major version
 - Parameter `includePermanentCache` of the method `Utils:oxResetFileCache()`
+- The interface `CacheConnectorInterface`

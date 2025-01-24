@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Model\Contract;
 
 /**
+ * @deprecated will be removed in next major version
+ *
  * CacheConnector interface
  */
 interface CacheConnectorInterface

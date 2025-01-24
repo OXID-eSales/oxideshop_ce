@@ -689,11 +689,11 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         $templateBlocksToExchange = $this->formListOfDuplicatedBlocks($activeBlockTemplates);
 
-        if ($templateBlocksToExchange['theme'] ?? false) {
+        if ($templateBlocksToExchange['theme']) {
             $templateBlocks = $this->removeDefaultBlocks($activeBlockTemplates, $templateBlocksToExchange);
         }
 
-        if ($templateBlocksToExchange['custom_theme'] ?? false) {
+        if ($templateBlocksToExchange['custom_theme']) {
             $templateBlocks = $this->removeParentBlocks($templateBlocks, $templateBlocksToExchange);
         }
 
@@ -713,7 +713,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
         $customThemeId = $this->getConfig()->getConfigParam('sCustomTheme');
 
         foreach ($activeBlockTemplates as $activeBlockTemplate) {
-            if ($activeBlockTemplate['OXTHEME'] ?? false) {
+            if ($activeBlockTemplate['OXTHEME']) {
                 if ($customThemeId && $customThemeId === $activeBlockTemplate['OXTHEME']) {
                     $templateBlocksToExchange['custom_theme'][] = $this->prepareBlockKey($activeBlockTemplate);
                 } else {
@@ -812,7 +812,7 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
 
         foreach ($blockTemplates as $activeBlockTemplate) {
             try {
-                if (array_key_exists($activeBlockTemplate['OXBLOCKNAME'], $templateBlocksWithContent) && !is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
+                if (!is_array($templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']])) {
                     $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']] = [];
                 }
                 $templateBlocksWithContent[$activeBlockTemplate['OXBLOCKNAME']][] = $this->_getTemplateBlock($activeBlockTemplate['OXMODULE'], $activeBlockTemplate['OXFILE']);

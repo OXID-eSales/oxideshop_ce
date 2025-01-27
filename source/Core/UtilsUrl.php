@@ -476,7 +476,9 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
         $aParams = [];
         foreach ($aNavParams as $sValue) {
             $exp = explode("=", $sValue);
-            $aParams[$exp[0]] = $exp[1];
+            if (isset($exp[1])) {
+                $aParams[$exp[0]] = $exp[1];
+            }
         }
 
         return $aParams;

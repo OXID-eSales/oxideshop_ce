@@ -689,7 +689,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // user remark
-        if (!isset($this->oxorder__oxremark) || $this->oxorder__oxremark->value === null) {
+        if (!isset($this->oxorder__oxremark)) {
             $this->oxorder__oxremark = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ordrem'), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
@@ -1823,7 +1823,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getPaymentType()
     {
-        if ($this->oxorder__oxpaymentid->value && $this->_oPaymentType === null) {
+        if (isset($this->oxorder__oxpaymentid->value) && $this->oxorder__oxpaymentid->value && $this->_oPaymentType === null) {
             $this->_oPaymentType = false;
             $oPaymentType = oxNew(\OxidEsales\Eshop\Application\Model\UserPayment::class);
             if ($oPaymentType->load($this->oxorder__oxpaymentid->value)) {

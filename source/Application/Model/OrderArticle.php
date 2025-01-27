@@ -196,7 +196,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
             return $this->_aPersParam;
         }
 
-        if ($this->oxorderarticles__oxpersparam->value) {
+        if (isset($this->oxorderarticles__oxpersparam->value)) {
             $this->_aPersParam = unserialize($this->oxorderarticles__oxpersparam->value);
         }
 

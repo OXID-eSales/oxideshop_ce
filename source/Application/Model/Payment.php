@@ -396,7 +396,10 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 ':oxpaymentid' => $sOxId
             ]);
 
-            return $rs->EOF;
+            if (isset($rs->EOF) && is_string($rs->EOF)) {
+                return $rs->EOF;
+            }
+
         }
 
         return false;

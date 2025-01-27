@@ -659,6 +659,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
             // yes, we need to build the navigation object
             $pageNavigation = new stdClass();
             $pageNavigation->pages = round((($this->_iListSize - 1) / $adminListSize) + 0.5, 0);
+            $pageNavigation->actpage = 0;
             $pageNavigation->actpage = ($pageNavigation->actpage > $pageNavigation->pages) ? $pageNavigation->pages : round(
                 ($this->_iCurrListPos / $adminListSize) + 0.5,
                 0

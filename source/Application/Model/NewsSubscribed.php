@@ -170,7 +170,9 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getOptInStatus()
     {
-        return $this->oxnewssubscribed__oxdboptin->value;
+        return isset($this->oxnewssubscribed__oxdboptin) && isset($this->oxnewssubscribed__oxdboptin->value)
+            ? $this->oxnewssubscribed__oxdboptin->value
+            : null;
     }
 
     /**

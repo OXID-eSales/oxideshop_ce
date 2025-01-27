@@ -685,9 +685,9 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
 
         if (
-            !$this->_checkArrValuesEmpty($_REQUEST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_POST["dynvalue"], $aFields) ||
-            !$this->_checkArrValuesEmpty($_GET["dynvalue"], $aFields)
+            !$this->_checkArrValuesEmpty($_REQUEST["dynvalue"] ?? [], $aFields) ||
+            !$this->_checkArrValuesEmpty($_POST["dynvalue"] ?? [], $aFields) ||
+            !$this->_checkArrValuesEmpty($_GET["dynvalue"] ?? [], $aFields)
         ) {
             $this->_blDynDataFiltered = true;
         }

@@ -2266,6 +2266,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
      */
     public function updateSoldAmount($dAmount = 0)
     {
+        $rs = false;
         if (!$dAmount) {
             return;
         }

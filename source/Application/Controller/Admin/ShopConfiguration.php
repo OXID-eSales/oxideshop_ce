@@ -399,7 +399,14 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
      */
     protected function _arrayToMultiline($input) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return implode("\n", (array) $input);
+        $array = array_values((array) $input);
+        // implode does not work with multidimensional lines
+        foreach ($array as $key => $value) {
+            if (is_array($value)) {
+                unset($array[$key]);
+            }
+        }
+        return implode("\n", $array);
     }
 
     /**
@@ -441,7 +448,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                 if ($multiline) {
                     $multiline .= "\n";
                 }
-                $multiline .= $key . " => " . $value;
+                $multiline .= $key . " => " . ((is_array($value)) ? 'Array' : $value);
             }
 
             return $multiline;

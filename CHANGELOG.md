@@ -34,6 +34,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - BaseModel::getLanguage() isset check on property
 - UtilsUrl::stringToParamsArray() isset check after explode()
 - UtilsView::filterTemplateBlocks() null coalesce array variables
+- ShopConfiguration::_arrayToMultiline() fix implode error with multidimensional array
+- ShopList::render() updatenav check in _aViewData
 
 ### Removed
 

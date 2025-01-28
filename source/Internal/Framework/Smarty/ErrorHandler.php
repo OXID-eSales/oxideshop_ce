@@ -19,13 +19,13 @@ class ErrorHandler
     private $previousErrorHandler = null;
 
     /**
-     * @var bool $debug set to true if you want to see smarty errors
+     * @var bool $hideErrors set to true if you want to see smarty errors
      */
-    private bool $debug;
+    private bool $hideErrors;
 
-    public function __construct($debug = false)
+    public function __construct($hideErrors = false)
     {
-        $this->debug = $debug;
+        $this->hideErrors = $hideErrors;
     }
 
     /**
@@ -44,7 +44,7 @@ class ErrorHandler
             Of particular note is that this value will be 0 if the statement that caused the error was
             prepended by the @ error-control operator.
         */
-        if ($this->debug) {
+        if ($this->hideErrors) {
             $this->previousErrorHandler = set_error_handler([$this, 'handleError']);
         }
     }
@@ -54,7 +54,7 @@ class ErrorHandler
      */
     public function deactivate()
     {
-        if ($this->debug) {
+        if ($this->hideErrors) {
             restore_error_handler();
             $this->previousErrorHandler = null;
         }

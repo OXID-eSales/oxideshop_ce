@@ -51,7 +51,7 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     {
         $this->engine = $engine;
         $this->bridge = $bridge;
-        $debug = Registry::get(ConfigFile::class)->getVar('iDebug') != 0;
+        $debug = Registry::get(ConfigFile::class)->getVar('iDebug') == 0;
         $this->errorHandler = new ErrorHandler($debug);
     }
 

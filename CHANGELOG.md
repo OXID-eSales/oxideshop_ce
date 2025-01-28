@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Error handler to LegacySmartyEngine for ignoring PHP 8+ warnings when config option `iDebug != 0`
+- Links to CHANGELOG for 6.14.2-6.14.3 and unreleased
+
+### Fixed
+
+- UserComponent::changeUserWithoutRedirect() undefined `oxuser__oxusername`
+- AdminListController::_setListNavigationParams() `actpage` default to 0
+- SystemInfoController::render() `shop` key null coalesce check
+- ThemeConfiguration::render() null coalesce check
+- ArticleListController::getTemplateName() null coalesce check
+- ForgotPasswordController::isExpiredLink() expired default to null
+- PaymentController::getCheckedPaymentId() isset check for $sCheckedId and null coalesce check on $_SERVER vars
+- ThankYouController::getOrder() null check
+- Article::updateSoldAmount default $rs to false
+- Basket::getPriceForPayment() isset check on oxdelivery
+- NewsSubscribed::getOptInStatus null coalesce on oxid oxboptin value
+- Order::finalizeOrder() null checks on order number and oxremark
+- Order::_updateNoticeList() null check
+- Order::getPaymentType() isset check on order
+- OrderArticle::getPersParams() isset check
+- Payment::delete() is_string and isset check on EOF
+- User::getNewsSubscription() isset and null coalescence on news subscriptions
+- InputValidator::checkLogin() isset check
+- BaseModel::getLanguage() isset check on property
+- UtilsUrl::stringToParamsArray() isset check after explode()
+- UtilsView::filterTemplateBlocks() null coalesce array variables
+
+### Removed
+
+- function.oxinputhelp.php unused $blAdmin parameter (no backward compat break - not used)
+
 ## [6.14.3] - 2024-11-04
 
 ### Changed
@@ -1309,6 +1344,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [6.0-beta.1] - 2016-11-30
 
+
+[Unreleased]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.14.3...b-6.5.x
+[6.14.3]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.14.2...v6.14.3
+[6.14.2]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.14.1...v6.14.2
 [6.14.1]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.14.0...v6.14.1
 [6.14.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.13.0...v6.14.0
 [6.13.0]: https://github.com/OXID-eSales/oxideshop_ce/compare/v6.12.0...v6.13.0

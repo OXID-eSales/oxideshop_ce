@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy;
 
+use OxidEsales\Eshop\Core\ConfigFile;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\ErrorHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
@@ -37,6 +39,7 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
      * @var array
      */
     private $globals = [];
+    private ErrorHandler $errorHandler;
 
     /**
      * Constructor.
@@ -48,6 +51,8 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     {
         $this->engine = $engine;
         $this->bridge = $bridge;
+        $debug = Registry::get(ConfigFile::class)->getVar('iDebug') != 0;
+        $this->errorHandler = new ErrorHandler($debug);
     }
 
     /**
@@ -64,15 +69,11 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
             $this->engine->assign($key, $value);
         }
 
-        $errorHandler = new ErrorHandler();
-        $errorHandler->activate();
-        if (isset($context['oxEngineTemplateId'])) {
-            $return = $this->engine->fetch($name, $context['oxEngineTemplateId']);
-        } else {
-            $return = $this->engine->fetch($name);
-        }
+        $engineTemplateId = $context['oxEngineTemplateId'] ?? null;
 
-        $errorHandler->deactivate();
+        $this->errorHandler->activate();
+        $return = $this->engine->fetch($name, $engineTemplateId);
+        $this->errorHandler->deactivate();
 
         return $return;
     }

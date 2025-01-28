@@ -15,25 +15,18 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty;
  */
 class ErrorHandler
 {
-    /**
-     * Allows {$foo->propName} where propName is undefined.
-     * @var bool
-     */
-    public $allowUndefinedProperties = true;
-
-    /**
-     * Allows {$foo.bar} where bar is unset and {$foo.bar1.bar2} where either bar1 or bar2 is unset.
-     * @var bool
-     */
-    public $allowUndefinedArrayKeys = true;
-
-    /**
-     * Allows {$foo->bar} where bar is not an object (e.g. null or false).
-     * @var bool
-     */
-    public $allowDereferencingNonObjects = true;
 
     private $previousErrorHandler = null;
+
+    /**
+     * @var bool $debug set to true if you want to see smarty errors
+     */
+    private bool $debug;
+
+    public function __construct($debug = false)
+    {
+        $this->debug = $debug;
+    }
 
     /**
      * Enable error handler to intercept errors
@@ -51,7 +44,9 @@ class ErrorHandler
             Of particular note is that this value will be 0 if the statement that caused the error was
             prepended by the @ error-control operator.
         */
-        $this->previousErrorHandler = set_error_handler([$this, 'handleError']);
+        if ($this->debug) {
+            $this->previousErrorHandler = set_error_handler([$this, 'handleError']);
+        }
     }
 
     /**
@@ -59,8 +54,10 @@ class ErrorHandler
      */
     public function deactivate()
     {
-        restore_error_handler();
-        $this->previousErrorHandler = null;
+        if ($this->debug) {
+            restore_error_handler();
+            $this->previousErrorHandler = null;
+        }
     }
 
     /**
@@ -78,30 +75,15 @@ class ErrorHandler
      */
     public function handleError($errno, $errstr, $errfile, $errline, $errcontext = [])
     {
-        if (
-            $this->allowUndefinedProperties && preg_match(
-                '/^(Undefined property)/',
-                $errstr
-            )
-        ) {
+        if (preg_match('/^(Undefined property)/', $errstr)) {
             return; // suppresses this error
         }
 
-        if (
-            $this->allowUndefinedArrayKeys && preg_match(
-                '/^(Undefined index|Undefined array key|Trying to access array offset on)/',
-                $errstr
-            )
-        ) {
+        if (preg_match('/^(Undefined index|Undefined array key|Trying to access array offset on)/', $errstr)) {
             return; // suppresses this error
         }
 
-        if (
-            $this->allowDereferencingNonObjects && preg_match(
-                '/^Attempt to read property ".+?" on/',
-                $errstr
-            )
-        ) {
+        if (preg_match('/^Attempt to read property ".+?" on/', $errstr)) {
             return; // suppresses this error
         }
 

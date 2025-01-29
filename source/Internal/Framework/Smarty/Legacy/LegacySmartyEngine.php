@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Smarty\Legacy;
 
-use OxidEsales\Eshop\Core\ConfigFile;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Bridge\SmartyEngineBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\ErrorHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface;
@@ -51,8 +49,6 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
     {
         $this->engine = $engine;
         $this->bridge = $bridge;
-        $debug = Registry::get(ConfigFile::class)->getVar('iDebug') == 0;
-        $this->errorHandler = new ErrorHandler($debug);
     }
 
     /**
@@ -71,9 +67,10 @@ class LegacySmartyEngine implements LegacySmartyEngineInterface, TemplateEngineI
 
         $engineTemplateId = $context['oxEngineTemplateId'] ?? null;
 
-        $this->errorHandler->activate();
+        $errorHandler = new ErrorHandler();
+        $errorHandler->activate();
         $return = $this->engine->fetch($name, $engineTemplateId);
-        $this->errorHandler->deactivate();
+        $errorHandler->deactivate();
 
         return $return;
     }

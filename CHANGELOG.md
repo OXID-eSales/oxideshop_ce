@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- Error handler to LegacySmartyEngine for ignoring PHP 8+ warnings when config option `iDebug != 0`
+- Error handler to LegacySmartyEngine for ignoring PHP 8+ warnings for the frontend
 - Links to CHANGELOG for 6.14.2-6.14.3 and unreleased
 
 ### Fixed

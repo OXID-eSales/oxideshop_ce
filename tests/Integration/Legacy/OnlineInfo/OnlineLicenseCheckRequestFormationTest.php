@@ -251,6 +251,11 @@ final class OnlineLicenseCheckRequestFormationTest extends IntegrationTestCase
         }
     }
 
+    private function cleanupServersData(): void
+    {
+        DatabaseProvider::getDb()->execute("DELETE FROM oxconfig WHERE oxvarname like 'aServersData_%'");
+    }
+
     private function getActiveAdminCount(): int
     {
         return (int) DatabaseProvider::getDb()

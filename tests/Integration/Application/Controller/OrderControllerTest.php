@@ -73,6 +73,16 @@ final class OrderControllerTest extends IntegrationTestCase
         $this->assertNotEmpty($_SESSION['Errors']);
     }
 
+    public function testRenderWillSetSessionChallenge(): void
+    {
+        $orderController = oxNew(OrderController::class);
+        $orderController->setIsOrderStep(false);
+
+        $orderController->render();
+
+        $this->assertNotEmpty($_SESSION['sess_challenge']);
+    }
+
     private function prepareUserStub(): void
     {
         Registry::getConfig()->setConfigParam('blEnableIntangibleProdAgreement', false);
@@ -102,7 +112,7 @@ final class OrderControllerTest extends IntegrationTestCase
             ->willReturnMap(
                 [
                     ['login-token', null],
-                    ['usr', $this->userId],
+                    ['usr', $this->userId]
                 ]
             );
         Registry::set(Session::class, $session);

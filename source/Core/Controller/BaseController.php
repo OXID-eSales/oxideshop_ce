@@ -10,13 +10,14 @@ namespace OxidEsales\EshopCommunity\Core\Controller;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\ShopVersion;
+use OxidEsales\EshopCommunity\Internal\Framework\Controller\ControllerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
  * configuration parameters.
  */
-class BaseController extends \OxidEsales\Eshop\Core\Base
+class BaseController extends \OxidEsales\Eshop\Core\Base implements ControllerInterface
 {
     /**
      * Array of data that is passed to template engine - array( "varName" => "varValue").

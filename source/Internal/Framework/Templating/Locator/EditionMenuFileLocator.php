@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -29,8 +30,12 @@ class EditionMenuFileLocator implements NavigationFileLocatorInterface
 
     public function locate(): array
     {
+        $path = $this->context->getEdition() === Edition::Community
+            ? $this->context->getSourcePath()
+            : $this->context->getEditionSourcePath($this->context->getEdition());
+
         $filePath = Path::join(
-            $this->context->getEditionSourcePath($this->context->getEdition()),
+            $path,
             'Application',
             'views',
             $this->themeName,

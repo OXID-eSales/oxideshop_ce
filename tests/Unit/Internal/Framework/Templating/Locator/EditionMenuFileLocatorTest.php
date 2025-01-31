@@ -61,7 +61,7 @@ final class EditionMenuFileLocatorTest extends TestCase
     {
         $context = new BasicContextStub();
         $context->setEdition(Edition::from($edition));
-        $context->setCommunityEditionSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathCE');
+        $context->setSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathCE');
         $context->setProfessionalEditionSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathPE');
         $context->setEnterpriseEditionSourcePath($this->vfsStreamDirectory->url() . '/testSourcePathEE');
 

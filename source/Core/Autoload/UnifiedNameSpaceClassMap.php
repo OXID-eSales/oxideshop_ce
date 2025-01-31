@@ -1711,7 +1711,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Contract\CacheConnectorInterface::class,
         'isAbstract'       => false,
         'isInterface'      => true,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Model\Country'                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Model\Country::class,

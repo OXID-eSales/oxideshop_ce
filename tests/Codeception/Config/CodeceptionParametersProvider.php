@@ -13,6 +13,7 @@ use OxidEsales\Codeception\Module\Database;
 use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionDirectoriesLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectDirectoriesLocator;
@@ -79,10 +80,13 @@ class CodeceptionParametersProvider
 
     private function getShopTestPath(): string
     {
+        $edition =  (new EditionResolver())->getEdition();
+        $testDirectoryName = $edition->isCommunityEdition() ? 'tests' : 'Tests';
+
         try {
             $testsPath = Path::join(
-                (new EditionDirectoriesLocator())->getEditionRootPath(Edition::Enterprise),
-                'Tests'
+                (new EditionDirectoriesLocator())->getEditionRootPath($edition),
+                $testDirectoryName
             );
         } catch (DirectoryNotExistentException) {
             $testsPath = Path::join(
@@ -90,6 +94,7 @@ class CodeceptionParametersProvider
                 'tests'
             );
         }
+
         return $testsPath;
     }
 

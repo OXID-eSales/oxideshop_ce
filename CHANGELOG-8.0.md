@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v8.0.0 - unreleased
+## v8.0.0-alpha.1 - 2025-02-03
 
 ### Added
 

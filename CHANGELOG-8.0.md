@@ -32,6 +32,7 @@
 - Browser-based application setup was discontinued. Only console-based setup is available
 - Replace file caching in `Utils` with Symfony cache
 - Removed $includePermanentCache parameter from `oxResetFileCache` method, all cache files are now cleared without exclusions.
+- Module environment configuration file paths
 
 ### Removed
 

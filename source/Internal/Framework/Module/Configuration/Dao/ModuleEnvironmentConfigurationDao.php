@@ -9,11 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 class ModuleEnvironmentConfigurationDao implements ModuleEnvironmentConfigurationDaoInterface
 {
@@ -50,11 +52,6 @@ class ModuleEnvironmentConfigurationDao implements ModuleEnvironmentConfiguratio
         return $data;
     }
 
-    /**
-     * backup environment configuration file
-     *
-     * @param int $shopId
-     */
     public function remove(string $moduleId, int $shopId): void
     {
         $path = $this->getEnvironmentConfigurationFilePath($moduleId, $shopId);
@@ -64,14 +61,14 @@ class ModuleEnvironmentConfigurationDao implements ModuleEnvironmentConfiguratio
         }
     }
 
-    /**
-     * @param int $shopId
-     *
-     * @return string
-     */
     private function getEnvironmentConfigurationFilePath(string $moduleId, int $shopId): string
     {
-        return $this->context->getProjectConfigurationDirectory()
-            . 'environment/shops/' . $shopId . '/modules/' . $moduleId . '.yaml';
+        return Path::join(
+            EnvUrlFormatter::toEnvUrl($this->context->getProjectConfigurationDirectory()),
+            'shops',
+            (string)$shopId,
+            'modules',
+            $moduleId . '.yaml'
+        );
     }
 }

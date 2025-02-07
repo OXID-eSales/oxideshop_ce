@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Configuration\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
     ModuleConfiguration\ModuleSettingsDataMapper};
@@ -20,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class ShopConfigurationDaoTest extends IntegrationTestCase
 {
@@ -157,11 +159,19 @@ final class ShopConfigurationDaoTest extends IntegrationTestCase
 
     private function configureModuleInEnvironmentFile(): void
     {
-        $storage = $this->get(FileStorageFactoryInterface::class)
-            ->create(
-                $this->get(ContextInterface::class)
-                    ->getProjectConfigurationDirectory() . "environment/shops/1/modules/{$this->testModuleId}.yaml"
-            );
+        $fileStorageFactory = $this->get(FileStorageFactoryInterface::class);
+
+        $configPath = Path::join(
+            EnvUrlFormatter::toEnvUrl(
+                $this->get(ContextInterface::class)->getProjectConfigurationDirectory()
+            ),
+            'shops',
+            '1',
+            'modules',
+            'testModuleId.yaml'
+        );
+
+        $storage = $fileStorageFactory->create($configPath);
 
         $storage->save([
             ModuleSettingsDataMapper::MAPPING_KEY => [

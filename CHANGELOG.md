@@ -36,6 +36,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - UtilsView::filterTemplateBlocks() null coalesce array variables
 - ShopConfiguration::_arrayToMultiline() fix implode error with multidimensional array
 - ShopList::render() updatenav check in _aViewData
+- SeoDecoder undefined array key oxtype
+- SystemRequirements non-numeric error on getBytes() 
+- Reading booling in VariantHandler Model
 
 ### Removed
 

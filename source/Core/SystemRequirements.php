@@ -1064,25 +1064,30 @@ class SystemRequirements
      */
     protected function _getBytes($sBytes) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        $sBytes = trim($sBytes);
-        $sLast = strtolower($sBytes[strlen($sBytes) - 1]);
-        switch ($sLast) {
-            // The 'G' modifier is available since PHP 5.1.0
-            // gigabytes
-            case 'g':
-                $sBytes *= 1024;
-            // megabytes
-            // no break
-            case 'm':
-                $sBytes *= 1024;
-            // kilobytes
-            // no break
-            case 'k':
-                $sBytes *= 1024;
-                break;
-        }
+        $sBytes = trim(strtolower($sBytes));
 
-        return $sBytes;
+        if (preg_match('/^(\d+)([k|m|g]?)$/', $sBytes, $matches)) {
+            $size = (int)$matches[1]; // Use int for size
+            $unit = $matches[2];
+
+            switch ($unit) {
+                case 'g':
+                    $size *= 1024 * 1024 * 1024;
+                    break;
+                case 'm':
+                    $size *= 1024 * 1024;
+                    break;
+                case 'k':
+                    $size *= 1024;
+                    break;
+                // No case needed for bytes (no unit)
+            }
+            return $size;
+
+        } else {
+            // Handle invalid input
+            return 0;
+        }
     }
 
     /**

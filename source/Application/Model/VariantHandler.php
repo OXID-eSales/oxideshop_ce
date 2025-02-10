@@ -290,11 +290,12 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     public function isMdVariant($oArticle)
     {
         if ($this->getConfig()->getConfigParam('blUseMultidimensionVariants')) {
-            if (strpos($oArticle->oxarticles__oxvarselect->value, trim($this->_sMdSeparator)) !== false) {
-                return true;
+            if (is_object($oArticle) && isset($oArticle->oxarticles__oxvarselect)) {
+                if (strpos($oArticle->oxarticles__oxvarselect->value, trim($this->_sMdSeparator)) !== false) {
+                    return true;
+                }
             }
         }
-
         return false;
     }
 

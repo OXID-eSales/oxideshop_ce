@@ -183,7 +183,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             ':oxshopid' => $iShopId,
         ]);
 
-        if ('oxarticle' == $aInfo['oxtype']) {
+        if (isset($aInfo['oxtype']) && 'oxarticle' == $aInfo['oxtype']) {
             $sMainCatId = $oDb->getOne("select oxcatnid from " . getViewName("oxobject2category") . " where oxobjectid = :oxobjectid order by oxtime", [
                 ':oxobjectid' => $sObjectId
             ]);
@@ -200,7 +200,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return $aInfo['oxseourl'];
+        return $objectInfo['oxseourl'] ?? null;
     }
 
     /**

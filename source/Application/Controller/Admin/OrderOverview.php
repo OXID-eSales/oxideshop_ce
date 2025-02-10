@@ -45,7 +45,9 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             $this->_aViewData["paymentType"] = $this->_getPaymentType($oOrder);
             $this->_aViewData["deliveryType"] = $oOrder->getDelSet();
             $sTsProtectsField = 'oxorder__oxtsprotectcosts';
-            if ($oOrder->$sTsProtectsField->value) {
+            if (isset($oOrder->$sTsProtectsField)
+                && isset($oOrder->$sTsProtectsField->value)
+                && $oOrder->$sTsProtectsField->value) {
                 $this->_aViewData["tsprotectcosts"] = $oLang->formatCurrency($oOrder->$sTsProtectsField->value, $oCur);
             }
         }

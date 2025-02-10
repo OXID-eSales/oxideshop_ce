@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - SeoDecoder undefined array key oxtype
 - SystemRequirements non-numeric error on getBytes() 
 - Reading booling in VariantHandler Model
+- Unset property on the order object
 
 ### Removed
 

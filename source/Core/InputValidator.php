@@ -623,7 +623,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
      */
     protected function _hasRequiredParametersForVatInCheck($invAddress) // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore
     {
-        return $invAddress['oxuser__oxustid'] && $invAddress['oxuser__oxcountryid'] && $invAddress['oxuser__oxcompany'];
+        return isset($invAddress['oxuser__oxustid']) && $invAddress['oxuser__oxustid']
+            && isset($invAddress['oxuser__oxcountryid']) && $invAddress['oxuser__oxcountryid']
+            && isset($invAddress['oxuser__oxcompany']) && $invAddress['oxuser__oxcompany'];
     }
 
     /**

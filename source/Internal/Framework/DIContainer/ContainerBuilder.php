@@ -9,9 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
-use OxidEsales\Eshop\Core\FileCache;
-use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass\ControllerPass;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
@@ -32,17 +29,16 @@ use Symfony\Component\Filesystem\Path;
  */
 class ContainerBuilder
 {
-    private int $shopId;
     private SymfonyContainerBuilder $containerBuilder;
 
     public function __construct(
         private readonly BasicContextInterface $basicContext,
+        private readonly int $shopId = 1
     ) {
     }
 
     public function getContainer(): SymfonyContainerBuilder
     {
-        $this->shopId = (new ShopIdCalculator(new UtilsServer()))->getShopId();
         $this->containerBuilder = new SymfonyContainerBuilder();
 
         $this->containerBuilder->setParameter('oxid_esales.current_shop_id', $this->shopId);

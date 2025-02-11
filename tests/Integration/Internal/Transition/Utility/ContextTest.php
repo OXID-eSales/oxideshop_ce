@@ -10,7 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Utility;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerBuilderFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -52,8 +53,7 @@ final class ContextTest extends TestCase
 
     private function getContext(): ContextInterface
     {
-        return (new ContainerBuilderFactory())
-            ->create()
+        return (new ContainerBuilder(new BasicContext(), 1))
             ->getContainer()
             ->get(ContextInterface::class);
     }

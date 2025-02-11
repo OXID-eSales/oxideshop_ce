@@ -83,7 +83,8 @@ class ServicesYamlValidator implements ModuleConfigurationValidatorInterface
 
     private function buildFakeContainerWithModifiedProjectConfigFile(): void
     {
-        $this->fakeContainer = (new ContainerBuilder($this->context))->getContainer();
+        $this->fakeContainer = (new ContainerBuilder($this->context, $this->context->getCurrentShopId()))
+            ->getContainer();
         foreach ($this->fakeContainer->getDefinitions() as $definition) {
             $definition->setPublic(true);
         }

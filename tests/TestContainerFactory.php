@@ -21,7 +21,7 @@ class TestContainerFactory
     public function create(): SymfonyContainerBuilder
     {
         $contextStub = new ContextStub();
-        $container = (new ContainerBuilder($contextStub))
+        $container = (new ContainerBuilder($contextStub, $contextStub->getCurrentShopId()))
             ->getContainer();
 
         $container->set(ContextInterface::class, $contextStub);

@@ -54,6 +54,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Top article list (OXTOPSTART)
      *
      * @var array
+     * @deprecated will be removed in v8.0.
      */
     protected $_aTopArticleList = null;
 
@@ -68,6 +69,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * First article (OXFIRSTSTART)
      *
      * @var object
+     * @deprecated will be removed in v8.0.
      */
     protected $_oFirstArticle = null;
 
@@ -75,6 +77,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Category offer article (OXCATOFFER)
      *
      * @var object
+     * @deprecated will be removed in v8.0.
      */
     protected $_oCatOfferArticle = null;
 
@@ -82,6 +85,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Category offer article list (OXCATOFFER)
      *
      * @var array
+     * @deprecated will be removed in v8.0.
      */
     protected $_oCatOfferArtList = null;
 
@@ -126,6 +130,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param bool   $blDescTag if true - performs additional duplicate cleaning
      *
      * @return string
+     * @deprecated will be removed in v8.0.
      */
     protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
     {
@@ -150,6 +155,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * @param bool   $blRemoveDuplicatedWords remove duplicated words
      *
      * @return string
+     * @deprecated will be removed in v8.0.
      */
     protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
     {
@@ -186,6 +192,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Template variable getter. Returns Top article list (OXTOPSTART)
      *
      * @return array
+     * @deprecated will be removed in v8.0.
      */
     public function getTopArticleList()
     {
@@ -231,6 +238,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Template variable getter. Returns first article
      *
      * @return object
+     * @deprecated will be removed in v8.0.
      */
     public function getFirstArticle()
     {
@@ -253,6 +261,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Template variable getter. Returns category offer article (OXCATOFFER)
      *
      * @return object
+     * @deprecated will be removed in v8.0.
      */
     public function getCatOfferArticle()
     {
@@ -270,6 +279,7 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
      * Template variable getter. Returns category offer article list (OXCATOFFER)
      *
      * @return array
+     * @deprecated will be removed in v8.0.
      */
     public function getCatOfferArticleList()
     {

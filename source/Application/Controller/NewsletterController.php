@@ -23,6 +23,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      * Action articlelist
      *
      * @var object
+     * @deprecated will be removed in v8.0.
      */
     protected $_oActionArticles = null;
 
@@ -30,6 +31,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      * Top start article
      *
      * @var object
+     * @deprecated will be removed in v8.0.
      */
     protected $_oTopArticle = null;
 
@@ -209,6 +211,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      * Template variable getter. Returns action articlelist
      *
      * @return object
+     * @deprecated will be removed in v8.0.
      */
     public function getTopStartActionArticles()
     {
@@ -231,6 +234,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      * Template variable getter. Returns top start article
      *
      * @return object
+     * @deprecated will be removed in v8.0.
      */
     public function getTopStartArticle()
     {

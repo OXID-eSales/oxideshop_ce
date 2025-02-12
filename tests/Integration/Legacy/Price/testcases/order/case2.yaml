@@ -1,0 +1,14 @@
+articles:
+    - { oxid: '111', oxtitle: '111', oxprice: 1, oxvat: 19, oxstock: 999, amount: 1 }
+discounts:
+    - { oxid: discount10for111, oxaddsum: 10, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+costs:
+    delivery: [{ oxactive: 1, oxaddsum: 4.64, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxaddsum: 59.5, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }]
+expected:
+    1: { articles: { 111: ['1,19', '1,19'] }, totals: { totalBrutto: '1,19', discount: '0,12', totalNetto: '0,90', vats: { 19: '0,17' }, delivery: { brutto: '4,64' }, payment: { brutto: '59,50' }, grandTotal: '65,21' } }
+    2: { articles: { 111: ['1,19', '1,19'] }, totals: { totalBrutto: '1,19', discount: '0,12', totalNetto: '0,90', vats: { 19: '0,17' }, delivery: { brutto: '4,64' }, payment: { brutto: '59,50' }, grandTotal: '65,21' } }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: false }
+actions:
+    changeConfigs: { blShowNetPrice: true }

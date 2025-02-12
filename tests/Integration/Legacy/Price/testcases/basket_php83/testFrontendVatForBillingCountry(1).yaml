@@ -1,0 +1,17 @@
+articles:
+    - { oxid: 10011, oxprice: 101, oxvat: 10, amount: 1, oxpricea: 0, oxpriceb: 0, oxpricec: 0 }
+    - { oxid: 1003, oxprice: 75.0, oxvat: 19, amount: 1, oxpricea: 70, oxpriceb: 85, oxpricec: 0 }
+    - { oxid: 1000, oxprice: 50.0, oxvat: 5, amount: 1, oxpricea: 35, oxpriceb: 45, oxpricec: 55, oxunitname: kg, oxunitquantity: 2, oxweight: 2 }
+user:
+    oxactive: 1
+    oxusername: basketUser
+    oxcountryid: a7c40f631fc920687.20179984
+costs:
+    delivery: [{ oxactive: 1, oxaddsum: 6.9, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxaddsum: 0.0, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1, oxaddsumrules: 0, oxcountryid: a7c40f631fc920687.20179984 }]
+expected:
+    articles: { 10011: ['101,00', '101,00'], 1003: ['75,00', '75,00'], 1000: ['50,00', '50,00'] }
+    totals: { totalBrutto: '226,00', totalNetto: '202,47', vats: { 10: '9,18', 19: '11,97', 5: '2,38' }, delivery: { brutto: '6,90' }, grandTotal: '232,90' }
+options:
+    activeCurrencyRate: 1
+    config: { blEnterNetPrice: false, blShowNetPrice: false, blShowVATForWrapping: false, blShowVATForDelivery: false, sAdditionalServVATCalcMethod: biggest_net }

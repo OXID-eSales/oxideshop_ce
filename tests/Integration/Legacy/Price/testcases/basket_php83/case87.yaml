@@ -1,0 +1,9 @@
+articles:
+    - { oxid: rounding_issue_test_article, oxprice: 298.55, oxvat: 19, amount: 200 }
+discounts:
+    - { oxid: discount_2_55_forShop, oxaddsum: 2.55, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+expected:
+    articles: { rounding_issue_test_article: ['290,94', '58.188,00'] }
+    totals: { totalBrutto: '58.188,00', totalNetto: '48.897,48', vats: { 19: '9.290,52' }, grandTotal: '58.188,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }

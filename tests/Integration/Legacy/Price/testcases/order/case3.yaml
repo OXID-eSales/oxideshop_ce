@@ -1,0 +1,22 @@
+articles:
+    - { oxid: 100, oxprice: 100, oxvat: 19, amount: 33 }
+    - { oxid: 1001, oxprice: 66, oxvat: 19, amount: 33 }
+discounts:
+    - { oxid: shopdiscount5for100, oxaddsum: 5, oxaddsumtype: abs, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [100], oxsort: 10 }
+    - { oxid: shopdiscount5for1001, oxaddsum: 5, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [1001], oxsort: 20 }
+    - { oxid: basketdiscount5for100, oxaddsum: 1, oxaddsumtype: abs, oxamount: 1, oxamountto: 99999, oxactive: 1, oxarticles: [100], oxsort: 30 }
+    - { oxid: basketdiscount5for1001, oxaddsum: 6, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxarticles: [1001], oxsort: 40 }
+    - { oxid: absolutebasketdiscount, oxaddsum: 5, oxaddsumtype: abs, oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 50 }
+costs:
+    wrapping: [{ oxtype: WRAP, oxname: testWrap9005, oxprice: 9, oxactive: 1, oxarticles: [100] }, { oxtype: WRAP, oxname: testWrap9006, oxprice: 6, oxactive: 1, oxarticles: [1001] }]
+    delivery: [{ oxtitle: 6_abs_del, oxactive: 1, oxaddsum: 6, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxtitle: '1 abs payment', oxaddsum: 1, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }]
+    voucherserie: [{ oxdiscount: 6.0, oxdiscounttype: absolute, oxallowsameseries: 1, oxallowotherseries: 1, oxallowuseanother: 1, voucher_count: 1 }]
+expected:
+    1: { articles: { 100: ['113,00', '3.729,00'], 1001: ['70,13', '2.314,29'] }, totals: { totalBrutto: '6.043,29', totalNetto: '5.069,15', vats: { 19: '963,14' }, discount: '5,00', wrapping: { brutto: '495,00', netto: '415,97', vat: '79,03' }, delivery: { brutto: '6,00', netto: '5,04', vat: '0,96' }, payment: { brutto: '1,00', netto: '0,84', vat: '0,16' }, voucher: { brutto: '6,00' }, grandTotal: '6.534,29' } }
+    2: { articles: { 100: ['113,00', '3.729,00'], 1001: ['70,13', '2.314,29'] }, totals: { totalBrutto: '6.043,29', totalNetto: '5.069,15', vats: { 19: '963,14' }, discount: '5,00', wrapping: { brutto: '495,00', netto: '415,97', vat: '79,03' }, delivery: { brutto: '6,00', netto: '5,04', vat: '0,96' }, payment: { brutto: '1,00', netto: '0,84', vat: '0,16' }, voucher: { brutto: '6,00' }, grandTotal: '6.534,29' } }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: false, blShowVATForWrapping: true, blShowVATForPayCharge: true, blShowVATForDelivery: true }
+    activeCurrencyRate: 1.0
+actions:
+    changeConfigs: { blShowNetPrice: false }

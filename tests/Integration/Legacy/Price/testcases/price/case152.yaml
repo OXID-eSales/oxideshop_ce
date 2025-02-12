@@ -1,0 +1,44 @@
+articles:
+    1: { oxid: _testId_1, oxprice: 13 }
+    2: { oxid: _testId_1_child_1, oxprice: 0, oxparentid: _testId_1, oxactive: true }
+    3: { oxid: _testId_2, oxprice: 13 }
+    4: { oxid: _testId_2_child_1, oxprice: 6, oxparentid: _testId_2, oxactive: false }
+    5: { oxid: _testId_3, oxprice: 13 }
+    6: { oxid: _testId_3_child_1, oxprice: 13, oxparentid: _testId_3, oxactive: false }
+    7: { oxid: _testId_4, oxprice: 13 }
+    8: { oxid: _testId_4_child_1, oxprice: 27, oxparentid: _testId_4, oxactive: false }
+    9: { oxid: _testId_5, oxprice: 13 }
+    10: { oxid: _testId_5_child_1, oxprice: 0, oxparentid: _testId_5, oxactive: false }
+    11: { oxid: _testId_5_child_2, oxprice: 0, oxparentid: _testId_5 }
+    12: { oxid: _testId_6, oxprice: 13 }
+    13: { oxid: _testId_6_child_1, oxprice: 0, oxparentid: _testId_6, oxactive: false }
+    14: { oxid: _testId_6_child_2, oxprice: 6, oxparentid: _testId_6 }
+    15: { oxid: _testId_7, oxprice: 13 }
+    16: { oxid: _testId_7_child_1, oxprice: 0, oxparentid: _testId_7, oxactive: false }
+    17: { oxid: _testId_7_child_2, oxprice: 13, oxparentid: _testId_7 }
+    18: { oxid: _testId_8, oxprice: 13 }
+    19: { oxid: _testId_8_child_1, oxprice: 0, oxparentid: _testId_8, oxactive: false }
+    20: { oxid: _testId_8_child_2, oxprice: 27, oxparentid: _testId_8 }
+    21: { oxid: _testId_9, oxprice: 13 }
+    22: { oxid: _testId_9_child_1, oxprice: 6, oxparentid: _testId_9, oxactive: false }
+    23: { oxid: _testId_9_child_2, oxprice: 0, oxparentid: _testId_9 }
+    24: { oxid: _testId_10, oxprice: 13 }
+    25: { oxid: _testId_10_child_1, oxprice: 6, oxparentid: _testId_10, oxactive: false }
+    26: { oxid: _testId_10_child_2, oxprice: 27, oxparentid: _testId_10 }
+    27: { oxid: _testId_11, oxprice: 13 }
+    28: { oxid: _testId_11_child_1, oxprice: 27, oxparentid: _testId_11, oxactive: false }
+    29: { oxid: _testId_11_child_2, oxprice: 27, oxparentid: _testId_11 }
+expected:
+    _testId_1: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '13,00', is_range_price: false }
+    _testId_2: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '13,00', is_range_price: false }
+    _testId_3: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '13,00', is_range_price: false }
+    _testId_4: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '13,00', is_range_price: false }
+    _testId_5: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '13,00', is_range_price: false }
+    _testId_6: { base_price: '13,00', price: '13,00', min_price: '6,00', var_min_price: '6,00', is_range_price: false }
+    _testId_7: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '13,00', is_range_price: false }
+    _testId_8: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '27,00', is_range_price: false }
+    _testId_9: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '13,00', is_range_price: false }
+    _testId_10: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '27,00', is_range_price: false }
+    _testId_11: { base_price: '13,00', price: '13,00', min_price: '13,00', var_min_price: '27,00', is_range_price: false }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false, blVariantParentBuyable: 0 }

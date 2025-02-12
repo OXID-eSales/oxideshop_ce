@@ -1,0 +1,15 @@
+articles:
+    - { oxid: '111', oxtitle: '111', oxprice: 1, oxvat: 19, oxstock: 999, amount: 1 }
+discounts:
+    - { oxid: discount10for111, oxaddsum: 10, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+costs:
+    delivery: [{ oxactive: 1, oxaddsum: 10.0, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxaddsum: 10.0, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }]
+expected:
+    1: { articles: { 111: ['1,19', '1,19'] }, totals: { totalBrutto: '1,19', discount: '0,12', totalNetto: '0,90', vats: { 19: '0,17' }, delivery: { brutto: '10,00' }, payment: { brutto: '10,00' }, grandTotal: '21,07' } }
+    2: { articles: { 111: ['1,19', '1,19'], 1111: ['4,17', '4,17'] }, totals: { totalBrutto: '5,36', discount: '0,54', totalNetto: '4,05', vats: { 19: '0,77' }, delivery: { brutto: '10,00' }, payment: { brutto: '10,00' }, grandTotal: '24,82' } }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: false, blShowVATForDelivery: false, blShowVATForPayCharge: false, blShowVATForWrapping: false, sAdditionalServVATCalcMethod: biggest_net, blDeliveryVatOnTop: false, blPaymentVatOnTop: false, blWrappingVatOnTop: false }
+actions:
+    changeConfigs: { blShowNetPrice: true }
+    addArticles: [{ oxid: '1111', oxtitle: '1111', oxprice: 3.5, oxvat: 19, oxstock: 999, amount: 1 }]

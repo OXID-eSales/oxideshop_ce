@@ -1,0 +1,9 @@
+articles:
+    - { oxid: tomatoes, oxprice: 1001, oxvat: 20, oxunitname: kg, oxunitquantity: 10, oxweight: 10 }
+discounts:
+    - { oxid: percent, oxaddsum: -10, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxamount: 0, oxamountto: 99999, oxactive: 1, oxarticles: [tomatoes], oxsort: 10 }
+expected:
+    tomatoes: { base_price: '1.001,00', price: '1.101,10', unit_price: '110,11' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }
+    activeCurrencyRate: 1

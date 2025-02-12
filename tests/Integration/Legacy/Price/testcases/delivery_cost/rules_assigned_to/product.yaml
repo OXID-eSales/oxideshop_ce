@@ -1,0 +1,19 @@
+articles:
+  - { oxid: parent_product_id }
+  - { oxid: variant_product_id, oxparentid: parent_product_id, oxprice: 10.0, amount: 10 }
+categories:
+  - { oxid: category_id_1, oxparentid: oxrootid, oxshopid: 1, oxactive: 1, oxarticles: [ variant_product_id ] }
+  - { oxid: category_id_2, oxparentid: oxrootid, oxshopid: 1, oxactive: 1, oxarticles: [ variant_product_id ] }
+  - { oxid: category_id_3, oxparentid: oxrootid, oxshopid: 1, oxactive: 1, oxarticles: [ variant_product_id ] }
+user:
+  oxid: testUser
+  oxactive: 1
+  oxusername: testUser
+costs:
+  delivery: [
+    { oxactive: 1, oxtitle: 'assigned-to-wrong-product', oxaddsum: 11, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparam: 0, oxparamend: 100, oxsort: 100, oxfixed: 0, oxarticles: [ wrong_product_id ] }
+    { oxactive: 1, oxtitle: 'correct-product-but-min-amount-too-high', oxaddsum: 22, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparam: 200, oxparamend: 600, oxsort: 200, oxfixed: 0, oxarticles: [ wrong_product_id, variant_product_id ] }
+    { oxactive: 1, oxtitle: 'ok-rule', oxaddsum: 333, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparam: 0, oxparamend: 600, oxsort: 300, oxfixed: 0, oxarticles: [ wrong_product_id, variant_product_id ] }
+  ]
+expected:
+  costs: { totals: { delivery: { brutto: 333.0 } } }

@@ -68,3 +68,4 @@
 - Legacy file-based caching methods from `Utils` class
 - Remove deprecated Interface `CacheConnectorInterface`
 - Remove `DateFormatHelper`
+- Deprecated promotions

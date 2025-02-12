@@ -51,43 +51,11 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     protected $_blLoadActions = null;
 
     /**
-     * Top article list (OXTOPSTART)
-     *
-     * @var array
-     * @deprecated will be removed in v8.0.
-     */
-    protected $_aTopArticleList = null;
-
-    /**
      * Newest article list
      *
      * @var array
      */
     protected $_aNewArticleList = null;
-
-    /**
-     * First article (OXFIRSTSTART)
-     *
-     * @var object
-     * @deprecated will be removed in v8.0.
-     */
-    protected $_oFirstArticle = null;
-
-    /**
-     * Category offer article (OXCATOFFER)
-     *
-     * @var object
-     * @deprecated will be removed in v8.0.
-     */
-    protected $_oCatOfferArticle = null;
-
-    /**
-     * Category offer article list (OXCATOFFER)
-     *
-     * @var array
-     * @deprecated will be removed in v8.0.
-     */
-    protected $_oCatOfferArtList = null;
 
     /**
      * Sign if to load and show top5articles action
@@ -121,57 +89,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Returns current view meta data
-     * If $sMeta parameter comes empty, sets to it article title and description.
-     * It happens if current view has no meta data defined in oxcontent table
-     *
-     * @param string $sMeta     category path
-     * @param int    $iLength   max length of result, -1 for no truncation
-     * @param bool   $blDescTag if true - performs additional duplicate cleaning
-     *
-     * @return string
-     * @deprecated will be removed in v8.0.
-     */
-    protected function prepareMetaDescription($sMeta, $iLength = 1024, $blDescTag = false)
-    {
-        if (
-            !$sMeta &&
-            \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion') &&
-            $oArt = $this->getFirstArticle()
-        ) {
-            $oDescField = $oArt->getLongDescription();
-            $sMeta = $oArt->oxarticles__oxtitle->value . ' - ' . $oDescField->value;
-        }
-
-        return parent::prepareMetaDescription($sMeta, $iLength, $blDescTag);
-    }
-
-    /**
-     * Returns current view keywords seperated by comma
-     * If $sKeywords parameter comes empty, sets to it article title and description.
-     * It happens if current view has no meta data defined in oxcontent table
-     *
-     * @param string $sKeywords               data to use as keywords
-     * @param bool   $blRemoveDuplicatedWords remove duplicated words
-     *
-     * @return string
-     * @deprecated will be removed in v8.0.
-     */
-    protected function prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords = true)
-    {
-        if (
-            !$sKeywords &&
-            \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion') &&
-            $oArt = $this->getFirstArticle()
-        ) {
-            $oDescField = $oArt->getLongDescription();
-            $sKeywords = $oDescField->value;
-        }
-
-        return parent::prepareMetaKeyword($sKeywords, $blRemoveDuplicatedWords);
-    }
-
-    /**
      * Template variable getter. Returns if actions are ON
      *
      * @return string
@@ -187,30 +104,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
         return $this->_blLoadActions;
     }
-
-    /**
-     * Template variable getter. Returns Top article list (OXTOPSTART)
-     *
-     * @return array
-     * @deprecated will be removed in v8.0.
-     */
-    public function getTopArticleList()
-    {
-        if ($this->_aTopArticleList === null) {
-            $this->_aTopArticleList = false;
-            if ($this->getLoadActionsParam()) {
-                // start list
-                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-                $oArtList->loadActionArticles('OXTOPSTART');
-                if ($oArtList->count()) {
-                    $this->_aTopArticleList = $oArtList;
-                }
-            }
-        }
-
-        return $this->_aTopArticleList;
-    }
-
 
     /**
      * Template variable getter. Returns newest article list
@@ -235,70 +128,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
     }
 
     /**
-     * Template variable getter. Returns first article
-     *
-     * @return object
-     * @deprecated will be removed in v8.0.
-     */
-    public function getFirstArticle()
-    {
-        if ($this->_oFirstArticle === null) {
-            $this->_oFirstArticle = false;
-            if ($this->getLoadActionsParam()) {
-                // top articles ( big one )
-                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-                $oArtList->loadActionArticles('OXFIRSTSTART');
-                if ($oArtList->count()) {
-                    $this->_oFirstArticle = $oArtList->current();
-                }
-            }
-        }
-
-        return $this->_oFirstArticle;
-    }
-
-    /**
-     * Template variable getter. Returns category offer article (OXCATOFFER)
-     *
-     * @return object
-     * @deprecated will be removed in v8.0.
-     */
-    public function getCatOfferArticle()
-    {
-        if ($this->_oCatOfferArticle === null) {
-            $this->_oCatOfferArticle = false;
-            if ($oArtList = $this->getCatOfferArticleList()) {
-                $this->_oCatOfferArticle = $oArtList->current();
-            }
-        }
-
-        return $this->_oCatOfferArticle;
-    }
-
-    /**
-     * Template variable getter. Returns category offer article list (OXCATOFFER)
-     *
-     * @return array
-     * @deprecated will be removed in v8.0.
-     */
-    public function getCatOfferArticleList()
-    {
-        if ($this->_oCatOfferArtList === null) {
-            $this->_oCatOfferArtList = [];
-            if ($this->getLoadActionsParam()) {
-                // "category offer" articles
-                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-                $oArtList->loadActionArticles('OXCATOFFER');
-                if ($oArtList->count()) {
-                    $this->_oCatOfferArtList = $oArtList;
-                }
-            }
-        }
-
-        return $this->_oCatOfferArtList;
-    }
-
-    /**
      * Returns SEO suffix for page title
      *
      * @return string
@@ -319,7 +148,6 @@ class StartController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->prepareCanonicalUrl($oViewConf->getHomeLink());
         }
     }
-
 
     /**
      * Returns active banner list

@@ -21,22 +21,6 @@ use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridge
 class NewsletterController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
     /**
-     * Action articlelist
-     *
-     * @var object
-     * @deprecated will be removed in v8.0.
-     */
-    protected $_oActionArticles = null;
-
-    /**
-     * Top start article
-     *
-     * @var object
-     * @deprecated will be removed in v8.0.
-     */
-    protected $_oTopArticle = null;
-
-    /**
      * Home country id
      *
      * @var string
@@ -138,7 +122,6 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
             $blUserLoaded = $oUser->load($oUser->getId());
         }
 
-
         // if user was added/loaded successfully and subscribe is on - subscribing to newsletter
         if ($blSubscribe && $blUserLoaded) {
             //removing user from subscribe list before adding
@@ -206,47 +189,6 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function rmvm()
     {
         $this->removeme();
-    }
-
-    /**
-     * Template variable getter. Returns action articlelist
-     *
-     * @return object
-     * @deprecated will be removed in v8.0.
-     */
-    public function getTopStartActionArticles()
-    {
-        if ($this->_oActionArticles === null) {
-            $this->_oActionArticles = false;
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion')) {
-                $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
-                $oArtList->loadActionArticles('OXTOPSTART');
-                if ($oArtList->count()) {
-                    $this->_oTopArticle = $oArtList->current();
-                    $this->_oActionArticles = $oArtList;
-                }
-            }
-        }
-
-        return $this->_oActionArticles;
-    }
-
-    /**
-     * Template variable getter. Returns top start article
-     *
-     * @return object
-     * @deprecated will be removed in v8.0.
-     */
-    public function getTopStartArticle()
-    {
-        if ($this->_oTopArticle === null) {
-            $this->_oTopArticle = false;
-            if ($this->getTopStartActionArticles()) {
-                return $this->_oTopArticle;
-            }
-        }
-
-        return $this->_oTopArticle;
     }
 
     /**

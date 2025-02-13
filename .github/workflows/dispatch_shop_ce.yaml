@@ -6,22 +6,15 @@ on:
       scenario:
         type: choice
         options:
-          - 7.0.x
-          - 7.1.x
           - 7.2.x
-          - 7.3.x
-          - 8.0.x
           - use custom testplan
-        default: '8.0.x'
+        default: '7.2.x'
         description: 'Choose test scenario'
       limit:
         type: choice
+        description: 'Limit php and mysql versions'
         options:
           - 'no'
-          - 'PHP8.0/MySQL5.7'
-          - 'PHP8.0/MySQL8.0'
-          - 'PHP8.1/MySQL5.7'
-          - 'PHP8.1/MySQL8.0'
           - 'PHP8.2/MySQL5.7'
           - 'PHP8.2/MySQL8.0'
           - 'PHP8.3/MySQL5.7'
@@ -30,7 +23,7 @@ on:
       custom_testplan:
         type: string
         description: 'Custom testplan'
-        default: '~/defaults/php8.2_mysql5.7_only.yaml,~/shop_ce.yaml'
+        default: '~/defaults/php8.4_mysql8.0_only.yaml,~/shop_ce.yaml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'
@@ -56,10 +49,6 @@ jobs:
           # shellcheck disable=SC2088
           case "${{ inputs.limit }}" in
             "no") LIMIT='';;
-            "PHP8.0/MySQL5.7") LIMIT='~/defaults/php8.0_mysql5.7_only.yaml,' ;;
-            "PHP8.0/MySQL8.0") LIMIT='~/defaults/php8.0_mysql8.0_only.yaml,' ;;
-            "PHP8.1/MySQL5.7") LIMIT='~/defaults/php8.1_mysql5.7_only.yaml,' ;;
-            "PHP8.1/MySQL8.0") LIMIT='~/defaults/php8.1_mysql8.0_only.yaml,' ;;
             "PHP8.2/MySQL5.7") LIMIT='~/defaults/php8.2_mysql5.7_only.yaml,' ;;
             "PHP8.2/MySQL8.0") LIMIT='~/defaults/php8.2_mysql8.0_only.yaml,' ;;
             "PHP8.3/MySQL5.7") LIMIT='~/defaults/php8.3_mysql5.7_only.yaml,' ;;
@@ -70,11 +59,7 @@ jobs:
           esac
           # shellcheck disable=SC2088
           case '${{ inputs.scenario}}' in
-            "7.0.x") TESTPLAN="~/defaults/7.0.x.yaml,${LIMIT}${PLAN}" ;;
-            "7.1.x") TESTPLAN="~/defaults/7.1.x.yaml,${LIMIT}${PLAN}" ;;
             "7.2.x") TESTPLAN="~/defaults/7.2.x.yaml,${LIMIT}${PLAN}" ;;
-            "7.3.x") TESTPLAN="~/defaults/7.3.x.yaml,${LIMIT}${PLAN}" ;;
-            "8.0.x") TESTPLAN="${LIMIT}${PLAN}" ;;
             "use custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
             *)
               echo "Illegal choice, fix the workflow"

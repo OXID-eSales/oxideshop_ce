@@ -5,6 +5,7 @@ on:
     inputs:
       limit:
         type: choice
+        description: 'Limit php and mysql versions'
         options:
           - 'no'
           - 'PHP8.0/MySQL5.7'

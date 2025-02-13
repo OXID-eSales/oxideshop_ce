@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Contract\ArticleInterface;
 use OxidEsales\Eshop\Core\Str;
 
@@ -193,8 +194,8 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
             return $this->_aPersParam;
         }
 
-        if ($this->oxorderarticles__oxpersparam->value) {
-            $this->_aPersParam = unserialize($this->oxorderarticles__oxpersparam->value);
+        if ($this->getFieldData('oxpersparam')) {
+            $this->_aPersParam = unserialize($this->getFieldData('oxpersparam'));
         }
 
         return $this->_aPersParam;
@@ -610,20 +611,21 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      * Deletes order article object. If deletion succeded - updates
      * article stock information. Returns deletion status
      *
-     * @param string $sOXID Article id
+     * @param string $oxid Article id
      *
      * @return bool
      */
-    public function delete($sOXID = null)
+    public function delete($oxid = null)
     {
-        if ($blDelete = parent::delete($sOXID)) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-            if ($this->oxorderarticles__oxstorno->value != 1) {
-                $this->updateArticleStock($this->oxorderarticles__oxamount->value, $myConfig->getConfigParam('blAllowNegativeStock'));
-            }
+        $isDeleted = parent::delete($oxid);
+        if ($isDeleted && (int)$this->getFieldData('oxstorno') !== 1) {
+            $this->updateArticleStock(
+                $this->getFieldData('oxamount'),
+                Registry::getConfig()->getConfigParam('blAllowNegativeStock')
+            );
         }
 
-        return $blDelete;
+        return $isDeleted;
     }
 
     /**

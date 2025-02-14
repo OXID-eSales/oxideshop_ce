@@ -59,7 +59,7 @@ jobs:
     if: always()
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/7.3.x.yaml,~/defaults/php8.2_8.3_mysql8.0_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
+      testplan: '~/defaults/7.3.x.yaml,~/defaults/php8.3_8.4_mysql8.0_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'
@@ -84,7 +84,7 @@ jobs:
     if: always()
     uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v4
     with:
-      testplan: '~/defaults/8.0.x.yaml,~/defaults/php8.2_8.3_mysql8.0_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
+      testplan: '~/defaults/8.0.x.yaml,~/defaults/php8.3_8.4_mysql8.0_only.yaml,~/defaults/scheduled.yaml,~/shop_ce.yaml,~/_custom.yaml'
       runs_on: '"ubuntu-latest"'
       defaults: 'v4'
       plan_folder: '.github/oxid-esales'

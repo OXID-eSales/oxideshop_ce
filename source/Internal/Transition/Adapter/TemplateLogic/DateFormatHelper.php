@@ -9,6 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
 use function sprintf;
 
+/**
+ * @deprecated will be removed in next major version
+ */
 class DateFormatHelper
 {
     /**

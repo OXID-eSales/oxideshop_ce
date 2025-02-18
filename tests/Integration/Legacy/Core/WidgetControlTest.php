@@ -13,24 +13,30 @@ use OxidEsales\Eshop\Application\Controller\SearchController;
 use OxidEsales\Eshop\Core\Exception\ObjectException;
 use OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver;
 use OxidEsales\Eshop\Core\WidgetControl;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class WidgetControlTest extends IntegrationTestCase
 {
+    use ContainerTrait;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->setParameter('oxid_esales.debug_mode', true);
+        $this->replaceContainerInstance();
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+    }
+
     public function testIfDoesNotAllowToInitiateNonWidgetClass(): void
     {
-        if (!ContainerFacade::getParameter('oxid_esales.debug_mode')) {
-            $this->markTestSkipped('Test works only in debug mode.');
-        }
-
-        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $nonWidgetClass = (new ControllerClassNameResolver())
+            ->getIdByClassName(SearchController::class);
 
         $this->expectException(ObjectException::class);
 
-        /** @var WidgetControl $widgetControl */
-        $widgetControl = oxNew(WidgetControl::class);
-        $nonWidgetClass = (new ControllerClassNameResolver())->getIdByClassName(SearchController::class);
-        $widgetControl->start($nonWidgetClass);
+        oxNew(WidgetControl::class)
+            ->start($nonWidgetClass);
     }
 }

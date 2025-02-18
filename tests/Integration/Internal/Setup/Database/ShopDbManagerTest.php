@@ -37,9 +37,11 @@ final class ShopDbManagerTest extends TestCase
             ->getDatabaseConnection(
                 $dbConfig
             );
-        $migrationsCount = $dbConnection->fetchAllAssociative('SELECT COUNT(*) FROM `oxmigrations_ce`');
+        $migrationsCount = $dbConnection
+            ->fetchAllNumeric('SELECT COUNT(*) FROM `oxmigrations_ce`');
+        $viewRows = $dbConnection
+            ->fetchAllNumeric('SELECT COUNT(*) FROM `oxv_oxshops_de`');
         $this->assertGreaterThan(1, $migrationsCount);
-        $viewRows = $dbConnection->executeQuery('SELECT COUNT(*) FROM `oxv_oxshops_de`');
         $this->assertGreaterThan(0, $viewRows);
     }
 

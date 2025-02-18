@@ -3,10 +3,10 @@
 ## v7.3.0 - unreleased
 
 ### Added
-- PHPUnit v11 support
-- Category detail page codeception test
+- PHP v8.4 support
 - Registration of environment variables via .env file
 - Controllers can be registered as DI services
+- PHPUnit v11 support
 
 ### Fixed
 - Shop ID resolution considers SSL language URLs
@@ -14,11 +14,8 @@
 
 ### Changed
 - Raised minimum required version of Symfony components to 6.4
-- Set the default value of blSkipDebitOldBankInfo to true
+- Set the default value of `blSkipDebitOldBankInfo` to `true`
 - Add to basket does not force a refresh of order confirmation step [#0007254](https://bugs.oxid-esales.com/view.php?id=7254)
-
-### Removed
-- PHPUnit v10 support
 
 ### Deprecated
 - Config parameters from [config.inc.php](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/project/configincphp.html) will be moved to env variables and container parameters
@@ -31,7 +28,7 @@
 - Method `isEnabledAdminQueryLog()` of ContextInterface
 - `handleDatabaseException` functionality
 - `FileCache` and `SubShopSpecificFileCache` classes 
-- Related Methods for managing cache files in Utils will be deleted in next major version
+- Related methods for managing cache files in `Utils` will be deleted in next major version
 - Parameter `includePermanentCache` of the method `Utils:oxResetFileCache()`
 - The interface `CacheConnectorInterface`
 - The helper `DateFormatHelper` will be removed in next major version

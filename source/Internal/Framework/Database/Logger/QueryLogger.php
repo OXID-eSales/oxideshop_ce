@@ -27,7 +27,7 @@ class QueryLogger implements SQLLogger
     public function startQuery($sql, ?array $params = null, ?array $types = null): void
     {
         if ($this->filterPass($sql)) {
-            $queryData = $this->getQueryData($sql, $params);
+            $queryData = $this->getQueryData($sql, $params ?? []);
             $this->psrLogger->debug($this->getLogMessage($queryData));
         }
     }
@@ -37,7 +37,7 @@ class QueryLogger implements SQLLogger
         return $this->queryFilter->shouldLogQuery($query, $this->context->getSkipLogTags());
     }
 
-    private function getQueryData(string $sql, array $params = null): array
+    private function getQueryData(string $sql, array $params): array
     {
         $backTraceInfo = $this->getQueryTrace();
 

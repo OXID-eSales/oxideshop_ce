@@ -20,9 +20,9 @@ class UniversallyUniqueIdGenerator
     /**
      * Sets dependencies.
      *
-     * @param \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLChecker
+     * @param \OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker|null $openSSLChecker
      */
-    public function __construct(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLChecker = null)
+    public function __construct(?\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker $openSSLChecker = null)
     {
         if (is_null($openSSLChecker)) {
             $openSSLChecker = oxNew(\OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker::class);

@@ -41,7 +41,7 @@ class StandardException extends \Exception
      * @param integer         $iCode    exception code
      * @param \Exception|null $previous previous exception
      */
-    public function __construct($sMessage = "not set", $iCode = 0, \Exception $previous = null)
+    public function __construct($sMessage = 'not set', $iCode = 0, ?\Exception $previous = null)
     {
         parent::__construct($sMessage, $iCode, $previous);
     }

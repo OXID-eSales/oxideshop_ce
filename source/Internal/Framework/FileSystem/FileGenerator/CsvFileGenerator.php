@@ -20,7 +20,7 @@ class CsvFileGenerator implements FileGeneratorInterface
         $file = fopen($filename, 'wb');
 
         foreach ($data as $value) {
-            fputcsv($file, $value);
+            fputcsv(stream: $file, fields: $value, escape: "\\");
         }
         fclose($file);
     }

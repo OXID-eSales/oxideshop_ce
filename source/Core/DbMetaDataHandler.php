@@ -539,7 +539,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @return bool
      */
-    public function updateViews(array $tables = null): bool
+    public function updateViews(?array $tables = null): bool
     {
         set_time_limit(0);
 

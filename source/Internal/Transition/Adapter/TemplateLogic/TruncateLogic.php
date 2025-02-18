@@ -12,16 +12,16 @@ use OxidEsales\Eshop\Core\Str;
 class TruncateLogic
 {
     /**
-     * @param string  $sString
-     * @param integer $iLength
-     * @param string  $sSufix
-     * @param bool    $blBreakWords
-     * @param bool    $middle
+     * @param string|null $sString
+     * @param int $iLength
+     * @param string $sSufix
+     * @param bool $blBreakWords
+     * @param bool $middle
      *
      * @return string
      */
     public function truncate(
-        string $sString = null,
+        ?string $sString = null,
         int $iLength = 80,
         string $sSufix = '...',
         bool $blBreakWords = false,

@@ -43,7 +43,7 @@
         "symfony/mime": "^6.4"
     },
     "require-dev": {
-        "codeception/codeception": "^5.0",
+        "codeception/codeception": "v5.1.2",
         "codeception/module-asserts": "^3.0",
         "codeception/module-db": "^3.0",
         "codeception/module-filesystem": "^3.0",

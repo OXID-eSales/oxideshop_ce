@@ -33,3 +33,4 @@
 - The interface `CacheConnectorInterface`
 - The helper `DateFormatHelper` will be removed in next major version
 - Unused promotions in `StartController` and `NewsletterController` will be removed in next major version
+- Browser-based application setup will be removed in next major version

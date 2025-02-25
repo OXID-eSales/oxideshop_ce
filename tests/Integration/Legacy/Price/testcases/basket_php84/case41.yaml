@@ -1,0 +1,25 @@
+articles:
+    - { oxid: 1001, oxprice: 20.0, oxvat: 11, amount: 2, scaleprices: { oxamount: 2, oxamountto: 3, oxartid: 1001, oxaddperc: 10 } }
+    - { oxid: 1002, oxprice: 200.0, oxvat: 19, amount: 1, oxfreeshipping: 1 }
+    - { oxid: 1004, oxprice: 200.0, oxvat: 19, OXSHOPID: 2 }
+user:
+    oxactive: 1
+    oxusername: basketUser
+group:
+    - { oxid: oxidpricea, oxactive: 1, oxtitle: 'Price A', oxobject2group: [basketUser] }
+shop:
+    - { oxactive: 1, oxparentid: 1, oxname: subshop, activeshop: true }
+discounts:
+    - { oxid: percentage_discount, oxaddsum: 10, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+    - { oxid: item_discount, oxaddsum: 0, oxaddsumtype: itm, oxamount: 1, oxamountto: 99999, oxactive: 1, oxitmartid: 1004, oxitmamount: 1, oxitmultiple: 1, oxarticles: [1002], oxsort: 20 }
+costs:
+    wrapping: [{ oxtype: CARD, oxname: testCard1001, oxprice: 2.5, oxactive: 1 }]
+    delivery: [{ oxactive: 1, oxaddsum: 55.0, oxaddsumtype: '%', oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    payment: [{ oxaddsum: 55.0, oxaddsumtype: '%', oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1, oxaddsumrules: 1 }]
+    voucherserie: [{ oxdiscount: 10.0, oxdiscounttype: '%', oxallowsameseries: 1, oxallowotherseries: 1, oxallowuseanother: 1, voucher_count: 1 }]
+expected:
+    articles: { 1001: ['18,00', '36,00'], 1002: ['200,00', '200,00'], 1004: ['0,00', '0,00'] }
+    totals: { totalBrutto: '225,15', totalNetto: '236,00', vats: { 19: '30,78', 11: '3,21' }, discounts: { percentage_discount: '23,60' }, giftcard: { brutto: '2,98', netto: '2,50', vat: '0,48' }, delivery: { brutto: '23,56', netto: '19,80', vat: '3,76' }, payment: { brutto: '154,46', netto: '129,80', vat: '24,66' }, voucher: { brutto: '21,24' }, grandTotal: '406,15' }
+options:
+    config: { blEnterNetPrice: true, blShowNetPrice: true, blShowVATForDelivery: true, blShowVATForPayCharge: true, blShowVATForWrapping: true, sAdditionalServVATCalcMethod: biggest_net, blDeliveryVatOnTop: true, blPaymentVatOnTop: true, blWrappingVatOnTop: true }
+    activeCurrencyRate: 1

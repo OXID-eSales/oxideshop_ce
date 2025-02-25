@@ -1,0 +1,9 @@
+articles:
+    - { oxid: '4425', oxprice: 879, amount: 1 }
+discounts:
+    - { oxid: discount10euro, oxaddsum: 10, oxaddsumtype: abs, oxamount: 1, oxamountto: 99999, oxprice: 0, oxpriceto: 0, oxactive: 1, oxarticles: [4425], oxsort: 10 }
+expected:
+    articles: { 4425: ['869,00', '869,00'] }
+    totals: { totalBrutto: '869,00', totalNetto: '730,25', vats: { 19: '138,75' }, grandTotal: '869,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }

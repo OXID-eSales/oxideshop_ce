@@ -618,17 +618,15 @@ class OrderArticle extends BaseModel implements ArticleInterface
      */
     public function delete($oxid = null)
     {
-        if ($blDelete = parent::delete($oxid)) {
-            $myConfig = Registry::getConfig();
-            if ((int)$this->getFieldData('oxstorno') !== 1) {
-                $this->updateArticleStock(
-                    $this->getFieldData('oxamount'),
-                    $myConfig->getConfigParam('blAllowNegativeStock')
-                );
-            }
+        $isDeleted = parent::delete($oxid);
+        if ($isDeleted && (int)$this->getFieldData('oxstorno') !== 1) {
+            $this->updateArticleStock(
+                $this->getFieldData('oxamount'),
+                Registry::getConfig()->getConfigParam('blAllowNegativeStock')
+            );
         }
 
-        return $blDelete;
+        return $isDeleted;
     }
 
     /**

@@ -1,0 +1,17 @@
+articles:
+    - { oxid: 10015, oxprice: 101, oxvat: 10, amount: 1, oxpricea: 0, oxpriceb: 0, oxpricec: 0 }
+    - { oxid: 1002, oxprice: 67.0, oxvat: 19, amount: 1 }
+    - { oxid: 1003, oxprice: 75.0, oxvat: 19, amount: 6, oxpricea: 70, oxpriceb: 85, oxpricec: 0, scaleprices: { oxamount: 6, oxamountto: 999999, oxartid: 1003, oxaddperc: 20 } }
+    - { oxid: 1000, oxprice: 50.0, oxvat: 5, amount: 1, oxpricea: 35, oxpriceb: 45, oxpricec: 55, oxunitname: kg, oxunitquantity: 2, oxweight: 2 }
+discounts:
+    - { oxid: discount1, oxaddsum: 10, oxaddsumtype: '%', oxamount: 0, oxamountto: 99999, oxprice: 100, oxpriceto: 99999, oxactive: 1, oxarticles: [1002, 1003], oxsort: 10 }
+    - { oxid: discount2, oxaddsum: 5, oxaddsumtype: abs, oxamount: 1, oxamountto: 99999, oxactive: 1, oxarticles: [10015, 1000], oxsort: 20 }
+costs:
+    delivery: [{ oxactive: 1, oxaddsum: 1.5, oxaddsumtype: abs, oxdeltype: p, oxfinalize: 1, oxparamend: 99999 }]
+    voucherserie: [{ oxdiscount: 10.0, oxdiscounttype: absolute, oxallowsameseries: 1, oxallowotherseries: 1, oxallowuseanother: 1, oxminimumvalue: 75, voucher_count: 1 }]
+expected:
+    articles: { 10015: ['96,00', '96,00'], 1002: ['60,30', '60,30'], 1003: ['54,00', '324,00'], 1000: ['45,00', '45,00'] }
+    totals: { totalBrutto: '525,30', totalNetto: '444,45', vats: { 10: '8,56', 19: '60,19', 5: '2,10' }, delivery: { brutto: '1,50' }, voucher: { brutto: '10,00' }, grandTotal: '516,80' }
+options:
+    activeCurrencyRate: 1
+    config: { blEnterNetPrice: false, blShowNetPrice: false, blShowVATForWrapping: false, blShowVATForDelivery: false, sAdditionalServVATCalcMethod: biggest_net }

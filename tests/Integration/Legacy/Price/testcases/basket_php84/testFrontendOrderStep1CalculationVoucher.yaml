@@ -1,0 +1,14 @@
+articles:
+    - { oxid: 1245, oxprice: 98, oxvat: 10, amount: 1 }
+    - { oxid: 6565, oxprice: 67, oxvat: 19, amount: 1 }
+    - { oxid: 1553, oxprice: 60, oxvat: 19, amount: 6 }
+    - { oxid: 1224, oxprice: 50, oxvat: 5, amount: 1 }
+discounts:
+    - { oxid: product, oxaddsum: 10, oxaddsumtype: '%', oxprice: 0, oxpriceto: 99999, oxactive: 1, oxarticles: [6565, 1553], oxsort: 10 }
+    - { oxid: prod2, oxaddsum: 5, oxaddsumtype: abs, oxamount: 0, oxamountto: 99999, oxprice: 0, oxpriceto: 99999, oxactive: 1, oxarticles: [1224, 1245], oxsort: 20 }
+costs:
+    voucherserie: [{ oxdiscount: 5, oxdiscounttype: '%', oxallowsameseries: 1, oxallowotherseries: 1, oxallowuseanother: 1, voucher_count: 1 }]
+expected:
+    articles: { 6565: ['60,30', '60,30'], 1553: ['54,00', '324,00'], 1224: ['45,00', '45,00'], 1245: ['93,00', '93,00'] }
+    totals: { totalBrutto: '522,30', totalNetto: '427,82', vats: { 10: '8,03', 19: '58,29', 5: '2,04' }, voucher: { brutto: '26,12' }, grandTotal: '496,18' }
+    options: { config: { blEnterNetPrice: false, blShowNetPrice: false, blShowVATForWrapping: true, blShowVATForPayCharge: false, blShowVATForDelivery: true }, activeCurrencyRate: 1.0 }

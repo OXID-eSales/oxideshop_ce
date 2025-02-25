@@ -1,0 +1,11 @@
+articles:
+    - { oxid: 111, oxprice: 120.0, oxvat: 20, amount: 1 }
+discounts:
+    - { oxid: discount_for_111, oxaddsum: 50.0, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxprice: 0, oxpriceto: 99999, oxactive: 1, oxarticles: [111], oxsort: 10 }
+    - { oxid: basket, oxaddsum: 50.0, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxprice: 0, oxpriceto: 99999, oxactive: 1, oxsort: 20 }
+expected:
+    articles: { 111: ['60,00', '60,00'] }
+    totals: { totalBrutto: '60,00', totalNetto: '25,00', vats: { 20: '5,00' }, discounts: { basket: '30,00' }, grandTotal: '30,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }
+    activeCurrencyRate: 1

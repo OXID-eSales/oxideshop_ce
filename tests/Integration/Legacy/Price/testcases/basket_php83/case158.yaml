@@ -1,0 +1,12 @@
+articles:
+    - { oxid: 9202, oxprice: 119, oxvat: 19, amount: 1 }
+user:
+    oxactive: 1
+    oxusername: basketUser
+    oxcountryid: 8f241f11096877ac0.98748826
+expected:
+    articles: { 9202: ['100,00', '100,00'] }
+    totals: { totalBrutto: '100,00', totalNetto: '100,00', vats: ['0,00'], grandTotal: '100,00' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: false }
+    activeCurrencyRate: 1

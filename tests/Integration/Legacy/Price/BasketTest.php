@@ -13,12 +13,15 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Yaml\Yaml;
 
+use function is_array;
+
 final class BasketTest extends IntegrationTestCase
 {
     public static function providerBasketCalculation(): array
     {
+        $cases = PHP_VERSION_ID >= 80400 ? 'basket_php84' : 'basket_php83';
         $testCases = [];
-        foreach (glob(__DIR__ . '/testcases/basket/*.yaml') as $filePath) {
+        foreach (glob(__DIR__ . "/testcases/$cases/*.yaml") as $filePath) {
             $testCases[$filePath] = [Yaml::parseFile($filePath)];
         }
         return $testCases;
@@ -51,12 +54,12 @@ final class BasketTest extends IntegrationTestCase
                 $this->assertEquals(
                     $expectedProducts[$productId][0],
                     $basketItem->getFUnitPrice(),
-                    "Unit price of product id {$productId}"
+                    "Unit price of product id $productId"
                 );
                 $this->assertEquals(
                     $expectedProducts[$productId][1],
                     $basketItem->getFTotalPrice(),
-                    "Total price of product id {$productId}"
+                    "Total price of product id $productId"
                 );
             }
         }
@@ -76,7 +79,7 @@ final class BasketTest extends IntegrationTestCase
                 $this->assertEquals(
                     $expectedDiscounts[$discount->sOXID],
                     $discount->fDiscount,
-                    "Total discount of {$discount->sOXID}"
+                    "Total discount of $discount->sOXID"
                 );
             }
         }
@@ -93,7 +96,7 @@ final class BasketTest extends IntegrationTestCase
         );
         if (! empty($expectedVats)) {
             foreach ($productVats as $percent => $sum) {
-                $this->assertEquals($expectedVats[$percent], $sum, "Total Vat of {$percent}%");
+                $this->assertEquals($expectedVats[$percent], $sum, "Total Vat of $percent%");
             }
         }
 
@@ -142,7 +145,12 @@ final class BasketTest extends IntegrationTestCase
         if (! empty($expectedDeliveryCosts)) {
             $this->assertEquals(
                 $expectedDeliveryCosts['brutto'],
-                number_format(round($basket->getDeliveryCosts(), 2), 2, ',', '.'),
+                number_format(
+                    (float)$basket->getDeliveryCosts(),
+                    2,
+                    ',',
+                    '.'
+                ),
                 'Delivery total brutto price'
             );
             $this->assertEquals(
@@ -162,7 +170,12 @@ final class BasketTest extends IntegrationTestCase
         if (! empty($expectedPayments)) {
             $this->assertEquals(
                 $expectedPayments['brutto'] ?? null,
-                number_format(round($basket->getPaymentCosts(), 2), 2, ',', '.'),
+                number_format(
+                    $basket->getPaymentCosts(),
+                    2,
+                    ',',
+                    '.'
+                ),
                 'Payment total brutto price'
             );
             $this->assertEquals(
@@ -182,7 +195,12 @@ final class BasketTest extends IntegrationTestCase
         if (! empty($expectedVouchers)) {
             $this->assertEquals(
                 $expectedVouchers['brutto'],
-                number_format(round($basket->getVoucherDiscValue(), 2), 2, ',', '.'),
+                number_format(
+                    $basket->getVoucherDiscValue(),
+                    2,
+                    ',',
+                    '.'
+                ),
                 'Voucher total discount brutto'
             );
         }

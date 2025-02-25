@@ -1,0 +1,14 @@
+articles:
+    - { oxid: _test1001, oxprice: 1002.55, oxvat: 19, amount: 2 }
+    - { oxid: 1002, oxprice: 11.56, oxvat: 13, amount: 2 }
+    - { oxid: 1003, oxprice: 1326.89, oxvat: 3, amount: 6 }
+    - { oxid: 1004, oxprice: 6.66, oxvat: 17, amount: 6 }
+    - { oxid: 1005, oxprice: 0.66, oxvat: 33, amount: 6 }
+discounts:
+    - { oxid: tenpercentdiscount, oxaddsum: 10, oxaddsumtype: '%', oxamount: 1, oxamountto: 99999, oxactive: 1, oxsort: 10 }
+expected:
+    articles: { _test1001: ['842,48', '1.684,96'], 1002: ['10,23', '20,46'], 1003: ['1.288,24', '7.729,44'], 1004: ['5,69', '34,14'], 1005: ['0,50', '3,00'] }
+    totals: { totalBrutto: '9.030,12', totalNetto: '9.472,00', vats: { 19: '288,13', 13: '2,39', 3: '208,69', 17: '5,22', 33: '0,89' }, discounts: { tenpercentdiscount: '947,20' }, grandTotal: '9.030,12' }
+options:
+    config: { blEnterNetPrice: false, blShowNetPrice: true }
+    activeCurrencyRate: 1

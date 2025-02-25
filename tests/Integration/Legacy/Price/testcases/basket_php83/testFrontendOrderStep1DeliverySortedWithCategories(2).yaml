@@ -1,0 +1,14 @@
+categories:
+    - { oxid: testCategory1, oxparentid: oxrootid, oxshopid: 1, oxactive: 1, oxarticles: [_test_10012] }
+    - { oxid: testCategory2, oxparentid: oxrootid, oxshopid: 1, oxactive: 1, oxarticles: [_test_1002] }
+articles:
+    - { oxid: _test_1002, oxprice: 20, oxvat: 20, amount: 6 }
+    - { oxid: _test_10012, oxprice: 10, oxvat: 10, amount: 1 }
+costs:
+    delivery: [{ oxactive: 1, oxaddsum: 0, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 5, oxparamend: 99999, oxsort: 2, oxcategories: [testCategory2] }, { oxactive: 1, oxaddsum: 2, oxaddsumtype: abs, oxdeltype: a, oxfinalize: 1, oxparam: 0, oxparamend: 99999, oxsort: 1, oxcategories: [testCategory1] }]
+expected:
+    articles: { _test_10012: ['10,00', '10,00'], _test_1002: ['20,00', '120,00'] }
+    totals: { totalBrutto: '130,00', totalNetto: '109,09', vats: { 10: '0,91', 20: '20,00' }, delivery: { brutto: '2,00' }, grandTotal: '132,00' }
+options:
+    activeCurrencyRate: 1
+    config: { blEnterNetPrice: false, blShowNetPrice: false, blShowVATForWrapping: false, blShowVATForDelivery: false, sAdditionalServVATCalcMethod: biggest_net }

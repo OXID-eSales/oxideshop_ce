@@ -874,7 +874,7 @@ CREATE TABLE `oxobject2group` (
   PRIMARY KEY  (`OXID`),
   KEY `OXOBJECTID` (`OXOBJECTID`),
   UNIQUE INDEX `UNIQ_OBJECTGROUP` (`OXGROUPSID`, `OXOBJECTID`, `OXSHOPID`)
-) ENGINE=InnoDB COMMENT 'Shows many-to-many relationship between users and groups';
+) ENGINE=InnoDB;
 
 #
 # Table structure for table `oxobject2list`

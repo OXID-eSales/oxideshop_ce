@@ -18,7 +18,6 @@ use Symfony\Component\Filesystem\Path;
 use UnitEnum;
 
 /**
- * @internal
  * @mixin Container
  */
 trait ContainerTrait

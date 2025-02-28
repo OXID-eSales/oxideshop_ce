@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\ClassExtensionsChainDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
@@ -124,6 +125,18 @@ final class ModuleConfigurationInstallerTest extends TestCase
         $this->assertModuleConfigurationDeletedForAllShops();
     }
 
+    public function testUninstallIfClassExtensionChainIsEmpty(): void
+    {
+        $configurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
+        $configurationInstaller->install($this->modulePath);
+
+        $this->get(ClassExtensionsChainDaoInterface::class)->saveChain(1, new ClassExtensionsChain());
+
+        $configurationInstaller->uninstallById($this->testModuleId);
+
+        $this->assertModuleConfigurationDeletedForAllShops();
+    }
+
     public function testIsInstalled(): void
     {
         $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
@@ -171,8 +184,11 @@ final class ModuleConfigurationInstallerTest extends TestCase
 
     private function assertModuleConfigurationDeletedForAllShops(): void
     {
-        foreach ($this->get(ShopConfigurationDaoInterface::class)->getAll() as $shopConfiguration) {
+        foreach ($this->get(ShopConfigurationDaoInterface::class)->getAll() as $shopId => $shopConfiguration) {
             $this->assertFalse($shopConfiguration->hasModuleConfiguration($this->testModuleId));
+
+            $chain = $this->get(ClassExtensionsChainDaoInterface::class)->getChain($shopId)->getChain();
+            $this->assertNotContains('testModuleClassExtendsShopClass', $chain['shopClass'] ?? []);
         }
     }
 

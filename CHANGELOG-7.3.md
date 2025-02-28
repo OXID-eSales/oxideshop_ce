@@ -20,6 +20,7 @@
 - Raised minimum required version of Symfony components to 6.4
 - Set the default value of `blSkipDebitOldBankInfo` to `true`
 - Add to basket does not force a refresh of order confirmation step [#0007254](https://bugs.oxid-esales.com/view.php?id=7254)
+- Optimized module installation/uninstallation process
 
 ### Deprecated
 - Config parameters from [config.inc.php](https://docs.oxid-esales.com/developer/en/latest/development/modules_components_themes/project/configincphp.html) will be moved to env variables and container parameters
@@ -38,3 +39,8 @@
 - The helper `DateFormatHelper` will be removed in next major version
 - Unused promotions in `StartController` and `NewsletterController` will be removed in next major version
 - Browser-based application setup will be removed in next major version
+- Redundant methods for module configuration management:
+  - `ShopConfigurationDaoInterface::save()`
+  - `ShopConfigurationDaoInterface::deleteAll()`
+  - `ShopConfiguration::deleteModuleConfiguration()`
+  - `ModuleConfigurationDaoInterface::deleteAll()`

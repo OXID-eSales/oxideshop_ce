@@ -8,8 +8,12 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\ClassExtensionsChainDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * Extensions sorting list handler.
@@ -72,16 +76,10 @@ class ModuleSortList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         $sanitizedClassExtensionsChain = $this->sanitizeClassExtensionsChain($classExtensionsChainFromRequest);
 
-        $container = $this->getContainer();
-        $shopConfigurationDao = $container->get(ShopConfigurationDaoBridgeInterface::class);
-        $shopConfiguration = $shopConfigurationDao->get();
-
-        $chain = $shopConfiguration->getClassExtensionsChain();
-        $chain->setChain($sanitizedClassExtensionsChain);
-
-        $shopConfiguration->setClassExtensionsChain($chain);
-
-        $shopConfigurationDao->save($shopConfiguration);
+        ContainerFacade::get(ClassExtensionsChainDaoInterface::class)->saveChain(
+            ContainerFacade::get(ContextInterface::class)->getCurrentShopId(),
+            new ClassExtensionsChain($sanitizedClassExtensionsChain)
+        );
     }
 
     /**

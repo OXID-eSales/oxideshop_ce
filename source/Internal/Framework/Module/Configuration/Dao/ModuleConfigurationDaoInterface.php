@@ -13,18 +13,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 
 interface ModuleConfigurationDaoInterface
 {
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     * @return ModuleConfiguration
-     */
     public function get(string $moduleId, int $shopId): ModuleConfiguration;
 
-    /**
-     * @param ModuleConfiguration $moduleConfiguration
-     * @param int                 $shopId
-     */
     public function save(ModuleConfiguration $moduleConfiguration, int $shopId);
+
+    public function delete(string $moduleId, int $shopId): void;
 
     /**
      * @param int $shopId
@@ -32,6 +25,9 @@ interface ModuleConfigurationDaoInterface
      */
     public function getAll(int $shopId): array;
 
+    /**
+     * @deprecated will be completely removed
+     */
     public function deleteAll(int $shopId): void;
 
     public function exists(string $moduleId, int $shopId): bool;

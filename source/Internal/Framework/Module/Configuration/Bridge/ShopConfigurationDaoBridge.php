@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
@@ -22,9 +21,6 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
     ) {
     }
 
-    /**
-     * @return ShopConfiguration
-     */
     public function get(): ShopConfiguration
     {
         return $this->shopConfigurationDao->get(
@@ -32,9 +28,6 @@ class ShopConfigurationDaoBridge implements ShopConfigurationDaoBridgeInterface
         );
     }
 
-    /**
-     * @param ShopConfiguration $shopConfiguration
-     */
     public function save(ShopConfiguration $shopConfiguration)
     {
         $this->shopConfigurationDao->save(

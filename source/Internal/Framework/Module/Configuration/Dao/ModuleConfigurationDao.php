@@ -90,9 +90,17 @@ class ModuleConfigurationDao implements ModuleConfigurationDaoInterface
         return $moduleConfigurations;
     }
 
+    /**
+     * @deprecated will be completely removed
+     */
     public function deleteAll(int $shopId): void
     {
         $this->filesystem->remove($this->getModulesConfigurationDirectory($shopId));
+    }
+
+    public function delete(string $moduleId, int $shopId): void
+    {
+        $this->filesystem->remove($this->getModuleConfigurationFilePath($shopId, $moduleId));
     }
 
     public function exists(string $moduleId, int $shopId): bool

@@ -17,13 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
  */
 interface ShopConfigurationDaoBridgeInterface
 {
-    /**
-     * @return ShopConfiguration
-     */
     public function get(): ShopConfiguration;
 
     /**
-     * @param ShopConfiguration $shopConfiguration
+     * @deprecated use ModuleConfigurationDaoInterface::save() and ClassExtensionsChainDaoInterface::saveChain() instead
      */
     public function save(ShopConfiguration $shopConfiguration);
 }

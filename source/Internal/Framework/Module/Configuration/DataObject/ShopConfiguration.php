@@ -67,6 +67,8 @@ class ShopConfiguration
     }
 
     /**
+     * @deprecated use ModuleConfigurationDaoInterface::delete() instead
+     *
      * @param string $moduleId
      *
      * @throws ModuleConfigurationNotFoundException

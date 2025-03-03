@@ -117,4 +117,30 @@ final class DeliveryCostTest extends IntegrationTestCase
         $this->assertCount(1, $suitableDeliveries);
         $this->assertEquals('ok-rule', reset($suitableDeliveries)->getFieldData('oxtitle'));
     }
+
+    #[DataProvider('providerDeliveryCostRules')]
+    public function testDeliveryCostNotDoubledWithSameDeliveryObject(array $testCase): void
+    {
+        $basket = (new BasketConstruct())->calculateBasket($testCase);
+
+        $user = oxNew(User::class);
+        $user->load($testCase['user']['oxid']);
+        $deliveryList = oxNew(DeliveryList::class);
+        $deliveries = $deliveryList->getDeliveryList(
+            $basket,
+            $user,
+            BasketConstruct::getDefaultCountryId(),
+            $basket->getShippingId()
+        );
+        $delivery = reset($deliveries);
+
+        $delivery->isForBasket($basket);
+        $firstPrice = $delivery->getDeliveryPrice()->getBruttoPrice();
+
+        $delivery->setDeliveryPrice(null);
+        $delivery->isForBasket($basket);
+        $secondPrice = $delivery->getDeliveryPrice()->getBruttoPrice();
+
+        $this->assertEquals($firstPrice, $secondPrice);
+    }
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Integration\Internal\Framework\Module\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\CacheNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
@@ -224,6 +225,9 @@ final class ActiveModulesDataProviderTest extends TestCase
 
             public function get(string $key, int $shopId): array
             {
+                if (!isset($this->cache[$shopId][$key])) {
+                    throw new CacheNotFoundException();
+                }
                 return $this->cache[$shopId][$key];
             }
 

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\CacheNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleSettingNotFountException;
@@ -107,15 +108,14 @@ class ModuleSettingService implements ModuleSettingServiceInterface
         $shopId = $this->context->getCurrentShopId();
         $cacheKey = $this->getCacheKey($moduleId, $name);
 
-        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
-            $this->moduleCacheService->put(
-                $cacheKey,
-                $shopId,
-                ['value' => $this->moduleConfigurationDao->get($moduleId, $shopId)->getModuleSetting($name)->getValue()]
-            );
-        }
+        try {
+            return $this->moduleCacheService->get($cacheKey, $shopId)['value'];
+        } catch (CacheNotFoundException | \JsonException) {
+            $data = $this->moduleConfigurationDao->get($moduleId, $shopId)->getModuleSetting($name)->getValue();
+            $this->moduleCacheService->put($cacheKey, $shopId, ['value' => $data]);
 
-        return $this->moduleCacheService->get($cacheKey, $shopId)['value'];
+            return $data;
+        }
     }
 
     private function getCacheKey(string $moduleId, string $name): string

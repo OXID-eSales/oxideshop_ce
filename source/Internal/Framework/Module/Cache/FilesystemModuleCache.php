@@ -34,10 +34,6 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
     ) {
     }
 
-    /**
-     * @param string $moduleId
-     * @param int    $shopId
-     */
     public function invalidate(string $moduleId, int $shopId): void
     {
         $this->shopTemplateCacheService->invalidateCache($shopId);
@@ -61,11 +57,6 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
         }
     }
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     * @param array  $data
-     */
     public function put(string $key, int $shopId, array $data): void
     {
         $this->fileSystem->dumpFile(
@@ -74,38 +65,20 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
         );
     }
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     *
-     * @return array
-     * @throws CacheNotFoundException
-     */
     public function get(string $key, int $shopId): array
     {
-        if (!$this->exists($key, $shopId)) {
+        $fileContent = @file_get_contents($this->getModulePathCacheFilePath($key, $shopId));
+
+        if (!$fileContent) {
             throw new CacheNotFoundException("Cache with key '$key' for the shop with id $shopId not found.");
         }
 
-        return $this->getCacheFileContent($this->getModulePathCacheFilePath($key, $shopId));
+        return $this->decode($fileContent);
     }
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     *
-     * @return bool
-     */
     public function exists(string $key, int $shopId): bool
     {
         return $this->fileSystem->exists($this->getModulePathCacheFilePath($key, $shopId));
-    }
-
-    private function getCacheFileContent(string $modulePathCacheFilePath): array
-    {
-        return $this->decode(
-            file_get_contents($modulePathCacheFilePath)
-        );
     }
 
     private function getModulePathCacheFilePath(string $key, int $shopId): string

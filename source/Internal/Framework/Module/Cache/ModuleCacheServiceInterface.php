@@ -14,12 +14,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Cache;
  */
 interface ModuleCacheServiceInterface
 {
-    /**
-     * Invalidate all module related cache items for a given module and a given shop
-     *
-     * @param string $moduleId
-     * @param int    $shopId
-     */
     public function invalidate(string $moduleId, int $shopId): void;
 
     /**
@@ -27,26 +21,16 @@ interface ModuleCacheServiceInterface
      */
     public function invalidateAll(): void;
 
-    /**
-     * @param string $key
-     * @param int    $shopId
-     * @param array  $data
-     */
     public function put(string $key, int $shopId, array $data): void;
 
     /**
-     * @param string $key
-     * @param int    $shopId
-     *
-     * @return array
+     * @throws CacheNotFoundException
+     * @throws \JsonException
      */
     public function get(string $key, int $shopId): array;
 
     /**
-     * @param string $key
-     * @param int    $shopId
-     *
-     * @return bool
+     * @deprecated use direct get() method instead
      */
     public function exists(string $key, int $shopId): bool;
 }

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\CacheNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
@@ -45,14 +46,14 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         $shopId = $this->context->getCurrentShopId();
         $cacheKey = 'absolute_module_paths';
 
-        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
-            $this->moduleCacheService->put(
-                $cacheKey,
-                $shopId,
-                $this->collectModulePathsForCaching()
-            );
+        try {
+            return $this->moduleCacheService->get($cacheKey, $shopId);
+        } catch (CacheNotFoundException | \JsonException) {
+            $data = $this->collectModulePaths();
+            $this->moduleCacheService->put($cacheKey, $shopId, $data);
+
+            return $data;
         }
-        return $this->moduleCacheService->get($cacheKey, $shopId);
     }
 
     /** @inheritDoc */
@@ -61,13 +62,14 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         $shopId = $this->context->getCurrentShopId();
         $cacheKey = 'controllers';
 
-        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
-            $this->moduleCacheService->put($cacheKey, $shopId, $this->collectControllersForCaching());
-        }
+        try {
+            return $this->createControllersFromData($this->moduleCacheService->get($cacheKey, $shopId));
+        } catch (CacheNotFoundException | \JsonException) {
+            $data = $this->collectControllersData();
+            $this->moduleCacheService->put($cacheKey, $shopId, $data);
 
-        return $this->createControllersFromData(
-            $this->moduleCacheService->get($cacheKey, $shopId)
-        );
+            return $this->createControllersFromData($data);
+        }
     }
 
     /** @inheritDoc */
@@ -76,19 +78,18 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
         $shopId = $this->context->getCurrentShopId();
         $cacheKey = 'module_class_extensions';
 
-        if (!$this->moduleCacheService->exists($cacheKey, $shopId)) {
-            $this->moduleCacheService->put(
-                $cacheKey,
-                $shopId,
-                $this->activeClassExtensionChainResolver->getActiveExtensionChain($shopId)->getChain()
-            );
-        }
+        try {
+            return $this->moduleCacheService->get($cacheKey, $shopId);
+        } catch (CacheNotFoundException | \JsonException) {
+            $data = $this->activeClassExtensionChainResolver->getActiveExtensionChain($shopId)->getChain();
+            $this->moduleCacheService->put($cacheKey, $shopId, $data);
 
-        return $this->moduleCacheService->get($cacheKey, $shopId);
+            return $data;
+        }
     }
 
     /** @return array */
-    private function collectModulePathsForCaching(): array
+    private function collectModulePaths(): array
     {
         $modulePaths = [];
         foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
@@ -103,7 +104,7 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
     }
 
     /** @return array */
-    private function collectControllersForCaching(): array
+    private function collectControllersData(): array
     {
         $controllers = [];
         foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {

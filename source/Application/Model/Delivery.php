@@ -329,6 +329,10 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      */
     public function isForBasket($oBasket)
     {
+        $this->_iItemCnt = 0;
+        $this->_iProdCnt = 0;
+        $this->_dPrice = 0;
+
         // amount for conditional check
         $blHasArticles = $this->hasArticles();
         $blHasCategories = $this->hasCategories();

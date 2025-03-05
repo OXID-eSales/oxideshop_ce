@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\Price;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -19,12 +21,12 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     /** @inheritdoc */
     public function render()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         parent::render();
 
-        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $oOrder = oxNew(Order::class);
         $oCur = $myConfig->getActShopCurrencyObject();
-        $oLang = \OxidEsales\Eshop\Core\Registry::getLang();
+        $oLang = Registry::getLang();
 
         $soxId = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
@@ -41,14 +43,12 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
             }
         }
 
-        // orders today
-        $dSum = $oOrder->getOrderSum(true);
-        $this->_aViewData["ordersum"] = $oLang->formatCurrency($dSum, $oCur);
+        $todaySum = Price::getPriceInActCurrency($oOrder->getOrderSum(true));
+        $this->_aViewData["ordersum"] = $oLang->formatCurrency($todaySum, $oCur);
         $this->_aViewData["ordercnt"] = $oOrder->getOrderCnt(true);
 
-        // ALL orders
-        $dSum = $oOrder->getOrderSum();
-        $this->_aViewData["ordertotalsum"] = $oLang->formatCurrency($dSum, $oCur);
+        $totalSum = Price::getPriceInActCurrency($oOrder->getOrderSum());
+        $this->_aViewData["ordertotalsum"] = $oLang->formatCurrency($totalSum, $oCur);
         $this->_aViewData["ordertotalcnt"] = $oOrder->getOrderCnt();
         $this->_aViewData["afolder"] = $myConfig->getConfigParam('aOrderfolder');
         $this->_aViewData["alangs"] = $oLang->getLanguageNames();
@@ -100,9 +100,9 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function sendorder()
     {
-        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $oOrder = oxNew(Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
-            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s", \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime()));
+            $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field(date("Y-m-d H:i:s", Registry::getUtilsDate()->getTime()));
             $oOrder->save();
 
             // #1071C
@@ -127,7 +127,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function resetorder()
     {
-        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $oOrder = oxNew(Order::class);
         if ($oOrder->load($this->getEditObjectId())) {
             $oOrder->oxorder__oxsenddate = new \OxidEsales\Eshop\Core\Field("0000-00-00 00:00:00");
             $oOrder->save();
@@ -141,7 +141,7 @@ class OrderOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      */
     public function canResetShippingDate()
     {
-        $oOrder = oxNew(\OxidEsales\Eshop\Application\Model\Order::class);
+        $oOrder = oxNew(Order::class);
         $blCan = false;
         if ($oOrder->load($this->getEditObjectId())) {
             $blCan = $oOrder->oxorder__oxstorno->value == "0" &&

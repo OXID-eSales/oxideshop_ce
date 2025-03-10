@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [6.14.4] - unreleased
 
 ### Fixed
-- Catch and log broken cms content in related plugin
+- Catch and log broken cms content in related plugin [#0007743] https://bugs.oxid-esales.com/view.php?id=7743
 
 ## [6.14.3] - 2024-11-04
 

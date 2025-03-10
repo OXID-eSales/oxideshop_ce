@@ -10,17 +10,20 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Cache;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Event\ClearShopCacheEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ShopCacheFacade implements ShopCacheCleanerInterface
+readonly class ShopCacheFacade implements ShopCacheCleanerInterface
 {
     public function __construct(
-        private readonly ContextInterface $context,
-        private readonly TagAwareAdapterFactoryInterface $tagAwareAdapterFactory,
-        private readonly ShopAdapterInterface $shopAdapter,
-        private readonly ShopTemplateCacheServiceInterface $templateCacheService,
+        private ContextInterface $context,
+        private TagAwareAdapterFactoryInterface $tagAwareAdapterFactory,
+        private ShopAdapterInterface $shopAdapter,
+        private ShopTemplateCacheServiceInterface $templateCacheService,
+        private EventDispatcherInterface $eventDispatcher
     ) {
     }
 
@@ -29,6 +32,8 @@ class ShopCacheFacade implements ShopCacheCleanerInterface
         $this->shopAdapter->invalidateModulesCache();
         $this->templateCacheService->invalidateCache($shopId);
         $this->tagAwareAdapterFactory->create($shopId)->clear();
+
+        $this->eventDispatcher->dispatch(new ClearShopCacheEvent($shopId));
     }
 
     public function clearAll(): void
@@ -37,6 +42,7 @@ class ShopCacheFacade implements ShopCacheCleanerInterface
         $this->templateCacheService->invalidateAllShopsCache();
         foreach ($this->context->getAllShopIds() as $shopId) {
             $this->tagAwareAdapterFactory->create($shopId)->clear();
+            $this->eventDispatcher->dispatch(new ClearShopCacheEvent($shopId));
         }
     }
 }

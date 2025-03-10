@@ -9,6 +9,7 @@
 - Registration of environment variables via Symfony Dotenv Component
 - Interface for storing Symfony Service Container parameters in configuration
 - Support Symfony caching interface with tags
+- ClearShopCacheEvent
 
 ### Deprecated
 

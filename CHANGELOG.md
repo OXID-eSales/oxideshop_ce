@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [6.14.4] - unreleased
+## [6.14.4] - 2025-03-11
 
 ### Fixed
 - Catch and log broken cms content in related plugin [#0007743] https://bugs.oxid-esales.com/view.php?id=7743

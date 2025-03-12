@@ -8,6 +8,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Core\Exception\ArticleInputException;
+use OxidEsales\Eshop\Core\Exception\NoArticleException;
+use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
 use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
@@ -169,7 +172,15 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             }
         }
 
-        $this->_aViewData['basketSummaryHash'] = $this->getBasketSummaryHash();
+        try {
+            $this->_aViewData['basketSummaryHash'] = $this->getBasketSummaryHash();
+        } catch (NoArticleException $exception) {
+            Registry::getUtils()->redirect(
+                Registry::getConfig()->getShopHomeUrl() . 'cl=basket',
+                false,
+                302
+            );
+        }
 
         parent::render();
 
@@ -198,30 +209,30 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             return null;
         }
 
-        if (!$this->validateTermsAndConditions()) {
-            $this->_blConfirmAGBError = 1;
+        try {
+            if (!$this->validateTermsAndConditions()) {
+                $this->_blConfirmAGBError = 1;
 
-            return null;
-        }
+                return null;
+            }
 
-        $user = $this->getUser();
-        if (!$user) {
-            return 'user';
-        }
-        $basket = $session->getBasket();
+            $user = $this->getUser();
+            if (!$user) {
+                return 'user';
+            }
+            $basket = $session->getBasket();
 
-        $requestBasketSummaryHash = Registry::getRequest()->getRequestParameter('basketSummaryHash');
-        if (!$requestBasketSummaryHash) {
-            $this->notifyIfBasketSummaryValidationIsNotPossible();
-        } elseif ($requestBasketSummaryHash !== $this->getBasketSummaryHash()) {
-            $redirect = $basket->getProductsCount() === 0 ? 'basket' : 'order';
-            $this->addBasketSummaryValidationError($redirect);
+            $requestBasketSummaryHash = Registry::getRequest()->getRequestParameter('basketSummaryHash');
+            if (!$requestBasketSummaryHash) {
+                $this->notifyIfBasketSummaryValidationIsNotPossible();
+            } elseif ($requestBasketSummaryHash !== $this->getBasketSummaryHash()) {
+                $redirect = $basket->getProductsCount() === 0 ? 'basket' : 'order';
+                $this->addBasketSummaryValidationError($redirect);
 
-            return $redirect;
-        }
+                return $redirect;
+            }
 
-        if ($basket->getProductsCount()) {
-            try {
+            if ($basket->getProductsCount()) {
                 $order = oxNew(Order::class);
 
                 //finalizing ordering process (validating, storing order into DB, executing payment, setting status ...)
@@ -232,14 +243,14 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
                 // proceeding to next view
                 return $this->getNextStep($success);
-            } catch (\OxidEsales\Eshop\Core\Exception\OutOfStockException $exception) {
-                $exception->setDestination('basket');
-                Registry::getUtilsView()->addErrorToDisplay($exception, false, true, 'basket');
-            } catch (\OxidEsales\Eshop\Core\Exception\NoArticleException $exception) {
-                Registry::getUtilsView()->addErrorToDisplay($exception);
-            } catch (\OxidEsales\Eshop\Core\Exception\ArticleInputException $exception) {
-                Registry::getUtilsView()->addErrorToDisplay($exception);
             }
+        } catch (OutOfStockException $exception) {
+            $exception->setDestination('basket');
+            Registry::getUtilsView()->addErrorToDisplay($exception, false, true, 'basket');
+        } catch (NoArticleException $exception) {
+            return 'basket';
+        } catch (ArticleInputException $exception) {
+            Registry::getUtilsView()->addErrorToDisplay($exception);
         }
     }
 

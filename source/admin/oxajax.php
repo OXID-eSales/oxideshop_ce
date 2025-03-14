@@ -25,10 +25,12 @@ if ($blAjaxCall) {
     $myConfig = Registry::getConfig();
 
     // Includes Utility module.
-    $sUtilModule = $myConfig->getConfigParam('sUtilModule');
-    if ($sUtilModule && file_exists(getShopBasePath() . "modules/" . $sUtilModule)) {
-        include_once getShopBasePath() . "modules/" . $sUtilModule;
-    }
+//    $sUtilModule = $myConfig->getConfigParam('sUtilModule');
+//    if ($sUtilModule && file_exists(getShopBasePath() . "modules/" . $sUtilModule)) {
+//        include_once getShopBasePath() . "modules/" . $sUtilModule;
+//    }
+
+    $myConfig->init();
 
     $myConfig->setConfigParam('blAdmin', true);
 

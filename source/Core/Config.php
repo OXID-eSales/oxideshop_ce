@@ -1801,10 +1801,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $this->processSeoCall();
 
-        //starting up the session
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        $session->start();
-
         // redirect to start page and display the error
         Registry::getUtilsView()->addErrorToDisplay($ex);
         Registry::getUtils()->redirect($this->getShopHomeUrl() . 'cl=start', true, 302);

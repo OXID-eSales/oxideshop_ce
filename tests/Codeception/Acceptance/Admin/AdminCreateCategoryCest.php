@@ -41,7 +41,7 @@ final class AdminCreateCategoryCest
         $mainCategoryPage->create($this->categoryName);
         $mainCategoryPage->uploadThumbnail('product_image.php');
 
-        $I->waitForText(Translator::translate('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE'));
+        $I->seeText(Translator::translate('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE'));
     }
 
     public function createCategoryWrongImageType(AcceptanceTester $I): void
@@ -54,6 +54,6 @@ final class AdminCreateCategoryCest
         $mainCategoryPage->create($this->categoryName);
         $mainCategoryPage->uploadThumbnail('fake_image.png');
 
-        $I->waitForText(Translator::translate('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE'));
+        $I->seeText(Translator::translate('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE'));
     }
 }

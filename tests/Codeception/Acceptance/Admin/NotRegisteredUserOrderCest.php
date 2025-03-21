@@ -25,23 +25,24 @@ final class NotRegisteredUserOrderCest
     {
         $I->wantToTest('Check editing not registered user order');
 
-        $adminPanel = $I->loginAdmin();
+        $orderOverview = $I
+            ->loginAdmin()
+            ->openOrders()
+            ->findByOrderNumber('2');
 
-        $orders = $adminPanel->openOrders();
-        $orders = $orders->find($orders->orderNumberInput, "2");
+        $addressesTab = $orderOverview->openAddressesTab();
+        $I->seeInField($addressesTab->firstNameInAddressesTab, 'name');
+        $I->seeInField($addressesTab->lastNameInAddressesTab, 'surname');
+        $I->seeInField($addressesTab->loginNameInAddressesTab, 'example01@oxid-esales.dev');
+        $I->seeInField($addressesTab->zipCodeInAddressesTab, '3000');
+        $I->seeInField($addressesTab->cityInAddressesTab, 'city');
 
-        $addressesTab = $orders->openAddressesTab();
-        $I->seeInField($addressesTab->firstNameInAddressesTab, "name");
-        $I->seeInField($addressesTab->lastNameInAddressesTab, "surname");
-        $I->seeInField($addressesTab->loginNameInAddressesTab, "example01@oxid-esales.dev");
-        $I->seeInField($addressesTab->zipCodeInAddressesTab, "3000");
-        $I->seeInField($addressesTab->cityInAddressesTab, "city");
-
-        $productsTab = $orders->openProductsTab();
-        $productsTab = $productsTab->addANewProductToTheOrder("1002-1");
+        $productsTab = $orderOverview
+            ->openProductsTab()
+            ->addANewProductToTheOrder('1002-1');
 
         $I->waitForElement($productsTab->secondProductInProductTab);
-        $I->see("1002-1", $productsTab->secondProductInProductTab);
+        $I->seeText('1002-1', $productsTab->secondProductInProductTab);
     }
 
     private function insertAnOrderInDatabase(AcceptanceTester $I): void

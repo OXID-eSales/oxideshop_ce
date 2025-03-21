@@ -18,7 +18,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 use function sprintf;
 
-#[group('myAccount', 'giftRegistry')]
+#[Group('myAccount', 'giftRegistry')]
 final class GiftRegistryCest
 {
     public function addProductToUserGiftRegistry(AcceptanceTester $I): void
@@ -36,7 +36,7 @@ final class GiftRegistryCest
 
         $I->amGoingTo('open details page');
         $detailsPage = (new ProductNavigation($I))->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
         $detailsPage = $detailsPage->loginUser($userData['userLoginName'], $userData['userPassword']);
 
@@ -60,14 +60,14 @@ final class GiftRegistryCest
 
         $I->amGoingTo('open details page');
         $detailsPage = $giftRegistryPage->openProductDetailsPage(1);
-        $I->see($productData['title'], $detailsPage->productTitle);
+        $I->seeText($productData['title'], $detailsPage->productTitle);
 
         $giftRegistryPage = $detailsPage->openUserGiftRegistryPage()
             ->addProductToBasket(1, 2);
-        $I->see('2', $giftRegistryPage->miniBasketMenuElement);
+        $I->seeText('2', $giftRegistryPage->miniBasketMenuElement);
 
         $giftRegistryPage->removeFromGiftRegistry(1);
-        $I->see(Translator::translate('GIFT_REGISTRY_EMPTY'));
+        $I->seeText(Translator::translate('GIFT_REGISTRY_EMPTY'));
         $giftRegistryPage->openAccountMenu()
             ->checkGiftRegistryItemCount(0)
             ->closeAccountMenu();
@@ -92,7 +92,7 @@ final class GiftRegistryCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
         //add to gift registry and open the page of it
         $giftRegistryPage = $detailsPage->loginUser($userData['userLoginName'], $userData['userPassword'])
@@ -107,16 +107,16 @@ final class GiftRegistryCest
             $adminUserData['userLoginName'],
             $adminUserData['userPassword']
         )->searchForGiftRegistry($userData['userLoginName']);
-        $I->see(Translator::translate('GIFT_REGISTRY_SEARCH_RESULTS'));
-        $I->see(
+        $I->seeText(Translator::translate('GIFT_REGISTRY_SEARCH_RESULTS'));
+        $I->seeText(
             Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName']
         );
         $giftRegListPage = $giftRegistryPage->openFoundGiftRegistryList();
-        $I->see(
+        $I->seeText(
             Translator::translate('GIFT_REGISTRY_OF') . ' ' . $userData['userName'] . ' ' . $userData['userLastName'],
             $giftRegListPage->headerTitle
         );
-        $I->see(
+        $I->seeText(
             sprintf(Translator::translate('WISHLIST_PRODUCTS'), $userData['userName'] . ' ' . $userData['userLastName'])
         );
         $giftRegListPage->seeProductData($productData, 1);
@@ -125,13 +125,13 @@ final class GiftRegistryCest
         $giftRegistryPage = $giftRegListPage->openUserGiftRegistryPage()
             ->logoutUser()
             ->loginUser($userData['userLoginName'], $userData['userPassword']);
-        $I->see(Translator::translate('MESSAGE_MAKE_GIFT_REGISTRY_PUBLISH'));
+        $I->seeText(Translator::translate('MESSAGE_MAKE_GIFT_REGISTRY_PUBLISH'));
         $giftRegistryPage = $giftRegistryPage->makeListNotSearchable();
 
         $giftRegistryPage = $giftRegistryPage->logoutUser()
             ->loginUser($adminUserData['userLoginName'], $adminUserData['userPassword'])
             ->searchForGiftRegistry($userData['userLoginName']);
-        $I->see(Translator::translate('MESSAGE_SORRY_NO_GIFT_REGISTRY'));
+        $I->seeText(Translator::translate('MESSAGE_SORRY_NO_GIFT_REGISTRY'));
 
         //send notification about gift registry
         $giftRegistryPage = $giftRegistryPage->logoutUser()
@@ -141,10 +141,15 @@ final class GiftRegistryCest
                 'recipient',
                 'Hi, I created a Gift Registry at OXID.'
             );
-        $I->see(sprintf(Translator::translate('GIFT_REGISTRY_SENT_SUCCESSFULLY'), 'example@oxid-esales.dev'));
+        $I->seeText(
+            sprintf(
+                Translator::translate('GIFT_REGISTRY_SENT_SUCCESSFULLY'),
+                'example@oxid-esales.dev'
+            )
+        );
 
         $giftRegistryPage->removeFromGiftRegistry(1);
-        $I->see(Translator::translate('GIFT_REGISTRY_EMPTY'));
+        $I->seeText(Translator::translate('GIFT_REGISTRY_EMPTY'));
     }
 
     public function disableUserGiftRegistry(AcceptanceTester $I): void
@@ -169,7 +174,7 @@ final class GiftRegistryCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
         $I->dontSeeElement($detailsPage->addToGiftRegistryLink);
         $detailsPage->openAccountMenu();

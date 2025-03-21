@@ -4,7 +4,7 @@
 install: &install
   git:
     sdk_ref: b-8.0.x
-  add_services: 'selenium-chrome-126'
+  add_services: 'selenium-chrome'
   method: script
   script: 'source/.github/oxid-esales/install.sh'
   cache:

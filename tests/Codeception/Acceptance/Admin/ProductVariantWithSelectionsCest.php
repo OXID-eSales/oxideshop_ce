@@ -25,17 +25,18 @@ final class ProductVariantWithSelectionsCest
 
         $parentMainPage = $productsMainPage->find($productsMainPage->searchNumberInput, '1002');
         $parentSelectionPage = $parentMainPage->openSelectionTab();
-        $parentAssignSelections = $parentSelectionPage->openAssignSelectionListPopup();
-        $parentAssignSelections->assignSelectionByTitle('test selection list [DE] šÄßüл');
+        $parentSelectionPage
+            ->openAssignSelectionListPopup()
+            ->assignSelectionByTitle('test selection list [DE] šÄßüл');
         $I->closeTab();
 
         $parentVariantPage = $parentSelectionPage->openVariantsTab();
         $variantMainPage = $parentVariantPage->openEditProductVariant(1);
         $I->seeInField($variantMainPage->numberInput, '1002-1');
 
-        $variantSelectionPage = $variantMainPage->openSelectionTab();
-        $variantAssignSelections = $variantSelectionPage->openAssignSelectionListPopup();
-        $I->retrySee('test selection list [DE] šÄßüл', $variantAssignSelections->assignedList);
-        $I->closeTab();
+        $variantMainPage
+            ->openSelectionTab()
+            ->openAssignSelectionListPopup()
+            ->seeProductAssigned('test selection list [DE] šÄßüл');
     }
 }

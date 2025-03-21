@@ -13,9 +13,9 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[Group('manufacturer')]
 final class ManufacturerCest
 {
-    #[group('manufacturer')]
     public function checkManufacturerList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer list');
@@ -38,7 +38,7 @@ final class ManufacturerCest
             ]);
     }
 
-    #[group('manufacturer', 'product_list')]
+    #[Group('product_list')]
     public function checkAndNavigateThroughManufacturerProductList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer functionality and product list navigation');

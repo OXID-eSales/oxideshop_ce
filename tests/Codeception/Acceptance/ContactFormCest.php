@@ -14,7 +14,7 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\DataObject\ContactData;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('ContactForm')]
+#[Group('ContactForm')]
 final class ContactFormCest
 {
     public function contactForm(AcceptanceTester $I): void
@@ -23,24 +23,26 @@ final class ContactFormCest
         $contactPage = $I
             ->openShop()
             ->openContactPage();
-        $I->see(Translator::translate("COMPLETE_MARKED_FIELDS"));
+        $I->seeText(Translator::translate("COMPLETE_MARKED_FIELDS"));
 
         $I->amGoingTo('provide invalid form data and submit');
         $contactData = $this->getContactData();
         $contactData->setEmail('');
         $contactPage->fillInContactData($contactData);
         $contactPage->sendContactData();
+
         $I->expect('validation fails with empty default required field');
-        $I->see(Translator::translate('DD_FORM_VALIDATION_REQUIRED'));
+        $I->seeText(Translator::translate('DD_FORM_VALIDATION_REQUIRED'));
         $I->dontSee(Translator::translate("THANK_YOU"));
 
         $I->amGoingTo('provide valid form data and submit');
         $contactData = $this->getContactData();
         $contactPage->fillInContactData($contactData);
         $contactPage->sendContactData();
+
         $I->expect('form works with valid data');
+        $I->seeText(Translator::translate('THANK_YOU'));
         $I->dontSee(Translator::translate('DD_FORM_VALIDATION_REQUIRED'));
-        $I->see(Translator::translate('THANK_YOU'));
     }
 
     public function contactFormConfigured(AcceptanceTester $I): void
@@ -63,7 +65,7 @@ final class ContactFormCest
         $contactPage->fillInContactData($contactData);
         $contactPage->sendContactData();
         $I->expect('form submit doesn\'t work without first name');
-        $I->see(Translator::translate('DD_FORM_VALIDATION_REQUIRED'));
+        $I->seeText(Translator::translate('DD_FORM_VALIDATION_REQUIRED'));
         $I->dontSee(Translator::translate("THANK_YOU"));
     }
 

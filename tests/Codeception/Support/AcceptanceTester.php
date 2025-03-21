@@ -9,29 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Support;
 
-use OxidEsales\EshopCommunity\Tests\Codeception\Support\_generated\AcceptanceTesterActions;
-use Codeception\Lib\Friend;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\AdminLoginPage;
 use OxidEsales\Codeception\Admin\AdminPanel;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Home;
-
-/**
- * Inherited Methods
- * @method void wantToTest($text)
- * @method void wantTo($text)
- * @method void execute($callable)
- * @method void expectTo($prediction)
- * @method void expect($prediction)
- * @method void amGoingTo($argumentation)
- * @method void am($role)
- * @method void lookForwardTo($achieveValue)
- * @method void comment($description)
- * @method Friend haveFriend($name, $actorClass = NULL)
- *
- * @SuppressWarnings(PHPMD)
- */
+use OxidEsales\EshopCommunity\Tests\Codeception\Support\_generated\AcceptanceTesterActions;
 
 class AcceptanceTester extends AcceptanceActor
 {

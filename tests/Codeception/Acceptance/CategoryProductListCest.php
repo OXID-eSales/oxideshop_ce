@@ -13,7 +13,7 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('category_product_list')]
+#[Group('category_product_list')]
 final class CategoryProductListCest
 {
     public function filterAndNavigateThroughCategoryList(AcceptanceTester $I): void

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
 use Codeception\Attribute\Group;
+use Facebook\WebDriver\WebDriverElement;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
@@ -43,15 +44,16 @@ final class ModuleSettingsCest
         $module =  $moduleList->selectModule('Codeception test module #1');
         $module->openModuleTab('Settings');
 
-        $I->click(Translator::translate('Empty Settings Group'));
+        $I->clickAndWait(Translator::translate('Empty Settings Group'));
         $this->checkEmptyInitialSettingsLoaded($I);
 
         $this->modifyEmptyInitialSettings($I);
-        $I->click('save');
+        $I->clickAndWait('save');
+        $I->selectEditFrame();
+        $I->waitForDocumentReadyState();
 
-        $I->waitForText('Empty Settings Group');
-        $I->see('Empty Settings Group');
-        $I->click('Empty Settings Group');
+        $I->amGoingTo('make sure that the form was reloaded and group contents are now collapsed');
+        $I->clickAndWait('Empty Settings Group');
         $this->checkModifiedSettingsNotEmpty($I);
     }
 
@@ -63,7 +65,7 @@ final class ModuleSettingsCest
         $module =  $moduleList->selectModule('Codeception test module #1');
         $module->openModuleTab('Settings');
 
-        $I->click(Translator::translate('Filled Settings Group'));
+        $I->clickAndWait(Translator::translate('Filled Settings Group'));
         $this->checkFilledInitialSettingsLoaded($I);
     }
 

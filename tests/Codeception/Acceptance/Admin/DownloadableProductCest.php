@@ -93,7 +93,7 @@ final class DownloadableProductCest
         $I->fillField("confstrs[iLinkExpirationTime]", "240");
         $I->fillField("confstrs[iDownloadExpirationTime]", "24");
         $I->fillField("confstrs[iMaxDownloadsCountUnregistered]", "1");
-        $I->click(['name' => 'save']);
+        $I->clickAndWait(['name' => 'save']);
     }
 
     private function setDownloadableFileForAProduct(AcceptanceTester $I, AdminPanel $adminPanel): void
@@ -102,7 +102,7 @@ final class DownloadableProductCest
         $products->find("where[oxarticles][oxartnum]", $this->productId);
         $products->openDownloadsTab();
         $I->checkOption('editval[oxarticles__oxisdownloadable]');
-        $I->click(['name' => 'save']);
+        $I->clickAndWait(['name' => 'save']);
     }
 
     private function makeOrderComplete(AcceptanceTester $I, AdminPanel $adminPanel): void

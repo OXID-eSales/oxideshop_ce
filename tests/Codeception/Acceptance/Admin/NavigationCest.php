@@ -32,8 +32,8 @@ final class NavigationCest
         $adminPanel = $I->loginAdmin();
         $adminPanel->openSystemInfo();
 
-        $I->see('PHP Version');
-        $I->see('Configuration');
+        $I->seeText('PHP Version');
+        $I->seeText('Configuration');
     }
 
     public function systemRequirements(AcceptanceTester $I): void
@@ -44,7 +44,7 @@ final class NavigationCest
         $adminPanel = $I->loginAdmin();
         $adminPanel->openSystemHealth();
 
-        $I->see(Translator::translate('State of system health'));
+        $I->seeText(Translator::translate('State of system health'));
         $I->dontSee($untranslatedKeyPrefix);
     }
 
@@ -56,7 +56,7 @@ final class NavigationCest
         $adminPanel = $I->loginAdmin();
         $tools = $adminPanel->openTools();
 
-        $I->see(Translator::translate('Update SQL'));
+        $I->waitForText(Translator::translate('Update SQL'));
         $I->seeElement($tools->sqlTextInput);
         $I->seeElement($tools->uploadSqlFileInput);
         $I->seeElement($tools->runUpdateSqlButton);

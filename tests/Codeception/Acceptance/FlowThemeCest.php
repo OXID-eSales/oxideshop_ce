@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class FlowThemeCest
 {
-    #[group('flow_theme')]
+    #[Group('flow_theme')]
     public function selectMultidimensionalVariantsInLists(AcceptanceTester $I): void
     {
         $I->markTestSkipped('make it work with APEX or remove');
@@ -42,7 +42,7 @@ final class FlowThemeCest
         $detailsPage->seeProductData($productData);
     }
 
-    #[group('flow_theme', 'product', 'priceAlarm')]
+    #[Group('flow_theme', 'product', 'priceAlarm')]
     public function sendProductPriceAlert(AcceptanceTester $I): void
     {
         $I->markTestSkipped('make it work with APEX or remove');
@@ -61,17 +61,17 @@ final class FlowThemeCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
-        $I->see(Translator::translate('PRICE_ALERT'));
+        $I->seeText($productData['title']);
+        $I->seeText(Translator::translate('PRICE_ALERT'));
 
         $detailsPage->sendPriceAlert('example_test@oxid-esales.dev', 99.99);
         $thankYouMessage = Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE3')
             . ' 99,99 € ' . Translator::translate('PAGE_DETAILS_THANKYOUMESSAGE4');
-        $I->see($thankYouMessage);
-        $I->see($productData['title']);
+        $I->seeText($thankYouMessage);
+        $I->seeText($productData['title']);
     }
 
-    #[group('flow_theme', 'product', 'priceAlarm')]
+    #[Group('flow_theme', 'product', 'priceAlarm')]
     public function disableProductPriceAlert(AcceptanceTester $I): void
     {
         $I->markTestSkipped('make it work with APEX or remove');
@@ -91,7 +91,7 @@ final class FlowThemeCest
 
         //open details page
         $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
         $I->dontSee(Translator::translate('PRICE_ALERT'));
     }
 }

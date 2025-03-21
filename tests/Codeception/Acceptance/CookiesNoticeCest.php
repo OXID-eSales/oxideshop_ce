@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('cookieNotice')]
+#[Group('cookieNotice')]
 final class CookiesNoticeCest
 {
     public function testCookieNoticeAccept(AcceptanceTester $I): void

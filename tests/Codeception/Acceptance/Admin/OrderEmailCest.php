@@ -20,8 +20,8 @@ final class OrderEmailCest
     {
         $I->wantToTest('Sending email on order shipment');
 
-        $shop = $this->getShopData();
-        $order = $this->getOrderData();
+        $shop = Fixtures::get('shop-1');
+        $order = Fixtures::get('testorder');
 
         $I->loginAdmin()
             ->openOrders()
@@ -84,15 +84,5 @@ final class OrderEmailCest
         foreach ($products as $product) {
             $I->seeInEmailPlainBody($product['OXAMOUNT']);
         }
-    }
-
-    private function getOrderData(): array
-    {
-        return Fixtures::get('testorder');
-    }
-
-    private function getShopData(): array
-    {
-        return Fixtures::get('shop-1');
     }
 }

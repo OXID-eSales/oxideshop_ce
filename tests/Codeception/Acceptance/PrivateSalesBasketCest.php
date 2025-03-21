@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class PrivateSalesBasketCest
 {
-    public function testIfblBasketExcludeEnabledBlocksRootCatChange(AcceptanceTester $I): void
+    public function testIfBasketExcludeEnabledBlocksRootCatChange(AcceptanceTester $I): void
     {
         $I->wantToTest('if blBasketExcludeEnabled blocks rootCatChange and continue shopping clears basket.');
 
@@ -58,7 +58,7 @@ final class PrivateSalesBasketCest
             ->checkBasketEmpty();
     }
 
-    public function checkIfblBasketExcludeEnabledAlsoClearsByEmptyBasket(AcceptanceTester $I): void
+    public function checkIfBasketExcludeEnabledAlsoClearsByEmptyBasket(AcceptanceTester $I): void
     {
         $I->wantToTest('if blBasketExcludeEnabled rootCatChange is no longer blocked by an empty basket.');
 
@@ -81,7 +81,7 @@ final class PrivateSalesBasketCest
 
         $homePage->openCategoryPage('Test category 0 [EN] šÄßüл')
             ->openProductDetailsPage(1)
-            ->addProductToBasket(1)
+            ->addProductToBasket()
             ->openBasket();
         $homePage->openCategoryPage('Test category 2 [EN] šÄßüл')
             ->openBasketIfMainCategoryChanged()
@@ -91,14 +91,15 @@ final class PrivateSalesBasketCest
         $I->dontSee(Translator::translate('ROOT_CATEGORY_CHANGED'));
     }
 
-    #[group('private_shopping_basket_expiration')]
+    #[Group('private_shopping_basket_expiration')]
     public function testPrivateShoppingBasketExpiration(AcceptanceTester $I): void
     {
         $I->wantToTest('private basket reservation expiration');
 
+        $basketExpirationTimeout = 5;
         $I->updateInDatabase('oxarticles', ['oxstock' => '2', 'oxstockflag' => '2'], ['oxid' => '1000']);
         $I->updateConfigInDatabase('blPsBasketReservationEnabled', 'true', 'bool');
-        $I->updateConfigInDatabase('iPsBasketReservationTimeout', '10', 'str');
+        $I->updateConfigInDatabase('iPsBasketReservationTimeout', (string)$basketExpirationTimeout, 'str');
 
         $I->clearShopCache();
         $homePage = $I->openShop();
@@ -109,16 +110,22 @@ final class PrivateSalesBasketCest
 
         $homePage->seeCountdownWithinBasket();
 
-        $I->openShop()->searchFor('1000');
-        $I->see(Translator::translate('NO_ITEMS_FOUND'));
-        //we need to wait for the timeout
-        $I->wait(12);
+        $I
+            ->openShop()
+            ->searchFor('1000');
+        $I->seeText(Translator::translate('NO_ITEMS_FOUND'));
 
-        $I->dontSee("expired products are still visible in basket popup...", "modalbasketFlyout");
+        $I
+            ->amGoingTo('wait for the basket to expire')
+            ->wait($basketExpirationTimeout + 0.1);
 
-        $homePage = $I->openShop();
-        $homePage->checkBasketEmpty();
-        $homePage->searchFor('1000');
+        $I->dontSee('expired products are still visible in basket popup...', 'modalbasketFlyout');
+
+        $I
+            ->openShop()
+            ->checkBasketEmpty()
+            ->searchFor('1000');
+
         $I->dontSee(Translator::translate('NO_ITEMS_FOUND'));
     }
 }

@@ -15,19 +15,9 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 final class CMSPageChangeIdentCest
 {
     private string $testCmsPageIdent = '_test_oxstdfooter';
-
     private string $cmsPageDemoIdent = 'oxstdfooter';
 
-    public function _after(AcceptanceTester $I): void
-    {
-        $I->updateInDatabase(
-            'oxcontents',
-            ['OXLOADID' => $this->cmsPageDemoIdent],
-            ['OXLOADID' => $this->testCmsPageIdent]
-        );
-    }
-
-    #[group('todo_add_clean_cache_after_database_update')]
+    #[Group('todo_add_clean_cache_after_database_update')]
     public function CMSPageChangeIdent(AcceptanceTester $I): void
     {
         $I->clearShopCache();

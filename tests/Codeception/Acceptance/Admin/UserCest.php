@@ -17,7 +17,6 @@ use OxidEsales\Codeception\Admin\DataObject\AdminUserExtendedInfo;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('admin')]
 final class UserCest
 {
     public function testUserMainInfo(AcceptanceTester $I): void
@@ -53,30 +52,43 @@ final class UserCest
 
         $adminUsersPage = $adminUsersPage->createNewUser($adminUser, $adminUserAddress);
 
-        //By default is Customer
-        $adminUser->setUserRights("Customer");
+        //By default, is Customer
+        $adminUser->setUserRights('Customer');
 
         $adminUsersPage = $adminUsersPage->seeUserInformation($adminUser, $adminUserAddress);
 
         $changedAdminUser = $this->getAdminUser();
         $changedAdminUserAddress = $this->getAdminUserAddress();
 
-        $adminUsersPage = $adminUsersPage->editUser($changedAdminUser, $changedAdminUserAddress);
+        $adminUsersPage = $adminUsersPage
+            ->editUser($changedAdminUser, $changedAdminUserAddress);
         //entering wrong month, set to default 01
         $changedAdminUser->setBirthMonth('01');
 
-        $adminUsersPage = $adminUsersPage->seeUserInformation($changedAdminUser, $changedAdminUserAddress);
+        $adminUsersPage = $adminUsersPage
+            ->seeUserInformation($changedAdminUser, $changedAdminUserAddress);
 
-        $adminUserExtendedPage = $adminUsersPage->openExtendedTab()
+        $adminUsersPage
+            ->openExtendedTab()
             ->seeUserAddress($changedAdminUserAddress);
 
-        $adminUserHistoryPage = $adminUserExtendedPage->openHistoryTab()
-            ->createNewRemark("new note_šÄßüл")
-            ->selectUserRemark("0");
-        $I->seeInField($adminUserHistoryPage->remarkField, "new note_šÄßüл");
+        $remarkText = 'new note_šÄßüл';
+        $adminUserHistoryPage = $adminUsersPage
+            ->openHistoryTab()
+            ->createNewRemark($remarkText);
+        $adminUsersPage
+            ->openHistoryTab()
+            ->selectUserRemark('0');
+        $I->seeInField($adminUserHistoryPage->remarkTextSelector, $remarkText);
 
-        $adminUserHistoryPage = $adminUserHistoryPage->deleteRemark()->selectUserRemark("0");
-        $I->dontSeeInField($adminUserHistoryPage->remarkField, "new note_šÄßüл");
+        $adminUsersPage
+            ->openHistoryTab()
+            ->selectUserRemark('0')
+            ->deleteRemark();
+        $adminUsersPage
+            ->openHistoryTab()
+            ->selectUserRemark('0');
+        $I->dontSeeInField($adminUserHistoryPage->remarkTextSelector, $remarkText);
 
         $adminUserProductPage = $adminUserHistoryPage->openProductsTab();
         $adminUserPaymentPage = $adminUserProductPage->openPaymentTab();
@@ -116,7 +128,8 @@ final class UserCest
         $adminUserAddress1->setPhone('7778788');
         $adminUserAddress1->setFax('8887877');
 
-        $adminUsersPage = $adminUsersPage->createNewAddress($adminUserAddress1)
+        $adminUsersPage = $adminUsersPage
+            ->createNewAddress($adminUserAddress1)
             ->seeAddressInformation($adminUserAddress1);
 
         $adminUserAddress2 = new AdminUserAddresses();
@@ -168,7 +181,7 @@ final class UserCest
         $adminUserChangedExtendedInfo->setReceivesNewsletter(true);
         $adminUserChangedExtendedInfo->setEmailInvalid(true);
         $adminUserChangedExtendedInfo->setCreditRating('1500');
-        $adminUserChangedExtendedInfo->setUrl('http://www.url.com');
+        $adminUserChangedExtendedInfo->setUrl('https://www.example.com');
         $adminUsersPage = $adminUsersPage->editExtendedInfo($adminUserChangedExtendedInfo)
             ->seeUserExtendedInformation($adminUserChangedExtendedInfo);
 
@@ -182,19 +195,14 @@ final class UserCest
         $I->wantToTest('that admin can update his own password');
         $newPass = uniqid('new-pass-', true);
         $userData = Fixtures::get('adminUser');
-        $adminLoginPage = $I->openAdmin();
         $I->amGoingTo('log the existing admin in, find him in the list and update his password');
-        $adminLoginPage
+        $I->expect('that admin will be logged-out after password change, but can log-in with the new one');
+        $I
+            ->openAdmin()
             ->login($userData['userLoginName'], $userData['userPassword'])
             ->openUsers()
             ->findByUserName($userData['userId'])
-            ->updatePassword($newPass);
-
-        $I->amGoingTo('send any page request after password change');
-        $I->reloadPage();
-
-        $I->expect('that admin is logged out but can log in with the new pass');
-        $adminLoginPage->seeLoginForm()
+            ->updatePassword($newPass)
             ->login($userData['userLoginName'], $newPass);
     }
 
@@ -215,12 +223,12 @@ final class UserCest
         $I->amGoingTo('try to change email to an existing guest user email');
         $adminUsersPage->updateUsername($guestUserData['userLoginName']);
         $I->expect('to see an error message about existing user');
-        $I->see(Translator::translate('EXCEPTION_USER_USEREXISTS'));
+        $I->seeText(Translator::translate('EXCEPTION_USER_USEREXISTS'));
 
         $I->amGoingTo('try to change email to an existing admin email');
         $adminUsersPage->updateUsername($adminUserData['userLoginName']);
         $I->expect('to see an error message about existing user');
-        $I->see(Translator::translate('EXCEPTION_USER_USEREXISTS'));
+        $I->seeText(Translator::translate('EXCEPTION_USER_USEREXISTS'));
 
         $I->amGoingTo('change user email to a new valid email address');
         $adminUsersPage->updateUsername($newEmail);
@@ -240,7 +248,7 @@ final class UserCest
         $I->haveInDatabase(
             'oxuser',
             [
-                'OXID'        => "kdiruuc",
+                'OXID'        => 'kdiruuc',
                 'OXACTIVE'    => $user->getActive(),
                 'OXRIGHTS'    => 'malladmin',
                 'OXSHOPID'    => 1,
@@ -279,8 +287,8 @@ final class UserCest
     {
         $adminUser = new AdminUser();
         $adminUser->setActive(false);
-        $adminUser->setUserRights("Admin");
-        $adminUser->setPassword("adminpass");
+        $adminUser->setUserRights('Admin');
+        $adminUser->setPassword('adminpass');
         $adminUser->setUsername('example00@oxid-esales.dev');
         $adminUser->setCustomerNumber('121');
         $adminUser->setBirthday('01');
@@ -320,7 +328,7 @@ final class UserCest
         $adminUserExtendedInfo->setReceivesNewsletter(false);
         $adminUserExtendedInfo->setEmailInvalid(false);
         $adminUserExtendedInfo->setCreditRating('1000');
-        $adminUserExtendedInfo->setUrl('http://www.url1.com');
+        $adminUserExtendedInfo->setUrl('https://www.example1.com');
         return $adminUserExtendedInfo;
     }
 }

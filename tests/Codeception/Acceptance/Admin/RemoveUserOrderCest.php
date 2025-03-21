@@ -38,7 +38,7 @@ final class RemoveUserOrderCest
             ]
         );
         $orders = $adminPanel->openOrders();
-        $orders = $orders->find($orders->orderNumberInput, "2");
+        $orders = $orders->findByOrderNumber('2');
         $orders->deleteOrder();
 
         $I->waitForPageLoad();
@@ -66,7 +66,7 @@ final class RemoveUserOrderCest
             ]
         );
         $orders = $adminPanel->openOrders();
-        $orders = $orders->find($orders->orderNumberInput, "2");
+        $orders = $orders->findByOrderNumber('2');
         $orders->cancelOrder();
 
         $I->waitForPageLoad();

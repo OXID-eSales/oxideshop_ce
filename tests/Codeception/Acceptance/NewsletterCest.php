@@ -14,9 +14,10 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Info\NewsletterSubscription;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[Group('newsletter')]
 final class NewsletterCest
 {
-    public function checkEmailvalueAfterOpeningNewsletterPage(AcceptanceTester $I): void
+    public function checkEmailValueAfterOpeningNewsletterPage(AcceptanceTester $I): void
     {
         $I->wantToTest('if the email value in the newsletter page is correct after opening');
 
@@ -26,53 +27,55 @@ final class NewsletterCest
         $I->seeInField($newsletterPage->userEmail, $email);
     }
 
-    #[group('subscribe_without_user_name')]
+    #[Group('subscribe_without_user_name')]
     public function subscribeWithoutUsername(AcceptanceTester $I): void
     {
-        $I->wantToTest('Skipping newsletter username');
+        $I->wantToTest('subscribe with username missing');
 
-        $newsletterPage = $this->openNewsletterPage($I);
-        $newsletterPage->enterUserData()->subscribe();
+        $this
+            ->openNewsletterPage($I)
+            ->enterUserData()
+            ->subscribe();
 
         $I->see(Translator::translate('ERROR_MESSAGE_INPUT_NOTALLFIELDS'));
     }
 
     public function subscribeWithIncorrectUsername(AcceptanceTester $I): void
     {
-        $I->wantToTest('No valid email as username');
+        $I->wantToTest('invalid email used as a username');
 
         $newsletterPage = $this->openNewsletterPage($I);
         $newsletterPage->enterUserData('Test', 'AAA', 'BBB')->subscribe();
 
-        $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
+        $I->seeText(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
     }
 
     public function subscribeForNewsletter(AcceptanceTester $I): void
     {
-        $I->wantToTest('Subscribe for newsletter');
+        $I->wantToTest('subscribe for newsletter');
 
         $email = 'example01@oxid-esales.dev';
         $newsletterPage = $this->openNewsletterPage($I, $email);
         $newsletterPage->enterUserData($email)->subscribe();
 
-        $I->see(Translator::translate('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'));
+        $I->seeText(Translator::translate('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'));
         $I->seeInDatabase('oxnewssubscribed', ['OXEMAIL' => $email]);
     }
 
     public function unsubscribeFromNewsletterWithWrongEmail(AcceptanceTester $I): void
     {
-        $I->wantToTest('Unsubscribe from newsletter but was not subscribed');
+        $I->wantToTest('trying to unsubscribe from newsletter when no previous subscription exists');
 
         $email = 'fake@email.com';
         $newsletterPage = $this->openNewsletterPage($I, $email);
         $newsletterPage->enterUserData($email)->unsubscribe();
 
-        $I->see(Translator::translate('NEWSLETTER_EMAIL_NOT_EXIST'));
+        $I->seeText(Translator::translate('NEWSLETTER_EMAIL_NOT_EXIST'));
     }
 
     public function unsubscribeFromNewsletter(AcceptanceTester $I): void
     {
-        $I->wantToTest('Unsubscribe from newsletter');
+        $I->wantToTest('unsubscribe from newsletter');
 
         $email = 'example01@oxid-esales.dev';
         $newsletterPage = $this->openNewsletterPage($I, $email);
@@ -81,28 +84,31 @@ final class NewsletterCest
         $newsletterPage = $this->openNewsletterPage($I, $email);
         $newsletterPage->enterUserData($email)->unsubscribe();
 
-        $I->see(Translator::translate('MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED'));
+        $I->seeText(Translator::translate('MESSAGE_NEWSLETTER_SUBSCRIPTION_CANCELED'));
         $I->seeInDatabase('oxnewssubscribed', ['OXEMAIL' => $email, 'OXUNSUBSCRIBED !=' => '0000-00-00 00:00:00']);
     }
 
 
     public function subscribeForNewsletterDoubleOptInOff(AcceptanceTester $I): void
     {
-        $I->wantToTest('Subscribe for newsletter');
+        $I->wantToTest('subscribe for newsletter with double-opt-in off');
 
         $I->updateConfigInDatabase('blOrderOptInEmail', false, 'bool');
 
         $email = 'example01@oxid-esales.dev';
-        $newsletterPage = $this->openNewsletterPage($I, $email);
-        $newsletterPage->enterUserData($email)->subscribe();
+        $this
+            ->openNewsletterPage($I, $email)
+            ->enterUserData($email)
+            ->subscribe();
 
-        $I->see(Translator::translate('MESSAGE_NEWSLETTER_SUBSCRIPTION_ACTIVATED'));
+        $I->seeText(Translator::translate('MESSAGE_NEWSLETTER_SUBSCRIPTION_ACTIVATED'));
         $I->seeInDatabase('oxnewssubscribed', ['OXEMAIL' => $email]);
     }
 
     private function openNewsletterPage(AcceptanceTester $I, string $email = ''): NewsletterSubscription
     {
-        $homePage = $I->openShop();
-        return $homePage->subscribeForNewsletter($email);
+        return $I
+            ->openShop()
+            ->subscribeForNewsletter($email);
     }
 }

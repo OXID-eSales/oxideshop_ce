@@ -13,7 +13,7 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('search')]
+#[Group('search')]
 final class SearchCest
 {
     public function searchAndNavigateInProductList(AcceptanceTester $I): void
@@ -46,7 +46,7 @@ final class SearchCest
         $searchListPage = $I->openShop()
             ->searchFor('notExisting')
             ->seeSearchCount(0);
-        $I->see(Translator::translate('NO_ITEMS_FOUND'));
+        $I->seeText(Translator::translate('NO_ITEMS_FOUND'));
 
         $searchListPage = $searchListPage->searchFor('100')
             ->seeSearchCount(4)
@@ -54,7 +54,7 @@ final class SearchCest
             ->seeProductData($productData3, 1)
             ->selectProductsPerPage('2');
 
-        $I->see(Translator::translate('PRODUCTS_PER_PAGE') . ' 2');
+        $I->seeText(Translator::translate('PRODUCTS_PER_PAGE') . ' 2');
 
         $searchListPage = $searchListPage->seeProductData($productData3, 1)
             ->seeProductData($productData, 2)

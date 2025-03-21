@@ -15,6 +15,8 @@ use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+use function sprintf;
+
 #[Group('basket')]
 final class BasketRefreshWithDeletedProductCest
 {
@@ -32,7 +34,7 @@ final class BasketRefreshWithDeletedProductCest
 
         $basketPage->updateProductAmount(2);
 
-        $I->see(sprintf(
+        $I->seeText(sprintf(
             Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST'),
             $productData['OXTITLE_1']
         ));

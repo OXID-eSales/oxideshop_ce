@@ -101,11 +101,11 @@ final class ProductDetailsPageCest
 
         $detailsPage = $detailsPage->openAttributes();
 
-        $I->see('attr value 1 [EN]');
+        $I->seeText('attr value 1 [EN]');
 
         $detailsPage = $detailsPage->openDescription();
 
-        $I->see('Test description');
+        $I->seeText('Test description');
 
         $detailsPage = $detailsPage->addProductToBasket(2);
 
@@ -138,16 +138,16 @@ final class ProductDetailsPageCest
             ->selectSorting('oxtitle', 'asc')
             ->seeProductData($productData, 3);
         $detailsPage = $searchListPage->openProductDetailsPage(2);
-        $breadCrumb = sprintf(Translator::translate('SEARCH_RESULT'), '100');
+        $breadCrumb = \sprintf(Translator::translate('SEARCH_RESULT'), '100');
         $detailsPage->seeOnBreadCrumb($breadCrumb);
         $navigationText = Translator::translate('PRODUCT') . ' 2 ' . Translator::translate('OF') . ' 4';
-        $I->see($navigationText);
+        $I->seeText($navigationText);
         $detailsPage = $detailsPage->openNextProduct();
         $navigationText = Translator::translate('PRODUCT') . ' 3 ' . Translator::translate('OF') . ' 4';
-        $I->see($navigationText);
+        $I->seeText($navigationText);
         $detailsPage = $detailsPage->openPreviousProduct();
         $navigationText = Translator::translate('PRODUCT') . ' 2 ' . Translator::translate('OF') . ' 4';
-        $I->see($navigationText);
+        $I->seeText($navigationText);
         $detailsPage->openProductSearchList()
             ->seeProductData($productData, 3);
         $breadCrumb = Translator::translate('SEARCH');
@@ -181,12 +181,12 @@ final class ProductDetailsPageCest
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id'])
             ->seeProductData($productData)
             ->seeProductOldPrice('150,00 €');
-        $I->see(Translator::translate('MESSAGE_NOT_ON_STOCK'));
-        $I->see(Translator::translate('AVAILABLE_ON') . ' 2030-01-01');
+        $I->seeText(Translator::translate('MESSAGE_NOT_ON_STOCK'));
+        $I->seeText(Translator::translate('AVAILABLE_ON') . ' 2030-01-01');
         $detailsPage = $detailsPage->selectSelectionListItem('selvar1 [EN] šÄßüл')
             ->selectSelectionListItem('selvar2 [EN] šÄßüл')
             ->openDescription();
-        $I->see('Test product 1 long description [EN] šÄßüл');
+        $I->seeText('Test product 1 long description [EN] šÄßüл');
         $detailsPage->openAttributes()
             ->seeAttributeName('Test attribute 1 [EN] šÄßüл', 1)
             ->seeAttributeValue('attr value 11 [EN] šÄßüл', 1)
@@ -219,7 +219,7 @@ final class ProductDetailsPageCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
         $detailsPage->seeProductData($productData);
 
         // select variant
@@ -257,7 +257,7 @@ final class ProductDetailsPageCest
             ->seeMiniBasketContains([$basketItemToCheck1, $basketItemToCheck2], '366,00 €', '6');
     }
 
-    #[group('product', 'productVariants')]
+    #[Group('product', 'productVariants')]
     public function selectProductVariantsWithSelectionLists(AcceptanceTester $I): void
     {
         $I->wantToTest('add to cart with product variant/selection list combinations');
@@ -319,8 +319,8 @@ final class ProductDetailsPageCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
-        $I->see(Translator::translate('ACCESSORIES'));
+        $I->seeText($productData['title']);
+        $I->seeText(Translator::translate('ACCESSORIES'));
         $detailsPage->seeAccessoryData($accessoryData, 1)
             ->openAccessoryDetailsPage(1)
             ->seeProductData($accessoryData);
@@ -351,9 +351,9 @@ final class ProductDetailsPageCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
-        $I->see(Translator::translate('SIMILAR_PRODUCTS'));
+        $I->seeText(Translator::translate('SIMILAR_PRODUCTS'));
         $detailsPage->seeSimilarProductData($similarProductData, 1)
             ->openSimilarProductDetailsPage(1)
             ->seeProductData($similarProductData)
@@ -385,9 +385,9 @@ final class ProductDetailsPageCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
-        $I->see(Translator::translate('HAVE_YOU_SEEN'));
+        $I->seeText(Translator::translate('HAVE_YOU_SEEN'));
         $detailsPage->seeCrossSellingData($crossSellingProductData, 1)
             ->openCrossSellingDetailsPage(1)
             ->seeProductData($crossSellingProductData);
@@ -617,7 +617,7 @@ final class ProductDetailsPageCest
         $productListPage = $I->openShop()->searchFor($this->productId);
         $productListPage->openProductDetailsPage(1);
 
-        $I->see(Translator::translate('LOW_STOCK'));
+        $I->seeText(Translator::translate('LOW_STOCK'));
 
 
         $I->amGoingTo('Test product low stock label with deactivated default option');
@@ -655,7 +655,7 @@ final class ProductDetailsPageCest
         );
         $I->reloadPage();
 
-        $I->see($lowStockMessage);
+        $I->seeText($lowStockMessage);
     }
 
     #[Group('stock', 'productVariants')]
@@ -682,7 +682,7 @@ final class ProductDetailsPageCest
                 'OXID' => $this->productVariantId
             ]
         );
-        $I->see(Translator::translate('LOW_STOCK'));
+        $I->seeText(Translator::translate('LOW_STOCK'));
 
 
         $I->amGoingTo('Test product low stock label with product flag enabled');
@@ -703,10 +703,10 @@ final class ProductDetailsPageCest
         $I->reloadPage();
         $detailsPage->selectVariant(1, $productVariant['OXVARSELECT_1']);
 
-        $I->see($lowStockMessage);
+        $I->seeText($lowStockMessage);
     }
 
-    #[group('product')]
+    #[Group('product')]
     public function popupWhenExceedingStockAvailability(AcceptanceTester $I): void
     {
         $I->wantToTest('popup is show when exceeding stock availability');
@@ -724,8 +724,7 @@ final class ProductDetailsPageCest
         $productNavigation
             ->openProductDetailsPage($productId)
             ->addProductToBasket(2);
-
-        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
+        $I->seeText(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         //assert product in basket
         $basketItem = [

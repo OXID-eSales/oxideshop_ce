@@ -32,7 +32,6 @@ final class ModuleActivationCest
         $I->uninstallModule($this->testModule1Id);
     }
 
-
     public function moduleActivation(AcceptanceTester $I): void
     {
         $I->wantToTest('module activation in normal mode');
@@ -42,9 +41,9 @@ final class ModuleActivationCest
         $I->seeElement('#module_activate');
         $I->dontSeeElement('#module_deactivate');
 
-        $I->click('#module_activate');
+        $I->clickAndWait('#module_activate');
 
-        $I->seeElement('#module_deactivate');
+        $I->waitForElementVisible('#module_deactivate');
         $I->dontSeeElement('#module_activate');
     }
 
@@ -57,13 +56,13 @@ final class ModuleActivationCest
 
         $I->dontSeeElement('#module_activate');
         $I->dontSeeElement('#module_deactivate');
-        $I->see(Translator::translate('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'));
+        $I->seeText(Translator::translate('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'));
 
         $I->activateModule($this->testModule1Id);
 
         $I->dontSeeElement('#module_deactivate');
         $I->dontSeeElement('#module_activate');
-        $I->see(Translator::translate('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'));
+        $I->seeText(Translator::translate('MODULE_ACTIVATION_NOT_POSSIBLE_IN_DEMOMODE'));
 
         $I->restoreProjectConfigurations();
     }

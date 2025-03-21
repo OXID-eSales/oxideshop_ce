@@ -16,7 +16,7 @@ use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\Codeception\Step\Start;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('myAccount', 'wishList')]
+#[Group('myAccount', 'wishList')]
 final class WishListCest
 {
     public function addProductToUserWishList(AcceptanceTester $I): void
@@ -37,32 +37,32 @@ final class WishListCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
         $detailsPage->checkWishListItemCount(0)
             ->addToWishList()
             ->checkWishListItemCount(1);
 
         $userAccountPage = $detailsPage->openAccountPage();
-        $I->see(Translator::translate('MY_WISH_LIST'));
-        $I->see(Translator::translate('PRODUCT') . ' 1');
+        $I->seeText(Translator::translate('MY_WISH_LIST'));
+        $I->seeText(Translator::translate('PRODUCT') . ' 1');
 
         $userAccountPage->logoutUserInAccountPage()->login($userData['userLoginName'], $userData['userPassword']);
-        $I->see(Translator::translate('MY_WISH_LIST'));
-        $I->see(Translator::translate('PRODUCT') . ' 1');
+        $I->seeText(Translator::translate('MY_WISH_LIST'));
+        $I->seeText(Translator::translate('PRODUCT') . ' 1');
 
         $userAccountPage->openWishListPage()
             ->seeProductData($productData)
             ->openProductDetailsPage(1);
-        $I->see($productData['title'], $detailsPage->productTitle);
+        $I->seeText($productData['title'], $detailsPage->productTitle);
 
         $wishListPage = $detailsPage->openUserWishListPage()
             ->addProductToBasket(1, 2);
-        $I->see('2', $wishListPage->miniBasketMenuElement);
+        $I->seeText('2', $wishListPage->miniBasketMenuElement);
         $wishListPage = $wishListPage->removeProductFromList(1);
 
-        $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
-        $I->see(Translator::translate('WISH_LIST_EMPTY'));
+        $I->seeText(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
+        $I->seeText(Translator::translate('WISH_LIST_EMPTY'));
 
         $wishListPage->checkWishListItemCount(0);
     }
@@ -88,7 +88,7 @@ final class WishListCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see('14 EN product šÄßüл');
+        $I->seeText('14 EN product šÄßüл');
         //add parent to wish list
         $wishListPage = $detailsPage->addToWishList()
             ->selectVariant(1, 'S')
@@ -111,8 +111,8 @@ final class WishListCest
         $wishListPage->removeProductFromList(2)
             ->removeProductFromList(1);
 
-        $I->see(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
-        $I->see(Translator::translate('WISH_LIST_EMPTY'));
+        $I->seeText(Translator::translate('PAGE_TITLE_ACCOUNT_NOTICELIST'), $wishListPage->headerTitle);
+        $I->seeText(Translator::translate('WISH_LIST_EMPTY'));
     }
 
     public function testWishlistInTheCartForALoggedInUser(AcceptanceTester $I): void
@@ -164,7 +164,7 @@ final class WishListCest
             ->seeAddToTheWishlistStar(1)
             ->addProductToTheWishList(1);
 
-        $I->see(Translator::translate('LOGIN'));
+        $I->seeText(Translator::translate('LOGIN'));
     }
 
     private function getExistingUserData()

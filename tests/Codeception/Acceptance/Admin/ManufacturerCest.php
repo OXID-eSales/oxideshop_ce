@@ -9,48 +9,66 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
+use Codeception\Attribute\After;
+use Codeception\Attribute\Before;
 use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Admin\DataObject\Manufacturer;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+use function codecept_data_dir;
+
 #[Group('admin', 'manufacturer')]
 final class ManufacturerCest
 {
+    private string $existingDataFile = 'some_icon.png';
+    private string $uniqueDataFile;
+
+    #[Before('createUniqueFixtureFile')]
+    #[After('removeUniqueFixtureFile')]
     public function createManufacturer(AcceptanceTester $I): void
     {
         $I->wantToTest('create and read for manufacturer form');
 
-        $adminPanel = $I->loginAdmin();
-        $manufacturerData = $this->getManufacturerData();
-        $manufacturersPage = $adminPanel->openManufacturers();
-        $manufacturersPage->createManufacturer($manufacturerData);
-        $mainManufacturerPage = $manufacturersPage->findByManufacturerTitle($manufacturerData->getTitle());
-
-        $mainManufacturerPage->seeManufacturer($manufacturerData);
+        $manufacturer = $this->getManufacturer();
+        $manufacturersPage = $I
+            ->loginAdmin()
+            ->openManufacturers();
+        $manufacturersPage
+            ->createManufacturer($manufacturer)
+            ->findByManufacturerTitle($manufacturer->getTitle())
+            ->openPicturesTab()
+            ->uploadIcon($manufacturer->getIcon());
+        $manufacturersPage
+            ->findByManufacturerTitle($manufacturer->getTitle())
+            ->openMainTab()
+            ->seeManufacturer($manufacturer)
+            ->openPicturesTab()
+            ->seeIcon($manufacturer->getIcon());
     }
 
-    public function openPictureTab(AcceptanceTester $I): void
+    private function createUniqueFixtureFile(): void
     {
-        $I->wantToTest('load demo manufacturer and read picture data');
-
-        $adminPanel = $I->loginAdmin();
-        $manufacturersPage = $adminPanel->openManufacturers();
-        $pictureManufacturerPage = $manufacturersPage->openPictureTab('Manufacturer [DE] šÄßüл');
-        $manufacturer = new Manufacturer();
-        $manufacturer->setIcon('test.png');
-
-        $pictureManufacturerPage->seeManufacturerIcon($manufacturer);
+        $this->uniqueDataFile = uniqid('some-icon-', true) . '.png';
+        copy(
+            codecept_data_dir($this->existingDataFile),
+            codecept_data_dir($this->uniqueDataFile)
+        );
     }
 
-    private function getManufacturerData(): Manufacturer
+    private function getManufacturer(): Manufacturer
     {
         $manufacturer = new Manufacturer();
         $manufacturer->setActive(true);
-        $manufacturer->setTitle('TestTitle');
-        $manufacturer->setShortDescription(uniqid('Test short description: ', true));
-        $manufacturer->setIcon('some_icon.png');
+        $manufacturer->setTitle(uniqid('Title -', true));
+        $manufacturer->setShortDescription(uniqid('Short description - ', true));
+        $manufacturer->setIcon($this->uniqueDataFile);
         $manufacturer->setSortValue(5);
 
         return $manufacturer;
+    }
+
+    private function removeUniqueFixtureFile(): void
+    {
+        unlink(codecept_data_dir($this->uniqueDataFile));
     }
 }

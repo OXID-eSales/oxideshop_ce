@@ -13,7 +13,7 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Page\Lists\DistributorList;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('manufacturer')]
+#[Group('manufacturer')]
 final class DistributorCest
 {
     public function checkDistributorList(AcceptanceTester $I): void

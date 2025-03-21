@@ -15,7 +15,7 @@ use OxidEsales\Codeception\Page\Account\MyReviews;
 use OxidEsales\Codeception\Step\ProductNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('myAccount', 'reviewAndRatings')]
+#[Group('myAccount', 'reviewAndRatings')]
 final class ReviewAndRatingCest
 {
     public function addUserReviewAndRatingForProduct(AcceptanceTester $I): void
@@ -87,36 +87,36 @@ final class ReviewAndRatingCest
         $numberOfReviewsTotal = $this->getReviewPaginationSize() + $numberOfReviewsOnNextPage;
         $this->insertReviewsIntoDb($I, $userData['userId'], $numberOfReviewsTotal);
 
-        /** test review link is not visible if config is off */
+        $I->amGoingTo('test review link is not visible if config is off');
         $I->updateConfigInDatabase('blAllowUsersToManageTheirReviews', false);
         $accountPage = $I->openShop()
             ->loginUser($userData['userLoginName'], $userData['userPassword'])
             ->openAccountPage();
         $accountPage->dontSeeMyReviewsLink();
 
-        /** test review page can't be accessed via URL */
+        $I->amGoingTo('test review page can\'t be accessed via URL');
         $I->amOnPage(MyReviews::URL);
         $accountPage->dontSeeMyReviewsPageTitle();
 
-        /** test review page after config change */
+        $I->amGoingTo('test review page after config change');
         $I->updateConfigInDatabase('blAllowUsersToManageTheirReviews', true);
         $I->reloadPage();
 
-        /** test badge with count in navigation */
+        $I->amGoingTo('test badge with count in navigation');
         $accountPage->seeItemNumberOnReviewPanel($numberOfReviewsTotal);
 
-        /** test number of reviews on page */
+        $I->amGoingTo('test number of reviews on page');
         $reviewsPage = $accountPage->openMyReviewsPage();
         $reviewsPage->seeNumberOfReviews($this->getReviewPaginationSize());
 
-        /** test pagination is present and functioning */
+        $I->amGoingTo('test pagination is present and functioning');
         $reviewsPage->goToNextPage();
         $reviewsPage->seeNumberOfReviews($numberOfReviewsOnNextPage);
 
-        /** test review delete */
+        $I->amGoingTo('test review delete');
         $reviewsPage->deleteFirstReviewInList();
 
-        /** test pagination in not displayed after delete */
+        $I->amGoingTo('test pagination is not displayed after delete');
         $reviewsPage->seeNumberOfReviews($this->getReviewPaginationSize());
         $reviewsPage->dontSeeBottomPaginationElements();
     }

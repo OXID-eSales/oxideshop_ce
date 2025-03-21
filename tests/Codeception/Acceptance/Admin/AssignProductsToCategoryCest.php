@@ -109,11 +109,12 @@ final class AssignProductsToCategoryCest
         $I->wantToTest('category products sorting');
 
         $I->amGoingTo('open products sorting popup');
-        $adminPanel = $I->loginAdmin();
-        $categoriesPage = $adminPanel->openCategories();
-        $mainCategoryPage = $categoriesPage->selectProductCategory('Test category 0 [DE] šÄßüл');
-        $sortingCategoryPage = $mainCategoryPage->openSortingTab();
-        $sortProductsPopup = $sortingCategoryPage->openSortingProductsPopup();
+        $sortProductsPopup = $I
+            ->loginAdmin()
+            ->openCategories()
+            ->selectProductCategory('Test category 0 [DE] šÄßüл')
+            ->openSortingTab()
+            ->openSortingProductsPopup();
 
         $I->expect('products to be in default order');
         $sortProductsPopup

@@ -171,7 +171,7 @@ final class ProductPromotionCest
     private function checkDetails(AcceptanceTester $I, array $productToCheck): void
     {
         $I->wantToTest('if the correct product details page is opened');
-        $I->see($productToCheck['title']);
-        $I->see($productToCheck['price']);
+        $I->seeText($productToCheck['title']);
+        $I->seeText($productToCheck['price']);
     }
 }

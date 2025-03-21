@@ -52,6 +52,7 @@ class CodeceptionParametersProvider
             'THEME_ID' => getenv('THEME_ID') ?: 'apex',
             'MAIL_HOST' => getenv('MAIL_HOST') ?: 'mailpit',
             'MAIL_WEB_PORT' => getenv('MAIL_WEB_PORT') ?: '8025',
+            'PAGE_LOAD_TIMEOUT' => getenv('PAGE_LOAD_TIMEOUT') ?: 0.25,
         ];
     }
 

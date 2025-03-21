@@ -17,9 +17,10 @@ use OxidEsales\Codeception\Step\UserRegistration;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[Group('registration')]
 final class UserRegistrationCest
 {
-    #[group('main','registration')]
+    #[Group('main')]
     public function registerStandardUserInFrontend(AcceptanceTester $I): void
     {
         $userRegistration = new UserRegistration($I);
@@ -40,7 +41,6 @@ final class UserRegistrationCest
         $this->checkUserBillingData($I, $userLoginData, $userData, $addressData);
     }
 
-    #[group('registration')]
     public function registerUserForNewsletterAndShop(AcceptanceTester $I): void
     {
         $userRegistration = new UserRegistration($I);
@@ -71,7 +71,6 @@ final class UserRegistrationCest
         $this->checkUserBillingData($I, $userLoginData, $userData, $addressData);
     }
 
-    #[group('registration')]
     public function createBasketUserAccountWithoutRegistration(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -117,7 +116,6 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    #[group('registration')]
     public function registerBasketUserAccount(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -156,7 +154,6 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    #[group('registration')]
     public function createBasketUserAccountWithoutRegistrationTwice(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -183,7 +180,7 @@ final class UserRegistrationCest
             $deliveryAddressData
         );
 
-        $I->see('Currently we have no shipping method set up for this country.');
+        $I->seeText('Currently we have no shipping method set up for this country.');
         $paymentPage->goToNextStep();
 
         // prepare user data second data
@@ -210,7 +207,6 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    #[group('registration')]
     public function createBasketUserAccountWithoutAndWithRegistration(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -237,7 +233,7 @@ final class UserRegistrationCest
             $deliveryAddressData
         );
 
-        $I->see('Currently we have no shipping method set up for this country.');
+        $I->seeText('Currently we have no shipping method set up for this country.');
         $paymentStep->goToNextStep();
 
         // prepare user data second step
@@ -266,7 +262,6 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    #[group('registration')]
     public function registerBasketUserAccountTwiceWithWrongPassword(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -297,7 +292,6 @@ final class UserRegistrationCest
         // prepare user data for second step
         $userId = '6_3';
         $userPassword = 'aaaaaa';
-        $userCountry = 'Belgium';
         $userLoginData2 = $this->getUserLoginData(6, $userPassword);
         $userData2 = $this->getUserData($userId);
         $addressData2 = $this->getUserAddressData($userId, $userCountry);
@@ -313,7 +307,6 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    #[group('registration')]
     public function registerBasketUserAccountAndNewsletter(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -355,7 +348,6 @@ final class UserRegistrationCest
         $this->checkUserDeliveryData($I, $deliveryAddressData);
     }
 
-    #[group('registration')]
     public function registerBasketUserAccountTwice(AcceptanceTester $I): void
     {
         $basket = new Basket($I);
@@ -404,7 +396,7 @@ final class UserRegistrationCest
             $deliveryAddressData2
         );
         $errorMessage = Translator::translate('ERROR_MESSAGE_USER_USEREXISTS');
-        $I->see(sprintf($errorMessage, $userLoginData['userLoginNameField']));
+        $I->seeText(sprintf($errorMessage, $userLoginData['userLoginNameField']));
 
         $this->checkUserBillingData($I, $userLoginData, $userData, $addressData);
         $this->checkUserDeliveryData($I, $deliveryAddressData);
@@ -452,8 +444,12 @@ final class UserRegistrationCest
         return $addressData;
     }
 
-    private function checkUserBillingData(AcceptanceTester $I, array $userLoginData, array $userData, array $addressData): void
-    {
+    private function checkUserBillingData(
+        AcceptanceTester $I,
+        array $userLoginData,
+        array $userData,
+        array $addressData
+    ): void {
         $I->seeInDatabase(
             'oxuser',
             [

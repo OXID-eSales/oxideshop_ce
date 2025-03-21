@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 use Codeception\Attribute\Group;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[group('currency_test')]
+#[Group('currency_test')]
 final class CurrencyCest
 {
     public function testCurrencySwitch(AcceptanceTester $I): void

@@ -14,9 +14,10 @@ modules:
             restart: true
             capabilities:
                 chromeOptions:
-                    excludeSwitches: ['enable-automation']
                     prefs:
                         'credentials_enable_service': false
+                goog:chromeOptions:
+                    args: [ "--headless" ]
         - OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'
@@ -38,6 +39,7 @@ modules:
                 - 'SET @@SESSION.sql_mode=""'
         - OxidEsales\Codeception\Module\Oxideshop:
             screen_shot_url: '%SCREEN_SHOT_URL%'
+            page_load_timeout: '%PAGE_LOAD_TIMEOUT%'
             depends:
               - WebDriver
               - Db
@@ -45,7 +47,6 @@ modules:
               screen_shot_url: '%SCREEN_SHOT_URL%'
               depends:
                   - WebDriver
-                  - OxidEsales\Codeception\Module\Oxideshop
         - OxidEsales\Codeception\Module\Database:
             depends: Db
         - OxidEsales\Codeception\Module\Translation\TranslationsModule:

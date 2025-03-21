@@ -35,7 +35,7 @@ final class ProductCompareCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
         $detailsPage->loginUser($userData['userLoginName'], $userData['userPassword'])
             ->checkCompareListItemCount(0)
@@ -43,17 +43,17 @@ final class ProductCompareCest
             ->checkCompareListItemCount(1);
 
         $userAccountPage = $detailsPage->openAccountPage();
-        $I->see(Translator::translate('MY_PRODUCT_COMPARISON'));
-        $I->see(Translator::translate('PRODUCT') . ' 1');
+        $I->seeText(Translator::translate('MY_PRODUCT_COMPARISON'));
+        $I->seeText(Translator::translate('PRODUCT') . ' 1');
 
         $userAccountPage->logoutUserInAccountPage()
             ->login($userData['userLoginName'], $userData['userPassword']);
-        $I->see(Translator::translate('MY_PRODUCT_COMPARISON'));
-        $I->see(Translator::translate('PRODUCT') . ' 1');
+        $I->seeText(Translator::translate('MY_PRODUCT_COMPARISON'));
+        $I->seeText(Translator::translate('PRODUCT') . ' 1');
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
         $detailsPage->removeFromCompareList()
             ->checkCompareListItemCount(0);
@@ -92,21 +92,21 @@ final class ProductCompareCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData1['id']);
-        $I->see($productData1['title']);
+        $I->seeText($productData1['title']);
         //add to compare list
         $detailsPage->addToCompareList()
             ->checkCompareListItemCount(1);
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData2['id']);
-        $I->see($productData2['title']);
+        $I->seeText($productData2['title']);
         //add to compare list
         $detailsPage->addToCompareList()
             ->checkCompareListItemCount(2);
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData3['id']);
-        $I->see($productData3['title']);
+        $I->seeText($productData3['title']);
         //add to compare list
         $detailsPage->addToCompareList()
             ->checkCompareListItemCount(3);
@@ -119,21 +119,21 @@ final class ProductCompareCest
 
         //open product details page
         $detailsPage = $comparePage->openProductDetailsPage(1);
-        $I->see($productData1['title'], $detailsPage->productTitle);
+        $I->seeText($productData1['title'], $detailsPage->productTitle);
         $comparePage = $detailsPage->openProductComparePage();
         $detailsPage = $comparePage->openProductDetailsPage(2);
-        $I->see($productData2['title'], $detailsPage->productTitle);
+        $I->seeText($productData2['title'], $detailsPage->productTitle);
         $comparePage = $detailsPage->openProductComparePage();
 
         $comparePage->seeProductAttributeName('Test attribute 1 [EN] šÄßüл:', 1);
-        $comparePage->seeProductAttributeValue('attr value 1 [EN] šÄßüл', 1, 1);
-        $comparePage->seeProductAttributeValue('attr value 11 [EN] šÄßüл', 1, 2);
+        $comparePage->seeProductAttributeValue('attr value 1 [EN] šÄßüл', 1);
+        $comparePage->seeProductAttributeValue('attr value 11 [EN] šÄßüл', 1);
         $comparePage->seeProductAttributeName('Test attribute 3 [EN] šÄßüл:', 2);
-        $comparePage->seeProductAttributeValue('attr value 3 [EN] šÄßüл', 2, 1);
-        $comparePage->seeProductAttributeValue('attr value 3 [EN] šÄßüл', 2, 2);
+        $comparePage->seeProductAttributeValue('attr value 3 [EN] šÄßüл', 2);
+        $comparePage->seeProductAttributeValue('attr value 3 [EN] šÄßüл', 2);
         $comparePage->seeProductAttributeName('Test attribute 2 [EN] šÄßüл:', 3);
-        $comparePage->seeProductAttributeValue('attr value 2 [EN] šÄßüл', 3, 1);
-        $comparePage->seeProductAttributeValue('attr value 12 [EN] šÄßüл', 3, 2);
+        $comparePage->seeProductAttributeValue('attr value 2 [EN] šÄßüл', 3);
+        $comparePage->seeProductAttributeValue('attr value 12 [EN] šÄßüл', 3);
 
         $comparePage->moveItemToRight($productData1['id']);
         $comparePage->seeProductData($productData1, 2);
@@ -146,7 +146,7 @@ final class ProductCompareCest
         $comparePage->removeProductFromList($productData1['id']);
         $comparePage->removeProductFromList($productData2['id']);
         $comparePage->removeProductFromList($productData3['id']);
-        $I->see(Translator::translate('MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'));
+        $I->seeText(Translator::translate('MESSAGE_SELECT_AT_LEAST_ONE_PRODUCT'));
     }
 
     public function disableProductCompare(AcceptanceTester $I): void
@@ -171,7 +171,7 @@ final class ProductCompareCest
 
         //open details page
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
-        $I->see($productData['title']);
+        $I->seeText($productData['title']);
 
         $I->dontSeeElement($detailsPage->addToCompareListLink);
         $detailsPage->openAccountMenu();

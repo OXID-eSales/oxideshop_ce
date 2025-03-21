@@ -19,6 +19,8 @@ use OxidEsales\Codeception\Step\Basket;
 use OxidEsales\Codeception\Step\UserRegistrationInCheckout;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+use function sprintf;
+
 #[Group('basketfrontend')]
 final class CheckoutProcessCest
 {
@@ -68,7 +70,7 @@ final class CheckoutProcessCest
         $breadCrumbName = Translator::translate('ADDRESS');
         $userCheckoutPage->seeOnBreadCrumb($breadCrumbName);
 
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         $homePage = $userCheckoutPage->openHomePage()
             ->loginUser($userData['userLoginName'], $userData['userPassword']);
 
@@ -84,7 +86,7 @@ final class CheckoutProcessCest
 
         $basket = new Basket($I);
 
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
 
         $basketItem1 = [
             'id' => '1001',
@@ -113,18 +115,18 @@ final class CheckoutProcessCest
             ->selectCard('testcard')
             ->addGreetingMessage('Greeting card text')
             ->submitChanges();
-        $I->see('Greeting card text');
+        $I->seeText('Greeting card text');
         $userCheckoutPage = $basketPage->goToNextStep();
         $paymentPage = $userCheckoutPage->enterOrderRemark('remark text')->goToNextStep();
 
-        $I->see(Translator::translate('PAYMENT_METHOD'));
+        $I->seeText(Translator::translate('PAYMENT_METHOD'));
 
         $orderPage = $paymentPage->selectPayment('oxidcashondel')
             ->goToNextStep()
             ->validateRemarkText('remark text');
 
-        $I->see('Test wrapping [EN] šÄßüл');
-        $I->see('Greeting card text');
+        $I->seeText('Test wrapping [EN] šÄßüл');
+        $I->seeText('Greeting card text');
         $I->dontSee(Translator::translate('HERE_YOU_CAN_ENETER_MESSAGE'));
         $userCheckoutPage = $orderPage->editUserAddress();
         $orderPage = $userCheckoutPage->enterOrderRemark('my message')->goToNextStep()->goToNextStep();
@@ -159,8 +161,6 @@ final class CheckoutProcessCest
         $orderPage->seeSummaryGrandTotal($priceInformation['total']);
         $orderPage->seeSummaryWrappingGross('0,90 €');
         $orderPage->seeSummaryGiftCardGross('0,20 €');
-
-        $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
     #[Group('todo_add_clean_cache_after_database_update')]
@@ -170,9 +170,11 @@ final class CheckoutProcessCest
         $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same
         product was sold out by other user during the checkout');
 
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
 
-        $homePage = $I->openShop()->loginUser($userData['userLoginName'], $userData['userPassword']);
+        $homePage = $I
+            ->openShop()
+            ->loginUser($userData['userLoginName'], $userData['userPassword']);
 
         $basketItem1 = [
             'id' => '1000',
@@ -189,19 +191,24 @@ final class CheckoutProcessCest
         ];
 
         //add Product to basket
-        /** @var \OxidEsales\Codeception\Page\Checkout\Basket $basketPage */
         $basket->addProductToBasket($basketItem1['id'], 5);
         $basket->addProductToBasket($basketItem2['id'], 1);
-        $basketPage = $homePage->openMiniBasket()
+        $basketPage = $homePage
+            ->openMiniBasket()
             ->openBasketDisplay()
             ->seeBasketContains([$basketItem1, $basketItem2], '350,00 €');
 
         // making product out of stock now
         $I->updateInDatabase('oxarticles', ['oxstock' => '3', 'oxstockflag' => '3'], ['oxid' => '1000']);
+        $I->seeInDatabase('oxarticles', [
+            'oxid' => '1000',
+            'oxstock' => '3',
+            'oxstockflag' => '3',
+            ]);
 
         $basketPage->updateProductAmount(7);
 
-        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
+        $I->seeText(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         $basketItem1 = [
             'id' => '1000',
@@ -214,31 +221,38 @@ final class CheckoutProcessCest
             ->goToNextStep();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate('PAYMENT_METHOD'));
+        $I->seeText(Translator::translate('PAYMENT_METHOD'));
 
         $orderPage = $paymentPage->selectPayment('oxidcashondel')
             ->goToNextStep();
 
         // someone bought some more items while client filled steps
         $I->updateInDatabase('oxarticles', ['oxstock' => '1', 'oxstockflag' => '3'], ['oxid' => '1000']);
+        $I->seeInDatabase('oxarticles', [
+            'oxid' => '1000',
+            'oxstock' => '1',
+            'oxstockflag' => '3',
+            ]);
 
         $orderPage->submitOrder();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
+        $I->seeText(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         // someone bought all items while client filled steps
         $I->updateInDatabase('oxarticles', ['oxstock' => '0', 'oxstockflag' => '3'], ['oxid' => '1000']);
+        $I->seeInDatabase('oxarticles', [
+            'oxid' => '1000',
+            'oxstock' => '0',
+            'oxstockflag' => '3',
+        ]);
 
         $orderPage->submitOrder();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE'));
+        $I->seeText(Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_NOT_BUYABLE'));
 
         $orderPage->submitOrderSuccessfully();
-
-        //cleanUp data
-        $I->updateInDatabase('oxarticles', ['oxstock' => '15', 'oxstockflag' => '1'], ['oxid' => '1000']);
     }
 
     public function checkMinimalOrderPrice(AcceptanceTester $I): void
@@ -257,7 +271,7 @@ final class CheckoutProcessCest
             'totalPrice' => '50,00 €'
         ];
 
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
 
         $homePage = $I->openShop();
 
@@ -271,7 +285,7 @@ final class CheckoutProcessCest
         $basketPage->seeNextStep();
 
         $basketPage = $basketPage->loginUser($userData['userLoginName'], $userData['userPassword']);
-        $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
+        $I->seeText(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->dontSeeNextStep();
 
         $productData['amount'] = 2;
@@ -282,7 +296,7 @@ final class CheckoutProcessCest
         $basketPage->seeNextStep();
 
         $basketPage = $basketPage->addCouponToBasket('123123');
-        $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
+        $I->seeText(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->dontSeeNextStep();
 
         $basketPage = $basketPage->removeCouponFromBasket();
@@ -290,8 +304,6 @@ final class CheckoutProcessCest
         $userCheckoutPage = $basketPage->goToNextStep();
         $breadCrumbName = Translator::translate('ADDRESS');
         $userCheckoutPage->seeOnBreadCrumb($breadCrumbName);
-        $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 0], ['OXID' => 'testcatdiscount']);
-        $I->updateInDatabase('oxvouchers', ['oxreserved' => 0], ['OXVOUCHERNR' => '123123']);
     }
 
     public function buyProductWithBundledItem(AcceptanceTester $I): void
@@ -322,8 +334,6 @@ final class CheckoutProcessCest
             ->openBasketDisplay()
             ->seeBasketContains([$productData], '50,00 €')
             ->seeBasketContainsBundledProduct($bundledProductData, 2);
-
-        $this->removeBundleFromProduct($I, $productData['id']);
     }
 
     public function checkGuestUserNameSwitching(AcceptanceTester $I): void
@@ -378,7 +388,7 @@ final class CheckoutProcessCest
     {
         $I->wantToTest('creating shipping address during authenticated user`s checkout');
         $basket = new Basket($I);
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         $existingProductId = '1001';
         $userShippingAddress = [
             'userSalutation' => 'Mrs',
@@ -479,7 +489,10 @@ final class CheckoutProcessCest
 
         (new Basket($I))->addProductToBasket('1001', 1);
 
-        $I->openShop()->openMiniBasket()->openBasketDisplay()
+        $I
+            ->openShop()
+            ->openMiniBasket()
+            ->openBasketDisplay()
             ->seeBasketContainsAttribute('attr value 11 [EN] šÄßüл', 1);
     }
 
@@ -495,7 +508,7 @@ final class CheckoutProcessCest
         (new Basket($I))->addProductToBasket('1000', 3);
 
         $I->amGoingTo('select additional product wrapping and click-through to the summary');
-        $loginData = $this->getExistingUserData();
+        $loginData = Fixtures::get('existingUser');
 
         /** @var OrderCheckout $orderCheckout */
         $orderCheckout = $I
@@ -542,7 +555,7 @@ final class CheckoutProcessCest
         $basket->addProductToBasket('1002-2', 1);
 
         $I->amGoingTo('click-through the checkout to the summary');
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         /** @var OrderCheckout $orderCheckoutPage */
         $orderCheckoutPage = $I
             ->openShop()
@@ -585,13 +598,13 @@ final class CheckoutProcessCest
         $basket->addProductToBasket("1001", 1);
         $basket->addProductToBasket("1002-2", 1);
 
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $basketPage = $homePage->openMiniBasket()->openBasketDisplay();
 
         $basketPage->addCouponToBasket("123123");
         $paymentMethodPage = $basketPage->goToNextStep()->goToNextStep();
-        $I->see(Translator::translate('PAYMENT_METHOD'));
+        $I->seeText(Translator::translate('PAYMENT_METHOD'));
 
         /** @var OrderCheckout $orderCheckoutPage */
         $orderCheckoutPage = $paymentMethodPage->goToNextStep();
@@ -638,7 +651,7 @@ final class CheckoutProcessCest
         $I->wantToTest('ordering to another country');
 
         $homePage = $I->openShop();
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
 
         $basket = new Basket($I);
@@ -686,7 +699,7 @@ final class CheckoutProcessCest
         $basket->addProductToBasket("1000", 1);
         $basket->addProductToBasket("1001", 1);
 
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
 
         $basket->openMiniBasket();
@@ -722,7 +735,7 @@ final class CheckoutProcessCest
         $I->wantToTest('my accounts order history');
 
         $homePage = $I->openShop();
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
 
         $basket = new Basket($I);
@@ -763,7 +776,7 @@ final class CheckoutProcessCest
 
         $basket->addProductToBasket("1001", 1);
 
-        $userData = $this->getExistingUserData();
+        $userData = Fixtures::get('existingUser');
         $homePage->loginUser($userData['userLoginName'], $userData['userPassword']);
 
         /** @var OrderCheckout $orderCheckout */
@@ -852,9 +865,9 @@ final class CheckoutProcessCest
 
         $I->amGoingTo('try to submit an order and make sure I see the warning');
         $orderCheckout->submitOrder();
+        $I->seeText(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
         $I->see($product1['OXTITLE_1']);
         $I->see($product2['OXTITLE_1']);
-        $I->see(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
 
         $I->amGoingTo('confirm that order can be submitted after the warning was shown');
         $orderCheckout->submitOrderSuccessfully();
@@ -888,8 +901,8 @@ final class CheckoutProcessCest
 
         $I->amGoingTo('try to submit an order and make sure I see the warning');
         $orderCheckout->submitOrder();
-        $I->see(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
-        $I->see(Translator::translate('BASKET_EMPTY'));
+        $I->seeText(Translator::translate('BASKET_ITEMS_CHANGED_ERROR'));
+        $I->seeText(Translator::translate('BASKET_EMPTY'));
 
         $I->amGoingTo('confirm that warning is gone after page reload');
         $I->reloadPage();
@@ -916,25 +929,15 @@ final class CheckoutProcessCest
 
         $I->amGoingTo('try to submit an order and make sure I see the warning');
         $orderCheckout->submitOrder();
-        $I->see(sprintf(
+        $I->seeText(sprintf(
             Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST'),
             $product['OXTITLE_1']
         ));
     }
 
-    private function getExistingUserData(): array
-    {
-        return Fixtures::get('existingUser');
-    }
-
     private function prepareTestDataForBundledProduct(AcceptanceTester $I, string $productId, string $bundleId): void
     {
         $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => $bundleId], ['OXID' => $productId]);
-    }
-
-    private function removeBundleFromProduct(AcceptanceTester $I, string $productId): void
-    {
-        $I->updateInDatabase('oxarticles', ['OXBUNDLEID' => ''], ['OXID' => $productId]);
     }
 
     private function getUserFormData(): array

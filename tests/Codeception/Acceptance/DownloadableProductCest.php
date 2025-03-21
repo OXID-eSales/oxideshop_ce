@@ -89,7 +89,7 @@ final class DownloadableProductCest
     {
         $accountPage = $startPage->openAccountPage();
         $accountPage->openMyDownloadsPage();
-        $I->see(Translator::translate('DOWNLOADS_PAYMENT_PENDING'));
+        $I->seeText(Translator::translate('DOWNLOADS_PAYMENT_PENDING'));
     }
 
     private function makeOrderComplete(AcceptanceTester $I): void
@@ -103,6 +103,6 @@ final class DownloadableProductCest
         $accountPage = $startPage->openAccountPage();
         $accountPage->openMyDownloadsPage();
         $I->dontSee(Translator::translate('DOWNLOADS_PAYMENT_PENDING'));
-        $I->click(".downloadList a");
+        $I->clickAndWait(".downloadList a");
     }
 }

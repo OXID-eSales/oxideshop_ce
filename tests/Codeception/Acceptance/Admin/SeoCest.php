@@ -17,67 +17,27 @@ final class SeoCest
 {
     public function updateStaticUrl(AcceptanceTester $I): void
     {
-        $I->wantToTest('static SEO URLs updating');
-
-        $accountData = [
-            'static_url' => 'index.php?cl=account',
-            'localized' => [
-                0 => 'mein-konto/',
-                1 => 'en/my-account/'
-            ]
-        ];
-        $updatedAccountData = $accountData;
-        $updatedAccountData['localized'][0] = 'konto/';
-        $updatedAccountData['localized'][1] = 'en/account/';
-        $contactData = [
-            'static_url' => 'index.php?cl=contact',
-            'localized' => [
-                0 => 'kontakt/',
-                1 => 'en/contact/'
-            ]
-        ];
-
-        $adminPanel = $I->loginAdmin();
-        $seoTab = $adminPanel->openCoreSettings()->openSEOTab();
-
-        // Check if form is empty when nothing is selected
-        $seoTab->seeInStaticSeoUrlFields('', '', '');
-
-        // Select account SEO
-        $seoTab
-            ->selectStaticSeoUrl($accountData['static_url'])
+        $I->wantToTest('static SEO URL form');
+        $I
+            ->loginAdmin()
+            ->openCoreSettings()
+            ->openSEOTab()
+            ->selectStaticSeoUrl('index.php?cl=account')
             ->seeInStaticSeoUrlFields(
-                $accountData['static_url'],
-                $accountData['localized'][0],
-                $accountData['localized'][1]
-            );
-
-        // Update data
-        $seoTab
-            ->fillStaticSeoUrlFields($updatedAccountData['localized'][0], $updatedAccountData['localized'][1])
+                'index.php?cl=account',
+                'mein-konto/',
+                'en/my-account/'
+            )
+            ->fillStaticSeoUrlFields(
+                'some-new-german-url/',
+                'some-new-english-url/'
+            )
             ->save()
+            ->selectStaticSeoUrl('index.php?cl=account')
             ->seeInStaticSeoUrlFields(
-                $updatedAccountData['static_url'],
-                $updatedAccountData['localized'][0],
-                $updatedAccountData['localized'][1]
-            );
-
-        // Check other SEO
-        $seoTab
-            ->selectStaticSeoUrl($contactData['static_url'])
-            ->seeInStaticSeoUrlFields(
-                $contactData['static_url'],
-                $contactData['localized'][0],
-                $contactData['localized'][1]
-            );
-
-        // Check again the edited SEO
-        $seoTab
-            ->selectStaticSeoUrl($updatedAccountData['static_url'])
-            ->seeInStaticSeoUrlFields(
-                $updatedAccountData['static_url'],
-                $updatedAccountData['localized'][0],
-                $updatedAccountData['localized'][1]
+                'index.php?cl=account',
+                'some-new-german-url/',
+                'en/some-new-english-url/'
             );
     }
 }

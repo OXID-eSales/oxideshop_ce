@@ -39,7 +39,7 @@ trait FilesystemTrait
         $this->varPath = Path::join($shopRootPath, 'var');
         $this->varBackupPath = Path::join(
             $shopRootPath,
-            uniqid('var.backup.', true)
+            'var.testing-backup'
         );
     }
 }

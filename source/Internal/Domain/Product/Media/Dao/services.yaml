@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDao

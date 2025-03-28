@@ -22,7 +22,6 @@ use Symfony\Component\Yaml\Yaml;
 use UnitEnum;
 
 /**
- * @internal
  * @mixin Container
  */
 trait ContainerTrait

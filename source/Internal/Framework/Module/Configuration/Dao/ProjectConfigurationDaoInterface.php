@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 
+/**
+ * @deprecated use ShopConfigurationDaoInterface instead
+ */
 interface ProjectConfigurationDaoInterface
 {
     /**

@@ -79,6 +79,25 @@ final class ModuleConfigurationDaoTest extends IntegrationTestCase
         );
     }
 
+
+
+    public function testDelete(): void
+    {
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration
+            ->setId('testDeleteId')
+            ->setModuleSource('test');
+
+        $dao = $this->get(ModuleConfigurationDaoInterface::class);
+        $dao->save($moduleConfiguration, 1);
+
+        $this->assertTrue($dao->exists('testDeleteId', 1));
+
+        $dao->delete('testDeleteId', 1);
+
+        $this->assertFalse($dao->exists('testDeleteId', 1));
+    }
+
     public function testDeleteAll(): void
     {
         $moduleConfiguration = new ModuleConfiguration();

@@ -21,8 +21,7 @@ interface ShopConfigurationDaoInterface
     public function get(int $shopId): ShopConfiguration;
 
     /**
-     * @param ShopConfiguration $shopConfiguration
-     * @param int               $shopId
+     * @deprecated use ModuleConfigurationDaoInterface::save() and ClassExtensionsChainDaoInterface::saveChain() instead
      */
     public function save(ShopConfiguration $shopConfiguration, int $shopId): void;
 
@@ -32,7 +31,7 @@ interface ShopConfigurationDaoInterface
     public function getAll(): array;
 
     /**
-     * delete all shop configurations
+     * @deprecated will be completely removed
      */
     public function deleteAll(): void;
 }

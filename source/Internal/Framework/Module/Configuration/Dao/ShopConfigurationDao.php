@@ -56,6 +56,8 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     }
 
     /**
+     * @deprecated use ModuleConfigurationDaoInterface::save() and ClassExtensionsChainDaoInterface::saveChain() instead
+     *
      * @param ShopConfiguration $shopConfiguration
      * @param int $shopId
      */
@@ -86,7 +88,7 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     }
 
     /**
-     * delete all shops configuration
+     * @deprecated will be completely removed
      */
     public function deleteAll(): void
     {

@@ -12,6 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ProjectConfigurationIsEmptyException;
 
+/**
+ * @deprecated use ShopConfigurationDaoInterface instead
+ */
 class ProjectConfigurationDao implements ProjectConfigurationDaoInterface
 {
     public function __construct(private ShopConfigurationDaoInterface $shopConfigurationDao)

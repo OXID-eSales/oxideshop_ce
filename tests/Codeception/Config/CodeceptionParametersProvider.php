@@ -29,6 +29,7 @@ class CodeceptionParametersProvider
         $this->loadEnvironmentVariables();
 
         $this->dbConfig = (new DatabaseConfiguration(getenv('OXID_DB_URL')));
+
         return [
             'SHOP_URL' => getenv('OXID_SHOP_BASE_URL'),
             'PROJECT_ROOT' => $this->getProjectRoot(),
@@ -80,22 +81,16 @@ class CodeceptionParametersProvider
 
     private function getShopTestPath(): string
     {
-        $edition =  (new EditionResolver())->getEdition();
-        $testDirectoryName = $edition->isCommunityEdition() ? 'tests' : 'Tests';
+        $edition = (new EditionResolver())->getEdition();
+        $loader = new EditionDirectoriesLocator();
 
         try {
-            $testsPath = Path::join(
-                (new EditionDirectoriesLocator())->getEditionRootPath($edition),
-                $testDirectoryName
-            );
+            return $edition->value === Edition::Enterprise->value
+                ? Path::join($loader->getEditionRootPath($edition), 'Tests')
+                : Path::join($loader->getEditionRootPath(Edition::Community), 'tests');
         } catch (DirectoryNotExistentException) {
-            $testsPath = Path::join(
-                $this->getProjectRoot(),
-                'tests'
-            );
+            return Path::join($this->getProjectRoot(), 'tests');
         }
-
-        return $testsPath;
     }
 
     private function generateMysqlStarUpConfigurationFile(): string
@@ -130,7 +125,7 @@ class CodeceptionParametersProvider
 
     private function getDbPort(): int
     {
-        return (int) getenv('DB_PORT') ?: $this->dbConfig->getPort();
+        return (int)getenv('DB_PORT') ?: $this->dbConfig->getPort();
     }
 
     private function loadEnvironmentVariables(): void

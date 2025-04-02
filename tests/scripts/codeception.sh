@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+set -x
 SUITE="${1}"
 SHARD_STEP="${2}"
 SHARD_COUNT="${3}"
@@ -73,7 +74,7 @@ function init() {
             echo "Argument 3 (SHARD_COUNT) must be numerical"
             exit 1
         fi
-            if [ ${SHARD_STEP} -gt ${SHARD_COUNT} ]; then
+        if [ ${SHARD_STEP} -gt ${SHARD_COUNT} ]; then
             echo "Argument 2 (SHARD_STEP) must less or equal to shards count"
             exit 1
         fi

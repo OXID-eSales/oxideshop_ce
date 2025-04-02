@@ -4,7 +4,7 @@ services:
 
   OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller\Fixtures\module1\src\Controller\ModuleControllerAsService:
     tags:
-      - { name: 'oxid.controller', controller_key: 'test_module_controller_as_service' }
+      - { name: 'oxid.view_controller', controller_key: 'test_module_controller_as_service' }
     public: true
 
   OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller\Fixtures\module1\src\Controller\ModuleControllerDecorator:

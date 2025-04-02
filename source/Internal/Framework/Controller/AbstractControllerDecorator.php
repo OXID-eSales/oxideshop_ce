@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Controller;
 
-abstract class AbstractControllerDecorator implements ControllerInterface
+abstract class AbstractControllerDecorator implements ViewControllerInterface
 {
     public function __construct(
-        protected readonly ControllerInterface $controller,
+        protected readonly ViewControllerInterface $controller,
     ) {
     }
 

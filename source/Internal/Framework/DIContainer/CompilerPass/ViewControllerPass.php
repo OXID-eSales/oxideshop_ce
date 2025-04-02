@@ -12,11 +12,11 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ControllerPass implements CompilerPassInterface
+class ViewControllerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $taggedServices = $container->findTaggedServiceIds('oxid.controller');
+        $taggedServices = $container->findTaggedServiceIds('oxid.view_controller');
         $controllersMap = [];
 
         foreach ($taggedServices as $id => $tags) {
@@ -25,6 +25,6 @@ class ControllerPass implements CompilerPassInterface
             }
         }
 
-        $container->setParameter('oxid.controllers_map', $controllersMap);
+        $container->setParameter('oxid.view_controllers_map', $controllersMap);
     }
 }

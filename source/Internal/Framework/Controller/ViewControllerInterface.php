@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Controller;
 
-interface ControllerInterface
+interface ViewControllerInterface
 {
     public function init();
 

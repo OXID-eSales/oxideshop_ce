@@ -8,14 +8,13 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
-use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Controller\ControllerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -342,7 +341,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
         $classKey = !is_null($classKey) ? $classKey : $class; //fallback
 
-        /** @var ControllerInterface $controller */
+        /** @var ViewControllerInterface $controller */
         $controller = $this->isServiceController($classKey, $class)
             ? ContainerFacade::get($class)
             : oxNew($class);
@@ -883,7 +882,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         Registry::getLogger()->error($displayedException->getMessage(), [$rendererError]);
     }
 
-    private function passSessionErrorsToViewData(ControllerInterface $view, array $viewData): array
+    private function passSessionErrorsToViewData(ViewControllerInterface $view, array $viewData): array
     {
         $errors = $this->getErrors($view->getClassKey());
         if (\is_array($errors) && count($errors)) {
@@ -894,6 +893,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     private function isServiceController(string $classKey, string $class): bool
     {
-        return isset(ContainerFacade::getParameter('oxid.controllers_map')[$classKey]) && ContainerFacade::has($class);
+        return isset(ContainerFacade::getParameter('oxid.view_controllers_map')[$classKey]) && ContainerFacade::has($class);
     }
 }

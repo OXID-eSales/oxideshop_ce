@@ -10,11 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller\Fixtures\module1\src\Controller;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\AbstractControllerDecorator;
-use OxidEsales\EshopCommunity\Internal\Framework\Controller\ControllerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
 
 class ModuleControllerDecorator extends AbstractControllerDecorator
 {
-    public function __construct(protected readonly ControllerInterface $controller)
+    public function __construct(protected readonly ViewControllerInterface $controller)
     {
 
     }

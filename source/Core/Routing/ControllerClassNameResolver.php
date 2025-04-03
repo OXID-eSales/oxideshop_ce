@@ -154,14 +154,14 @@ class ControllerClassNameResolver implements ClassNameResolverInterface
 
     private function getClassNameFromContainerParametersMap(string $classId): ?string
     {
-        return ContainerFacade::getParameter('oxid.controllers_map')[$classId] ?? null;
+        return ContainerFacade::getParameter('oxid.view_controllers_map')[$classId] ?? null;
     }
 
     private function getClassIdFromContainerParametersMap(string $className): false|string
     {
         return array_search(
             $className,
-            ContainerFacade::getParameter('oxid.controllers_map'),
+            ContainerFacade::getParameter('oxid.view_controllers_map'),
             true
         );
     }

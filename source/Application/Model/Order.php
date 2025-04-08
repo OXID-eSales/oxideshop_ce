@@ -689,7 +689,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // user remark
-        if (!isset($this->oxorder__oxremark)) {
+        if (!isset($this->oxorder__oxremark) || !$this->oxorder__oxremark) {
             $this->oxorder__oxremark = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getSession()->getVariable('ordrem'), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 

@@ -5,7 +5,7 @@
 ### Fixed
 - Environment variables via .env file now work in console commands
 
-## v7.3.0 - unreleased
+## v7.3.0 - 2025-04-10
 
 ### Added
 - PHP v8.4 support

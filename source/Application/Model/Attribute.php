@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use oxField;
@@ -70,13 +72,13 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = "delete from oxobject2attribute where oxattrid = :oxattrid";
         $oDb->execute($sDelete, [
-            ':oxattrid' => $sOXID
+            'oxattrid' => $sOXID
         ]);
 
         // #657 ADDITIONAL removes attribute connection to category
         $sDelete = "delete from oxcategory2attribute where oxattrid = :oxattrid";
         $oDb->execute($sDelete, [
-            ':oxattrid' => $sOXID
+            'oxattrid' => $sOXID
         ]);
 
         return parent::delete($sOXID);
@@ -104,7 +106,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                     $oNewAssign->init("oxobject2attribute");
                     $sNewId = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
                     if ($oNewAssign->load($sId)) {
-                        $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
+                        $oNewAssign->oxobject2attribute__oxobjectid = new Field($sVarId);
                         $oNewAssign->setId($sNewId);
                         $oNewAssign->save();
                     }
@@ -113,11 +115,11 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 $oNewAssign = oxNew(\OxidEsales\Eshop\Core\Model\MultiLanguageModel::class);
                 $oNewAssign->setEnableMultilang(false);
                 $oNewAssign->init("oxobject2attribute");
-                $oNewAssign->oxobject2attribute__oxobjectid = new \OxidEsales\Eshop\Core\Field($sVarId);
-                $oNewAssign->oxobject2attribute__oxattrid = new \OxidEsales\Eshop\Core\Field($sAttrId);
+                $oNewAssign->oxobject2attribute__oxobjectid = new Field($sVarId);
+                $oNewAssign->oxobject2attribute__oxattrid = new Field($sAttrId);
                 foreach ($aConfLanguages as $sKey => $sLang) {
                     $sPrefix = $myLang->getLanguageTag($sKey);
-                    $oNewAssign->{'oxobject2attribute__oxvalue' . $sPrefix} = new \OxidEsales\Eshop\Core\Field($oValue[$sKey]->name);
+                    $oNewAssign->{'oxobject2attribute__oxvalue' . $sPrefix} = new Field($oValue[$sKey]->name);
                 }
                 $oNewAssign->save();
             }
@@ -138,7 +140,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sAttViewName = $tableViewNameGenerator->getViewName('oxattribute');
 
         return $oDb->getOne("select oxid from $sAttViewName where LOWER(oxtitle) = :oxtitle ", [
-            ':oxtitle' => Str::getStr()->strtolower($sSelTitle)
+            'oxtitle' => Str::getStr()->strtolower($sSelTitle)
         ]);
     }
 
@@ -158,7 +160,7 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oAttr->init('oxattribute');
         foreach ($aConfLanguages as $sKey => $sLang) {
             $sPrefix = $myLang->getLanguageTag($sKey);
-            $oAttr->{'oxattribute__oxtitle' . $sPrefix} = new \OxidEsales\Eshop\Core\Field($aSelTitle[$sKey]);
+            $oAttr->{'oxattribute__oxtitle' . $sPrefix} = new Field($aSelTitle[$sKey]);
         }
         $oAttr->save();
 
@@ -175,23 +177,12 @@ class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getAttributeAssigns($sArtId)
     {
         if ($sArtId) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $sSelect = "select o2a.oxid from oxobject2attribute as o2a "
+            . "where o2a.oxobjectid = :oxobjectid order by o2a.oxpos";
 
-            $sSelect = "select o2a.oxid from oxobject2attribute as o2a ";
-            $sSelect .= "where o2a.oxobjectid = :oxobjectid order by o2a.oxpos";
-
-            $aIds = [];
-            $rs = $oDb->select($sSelect, [
-                ':oxobjectid' => $sArtId
+            return DatabaseProvider::getDb()->getCol($sSelect, [
+                'oxobjectid' => $sArtId
             ]);
-            if ($rs != false && $rs->count() > 0) {
-                while (!$rs->EOF) {
-                    $aIds[] = $rs->fields[0];
-                    $rs->fetchRow();
-                }
-            }
-
-            return $aIds;
         }
     }
 

@@ -50,13 +50,13 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $oDb->execute('delete from oxobject2payment where oxobjectid = :oxid', [
-            ':oxid' => $sOxId
+            'oxid' => $sOxId
         ]);
         $oDb->execute('delete from oxobject2delivery where oxdeliveryid = :oxid', [
-            ':oxid' => $sOxId
+            'oxid' => $sOxId
         ]);
         $oDb->execute('delete from oxdel2delset where oxdelsetid = :oxid', [
-            ':oxid' => $sOxId
+            'oxid' => $sOxId
         ]);
 
         return parent::delete($sOxId);
@@ -76,7 +76,7 @@ class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sQ = "SELECT `oxid` FROM `" . $tableViewNameGenerator->getViewName('oxdeliveryset') . "` 
             WHERE  `oxtitle` = :oxtitle";
         $sId = $oDb->getOne($sQ, [
-            ':oxtitle' => $sTitle
+            'oxtitle' => $sTitle
         ]);
 
         return $sId;

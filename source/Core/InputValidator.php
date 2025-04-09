@@ -298,14 +298,14 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
                 $billingCountry = $billingCountry ? $billingCountry : $deliveryCountry;
                 $query = "select oxactive from oxcountry where oxid = :oxbillingid";
                 $params = [
-                    ':oxbillingid' => $billingCountry
+                    'oxbillingid' => $billingCountry
                 ];
             } else {
                 $query = "select ( select oxactive from oxcountry where oxid = :oxbillingid ) and
                               ( select oxactive from oxcountry where oxid = :oxdeliveryid ) ";
                 $params = [
-                    ':oxbillingid' => $billingCountry,
-                    ':oxdeliveryid' => $deliveryCountry,
+                    'oxbillingid' => $billingCountry,
+                    'oxdeliveryid' => $deliveryCountry,
                 ];
             }
 

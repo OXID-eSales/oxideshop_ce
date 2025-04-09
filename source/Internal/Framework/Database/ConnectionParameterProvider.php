@@ -9,17 +9,18 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
-class ConnectionParameterProvider implements ConnectionParameterProviderInterface
+readonly class ConnectionParameterProvider implements ConnectionParameterProviderInterface
 {
     public function __construct(
-        private readonly BasicContextInterface $basicContext,
+        private BasicContextInterface $basicContext,
     ) {
     }
 
     public function getParameters(): array
     {
-        return ['url' => $this->basicContext->getDatabaseUrl()];
+        return (new DatabaseConfiguration($this->basicContext->getDatabaseUrl()))->getConnectionParameters();
     }
 }

@@ -5,34 +5,41 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger:
-
-  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger:
+  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogFilterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogFilter
     arguments:
-      $psrLogger: '@database.psr_logger'
+      $skipLogTags: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getSkipLogTags()'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactoryInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\DatabaseLoggerFactory
+  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogContextExtenderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogContextExtender
+
+  Psr\Log\NullLogger:
+    public: true
+
+  Doctrine\DBAL\Logging\Middleware:
     arguments:
-      $queryLogger: '@OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogger'
-      $nullLogger: '@OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\NullLogger'
-      $logQueriesInAdmin: '%oxid_esales.log_admin_queries%'
-
-  OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilterInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter
+      $logger: '@=(parameter("oxid_esales.log_admin_queries") & service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").isAdmin()) ? service("database.psr_logger") : service("Psr\\Log\\NullLogger")'
+    tags:
+      - { name: doctrine.middleware }
 
   database.monolog_logger_factory:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
-    arguments:
-      $configuration: '@database.logger.admin_monolog_configuration'
-
-  database.logger.admin_monolog_configuration:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
+    class: OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLoggerFactory
     arguments:
       $loggerName: 'OXID Admin Logger'
-      $logFilePath: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getAdminLogFilePath()'
-      $logLevel: !php/const Psr\Log\LogLevel::DEBUG
+      $streamHandler: '@database.monolog.stream_handler'
 
   database.psr_logger:
     class: Monolog\Logger
     factory: ['@database.monolog_logger_factory', 'create']
+
+  database.monolog.stream_handler:
+    class: Monolog\Handler\StreamHandler
+    arguments:
+      $stream: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getAdminLogFilePath()'
+      $level: !php/const Psr\Log\LogLevel::DEBUG
+    calls:
+      - setFormatter: ['@Monolog\Formatter\LineFormatter']
+
+  Monolog\Formatter\LineFormatter:
+    calls:
+      - includeStacktraces: []

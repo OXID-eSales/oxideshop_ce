@@ -414,7 +414,7 @@ namespace OxidEsales\EshopCommunity\Core {
             list($width, $height, $quality) = $this->getImageInfo();
             if ($width && $height && $quality) {
                 $config = Registry::getConfig();
-                $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+                $db = DatabaseProvider::getDb();
 
                 // parameter names
                 $names = [];
@@ -437,7 +437,7 @@ namespace OxidEsales\EshopCommunity\Core {
                             oxvarvalue = :quality";
 
                     $shopIdsArray = $db->getAll($q, [
-                        ':quality' => $quality
+                        'quality' => $quality
                     ]);
 
                     // building query:

@@ -2847,7 +2847,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
 
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sParentId = $oDb->getOne("select oxparentid from oxarticles where oxid = :oxid", [
-            ':oxid' => $sProductId
+            'oxid' => $sProductId
         ]);
         $sProductId = $sParentId ? $sParentId : $sProductId;
 
@@ -2857,8 +2857,8 @@ class Basket extends \OxidEsales\Eshop\Core\Base
                        {$sCatTable}.oxrootid = :oxrootid";
 
         return (bool) $oDb->getOne($sQ, [
-            ':oxobjectid' => $sProductId,
-            ':oxrootid' => $sRootCatId
+            'oxobjectid' => $sProductId,
+            'oxrootid' => $sRootCatId
         ]);
     }
 

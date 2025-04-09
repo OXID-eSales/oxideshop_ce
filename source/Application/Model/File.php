@@ -318,7 +318,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         $iCount = $oDb->getOne(
             'SELECT COUNT(*) FROM `oxfiles` WHERE `OXSTOREHASH` = :oxstorehash',
             [
-                ':oxstorehash' => $this->oxfiles__oxstorehash->value
+                'oxstorehash' => $this->oxfiles__oxstorehash->value
             ]
         );
         if (!$iCount) {
@@ -396,8 +396,8 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
                         AND `oxorder`.`oxstorno` = 0
                         AND `oxorderarticles`.`oxstorno` = 0";
             $params = [
-                ':oxfileid' => $this->getId(),
-                ':oxvaliduntil' => date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime())
+                'oxfileid' => $this->getId(),
+                'oxvaliduntil' => date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime())
             ];
 
             if ($oDb->getOne($sSql, $params)) {

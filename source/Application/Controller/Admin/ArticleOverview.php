@@ -20,58 +20,53 @@ class ArticleOverview extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     /** @inheritdoc */
     public function render()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
 
         parent::render();
 
-        $this->_aViewData['edit'] = $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        $this->_aViewData['edit'] = $product = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
 
-        $soxId = $this->getEditObjectId();
-        if (isset($soxId) && $soxId != "-1") {
-            $oDB = $this->getDatabase();
+        $productEditId = $this->getEditObjectId();
+        if (isset($productEditId) && $productEditId != "-1") {
+            $database = $this->getDatabase();
 
-            // load object
-            $this->updateArticle($oArticle, $soxId);
+            $this->updateArticle($product, $productEditId);
 
-            $sShopID = $myConfig->getShopID();
+            $shopId = $config->getShopID();
 
-            $sSelect = $this->formOrderAmountQuery($soxId);
-            $this->_aViewData["totalordercnt"] = $iTotalOrderCnt = (float) $oDB->getOne($sSelect);
+            $query = $this->formOrderAmountQuery($productEditId);
+            $this->_aViewData["totalordercnt"] = $iTotalOrderCnt = (float) $database->getOne($query);
 
-            $sSelect = $this->formSoldOutAmountQuery($soxId);
-            $this->_aViewData["soldcnt"] = $iSoldCnt = (float) $oDB->getOne($sSelect);
+            $query = $this->formSoldOutAmountQuery($productEditId);
+            $this->_aViewData["soldcnt"] = $iSoldCnt = (float) $database->getOne($query);
 
-            $sSelect = $this->formCanceledAmountQuery($soxId);
-            $this->_aViewData["canceledcnt"] = $iCanceledCnt = (float) $oDB->getOne($sSelect);
+            $query = $this->formCanceledAmountQuery($productEditId);
+            $this->_aViewData["canceledcnt"] = $iCanceledCnt = (float) $database->getOne($query);
 
-            // not yet processed
             $this->_aViewData["leftordercnt"] = $iTotalOrderCnt - $iSoldCnt - $iCanceledCnt;
 
-            // position in top ten
-            $sSelect = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
+            $query = "select oxartid,sum(oxamount) as cnt from oxorderarticles " .
                        "where oxordershopid = :oxordershopid group by oxartid order by cnt desc";
 
-            $rs = $oDB->select($sSelect, [
-                ':oxordershopid' => $sShopID
+            $productIds = $database->getCol($query, [
+                'oxordershopid' => $shopId
             ]);
-            $iTopPos = 0;
-            $iPos = 0;
-            if ($rs != false && $rs->count() > 0) {
-                while (!$rs->EOF) {
-                    $iPos++;
-                    if ($rs->fields[0] == $soxId) {
-                        $iTopPos = $iPos;
-                    }
-                    $rs->fetchRow();
+            $topPosition = 0;
+            $position = 0;
+
+            foreach ($productIds as $productId) {
+                $position++;
+                if ($productId == $productEditId) {
+                    $topPosition = $position;
                 }
             }
 
-            $this->_aViewData["postopten"] = $iTopPos;
-            $this->_aViewData["toptentotal"] = $iPos;
+            $this->_aViewData["postopten"] = $topPosition;
+            $this->_aViewData["toptentotal"] = $position;
         }
 
-        $this->_aViewData["afolder"] = $myConfig->getConfigParam('aProductfolder');
-        $this->_aViewData["aSubclass"] = $myConfig->getConfigParam('aArticleClasses');
+        $this->_aViewData["afolder"] = $config->getConfigParam('aProductfolder');
+        $this->_aViewData["aSubclass"] = $config->getConfigParam('aArticleClasses');
 
         return "article_overview";
     }

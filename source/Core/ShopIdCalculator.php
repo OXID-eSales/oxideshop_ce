@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Doctrine\DBAL\DriverManager;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionParameterProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 
 use function array_fill_keys;
@@ -19,7 +20,7 @@ use function unserialize;
 class ShopIdCalculator
 {
     public const BASE_SHOP_ID = 1;
-    private static array $urlMap;
+    private array $urlMap;
 
     public function __construct(
         private readonly \OxidEsales\Eshop\Core\UtilsServer $utilsServer,
@@ -33,8 +34,8 @@ class ShopIdCalculator
 
     protected function getShopUrlMap(): array
     {
-        if (isset(self::$urlMap)) {
-            return self::$urlMap;
+        if (isset($this->urlMap)) {
+            return $this->urlMap;
         }
 
         $urlMap = [];
@@ -54,23 +55,24 @@ class ShopIdCalculator
                 $urlMap[$urlValues] = $shopId;
             }
         }
-        self::$urlMap = $urlMap;
+        $this->urlMap = $urlMap;
 
         return $urlMap;
     }
 
     private function fetchUrlsFromConfigTable(): array
     {
-        $connection = DriverManager::getConnection(['url' => (new BasicContext())->getDatabaseUrl()]);
+        $connection = DriverManager::getConnection(
+            (new ConnectionParameterProvider(new BasicContext()))->getParameters()
+        );
         $statement = $connection
             ->prepare(
                 "SELECT oxshopid, oxvarname, oxvarvalue
                 FROM oxconfig
                 WHERE oxvarname IN ('aLanguageURLs', 'aLanguageSSLURLs', 'sMallShopURL','sMallSSLShopURL')"
             );
-        $statement->execute();
 
-        return $statement->fetchAllAssociative();
+        return $statement->executeQuery()->fetchAllAssociative();
     }
 
     protected function getUtilsServer(): \OxidEsales\Eshop\Core\UtilsServer

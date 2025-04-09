@@ -56,7 +56,7 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($iRatingLogsTimeout = $myConfig->getConfigParam('iRatingLogsTimeout')) {
             $sExpDate = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime() - $iRatingLogsTimeout * 24 * 60 * 60);
             $oDb->execute("delete from oxratings where oxtimestamp < :expDate", [
-                ':expDate' => $sExpDate
+                'expDate' => $sExpDate
             ]);
         }
         $sSelect = "select oxid from oxratings 
@@ -64,9 +64,9 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
                 and oxtype = :oxtype 
                 and oxobjectid = :oxobjectid";
         $params = [
-            ':oxuserid' => $sUserId,
-            ':oxtype' => $sType,
-            ':oxobjectid' => $sObjectId
+            'oxuserid' => $sUserId,
+            'oxtype' => $sType,
+            'oxobjectid' => $sObjectId
         ];
 
         if ($oDb->getOne($sSelect, $params)) {
@@ -103,8 +103,8 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
             LIMIT 1";
 
         $params = [
-            ':oxobjectid' => $sObjectId,
-            ':oxtype' => $sType
+            'oxobjectid' => $sObjectId,
+            'oxtype' => $sType
         ];
 
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
@@ -143,8 +143,8 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         $masterDb = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
         $iCount = $masterDb->getOne($sSelect, [
-            ':oxobjectid' => $sObjectId,
-            ':oxtype' => $sType
+            'oxobjectid' => $sObjectId,
+            'oxtype' => $sType
         ]);
 
         return $iCount;

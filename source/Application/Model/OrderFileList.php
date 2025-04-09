@@ -52,8 +52,8 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
                     ORDER BY `oxorder`.`oxordernr`";
 
         $this->selectString($sSql, [
-            ':oxuserid' => $sUserId,
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+            'oxuserid' => $sUserId,
+            'oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
         ]);
     }
 
@@ -81,8 +81,8 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
                         AND `oxorderarticles`.`oxstorno` = 0";
 
         $this->selectString($sSql, [
-            ':oxorderid' => $sOrderId,
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+            'oxorderid' => $sOrderId,
+            'oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
         ]);
     }
 }

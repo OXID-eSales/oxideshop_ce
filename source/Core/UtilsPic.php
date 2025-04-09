@@ -129,7 +129,7 @@ class UtilsPic extends \OxidEsales\Eshop\Core\Base
         $query = "SELECT count(*) FROM $sTable WHERE $sField = :picturename group by $sField ";
 
         return $masterDb->getOne($query, [
-            ':picturename' => (string) $sPicName
+            'picturename' => (string) $sPicName
         ]);
     }
 

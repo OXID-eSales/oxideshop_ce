@@ -130,7 +130,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
                  ORDER BY o2c.oxtime ";
 
         $fVat = $oDb->getOne($sSql, [
-            ':oxobjectid' => $oArticle->getId()
+            'oxobjectid' => $oArticle->getId()
         ]);
         if ($fVat !== false && $fVat !== null) {
             return $fVat;

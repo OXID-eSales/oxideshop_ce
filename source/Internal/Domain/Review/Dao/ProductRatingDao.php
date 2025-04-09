@@ -35,7 +35,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
             ->where('OXID = :OXID')
             ->setParameters($this->productRatingMapper->getData($productRating));
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 
     /**
@@ -50,11 +50,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
 
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
-            ->select([
-                'OXID',
-                'OXRATING',
-                'OXRATINGCNT',
-            ])
+            ->select('OXID', 'OXRATING', 'OXRATINGCNT')
             ->from('oxarticles')
             ->where('oxid = :productId')
             ->setMaxResults(1)
@@ -62,7 +58,7 @@ class ProductRatingDao implements ProductRatingDaoInterface
 
         return $this->productRatingMapper->map(
             new ProductRating(),
-            $queryBuilder->execute()->fetch()
+            $queryBuilder->fetchAssociative()
         );
     }
 

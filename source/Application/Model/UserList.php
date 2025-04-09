@@ -46,7 +46,7 @@ class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect .= "and ( select 1 from oxuserbasketitems where oxuserbasketitems.oxbasketid = oxuserbaskets.oxid limit 1)";
 
         $this->selectString($sSelect, [
-            ':search' => "$sSearchStr"
+            'search' => "$sSearchStr"
         ]);
     }
 }

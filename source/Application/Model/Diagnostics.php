@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
+
 /**
  * Diagnostic tool model
  * Stores configuration and public diagnostic methods for shop diagnostics
@@ -132,18 +134,15 @@ class Diagnostics
      *
      * @return integer
      */
-    protected function countRows($sTable, $blMode)
+    protected function countRows($table, $mode)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $sRequest = 'SELECT COUNT(*) FROM ' . $sTable;
+        $query = sprintf("SELECT COUNT(*) FROM %s", $table);
 
-        if ($blMode == false) {
-            $sRequest .= ' WHERE oxactive = 1';
+        if ($mode == false) {
+            $query .= ' WHERE oxactive = 1';
         }
 
-        $aRes = $oDb->select($sRequest)->fields[0];
-
-        return $aRes;
+        return (int) DatabaseProvider::getDb()->getOne($query);
     }
 
 
@@ -407,7 +406,7 @@ class Diagnostics
      */
     protected function getMySqlServerInfo()
     {
-        $aResult = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC)->getRow("SHOW VARIABLES LIKE 'version'");
+        $aResult = DatabaseProvider::getDb()->getRow("SHOW VARIABLES LIKE 'version'");
 
         return $aResult['Value'];
     }

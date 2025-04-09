@@ -7,12 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\InvalidDatabaseConfigurationException;
-
-use function is_array;
-use function parse_url;
+use Doctrine\DBAL\Tools\DsnParser;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\InvalidDatabaseConfigurationException;
 
 class DatabaseConfiguration
 {
@@ -34,31 +32,15 @@ class DatabaseConfiguration
         'sqlite3' => 'pdo_sqlite',
     ];
 
-    /**
-     * @throws InvalidDatabaseConfigurationException
-     */
     public function __construct(private readonly string $databaseUrl)
     {
-        $urlComponents = parse_url($this->databaseUrl);
-        if (
-            !$urlComponents ||
-            !is_array($urlComponents) ||
-            !isset($urlComponents['scheme'], self::$driverSchemeAliases[$urlComponents['scheme']]) ||
-            empty($urlComponents['host'])
-        ) {
-            throw new InvalidDatabaseConfigurationException("'$this->databaseUrl' is not a valid database URL");
-        }
-        $this->urlComponents = $urlComponents;
-    }
-
-    public function getScheme(): string
-    {
-        return $this->urlComponents['scheme'];
+        $this->urlComponents = (new DsnParser(self::$driverSchemeAliases))->parse($databaseUrl);
+        $this->validateRequiredUrlComponents();
     }
 
     public function getDriver(): string
     {
-        return self::$driverSchemeAliases[$this->urlComponents['scheme']];
+        return $this->urlComponents['driver'];
     }
 
     public function getDatabaseUrl(): string
@@ -73,7 +55,7 @@ class DatabaseConfiguration
 
     public function getPass(): string
     {
-        return $this->urlComponents['pass'] ?? '';
+        return $this->urlComponents['password'] ?? '';
     }
 
     public function getHost(): string
@@ -88,27 +70,42 @@ class DatabaseConfiguration
 
     public function getName(): string
     {
-        return isset($this->urlComponents['path']) ?
-            ltrim($this->urlComponents['path'], '/') :
-            '';
+        return $this->urlComponents['dbname'] ?? '';
     }
 
     public function getOptions(): array
     {
-        if (!empty($this->urlComponents['query'])) {
-            parse_str($this->urlComponents['query'], $options);
-        }
+        return $this->urlComponents['driverOptions'] ?? [];
+    }
 
-        return $options ?? [];
+    public function getCharset(): ?string
+    {
+        return $this->urlComponents['charset'] ?? null;
     }
 
     public function isSocketConnection(): bool
     {
-        return !empty($this->getOptions()['socket']);
+        return isset($this->urlComponents['socket']);
     }
 
     public function getSocket(): string
     {
-        return trim($this->getOptions()['socket'], '()');
+        return trim($this->urlComponents['socket'], '()');
+    }
+
+    public function getConnectionParameters(): array
+    {
+        return $this->urlComponents;
+    }
+
+    private function validateRequiredUrlComponents(): void
+    {
+        if (
+            empty($this->urlComponents['host']) ||
+            !isset($this->urlComponents['driver']) ||
+            !in_array($this->urlComponents['driver'], self::$driverSchemeAliases, true)
+        ) {
+            throw new InvalidDatabaseConfigurationException('Provided database URL is not valid');
+        }
     }
 }

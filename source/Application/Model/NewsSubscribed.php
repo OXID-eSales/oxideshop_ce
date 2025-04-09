@@ -92,7 +92,7 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $params = [
-            ':oxemail' => (string) $email
+            'oxemail' => (string) $email
         ];
 
         $userOxid = $database->getOne("select oxid from oxnewssubscribed 
@@ -112,8 +112,8 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $params = [
-            ':oxuserid' => $sOxUserId,
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+            'oxuserid' => $sOxUserId,
+            'oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
         ];
 
         $sOxId = $oDb->getOne("select oxid from oxnewssubscribed 

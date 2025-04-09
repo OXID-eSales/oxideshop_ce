@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
@@ -25,7 +26,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::render();
 
-        \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('bl_perfLoadPrice', true);
+        Registry::getConfig()->setConfigParam('bl_perfLoadPrice', true);
 
         $oArticle = $this->createArticle();
         $oArticle->enablePriceLoad();
@@ -71,7 +72,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             //hook for modules
             $oArticle = $this->customizeArticleInformation($oArticle);
 
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -91,7 +92,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             "oxarticles__oxlongdesc",
             "details.css"
         );
-        $this->_aViewData["blUseTimeCheck"] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blUseTimeCheck');
+        $this->_aViewData["blUseTimeCheck"] = Registry::getConfig()->getConfigParam('blUseTimeCheck');
 
         return "article_main";
     }
@@ -112,7 +113,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         parent::save();
 
         $oDb = DatabaseProvider::getDb();
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
         $soxId = $this->getEditObjectId();
         $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
 
@@ -160,7 +161,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $sSelect = "select oxid from " . $tableViewNameGenerator->getViewName('oxarticles');
             $sSelect .= " where oxartnum = " . $oDb->quote($aParams['oxarticles__oxartnum']);
             $sSelect .= " and oxid != " . $oDb->quote($aParams['oxarticles__oxid']);
-            $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sSelect);
+            $record = DatabaseProvider::getDb()->select($sSelect);
             if ($record && $record->count() > 0) {
                 $oArticle->assign($record->fields);
                 $this->_aViewData["errorsavingatricle"] = 1;
@@ -176,7 +177,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $oArticle->assign($aParams);
         $oArticle->setArticleLongDesc($this->processLongDesc($aParams['oxarticles__oxlongdesc']));
         $oArticle->setLanguage($this->_iEditLang);
-        $oArticle = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oArticle);
+        $oArticle = Registry::getUtilsFile()->processFiles($oArticle);
         $oArticle->save();
 
         // set oxid if inserted
@@ -220,16 +221,14 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function resetCategoriesCounter($sArticleId)
     {
-        $oDb = DatabaseProvider::getDb();
-        $sQ = "select oxcatnid from oxobject2category where oxobjectid = :oxobjectid";
-        $oRs = $oDb->select($sQ, [
-            ':oxobjectid' => $sArticleId
-        ]);
-        if ($oRs !== false && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $this->resetCounter("catArticle", $oRs->fields[0]);
-                $oRs->fetchRow();
-            }
+        $categories = DatabaseProvider::getDb()->getCol(
+            'select oxcatnid from oxobject2category where oxobjectid = :oxobjectid',
+            [
+            'oxobjectid' => $sArticleId
+            ]
+        );
+        foreach ($categories as $category) {
+            $this->resetCounter("catArticle", $category);
         }
     }
 
@@ -241,7 +240,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function addToCategory($sCatID, $sOXID)
     {
-        $base = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $base = oxNew(BaseModel::class);
         $base->init("oxobject2category");
         $base->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(0);
         $base->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sOXID);
@@ -261,12 +260,12 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function copyArticle($sOldId = null, $sNewId = null, $sParentId = null)
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         $sOldId = $sOldId ? $sOldId : $this->getEditObjectId();
-        $sNewId = $sNewId ? $sNewId : \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
+        $sNewId = $sNewId ? $sNewId : Registry::getUtilsObject()->generateUID();
 
-        $oArticle = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $oArticle = oxNew(BaseModel::class);
         $oArticle->init('oxarticles');
         if ($oArticle->load($sOldId)) {
             if ($myConfig->getConfigParam('blDisableDublArtOnCopy')) {
@@ -281,7 +280,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             }
 
             // setting oxinsert/oxtimestamp
-            $iNow = date('Y-m-d H:i:s', \OxidEsales\Eshop\Core\Registry::getUtilsDate()->getTime());
+            $iNow = date('Y-m-d H:i:s', Registry::getUtilsDate()->getTime());
             $oArticle->oxarticles__oxinsert = new \OxidEsales\Eshop\Core\Field($iNow);
 
             // mantis#0001590: OXRATING and OXRATINGCNT not set to 0 when copying article
@@ -318,19 +317,17 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             $this->resetContentCache();
 
-            $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-            $oDb = DatabaseProvider::getDb();
+            $myUtilsObject = Registry::getUtilsObject();
+            $database = DatabaseProvider::getDb();
 
-            //copy variants
-            $sQ = "select oxid from oxarticles where oxparentid = :oxparentid";
-            $oRs = $oDb->select($sQ, [
-                ':oxparentid' => $sOldId
-            ]);
-            if ($oRs !== false && $oRs->count() > 0) {
-                while (!$oRs->EOF) {
-                    $this->copyArticle($oRs->fields[0], $myUtilsObject->generateUid(), $sNewId);
-                    $oRs->fetchRow();
-                }
+            $productsIds = DatabaseProvider::getDb()->getCol(
+                'select oxid from oxarticles where oxparentid = :oxparentid',
+                [
+                    'oxparentid' => $sOldId
+                ]
+            );
+            foreach ($productsIds as $productId) {
+                $this->copyArticle($productId, $myUtilsObject->generateUid(), $sNewId);
             }
 
             // only for top articles
@@ -345,10 +342,10 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
                     $oArticle->$sArtNumField->value && $sFncParameter == 'copyArticle'
                 ) {
                     $sSelect = "select oxid from " . $oArticle->getCoreTableName() .
-                               " where oxartnum = " . $oDb->quote($oArticle->$sArtNumField->value) .
-                               " and oxid != " . $oDb->quote($sNewId);
+                               " where oxartnum = " . $database->quote($oArticle->$sArtNumField->value) .
+                               " and oxid != " . $database->quote($sNewId);
 
-                    $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($sSelect);
+                    $record = $database->select($sSelect);
                     if ($record && $record->count() > 0) {
                         $oArticle->assign($record->fields);
                         $this->_aViewData["errorsavingatricle"] = 1;
@@ -366,24 +363,23 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copyCategories($sOldId, $newArticleId)
     {
-        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = DatabaseProvider::getDb();
+        $myUtilsObject = Registry::getUtilsObject();
+        $database = DatabaseProvider::getDb();
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sO2CView = $tableViewNameGenerator->getViewName('oxobject2category');
-        $sQ = "select oxcatnid, oxtime from {$sO2CView} where oxobjectid = :oxobjectid";
-        $oRs = $oDb->select($sQ, [
-            ':oxobjectid' => $sOldId
-        ]);
-        if ($oRs !== false && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $uniqueId = $myUtilsObject->generateUid();
-                $sCatId = $oRs->fields[0];
-                $sTime = $oRs->fields[1];
-                $sSql = $this->formQueryForCopyingToCategory($newArticleId, $uniqueId, $sCatId, $sTime);
-                $oDb->execute($sSql);
-                $oRs->fetchRow();
-            }
+        $categories = $database->getAll(
+            sprintf('select oxcatnid, oxtime from %s where oxobjectid = :oxobjectid', $sO2CView),
+            [
+            'oxobjectid' => $sOldId
+            ]
+        );
+        foreach ($categories as $category) {
+            $uniqueId = $myUtilsObject->generateUid();
+            $sCatId = $category['oxcatnid'];
+            $sTime = $category['oxtime'];
+            $sSql = $this->formQueryForCopyingToCategory($newArticleId, $uniqueId, $sCatId, $sTime);
+            $database->execute($sSql);
         }
     }
 
@@ -395,24 +391,22 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copyAttributes($sOldId, $sNewId)
     {
-        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = DatabaseProvider::getDb();
+        $utilsObject = Registry::getUtilsObject();
 
-        $sQ = "select oxid from oxobject2attribute where oxobjectid = :oxobjectid";
-        $oRs = $oDb->select($sQ, [
-            ':oxobjectid' => $sOldId
-        ]);
-        if ($oRs !== false && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                // #1055A
-                $oAttr = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
-                $oAttr->init("oxobject2attribute");
-                $oAttr->load($oRs->fields[0]);
-                $oAttr->setId($myUtilsObject->generateUID());
-                $oAttr->oxobject2attribute__oxobjectid->setValue($sNewId);
-                $oAttr->save();
-                $oRs->fetchRow();
-            }
+        $ArticleAttributesIds = DatabaseProvider::getDb()->getCol(
+            'select oxid from oxobject2attribute where oxobjectid = :oxobjectid',
+            [
+            'oxobjectid' => $sOldId
+            ]
+        );
+
+        foreach ($ArticleAttributesIds as $articleAttributesId) {
+            $articleAttribute = oxNew(BaseModel::class);
+            $articleAttribute->init("oxobject2attribute");
+            $articleAttribute->load($articleAttributesId);
+            $articleAttribute->setId($utilsObject->generateUID());
+            $articleAttribute->oxobject2attribute__oxobjectid->setValue($sNewId);
+            $articleAttribute->save();
         }
     }
 
@@ -424,12 +418,12 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copyFiles($sOldId, $sNewId)
     {
-        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $myUtilsObject = Registry::getUtilsObject();
+        $oDb = DatabaseProvider::getDb();
 
         $sQ = "SELECT * FROM `oxfiles` WHERE `oxartid` = :oxartid";
         $oRs = $oDb->select($sQ, [
-            ':oxartid' => $sOldId
+            'oxartid' => $sOldId
         ]);
         if ($oRs !== false && $oRs->count() > 0) {
             while (!$oRs->EOF) {
@@ -454,26 +448,21 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copySelectlists($sOldId, $sNewId)
     {
-        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = DatabaseProvider::getDb();
+        $myUtilsObject = Registry::getUtilsObject();
+        $database = DatabaseProvider::getDb();
 
-        $sQ = "select oxselnid from oxobject2selectlist where oxobjectid = :oxobjectid";
-        $oRs = $oDb->select($sQ, [
-            ':oxobjectid' => $sOldId
+        $selectListIds = $database->getCol('select oxselnid from oxobject2selectlist where oxobjectid = :oxobjectid', [
+            'oxobjectid' => $sOldId
         ]);
-        if ($oRs !== false && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $sUid = $myUtilsObject->generateUID();
-                $sId = $oRs->fields[0];
-                $sSql = "INSERT INTO oxobject2selectlist (oxid, oxobjectid, oxselnid) " .
-                        "VALUES (:oxid, :oxobjectid, :oxselnid)";
-                $oDb->execute($sSql, [
-                    ':oxid' => $sUid,
-                    ':oxobjectid' => $sNewId,
-                    ':oxselnid' => $sId,
-                ]);
-                $oRs->fetchRow();
-            }
+        foreach ($selectListIds as $selectListId) {
+            $database->execute(
+                'INSERT INTO oxobject2selectlist (oxid, oxobjectid, oxselnid) VALUES (:oxid, :oxobjectid, :oxselnid)',
+                [
+                    'oxid' => $myUtilsObject->generateUID(),
+                    'oxobjectid' => $sNewId,
+                    'oxselnid' => $selectListId,
+                ]
+            );
         }
     }
 
@@ -485,26 +474,23 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copyCrossseling($sOldId, $sNewId)
     {
-        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = DatabaseProvider::getDb();
+        $myUtilsObject = Registry::getUtilsObject();
+        $database = DatabaseProvider::getDb();
 
-        $sQ = "select oxobjectid from oxobject2article where oxarticlenid = :oxarticlenid";
-        $oRs = $oDb->select($sQ, [
-            ':oxarticlenid' => $sOldId
-        ]);
-        if ($oRs !== false && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $sUid = $myUtilsObject->generateUID();
-                $sId = $oRs->fields[0];
-                $sSql = "INSERT INTO oxobject2article (oxid, oxobjectid, oxarticlenid) " .
-                        "VALUES (:oxid, :oxobjectid, :oxarticlenid)";
-                $oDb->execute($sSql, [
-                    ':oxid' => $sUid,
-                    ':oxobjectid' => $sId,
-                    ':oxarticlenid' => $sNewId
-                ]);
-                $oRs->fetchRow();
-            }
+        $objects = $database->getCol(
+            'select oxobjectid from oxobject2article where oxarticlenid = :oxarticlenid',
+            [
+            'oxarticlenid' => $sOldId
+            ]
+        );
+        foreach ($objects as $object) {
+            $query = 'INSERT INTO oxobject2article (oxid, oxobjectid, oxarticlenid) ' .
+                'VALUES (:oxid, :oxobjectid, :oxarticlenid)';
+            $database->execute($query, [
+                'oxid' => $myUtilsObject->generateUID(),
+                'oxobjectid' => $object,
+                'oxarticlenid' => $sNewId
+            ]);
         }
     }
 
@@ -516,26 +502,23 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copyAccessoires($sOldId, $sNewId)
     {
-        $myUtilsObject = \OxidEsales\Eshop\Core\Registry::getUtilsObject();
-        $oDb = DatabaseProvider::getDb();
+        $myUtilsObject = Registry::getUtilsObject();
+        $database = DatabaseProvider::getDb();
 
-        $sQ = "select oxobjectid from oxaccessoire2article where oxarticlenid = :oxarticlenid";
-        $oRs = $oDb->select($sQ, [
-            ':oxarticlenid' => $sOldId
-        ]);
-        if ($oRs !== false && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $sUId = $myUtilsObject->generateUid();
-                $sId = $oRs->fields[0];
-                $sSql = "INSERT INTO oxaccessoire2article (oxid, oxobjectid, oxarticlenid) " .
-                        "VALUES (:oxid, :oxobjectid, :oxarticlenid)";
-                $oDb->execute($sSql, [
-                    ':oxid' => $sUId,
-                    ':oxobjectid' => $sId,
-                    ':oxarticlenid' => $sNewId
-                ]);
-                $oRs->fetchRow();
-            }
+        $accessories = $database->getCol(
+            'select oxobjectid from oxaccessoire2article where oxarticlenid = :oxarticlenid',
+            [
+                'oxarticlenid' => $sOldId
+            ]
+        );
+        foreach ($accessories as $accessoryId) {
+            $sSql = 'INSERT INTO oxaccessoire2article (oxid, oxobjectid, oxarticlenid) ' .
+                'VALUES (:oxid, :oxobjectid, :oxarticlenid)';
+            $database->execute($sSql, [
+                'oxid' => $myUtilsObject->generateUid(),
+                'oxobjectid' => $accessoryId,
+                'oxarticlenid' => $sNewId
+            ]);
         }
     }
 
@@ -547,14 +530,14 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copyStaffelpreis($sOldId, $sNewId)
     {
-        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+        $sShopId = Registry::getConfig()->getShopId();
         $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oPriceList->init("oxbase", "oxprice2article");
         $sQ = "select * from oxprice2article where oxartid = :oxartid and oxshopid = :oxshopid " .
               "and (oxamount > 0 or oxamountto > 0) order by oxamount ";
         $oPriceList->selectString($sQ, [
-            ':oxartid' => $sOldId,
-            ':oxshopid' => $sShopId
+            'oxartid' => $sOldId,
+            'oxshopid' => $sShopId
         ]);
         if ($oPriceList->count()) {
             foreach ($oPriceList as $oItem) {
@@ -573,7 +556,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     protected function copyArtExtends($sOldId, $sNewId)
     {
-        $oExt = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $oExt = oxNew(BaseModel::class);
         $oExt->init("oxartextends");
         $oExt->load($sOldId);
         $oExt->setId($sNewId);
@@ -632,7 +615,9 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         } else {
             $aJumpList[] = [$oArticle->$sOxIdField->value, $this->getTitle($oArticle)];
             //fetching this article variants data
-            $oVariants = $oArticle->getAdminVariants(Registry::getRequest()->getRequestEscapedParameter("editlanguage"));
+            $oVariants = $oArticle->getAdminVariants(
+                Registry::getRequest()->getRequestEscapedParameter("editlanguage")
+            );
             if ($oVariants && $oVariants->count()) {
                 foreach ($oVariants as $oVar) {
                     $aJumpList[] = [$oVar->$sOxIdField->value, " - " . $this->getTitle($oVar)];

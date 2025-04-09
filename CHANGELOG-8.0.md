@@ -34,6 +34,12 @@
 - Replace file caching in `Utils` with Symfony cache
 - Removed $includePermanentCache parameter from `oxResetFileCache` method, all cache files are now cleared without exclusions.
 - Module environment configuration file paths
+- Updated doctrine/dbal dependency to ^4.2
+- `ResultSet` constructor now strictly requires `$statement` to be a `Doctrine\DBAL\Statement`
+- Refactored database query logging configuration.
+- Database adapter fetcher methods now return associative results by default
+- Method `getLastInsertId` of `DatabaseInterface` Adapter will throw `DatabaseErrorException` if no insert ID is available.
+- The `DatabaseConfiguration` namespace has been renamed for consistency, and the `getScheme` method has been replaced with `getDriver`
 
 ### Removed
 
@@ -70,3 +76,7 @@
 - Remove deprecated Interface `CacheConnectorInterface`
 - Remove `DateFormatHelper`
 - Deprecated promotions
+- Fetch mode support from `DatabaseInterface` and `DatabaseProvider`
+- Database `NullLogger` and `DatabaseLoggerFactoryInterface`
+- Redundant Logger classes and interfaces: `MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`,
+`LoggerConfigurationValidatorInterface`, `LoggerWrapper`

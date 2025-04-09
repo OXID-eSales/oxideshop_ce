@@ -45,7 +45,7 @@ class Review extends BaseModel
         if (isset($this->oxreviews__oxuserid) && $this->oxreviews__oxuserid->value) {
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $params = [
-                ':oxid' => $this->oxreviews__oxuserid->value
+                'oxid' => $this->oxreviews__oxuserid->value
             ];
 
             $firstName = $oDb->getOne("SELECT oxfname FROM oxuser 
@@ -103,15 +103,15 @@ class Review extends BaseModel
         $reviews->init('oxreview');
 
         $params = [
-            ':oxtype' => $sType,
-            ':oxlang' => is_null($iLoadInLang) ? (int) Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang
+            'oxtype' => $sType,
+            'oxlang' => is_null($iLoadInLang) ? (int) Registry::getLang()->getBaseLanguage() : (int) $iLoadInLang
         ];
 
         if (is_array($aIds) && count($aIds)) {
             $sObjectIdWhere = "oxreviews.oxobjectid in ( " . implode(", ", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds)) . " )";
         } elseif (is_string($aIds) && $aIds) {
             $sObjectIdWhere = "oxreviews.oxobjectid = :oxobjectid";
-            $params[':oxobjectid'] = $aIds;
+            $params['oxobjectid'] = $aIds;
         } else {
             return $reviews;
         }
@@ -127,7 +127,7 @@ class Review extends BaseModel
 
             if ($oUser = $this->getUser()) {
                 $sSelect .= 'or  oxreviews.oxuserid = :oxuserid ';
-                $params[':oxuserid'] = $oUser->getId();
+                $params['oxuserid'] = $oUser->getId();
             }
 
             $sSelect .= ')';

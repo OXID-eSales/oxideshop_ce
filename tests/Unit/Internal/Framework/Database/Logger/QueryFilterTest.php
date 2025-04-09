@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database\Logger;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryFilter;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Logger\QueryLogFilter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -81,8 +81,8 @@ final class QueryFilterTest extends TestCase
     #[DataProvider('providerTestFiltering')]
     public function testFiltering(string $query, array $skipLogTags, bool $expected): void
     {
-        $queryFilter = new QueryFilter();
+        $queryFilter = new QueryLogFilter($skipLogTags);
 
-        $this->assertEquals($expected, $queryFilter->shouldLogQuery($query, $skipLogTags));
+        $this->assertEquals($expected, $queryFilter->shouldLogQuery($query));
     }
 }

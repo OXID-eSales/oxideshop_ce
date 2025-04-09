@@ -476,8 +476,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $sTable = $tableViewNameGenerator->getViewName('oxuser');
             $sQ = "SELECT 1 FROM $sTable WHERE MD5( CONCAT( :adminsid, {$sTable}.oxid, {$sTable}.oxpassword, {$sTable}.oxrights ) ) = :previd";
             $blCan = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
-                ':adminsid' => $sAdminSid,
-                ':previd'   => $sPrevId
+                'adminsid' => $sAdminSid,
+                'previd'   => $sPrevId
             ]);
         }
 
@@ -586,7 +586,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return $database->getOne("SELECT oxrights FROM oxuser WHERE oxid = :oxid ", [
-            ':oxid' => $userOxId
+            'oxid' => $userOxId
         ]);
     }
 
@@ -602,7 +602,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return $database->getOne("SELECT oxid FROM oxshops WHERE oxid = :oxid", [
-            ':oxid' => $oxId
+            'oxid' => $oxId
         ]);
     }
 

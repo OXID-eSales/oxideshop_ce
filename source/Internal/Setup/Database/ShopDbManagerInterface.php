@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 
 interface ShopDbManagerInterface
 {

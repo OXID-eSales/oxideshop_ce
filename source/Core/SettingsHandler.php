@@ -101,16 +101,16 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
                              "VALUES (:oxid, :oxcfgmodule, :oxcfgvarname, :oxgrouping, :oxvarconstraint, :oxpos)";
 
                 $db->execute($deleteSql, [
-                    ':oxcfgmodule' => $module,
-                    ':oxcfgvarname' => $name,
+                    'oxcfgmodule' => $module,
+                    'oxcfgvarname' => $name,
                 ]);
                 $db->execute($insertSql, [
-                    ':oxid' => $oxid,
-                    ':oxcfgmodule' => $module,
-                    ':oxcfgvarname' => $name,
-                    ':oxgrouping' => $group,
-                    ':oxvarconstraint' => $constraints,
-                    ':oxpos' => $position,
+                    'oxid' => $oxid,
+                    'oxcfgmodule' => $module,
+                    'oxcfgvarname' => $name,
+                    'oxgrouping' => $group,
+                    'oxvarconstraint' => $constraints,
+                    'oxpos' => $position,
                 ]);
             }
         }
@@ -155,15 +155,15 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
      */
     protected function getModuleConfigs($moduleId)
     {
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $db = DatabaseProvider::getDb();
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $config->getShopId();
         $module = $this->getModuleConfigId($moduleId);
 
         $moduleConfigsQuery = "SELECT oxvarname, oxvartype, oxvarvalue FROM oxconfig WHERE oxmodule = :oxmodule AND oxshopid = :oxshopid";
         $dbConfigs = $db->getAll($moduleConfigsQuery, [
-            ':oxmodule' => $module,
-            ':oxshopid' => $shopId
+            'oxmodule' => $module,
+            'oxshopid' => $shopId
         ]);
 
         $result = [];
@@ -212,8 +212,8 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
                              oxvarname IN (" . implode(", ", $quotedConfigsToRemove) . ")";
 
         $db->execute($deleteSql, [
-            ':oxmodule' => $this->getModuleConfigId($moduleId),
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),
+            'oxmodule' => $this->getModuleConfigId($moduleId),
+            'oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),
         ]);
     }
 

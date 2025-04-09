@@ -74,7 +74,7 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $sQ = "select * from oxprice2article where oxartid = :oxartid " .
                   "and {$sShopSelect} and (oxamount > 0 or oxamountto > 0) order by oxamount ";
             $oPriceList->selectstring($sQ, [
-                ':oxartid' => $soxId
+                'oxartid' => $soxId
             ]);
 
             $this->_aViewData["amountprices"] = $oPriceList;
@@ -228,8 +228,8 @@ class ArticleStock extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $articleId = $this->getEditObjectId();
         $oDb->execute("delete from oxprice2article where oxid = :oxid and oxartid = :oxartid", [
-            ':oxid' => Registry::getRequest()->getRequestEscapedParameter("priceid"),
-            ':oxartid' => $articleId
+            'oxid' => Registry::getRequest()->getRequestEscapedParameter("priceid"),
+            'oxartid' => $articleId
         ]);
 
         $this->onArticleAmountPriceChange($articleId);

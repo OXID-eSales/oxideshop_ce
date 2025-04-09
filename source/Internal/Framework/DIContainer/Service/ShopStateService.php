@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service;
 
 use Doctrine\DBAL\DriverManager;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionParameterProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 
 /**
@@ -40,8 +42,10 @@ class ShopStateService implements ShopStateServiceInterface
     private function doesConfigTableExist(): bool
     {
         try {
-            $connection = DriverManager::getConnection(['url' => $this->basicContext->getDatabaseUrl()]);
-            $connection->exec(
+            $connection = DriverManager::getConnection(
+                (new DatabaseConfiguration($this->basicContext->getDatabaseUrl()))->getConnectionParameters()
+            );
+            $connection->executeQuery(
                 sprintf('SELECT 1 FROM `%s` LIMIT 1', $this->basicContext->getConfigTableName())
             );
             $connection->close();

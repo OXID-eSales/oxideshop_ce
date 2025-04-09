@@ -142,7 +142,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
                WHERE $sO2CView.`oxcatnid` = :oxcatnid AND " . $oArticle->getSqlActiveSnippet();
 
         $aCache[$sCatId][$sActIdent] = $oDb->getOne($sQ, [
-            ':oxcatnid' => $sCatId
+            'oxcatnid' => $sCatId
         ]);
 
         $this->setCatCache($aCache);
@@ -170,12 +170,12 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $sSelect = "SELECT count({$sTable}.oxid) FROM {$sTable} WHERE oxvarminprice >= 0";
         if ($dPriceTo) {
             $sSelect .= " AND oxvarminprice <= :oxvarpriceto";
-            $params[':oxvarpriceto'] = (double) $dPriceTo;
+            $params['oxvarpriceto'] = (double) $dPriceTo;
         }
 
         if ($dPriceFrom) {
             $sSelect .= " AND oxvarminprice  >= :oxvarpricefrom";
-            $params[':oxvarpricefrom'] = (double) $dPriceFrom;
+            $params['oxvarpricefrom'] = (double) $dPriceFrom;
         }
 
         $sSelect .=  " AND {$sTable}.oxissearch = 1 AND " . $oArticle->getSqlActiveSnippet();
@@ -233,7 +233,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      */
     protected function getAssoc($query, $parameters = [])
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb();
 
         $resultSet = $database->select($query, $parameters);
 
@@ -282,7 +282,7 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         //#3485
         $sQ = "SELECT count($sArtTable.oxid) FROM $sArtTable WHERE $sArtTable.oxparentid = '' AND oxmanufacturerid = :manufacturerId AND " . $oArticle->getSqlActiveSnippet();
         $iValue = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
-            ':manufacturerId' => $sMnfId
+            'manufacturerId' => $sMnfId
         ]);
 
         $aCache[$sMnfId][$sActIdent] = (int) $iValue;
@@ -322,23 +322,25 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         // loading from cache
         if ($aCatData = $this->getCatCache()) {
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-            $sTable = $tableViewNameGenerator->getViewName('oxcategories');
-            $sSelect = "SELECT $sTable.oxid FROM $sTable WHERE :oxpricefrom >= $sTable.oxpricefrom AND :oxpriceto <= $sTable.oxpriceto ";
 
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-            $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->select($sSelect, [
-                ':oxpricefrom' => (double) $iPrice,
-                ':oxpriceto' => (double) $iPrice
-            ]);
-            if ($rs != false && $rs->count() > 0) {
-                while (!$rs->EOF) {
-                    if (isset($aCatData[$rs->fields[0]])) {
-                        unset($aCatData[$rs->fields[0]]);
-                    }
-                    $rs->fetchRow();
+            $categoriesIds = DatabaseProvider::getMaster()->getCol(
+                sprintf(
+                    "SELECT oxid FROM %s WHERE :oxpricefrom >= oxpricefrom AND :oxpriceto <= oxpriceto",
+                    $tableViewNameGenerator->getViewName('oxcategories')
+                ),
+                [
+                    'oxpricefrom' => (double) $iPrice,
+                    'oxpriceto' => (double) $iPrice
+                ]
+            );
+            foreach ($categoriesIds as $categoryId) {
+                if (isset($aCatData[$categoryId])) {
+                    unset($aCatData[$categoryId]);
                 }
+            }
 
-                // writing back to cache
+            if (!empty($categoriesIds)) {
                 $this->setCatCache($aCatData);
             }
         }

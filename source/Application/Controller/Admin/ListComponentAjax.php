@@ -301,7 +301,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function isExtendedColumn($sColumn)
     {
-        $blVariantsSelectionParameter = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection');
+        $blVariantsSelectionParameter = Registry::getConfig()->getConfigParam('blVariantsSelection');
 
         return $this->_blAllowExtColumns && $blVariantsSelectionParameter && $sColumn == 'oxtitle';
     }
@@ -417,16 +417,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function getAll($sQ)
     {
-        $aReturn = [];
-        $rs = DatabaseProvider::getDb()->select($sQ);
-        if ($rs != false && $rs->count() > 0) {
-            while (!$rs->EOF) {
-                $aReturn[] = $rs->fields[0];
-                $rs->fetchRow();
-            }
-        }
-
-        return $aReturn;
+        return DatabaseProvider::getDb()->getCol($sQ);
     }
 
     /**
@@ -483,9 +474,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
     protected function getDataFields($sQ)
     {
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return DatabaseProvider::getMaster(
-            DatabaseProvider::FETCH_MODE_ASSOC
-        )->getAll($sQ);
+        return DatabaseProvider::getMaster()->getAll($sQ);
     }
 
     /**
@@ -517,8 +506,10 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     protected function getViewName($sTable)
     {
-        $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        return $tableViewNameGenerator->getViewName($sTable, Registry::getRequest()->getRequestEscapedParameter('editlanguage'));
+        return oxNew(TableViewNameGenerator::class)->getViewName(
+            $sTable,
+            Registry::getRequest()->getRequestEscapedParameter('editlanguage')
+        );
     }
 
     /**
@@ -580,10 +571,10 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
             $aArtIds = [$aArtIds];
         }
 
-        $sShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+        $sShopId = Registry::getConfig()->getShopId();
         foreach ($aArtIds as $sArtId) {
             /** @var \OxidEsales\Eshop\Core\SeoEncoder $oSeoEncoder */
-            \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
+            Registry::getSeoEncoder()->markAsExpired($sArtId, $sShopId, 1, null, "oxtype='oxarticle'");
         }
     }
 
@@ -592,12 +583,12 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     public function resetContentCache()
     {
-        $blDeleteCacheOnLogout = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = Registry::getConfig()->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout) {
             $this->resetCaches();
 
-            \OxidEsales\Eshop\Core\Registry::getUtils()->oxResetFileCache();
+            Registry::getUtils()->oxResetFileCache();
         }
     }
 
@@ -610,10 +601,10 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
      */
     public function resetCounter($sCounterType, $sValue = null)
     {
-        $blDeleteCacheOnLogout = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blClearCacheOnLogout');
+        $blDeleteCacheOnLogout = Registry::getConfig()->getConfigParam('blClearCacheOnLogout');
 
         if (!$blDeleteCacheOnLogout) {
-            $myUtilsCount = \OxidEsales\Eshop\Core\Registry::getUtilsCount();
+            $myUtilsCount = Registry::getUtilsCount();
             switch ($sCounterType) {
                 case 'priceCatArticle':
                     $myUtilsCount->resetPriceCatArticleCount($sValue);

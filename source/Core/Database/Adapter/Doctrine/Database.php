@@ -9,13 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Core\Database\Adapter\Doctrine;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\ConnectionException;
-use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Driver\Connection as DriverConnection;
-use Doctrine\DBAL\Driver\PDOException;
-use Doctrine\DBAL\Driver\Statement;
-use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\TransactionIsolationLevel;
 use InvalidArgumentException;
 use oxException;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
@@ -25,7 +21,7 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
-use PDO;
+use PDOException;
 use stdClass;
 
 /**
@@ -40,34 +36,16 @@ class Database implements DatabaseInterface
 
     protected $connectionParameters = [];
 
-    /**
-     * @var DriverConnection The database connection.
-     */
     protected $connection = null;
-
-    /**
-     * @var int The current fetch mode.
-     */
-    protected $fetchMode = PDO::FETCH_NUM;
 
     /**
      * @var array Map strings used in the shop to Doctrine constants
      */
     protected $transactionIsolationLevelMap = [
-        'READ UNCOMMITTED' => Connection::TRANSACTION_READ_UNCOMMITTED,
-        'READ COMMITTED' => Connection::TRANSACTION_READ_COMMITTED,
-        'REPEATABLE READ' => Connection::TRANSACTION_REPEATABLE_READ,
-        'SERIALIZABLE' => Connection::TRANSACTION_SERIALIZABLE
-    ];
-
-    /**
-     * @var array Map fetch modes used in the shop to doctrine constants
-     */
-    protected $fetchModeMap = [
-        DatabaseInterface::FETCH_MODE_DEFAULT => PDO::FETCH_BOTH,
-        DatabaseInterface::FETCH_MODE_NUM => PDO::FETCH_NUM,
-        DatabaseInterface::FETCH_MODE_ASSOC => PDO::FETCH_ASSOC,
-        DatabaseInterface::FETCH_MODE_BOTH => PDO::FETCH_BOTH
+        'READ UNCOMMITTED' => TransactionIsolationLevel::READ_UNCOMMITTED,
+        'READ COMMITTED' => TransactionIsolationLevel::READ_COMMITTED,
+        'REPEATABLE READ' => TransactionIsolationLevel::REPEATABLE_READ,
+        'SERIALIZABLE' => TransactionIsolationLevel::SERIALIZABLE
     ];
 
     public function setConnectionParameters(array $connectionParameters)
@@ -77,30 +55,18 @@ class Database implements DatabaseInterface
         }
     }
 
-    /**
-     * @inheritDoc
-     */
     public function connect()
     {
         try {
             $connection = ContainerFacade::get(ConnectionFactoryInterface::class)->create();
-            $connection->connect();
-
             $this->setConnection($connection);
-
             $this->ensureConnectionIsEstablished($connection);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function forceMasterConnection()
     {
         if (is_null($this->connection)) {
@@ -108,9 +74,6 @@ class Database implements DatabaseInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function forceSlaveConnection()
     {
         if (is_null($this->connection)) {
@@ -118,54 +81,23 @@ class Database implements DatabaseInterface
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function closeConnection()
     {
         $this->connection->close();
         gc_collect_cycles();
     }
 
-    /**
-     * @param Connection $connection
-     */
     protected function setConnection($connection)
     {
         $this->connection = $connection;
     }
 
-    /**
-     * @inheritdoc
-     * @param integer $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
-     */
-    public function setFetchMode($fetchMode)
-    {
-        $this->fetchMode = $this->fetchModeMap[$fetchMode];
-
-        try {
-            $this->getConnection()->setFetchMode($this->fetchMode);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        }
-    }
-
-    /**
-     * @inheritDoc
-     */
     public function getOne($query, $parameters = [])
     {
         if ($this->doesStatementProduceOutput($query)) {
             try {
-                return $this->getConnection()->fetchColumn($query, $parameters);
-            } catch (DBALException $exception) {
-                $exception = $this->convertException($exception);
-                $this->handleException($exception);
-            } catch (PDOException $exception) {
+                return $this->getConnection()->fetchOne($query, $parameters);
+            } catch (DBALException | PDOException $exception) {
                 $exception = $this->convertException($exception);
                 $this->handleException($exception);
             }
@@ -179,50 +111,33 @@ class Database implements DatabaseInterface
         return false;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getRow($query, $parameters = [])
     {
         try {
             $resultSet = $this->select($query, $parameters);
             $result = $resultSet->fields;
         } catch (DatabaseErrorException $exception) {
-            /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $this->logException($exception);
             $result = [];
         } catch (PDOException $exception) {
-            /** Only log exception, do not re-throw here, as legacy code expects this behavior */
             $exception = $this->convertException($exception);
             $this->logException($exception);
             $result = [];
         }
 
-        if (false == $result) {
+        if ($result === false) {
             $result = [];
         }
 
         return $result;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function quoteIdentifier($string)
     {
-        $identifierQuoteCharacter = $this->getConnection()->getDatabasePlatform()->getIdentifierQuoteCharacter();
-
-        if (!$identifierQuoteCharacter) {
-            $identifierQuoteCharacter = '`';
-        }
-
-        $string = trim(str_replace($identifierQuoteCharacter, '', $string));
+        $string = trim(str_replace('`', '', $string));
         try {
             $result = $this->getConnection()->quoteIdentifier($string);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -230,95 +145,57 @@ class Database implements DatabaseInterface
         return $result;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function quote($value)
     {
+        if (!is_scalar($value)) {
+            return false;
+        }
+
         try {
-            $result = $this->getConnection()->quote($value);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+            return $this->getConnection()->quote((string) $value);
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
-
-        return $result;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function quoteArray($array)
     {
-        $result = [];
-
-        foreach ($array as $key => $item) {
-            $result[$key] = $this->quote($item);
-        }
-
-        return $result;
+        return array_map(function ($item) {
+            return $this->quote($item);
+        }, $array);
     }
 
-    /**
-     * @inheritdoc
-     */
     public function startTransaction()
     {
         try {
             $this->getConnection()->beginTransaction();
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function commitTransaction()
     {
         try {
             $this->getConnection()->commit();
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rollbackTransaction()
     {
         try {
             $this->getConnection()->rollBack();
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
     }
 
-    /**
-     * @param string $level The transaction isolation level
-     *
-     * @return bool|int
-     * @throws InvalidArgumentException|DatabaseErrorException
-     *
-     * @see Doctrine::transactionIsolationLevelMap
-     *
-     */
     public function setTransactionIsolationLevel($level)
     {
         $level = strtoupper($level);
@@ -330,44 +207,27 @@ class Database implements DatabaseInterface
         return $this->getConnection()->setTransactionIsolation($this->transactionIsolationLevelMap[$level]);
     }
 
-    /**
-     * @inheritDoc
-     *
-     */
     public function execute($query, $parameters = [])
     {
         return $this->executeUpdate($query, $parameters);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function select($query, $parameters = [])
     {
-        $result = null;
-
         $this->checkIfSqlIsReadOnly($query);
         try {
-            /**
-             * Be aware that Connection::executeQuery is a method specifically for READ operations only.
-             * This is especially important in master-slave Connection
-             */
-            /** @var Statement $statement Statement is prepared and executed by executeQuery() */
-            $statement = $this->getConnection()->executeQuery(
-                $this->checkForMultipleQueries($query, $parameters),
-                $parameters
-            );
+            $parameters = $this->ensureParametersWithIntegerKeysStartWithOne($parameters);
 
-            $result = new \OxidEsales\Eshop\Core\Database\Adapter\Doctrine\ResultSet($statement);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+            $statement = $this->getConnection()->prepare($this->checkForMultipleQueries($query, $parameters));
+            foreach ($parameters as $key => $value) {
+                $statement->bindValue($key, $value);
+            }
+
+            return new ResultSet($statement);
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
-
-        return $result;
     }
 
     /**
@@ -386,7 +246,10 @@ class Database implements DatabaseInterface
         if ($parameters !== [] || strrpos($query, ';', -1) === false) {
             return $query;
         }
-        $queries = preg_split('~(\"[^\\\\"]*\"|' . "\'[^\\\\']*\'|\'.+\'|`[^\\`]*`)(*SKIP)(*F)|(?<=;)(?![ ]*$)~", $query);
+        $queries = preg_split(
+            '~(\"[^\\\\"]*\"|' . "\'[^\\\\']*\'|\'.+\'|`[^\\`]*`)(*SKIP)(*F)|(?<=;)(?![ ]*$)~",
+            $query
+        );
         if (count($queries) > 1) {
             Registry::getLogger()->error('More than one query within one statement', [$query]);
         }
@@ -394,9 +257,6 @@ class Database implements DatabaseInterface
         return $queries[0];
     }
 
-    /**
-     * @inheritDoc
-     */
     public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = [])
     {
         /**
@@ -430,27 +290,14 @@ class Database implements DatabaseInterface
         return $this->select($query . " $limitClause ", $parameters);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getCol($query, $parameters = [])
     {
         $this->checkIfSqlIsReadOnly($query);
         $result = [];
 
         try {
-            $rows = $this->getConnection()->fetchAll($query, $parameters);
-            foreach ($rows as $row) {
-                // cause there is no doctrine equivalent, we take this little detour and restructure the result
-                $columnNames = array_keys($row);
-                $columnName = $columnNames[0];
-
-                $result[] = $row[$columnName];
-            }
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+            $result = $this->getConnection()->fetchFirstColumn($query, $parameters);
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -458,45 +305,16 @@ class Database implements DatabaseInterface
         return $result;
     }
 
-    /**
-     * Execute non read statements like INSERT, UPDATE, DELETE and return the number of rows affected by the statement.
-     * This method has to be used EXCLUSIVELY for non read statements.
-     *
-     * IMPORTANT:
-     * You are strongly encouraged to use prepared statements to prevent SQL injection vulnerability.
-     *
-     * This method supports PDO binding types as well as DBAL mapping types.
-     *
-     * @param string $query The SQL query.
-     * @param array $parameters The query parameters.
-     * @param array $types The parameter types.
-     *
-     * @return integer The number of affected rows.
-     * @throws DatabaseErrorException
-     *
-     */
     public function executeUpdate($query, $parameters = [], $types = [])
     {
-        $affectedRows = 0;
-
         try {
-            $affectedRows = $this->getConnection()->executeUpdate($query, $parameters, $types);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+            return $this->getConnection()->executeStatement($query, $parameters, $types);
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
-
-        return $affectedRows;
     }
 
-    /**
-     * Get the database connection.
-     *
-     * @return DriverConnection $oConnection The database connection we want to use.
-     */
     protected function getConnection()
     {
         return $this->connection;
@@ -511,11 +329,6 @@ class Database implements DatabaseInterface
         return $this->connection;
     }
 
-    /**
-     * @param string $query
-     *
-     * @return bool
-     */
     private function doesStatementProduceOutput($query)
     {
         return in_array(
@@ -533,14 +346,6 @@ class Database implements DatabaseInterface
         );
     }
 
-    /**
-     * Convert a given native Doctrine exception into an OxidEsales exception.
-     * Note: This method is MySQL specific, as the MySQL error codes instead of SQLSTATE are used.
-     *
-     * @param \Exception $exception Doctrine exception to be converted
-     *
-     * @return StandardException Exception converted into an instance of StandardException
-     */
     protected function convertException(\Exception $exception)
     {
         $message = $exception->getMessage();
@@ -548,7 +353,7 @@ class Database implements DatabaseInterface
         $exceptionClass = DatabaseErrorException::class;
 
         switch (true) {
-            case $exception instanceof Exception\ConnectionException:
+            case $exception instanceof DBALException\ConnectionException:
                 // ConnectionException will be mapped to DatabaseConnectionException::class
             case $exception instanceof ConnectionException:
                 /**
@@ -559,13 +364,15 @@ class Database implements DatabaseInterface
                  */
                 // ConnectionException will be mapped to DatabaseConnectionException::class
                 // no break
-            case is_a($exception->getPrevious(), '\Exception') && in_array($exception->getPrevious()->getCode(), ['2003']):
+            case is_a($exception->getPrevious(), '\Exception')
+                && in_array($exception->getPrevious()->getCode(), ['2003']):
                 $exceptionClass = DatabaseConnectionException::class;
                 break;
             case $exception instanceof DBALException:
                 /**
                  * Doctrine passes the message and the code of the PDO Exception, which would break backward
-                 * compatibility as it uses SQLSTATE error code (string), but the shop used to the (My)SQL errors (integer)
+                 * compatibility as it uses SQLSTATE error code (string),
+                 * but the shop used to the (My)SQL errors (integer)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
@@ -580,9 +387,10 @@ class Database implements DatabaseInterface
                 break;
             case $exception instanceof PDOException:
                 /**
-                 * The shop uses the (My)SQL errors (integer) in the error code, but $pdoException uses SQLSTATE error code (string)
+                 * The shop uses the (My)SQL errors (integer) in the error code,
+                 * but $pdoException uses SQLSTATE error code (string)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
-                 * Fortunately in some cases we can access PDOException and recover the original SQL error code and message.
+                 * Fortunately in some cases we can access PDOException and recover the original SQL error.
                  */
                 $code = $this->convertErrorCode($exception->errorInfo[1]);
                 $message = $exception->errorInfo[2];
@@ -601,27 +409,11 @@ class Database implements DatabaseInterface
         return $convertedException;
     }
 
-    /**
-     * Handle a given exception. The standard behavior at the moment is to throw the exception passed in the parameter.
-     * A second exception handling including logging will be done by the ShopControl class.
-     *
-     * @param StandardException $exception
-     *
-     * @throws StandardException
-     * @throws DatabaseConnectionException
-     * @throws DatabaseErrorException
-     */
     protected function handleException(StandardException $exception)
     {
         throw $exception;
     }
 
-    /**
-     * Log a given Exception the log file using the standard eShop logging mechanism.
-     * Use this function whenever a exception is caught and not re-thrown.
-     *
-     * @param \Exception $exception
-     */
     protected function logException(\Exception $exception)
     {
         /** The exception has to be converted into an instance of oxException in order to be logged like this */
@@ -629,51 +421,33 @@ class Database implements DatabaseInterface
         Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getAll($query, $parameters = [])
     {
-        $result = [];
-        $statement = null;
         try {
-            $statement = $this->getConnection()->executeQuery($query, $parameters);
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+            $result = $this->getConnection()->fetchAllAssociative($query, $parameters);
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
 
         if ($this->doesStatementProduceOutput($query)) {
-            $result = $statement->fetchAll();
-        } else {
-            Registry::getLogger()
-                ->warning(
-                    'Given statement does not produce output and was not executed',
-                    [debug_backtrace()]
-                );
+            return $result;
         }
 
-        return $result;
+        Registry::getLogger()
+            ->warning(
+                'Given statement does not produce an output',
+                [debug_backtrace()]
+            );
+
+        return [];
     }
 
-    /**
-     * Return string representing the row ID of the last row that was inserted into
-     * the database.
-     * Returns 0 for tables without autoincrement field.
-     *
-     * @return string|int Row ID
-     */
     public function getLastInsertId()
     {
         try {
             $lastInsertId = $this->getConnection()->lastInsertId();
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -681,13 +455,9 @@ class Database implements DatabaseInterface
         return $lastInsertId;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function metaColumns($table)
     {
-        $connection = $this->getConnection();
-        $databaseName = $connection->getDatabase();
+        $databaseName = $this->getConnection()->getDatabase();
         $query = "SELECT
               COLUMN_NAME AS `Field`,
               COLUMN_TYPE AS `Type`,
@@ -706,16 +476,12 @@ class Database implements DatabaseInterface
             ORDER BY ORDINAL_POSITION ASC";
 
         try {
-            $columns = $connection->executeQuery($query)->fetchAll();
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+            $columns = $this->getConnection()->fetchAllAssociative($query);
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
 
-        /** Depending on the fetch mode we may find numeric or string key in the array $rawColumns */
         $result = [];
 
         foreach ($columns as $column) {
@@ -793,17 +559,11 @@ class Database implements DatabaseInterface
         return $result;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isRollbackOnly()
     {
         try {
             $isRollbackOnly = $this->connection->isRollbackOnly();
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -811,17 +571,11 @@ class Database implements DatabaseInterface
         return $isRollbackOnly;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function isTransactionActive()
     {
         try {
             $isTransactionActive = $this->connection->isTransactionActive();
-        } catch (DBALException $exception) {
-            $exception = $this->convertException($exception);
-            $this->handleException($exception);
-        } catch (PDOException $exception) {
+        } catch (DBALException | PDOException $exception) {
             $exception = $this->convertException($exception);
             $this->handleException($exception);
         }
@@ -829,12 +583,6 @@ class Database implements DatabaseInterface
         return $isTransactionActive;
     }
 
-    /**
-     * @param array $column The meta column, where the value has to be fetched.
-     * @param string $key The key to fetch.
-     *
-     * @return mixed
-     */
     protected function getMetaColumnValueByKey(array $column, $key)
     {
         if (array_key_exists('Field', $column)) {
@@ -863,21 +611,9 @@ class Database implements DatabaseInterface
             ];
         }
 
-        $result = $column[$keyMap[$key]];
-
-        return $result;
+        return $column[$keyMap[$key]];
     }
 
-
-    /**
-     * Get the maximal length of a given column of a given type.
-     *
-     * @param array $column The meta column for which the may length has to be found.
-     * @param string $assignedType The type of the column.
-     *
-     * @return int[] The maximal length and the scale (in case of DECIMAL type).
-     *               Both variables are -1 in case of no value can be found.
-     */
     protected function getColumnMaxLengthAndScale(array $column, $assignedType)
     {
         /** @var int $maxLength The max length of a field. For floating point type or fixed point type fields the precision of the field */
@@ -937,18 +673,14 @@ class Database implements DatabaseInterface
                 in_array($assignedType, $dateTypes)) && -1 == $maxLength
         ) {
             /**
-             * @todo: If the assigned type is one of the following and maxLength is -1, then, if applicable the default max length ot that type should be assigned.
+             * @todo: If the assigned type is one of the following and maxLength is -1, then,
+             * if applicable the default max length ot that type should be assigned.
              */
         }
 
         return [(int)$maxLength, (int)$scale];
     }
 
-    /**
-     * @param string $query The query to extract the command from
-     *
-     * @return string
-     */
     protected function getFirstCommandInStatement($query)
     {
         $singleLineQuery = str_replace(["\r", "\n"], ' ', $query);
@@ -962,11 +694,6 @@ class Database implements DatabaseInterface
         );
     }
 
-    /**
-     * @param Connection $connection
-     *
-     * @throws \Exception If we are not connected correctly to the database.
-     */
     protected function ensureConnectionIsEstablished($connection)
     {
         if (!$this->isConnectionEstablished($connection)) {
@@ -976,41 +703,48 @@ class Database implements DatabaseInterface
         }
     }
 
-    /**
-     * @param Connection $connection
-     *
-     * @return bool
-     */
     protected function isConnectionEstablished($connection)
     {
-        return $connection->isConnected();
+        try {
+            $connection->getServerVersion();
+        } catch (DBALException) {
+            return false;
+        }
+
+        return true;
     }
 
-    /**
-     * @param Connection $connection The connection.
-     *
-     * @return string
-     */
     protected function createConnectionErrorMessage($connection)
     {
+        $params = $connection->getParams();
         return sprintf(
-            "Not connected to database. dsn: %s://****:****@%s:%s/%s",
-            $connection->getDriver()->getName(),
-            $connection->getHost(),
-            $connection->getPort(),
-            $connection->getDatabase()
+            "Could not connect to the database. Please check your database status and configuration. " .
+            "driver: '%s', host: '%s'",
+            $params['driver'] ?? '',
+            $params['host'] ?? ''
         );
     }
 
-    /**
-     * @param int $code
-     *
-     * @return string
-     */
     private function convertErrorCode($code)
     {
         return $code === self::MYSQL_DUPLICATE_KEY_ERROR_CODE
             ? self::DUPLICATE_KEY_ERROR_CODE
             : $code;
+    }
+
+    /**
+     * Doctrine's DBAL requires that arrays with integer keys for positional
+     * parameters must start from index 1. This method checks if the provided
+     * parameter array keys are integers and if the lowest index is 0. If so,
+     * it shifts all keys to begin from 1. Associative arrays are left untouched.
+     */
+    private function ensureParametersWithIntegerKeysStartWithOne(array $parameters): array
+    {
+        if (array_key_exists(0, $parameters)) {
+            array_unshift($parameters, '');
+            unset($parameters[0]);
+        }
+
+        return $parameters;
     }
 }

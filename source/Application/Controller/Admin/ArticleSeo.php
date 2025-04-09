@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
@@ -138,44 +140,39 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      *
      * @return array
      */
-    protected function getCategoryList($oArticle)
+    protected function getCategoryList($article)
     {
-        $sMainCatId = false;
-        if ($oMainCat = $oArticle->getCategory()) {
-            $sMainCatId = $oMainCat->getId();
+        $mainCategoryId = false;
+        if ($mainCategory = $article->getCategory()) {
+            $mainCategoryId = $mainCategory->getId();
         }
 
-        $aCatList = [];
-        $iLang = $this->getEditLang();
+        $categoryList = [];
+        $language = $this->getEditLang();
 
-        // adding categories
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
-        $sView = $tableViewNameGenerator->getViewName('oxobject2category');
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
-        $sSqlForPriceCategories = $oArticle->getSqlForPriceCategories('oxid');
-        $sQ = "select oxobject2category.oxcatnid as oxid from {$sView} as oxobject2category " .
-              "where oxobject2category.oxobjectid = :oxobjectid union " . $sSqlForPriceCategories;
+        $view = $tableViewNameGenerator->getViewName('oxobject2category');
+        $queryForPriceCategories = $article->getSqlForPriceCategories('oxid');
+        $query = "select oxobject2category.oxcatnid as oxid from {$view} as oxobject2category " .
+              "where oxobject2category.oxobjectid = :oxobjectid union " . $queryForPriceCategories;
 
-        $oRs = $oDb->select($sQ, [
-            ':oxobjectid' => $oArticle->getId()
+        $categoriesIds = DatabaseProvider::getDb()->getCol($query, [
+            'oxobjectid' => $article->getId()
         ]);
-        if ($oRs != false && $oRs->count() > 0) {
-            while (!$oRs->EOF) {
-                $oCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-                if ($oCat->loadInLang($iLang, current($oRs->fields))) {
-                    if ($sMainCatId == $oCat->getId()) {
-                        $sSuffix = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('(main category)', $this->getEditLang());
-                        $sTitleField = 'oxcategories__oxtitle';
-                        $sTitle = $oCat->$sTitleField->getRawValue() . " " . $sSuffix;
-                        $oCat->$sTitleField = new \OxidEsales\Eshop\Core\Field($sTitle, \OxidEsales\Eshop\Core\Field::T_RAW);
-                    }
-                    $aCatList[] = $oCat;
+        foreach ($categoriesIds as $categoryId) {
+            $category = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+            if ($category->loadInLang($language, $categoryId)) {
+                if ($mainCategoryId == $category->getId()) {
+                    $suffix = Registry::getLang()->translateString('(main category)', $this->getEditLang());
+                    $titleField = 'oxcategories__oxtitle';
+                    $title = $category->$titleField->getRawValue() . ' ' . $suffix;
+                    $category->$titleField = new Field($title, Field::T_RAW);
                 }
-                $oRs->fetchRow();
+                $categoryList[] = $category;
             }
         }
 
-        return $aCatList;
+        return $categoryList;
     }
 
     /**
@@ -313,7 +310,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     protected function getEncoder()
     {
-        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
+        return Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class);
     }
 
     /**
@@ -364,7 +361,7 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
 
         $sId = $this->getSaveObjectId();
         $iLang = (int) $this->getEditLang();
-        $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
+        $iShopId = Registry::getConfig()->getShopId();
         $sParam = $this->processParam($this->getActCatId());
 
         $sQ = "select oxfixed from oxseo where
@@ -372,11 +369,14 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
                    oxseo.oxshopid = :oxshopid and oxseo.oxlang = :oxlang and oxparams = :oxparams";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
-            ':oxobjectid' => $sId,
-            ':oxshopid' => $iShopId,
-            ':oxlang' => $iLang,
-            ':oxparams' => $sParam
-        ]);
+        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne(
+            $sQ,
+            [
+                'oxobjectid' => $sId,
+                'oxshopid' => $iShopId,
+                'oxlang' => $iLang,
+                'oxparams' => $sParam
+            ]
+        );
     }
 }

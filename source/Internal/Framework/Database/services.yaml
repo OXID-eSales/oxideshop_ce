@@ -17,6 +17,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactory
+    arguments:
+      $middlewares: !tagged doctrine.middleware
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionParameterProviderInterface:

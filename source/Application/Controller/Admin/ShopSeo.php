@@ -39,12 +39,13 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $this->_aViewData['edit'] = $oShop;
 
         // loading static seo urls
-        $sQ = "select oxstdurl, oxobjectid from oxseo where oxtype='static' and oxshopid = :oxshopid group by oxobjectid order by oxstdurl";
+        $sQ = "select oxstdurl, oxobjectid from oxseo where oxtype='static' and oxshopid = :oxshopid"
+            . " group by oxobjectid order by oxstdurl";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init('oxbase', 'oxseo');
         $oList->selectString($sQ, [
-            ':oxshopid' => $oShop->getId()
+            'oxshopid' => $oShop->getId()
         ]);
 
         $this->_aViewData['aStaticUrls'] = $oList;
@@ -72,11 +73,11 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         if ($sActObject && $sActObject != '-1') {
             $this->_aViewData['sActSeoObject'] = $sActObject;
 
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = "select oxseourl, oxlang from oxseo where oxobjectid = :oxobjectid and oxshopid = :oxshopid";
             $oRs = $oDb->select($sQ, [
-                ':oxobjectid' => $sActObject,
-                ':oxshopid' => $iShopId
+                'oxobjectid' => $sActObject,
+                'oxshopid' => $iShopId
             ]);
             if ($oRs != false && $oRs->count() > 0) {
                 while (!$oRs->EOF) {
@@ -106,7 +107,11 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
 
             // saving static url changes
             if (is_array($aStaticUrl = Registry::getRequest()->getRequestEscapedParameter('aStaticUrl'))) {
-                $this->_sActSeoObject = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->encodeStaticUrls($this->processUrls($aStaticUrl), $oShop->getId(), $this->_iEditLang);
+                $this->_sActSeoObject = Registry::getSeoEncoder()->encodeStaticUrls(
+                    $this->processUrls($aStaticUrl),
+                    $oShop->getId(),
+                    $this->_iEditLang
+                );
             }
         }
     }
@@ -157,7 +162,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
      */
     public function dropSeoIds()
     {
-        $this->resetSeoData(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
+        $this->resetSeoData(Registry::getConfig()->getShopId());
     }
 
     /**
@@ -185,8 +190,8 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
         $shopId = $this->getEditObjectId();
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $db->execute("delete from oxseo where oxtype='static' and oxobjectid = :oxobjectid and oxshopid = :oxshopid", [
-            ':oxobjectid' => $staticUrlId,
-            ':oxshopid' => $shopId
+            'oxobjectid' => $staticUrlId,
+            'oxshopid' => $shopId
         ]);
     }
 }

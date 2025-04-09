@@ -11,43 +11,13 @@ use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 
 /**
- * @deprecated since v6.5.0 (2019-09-24); Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
+ * @deprecated since v6.5.0 (2019-09-24);
+ * Use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface
  */
 interface DatabaseInterface
 {
-
     /** @var int code of exception to check against. Use same number as MySQL to avoid duplications. */
-    const DUPLICATE_KEY_ERROR_CODE = 1062;
-
-    /**
-     * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH
-     *
-     * @deprecated since 6.0 (2016-04-19); This constant is confusing as the shop uses a different default fetch mode,
-     * will be removed in next major version
-     */
-    const FETCH_MODE_DEFAULT = 0;
-
-    /**
-     * Fetch the query result into an array with integer keys.
-     * This is the default fetch mode as it is set by OXID eShop on opening a database connection.
-     *
-     * @deprecated will be removed in next major version
-     */
-    const FETCH_MODE_NUM = 1;
-
-    /**
-     * Fetch the query result into an array with string keys
-     *
-     * @deprecated will be removed in next major version
-     */
-    const FETCH_MODE_ASSOC = 2;
-
-    /**
-     * Fetch the query result into an array with string keys
-     *
-     * @deprecated will be removed in next major version
-     */
-    const FETCH_MODE_BOTH = 3;
+    public const DUPLICATE_KEY_ERROR_CODE = 1062;
 
     /**
      * Set the necessary connection parameters to connect to the database.
@@ -100,20 +70,6 @@ interface DatabaseInterface
     public function closeConnection();
 
     /**
-     * Set the fetch mode of an open database connection.
-     *
-     * After the connection has been opened, this method may be used to set the fetch mode to any of the valid fetch
-     * modes as defined in DatabaseInterface::FETCH_MODE_*
-     *
-     * NOTE: This implies, that it is not safe to make any assumptions about the current fetch mode of the connection.
-     *
-     * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
-     *
-     * @deprecated will be removed in next major version
-     */
-    public function setFetchMode($fetchMode);
-
-    /**
      * Get the first value of the first row of the result set of a given sql SELECT or SHOW statement.
      * Returns false for any other statement.
      *
@@ -130,12 +86,6 @@ interface DatabaseInterface
     /**
      * Get an array with the values of the first row of a given sql SELECT or SHOW statement .
      * Returns an empty array for any other statement.
-     * The returned value depends on the fetch mode.
-     *
-     * @see DatabaseInterface::setFetchMode() for how to set the fetch mode
-     *
-     * The keys of the array may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
-     * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
      *
      * NOTE: Although you might pass any SELECT or SHOW statement to this method, try to limit the result of the
      * statement to one single row, as the rest of the rows is simply discarded.
@@ -182,10 +132,6 @@ interface DatabaseInterface
      * Get an multi-dimensional array of arrays with the values of the all rows of a given sql SELECT or SHOW statement.
      * Returns an empty array for any other statement.
      *
-     * The keys of the first level array are numeric.
-     * The keys of the second level arrays may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
-     * Set the desired fetch mode with DatabaseInterface::setFetchMode() before calling this method.
-     *
      * IMPORTANT:
      * You are strongly encouraged to use prepared statements like this:
      * $result = DatabaseProvider::getDb->getAll(
@@ -195,11 +141,8 @@ interface DatabaseInterface
      * If you do not use prepared statements, you MUST quote variables the values with quote(), otherwise you create a
      * SQL injection vulnerability.
      *
-     * @param string $query      If parameters are given, the "?" in the string will be replaced by the values in the array
+     * @param string $query If parameters are given, the "?" in the string will be replaced by the values in the array
      * @param array  $parameters Array of parameters, for the given sql statement.
-     *
-     * @see DatabaseInterface::setFetchMode()
-     * @see Doctrine::$fetchMode
      *
      * @throws DatabaseErrorException
      * @throws \InvalidArgumentException
@@ -213,7 +156,6 @@ interface DatabaseInterface
      * Throws an exception for any other statement.
      *
      * The values of first row of the result may be via resultSet's fields property.
-     * This property is an array, which keys may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
      * All further rows can be accessed via the specific methods of ResultSet.
      *
      * IMPORTANT:
@@ -230,16 +172,16 @@ interface DatabaseInterface
      *
      * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
      *
-     * @return \OxidEsales\Eshop\Core\Database\Adapter\ResultSetInterface The result of the given query.
+     * @return ResultSetInterface The result of the given query.
      */
     public function select($query, $parameters = []);
 
     /**
-     * Return the results of a given sql SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.
+     * Return the results of a given SQL SELECT or SHOW statement limited by a LIMIT clause as a ResultSet.
      * Throws an exception for any other statement.
      *
-     * The values of first row of the result may be via resultSet's fields property.
-     * This property is an array, which keys may be numeric, strings or both, depending on the FETCH_MODE_* of the connection.
+     * To access the values of the first row from the result, use the 'fields' property of the resultSet object.
+     * This property is an array, which keys are strings
      * All further rows can be accessed via the specific methods of ResultSet.
      *
      * IMPORTANT:
@@ -258,9 +200,9 @@ interface DatabaseInterface
      * @param int    $offset     Offset of the first row to return
      * @param array  $parameters The parameters array.
      *
-     * @throws DatabaseErrorException The exception, that can occur while executing the sql statement.
-     *
      * @return ResultSetInterface The result of the given query.
+     *@throws DatabaseErrorException The exception, that can occur while executing the sql statement.
+     *
      */
     public function selectLimit($query, $rowCount = -1, $offset = 0, $parameters = []);
 
@@ -287,7 +229,7 @@ interface DatabaseInterface
     public function execute($query, $parameters = []);
 
     /**
-     * Quote a string or a numeric value in a way, that it might be used as a value in a sql statement.
+     * Quote a string, that it might be used as a value in a sql statement.
      * Returns false for values that cannot be quoted.
      *
      * NOTE: It is not safe to use the return value of this function in a query. There will be no risk of SQL injection,
@@ -300,12 +242,14 @@ interface DatabaseInterface
      * );
      * instead of
      * $resultSet = DatabaseProvider::getDb->select(
-     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseProvider::getDb->quote($id1) . ' OR ´id´ = ' . DatabaseProvider::getDb->quote($id1)
+     *  'SELECT * FROM ´mytable´ WHERE ´id´ = ' . DatabaseProvider::getDb->quote($id1) . ' OR ´id´ = '
+     * . DatabaseProvider::getDb->quote($id1)
      * );
      *
      * @param mixed $value The string or numeric value to be quoted.
      *
-     * @return false|string The given string or numeric value converted to a string surrounded by single quotes or set to false, if the value could not have been quoted.
+     * @return false|string The given string or numeric value converted to a string surrounded by single quotes
+     * or set to false, if the value could not have been quoted.
      */
     public function quote($value);
 
@@ -320,7 +264,8 @@ interface DatabaseInterface
      *
      * @param array $array The strings to quote as an array.
      *
-     * @return array Array with all string and numeric values quoted with single quotes or set to false, if the value could not have been quoted.
+     * @return array Array with all string and numeric values quoted with single quotes or set to false,
+     * if the value could not have been quoted.
      */
     public function quoteArray($array);
 
@@ -386,8 +331,6 @@ interface DatabaseInterface
      * @param string $level The transaction isolation level
      *
      * @throws \InvalidArgumentException|DatabaseErrorException
-     *
-     * @return
      */
     public function setTransactionIsolationLevel($level);
 
@@ -408,7 +351,7 @@ interface DatabaseInterface
     /**
      * Return string representing the row ID of the last row that was inserted into
      * the database.
-     * Returns 0 for tables without autoincrement field.
+     * @throws DatabaseErrorException for tables without autoincrement field.
      *
      * @return string|int Row ID
      */

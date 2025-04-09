@@ -360,8 +360,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         $params = [
-            ':oxshopid' => $shopId,
-            ':oxmodule' => $module
+            'oxshopid' => $shopId,
+            'oxmodule' => $module
         ];
 
         $select = "
@@ -374,9 +374,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $result = $db->getAll($select, $params);
 
         foreach ($result as $value) {
-            $varName = $value[0];
-            $varType = $value[1];
-            $varVal = $value[2];
+            $varName = $value['oxvarname'];
+            $varType = $value['oxvartype'];
+            $varVal = $value['oxvarvalue'];
 
             $this->setConfVarFromDb($varName, $varType, $varVal);
 
@@ -1483,20 +1483,20 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $query = "delete from oxconfig where oxshopid = :oxshopid and oxvarname = :oxvarname and oxmodule = :oxmodule";
         $db->execute($query, [
-            ':oxshopid' => $shopId,
-            ':oxvarname' => $varName,
-            ':oxmodule' => $module ?: ''
+            'oxshopid' => $shopId,
+            'oxvarname' => $varName,
+            'oxmodule' => $module ?: ''
         ]);
 
         $query = "insert into oxconfig (oxid, oxshopid, oxmodule, oxvarname, oxvartype, oxvarvalue)
                   values (:oxid, :oxshopid, :oxmodule, :oxvarname, :oxvartype, :value)";
         $db->execute($query, [
-            ':oxid' => $newOXID,
-            ':oxshopid' => $shopId,
-            ':oxmodule' => $module ?: '',
-            ':oxvarname' => $varName,
-            ':oxvartype' => $varType,
-            ':value' => $value ?? '',
+            'oxid' => $newOXID,
+            'oxshopid' => $shopId,
+            'oxmodule' => $module ?: '',
+            'oxvarname' => $varName,
+            'oxvartype' => $varType,
+            'value' => $value ?? '',
         ]);
 
         $this->informServicesAfterConfigurationChanged($varName, $shopId, $module);
@@ -1524,17 +1524,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $db = DatabaseProvider::getDb();
 
         $query = "select oxvartype, oxvarvalue from oxconfig where oxshopid = :oxshopid and oxmodule = :oxmodule and oxvarname = :oxvarname";
-        $rs = $db->select($query, [
-            ':oxshopid' => $shopId,
-            ':oxmodule' => $module,
-            ':oxvarname' => $varName
+        $result = $db->select($query, [
+            'oxshopid' => $shopId,
+            'oxmodule' => $module,
+            'oxvarname' => $varName
         ]);
 
-        if ($rs != false && $rs->count() > 0) {
-            return $this->decodeValue($rs->fields['oxvartype'], $rs->fields['oxvarvalue']);
+        if ($result != false && $result->count() > 0) {
+            return $this->decodeValue($result->fields['oxvartype'], $result->fields['oxvarvalue']);
         }
     }
 
@@ -1573,7 +1573,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if (!isset($productive)) {
             $query = 'select oxproductive from oxshops where oxid = :oxid';
             $productive = (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [
-                ':oxid' => $this->getShopId()
+                'oxid' => $this->getShopId()
             ]);
             $this->setConfigParam('blProductive', $productive);
         }

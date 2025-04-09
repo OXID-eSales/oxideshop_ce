@@ -44,8 +44,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                 where oxactionid = :oxactionid and oxshopid = :oxshopid";
 
         $params = [
-            ':oxactionid' => $this->getId(),
-            ':oxshopid' => $this->getShopId()
+            'oxactionid' => $this->getId(),
+            'oxshopid' => $this->getShopId()
         ];
         $iSort = ((int)$oDb->getOne($sQ, $params)) + 1;
 
@@ -71,9 +71,9 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = :oxactionid and oxartid = :oxartid and oxshopid = :oxshopid";
         $iRemovedArticles = $oDb->execute($sDelete, [
-            ':oxactionid' => $this->getId(),
-            ':oxartid' => $articleId,
-            ':oxshopid' => $this->getShopId()
+            'oxactionid' => $this->getId(),
+            'oxartid' => $articleId,
+            'oxshopid' => $this->getShopId()
         ]);
 
         return (bool) $iRemovedArticles;
@@ -99,8 +99,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sDelete = "delete from oxactions2article where oxactionid = :oxactionid and oxshopid = :oxshopid";
         $oDb->execute($sDelete, [
-            ':oxactionid' => $articleId,
-            ':oxshopid' => $this->getShopId()
+            'oxactionid' => $articleId,
+            'oxshopid' => $this->getShopId()
         ]);
 
         return parent::delete($articleId);
@@ -227,8 +227,8 @@ class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             'select oxobjectid from oxobject2action ' .
             'where oxactionid = :oxactionid and oxclass = :oxclass',
             [
-                ':oxactionid' => $this->getId(),
-                ':oxclass' => 'oxarticle'
+                'oxactionid' => $this->getId(),
+                'oxclass' => 'oxarticle'
             ]
         );
 

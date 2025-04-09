@@ -44,7 +44,7 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
      */
     protected function getQuery()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sArticleTable = $this->getViewName('oxarticles');
         $sViewName = $this->getViewName('oxobject2category');
@@ -90,7 +90,9 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         $sQ = parent::addFilter($sQ);
 
         // display variants or not ?
-        $sQ .= \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blVariantsSelection') ? ' group by ' . $sArtTable . '.oxid ' : '';
+        $sQ .= Registry::getConfig()->getConfigParam('blVariantsSelection')
+            ? ' group by ' . $sArtTable . '.oxid '
+            : '';
 
         return $sQ;
     }
@@ -109,7 +111,7 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             'delete from oxobject2action '
             . 'where oxactionid = :oxactionid'
             . ' and oxclass = "oxarticle"',
-            [':oxactionid' => $sActionId]
+            ['oxactionid' => $sActionId]
         );
     }
 
@@ -126,7 +128,7 @@ class ActionsArticleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
             'delete from oxobject2action '
             . 'where oxactionid = :oxactionid'
             . ' and oxclass = "oxarticle"',
-            [':oxactionid' => $sActionId]
+            ['oxactionid' => $sActionId]
         );
 
         $oObject2Promotion = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);

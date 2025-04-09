@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -56,7 +57,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function getFilterSelect($sShipSetId, $dPrice, $oUser)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         $sBoni = ($oUser && $oUser->getFieldData('oxboni')) ? $oUser->oxuser__oxboni->value : 0;
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -156,7 +157,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function loadRDFaPaymentList($dPrice = null)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $oDb = DatabaseProvider::getDb();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sTable = $tableViewNameGenerator->getViewName('oxpayments');
         $sQ = "select $sTable.*, oxobject2payment.oxobjectid from $sTable left join (select oxobject2payment.* from oxobject2payment where oxobject2payment.oxtype = 'rdfapayment') as oxobject2payment on oxobject2payment.oxpaymentid=$sTable.oxid ";
@@ -165,7 +166,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sQ .= "and $sTable.oxfromamount <= :amount and $sTable.oxtoamount >= :amount";
         }
         $rs = $oDb->select($sQ, [
-            ':amount' => $dPrice
+            'amount' => $dPrice
         ]);
         if ($rs != false && $rs->count() > 0) {
             $oSaved = clone $this->getBaseObject();

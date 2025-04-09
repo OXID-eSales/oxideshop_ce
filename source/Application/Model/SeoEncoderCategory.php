@@ -192,8 +192,8 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         // select it from table instead of using object carrying value
         // this is because this method is usually called inside update,
         // where object may already be carrying changed id
-        $aCatInfo = $oDb->getAll("select oxrootid, oxleft, oxright from oxcategories where oxid = :oxid limit 1", [
-            ':oxid' => $oCategory->getId()
+        $aCatInfo = $oDb->getRow("select oxrootid, oxleft, oxright from oxcategories where oxid = :oxid limit 1", [
+            'oxid' => $oCategory->getId()
         ]);
 
         // update sub cats
@@ -203,9 +203,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
             and oxright < :oxright ) as seo2 
                 set seo1.oxexpired = '1' where seo1.oxtype = 'oxcategory' and seo1.oxobjectid = seo2.oxid";
         $oDb->execute($sQ, [
-            ':oxrootid' => $aCatInfo[0][0],
-            ':oxleft' => (int) $aCatInfo[0][1],
-            ':oxright' => (int) $aCatInfo[0][2]
+            'oxrootid' => $aCatInfo['oxrootid'],
+            'oxleft' => (int) $aCatInfo['oxleft'],
+            'oxright' => (int) $aCatInfo['oxright']
         ]);
 
         // update subarticles
@@ -215,9 +215,9 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
               . "set seo1.oxexpired = '1' where seo1.oxtype = 'oxarticle' and seo1.oxobjectid = seo2.id "
               . "and seo1.oxfixed = 0";
         $oDb->execute($sQ, [
-            ':oxrootid' => $aCatInfo[0][0],
-            ':oxleft' => (int) $aCatInfo[0][1],
-            ':oxright' => (int) $aCatInfo[0][2]
+            'oxrootid' => $aCatInfo['oxrootid'],
+            'oxleft' => (int) $aCatInfo['oxleft'],
+            'oxright' => (int) $aCatInfo['oxright']
         ]);
     }
 
@@ -231,16 +231,16 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         $database = DatabaseProvider::getDb();
 
         $database->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = :oxparams", [
-            ':oxparams' => $category->getId()
+            'oxparams' => $category->getId()
         ]);
         $database->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'", [
-            ':oxobjectid' => $category->getId()
+            'oxobjectid' => $category->getId()
         ]);
         $database->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $category->getId()
+            'oxobjectid' => $category->getId()
         ]);
         $database->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $category->getId()
+            'oxobjectid' => $category->getId()
         ]);
     }
 
@@ -277,7 +277,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         return DatabaseProvider::getDb()
             ->getCol(
                 "select oxseourl from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'",
-                [':oxobjectid' => $category->getId()]
+                ['oxobjectid' => $category->getId()]
             );
     }
 
@@ -290,7 +290,7 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
             from oxseo
             where oxseo.oxseourl like CONCAT(:url, '%') 
               and oxtype in ('oxarticle', 'oxcategory')",
-                [':url' => $rootCategoryUrl]
+                ['url' => $rootCategoryUrl]
             );
     }
 

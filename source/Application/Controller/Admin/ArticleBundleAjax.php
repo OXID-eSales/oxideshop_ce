@@ -106,7 +106,7 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         $sQ = "update oxarticles set oxarticles.oxbundleid = '' where oxarticles.oxid = :oxid ";
         $oDb->Execute(
             $sQ,
-            [':oxid' => Registry::getRequest()->getRequestEscapedParameter('oxid')]
+            ['oxid' => Registry::getRequest()->getRequestEscapedParameter('oxid')]
         );
     }
 
@@ -122,8 +122,8 @@ class ArticleBundleAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
         $oDb->Execute(
             $sQ,
             [
-                ':oxbundleid' => Registry::getRequest()->getRequestEscapedParameter('oxbundleid'),
-                ':oxid' => Registry::getRequest()->getRequestEscapedParameter('oxid')
+                'oxbundleid' => Registry::getRequest()->getRequestEscapedParameter('oxbundleid'),
+                'oxid' => Registry::getRequest()->getRequestEscapedParameter('oxid')
             ]
         );
     }

@@ -43,8 +43,8 @@ class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $params = [
-            ':oxisoalpha2' => $sCode,
-            ':oxcountryid' => $sCountryId
+            'oxisoalpha2' => $sCode,
+            'oxcountryid' => $sCountryId
         ];
 
         return $oDb->getOne("SELECT oxid FROM oxstates 
@@ -67,7 +67,7 @@ class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             WHERE oxid = :oxid";
 
         $sStateTitle = $oDb->getOne($sQ, [
-            ':oxid' => $iStateId
+            'oxid' => $iStateId
         ]);
 
         return (string) $sStateTitle;

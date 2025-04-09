@@ -122,8 +122,8 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             where $sWrappingViewName.oxactive = :oxactive
               and $sWrappingViewName.oxtype = :oxtype";
         $oEntries->selectString($sSelect, [
-            ':oxactive' => '1',
-            ':oxtype' => $sWrapType
+            'oxactive' => '1',
+            'oxtype' => $sWrapType
         ]);
 
         return $oEntries;
@@ -146,8 +146,8 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
               and $sWrappingViewName.oxtype = :oxtype";
 
         return (int) $oDb->getOne($sQ, [
-            ':oxactive' => '1',
-            ':oxtype' => $sWrapType
+            'oxactive' => '1',
+            'oxtype' => $sWrapType
         ]);
     }
 

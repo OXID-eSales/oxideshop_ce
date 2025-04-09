@@ -119,7 +119,7 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     {
         // #1140 R - price must be checked from the object.
         $query = "
-            SELECT oxarticles.oxid, oxpricealarm.oxprice
+            SELECT oxarticles.oxid as oxid, oxpricealarm.oxprice as oxprice
             FROM oxpricealarm, oxarticles
             WHERE oxarticles.oxid = oxpricealarm.oxartid AND oxpricealarm.oxsended = '000-00-00 00:00:00'";
         $result = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($query);
@@ -128,8 +128,8 @@ class PriceAlarmMain extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         if ($result != false && $result->count() > 0) {
             while (!$result->EOF) {
                 $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
-                $article->load($result->fields[0]);
-                if ($article->getPrice()->getBruttoPrice() <= $result->fields[1]) {
+                $article->load($result->fields['oxid']);
+                if ($article->getPrice()->getBruttoPrice() <= $result->fields['oxprice']) {
                     $count++;
                 }
                 $result->fetchRow();

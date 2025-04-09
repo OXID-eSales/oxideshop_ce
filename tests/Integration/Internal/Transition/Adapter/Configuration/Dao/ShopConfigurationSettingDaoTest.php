@@ -190,7 +190,7 @@ final class ShopConfigurationSettingDaoTest extends TestCase
             ->where('oxshopid = "1"')
             ->andWhere('oxvarname = "testDuplications"')
             ->andWhere('oxmodule = ""')
-            ->execute()
+            ->executeQuery()
             ->rowCount();
     }
 }

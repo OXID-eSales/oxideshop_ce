@@ -64,7 +64,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
         $aWhere = ['oxuserbaskets.oxuserid' => $sBasketId, 'oxuserbaskets.oxtitle' => 'reservations'];
         $query = $oReservations->buildSelectString($aWhere);
 
-        $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
+        $record = DatabaseProvider::getDb()->select($query);
         if ($record && $record->count() > 0) {
             $oReservations->assign($record->fields);
         } else {
@@ -272,26 +272,27 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      */
     public function discardUnusedReservations($iLimit)
     {
-        $database = DatabaseProvider::getMaster(DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getMaster();
 
         $psBasketReservationTimeout = (int)Registry::getConfig()->getConfigParam('iPsBasketReservationTimeout');
         $startTime = Registry::getUtilsDate()->getTime() - $psBasketReservationTimeout;
 
         $parameters = [
-            ':oxtitle'  => 'reservations',
-            ':oxupdate' => $startTime
+            'oxtitle'  => 'reservations',
+            'oxupdate' => $startTime
         ];
 
-        $reservation = $database->select("select oxid from oxuserbaskets 
-            where oxtitle = :oxtitle and oxupdate <= :oxupdate limit $iLimit", $parameters);
-        if ($reservation->EOF) {
+        $reservations = $database->getCol(
+            "select oxid from oxuserbaskets where oxtitle = :oxtitle and oxupdate <= :oxupdate limit $iLimit",
+            $parameters
+        );
+        if (empty($reservations)) {
             return;
         }
 
         $finished = [];
-        while (!$reservation->EOF) {
-            $finished[] = $database->quote($reservation->fields['oxid']);
-            $reservation->fetchRow();
+        foreach ($reservations as $reservation) {
+            $finished[] = $database->quote($reservation);
         }
 
         $database->startTransaction();
@@ -319,7 +320,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
                 "delete from oxuserbasketitems where oxbasketid in (select oxid from oxuserbaskets where 
                         oxuserid in (select oxid from oxuser where oxshopid= :oxshopid))",
                 [
-                    ':oxshopid' => $shopId
+                    'oxshopid' => $shopId
                 ]
             );
 
@@ -329,8 +330,8 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
                         oxuserid in (select oxid from oxuser where oxshopid= :oxshopid) and 
                         oxuserbaskets.oxtitle = 'savedbasket' and oxuserbaskets.oxupdate <= :startTime",
                 [
-                    ':startTime' => $startTime,
-                    ':oxshopid'  => $shopId
+                    'startTime' => $startTime,
+                    'oxshopid'  => $shopId
                 ]
             );
 

@@ -150,8 +150,8 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $sQ = "select oxobjectid from oxobject2delivery 
                 where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
             $aArtIds = $oDb->getCol($sQ, [
-                ':oxdeliveryid' => $this->getId(),
-                ':oxtype' => 'oxarticles'
+                'oxdeliveryid' => $this->getId(),
+                'oxtype' => 'oxarticles'
             ]);
             $this->_aArtIds = $aArtIds;
         }
@@ -171,8 +171,8 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
             $sQ = "select oxobjectid from oxobject2delivery 
                 where oxdeliveryid = :oxdeliveryid and oxtype = :oxtype";
             $aCatIds = $oDb->getCol($sQ, [
-                ':oxdeliveryid' => $this->getId(),
-                ':oxtype' => 'oxcategories'
+                'oxdeliveryid' => $this->getId(),
+                'oxtype' => 'oxcategories'
             ]);
             $this->_aCatIds = $aCatIds;
         }
@@ -314,7 +314,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sQ = "delete from `oxobject2delivery` where `oxobject2delivery`.`oxdeliveryid` = :oxdeliveryid";
         $oDb->execute($sQ, [
-            ':oxdeliveryid' => $sOxId
+            'oxdeliveryid' => $sOxId
         ]);
 
         return parent::delete($sOxId);
@@ -477,7 +477,7 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sQ = "SELECT `oxid` FROM `" . $tableViewNameGenerator->getViewName('oxdelivery') . "` 
             WHERE `oxtitle` = :oxtitle";
         $sId = $oDb->getOne($sQ, [
-            ':oxtitle' => $sTitle
+            'oxtitle' => $sTitle
         ]);
 
         return $sId;
@@ -503,8 +503,8 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                     AND `oxobject2delivery`.`oxtype` = :oxtype";
 
             $rs = $oDb->getCol($sSelect, [
-                ':oxdeliveryid' => $this->getId(),
-                ':oxtype' => 'oxcountry'
+                'oxdeliveryid' => $this->getId(),
+                'oxtype' => 'oxcountry'
             ]);
             $this->_aCountriesISO = $rs;
         }

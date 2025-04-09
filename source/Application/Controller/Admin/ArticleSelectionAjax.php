@@ -20,18 +20,19 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxtitle', 'oxselectlist', 1, 1, 0],
-        ['oxident', 'oxselectlist', 1, 0, 0],
-        ['oxvaldesc', 'oxselectlist', 1, 0, 0],
-        ['oxid', 'oxselectlist', 0, 0, 1]
-    ],
-                                 'container2' => [
-                                     ['oxtitle', 'oxselectlist', 1, 1, 0],
-                                     ['oxident', 'oxselectlist', 1, 0, 0],
-                                     ['oxvaldesc', 'oxselectlist', 1, 0, 0],
-                                     ['oxid', 'oxobject2selectlist', 0, 0, 1]
-                                 ]
+    protected $_aColumns = [
+        'container1' => [ // field , table, visible, multilanguage, ident
+            ['oxtitle', 'oxselectlist', 1, 1, 0],
+            ['oxident', 'oxselectlist', 1, 0, 0],
+            ['oxvaldesc', 'oxselectlist', 1, 0, 0],
+            ['oxid', 'oxselectlist', 0, 0, 1]
+        ],
+        'container2' => [
+            ['oxtitle', 'oxselectlist', 1, 1, 0],
+            ['oxident', 'oxselectlist', 1, 0, 0],
+            ['oxvaldesc', 'oxselectlist', 1, 0, 0],
+            ['oxid', 'oxobject2selectlist', 0, 0, 1]
+        ]
     ];
 
     /**
@@ -52,10 +53,11 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         $sQ = "select oxparentid from {$sArtViewName} where oxid = :oxid and oxparentid != '' ";
         $sQ .= "and (select count(oxobjectid) from oxobject2selectlist " .
                "where oxobjectid = :oxobjectid) = 0";
-        // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
+        // We force reading from master to prevent issues with slow replications or open transactions
+        // (see ESDEV-3804 and ESDEV-3822).
         $sParentId = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
-            ':oxid' => $sOxid,
-            ':oxobjectid' => $sOxid
+            'oxid' => $sOxid,
+            'oxobjectid' => $sOxid
         ]);
 
         // all selectlists article is in
@@ -111,7 +113,8 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
         }
 
         if ($soxId && $soxId != "-1" && is_array($aAddSel)) {
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            // We force reading from master to prevent issues with slow replications or open transactions
+            // (see ESDEV-3804).
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster();
             foreach ($aAddSel as $sAdd) {
                 $oNew = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);
@@ -126,7 +129,7 @@ class ArticleSelectionAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                 $sSql = "select max(oxsort) + 1 from oxobject2selectlist where oxobjectid = :oxobjectid";
 
                 $oNew->$sOxSortField = new \OxidEsales\Eshop\Core\Field((int) $database->getOne($sSql, [
-                    ':oxobjectid' => $soxId
+                    'oxobjectid' => $soxId
                 ]));
                 $oNew->save();
             }

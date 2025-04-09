@@ -112,7 +112,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $result = [];
 
         if ($this->tableExists($tableName)) {
-            $result = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->getAll("SHOW INDEX FROM $tableName");
+            $result = DatabaseProvider::getDb()->getAll("SHOW INDEX FROM $tableName");
         }
 
         return $result;
@@ -171,11 +171,11 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     public function getAllTables()
     {
         if (empty($this->_aTables)) {
-            $tables = DatabaseProvider::getDb()->getAll("show tables");
+            $tablesNames = DatabaseProvider::getDb()->getCol("show tables");
 
-            foreach ($tables as $tableInfo) {
-                if ($this->validateTableName($tableInfo[0])) {
-                    $this->_aTables[] = $tableInfo[0];
+            foreach ($tablesNames as $tableName) {
+                if ($this->validateTableName($tableName)) {
+                    $this->_aTables[] = $tableName;
                 }
             }
         }
@@ -216,8 +216,12 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         $tableSet = getLangTableName($table, $lang);
 
         $tableStatus = DatabaseProvider::getDb()->getRow(
-            "SHOW TABLE STATUS LIKE  '{$table}';"
+            'SHOW TABLE STATUS LIKE :tablename',
+            [
+                'tablename' => $table
+            ]
         );
+        $tableStatus = array_values($tableStatus);
 
         return "CREATE TABLE `{$tableSet}` (" .
                "`OXID` char(32) NOT NULL, " .
@@ -242,8 +246,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
         if (!$tableSet) {
             $tableSet = $table;
         }
-        $res = DatabaseProvider::getDb()->getAll("show create table {$table}");
-        $tableSql = $res[0][1];
+        $tableSql = $this->getTableCreationSql($table);
 
         // removing comments;
         $tableSql = preg_replace('/COMMENT \\\'.*?\\\'/', '', $tableSql);
@@ -275,9 +278,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
      */
     public function getAddFieldIndexSql($table, $field, $newField, $tableSet = null)
     {
-        $res = DatabaseProvider::getDb()->getAll("show create table {$table}");
-
-        $tableSql = $res[0][1];
+        $tableSql = $this->getTableCreationSql($table);
 
         preg_match_all("/([\w]+\s+)?\bKEY\s+(`[^`]+`)?\s*\([^)]+(\(\d++\))*\)/iU", $tableSql, $match);
         $index = $match[0];
@@ -556,7 +557,7 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
 
         $success = true;
         foreach ($shops as $shopValues) {
-            $shopId = $shopValues[0];
+            $shopId = $shopValues['OXID'];
             $shop = oxNew(Shop::class);
             $shop->load($shopId);
             $shop->setMultiShopTables($tables);
@@ -667,5 +668,14 @@ class DbMetaDataHandler extends \OxidEsales\Eshop\Core\Base
     protected function validateTableName($tableName)
     {
         return true;
+    }
+
+    private function getTableCreationSql(string $tableName): string
+    {
+        $result = DatabaseProvider::getDb()->getRow(
+            sprintf("show create table %s", DatabaseProvider::getDb()->quoteIdentifier($tableName))
+        );
+
+        return array_values($result)[1];
     }
 }

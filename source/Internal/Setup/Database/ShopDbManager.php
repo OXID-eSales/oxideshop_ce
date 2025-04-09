@@ -9,8 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
-use Doctrine\DBAL\Exception\ConnectionException;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutorInterface;
 use Symfony\Component\Filesystem\Path;
 

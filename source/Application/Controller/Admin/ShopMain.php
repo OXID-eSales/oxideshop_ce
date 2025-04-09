@@ -185,19 +185,19 @@ class ShopMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         $shopConfiguration = $db->select($selectShopConfigurationQuery);
         if ($shopConfiguration != false && $shopConfiguration->count() > 0) {
             while (!$shopConfiguration->EOF) {
-                $configName = $shopConfiguration->fields[0];
+                $configName = $shopConfiguration->fields['oxvarname'];
                 if (!in_array($configName, $nonCopyVars)) {
                     $newId = $utilsObject->generateUID();
                     $insertNewConfigQuery =
                         "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue, oxmodule)
                          values (:oxid, :oxshopid, :oxvarname, :oxvartype, :value, :oxmodule)";
                     $db->execute($insertNewConfigQuery, [
-                        ':oxid' => $newId,
-                        ':oxshopid' => $shop->getId(),
-                        ':oxvarname' => $shopConfiguration->fields[0],
-                        ':oxvartype' => $shopConfiguration->fields[1],
-                        ':value' => $shopConfiguration->fields[2],
-                        ':oxmodule' => $shopConfiguration->fields[3],
+                        'oxid' => $newId,
+                        'oxshopid' => $shop->getId(),
+                        'oxvarname' => $shopConfiguration->fields['oxvarname'],
+                        'oxvartype' => $shopConfiguration->fields['oxvartype'],
+                        'value' => $shopConfiguration->fields['oxvarvalue'],
+                        'oxmodule' => $shopConfiguration->fields['oxmodule'],
                     ]);
                 }
                 $shopConfiguration->fetchRow();

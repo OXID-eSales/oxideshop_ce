@@ -79,7 +79,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      */
     protected function countActivePriceAlerts()
     {
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $config->getShopId();
 
@@ -87,7 +87,7 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
             "SELECT oxprice, oxartid FROM oxpricealarm
                     WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = :oxshopid";
         $result = $database->select($activeAlarmsQuery, [
-            ':oxshopid' => $shopId
+            'oxshopid' => $shopId
         ]);
         $count = 0;
         while ($result != false && !$result->EOF) {
@@ -112,14 +112,14 @@ class PriceAlarmSend extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
     protected function sendPriceChangeNotifications($start, $limit)
     {
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $shopId = $config->getShopId();
 
         $alarmsQuery =
             "SELECT oxid, oxemail, oxartid, oxprice FROM oxpricealarm
             WHERE oxsended = '000-00-00 00:00:00' AND oxshopid = :oxshopid";
         $result = $database->selectLimit($alarmsQuery, $limit, $start, [
-            ':oxshopid' => $shopId
+            'oxshopid' => $shopId
         ]);
         while ($result != false && !$result->EOF) {
             $article = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);

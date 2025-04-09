@@ -157,7 +157,7 @@ final class ManufacturerPictureTest extends IntegrationTestCase
             ->setParameters([
                 'oxid' => $this->oxid,
             ])
-            ->execute()
+            ->executeQuery()
             ->fetchOne();
     }
 }

@@ -70,7 +70,7 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         // Delete old mappings
         $oDb = DatabaseProvider::getDb();
         $oDb->execute("DELETE FROM oxobject2payment WHERE oxpaymentid = :oxpaymentid AND OXTYPE = 'rdfapayment'", [
-            ':oxpaymentid' => Registry::getRequest()->getRequestEscapedParameter("oxid")
+            'oxpaymentid' => Registry::getRequest()->getRequestEscapedParameter("oxid")
         ]);
 
         // Save new mappings
@@ -110,20 +110,12 @@ class PaymentRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
      */
     public function getAssignedRDFaPayments()
     {
-        $oDb = DatabaseProvider::getDb();
-        $aRDFaPayments = [];
-        $sSelect = 'select oxobjectid from oxobject2payment where oxpaymentid = :oxpaymentid and oxtype = "rdfapayment" ';
-        $rs = $oDb->select($sSelect, [
-            ':oxpaymentid' => Registry::getRequest()->getRequestEscapedParameter("oxid")
-        ]);
-        if ($rs && $rs->count()) {
-            while (!$rs->EOF) {
-                $aRDFaPayments[] = $rs->fields[0];
-                $rs->fetchRow();
-            }
-        }
-
-        return $aRDFaPayments;
+        return DatabaseProvider::getDb()->getCol(
+            'select oxobjectid from oxobject2payment where oxpaymentid = :oxpaymentid and oxtype = "rdfapayment"',
+            [
+                'oxpaymentid' => Registry::getRequest()->getRequestEscapedParameter("oxid")
+            ]
+        );
     }
 
     /**

@@ -137,7 +137,7 @@ class ArticleAttributeAjax extends \OxidEsales\Eshop\Application\Controller\Admi
                 $objectToAttribute->setLanguage(Registry::getRequest()->getRequestEscapedParameter('editlanguage'));
                 $objectToAttribute->init("oxobject2attribute");
 
-                $record = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($select);
+                $record = DatabaseProvider::getDb()->select($select);
                 if ($record && $record->count() > 0) {
                     $objectToAttribute->assign($record->fields);
                     $objectToAttribute->oxobject2attribute__oxvalue->setValue($attributeValue);

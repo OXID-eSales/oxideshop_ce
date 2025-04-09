@@ -196,7 +196,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         $accessoriesList->init("oxbase", "oxaccessoire2article");
         $sortQuery = "select * from  oxaccessoire2article where OXARTICLENID = :OXARTICLENID order by oxsort,oxid";
         $accessoriesList->selectString($sortQuery, [
-            ':OXARTICLENID' => $oxidRelationId
+            'OXARTICLENID' => $oxidRelationId
         ]);
 
 

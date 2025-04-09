@@ -167,7 +167,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $oItems = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oItems->init('oxuserbasketitem');
         $oItems->selectstring($sSelect, [
-            ':oxbasketid' => $this->getId()
+            'oxbasketid' => $this->getId()
         ]);
 
         foreach ($oItems as $oItem) {
@@ -332,7 +332,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $sQ = "delete from oxuserbasketitems where oxbasketid = :oxbasketid";
             $oDb->execute($sQ, [
-                ':oxbasketid' => $sOXID
+                'oxbasketid' => $sOXID
             ]);
             $this->_aBasketItems = null;
         }

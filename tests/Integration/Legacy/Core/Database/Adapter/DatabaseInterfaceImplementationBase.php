@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapt
 
 use oxDb;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
@@ -170,7 +170,8 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
             $queryValuesParts[] = "('{$oxId}','{$oxUserId}')";
         }
         $database->execute(
-            'INSERT INTO ' . self::TABLE_NAME . '(OXID, OXUSERID) VALUES ' . implode(',', $queryValuesParts) . ';'
+            'INSERT INTO ' . self::TABLE_NAME . '(OXID, OXUSERID) VALUES '
+            . implode(',', $queryValuesParts) . ';'
         );
     }
 

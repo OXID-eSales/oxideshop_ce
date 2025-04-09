@@ -173,12 +173,12 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
         if (!$voucherSerie) {
             return false;
         }
-        $resultSet = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)
+        $resultSet = DatabaseProvider::getDb()
             ->selectLimit(
                 'select oxvouchernr from oxvouchers where oxvoucherserieid = :oxvoucherserieid',
                 $this->iExportPerTick,
                 $iStart,
-                [':oxvoucherserieid' => $voucherSerie->getId()]
+                ['oxvoucherserieid' => $voucherSerie->getId()]
             );
         if ($resultSet->EOF) {
             return false;

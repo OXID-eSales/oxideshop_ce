@@ -57,6 +57,9 @@ final class ShopStateServiceTest extends TestCase
         $context
             ->method('getConfigTableName')
             ->willReturn('nonExistentTable');
+        $context
+            ->method('getDatabaseUrl')
+            ->willReturn($this->get(BasicContextInterface::class)->getDatabaseUrl());
 
         $shopStateService = new ShopStateService(
             $context,

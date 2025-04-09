@@ -88,7 +88,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder->delete('oxnewssubscribed');
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $this->createSubscribedUserWithGroups();
         $this->createSubscribedUserWithoutGroups();
@@ -119,7 +119,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'create' => (new DateTime())->format('Y-m-d H:i:s')
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $queryBuilder
             ->insert('oxgroups')
@@ -133,7 +133,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'title' => "test_group1"
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $queryBuilder
             ->insert('oxgroups')
@@ -147,7 +147,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'title' => "test_group2"
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $queryBuilder
             ->insert('oxobject2group')
@@ -163,7 +163,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'groupId' => 'test_group1'
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $queryBuilder
             ->insert('oxobject2group')
@@ -179,7 +179,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'groupId' => 'test_group2'
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $queryBuilder
             ->insert('oxnewssubscribed')
@@ -204,7 +204,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'shopId' => "1"
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 
     private function createSubscribedUserWithoutGroups(): void
@@ -231,7 +231,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'create' => (new DateTime())->add(new DateInterval('P1D'))->format('Y-m-d H:i:s')
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $queryBuilder
             ->insert('oxnewssubscribed')
@@ -256,7 +256,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'shopId' => "1"
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 
     private function createSubscribedUserInOtherSubshop(): void
@@ -281,7 +281,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'countryId' => "a7c40f631fc920687.20179984",
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
 
         $queryBuilder
             ->insert('oxnewssubscribed')
@@ -306,6 +306,6 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'shopId' => "99"
             ]);
 
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 }

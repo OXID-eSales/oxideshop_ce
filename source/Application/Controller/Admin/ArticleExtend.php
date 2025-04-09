@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Field;
 use stdClass;
 use Exception;
 use OxidEsales\Eshop\Core\Registry;
@@ -98,14 +99,14 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     {
         parent::save();
 
-        $aMyFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("myfile");
-        $aMediaFile = \OxidEsales\Eshop\Core\Registry::getConfig()->getUploadedFile("mediaFile");
+        $aMyFile = Registry::getConfig()->getUploadedFile("myfile");
+        $aMediaFile = Registry::getConfig()->getUploadedFile("mediaFile");
         if (is_array($aMyFile['name']) && reset($aMyFile['name']) || $aMediaFile['name']) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $myConfig = Registry::getConfig();
             if ($myConfig->isDemoShop()) {
                 $oEx = oxNew(\OxidEsales\Eshop\Core\Exception\ExceptionToDisplay::class);
                 $oEx->setMessage('ARTICLE_EXTEND_UPLOADISDISABLED');
-                \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($oEx, false);
+                Registry::getUtilsView()->addErrorToDisplay($oEx, false);
 
                 return;
             }
@@ -140,7 +141,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $oArticle->setLanguage(0);
         $oArticle->assign($aParams);
         $oArticle->setLanguage($this->_iEditLang);
-        $oArticle = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oArticle);
+        $oArticle = Registry::getUtilsFile()->processFiles($oArticle);
         $oArticle->save();
 
         //saving media file
@@ -149,31 +150,31 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         if (($sMediaUrl && $sMediaUrl != 'http://') || $aMediaFile['name'] || $sMediaDesc) {
             if (!$sMediaDesc) {
-                return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NODESCRIPTIONADDED');
+                return Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NODESCRIPTIONADDED');
             }
 
             if ((!$sMediaUrl || $sMediaUrl == 'http://') && !$aMediaFile['name']) {
-                return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NOMEDIAADDED');
+                return Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_NOMEDIAADDED');
             }
 
             $oMediaUrl = oxNew(\OxidEsales\Eshop\Application\Model\MediaUrl::class);
             $oMediaUrl->setLanguage($this->_iEditLang);
-            $oMediaUrl->oxmediaurls__oxisuploaded = new \OxidEsales\Eshop\Core\Field(0, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxisuploaded = new Field(0, Field::T_RAW);
 
             //handle uploaded file
             if ($aMediaFile['name']) {
                 try {
-                    $sMediaUrl = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFile('mediaFile', 'out/media/');
-                    $oMediaUrl->oxmediaurls__oxisuploaded = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
+                    $sMediaUrl = Registry::getUtilsFile()->processFile('mediaFile', 'out/media/');
+                    $oMediaUrl->oxmediaurls__oxisuploaded = new Field(1, Field::T_RAW);
                 } catch (Exception $e) {
-                    return \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay($e->getMessage());
+                    return Registry::getUtilsView()->addErrorToDisplay($e->getMessage());
                 }
             }
 
             //save media url
-            $oMediaUrl->oxmediaurls__oxobjectid = new \OxidEsales\Eshop\Core\Field($soxId, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $oMediaUrl->oxmediaurls__oxurl = new \OxidEsales\Eshop\Core\Field($sMediaUrl, \OxidEsales\Eshop\Core\Field::T_RAW);
-            $oMediaUrl->oxmediaurls__oxdesc = new \OxidEsales\Eshop\Core\Field($sMediaDesc, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxobjectid = new Field($soxId, Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxurl = new Field($sMediaUrl, Field::T_RAW);
+            $oMediaUrl->oxmediaurls__oxdesc = new Field($sMediaDesc, Field::T_RAW);
             $oMediaUrl->save();
         }
 
@@ -235,7 +236,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     public function getUnitsArray()
     {
         if ($this->_aUnitsArray === null) {
-            $this->_aUnitsArray = \OxidEsales\Eshop\Core\Registry::getLang()->getSimilarByKey("_UNIT_", $this->_iEditLang, false);
+            $this->_aUnitsArray = Registry::getLang()->getSimilarByKey("_UNIT_", $this->_iEditLang, false);
         }
 
         return $this->_aUnitsArray;
@@ -261,7 +262,7 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
     protected function prepareBundledArticlesDataForView($article)
     {
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDB();
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $config = Registry::getConfig();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $articleTable = $tableViewNameGenerator->getViewName('oxarticles', $this->_iEditLang);
         $query = "select {$articleTable}.oxtitle, {$articleTable}.oxartnum, {$articleTable}.oxvarselect " .
@@ -273,12 +274,14 @@ class ArticleExtend extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $query .= " and {$articleTable}.oxid = :oxid";
 
         $resultFromDatabase = $database->select($query, [
-            ':oxid' => $article->$bundleIdField->value
+            'oxid' => $article->$bundleIdField->value
         ]);
         if ($resultFromDatabase != false && $resultFromDatabase->count() > 0) {
             while (!$resultFromDatabase->EOF) {
-                $articleNumber = new \OxidEsales\Eshop\Core\Field($resultFromDatabase->fields[1]);
-                $articleTitle = new \OxidEsales\Eshop\Core\Field($resultFromDatabase->fields[0] . " " . $resultFromDatabase->fields[2]);
+                $articleNumber = new Field($resultFromDatabase->fields['oxartnum']);
+                $articleTitle = new Field(
+                    $resultFromDatabase->fields['oxtitle'] . " " . $resultFromDatabase->fields['oxvarselect']
+                );
                 $resultFromDatabase->fetchRow();
             }
         }

@@ -83,11 +83,12 @@ final class ModuleMigrationsTest extends TestCase
     private function assertIfMigrationExistsInDatabase(): void
     {
         $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
-        $queryBuilder
+        $result = $queryBuilder
             ->select('*')
-            ->from('test_module_with_migrations');
+            ->from('test_module_with_migrations')
+            ->executeQuery();
 
-        $this->assertEquals(1, $queryBuilder->execute()->rowCount());
+        $this->assertEquals(1, $result->rowCount());
     }
 
     private function getMigrations(): Migrations

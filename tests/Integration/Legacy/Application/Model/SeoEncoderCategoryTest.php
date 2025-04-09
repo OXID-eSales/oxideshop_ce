@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
 use OxidEsales\Eshop\Core\SeoEncoder;
 use OxidEsales\EshopCommunity\Core\UtilsObject;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -49,9 +49,8 @@ final class SeoEncoderCategoryTest extends IntegrationTestCase
 
         $seoEncoderCategory->onDeleteCategory($category);
 
-        $expiredRowCount = $this->get(QueryBuilderFactoryInterface::class)
+        $expiredRowCount = $this->get(ConnectionFactoryInterface::class)
             ->create()
-            ->getConnection()
             ->fetchOne(
                 'SELECT COUNT(*) FROM `oxseo` WHERE `OXSEOURL` like "%www-some-shop/category-%" AND `OXEXPIRED` = "1";'
             );

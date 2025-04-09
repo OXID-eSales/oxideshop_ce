@@ -272,7 +272,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     {
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $sUpdate = "update oxarticles set " . $sUpdate . " where oxid = :oxid";
-        $oDb->execute($sUpdate, [':oxid' => $sArtId]);
+        $oDb->execute($sUpdate, ['oxid' => $sArtId]);
     }
 
     /**

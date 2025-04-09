@@ -34,7 +34,7 @@ class UserRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDet
             $oRems->init("oxremark");
             $sSelect = "select * from oxremark where oxparentid = :oxparentid order by oxcreate desc";
             $oRems->selectString($sSelect, [
-                ':oxparentid' => $oUser->getId()
+                'oxparentid' => $oUser->getId()
             ]);
             foreach ($oRems as $key => $val) {
                 if ($val->oxremark__oxid->value == $sRemoxId) {

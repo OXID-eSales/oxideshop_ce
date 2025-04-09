@@ -43,7 +43,7 @@ class OrderArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sSelect .= "WHERE oxorder.oxuserid = :oxuserid";
 
         $this->selectString($sSelect, [
-            ':oxuserid' => $sOxId
+            'oxuserid' => $sOxId
         ]);
     }
 }

@@ -10,14 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Logger;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
 final class LoggerTest extends TestCase
 {
     private string $logFilePath;
-    private ContextInterface $context;
 
     public function setup(): void
     {

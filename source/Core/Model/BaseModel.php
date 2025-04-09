@@ -292,10 +292,10 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
                 try {
                     if ($this->_aInnerLazyCache === null) {
-                        $database = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+                        $database = DatabaseProvider::getDb();
                         $query = 'SELECT * FROM ' . $viewName . ' WHERE `oxid` = :oxid';
                         $queryResult = $database->select($query, [
-                            ':oxid' => $id
+                            'oxid' => $id
                         ]);
                         if ($queryResult && $queryResult->count()) {
                             $this->_aInnerLazyCache = array_change_key_case($queryResult->fields, CASE_UPPER);
@@ -431,7 +431,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
             $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $tableName = $this->getCoreTableName();
             $title = $database->getOne("select `{$fieldName}` from `{$tableName}` where `oxid` = :oxid", [
-                ':oxid' => $this->getId()
+                'oxid' => $this->getId()
             ]);
             $fieldValue = "{$tableName}__{$fieldName}";
             $currentTime = $this->$fieldValue->value;
@@ -751,7 +751,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      */
     protected function getRecordByQuery($query)
     {
-        return DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC)->select($query);
+        return DatabaseProvider::getDb()->select($query);
     }
 
     /**
@@ -828,11 +828,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
 
         $this->removeElement2ShopRelations($oxid);
 
-        $database = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb();
         $coreTable = $this->getCoreTableName();
         $deleteQuery = "delete from {$coreTable} where oxid = :oxid";
         $affectedRows = $database->execute($deleteQuery, [
-            ':oxid' => $oxid
+            'oxid' => $oxid
         ]);
         if ($blDelete = (bool) $affectedRows) {
             $this->onChange(ACTION_DELETE, $oxid);
@@ -944,11 +944,11 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
         }
 
         $viewName = $this->getCoreTableName();
-        $database = DatabaseProvider::getDb(DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb();
         $query = "select {$this->_sExistKey} from {$viewName} where {$this->_sExistKey} = :oxid";
 
         return (bool) $database->getOne($query, [
-            ':oxid' => $oxid
+            'oxid' => $oxid
         ]);
     }
 

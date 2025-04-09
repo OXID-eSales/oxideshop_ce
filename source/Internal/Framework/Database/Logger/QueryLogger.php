@@ -9,95 +9,26 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Logger;
 
-use Doctrine\DBAL\Logging\SQLLogger;
-use Exception;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
-use Psr\Log\LoggerInterface;
+use Monolog\Logger;
 
-class QueryLogger implements SQLLogger
+class QueryLogger extends Logger
 {
     public function __construct(
-        private readonly QueryFilterInterface $queryFilter,
-        private readonly ContextInterface $context,
-        private readonly LoggerInterface $psrLogger
+        string $loggerName,
+        private readonly QueryLogFilterInterface $queryLogFilter,
+        private readonly QueryLogContextExtenderInterface $queryLogContextExtender,
     ) {
+        parent::__construct($loggerName);
     }
 
-    /**
-     * @deprecated will be removed in next major version
-     */
-    public function startQuery($query, ?array $params = null, ?array $types = null): void
+    public function addRecord($level, $message, array $context = array()): bool
     {
-        if ($this->filterPass($sql)) {
-            $queryData = $this->getQueryData($sql, $params ?? []);
-            $this->psrLogger->debug($this->getLogMessage($queryData));
-        }
-    }
-
-    private function filterPass(string $query): bool
-    {
-        return $this->queryFilter->shouldLogQuery($query, $this->context->getSkipLogTags());
-    }
-
-    private function getQueryData(string $sql, array $params): array
-    {
-        $backTraceInfo = $this->getQueryTrace();
-
-        return [
-            'adminUserId' => $this->getAdminUserIdIfExists(),
-            'shopId' => $this->context->getCurrentShopId(),
-            'class' => $backTraceInfo['class'] ?? '',
-            'function' => $backTraceInfo['function'] ?? '',
-            'file' => $backTraceInfo['file'] ?? '',
-            'line' => $backTraceInfo['line'] ?? '',
-            'query' => $sql,
-            'params' => serialize($params),
-        ];
-    }
-
-    /**
-     * Get first entry from backtrace that is not connected to database.
-     * This has to be the origin of the query.
-     */
-    private function getQueryTrace(): array
-    {
-        $queryTraceItem = [];
-        foreach ((new Exception())->getTrace() as $item) {
-            if (
-                stripos($item['class'], $this::class) === false &&
-                stripos($item['class'], 'Doctrine') === false
-            ) {
-                $queryTraceItem = $item;
-                break;
-            }
-        }
-
-        return $queryTraceItem;
-    }
-
-    private function getAdminUserIdIfExists(): string
-    {
-        try {
-            $adminId = $this->context->getAdminUserId();
-        } catch (AdminUserNotFoundException) {
-            $adminId = '';
-        }
-
-        return $adminId;
-    }
-
-    private function getLogMessage(array $queryData): string
-    {
-        $message = '';
-        foreach ($queryData as $key => $value) {
-            $message .= PHP_EOL . $key . ': ' . $value;
-        }
-
-        return $message . PHP_EOL;
-    }
-
-    public function stopQuery(): void
-    {
+        return isset($context['sql']) &&
+            $this->queryLogFilter->shouldLogQuery($context['sql'])
+            && parent::addRecord(
+                $level,
+                $message,
+                $this->queryLogContextExtender->extend($context)
+            );
     }
 }

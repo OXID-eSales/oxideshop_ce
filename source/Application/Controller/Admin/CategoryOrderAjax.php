@@ -21,25 +21,26 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
      *
      * @var array
      */
-    protected $_aColumns = ['container1' => [ // field , table,         visible, multilanguage, ident
-        ['oxartnum', 'oxarticles', 1, 0, 0],
-        ['oxtitle', 'oxarticles', 1, 1, 0],
-        ['oxpos', 'oxobject2category', 1, 0, 0],
-        ['oxean', 'oxarticles', 0, 0, 0],
-        ['oxmpn', 'oxarticles', 0, 0, 0],
-        ['oxprice', 'oxarticles', 0, 0, 0],
-        ['oxstock', 'oxarticles', 0, 0, 0],
-        ['oxid', 'oxarticles', 0, 0, 1]
-    ],
-                                 'container2' => [
-                                     ['oxartnum', 'oxarticles', 1, 0, 0],
-                                     ['oxtitle', 'oxarticles', 1, 1, 0],
-                                     ['oxean', 'oxarticles', 0, 0, 0],
-                                     ['oxmpn', 'oxarticles', 0, 0, 0],
-                                     ['oxprice', 'oxarticles', 0, 0, 0],
-                                     ['oxstock', 'oxarticles', 0, 0, 0],
-                                     ['oxid', 'oxarticles', 0, 0, 1]
-                                 ]
+    protected $_aColumns = [
+        'container1' => [ // field , table, visible, multilanguage, ident
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxpos', 'oxobject2category', 1, 0, 0],
+            ['oxean', 'oxarticles', 0, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1]
+        ],
+         'container2' => [
+            ['oxartnum', 'oxarticles', 1, 0, 0],
+            ['oxtitle', 'oxarticles', 1, 1, 0],
+            ['oxean', 'oxarticles', 0, 0, 0],
+            ['oxmpn', 'oxarticles', 0, 0, 0],
+            ['oxprice', 'oxarticles', 0, 0, 0],
+            ['oxstock', 'oxarticles', 0, 0, 0],
+            ['oxid', 'oxarticles', 0, 0, 1]
+         ]
     ];
 
     /**
@@ -56,15 +57,20 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         // category selected or not ?
         if ($sSynchOxid = Registry::getRequest()->getRequestEscapedParameter('synchoxid')) {
-            $sQAdd = " from $sArtTable left join $sO2CView on $sArtTable.oxid=$sO2CView.oxobjectid where $sO2CView.oxcatnid = " . $oDb->quote($sSynchOxid);
+            $sQAdd = " from $sArtTable left join $sO2CView on $sArtTable.oxid=$sO2CView.oxobjectid where"
+                . " $sO2CView.oxcatnid = " . $oDb->quote($sSynchOxid);
             if ($aSkipArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess')) {
-                $sQAdd .= " and $sArtTable.oxid not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
+                $sQAdd .= " and $sArtTable.oxid not in ( "
+                    . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt))
+                    . " ) ";
             }
         } else {
             // which fields to load ?
             $sQAdd = " from $sArtTable where ";
             if ($aSkipArt = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('neworder_sess')) {
-                $sQAdd .= " $sArtTable.oxid in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
+                $sQAdd .= " $sArtTable.oxid in ( "
+                    . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt))
+                    . " ) ";
             } else {
                 $sQAdd .= " 1 = 0 ";
             }
@@ -125,10 +131,11 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                 $sSelect .= "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
             }
 
-            // simply echoing "1" if some items found, and 0 if nothing was found
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            // Simply echoing "1" if some items found, and 0 if nothing was found
+            // We force reading from master to prevent issues with slow replications or open transactions
+            // (see ESDEV-3804).
             echo (int) DatabaseProvider::getMaster()->getOne($sSelect, [
-                ':oxcatnid' => $soxId
+                'oxcatnid' => $soxId
             ]);
         }
     }
@@ -159,14 +166,15 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $sO2CView = $this->getViewName('oxobject2category');
 
             // checking if all articles were moved from one
-            $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid ";
-            $sSelect .= "where $sO2CView.oxcatnid = :oxcatnid and $sArticleTable.oxparentid = '' and $sArticleTable.oxid ";
-            $sSelect .= "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aOrdArt)) . " ) ";
+            $sSelect = "select 1 from $sArticleTable left join $sO2CView on $sArticleTable.oxid=$sO2CView.oxobjectid "
+            . "where $sO2CView.oxcatnid = :oxcatnid and $sArticleTable.oxparentid = '' and $sArticleTable.oxid "
+            . "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aOrdArt)) . " ) ";
 
-            // simply echoing "1" if some items found, and 0 if nothing was found
-            // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
+            // Simply echoing "1" if some items found, and 0 if nothing was found
+            // We force reading from master to prevent issues with slow replications or open transactions
+            // (see ESDEV-3804).
             echo (int) DatabaseProvider::getMaster()->getOne($sSelect, [
-                ':oxcatnid' => $soxId
+                'oxcatnid' => $soxId
             ]);
         }
     }
@@ -191,11 +199,13 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $aNewOrder = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("neworder_sess");
             if (is_array($aNewOrder) && count($aNewOrder)) {
                 $sO2CView = $this->getViewName('oxobject2category');
-                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid = :oxcatnid and $sO2CView.oxobjectid in (" . implode(", ", DatabaseProvider::getDb()->quoteArray($aNewOrder)) . " )";
+                $sSelect = "select * from $sO2CView where $sO2CView.oxcatnid = :oxcatnid and $sO2CView.oxobjectid in ("
+                    . implode(", ", DatabaseProvider::getDb()->quoteArray($aNewOrder))
+                    . " )";
                 $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
                 $oList->init($this->getObject2CategoryClass(), 'oxobject2category');
                 $oList->selectString($sSelect, [
-                    ':oxcatnid' => $oCategory->getId()
+                    'oxcatnid' => $oCategory->getId()
                 ]);
 
                 // setting new position
@@ -231,8 +241,11 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             $oDb = DatabaseProvider::getDb();
             $sSqlShopFilter = $this->updateQueryFilterForResetCategoryArticlesOrder();
 
-            $sSelect = "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid = :id {$sSqlShopFilter}";
-            $oDb->execute($sSelect, [':id' => $oCategory->getId()]);
+            $sSelect = sprintf(
+                "update oxobject2category set oxpos = '0' where oxobject2category.oxcatnid = :id %s",
+                $sSqlShopFilter
+            );
+            $oDb->execute($sSelect, ['id' => $oCategory->getId()]);
 
             \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('neworder_sess', null);
 

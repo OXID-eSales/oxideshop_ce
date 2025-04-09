@@ -20,19 +20,6 @@ use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
  */
 class DatabaseProvider
 {
-    /**
-     * @var int Fetch mode - numeric
-     *
-     * @deprecated will be removed in next major version
-     */
-    const FETCH_MODE_NUM = DatabaseInterface::FETCH_MODE_NUM;
-
-    /**
-     * @var int Fetch mode - associative
-     *
-     * @deprecated will be removed in next major version
-     */
-    const FETCH_MODE_ASSOC = DatabaseInterface::FETCH_MODE_ASSOC;
 
     /**
      * @var ?DatabaseProvider
@@ -87,7 +74,7 @@ class DatabaseProvider
      * @throws DatabaseConnectionException Error while initiating connection to DB.
      *
      */
-    public static function getDb($fetchMode = \OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM)
+    public static function getDb()
     {
         if (null === static::$db) {
             $databaseFactory = static::getInstance();
@@ -96,9 +83,6 @@ class DatabaseProvider
             /** Post connect actions will be taken only once per connection */
             $databaseFactory->onPostConnect();
         }
-
-        /** The following actions be taken on each call to getDb */
-        static::$db->setFetchMode($fetchMode);
 
         return static::$db;
     }
@@ -114,11 +98,11 @@ class DatabaseProvider
      * @throws DatabaseConnectionException Error while initiating connection to DB
      *
      */
-    public static function getMaster($fetchMode = \OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_NUM)
+    public static function getMaster()
     {
-        static::getDb($fetchMode)->forceMasterConnection();
+        static::getDb()->forceMasterConnection();
 
-        return static::getDb($fetchMode);
+        return static::getDb();
     }
 
     /**

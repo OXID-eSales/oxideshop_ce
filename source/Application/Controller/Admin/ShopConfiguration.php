@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use Exception;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -200,8 +201,7 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
         ];
         $constraints = [];
         $groupings = [];
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-        $rs = $database->select(
+        $rs = DatabaseProvider::getDb()->select(
             "select cfg.oxvarname,
                     cfg.oxvartype,
                     cfg.oxvarvalue,
@@ -214,14 +214,14 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
                     and cfg.oxmodule = :oxmodule
                 order by disp.oxpos, cfg.oxvarname",
             [
-                ':oxshopid' => $shopId,
-                ':oxmodule' => $moduleId
+                'oxshopid' => $shopId,
+                'oxmodule' => $moduleId
             ]
         );
 
         if ($rs != false && $rs->count() > 0) {
             while (!$rs->EOF) {
-                list($name, $type, $value, $constraint, $grouping) = $rs->fields;
+                list($name, $type, $value, $constraint, $grouping) = array_values($rs->fields);
                 $configurationVariables[$type][$name] = $this->unserializeConfVar($type, $name, $value);
                 $constraints[$name] = $this->parseConstraint($type, $constraint);
                 if ($grouping) {

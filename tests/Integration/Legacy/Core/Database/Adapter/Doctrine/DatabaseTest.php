@@ -77,7 +77,7 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
             ' UNION SELECT oxusername FROM oxuser',
             // offset
             [
-                [self::FIXTURE_OXID_1], [self::FIXTURE_OXID_2],  // expected result
+                ['OXID' => self::FIXTURE_OXID_1], ['OXID' => self::FIXTURE_OXID_2],  // expected result
             ],
         ], [
             'If parameter rowCount is integer 2 and offset is string "1  UNION SELECT oxusername FROM oxuser -- " , a warning will be triggered and last 2 rows will be returned',
@@ -86,7 +86,7 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
             '1  UNION SELECT oxusername FROM oxuser',
             // offset
             [
-                [self::FIXTURE_OXID_2], [self::FIXTURE_OXID_3],  // expected result
+                ['OXID' => self::FIXTURE_OXID_2], ['OXID' => self::FIXTURE_OXID_3],  // expected result
             ],
         ], [
             'If parameter rowCount is string " UNION SELECT oxusername FROM oxuser  --" and offset is 0, a warning will be triggered and the first 2 rows will be returned',
@@ -102,7 +102,7 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
             0,
             // offset
             [
-                [self::FIXTURE_OXID_1],  // expected result
+                ['OXID' => self::FIXTURE_OXID_1],  // expected result
             ],
         ]];
     }
@@ -151,7 +151,7 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
         $this->loadFixtureToTestTable();
         $quotedIdentifier = $this->database->quoteIdentifier('OXID');
 
-        $expectedResult = [[self::FIXTURE_OXID_1]];
+        $expectedResult = [['OXID' => self::FIXTURE_OXID_1]];
         $resultSet = $this->database
             ->select(
                 'SELECT OXID FROM ' . self::TABLE_NAME . " WHERE OXID = '" . self::FIXTURE_OXID_1 . "' ORDER BY " . $quotedIdentifier
@@ -313,7 +313,7 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
         $oxIds = [];
 
         foreach ($rows as $row) {
-            $oxIds[] = $row[0];
+            $oxIds[] = $row['oxid'];
         }
 
         $this->assertArrayIsUnique($oxIds);
@@ -324,13 +324,7 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
      */
     public function testMoveNextWithOrderByRand(): void
     {
-        $resultSet = $this->database->select('SELECT oxid FROM oxarticles ORDER BY RAND()');
-        $oxIds = [];
-
-        while (!$resultSet->EOF) {
-            $oxIds[] = $resultSet->fields[0];
-            $resultSet->fetchRow();
-        }
+        $oxIds = $this->database->getCol('SELECT oxid FROM oxarticles ORDER BY RAND()');
 
         $this->assertArrayIsUnique($oxIds);
     }

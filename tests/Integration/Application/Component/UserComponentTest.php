@@ -281,9 +281,9 @@ final class UserComponentTest extends IntegrationTestCase
             ->from('oxuser')
             ->where('oxusername = :oxusername')
             ->setParameters([
-                ':oxusername' => $this->userName,
+                'oxusername' => $this->userName,
             ])
-            ->execute()
+            ->executeQuery()
             ->fetchAssociative();
     }
 }

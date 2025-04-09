@@ -159,9 +159,9 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
             limit 1";
 
         return \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($query, [
-            ':oxtype' => 2,
-            ':oxactive' => 1,
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+            'oxtype' => 2,
+            'oxactive' => 1,
+            'oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
         ]);
     }
 

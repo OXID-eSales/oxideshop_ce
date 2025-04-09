@@ -445,7 +445,7 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
                 $sQ = "select oxtitle from {$sViewName} where oxisoalpha2 = :oxisoalpha2";
                 // Value does not change that often, reading from slave is ok here (see ESDEV-3804 and ESDEV-3822).
                 $sCountryName = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sQ, [
-                    ':oxisoalpha2' => $sCountryCode
+                    'oxisoalpha2' => $sCountryCode
                 ]);
                 if ($sCountryName) {
                     $sCountry = $sCountryName;

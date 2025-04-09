@@ -40,6 +40,6 @@ class AdminDao implements AdminDaoInterface
                 'OXRIGHTS' => $admin->getRights(),
                 'OXSHOPID' => $admin->getShopId(),
             ]);
-        $queryBuilder->execute();
+        $queryBuilder->executeStatement();
     }
 }

@@ -134,7 +134,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
             $sQ .= "and " . $oCategory->getSqlActiveSnippet();
 
             $params = [
-                ':oxid' => $sInitialSearchCat
+                'oxid' => $sInitialSearchCat
             ];
 
             if (!$oDb->getOne($sQ, $params)) {
@@ -153,7 +153,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
             $sQ .= "and " . $oVendor->getSqlActiveSnippet();
 
             $params = [
-                ':oxid' => $sInitialSearchVendor
+                'oxid' => $sInitialSearchVendor
             ];
 
             if (!$oDb->getOne($sQ, $params)) {
@@ -172,7 +172,7 @@ class Search extends \OxidEsales\Eshop\Core\Base
             $sQ .= "and " . $oManufacturer->getSqlActiveSnippet();
 
             $params = [
-                ':oxid' => $sInitialSearchManufacturer
+                'oxid' => $sInitialSearchManufacturer
             ];
 
             if (!$oDb->getOne($sQ, $params)) {

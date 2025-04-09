@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
 use Doctrine\DBAL\Exception\DriverException;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\ShopDbManagerInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;

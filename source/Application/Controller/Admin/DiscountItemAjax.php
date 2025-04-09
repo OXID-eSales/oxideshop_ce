@@ -110,8 +110,8 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         if (is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = '' where oxid = :oxid and oxitmartid = :oxitmartid";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [
-                ':oxid' => $soxId,
-                ':oxitmartid' => reset($aChosenArt)
+                'oxid' => $soxId,
+                'oxitmartid' => reset($aChosenArt)
             ]);
         }
     }
@@ -126,8 +126,8 @@ class DiscountItemAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         if ($soxId && $soxId != "-1" && is_array($aChosenArt)) {
             $sQ = "update oxdiscount set oxitmartid = :oxitmartid where oxid = :oxid";
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->execute($sQ, [
-                ':oxitmartid' => reset($aChosenArt),
-                ':oxid' => $soxId
+                'oxitmartid' => reset($aChosenArt),
+                'oxid' => $soxId
             ]);
         }
     }

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
 use Doctrine\DBAL\Exception\ConnectionException;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\DatabaseAlreadyExistsException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\UnsupportedDatabaseConfigurationException;
@@ -82,10 +82,13 @@ final class SetupDbConnectionValidatorTest extends TestCase
         $dbConfig->getUser()->willReturn('user');
         $dbConfig->getPass()->willReturn('pass');
         $dbConfig->getName()->willReturn('db-name');
-        $dbConfig->getHost()->willReturn(uniqid('db-server-', true));
-        $dbConfig->getPort()->willReturn(3306);
-        $dbConfig->getScheme()->willReturn('mysql');
-        $dbConfig->getDatabaseUrl()->willReturn(Argument::type('string'));
+        $dbConfig->getConnectionParameters()->willReturn([
+            'user' => 'user',
+            'password' => 'pass',
+            'host' => uniqid('db-server-', true),
+            'driver' => 'pdo_mysql',
+            'port' => 3306,
+        ]);
 
         $this->expectException(ConnectionException::class);
 
@@ -100,7 +103,7 @@ final class SetupDbConnectionValidatorTest extends TestCase
         $configWithNonexistentDatabase = new DatabaseConfiguration(
             sprintf(
                 '%s://%s:%s@%s:%s/%s',
-                $currentDbConfig->getScheme(),
+                parse_url(getenv('OXID_DB_URL'), PHP_URL_SCHEME),
                 $currentDbConfig->getUser(),
                 $currentDbConfig->getPass(),
                 $currentDbConfig->getHost(),

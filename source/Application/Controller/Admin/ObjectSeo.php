@@ -151,11 +151,14 @@ class ObjectSeo extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                    oxseo.oxshopid = :oxshopid and oxseo.oxlang = :oxlang and oxparams = '' ";
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne($sQ, [
-            ':oxobjectid' => $this->getEditObjectId(),
-            ':oxshopid' => $iShopId,
-            ':oxlang' => $iLang
-        ]);
+        return (bool) \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->getOne(
+            $sQ,
+            [
+                'oxobjectid' => $this->getEditObjectId(),
+                'oxshopid' => $iShopId,
+                'oxlang' => $iLang
+            ]
+        );
     }
 
     /**

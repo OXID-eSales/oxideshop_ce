@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Model;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxObjectException;
 
@@ -210,10 +211,10 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         // select from non-multilanguage core view (all ml tables joined to one)
-        $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $db = DatabaseProvider::getDb();
         $query = "select * from " . $tableViewNameGenerator->getViewName($this->_sCoreTable, -1, -1) . " where oxid = :oxid";
         $rs = $db->getAll($query, [
-            ':oxid' => $this->getId()
+            'oxid' => $this->getId()
         ]);
 
         $notInLang = $languages;
@@ -597,12 +598,12 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $deleted = parent::delete($oxid);
         if ($deleted) {
-            $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $db = DatabaseProvider::getDb();
 
             //delete the record
             foreach ($this->getLanguageSetTables() as $setTbl) {
                 $db->execute("delete from {$setTbl} where oxid = :oxid", [
-                    ':oxid' => $oxid
+                    'oxid' => $oxid
                 ]);
             }
         }

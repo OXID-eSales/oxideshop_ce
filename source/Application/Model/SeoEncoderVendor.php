@@ -128,13 +128,13 @@ class SeoEncoderVendor extends \OxidEsales\Eshop\Core\SeoEncoder
         $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $vendorId = $vendor->getId();
         $database->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxvendor'", [
-            ':oxobjectid' => $vendorId
+            'oxobjectid' => $vendorId
         ]);
         $database->execute("delete from oxobject2seodata where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $vendorId
+            'oxobjectid' => $vendorId
         ]);
         $database->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
-            ':oxobjectid' => $vendorId
+            'oxobjectid' => $vendorId
         ]);
     }
 

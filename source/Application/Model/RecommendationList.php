@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -93,7 +94,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         $iCnt = 0;
         $sSelect = $this->getArticleSelect();
         if ($sSelect) {
-            $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
+            $iCnt = DatabaseProvider::getDb()->getOne($sSelect);
         }
 
         return $iCnt;
@@ -147,10 +148,10 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         }
 
         if (($blDelete = parent::delete($sOXID))) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = DatabaseProvider::getDb();
             // cleaning up related data
             $oDb->execute("delete from oxobject2list where oxlistid = :oxlistid", [
-                ':oxlistid' => $sOXID
+                'oxlistid' => $sOXID
             ]);
             $this->onDelete();
         }
@@ -171,13 +172,13 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             return false;
         }
 
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = DatabaseProvider::getDb();
         $sSelect = 'select oxdesc from oxobject2list 
             where oxlistid = :oxlistid and oxobjectid = :oxobjectid';
 
         return $oDb->getOne($sSelect, [
-            ':oxlistid' => $this->getId(),
-            ':oxobjectid' => $sOXID
+            'oxlistid' => $this->getId(),
+            'oxobjectid' => $sOXID
         ]);
     }
 
@@ -191,12 +192,12 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     public function removeArticle($sOXID)
     {
         if ($sOXID) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = DatabaseProvider::getDb();
             $sQ = "delete from oxobject2list where oxobjectid = :oxobjectid and oxlistid = :oxlistid";
 
             return $oDb->execute($sQ, [
-                ':oxobjectid' => $sOXID,
-                ':oxlistid' => $this->getId()
+                'oxobjectid' => $sOXID,
+                'oxlistid' => $this->getId()
             ]);
         }
     }
@@ -216,24 +217,24 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         $blAdd = false;
         if ($sOXID) {
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804 and ESDEV-3822).
-            $database = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+            $database = DatabaseProvider::getMaster();
 
             $sql = "select oxid from oxobject2list 
                 where oxobjectid = :oxobjectid 
                     and oxlistid = :oxlistid";
             $params = [
-                ':oxobjectid' => $sOXID,
-                ':oxlistid' => $this->getId()
+                'oxobjectid' => $sOXID,
+                'oxlistid' => $this->getId()
             ];
 
             if (!$database->getOne($sql, $params)) {
                 $sUid = \OxidEsales\Eshop\Core\Registry::getUtilsObject()->generateUID();
                 $sQ = "insert into oxobject2list (oxid, oxobjectid, oxlistid, oxdesc) values (:oxid, :oxobjectid, :oxlistid, :oxdesc)";
                 $blAdd = $database->execute($sQ, [
-                    ':oxid' => $sUid,
-                    ':oxobjectid' => $sOXID,
-                    ':oxlistid' => $this->getId(),
-                    ':oxdesc' => $sDesc
+                    'oxid' => $sUid,
+                    'oxobjectid' => $sOXID,
+                    'oxlistid' => $this->getId(),
+                    'oxdesc' => $sDesc
                 ]);
             }
         }
@@ -256,7 +257,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         if (is_array($aArticleIds) && count($aArticleIds)) {
             startProfile(__FUNCTION__);
 
-            $sIds = implode(",", \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aArticleIds));
+            $sIds = implode(",", DatabaseProvider::getDb()->quoteArray($aArticleIds));
 
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
             $oRecommList->init('oxrecommlist');
@@ -275,7 +276,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $sSelect .= " ) DESC, count( lists.oxid ) DESC";
 
             $oRecommList->selectString($sSelect, [
-                ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+                'oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
             ]);
 
             stopProfile(__FUNCTION__);
@@ -303,7 +304,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
      */
     protected function loadFirstArticles(\OxidEsales\Eshop\Core\Model\ListModel $oRecommList, $aIds)
     {
-        $aIds = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds);
+        $aIds = DatabaseProvider::getDb()->quoteArray($aIds);
         $sIds = implode(", ", $aIds);
 
         $aPrevIds = [];
@@ -376,7 +377,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
         if ($sSelect) {
             $sPartial = substr($sSelect, strpos($sSelect, ' from '));
             $sSelect = "select count( distinct rl.oxid ) $sPartial ";
-            $iCnt = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($sSelect);
+            $iCnt = DatabaseProvider::getDb()->getOne($sSelect);
         }
 
         return $iCnt;
@@ -392,7 +393,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
     protected function getSearchSelect($sSearchStr)
     {
         $iShopId = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId();
-        $sSearchStrQuoted = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quote("%$sSearchStr%");
+        $sSearchStrQuoted = DatabaseProvider::getDb()->quote("%$sSearchStr%");
 
         $sSelect = "select distinct rl.* from oxrecommlists as rl";
         $sSelect .= " inner join oxobject2list as o2l on o2l.oxlistid = rl.oxid";

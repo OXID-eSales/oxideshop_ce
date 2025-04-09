@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
@@ -141,7 +142,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
                         where oxobject2group.oxobjectid = :oxobjectid
                         and oxobject2group.oxgroupsid = {$sViewName}.oxid ";
             $this->_oGroups->selectString($sSelect, [
-                ':oxobjectid' => $sOxid
+                'oxobjectid' => $sOxid
             ]);
         }
 
@@ -366,13 +367,13 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getCountries()
     {
         if ($this->_aCountries === null) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = DatabaseProvider::getDb();
             $this->_aCountries = [];
             $sSelect = 'select oxobjectid from oxobject2payment
                 where oxpaymentid = :oxpaymentid and oxtype = :oxtype ';
             $rs = $oDb->getCol($sSelect, [
-                ':oxpaymentid' => $this->getId(),
-                ':oxtype' => 'oxcountry'
+                'oxpaymentid' => $this->getId(),
+                'oxtype' => 'oxcountry'
             ]);
             $this->_aCountries = $rs;
         }
@@ -387,18 +388,19 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
      *
      * @return bool
      */
-    public function delete($sOxId = null)
+    public function delete($id = null)
     {
-        if (parent::delete($sOxId)) {
-            $sOxId = $sOxId ? $sOxId : $this->getId();
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        if (parent::delete($id)) {
+            $id = $id ?: $this->getId();
 
-            // deleting payment related data
-            $rs = $oDb->execute("delete from oxobject2payment where oxpaymentid = :oxpaymentid", [
-                ':oxpaymentid' => $sOxId
-            ]);
+            $deletedRows = DatabaseProvider::getDb()->execute(
+                'delete from oxobject2payment where oxpaymentid = :oxpaymentid',
+                [
+                'oxpaymentid' => $id
+                ]
+            );
 
-            return $rs->EOF;
+            return $deletedRows > 0;
         }
 
         return false;

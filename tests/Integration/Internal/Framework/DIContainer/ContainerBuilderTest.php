@@ -57,7 +57,6 @@ final class ContainerBuilderTest extends TestCase
 
     public function testServiceLoadingOrderWithEnvironmentAndNoShopConfig(): void
     {
-        ContainerFactory::resetContainer();
         $this->loadEnvFixture(__DIR__, ['OXID_ENV=abc']);
         $context = $this->makeContextStub();
         $context->setEdition(Edition::Community);

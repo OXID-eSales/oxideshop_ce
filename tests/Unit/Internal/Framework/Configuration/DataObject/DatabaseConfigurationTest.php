@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Configuration\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\InvalidDatabaseConfigurationException;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\InvalidDatabaseConfigurationException;
 use PHPUnit\Framework\TestCase;
 
 final class DatabaseConfigurationTest extends TestCase
@@ -48,8 +48,8 @@ final class DatabaseConfigurationTest extends TestCase
         $this->assertEquals($server, $databaseConfiguration->getHost());
         $this->assertEquals($port, $databaseConfiguration->getPort());
         $this->assertEquals($database, $databaseConfiguration->getName());
-        $this->assertEquals($encoding, $databaseConfiguration->getOptions()['charset']);
-        $this->assertEquals($driverOptions, $databaseConfiguration->getOptions()['driverOptions'][1002]);
+        $this->assertEquals($encoding, $databaseConfiguration->getCharset());
+        $this->assertEquals($driverOptions, $databaseConfiguration->getOptions()[1002]);
     }
 
     public function testGetParametersWithMinimalUrl(): void

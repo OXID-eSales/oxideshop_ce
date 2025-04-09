@@ -144,8 +144,8 @@ class OrderArticle extends BaseModel implements ArticleInterface
 
             $oArticle->oxarticles__oxstock = new \OxidEsales\Eshop\Core\Field($iStockCount);
             $oDb->execute('update oxarticles set oxarticles.oxstock = :oxstock where oxarticles.oxid = :oxid', [
-                ':oxstock' => $iStockCount,
-                ':oxid' => $this->oxorderarticles__oxartid->value
+                'oxstock' => $iStockCount,
+                'oxid' => $this->oxorderarticles__oxartid->value
             ]);
             $oArticle->onChange(ACTION_UPDATE_STOCK);
         }
@@ -171,7 +171,7 @@ class OrderArticle extends BaseModel implements ArticleInterface
         $sQ = 'select oxstock from oxarticles 
             where oxid = :oxid';
         $iStockCount = (float) $masterDb->getOne($sQ, [
-            ':oxid' => $this->oxorderarticles__oxartid->value
+            'oxid' => $this->oxorderarticles__oxartid->value
         ]);
 
         $iStockCount += $dAddAmount;
@@ -281,7 +281,7 @@ class OrderArticle extends BaseModel implements ArticleInterface
         $sQ = "select oxparentid from " . $oArticle->getViewName() . " 
             where oxid = :oxid";
         $this->oxarticles__oxparentid = new \OxidEsales\Eshop\Core\Field($oDb->getOne($sQ, [
-            ':oxid' => $this->getProductId()
+            'oxid' => $this->getProductId()
         ]));
 
         return $this->oxarticles__oxparentid->value;

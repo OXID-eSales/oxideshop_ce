@@ -33,7 +33,7 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $sUserIdField = 'oxorder__oxuserid';
             $sSelect = "select * from oxremark where oxparentid = :oxparentid order by oxcreate desc";
             $oRems->selectString($sSelect, [
-                ':oxparentid' => $oOrder->$sUserIdField->value
+                'oxparentid' => $oOrder->$sUserIdField->value
             ]);
             foreach ($oRems as $key => $val) {
                 if ($val->oxremark__oxid->value == $sRemoxId) {

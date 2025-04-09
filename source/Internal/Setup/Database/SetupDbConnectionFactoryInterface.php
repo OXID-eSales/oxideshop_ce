@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
 use Doctrine\DBAL\Connection;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 
 interface SetupDbConnectionFactoryInterface
 {

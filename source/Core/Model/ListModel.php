@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Model;
 
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use ReturnTypeWillChange;
 
 /**
@@ -379,24 +380,24 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     {
         $this->clear();
 
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $database = DatabaseProvider::getDb();
         if ($this->_aSqlLimit[0] || $this->_aSqlLimit[1]) {
-            $rs = $oDb->selectLimit($sql, $this->_aSqlLimit[1], max(0, $this->_aSqlLimit[0]), $parameters);
+            $result = $database->selectLimit($sql, $this->_aSqlLimit[1], max(0, $this->_aSqlLimit[0]), $parameters);
         } else {
-            $rs = $oDb->select($sql, $parameters);
+            $result = $database->select($sql, $parameters);
         }
 
-        if ($rs != false && $rs->count() > 0) {
+        if ($result != false && $result->count() > 0) {
             $oSaved = clone $this->getBaseObject();
 
-            while (!$rs->EOF) {
+            while (!$result->EOF) {
                 $oListObject = clone $oSaved;
 
-                $this->assignElement($oListObject, $rs->fields);
+                $this->assignElement($oListObject, $result->fields);
 
                 $this->add($oListObject);
 
-                $rs->fetchRow();
+                $result->fetchRow();
             }
         }
     }

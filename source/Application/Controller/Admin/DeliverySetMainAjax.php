@@ -100,8 +100,8 @@ class DeliverySetMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin
                 // check if we have this entry already in
                 // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
                 $sID = $database->getOne("select oxid from oxdel2delset where oxdelid = :oxdelid and oxdelsetid = :oxdelsetid", [
-                    ':oxdelid' => $sChosenSet,
-                    ':oxdelsetid' => $soxId
+                    'oxdelid' => $sChosenSet,
+                    'oxdelsetid' => $soxId
                 ]);
                 if (!isset($sID) || !$sID) {
                     $oDel2delset = oxNew(\OxidEsales\Eshop\Core\Model\BaseModel::class);

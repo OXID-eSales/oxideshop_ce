@@ -38,38 +38,15 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
         $this->assertGreaterThan(0, $count);
     }
 
-    public static function dataProviderTestFields(): array
+    public function testFields(): void
     {
-        return [['SELECT OXID FROM ' . self::TABLE_NAME, false, false], [
-            'SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID',
-            true,
-            [self::FIXTURE_OXID_1]], ['SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID', true, [
-                'OXID' => self::FIXTURE_OXID_1,
-                'OXUSERID' => self::FIXTURE_OXUSERID_1,
-            ], true]];
-    }
+        $expected = [
+            'OXID' => self::FIXTURE_OXID_1,
+            'OXUSERID' => self::FIXTURE_OXUSERID_1,
+        ];
+        $this->loadFixtureToTestTable();
 
-    /**
-     * @param string $query The sql statement to execute.
-     * @param bool $loadFixture Should the fixture be loaded to the test database table?
-     * @param mixed $expected The expected result of the fields method under the given specification.
-     * @param bool $fetchModeAssociative Should the fetch mode be set to associative array before running the statement?
-     */
-    #[DataProvider('dataProviderTestFields')]
-    public function testFields(
-        string $query,
-        bool $loadFixture,
-        mixed $expected,
-        bool $fetchModeAssociative = false
-    ): void {
-        if ($loadFixture) {
-            $this->loadFixtureToTestTable();
-        }
-        if ($fetchModeAssociative) {
-            $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_ASSOC);
-        }
-
-        $resultSet = $this->database->select($query);
+        $resultSet = $this->database->select('SELECT OXID,OXUSERID FROM ' . self::TABLE_NAME . ' ORDER BY OXID');
 
         $this->truncateTestTable();
         $this->assertSame($expected, $resultSet->getFields());
@@ -94,19 +71,19 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
         $this->assertSame(3, $resultSet->count());
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame([self::FIXTURE_OXID_1], $resultSet->fields);
+        $this->assertSame(['OXID' => self::FIXTURE_OXID_1], $resultSet->fields);
 
         $methodResult = $resultSet->fetchRow();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame([self::FIXTURE_OXID_2], $resultSet->fields);
-        $this->assertSame([self::FIXTURE_OXID_2], $methodResult);
+        $this->assertSame(['OXID' => self::FIXTURE_OXID_2], $resultSet->fields);
+        $this->assertSame(['OXID' => self::FIXTURE_OXID_2], $methodResult);
 
         $methodResult = $resultSet->fetchRow();
 
         $this->assertFalse($resultSet->EOF);
-        $this->assertSame([self::FIXTURE_OXID_3], $resultSet->fields);
-        $this->assertSame([self::FIXTURE_OXID_3], $methodResult);
+        $this->assertSame(['OXID' => self::FIXTURE_OXID_3], $resultSet->fields);
+        $this->assertSame(['OXID' => self::FIXTURE_OXID_3], $methodResult);
     }
 
     public function testFetchRowWithNonEmptyResultSetReachingEnd(): void
@@ -129,11 +106,10 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
         $this->assertFalse($methodResult);
     }
 
-    public function testFetchRowWithNonEmptyResultSetFetchModeAssociative(): void
+    public function testFetchRowWithNonEmptyResult(): void
     {
         $this->loadFixtureToTestTable();
 
-        $this->database->setFetchMode(oxDb::FETCH_MODE_ASSOC);
         $resultSet = $this->getResultSet();
         $this->initializeDatabase();
 
@@ -178,37 +154,15 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
         $this->loadFixtureToTestTable();
         $resultSet = $this->getResultSet();
 
-        $this->assertSame([self::FIXTURE_OXID_1], $resultSet->fields);
+        $this->assertSame(['OXID' => self::FIXTURE_OXID_1], $resultSet->fields);
         $rows = $resultSet->fetchAll();
 
         $this->assertIsArray($rows);
         $this->assertNotEmpty($rows);
         $this->assertSame(3, count($rows));
-        $this->assertSame(self::FIXTURE_OXID_1, $rows[0][0]);
-        $this->assertSame(self::FIXTURE_OXID_2, $rows[1][0]);
-        $this->assertSame(self::FIXTURE_OXID_3, $rows[2][0]);
-    }
-
-    public function testFetchAllWithDifferentFetchMode(): void
-    {
-        $this->loadFixtureToTestTable();
-        $this->database->setFetchMode(DatabaseInterface::FETCH_MODE_BOTH);
-        $expectedRows = [[
-            'OXID' => self::FIXTURE_OXID_1,
-            self::FIXTURE_OXID_1,
-        ], [
-            'OXID' => self::FIXTURE_OXID_2,
-            self::FIXTURE_OXID_2,
-        ], [
-            'OXID' => self::FIXTURE_OXID_3,
-            self::FIXTURE_OXID_3,
-        ]];
-
-        $rows = $this->database
-            ->select('SELECT OXID FROM ' . self::TABLE_NAME . ' ORDER BY OXID')
-            ->fetchAll();
-
-        $this->assertSame(sort($expectedRows), sort($rows));
+        $this->assertSame(self::FIXTURE_OXID_1, $rows[0]['OXID']);
+        $this->assertSame(self::FIXTURE_OXID_2, $rows[1]['OXID']);
+        $this->assertSame(self::FIXTURE_OXID_3, $rows[2]['OXID']);
     }
 
     public function testEofWithEmptyResultSet(): void
@@ -255,7 +209,7 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
 
         $resultSet->close();
 
-        $this->assertSame([self::FIXTURE_OXID_1], $firstRow);
+        $this->assertSame(['OXID' => self::FIXTURE_OXID_1], $firstRow);
         $this->assertFalse($resultSet->EOF);
         $this->assertSame([], $resultSet->fields);
     }
@@ -265,7 +219,11 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
         $this->loadFixtureToTestTable();
         $resultSet = $this->getResultSet();
 
-        $expectedResults = [[self::FIXTURE_OXID_1], [self::FIXTURE_OXID_2], [self::FIXTURE_OXID_3]];
+        $expectedResults = [
+            ['OXID' => self::FIXTURE_OXID_1],
+            ['OXID' => self::FIXTURE_OXID_2],
+            ['OXID' => self::FIXTURE_OXID_3]
+        ];
 
         $this->assertSame($expectedResults[0], $resultSet->getFields());
         $counter = 1;
@@ -281,12 +239,11 @@ final class ResultSetTest extends DatabaseInterfaceImplementationBase
         $this->loadFixtureToTestTable();
 
         $resultSet = $this->database->select(
-            'SELECT * FROM ' . self::TABLE_NAME . ' WHERE OXID in (?, ?)',
-            [self::FIXTURE_OXID_2, self::FIXTURE_OXID_3]
+            'SELECT * FROM ' . self::TABLE_NAME . ' WHERE OXID in (?, ?)', [self::FIXTURE_OXID_2, self::FIXTURE_OXID_3]
         );
         $this->assertSame([
-            0 => 'OXID_2',
-            1 => 'OXUSERID_2',
+            'oxid' => 'OXID_2',
+            'oxuserid' => 'OXUSERID_2',
         ], $resultSet->fields);
     }
 

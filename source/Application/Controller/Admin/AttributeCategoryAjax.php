@@ -130,7 +130,7 @@ class AttributeCategoryAjax extends \OxidEsales\Eshop\Application\Controller\Adm
                 $sSql = "select max(oxsort) + 1 from oxcategory2attribute where oxobjectid = :oxobjectid";
 
                 $oNewGroup->$sOxSortField = new \OxidEsales\Eshop\Core\Field((int) $database->getOne($sSql, [
-                    ':oxobjectid' => $sAdd
+                    'oxobjectid' => $sAdd
                 ]));
                 $oNewGroup->save();
             }

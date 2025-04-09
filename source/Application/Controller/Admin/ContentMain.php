@@ -218,9 +218,9 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
         } elseif (
             $masterDb->getOne("select oxid from oxcontents where oxloadid = :oxloadid and oxid != :oxid and oxshopid = :oxshopid", [
-            ':oxloadid' => $sIdent,
-            ':oxid' => $sOxId,
-            ':oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
+            'oxloadid' => $sIdent,
+            'oxid' => $sOxId,
+            'oxshopid' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId()
             ])
         ) {
             $blAllow = true;

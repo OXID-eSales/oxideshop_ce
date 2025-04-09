@@ -53,22 +53,22 @@ class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         // deleting related data records
         $sDelete = 'delete from oxobject2group where oxobject2group.oxgroupsid = :oxid';
         $oDb->execute($sDelete, [
-            ':oxid' => $sOXID
+            'oxid' => $sOXID
         ]);
 
         $sDelete = 'delete from oxobject2delivery where oxobject2delivery.oxobjectid = :oxid';
         $oDb->execute($sDelete, [
-            ':oxid' => $sOXID
+            'oxid' => $sOXID
         ]);
 
         $sDelete = 'delete from oxobject2discount where oxobject2discount.oxobjectid = :oxid';
         $oDb->execute($sDelete, [
-            ':oxid' => $sOXID
+            'oxid' => $sOXID
         ]);
 
         $sDelete = 'delete from oxobject2payment where oxobject2payment.oxobjectid = :oxid';
         $oDb->execute($sDelete, [
-            ':oxid' => $sOXID
+            'oxid' => $sOXID
         ]);
 
         return $parentResult;

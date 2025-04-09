@@ -182,8 +182,8 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
               "and $sArtTable.oxid is not null";
 
         $parameters = [
-            ':oxactionid' => $soxId,
-            ':oxshopid' => $myConfig->getShopId()
+            'oxactionid' => $soxId,
+            'oxshopid' => $myConfig->getShopId()
         ];
 
         $iSort = ((int) $database->getOne($sQ, $parameters)) + 1;
@@ -221,8 +221,8 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $oList->init("oxbase", "oxactions2article");
         $oList->selectString($sSelect, [
-            ':oxactionid' => $sSelId,
-            ':oxshopid' => $myConfig->getShopID()
+            'oxactionid' => $sSelId,
+            'oxshopid' => $myConfig->getShopID()
         ]);
 
         // fixing indexes

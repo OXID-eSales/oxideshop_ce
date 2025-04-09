@@ -76,7 +76,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $this->_aStates = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
         $this->_aStates->init("oxstate");
         $this->_aStates->selectString($sQ, [
-            ':oxcountryid' => $sCountryId
+            'oxcountryid' => $sCountryId
         ]);
 
         return $this->_aStates;
@@ -94,7 +94,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         return $oDb->getOne("select oxid from oxcountry where oxisoalpha2 = :oxisoalpha2", [
-            ':oxisoalpha2' => $sCode
+            'oxisoalpha2' => $sCode
         ]);
     }
 

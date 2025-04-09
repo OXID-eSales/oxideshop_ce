@@ -39,7 +39,7 @@ class RatingDao implements RatingDaoInterface
             ->orderBy('r.oxtimestamp', 'DESC')
             ->setParameter('userId', $userId);
 
-        return $this->mapRatings($queryBuilder->execute()->fetchAll());
+        return $this->mapRatings($queryBuilder->fetchAllAssociative());
     }
 
     /**
@@ -52,7 +52,7 @@ class RatingDao implements RatingDaoInterface
             ->delete('oxratings')
             ->where('oxid = :id')
             ->setParameter('id', $rating->getId())
-            ->execute();
+            ->executeStatement();
     }
 
     /**
@@ -78,7 +78,7 @@ class RatingDao implements RatingDaoInterface
                 ]
             );
 
-        return $this->mapRatings($queryBuilder->execute()->fetchAll());
+        return $this->mapRatings($queryBuilder->fetchAllAssociative());
     }
 
     /**

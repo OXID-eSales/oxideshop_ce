@@ -108,10 +108,7 @@ class Context extends BasicContext implements ContextInterface
      */
     private function getConfigParameter($name, $default = null)
     {
-        $value = Registry::getConfig()->getConfigParam($name, $default);
-        DatabaseProvider::getDb()->setFetchMode(PDO::FETCH_ASSOC);
-
-        return $value;
+        return Registry::getConfig()->getConfigParam($name, $default);
     }
 
     private function isConfigLoaded(): bool

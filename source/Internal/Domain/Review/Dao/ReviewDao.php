@@ -39,7 +39,7 @@ class ReviewDao implements ReviewDaoInterface
             ->orderBy('r.oxcreate', 'DESC')
             ->setParameter('userId', $userId);
 
-        return $this->mapReviews($queryBuilder->execute()->fetchAll());
+        return $this->mapReviews($queryBuilder->fetchAllAssociative());
     }
 
     /**
@@ -52,7 +52,7 @@ class ReviewDao implements ReviewDaoInterface
             ->delete('oxreviews')
             ->where('oxid = :id')
             ->setParameter('id', $review->getId())
-            ->execute();
+            ->executeStatement();
     }
 
     /**

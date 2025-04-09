@@ -1958,8 +1958,8 @@ class Email extends PHPMailer
         }
 
         $sOxId = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->getOne($select, [
-            ':oxusername' => $userName,
-            ':oxshopid'   => $shopId
+            'oxusername' => $userName,
+            'oxshopid'   => $shopId
         ]);
 
         return $sOxId;

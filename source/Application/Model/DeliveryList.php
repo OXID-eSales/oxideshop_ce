@@ -376,15 +376,15 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sQ .= " and ($sTable.oxdeltype != 'a' || ( $sTable.oxparam <= 1 && $sTable.oxparamend >= 1))";
         if ($dPrice) {
             $sQ .= " and ($sTable.oxdeltype != 'p' || ( $sTable.oxparam <= :dprice && $sTable.oxparamend >= :dprice))";
-            $params[':dprice'] = $dPrice;
+            $params['dprice'] = $dPrice;
         }
         if ($dSize) {
             $sQ .= " and ($sTable.oxdeltype != 's' || ( $sTable.oxparam <= :dsize && $sTable.oxparamend >= :dsize))";
-            $params[':dsize'] = $dSize;
+            $params['dsize'] = $dSize;
         }
         if ($dWeight) {
             $sQ .= " and ($sTable.oxdeltype != 'w' || ( $sTable.oxparam <= :dweight && $sTable.oxparamend >= :dweight))";
-            $params[':dweight'] = $dWeight;
+            $params['dweight'] = $dWeight;
         }
         $this->selectString($sQ, $params);
     }

@@ -52,6 +52,6 @@ final class PaymentRDFaTest extends IntegrationTestCase
                 'OXACTIVE' => true,
                 'OXDESC' => "\"{$this->descriptionInDefaultLanguage}\"",
             ])
-            ->execute();
+            ->executeStatement();
     }
 }

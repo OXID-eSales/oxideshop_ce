@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use Exception;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
@@ -138,17 +139,21 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
                 $sProdIds = "";
                 foreach ($aArticles as $sAdd) {
                     // check, if it's already in, then don't add it again
-                    $sSelect = "select 1 from $sO2CView as oxobject2category where oxobject2category.oxcatnid = :oxcatnid "
-                               . " and oxobject2category.oxobjectid = :oxobjectid";
-                    // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-                    if ($database->getOne($sSelect, [':oxcatnid' => $sCategoryID, ':oxobjectid' => $sAdd])) {
+                    $sSelect = sprintf(
+                        'select 1 from %s as oxobject2category where oxobject2category.oxcatnid = :oxcatnid '
+                        . ' and oxobject2category.oxobjectid = :oxobjectid',
+                        $sO2CView
+                    );
+                    // We force reading from master to prevent issues with slow replications or open transactions
+                    // (see ESDEV-3804).
+                    if ($database->getOne($sSelect, ['oxcatnid' => $sCategoryID, 'oxobjectid' => $sAdd])) {
                         continue;
                     }
 
-                    $oNew->oxobject2category__oxid = new \OxidEsales\Eshop\Core\Field($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
-                    $oNew->oxobject2category__oxobjectid = new \OxidEsales\Eshop\Core\Field($sAdd);
-                    $oNew->oxobject2category__oxcatnid = new \OxidEsales\Eshop\Core\Field($sCategoryID);
-                    $oNew->oxobject2category__oxtime = new \OxidEsales\Eshop\Core\Field(time());
+                    $oNew->oxobject2category__oxid = new Field($oNew->setId(md5($sAdd . $sCategoryID . $sShopID)));
+                    $oNew->oxobject2category__oxobjectid = new Field($sAdd);
+                    $oNew->oxobject2category__oxcatnid = new Field($sCategoryID);
+                    $oNew->oxobject2category__oxtime = new Field(time());
 
                     $oNew->save();
 

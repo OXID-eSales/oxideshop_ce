@@ -2,26 +2,18 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\LoggerConfigurationValidatorInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Validator\PsrLoggerConfigurationValidator
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfigurationInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration\MonologConfiguration
+  OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
     arguments:
       $loggerName: 'OXID Logger'
       $logFilePath: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getLogFilePath()'
       $logLevel: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\ContextInterface").getLogLevel()'
-
-  OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\MonologLoggerFactory
 
   oxid_esales.monolog.logger:
     class: Monolog\Logger
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Logger\Factory\LoggerFactoryInterface', 'create']
 
   Psr\Log\LoggerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper\LoggerWrapper
-    arguments:
-      $logger: '@oxid_esales.monolog.logger'
+    alias: 'oxid_esales.monolog.logger'
     public: true
+

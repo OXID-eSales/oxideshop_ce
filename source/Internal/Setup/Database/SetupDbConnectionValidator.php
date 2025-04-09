@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
 use Doctrine\DBAL\Exception\ConnectionException;
-use OxidEsales\EshopCommunity\Internal\Framework\Configuration\DataObject\DatabaseConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 
 class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
 {
@@ -48,6 +48,8 @@ class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
         } catch (ConnectionException) {
             return;
         }
-        throw new DatabaseAlreadyExistsException("Database `{$databaseConfiguration->getName()}` already exists!");
+        throw new DatabaseAlreadyExistsException(
+            "Database `{$databaseConfiguration->getName()}` already exists!"
+        );
     }
 }

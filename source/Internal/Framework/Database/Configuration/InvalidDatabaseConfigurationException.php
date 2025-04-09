@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Configuration;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration;
 
 class InvalidDatabaseConfigurationException extends \Exception
 {

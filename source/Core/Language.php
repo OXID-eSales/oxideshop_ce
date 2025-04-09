@@ -369,19 +369,19 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getLanguageAbbr($iLanguage = null)
+    public function getLanguageAbbr($language = null)
     {
         if ($this->_aLangAbbr === []) {
             $this->_aLangAbbr = $this->getLanguageIds();
         }
 
-        $iLanguage = isset($iLanguage) ? (int) $iLanguage : $this->getBaseLanguage();
-        if (isset($this->_aLangAbbr[$iLanguage])) {
-            return $this->_aLangAbbr[$iLanguage];
+        $language = isset($language) ? (int) $language : $this->getBaseLanguage();
+        if (isset($this->_aLangAbbr[$language])) {
+            return $this->_aLangAbbr[$language];
         }
 
         throw new LanguageNotFoundException(
-            'Could not find language abbreviation for language-id ' . $iLanguage . '! '
+            'Could not find language abbreviation for language-id ' . $language . '! '
             . (
                 count($this->_aLangAbbr) === 0
                 ? 'No languages available'
@@ -1346,10 +1346,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function selectLanguageParamValues($sParamName, $sShopId = null)
     {
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+        $oDb = DatabaseProvider::getDb();
 
         $params = [
-            ':oxvarname' => $sParamName
+            'oxvarname' => $sParamName
         ];
         $sQuery = "
             select oxvarvalue
@@ -1358,7 +1358,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         if (!empty($sShopId)) {
             $sQuery .= " and oxshopid = :oxshopid limit 1";
-            $params[':oxshopid'] = $sShopId;
+            $params['oxshopid'] = $sShopId;
         }
 
         return $oDb->getAll($sQuery, $params);

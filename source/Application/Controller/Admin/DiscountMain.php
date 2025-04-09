@@ -95,7 +95,7 @@ class DiscountMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                    left join $sViewName on $sViewName.oxid=oxdiscount.oxitmartid
                    where oxdiscount.oxitmartid != '' and oxdiscount.oxid = :oxid";
             $sTitle = $database->getOne($sQ, [
-                ':oxid' => $sOxId
+                'oxid' => $sOxId
             ]);
         }
 

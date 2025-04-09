@@ -52,7 +52,7 @@ class ShopRdfa extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfig
                 AND OXLOADID IN ('oxagb', 'oxdeliveryinfo', 'oximpressum', 'oxrightofwithdrawal')
                 AND OXSHOPID = :OXSHOPID
              ORDER BY OXLOADID ASC",
-            [':OXSHOPID' => Registry::getRequest()->getRequestEscapedParameter("oxid")]
+            ['OXSHOPID' => Registry::getRequest()->getRequestEscapedParameter("oxid")]
         );
 
         return $oContentList;

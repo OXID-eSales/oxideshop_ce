@@ -94,8 +94,8 @@ class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
             $sQ = 'select oxpaymentid from oxorder where oxpaymenttype = :oxpaymenttype and
                     oxuserid = :oxuserid order by oxorderdate desc';
             $params = [
-                ':oxpaymenttype' => $sPaymentType,
-                ':oxuserid' => $oUser->getId()
+                'oxpaymenttype' => $sPaymentType,
+                'oxuserid' => $oUser->getId()
             ];
 
             if (($sOxId = $oDb->getOne($sQ, $params))) {

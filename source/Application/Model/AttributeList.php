@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxDb;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use oxRegistry;
 use stdClass;
@@ -42,7 +43,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
         $sAttrViewName = $tableViewNameGenerator->getViewName('oxattribute');
         $sViewName = $tableViewNameGenerator->getViewName('oxobject2attribute');
 
-        $oxObjectIdsSql = implode(',', \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->quoteArray($aIds));
+        $oxObjectIdsSql = implode(',', DatabaseProvider::getDb()->quoteArray($aIds));
 
         $sSelect = "select $sAttrViewName.oxid, $sAttrViewName.oxtitle, {$sViewName}.oxvalue, {$sViewName}.oxobjectid ";
         $sSelect .= "from {$sViewName} left join $sAttrViewName on $sAttrViewName.oxid = {$sViewName}.oxattrid ";
@@ -59,26 +60,27 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @return array $aAttributes
      */
-    protected function createAttributeListFromSql($sSelect)
+    protected function createAttributeListFromSql($select)
     {
-        $aAttributes = [];
-        $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->select($sSelect);
-        if ($rs != false && $rs->count() > 0) {
-            while (!$rs->EOF) {
-                if (!isset($aAttributes[$rs->fields[0]])) {
-                    $aAttributes[$rs->fields[0]] = new stdClass();
+        $attributes = [];
+        $result = DatabaseProvider::getDb()->select($select);
+        if ($result != false && $result->count() > 0) {
+            while (!$result->EOF) {
+                $fields = array_values($result->fields);
+                if (!isset($attributes[$fields[0]])) {
+                    $attributes[$fields[0]] = new stdClass();
                 }
 
-                $aAttributes[$rs->fields[0]]->title = $rs->fields[1];
-                if (!isset($aAttributes[$rs->fields[0]]->aProd[$rs->fields[3]])) {
-                    $aAttributes[$rs->fields[0]]->aProd[$rs->fields[3]] = new stdClass();
+                $attributes[$fields[0]]->title = $fields[1];
+                if (!isset($attributes[$fields[0]]->aProd[$fields[3]])) {
+                    $attributes[$fields[0]]->aProd[$fields[3]] = new stdClass();
                 }
-                $aAttributes[$rs->fields[0]]->aProd[$rs->fields[3]]->value = $rs->fields[2];
-                $rs->fetchRow();
+                $attributes[$fields[0]]->aProd[$fields[3]]->value = $fields[2];
+                $result->fetchRow();
             }
         }
 
-        return $aAttributes;
+        return $attributes;
     }
 
     /**
@@ -90,7 +92,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadAttributes($sArticleId, $sParentId = null)
     {
         if ($sArticleId) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+            $oDb = DatabaseProvider::getDb();
 
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sAttrViewName = $tableViewNameGenerator->getViewName('oxattribute');
@@ -102,12 +104,12 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";
 
             $aAttributes = $oDb->getAll($sSelect, [
-                ':oxobjectid' => $sArticleId
+                'oxobjectid' => $sArticleId
             ]);
 
             if ($sParentId) {
                 $aParentAttributes = $oDb->getAll($sSelect, [
-                    ':oxobjectid' => $sParentId
+                    'oxobjectid' => $sParentId
                 ]);
                 $aAttributes = $this->mergeAttributes($aAttributes, $aParentAttributes);
             }
@@ -125,7 +127,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function loadAttributesDisplayableInBasket($sArtId, $sParentId = null)
     {
         if ($sArtId) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb(\OxidEsales\Eshop\Core\DatabaseProvider::FETCH_MODE_ASSOC);
+            $oDb = DatabaseProvider::getDb();
 
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sAttrViewName = $tableViewNameGenerator->getViewName('oxattribute');
@@ -137,12 +139,12 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sSelect .= "order by o2a.oxpos, {$sAttrViewName}.oxpos";
 
             $aAttributes = $oDb->getAll($sSelect, [
-                ':oxobjectid' => $sArtId
+                'oxobjectid' => $sArtId
             ]);
 
             if ($sParentId) {
                 $aParentAttributes = $oDb->getAll($sSelect, [
-                    ':oxobjectid' => $sParentId
+                    'oxobjectid' => $sParentId
                 ]);
                 $aAttributes = $this->mergeAttributes($aAttributes, $aParentAttributes);
             }
@@ -168,7 +170,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
 
         // Only if we have articles
         if (count($oArtList) > 0) {
-            $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+            $oDb = DatabaseProvider::getDb();
             $sArtIds = '';
             foreach (array_keys($oArtList->getArray()) as $sId) {
                 if ($sArtIds) {
@@ -182,17 +184,18 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
             $sO2ATbl = $tableViewNameGenerator->getViewName('oxobject2attribute', $iLang);
             $sC2ATbl = $tableViewNameGenerator->getViewName('oxcategory2attribute', $iLang);
 
-            $sSelect = "SELECT DISTINCT att.oxid, att.oxtitle, o2a.oxvalue " .
-                       "FROM $sAttTbl as att, $sO2ATbl as o2a ,$sC2ATbl as c2a " .
-                       "WHERE att.oxid = o2a.oxattrid AND c2a.oxobjectid = :oxobjectid AND c2a.oxattrid = att.oxid AND o2a.oxvalue !='' AND o2a.oxobjectid IN ($sArtIds) " .
-                       "ORDER BY c2a.oxsort , att.oxpos, att.oxtitle, o2a.oxvalue";
+            $sSelect = "SELECT DISTINCT att.oxid as oxid, att.oxtitle as oxtitle, o2a.oxvalue as oxvalue" .
+                       " FROM $sAttTbl as att, $sO2ATbl as o2a ,$sC2ATbl as c2a" .
+                       " WHERE att.oxid = o2a.oxattrid AND c2a.oxobjectid = :oxobjectid AND c2a.oxattrid = att.oxid"
+                       . " AND o2a.oxvalue !='' AND o2a.oxobjectid IN ($sArtIds)" .
+                       " ORDER BY c2a.oxsort , att.oxpos, att.oxtitle, o2a.oxvalue";
 
             $rs = $oDb->select($sSelect, [
-                ':oxobjectid' => $sCategoryId
+                'oxobjectid' => $sCategoryId
             ]);
 
             if ($rs != false && $rs->count() > 0) {
-                while (!$rs->EOF && list($sAttId, $sAttTitle, $sAttValue) = $rs->fields) {
+                while (!$rs->EOF && list($sAttId, $sAttTitle, $sAttValue) = array_values($rs->fields)) {
                     if (!$this->offsetExists($sAttId)) {
                         $oAttribute = oxNew(\OxidEsales\Eshop\Application\Model\Attribute::class);
                         $oAttribute->setTitle($sAttTitle);

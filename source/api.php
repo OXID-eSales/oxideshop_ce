@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
+use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Api\Api;
 use OxidEsales\EshopCommunity\Internal\Framework\Api\ExceptionHandler;
@@ -28,6 +29,8 @@ require_once VENDOR_PATH . 'autoload.php';
  */
 require_once (new Facts())->getCommunityEditionSourcePath() . '/Core/Autoload/BackwardsCompatibilityAutoload.php';
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
+
+spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
 require_once INSTALLATION_ROOT_PATH . '/source/oxfunctions.php';
 require_once INSTALLATION_ROOT_PATH . '/source/overridablefunctions.php';

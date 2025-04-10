@@ -11,3 +11,6 @@ services:
     decorates: OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller\Fixtures\module1\src\Controller\ModuleControllerAsService
     arguments: [ '@.inner' ]
     public: true
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller\Fixtures\module1\src\Controller\ApiTestController:
+    public: true

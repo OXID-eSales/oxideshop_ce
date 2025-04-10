@@ -1,0 +1,31 @@
+parameters:
+  rate_limiter.enabled: true
+  rate_limiter.limit: 100
+  rate_limiter.interval: 60
+  rate_limiter.policy: 'token_bucket'
+  rate_limiter.excluded_routes: []
+
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ApiRateLimiterFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ApiRateLimiterFactory
+    arguments:
+      $limit: '%rate_limiter.limit%'
+      $interval: '%rate_limiter.interval%'
+      $policy: '%rate_limiter.policy%'
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ClientIdentifierProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ClientIdentifierProvider
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ApiRateLimitListener:
+    arguments:
+      $enabled: '%rate_limiter.enabled%'
+      $excludedRoutes: '%rate_limiter.excluded_routes%'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\RateLimitHeadersListener:
+    tags:
+      - { name: kernel.event_subscriber }

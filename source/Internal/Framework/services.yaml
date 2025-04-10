@@ -1,4 +1,5 @@
 imports:
+  - { resource: Api/services.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Logger/services.yaml }
   - { resource: Templating/services.yaml }
@@ -16,3 +17,4 @@ imports:
   - { resource: Session/services.yaml }
   - { resource: Html/services.yaml }
   - { resource: Mailing/services.yaml }
+  - { resource: RateLimiter/services.yaml }

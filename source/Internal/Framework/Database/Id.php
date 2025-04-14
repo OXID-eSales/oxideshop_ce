@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
 use InvalidArgumentException;
@@ -18,7 +17,7 @@ readonly class Id
 
     private function __construct(?string $uid = null)
     {
-        if ($uid && !$this->isMd5($uid)) {
+        if (!is_null($uid) && !$this->isValidUid($uid)) {
             throw new InvalidArgumentException("Invalid ID format: $uid");
         }
 
@@ -40,9 +39,9 @@ readonly class Id
         return $this->uid;
     }
 
-    private function isMd5(string $id): bool
+    private function isValidUid(string $id): bool
     {
-        return preg_match('/^[a-f0-9]{32}$/i', $id) === 1;
+        return (bool) preg_match('/^.{1,32}$/', $id);
     }
 
     private function generateUid(): string

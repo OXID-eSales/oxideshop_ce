@@ -429,6 +429,12 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
+    'OxidEsales\Eshop\Application\Controller\Admin\ArticlePicturesAjax'              => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticlePicturesAjax::class,
+        'isAbstract'       => false,
+        'isInterface'      => false,
+        'isDeprecated'     => false
+    ],
     'OxidEsales\Eshop\Application\Controller\Admin\ArticleReview'                => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleReview::class,
         'isAbstract'       => false,

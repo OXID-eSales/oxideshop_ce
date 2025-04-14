@@ -18,7 +18,7 @@ final class Version20250523154010 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Migrates legacy product images from oxarticles to existing oxmedia and oxarticle_media tables.';
+        return 'Migrates legacy product images from oxarticles to the new tables.';
     }
 
     public function up(Schema $schema): void
@@ -26,23 +26,23 @@ final class Version20250523154010 extends AbstractMigration
         $lastProcessedId = null;
 
         while (true) {
-            $articles = $this->fetchArticlesBatch($lastProcessedId);
+            $products = $this->fetchProductsBatch($lastProcessedId);
 
-            if (empty($articles)) {
+            if (empty($products)) {
                 break;
             }
 
             $mediaRows = [];
-            $articleMediaRows = [];
+            $productMediaRows = [];
 
-            foreach ($articles as $article) {
-                $this->collectImageDataForArticle($article, $mediaRows, $articleMediaRows);
+            foreach ($products as $product) {
+                $this->collectImageDataForProduct($product, $mediaRows, $productMediaRows);
             }
 
             $this->batchInsertMedia($mediaRows);
-            $this->batchInsertArticleMedia($articleMediaRows);
+            $this->batchInsertProductMedia($productMediaRows);
 
-            $lastProcessedId = end($articles)['OXID'];
+            $lastProcessedId = end($products)['OXID'];
         }
     }
 
@@ -51,7 +51,7 @@ final class Version20250523154010 extends AbstractMigration
         return false;
     }
 
-    private function fetchArticlesBatch(?string $lastProcessedId = null): array
+    private function fetchProductsBatch(?string $lastProcessedId = null): array
     {
         $sql = 'SELECT OXID, OXICON, OXTHUMB, OXPIC1, OXPIC2, OXPIC3, OXPIC4, OXPIC5, OXPIC6,
                        OXPIC7, OXPIC8, OXPIC9, OXPIC10, OXPIC11, OXPIC12
@@ -70,23 +70,23 @@ final class Version20250523154010 extends AbstractMigration
         ])->fetchAllAssociative();
     }
 
-    private function collectImageDataForArticle(array $article, array &$mediaRows, array &$articleMediaRows): void
+    private function collectImageDataForProduct(array $product, array &$mediaRows, array &$productMediaRows): void
     {
-        $articleId = $article['OXID'];
+        $productId = $product['OXID'];
         $position = 1;
 
         for ($i = 1; $i <= 12; $i++) {
             $picField = 'OXPIC' . $i;
 
-            if (!empty($article[$picField])) {
+            if (!empty($product[$picField])) {
                 $mediaId = $this->generateUuid();
-                $fileName = $article[$picField];
+                $fileName = $product[$picField];
                 $path = "master/product/$i/$fileName";
 
                 $mediaRows[] = [$mediaId, $path];
-                $articleMediaRows[] = [
+                $productMediaRows[] = [
                     $this->generateUuid(),
-                    $articleId,
+                    $productId,
                     $mediaId,
                     $position,
                     'detail',
@@ -96,30 +96,30 @@ final class Version20250523154010 extends AbstractMigration
             }
         }
 
-        if (!empty($article['OXICON'])) {
+        if (!empty($product['OXICON'])) {
             $mediaId = $this->generateUuid();
-            $fileName = $article['OXICON'];
+            $fileName = $product['OXICON'];
             $path = "master/product/icon/$fileName";
 
             $mediaRows[] = [$mediaId, $path];
-            $articleMediaRows[] = [
+            $productMediaRows[] = [
                 $this->generateUuid(),
-                $articleId,
+                $productId,
                 $mediaId,
                 0,
                 'icon',
             ];
         }
 
-        if (!empty($article['OXTHUMB'])) {
+        if (!empty($product['OXTHUMB'])) {
             $mediaId = $this->generateUuid();
-            $fileName = $article['OXTHUMB'];
+            $fileName = $product['OXTHUMB'];
             $path = "master/product/thumb/$fileName";
 
             $mediaRows[] = [$mediaId, $path];
-            $articleMediaRows[] = [
+            $productMediaRows[] = [
                 $this->generateUuid(),
-                $articleId,
+                $productId,
                 $mediaId,
                 0,
                 'thumbnail',
@@ -144,18 +144,23 @@ final class Version20250523154010 extends AbstractMigration
                 array_push($params, ...$row);
             }
 
-            $sql = 'INSERT INTO oxmedia (id, path, type, created) VALUES ' . implode(', ', $values);
+            $sql = 'INSERT INTO oxmedia (
+                     id,
+                     path,
+                     type,
+                     created
+                     ) VALUES ' . implode(', ', $values);
             $this->connection->executeStatement($sql, $params);
         }
     }
 
-    private function batchInsertArticleMedia(array $articleMediaRows): void
+    private function batchInsertProductMedia(array $productMediaRows): void
     {
-        if (empty($articleMediaRows)) {
+        if (empty($productMediaRows)) {
             return;
         }
 
-        $chunks = array_chunk($articleMediaRows, 1000);
+        $chunks = array_chunk($productMediaRows, 1000);
 
         foreach ($chunks as $chunk) {
             $values = [];
@@ -166,7 +171,15 @@ final class Version20250523154010 extends AbstractMigration
                 array_push($params, ...$row);
             }
 
-            $sql = 'INSERT INTO oxarticle_media (id, articleid, mediaid, position, type, active, created) VALUES '
+            $sql = 'INSERT INTO oxproduct_media (
+                             id,
+                             product_id,
+                             media_id,
+                             position,
+                             type,
+                             active,
+                             created
+                             ) VALUES '
             . implode(', ', $values);
 
             $this->connection->executeStatement($sql, $params);

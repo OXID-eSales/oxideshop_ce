@@ -25,6 +25,7 @@ parameters:
     - 'png'
     - 'ppt'
     - 'xls'
+    - 'webp'
   oxid_esales.search_engine_list:
     - 'ahrefs'
     - 'ahrefsbot'

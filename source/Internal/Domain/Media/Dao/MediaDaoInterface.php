@@ -5,17 +5,18 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 interface MediaDaoInterface
 {
-    public function create(string $path, string $type): Media;
+    public function add(Media $media): void;
 
-    public function get(string $id): Media;
+    /** @throws EntryDoesNotExistDaoException */
+    public function get(Id $id): Media;
 
-    public function delete(string $id): void;
+    public function delete(Id $id): void;
 }

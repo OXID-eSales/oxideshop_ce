@@ -1,9 +1,10 @@
 imports:
     - { resource: ./parameter.yaml }
-    - { resource: Review/services.yaml }
+    - { resource: Admin/services.yaml }
     - { resource: Authentication/services.yaml }
     - { resource: Contact/services.yaml }
-    - { resource: Admin/services.yaml }
-    - { resource: Newsletter/services.yaml }
     - { resource: Media/services.yaml }
-    - { resource: Product/services.yaml }
+    - { resource: Newsletter/services.yaml }
+    - { resource: Product/Media/parameters.yaml }
+    - { resource: Product/Media/services.yaml }
+    - { resource: Review/services.yaml }

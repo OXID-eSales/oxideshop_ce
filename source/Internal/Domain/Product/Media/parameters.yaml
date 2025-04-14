@@ -1,0 +1,3 @@
+parameters:
+  oxid_esales.product.media.file.min_size_kb: 1
+  oxid_esales.product.media.file.max_size_kb: 102400

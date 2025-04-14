@@ -1,2 +1,9 @@
-imports:
-  - { resource: Dao/services.yaml }
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDao
+
+  OxidEsales\EshopCommunity\Internal\Domain\Media\DataMapper\DataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\DataMapper\DataMapper

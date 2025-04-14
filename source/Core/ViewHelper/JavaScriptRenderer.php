@@ -113,7 +113,7 @@ class JavaScriptRenderer
         $usedSources = [];
         $widgets = [];
         $widgetTemplate = "WidgetsHandler.registerFile('%s', '%s');";
-        $scriptTemplate = '<script type="text/javascript" src="%s"></script>';
+        $scriptTemplate = '<script src="%s"></script>';
         foreach ($includes as $priority) {
             foreach ($priority as $source) {
                 if (!in_array($source, $usedSources)) {
@@ -125,7 +125,7 @@ class JavaScriptRenderer
         $output = implode(PHP_EOL, $widgets);
         if ($widget && !empty($output)) {
             $output = <<<JS
-<script type='text/javascript'>
+<script>
     window.addEventListener('load', function() {
         $output
     }, false)
@@ -188,7 +188,7 @@ JS;
                 $scriptsOutput = "window.addEventListener('load', function() { $scriptsOutput }, false )";
             }
 
-            return "<script type='text/javascript'>$scriptsOutput</script>";
+            return "<script>$scriptsOutput</script>";
         }
     }
 }

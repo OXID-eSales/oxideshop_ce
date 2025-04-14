@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core\Routing;
 use OxidEsales\Eshop\Application\Component\Widget as Widget;
 use OxidEsales\Eshop\Application\Controller as Controller;
 use OxidEsales\Eshop\Core\Contract\ControllerMapProviderInterface;
+use OxidEsales\EshopCommunity\Application\Controller\Admin\ArticlePicturesAjax;
 
 /**
  * This class determines the controllers which should be allowed to be called directly via
@@ -147,6 +148,7 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
         'article_main' => Controller\Admin\ArticleMain::class,
         'article_overview' => Controller\Admin\ArticleOverview::class,
         'article_pictures' => Controller\Admin\ArticlePictures::class,
+        'article_pictures_ajax' => ArticlePicturesAjax::class,
         'article_review' => Controller\Admin\ArticleReview::class,
         'article_selection_ajax' => Controller\Admin\ArticleSelectionAjax::class,
         'article_seo' => Controller\Admin\ArticleSeo::class,

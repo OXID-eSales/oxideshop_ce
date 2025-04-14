@@ -11,8 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Media\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use PHPUnit\Framework\TestCase;
@@ -39,41 +42,44 @@ final class MediaDaoTest extends TestCase
 
     public function testCreateAndGetMedia(): void
     {
-        $path = 'media/test_mdt.png';
-        $type = 'image/png';
+        $mediaId = Id::generate();
+        $mediaPath = new MediaPath('media/test_mdt.png');
+        $mediaType = new MediaType('image/png');
+        $media = new Media(
+            $mediaId,
+            $mediaPath,
+            $mediaType
+        );
 
-        $createdMedia = $this->mediaDao->create(path: $path, type: $type);
+        $this->mediaDao->add($media);
+        $fetched = $this->mediaDao->get($mediaId);
 
-        $this->assertInstanceOf(Media::class, $createdMedia);
-        $this->assertNotEmpty($createdMedia->getId());
-        $this->assertSame($path, $createdMedia->getPath());
-        $this->assertSame($type, $createdMedia->getType());
-
-        $retrievedMedia = $this->mediaDao->get($createdMedia->getId());
-
-        $this->assertEquals($createdMedia, $retrievedMedia);
+        $this->assertEquals($media, $fetched);
     }
 
     public function testGetMediaThrowsExceptionForNonExistentId(): void
     {
         $this->expectException(EntryDoesNotExistDaoException::class);
-        $this->mediaDao->get('nonexistent_media_id');
+
+        $this->mediaDao->get(Id::generate());
     }
 
     public function testDeleteMedia(): void
     {
-        $createdMedia = $this->mediaDao->create(path: 'to/be/deleted.jpg', type: 'image/jpeg');
-        $mediaId = $createdMedia->getId();
+        $mediaId = Id::generate();
+        $mediaPath = new MediaPath('media/test_mdt.png');
+        $mediaType = new MediaType('image/png');
+        $media = new Media(
+            $mediaId,
+            $mediaPath,
+            $mediaType
+        );
+        $this->mediaDao->add($media);
 
         $this->mediaDao->delete($mediaId);
 
         $this->expectException(EntryDoesNotExistDaoException::class);
-        $this->mediaDao->get($mediaId);
-    }
 
-    public function testDeleteMediaThrowsExceptionForNonExistentId(): void
-    {
-        $this->expectException(EntryDoesNotExistDaoException::class);
-        $this->mediaDao->delete('nonexistent_media_id_for_delete');
+        $this->mediaDao->get($mediaId);
     }
 }

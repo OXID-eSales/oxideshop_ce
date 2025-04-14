@@ -73,7 +73,7 @@ final class ScriptLogicTest extends IntegrationTestCase
     {
         $expected = sprintf(
             <<<EOF
-<script type='text/javascript'>
+<script>
     window.addEventListener('load', function() {
         WidgetsHandler.registerFunction('%s', 'somewidget');
         }, false )
@@ -107,7 +107,7 @@ EOF,
         $this->scriptLogic->include('http://someurl/src/js/libs/jquery.min.js');
 
         $expected = <<<HTML
-<script type='text/javascript'>
+<script>
     window.addEventListener('load', function() {
         WidgetsHandler.registerFile('http://someurl/src/js/libs/jquery.min.js', 'somewidget');
     }, false)

@@ -9,88 +9,66 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataMapper\DataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
-final class MediaDao implements MediaDaoInterface
+use function sprintf;
+
+readonly class MediaDao implements MediaDaoInterface
 {
-    private readonly string $mediaTableName;
+    private const MEDIA_TABLE = 'oxmedia';
 
     public function __construct(
-        private readonly QueryBuilderFactoryInterface $queryBuilderFactory,
-        private readonly ShopAdapterInterface $shopAdapter
+        private QueryBuilderFactoryInterface $queryBuilderFactory,
+        private DataMapperInterface $dataMapper,
     ) {
-        $this->mediaTableName = 'oxmedia';
     }
 
-    public function create(string $path, string $type): Media
+    public function add(Media $media): void
     {
-        $id = $this->shopAdapter->generateUniqueId();
-
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder
-            ->insert($this->mediaTableName)
+        $this->queryBuilderFactory
+            ->create()
+            ->insert(self::MEDIA_TABLE)
             ->values([
                 'id' => ':id',
                 'path' => ':path',
                 'type' => ':type'
             ])
-            ->setParameters([
-                'id' => $id,
-                'path' => $path,
-                'type' => $type
-            ]);
-
-        $queryBuilder->execute();
-
-        return new Media($id, $path, $type);
+            ->setParameters(
+                $this->dataMapper->toData($media)
+            )
+            ->executeStatement();
     }
 
-    public function get(string $id): Media
+    public function get(Id $id): Media
     {
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder
+        $result = $this->queryBuilderFactory
+            ->create()
             ->select('id', 'path', 'type')
-            ->from($this->mediaTableName)
+            ->from(self::MEDIA_TABLE)
             ->where('id = :id')
-            ->setParameter('id', $id);
-
-        $result = $queryBuilder->execute()->fetchAssociative();
-
-        if ($result === false) {
+            ->setParameter('id', $id)
+            ->executeQuery()
+            ->fetchAssociative();
+        if (!$result) {
             throw new EntryDoesNotExistDaoException(
                 sprintf('Media entry with ID "%s" does not exist.', $id)
             );
         }
 
-        return $this->mapArrayToMedia($result);
+        return $this->dataMapper->fromData($result);
     }
 
-    public function delete(string $id): void
+    public function delete(Id $id): void
     {
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder
-            ->delete($this->mediaTableName)
+        $this->queryBuilderFactory
+            ->create()
+            ->delete(self::MEDIA_TABLE)
             ->where('id = :id')
-            ->setParameter('id', $id);
-
-        $affectedRows = $queryBuilder->execute();
-
-        if ($affectedRows === 0) {
-            throw new EntryDoesNotExistDaoException(
-                sprintf('Media entry with ID "%s" not found for deletion.', $id)
-            );
-        }
-    }
-
-    private function mapArrayToMedia(array $data): Media
-    {
-        return new Media(
-            id: $data['id'],
-            path: $data['path'],
-            type: $data['type']
-        );
+            ->setParameter('id', $id)
+            ->executeStatement();
     }
 }

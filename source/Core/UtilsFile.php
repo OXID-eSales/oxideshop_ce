@@ -17,32 +17,8 @@ use Symfony\Component\Filesystem\Path;
 
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
-    /**
-     * Promotions images upload dir name
-     *
-     * @var string
-     */
     const PROMO_PICTURE_DIR = 'promo';
 
-    /**
-     * Max pictures count
-     *
-     * @var int
-     */
-    protected $_iMaxPicImgCount = 12;
-
-    /**
-     * Max zoom pictures count
-     *
-     * @var int
-     */
-    protected $_iMaxZoomImgCount = 12;
-
-    /**
-     * Image type and its folder information array
-     *
-     * @var array
-     */
     protected $_aTypeToPath = [
         'TC'    => 'master/category/thumb',
         'CICO'  => 'master/category/icon',
@@ -118,47 +94,16 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
      */
     protected $_iNewFilesCounter = 0;
 
-    /**
-     * Class constructor, initailizes pictures count info (_iMaxPicImgCount/_iMaxZoomImgCount)
-     *
-     * @return null
-     */
-    public function __construct()
-    {
-        if ($picturesCount = ContainerFacade::getParameter('oxid_esales.max_product_picture_count')) {
-            $this->_iMaxPicImgCount = $picturesCount;
-        }
-
-        $this->_iMaxZoomImgCount = $this->_iMaxPicImgCount;
-    }
-
-    /**
-     * Getter for param _iNewFilesCounter which counts how many new files added.
-     *
-     * @return integer
-     */
     public function getNewFilesCounter()
     {
         return $this->_iNewFilesCounter;
     }
 
-    /**
-     * Setter for param _iNewFilesCounter which counts how many new files added.
-     *
-     * @param integer $iNewFilesCounter New files count.
-     */
     protected function setNewFilesCounter($iNewFilesCounter)
     {
         $this->_iNewFilesCounter = (int) $iNewFilesCounter;
     }
 
-    /**
-     * Normalizes dir by adding missing trailing slash
-     *
-     * @param string $sDir Directory
-     *
-     * @return string
-     */
     public function normalizeDir($sDir)
     {
         if (isset($sDir) && $sDir != "" && substr($sDir, -1) !== '/') {
@@ -168,12 +113,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         return $sDir;
     }
 
-    /**
-     * Copies directory tree for creating a new shop.
-     *
-     * @param string $sSourceDir Source directory
-     * @param string $sTargetDir Target directory
-     */
     public function copyDir($sSourceDir, $sTargetDir)
     {
         $oStr = Str::getStr();
@@ -181,7 +120,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
                 if (is_dir($sSourceDir . '/' . $file)) {
-                    // recursive
                     $sNewSourceDir = $sSourceDir . '/' . $file;
                     $sNewTargetDir = $sTargetDir . '/' . $file;
                     if (strcasecmp($file, 'CVS') && strcasecmp($file, '.svn')) {
@@ -192,7 +130,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
                     $sSourceFile = $sSourceDir . '/' . $file;
                     $sTargetFile = $sTargetDir . '/' . $file;
 
-                    //do not copy files within dyn_images
                     if (!$oStr->strstr($sSourceDir, 'dyn_images') || $file == 'nopic.jpg' || $file == 'nopic_ico.jpg') {
                         @copy($sSourceFile, $sTargetFile);
                     }
@@ -202,13 +139,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         closedir($handle);
     }
 
-    /**
-     * Deletes directory tree.
-     *
-     * @param string $sSourceDir Path to directory
-     *
-     * @return null
-     */
     public function deleteDir($sSourceDir)
     {
         if (is_dir($sSourceDir)) {
@@ -234,13 +164,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         }
     }
 
-    /**
-     * Reads remote stored file. Returns contents of file.
-     *
-     * @param string $sPath Remote file path & name
-     *
-     * @return string
-     */
     public function readRemoteFileAsString($sPath)
     {
         $sRet = '';
@@ -479,17 +402,14 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             $uploadPath
         );
 
-        //checking params
         if (!isset($fileInfo['name']) || !isset($fileInfo['tmp_name'])) {
             throw oxNew(StandardException::class, 'EXCEPTION_NOFILE');
         }
 
-        //wrong chars in file name?
         if (!Str::getStr()->preg_match('/^[\-_a-z0-9\.]+$/i', $fileInfo['name'])) {
             throw oxNew(StandardException::class, 'EXCEPTION_FILENAMEINVALIDCHARS');
         }
 
-        // error uploading file ?
         if (isset($fileInfo['error']) && $fileInfo['error']) {
             throw oxNew(StandardException::class, 'EXCEPTION_FILEUPLOADERROR_' . ((int)$fileInfo['error']));
         }
@@ -594,10 +514,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         return filter_var($url, FILTER_VALIDATE_URL) === false ? false : true;
     }
 
-    /**
-     * @param string $url
-     * @return bool
-     */
     private function isUrlAccessible(string $url): bool
     {
         $curl = curl_init($url);
@@ -665,10 +581,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         Registry::getUtilsView()->addErrorToDisplay($exception, false);
     }
 
-    /**
-     * @param string $path
-     * @return string
-     */
     private function makePathRelativeToShopSource(string $path): string
     {
 

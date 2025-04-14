@@ -18,6 +18,7 @@
 
 ### Changed
 
+- Product Pictures management page has been redesigned
 - Module environment configuration file paths
 - Updated doctrine/dbal dependency to ^4.2
 - `ResultSet` constructor now strictly requires `$statement` to be a `Doctrine\DBAL\Statement`
@@ -32,15 +33,14 @@
 
 ### Removed
 
-- Remove `DateFormatHelper`
+- Deprecated helper class `DateFormatHelper`
 - Deprecated promotions
 - Fetch mode support from `DatabaseInterface` and `DatabaseProvider`
-- Database `NullLogger` and `DatabaseLoggerFactoryInterface`
 - Redundant Logger classes and interfaces: `MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`,
-  `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
-- Redundant shop state and configuration classes and services: `ShopStateService`, `ShopStateServiceInterface`, `ProjectConfigurationDao`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`
+  `LoggerConfigurationValidatorInterface`, `LoggerWrapper`, `NullLogger` and `DatabaseLoggerFactoryInterface`
+- Redundant shop state and configuration classes and services: `ShopStateServiceInterface`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`
 - A deprecated partner-related method `getBelboonParam()` of class `BaseController` [0006140](https://bugs.oxid-esales.com/view.php?id=6140)
-- `ContainerBuilderFactory`
+- `ContainerBuilderFactory` class
 
 ## v8.0.0-alpha.1 - 2025-02-03
 

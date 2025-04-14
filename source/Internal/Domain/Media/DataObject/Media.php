@@ -9,27 +9,29 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject;
 
-final readonly class Media
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
+
+readonly class Media
 {
     public function __construct(
-        private string $id,
-        private string $path,
-        private string $type
+        private Id $id,
+        private MediaPath $mediaPath,
+        private MediaType $mediaType,
     ) {
     }
 
-    public function getId(): string
+    public function getId(): Id
     {
         return $this->id;
     }
 
-    public function getPath(): string
+    public function getMediaPath(): MediaPath
     {
-        return $this->path;
+        return $this->mediaPath;
     }
 
-    public function getType(): string
+    public function getMediaType(): MediaType
     {
-        return $this->type;
+        return $this->mediaType;
     }
 }

@@ -574,7 +574,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
                     <div id='debugInfoBlock_$logId' style='display:$display' class='debugInfoBlock' align='left'>
                         $monitorMessage
                     </div>
-                    <script type='text/javascript'>
+                    <script>
                         var b = document.getElementById('oxidDebugInfo_$logId');
                         var c = document.body;
                         if (c) { c.appendChild(b.parentNode.removeChild(b));}

@@ -967,20 +967,23 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getNavFormParams()
     {
-        if (($sParams = $this->getViewConfigParam('navformparams')) === null) {
-            $oStr = Str::getStr();
-            $sParams = '';
-            $aNavParams = Registry::getConfig()->getTopActiveView()->getNavigationParams();
-            foreach ($aNavParams as $sName => $sValue) {
-                if (isset($sValue)) {
-                    $sParams .= "<input type=\"hidden\" name=\"{$sName}\" value=\"";
-                    $sParams .= $oStr->htmlentities($sValue) . "\" />\n";
-                }
-            }
-            $this->setViewConfigParam('navformparams', $sParams);
+        $configParameters = $this->getViewConfigParam('navformparams');
+        if ($configParameters !== null) {
+            return $configParameters;
         }
+        $parameters = '';
+        foreach (Registry::getConfig()->getTopActiveView()->getNavigationParams() as $name => $value) {
+            if (isset($value)) {
+                $parameters .= \sprintf(
+                    '<input type="hidden" name="%s" value="%s">' . "\n",
+                    $name,
+                    Str::getStr()->htmlentities($value)
+                );
+            }
+        }
+        $this->setViewConfigParam('navformparams', $parameters);
 
-        return $sParams;
+        return $parameters;
     }
 
     public function getStockOnDefaultMessage()
@@ -1016,6 +1019,11 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getAjaxLink()
     {
         return $this->getViewConfigParam('ajaxlink');
+    }
+
+    public function getAjaxUrl(): string
+    {
+        return $this->getViewConfigParam('ajax_url');
     }
 
     /**

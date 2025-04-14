@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridgeInterface;
+use Symfony\Component\Filesystem\Path;
 
 /**
  * Main Controller class for admin area.
@@ -196,6 +197,13 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
                     $this->_iEditLang,
                     false
                 )
+            )
+        );
+        $oViewConf->setViewConfigParam(
+            'ajax_url',
+            Path::join(
+                htmlspecialchars_decode($url),
+                'oxajax.php'
             )
         );
 

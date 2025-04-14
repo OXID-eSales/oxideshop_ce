@@ -11,10 +11,17 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Me
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaSorting;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
@@ -26,166 +33,424 @@ final class ProductMediaDaoTest extends TestCase
     use ContainerTrait;
 
     private ProductMediaDaoInterface $productMediaDao;
-    private MediaDaoInterface $mediaDao;
-    private string $productId = 'prod_pmdt_01';
-    private Media $testMedia;
+    private readonly ID $productId;
+    private readonly Media $media1;
+    private readonly Media $media2;
 
     public function setUp(): void
     {
         parent::setUp();
-        $connection = $this->get(ConnectionFactoryInterface::class)->create();
+        $connection = $this
+            ->get(ConnectionFactoryInterface::class)
+            ->create();
         $this->beginTransaction($connection);
 
         $this->productMediaDao = $this->get(ProductMediaDaoInterface::class);
-        $this->mediaDao = $this->get(MediaDaoInterface::class);
-
-        $this->createTestProduct($this->productId);
-        $this->testMedia = $this->createTestMedia('media/pmdt_default.jpg', 'image/jpeg');
+        $this->createTestProduct();
+        $this->media1 = new Media(
+            Id::generate(),
+            new MediaPath('media/pmdt_default.jpg'),
+            new MediaType('image/jpeg')
+        );
+        $this->media2 = new Media(
+            Id::generate(),
+            new MediaPath('media/pmdt_default2.jpg'),
+            new MediaType('image/png')
+        );
+        $this
+            ->get(MediaDaoInterface::class)
+            ->add($this->media1);
+        $this
+            ->get(MediaDaoInterface::class)
+            ->add($this->media2);
     }
 
     public function tearDown(): void
     {
-        $connection = $this->get(ConnectionFactoryInterface::class)->create();
+        $connection = $this
+            ->get(ConnectionFactoryInterface::class)
+            ->create();
         $this->rollBackTransaction($connection);
         parent::tearDown();
     }
 
-    private function createTestProduct(string $productId): void
+    public function testAddAndGet(): void
     {
-        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
-        $queryBuilder
-            ->insert('oxarticles')
-            ->values(['OXID' => ':id', 'OXTITLE' => ':title', 'OXACTIVE' => ':active'])
-            ->setParameters(['id' => $productId, 'title' => 'Test Product ' . $productId, 'active' => 1]);
-        $queryBuilder->execute();
-    }
-
-    private function createTestMedia(string $path, string $type): Media
-    {
-        return $this->mediaDao->create(path: $path, type: $type);
-    }
-
-    public function testCreateAndGetProductMedia(): void
-    {
-        $position = 5;
-        $active = false;
-
-        $createdProductMedia = $this->productMediaDao->create(
+        $productMedia = new ProductMedia(
+            id: Id::generate(),
             productId: $this->productId,
-            media: $this->testMedia,
-            position: $position,
-            active: $active
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(
+                ProductMediaRole::from(SystemProductMediaRole::Thumb->value),
+                ProductMediaRole::from(SystemProductMediaRole::Icon->value),
+            ),
         );
+        $productMedia->setPosition(123);
 
-        $retrievedProductMedia = $this->productMediaDao->get($createdProductMedia->getId());
+        $this->productMediaDao->add($productMedia);
 
-        $this->assertEquals($createdProductMedia, $retrievedProductMedia);
+        $fetched = $this->productMediaDao->get($productMedia->getId());
+        $this->assertEquals(
+            $productMedia->getId(),
+            $fetched->getId()
+        );
+        $this->assertEquals(
+            $productMedia->getProductId(),
+            $fetched->getProductId()
+        );
+        $this->assertEquals(
+            $productMedia->getMedia(),
+            $fetched->getMedia()
+        );
+        $this->assertEquals(
+            $productMedia->getPosition(),
+            $fetched->getPosition()
+        );
+        $this->assertEquals(
+            $productMedia->isActive(),
+            $fetched->isActive()
+        );
+        $this->assertTrue(
+            $fetched
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Thumb->value)
+        );
+        $this->assertTrue(
+            $fetched
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Icon->value)
+        );
     }
 
-    public function testGetProductMediaThrowsExceptionForNonExistentId(): void
+    public function testGetWithNonExistentId(): void
     {
         $this->expectException(EntryDoesNotExistDaoException::class);
-        $this->productMediaDao->get('nonexistent_pm_id');
+
+        $this->productMediaDao->get(Id::generate());
     }
 
-    public function testUpdateProductMedia(): void
+    public function testUpdate(): void
     {
-        $initialPosition = 1;
-        $initialActive = true;
-        $createdProductMedia = $this->productMediaDao->create(
+        $productMedia = new ProductMedia(
+            id: Id::generate(),
             productId: $this->productId,
-            media: $this->testMedia,
-            position: $initialPosition,
-            active: $initialActive
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
         );
-        $relationId = $createdProductMedia->getId();
+        $productMedia->setPosition(123);
+        $this->productMediaDao->add($productMedia);
 
-        $newPosition = 10;
-        $newActive = false;
-        $expectedProductMediaAfterUpdate = new ProductMedia(
-            id: $relationId,
+        $productMedia
+            ->getRoleSet()
+            ->addRole(ProductMediaRole::from(SystemProductMediaRole::Icon->value));
+        $productMedia
+            ->getRoleSet()
+            ->addRole(ProductMediaRole::from(SystemProductMediaRole::Thumb->value));
+        $productMedia
+            ->getRoleSet()
+            ->removeRole(ProductMediaRole::from(SystemProductMediaRole::Detail->value));
+        $productMedia->deactivate();
+        $this->productMediaDao->update($productMedia);
+
+        $fetched = $this->productMediaDao->get($productMedia->getId());
+        $this->assertTrue(
+            $fetched
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Icon->value)
+        );
+        $this->assertTrue(
+            $fetched
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Thumb->value)
+        );
+        $this->assertFalse(
+            $fetched
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Detail->value)
+        );
+        $this->assertFalse($fetched->isActive());
+    }
+
+    public function testUpdateWithNonExistent(): void
+    {
+        $productMedia = new ProductMedia(
+            id: Id::generate(),
             productId: $this->productId,
-            media: $this->testMedia,
-            position: $newPosition,
-            active: $newActive
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
         );
+        $productMedia->setPosition(123);
 
-        $this->productMediaDao->update(
-            id: $relationId,
-            position: $newPosition,
-            active: $newActive
-        );
-
-        $updatedProductMedia = $this->productMediaDao->get($relationId);
-
-        $this->assertEquals($expectedProductMediaAfterUpdate, $updatedProductMedia);
-    }
-
-    public function testUpdateProductMediaThrowsExceptionForNonExistentId(): void
-    {
         $this->expectException(EntryDoesNotExistDaoException::class);
-        $this->productMediaDao->update(id: 'nonexistent_pm_id_update', position: 99, active: false);
+
+        $this->productMediaDao->update($productMedia);
     }
 
-    public function testDeleteProductMedia(): void
+    public function testDelete(): void
     {
-        $createdProductMedia = $this->productMediaDao->create(
+        $productMedia = new ProductMedia(
+            id: Id::generate(),
             productId: $this->productId,
-            media: $this->testMedia,
-            position: 0,
-            active: true
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
         );
-        $relationId = $createdProductMedia->getId();
+        $productMedia->setPosition(123);
+        $productMedia->deactivate();
+        $this->productMediaDao->add($productMedia);
 
-        $this->productMediaDao->delete($relationId);
+        $this->productMediaDao->delete($productMedia->getId());
 
         $this->expectException(EntryDoesNotExistDaoException::class);
-        $this->productMediaDao->get($relationId);
+
+        $this->productMediaDao->get($productMedia->getId());
     }
 
-    public function testDeleteProductMediaThrowsExceptionForNonExistentId(): void
+    public function testGetAllProductMediaWillReturnMultipleRecords(): void
     {
-        $this->expectException(EntryDoesNotExistDaoException::class);
-        $this->productMediaDao->delete('nonexistent_pm_id_delete');
+        $productMedia1 = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(
+                ProductMediaRole::from(SystemProductMediaRole::Icon->value),
+                ProductMediaRole::from(SystemProductMediaRole::Thumb->value),
+            ),
+        );
+        $productMedia2 = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media2,
+            roleSet: new ProductMediaRoleSet(
+                ProductMediaRole::from(SystemProductMediaRole::Detail->value),
+                ProductMediaRole::from('whatever')
+            ),
+        );
+        $productMedia2->deactivate();
+        $this->productMediaDao->add($productMedia1);
+        $this->productMediaDao->add($productMedia2);
+
+        $fetchedList = $this->productMediaDao->getAllProductMedia(productId: $this->productId);
+
+        $this->assertCount(
+            2,
+            $fetchedList
+        );
+        $this->assertEquals(
+            $productMedia1->getId(),
+            $fetchedList
+                ->get(0)
+                ->getId()
+        );
+        $this->assertEquals(
+            $this->media1->getId(),
+            $fetchedList
+                ->get(0)
+                ->getMedia()
+                ->getId()
+        );
+        $this->assertTrue(
+            $fetchedList
+                ->get(0)
+                ->isActive()
+        );
+        $this->assertTrue(
+            $fetchedList
+                ->get(0)
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Icon->value)
+        );
+        $this->assertTrue(
+            $fetchedList
+                ->get(0)
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Thumb->value)
+        );
+        $this->assertEquals(
+            $productMedia2->getProductId(),
+            $fetchedList
+                ->get(0)
+                ->getProductId()
+        );
+        $this->assertEquals(
+            $productMedia2->getId(),
+            $fetchedList
+                ->get(1)
+                ->getId()
+        );
+        $this->assertFalse(
+            $fetchedList
+                ->get(1)
+                ->isActive()
+        );
+        $this->assertTrue(
+            $fetchedList
+                ->get(1)
+                ->getRoleSet()
+                ->is(SystemProductMediaRole::Detail->value)
+        );
+        $this->assertTrue(
+            $fetchedList
+                ->get(1)
+                ->getRoleSet()
+                ->is('whatever')
+        );
     }
 
-    public function testGetAllProductMediaListReturnsCorrectlyOrderedAndCompleteList(): void
+    public function testAddWillSetNextPositionsAutomatically(): void
     {
-        $media2 = $this->createTestMedia('media/pmdt_other.gif', 'image/gif');
-        $pm1 = $this->productMediaDao->create(productId: $this->productId, media: $this->testMedia, position: 2, active: true);
-        $pm2 = $this->productMediaDao->create(productId: $this->productId, media: $media2, position: 1, active: true);
-        $pm3 = $this->productMediaDao->create(productId: $this->productId, media: $this->testMedia, position: 3, active: false);
+        $productMedia1 = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
+        );
+        $productMedia1->setPosition(123);
+        $productMedia2 = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
+        );
+        $productMedia3 = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
+        );
+        $this->productMediaDao->add($productMedia1);
+        $this->productMediaDao->add($productMedia2);
+        $this->productMediaDao->add($productMedia3);
 
-        $list = $this->productMediaDao->getAllProductMediaList(productId: $this->productId);
+        $list = $this->productMediaDao->getAllProductMedia(productId: $this->productId);
 
-        $this->assertEquals($pm2, $list->get(0));
-        $this->assertEquals($pm1, $list->get(1));
-        $this->assertEquals($pm3, $list->get(2));
-        $this->assertNull($list->get(3));
+        $this->assertEquals(
+            123,
+            $list
+                ->get(0)
+                ->getPosition()
+        );
+        $this->assertEquals(
+            124,
+            $list
+                ->get(1)
+                ->getPosition()
+        );
+        $this->assertEquals(
+            125,
+            $list
+                ->get(2)
+                ->getPosition()
+        );
     }
 
-    public function testGetActiveProductMediaListReturnsCorrectlyOrderedAndFilteredList(): void
+    public function testSortWillResetAndUpdatePositions(): void
     {
-        $media2 = $this->createTestMedia('media/pmdt_active.png', 'image/png');
-        $pm1 = $this->productMediaDao->create(productId: $this->productId, media: $this->testMedia, position: 2, active: true);
-        $pm2 = $this->productMediaDao->create(productId: $this->productId, media: $media2, position: 1, active: true);
-        $this->productMediaDao->create(productId: $this->productId, media: $this->testMedia, position: 3, active: false);
+        $id1 = Id::generate();
+        $id2 = Id::generate();
+        $id3 = Id::generate();
 
-        $list = $this->productMediaDao->getActiveProductMediaList(productId: $this->productId);
+        $productMedia1 = new ProductMedia(
+            id: $id1,
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
+        );
+        $productMedia1->setPosition(123);
+        $productMedia2 = new ProductMedia(
+            id: $id2,
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
+        );
+        $productMedia2->setPosition(456);
+        $productMedia3 = new ProductMedia(
+            id: $id3,
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value)),
+        );
+        $productMedia3->setPosition(789);
+        $this->productMediaDao->add($productMedia1);
+        $this->productMediaDao->add($productMedia2);
+        $this->productMediaDao->add($productMedia3);
 
-        $this->assertEquals($pm2, $list->get(0));
-        $this->assertEquals($pm1, $list->get(1));
-        $this->assertNull($list->get(2));
+        $this->productMediaDao->sort(
+            new ProductMediaSorting(
+                array_map(
+                    'strval',
+                    [
+                        $id2,
+                        $id1,
+                        $id3
+                    ]
+                )
+            )
+        );
+
+        $list = $this->productMediaDao->getAllProductMedia(productId: $this->productId);
+
+        $this->assertEquals(
+            $id2,
+            $list
+                ->get(0)
+                ->getId()
+        );
+        $this->assertEquals(
+            $id1,
+            $list
+                ->get(1)
+                ->getId()
+        );
+        $this->assertEquals(
+            $id3,
+            $list
+                ->get(2)
+                ->getId()
+        );
+        $this->assertEquals(
+            1,
+            $list
+                ->get(0)
+                ->getPosition()
+        );
+        $this->assertEquals(
+            2,
+            $list
+                ->get(1)
+                ->getPosition()
+        );
+        $this->assertEquals(
+            3,
+            $list
+                ->get(2)
+                ->getPosition()
+        );
     }
 
-    public function testGetProductMediaListsReturnEmptyCollectionForNonExistentProduct(): void
+    public function testGetByProductIdWithEmptyCollection(): void
     {
-        $nonExistentProductId = 'non_existent_product_id';
-
-        $listAll = $this->productMediaDao->getAllProductMediaList($nonExistentProductId);
-        $listActive = $this->productMediaDao->getActiveProductMediaList($nonExistentProductId);
+        $listAll = $this->productMediaDao->getAllProductMedia(Id::generate());
 
         $this->assertTrue($listAll->isEmpty());
-        $this->assertTrue($listActive->isEmpty());
+    }
+
+    private function createTestProduct(): void
+    {
+        $this->productId = Id::generate();
+        $this
+            ->get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->insert('oxarticles')
+            ->values([
+                'OXID' => ':id',
+                'OXTITLE' => ':title',
+                'OXACTIVE' => ':active',
+            ])
+            ->setParameters([
+                'id' => (string)$this->productId,
+                'title' => 'Test Product ',
+                'active' => 1,
+            ])
+            ->executeQuery();
     }
 }

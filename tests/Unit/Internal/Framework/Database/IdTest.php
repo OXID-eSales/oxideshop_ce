@@ -7,13 +7,12 @@
 
 declare(strict_types=1);
 
-
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use PHPUnit\Framework\TestCase;
 
-class IdTest extends TestCase
+final class IdTest extends TestCase
 {
     public function testGenerate(): void
     {
@@ -23,15 +22,39 @@ class IdTest extends TestCase
         $this->assertNotEquals($id1, $id2);
     }
 
-    public function testFromString(): void
+    public function testFromUidWithMd5String(): void
     {
-        $id = md5('12345');
-        $this->assertEquals($id, Id::fromUid($id));
+        $md5 = md5('1');
+
+        $id = Id::fromUid($md5);
+
+        $this->assertEquals($id, $md5);
     }
 
-    public function testFromInvalidString(): void
+    public function testFromUidWithLegacyIdsWillNotFail(): void
     {
+        $legacyId = str_repeat('z1-.', 4);
+
+        $id = Id::fromUid($legacyId);
+
+        $this->assertEquals($id, $legacyId);
+    }
+
+    public function testFromUidWithEmptyStringWillThrow(): void
+    {
+        $string = '';
+
         $this->expectException(\InvalidArgumentException::class);
-        Id::fromUid('notMd5');
+
+        Id::fromUid($string);
+    }
+
+    public function testFromUidWithStringTooLongWillThrow(): void
+    {
+        $string = str_repeat('1', 33);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        Id::fromUid($string);
     }
 }

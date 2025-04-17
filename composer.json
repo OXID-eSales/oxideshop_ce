@@ -43,7 +43,9 @@
         "symfony/http-foundation": "^6.4",
         "symfony/http-kernel": "^7.2",
         "symfony/routing": "^7.2",
-        "symfony/error-handler": "^7.2"
+        "symfony/error-handler": "^7.2",
+        "symfony/security-core": "^7.2",
+        "symfony/security-http": "^7.2"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

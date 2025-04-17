@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Api\TestController:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Api\TestController
+    public: true
+

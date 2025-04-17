@@ -24,6 +24,8 @@ class QueryLogger implements SQLLogger
     }
 
     /**
+     * @deprecated will be removed in next major version
+     *
      * Logs an SQL statement somewhere.
      *
      * @param string              $query  The query to be executed.

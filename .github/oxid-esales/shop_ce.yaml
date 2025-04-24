@@ -18,18 +18,13 @@ install:
         }
       }
 
-runscript: &runscript
+runscript:
   matrix:
     script: |
       [
         "shop:~/unit.sh",
         "shop:~/integration.sh",
-        "shop:~/codeception.sh acceptance 1 3",
-        "shop:~/codeception.sh acceptance 2 3",
-        "shop:~/codeception.sh acceptance 3 3",
-        "shop:~/codeception.sh acceptanceAdmin 1 2",
-        "shop:~/codeception.sh acceptanceAdmin 2 2",
-        "setup:~/shop-setup.sh"
+        "shop:~/codeception.sh"
       ]
   container:
     options:
@@ -42,22 +37,6 @@ runscript: &runscript
       -e GITHUB_BASE_REF="{{ .Github.BaseRef }}"
       -e GITHUB_REF="refs/heads/{{ .Data.install.git.ref }}"
       -e GITHUB_REF_NAME="{{ .Data.install.git.ref }}"
-  custom_script_container: |
-    # Only needed for php 8.0 / shop 7.0.x
-    sudo sed \
-      -e 's|^xdebug\.remote_enable.*$|xdebug.mode = debug|' \
-      -e 's|^xdebug\.remote_host.*=\(.*\)$|xdebug.client_host = \1|' \
-      -i.backup /usr/local/etc/php/conf.d/xdebug.ini
-  shop: &shop
-    path: ''
-  setup:
-    <<: *shop
-    load_shop: '{{ .Data.install.cache.prepared_shop_prefix }}'
-
-runslim:
-  <<: *runscript
-  matrix:
-    script: '["shop:~/php-cs-report.sh"]'
 
 sonarcloud:
   matrix:

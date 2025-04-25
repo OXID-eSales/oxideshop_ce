@@ -1,4 +1,7 @@
 install:
+  add_services: 'selenium-chrome'
+  git:
+    sdk_ref: b-8.0.x
   script: 'source/.github/oxid-esales/install.sh'
   cache:
     prepared_shop: true

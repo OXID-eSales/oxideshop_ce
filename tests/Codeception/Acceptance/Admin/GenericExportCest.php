@@ -26,13 +26,15 @@ final class GenericExportCest
         $descriptionWithTags = "$contents{{ 'now' | date('Y') }}";
         $renderedDescription = $contents . date('Y');
         $products = $adminPanel->openProducts();
-        $mainProductPage = $products->find($products->searchNumberInput, value: '1000');
-        $I->fillField($mainProductPage->longDescriptionInput, $descriptionWithTags);
-        $mainProductPage->save();
+        $products
+            ->find($products->searchNumberInput, value: '1000')
+            ->setLongDescription($descriptionWithTags)
+            ->save();
 
         $I->amGoingTo('export category of the modified product and see that long description is rendered');
-        $genericExport = $adminPanel->openGenericExport();
-        $genericExport->selectExportCategory('Test category 0 [DE] šÄßüл')
+        $adminPanel
+            ->openGenericExport()
+            ->selectExportCategory('Test category 0 [DE] šÄßüл')
             ->doExport()
             ->seeInExportResultsFile($renderedDescription);
     }

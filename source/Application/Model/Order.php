@@ -519,7 +519,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             }
         }
 
-        if (!isset($this->oxorder__oxordernr->value) || !$this->oxorder__oxordernr->value) {
+        if (!$this->getFieldData('oxordernr')) {
             $this->setNumber();
         } else {
             oxNew(\OxidEsales\Eshop\Core\Counter::class)->update($this->getCounterIdent(), $this->oxorder__oxordernr->value);

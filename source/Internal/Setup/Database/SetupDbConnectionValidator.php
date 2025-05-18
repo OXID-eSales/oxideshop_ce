@@ -32,7 +32,7 @@ class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
             );
         }
         $this->canConnectToServer($databaseConfiguration);
-        $this->databaseDoesNotExist($databaseConfiguration);
+        $this->databaseDoesNotExistOrIsEmpty($databaseConfiguration);
     }
 
     private function canConnectToServer(DatabaseConfiguration $databaseConfiguration): void
@@ -41,15 +41,19 @@ class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
         $connection->close();
     }
 
-    private function databaseDoesNotExist(DatabaseConfiguration $databaseConfiguration): void
+    private function databaseDoesNotExistOrIsEmpty(DatabaseConfiguration $databaseConfiguration): void
     {
         try {
-            $this->databaseConnectionFactory->getDatabaseConnection($databaseConfiguration);
+            $dbConn = $this->databaseConnectionFactory->getDatabaseConnection($databaseConfiguration);
+            $tables = $dbConn->createSchemaManager()->listTables();
+            if (count($tables) === 0) {
+                return; // Allow empty database
+            }
         } catch (ConnectionException) {
             return;
         }
         throw new DatabaseAlreadyExistsException(
-            "Database `{$databaseConfiguration->getName()}` already exists!"
+            "Database `{$databaseConfiguration->getName()}` already exists and is not empty!"
         );
     }
 }

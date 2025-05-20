@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidRightsException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidShopException;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Service\PasswordHashServiceInterface;
@@ -53,7 +54,7 @@ class AdminFactory implements AdminFactoryInterface
         }
 
         return new Admin(
-            $this->shopAdapter->generateUniqueId(),
+            (string)Id::generate(),
             $email,
             $this->passwordHashService->hash(($password)),
             $rights,

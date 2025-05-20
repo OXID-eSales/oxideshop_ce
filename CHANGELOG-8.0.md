@@ -14,6 +14,8 @@
 ### Deprecated
 
 - `Utils` methods for managing cache will be replaced by using Symfony cache directly
+- `ShopAdapterInterface::generateUniqueId()` use `Id::generate()` instead
+- `UtilsObject::generateUId()` use `Id::generate()` instead
 
 ### Changed
 

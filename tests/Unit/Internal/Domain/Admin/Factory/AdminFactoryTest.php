@@ -33,7 +33,6 @@ final class AdminFactoryTest extends TestCase
         $shopAdapter = $this->prophesize(ShopAdapterInterface::class);
         $shopAdapter->willImplement(ShopAdapterInterface::class);
         $shopAdapter->validateShopId(1)->willReturn(true);
-        $shopAdapter->generateUniqueId()->willReturn(uniqid());
 
         $passwordHashService = $this->prophesize(PasswordHashServiceInterface::class);
         $passwordHashService->hash($this->password)->willReturn(md5($this->password));

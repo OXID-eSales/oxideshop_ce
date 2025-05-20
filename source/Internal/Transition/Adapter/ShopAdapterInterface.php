@@ -17,6 +17,9 @@ interface ShopAdapterInterface
 
     public function invalidateModulesCache();
 
+    /**
+     * @deprecated use Id::generate() instead
+     */
     public function generateUniqueId(): string;
 
     public function getShopControllerClassMap(): array;

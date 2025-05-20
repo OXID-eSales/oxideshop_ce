@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Dao\NewsletterRecipient
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapper;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -158,7 +159,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'OXGROUPSID' => ':groupId',
             ])
             ->setParameters([
-                'id' => $shopAdapter->generateUniqueId(),
+                'id' => (string)Id::generate(),
                 'userId' => $testUserId,
                 'groupId' => 'test_group1'
             ]);
@@ -174,7 +175,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'OXGROUPSID' => ':groupId',
             ])
             ->setParameters([
-                'id' => $shopAdapter->generateUniqueId(),
+                'id' => (string)Id::generate(),
                 'userId' => $testUserId,
                 'groupId' => 'test_group2'
             ]);
@@ -194,7 +195,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'OXSHOPID' => ':shopId',
             ])
             ->setParameters([
-                'id' => $shopAdapter->generateUniqueId(),
+                'id' => (string)Id::generate(),
                 'userId' => $testUserId,
                 'sal' => "MR",
                 'fistname' => "christine&#039;s welt&quot;",
@@ -246,7 +247,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'OXSHOPID' => ':shopId',
             ])
             ->setParameters([
-                'id' => $shopAdapter->generateUniqueId(),
+                'id' => (string)Id::generate(),
                 'userId' => $testUserId,
                 'sal' => "MS",
                 'fistname' => "christine&#039;s welt&quot;",
@@ -296,7 +297,7 @@ final class NewsletterRecipientsDaoTest extends TestCase
                 'OXSHOPID' => ':shopId',
             ])
             ->setParameters([
-                'id' => $shopAdapter->generateUniqueId(),
+                'id' => (string)Id::generate(),
                 'userId' => $testUserId,
                 'sal' => "MR",
                 'fistname' => "christine&#039;s welt&quot;",

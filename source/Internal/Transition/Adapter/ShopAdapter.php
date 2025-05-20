@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Application\Model\Shop;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 class ShopAdapter implements ShopAdapterInterface
 {
@@ -51,9 +52,12 @@ class ShopAdapter implements ShopAdapterInterface
         }
     }
 
+    /**
+     * @deprecated use Id::generate() instead
+     */
     public function generateUniqueId(): string
     {
-        return Registry::getUtilsObject()->generateUId();
+        return (string)Id::generate();
     }
 
     public function getShopControllerClassMap(): array

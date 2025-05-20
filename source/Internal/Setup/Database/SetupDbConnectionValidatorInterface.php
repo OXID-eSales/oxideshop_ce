@@ -12,7 +12,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObje
 interface SetupDbConnectionValidatorInterface
 {
     /**
-     * @throws DatabaseAlreadyExistsException
+     * @throws UnsupportedDatabaseConfigurationException
+     * @throws DatabaseNotEmptyException
      */
     public function validate(DatabaseConfiguration $databaseConfiguration): void;
 }

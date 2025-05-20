@@ -11,6 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
 use Exception;
 
-class DatabaseAlreadyExistsException extends Exception
+class DatabaseNotEmptyException extends Exception
 {
 }

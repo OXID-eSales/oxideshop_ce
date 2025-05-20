@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
-use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 
 class SetupDbConnectionFactory implements SetupDbConnectionFactoryInterface
@@ -19,6 +19,7 @@ class SetupDbConnectionFactory implements SetupDbConnectionFactoryInterface
     {
         $connectionParameters = $databaseConfiguration->getConnectionParameters();
         unset($connectionParameters['dbname']);
+
         return $this->getConnection($connectionParameters);
     }
 
@@ -29,7 +30,7 @@ class SetupDbConnectionFactory implements SetupDbConnectionFactoryInterface
 
     private function getConnection(array $parameters): Connection
     {
-        $connection =  DriverManager::getConnection($parameters);
+        $connection = DriverManager::getConnection($parameters);
         $connection->getServerVersion();
 
         return $connection;

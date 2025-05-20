@@ -9,16 +9,18 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
-use Doctrine\DBAL\Exception\ConnectionException;
+use Doctrine\DBAL\Exception;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 
-class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
+readonly class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
 {
-    public function __construct(
-        private readonly SetupDbConnectionFactoryInterface $databaseConnectionFactory
-    ) {
+    public function __construct(private SetupDbConnectionFactoryInterface $databaseConnectionFactory)
+    {
     }
 
+    /**
+     * @inheritdoc
+     */
     public function validate(DatabaseConfiguration $databaseConfiguration): void
     {
         if (
@@ -32,7 +34,7 @@ class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
             );
         }
         $this->canConnectToServer($databaseConfiguration);
-        $this->databaseDoesNotExist($databaseConfiguration);
+        $this->assertDatabaseIsEmpty($databaseConfiguration);
     }
 
     private function canConnectToServer(DatabaseConfiguration $databaseConfiguration): void
@@ -41,15 +43,20 @@ class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
         $connection->close();
     }
 
-    private function databaseDoesNotExist(DatabaseConfiguration $databaseConfiguration): void
+    private function assertDatabaseIsEmpty(DatabaseConfiguration $databaseConfiguration): void
     {
         try {
-            $this->databaseConnectionFactory->getDatabaseConnection($databaseConfiguration);
-        } catch (ConnectionException) {
+            $connection = $this->databaseConnectionFactory->getDatabaseConnection($databaseConfiguration);
+
+            if (count($connection->createSchemaManager()->listTables()) === 0) {
+                return;
+            }
+        } catch (Exception) {
             return;
         }
-        throw new DatabaseAlreadyExistsException(
-            "Database `{$databaseConfiguration->getName()}` already exists!"
+
+        throw new DatabaseNotEmptyException(
+            sprintf('Database `%s` is not empty.', $databaseConfiguration->getName())
         );
     }
 }

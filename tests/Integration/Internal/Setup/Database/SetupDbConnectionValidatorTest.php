@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
 use Doctrine\DBAL\Exception\ConnectionException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
-use OxidEsales\EshopCommunity\Internal\Setup\Database\DatabaseAlreadyExistsException;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\DatabaseNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\UnsupportedDatabaseConfigurationException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -120,7 +120,7 @@ final class SetupDbConnectionValidatorTest extends TestCase
     {
         $dbConfig = new DatabaseConfiguration(getenv('OXID_DB_URL'));
 
-        $this->expectException(DatabaseAlreadyExistsException::class);
+        $this->expectException(DatabaseNotEmptyException::class);
 
         $this->get(SetupDbConnectionValidatorInterface::class)->validate($dbConfig);
     }

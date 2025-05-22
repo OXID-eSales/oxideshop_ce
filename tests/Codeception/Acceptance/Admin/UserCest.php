@@ -10,240 +10,166 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance\Admin;
 
 use Codeception\Attribute\Group;
-use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Admin\DataObject\AdminUser;
-use OxidEsales\Codeception\Admin\DataObject\AdminUserAddresses;
+use OxidEsales\Codeception\Admin\DataObject\AdminUserAddress;
 use OxidEsales\Codeception\Admin\DataObject\AdminUserExtendedInfo;
-use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
+#[Group('user')]
 final class UserCest
 {
-    public function testUserMainInfo(AcceptanceTester $I): void
+    private const BELGIUM = 'Belgium';
+    private const GERMANY = 'Germany';
+
+    public function mainTab(AcceptanceTester $I): void
     {
-        $I->wantToTest('User main info');
+        $I->wantToTest('functionality on the Main tab');
 
-        // Main tab
-        $adminUsersPage = $I->loginAdmin()->openUsers();
+        $I->amGoingTo('prepare test data');
+        $I->comment('this user data has no user-rights specified');
+        $user1 = $this->getAdminUser1();
+        $I->comment('this user data contains invalid birth-month value');
+        $user2 = $this->getAdminUser2();
+        $address1 = $this->getAdminUserAddress1();
+        $address2 = $this->getAdminUserAddress2();
+        $mainTab = $I
+            ->loginAdmin()
+            ->openUsers()
+            ->createNewUser(
+                $user1,
+                $address1
+            );
 
-        $adminUser = new AdminUser();
-        $adminUser->setActive(true);
-        $adminUser->setUsername('example01@oxid-esales.dev');
-        $adminUser->setCustomerNumber('20');
-        $adminUser->setBirthday('01');
-        $adminUser->setBirthMonth('12');
-        $adminUser->setBirthYear('1980');
-        $adminUser->setUstid('111222');
-
-        $adminUserAddress = new AdminUserAddresses();
-        $adminUserAddress->setTitle('Mrs');
-        $adminUserAddress->setFirstName('Name_šÄßüл');
-        $adminUserAddress->setLastName('Surname_šÄßüл');
-        $adminUserAddress->setCompany('company_šÄßüл');
-        $adminUserAddress->setStreet('street_šÄßüл');
-        $adminUserAddress->setStreetNumber('1');
-        $adminUserAddress->setZip('3000');
-        $adminUserAddress->setCity('City_šÄßüл');
-        $adminUserAddress->setAdditionalInfo('additional info_šÄßüл');
-        $adminUserAddress->setCountryId('Germany');
-        $adminUserAddress->setStateId('BW');
-        $adminUserAddress->setPhone('111222333');
-        $adminUserAddress->setFax('222333444');
-
-        $adminUsersPage = $adminUsersPage->createNewUser($adminUser, $adminUserAddress);
-
-        //By default, is Customer
-        $adminUser->setUserRights('Customer');
-
-        $adminUsersPage = $adminUsersPage->seeUserInformation($adminUser, $adminUserAddress);
-
-        $changedAdminUser = $this->getAdminUser();
-        $changedAdminUserAddress = $this->getAdminUserAddress();
-
-        $adminUsersPage = $adminUsersPage
-            ->editUser($changedAdminUser, $changedAdminUserAddress);
-        //entering wrong month, set to default 01
-        $changedAdminUser->setBirthMonth('01');
-
-        $adminUsersPage = $adminUsersPage
-            ->seeUserInformation($changedAdminUser, $changedAdminUserAddress);
-
-        $adminUsersPage
-            ->openExtendedTab()
-            ->seeUserAddress($changedAdminUserAddress);
-
-        $remarkText = 'new note_šÄßüл';
-        $adminUserHistoryPage = $adminUsersPage
-            ->openHistoryTab()
-            ->createNewRemark($remarkText);
-        $adminUsersPage
-            ->openHistoryTab()
-            ->selectUserRemark('0');
-        $I->seeInField($adminUserHistoryPage->remarkTextSelector, $remarkText);
-
-        $adminUsersPage
-            ->openHistoryTab()
-            ->selectUserRemark('0')
-            ->deleteRemark();
-        $adminUsersPage
-            ->openHistoryTab()
-            ->selectUserRemark('0');
-        $I->dontSeeInField($adminUserHistoryPage->remarkTextSelector, $remarkText);
-
-        $adminUserProductPage = $adminUserHistoryPage->openProductsTab();
-        $adminUserPaymentPage = $adminUserProductPage->openPaymentTab();
-
-        //checking if created user can be found
-        $adminUserPaymentPage->findByUserName($changedAdminUser->getUsername())
-            ->openExtendedTab()
-            ->seeUserAddress($changedAdminUserAddress);
-    }
-
-    public function testUserAddresses(AcceptanceTester $I): void
-    {
-        $I->wantToTest('User addresses');
-
-        $this->createAdminTestUser(
-            $I,
-            $this->getAdminUser(),
-            $this->getAdminUserAddress(),
-            $this->getAdminUserExtendedInfo()
+        $I->expect('to see user has "Customer", the default user-rights value, assigned');
+        $user1->setUserRights('Customer');
+        $mainTab->seeUserInformation(
+            $user1,
+            $address1
         );
 
-        $adminUsersPage = $I->loginAdmin()->openUsers();
-
-        $adminUsersPage = $adminUsersPage->findByUserName('example00@oxid-esales.dev')->openAddressesTab();
-
-        $adminUserAddress1 = new AdminUserAddresses();
-        $adminUserAddress1->setTitle('Mr');
-        $adminUserAddress1->setFirstName('shipping name_šÄßüл');
-        $adminUserAddress1->setLastName('shipping surname_šÄßüл');
-        $adminUserAddress1->setCompany('shipping company_šÄßüл');
-        $adminUserAddress1->setStreet('shipping street_šÄßüл');
-        $adminUserAddress1->setStreetNumber('1');
-        $adminUserAddress1->setZip('1000');
-        $adminUserAddress1->setCity('shipping city_šÄßüл');
-        $adminUserAddress1->setAdditionalInfo('shipping additional info_šÄßüл');
-        $adminUserAddress1->setCountryId('Germany');
-        $adminUserAddress1->setPhone('7778788');
-        $adminUserAddress1->setFax('8887877');
-
-        $adminUsersPage = $adminUsersPage
-            ->createNewAddress($adminUserAddress1)
-            ->seeAddressInformation($adminUserAddress1);
-
-        $adminUserAddress2 = new AdminUserAddresses();
-        $adminUserAddress2->setTitle('Mrs');
-        $adminUserAddress2->setFirstName('name2');
-        $adminUserAddress2->setLastName('last name 2');
-        $adminUserAddress2->setCompany('company 2');
-        $adminUserAddress2->setStreet('street2');
-        $adminUserAddress2->setStreetNumber('12');
-        $adminUserAddress2->setZip('2001');
-        $adminUserAddress2->setCity('city2');
-        $adminUserAddress2->setAdditionalInfo('additional info2');
-        $adminUserAddress2->setCountryId('United States');
-        $adminUserAddress2->setPhone('999666');
-        $adminUserAddress2->setFax('666999');
-
-        $emptyAddress = new AdminUserAddresses();
-        $adminUsersPage->createNewAddress($adminUserAddress2)
-            ->selectAddress($emptyAddress)
-            ->selectAddress($adminUserAddress2)
-            ->seeAddressInformation($adminUserAddress2)
-            ->selectAddress($adminUserAddress1)
-            ->seeAddressInformation($adminUserAddress1)
-            ->deleteSelectedAddress()
-            ->selectAddress($adminUserAddress2)
-            ->deleteSelectedAddress()
-            ->seeAddressInformation($emptyAddress);
-    }
-
-    public function testCreateUserExtendedInfo(AcceptanceTester $I): void
-    {
-        $I->wantToTest('Create user extended info');
-
-        $user = $this->getAdminUser();
-        $userAddress = $this->getAdminUserAddress();
-        $userOriginalExtendedInfo = $this->getAdminUserExtendedInfo();
-        $this->createAdminTestUser($I, $user, $userAddress, $userOriginalExtendedInfo);
-
-        $adminPanel = $I->loginAdmin();
-        $adminUsersPage = $adminPanel->openUsers();
-
-        $adminUsersPage = $adminUsersPage->findByUserName($user->getUsername())
+        $I->amGoingTo('modify user info with the new data');
+        $mainTab->editUser(
+            $user2,
+            $address2
+        );
+        $I->expect('to see user has "01", the default birth-month value, assigned');
+        $user2->setBirthMonth('01');
+        $I->expect('user can be found by the new username and has the new info saved');
+        $mainTab
+            ->findByUserName(
+                $user2->getUsername()
+            )
+            ->seeUserInformation(
+                $user2,
+                $address2
+            )
             ->openExtendedTab()
-            ->seeUserAddress($userAddress);
-
-        $adminUserChangedExtendedInfo = new AdminUserExtendedInfo();
-        $adminUserChangedExtendedInfo->setEveningPhone('555444555');
-        $adminUserChangedExtendedInfo->setCellularPhone('666555666');
-        $adminUserChangedExtendedInfo->setReceivesNewsletter(true);
-        $adminUserChangedExtendedInfo->setEmailInvalid(true);
-        $adminUserChangedExtendedInfo->setCreditRating('1500');
-        $adminUserChangedExtendedInfo->setUrl('https://www.example.com');
-        $adminUsersPage = $adminUsersPage->editExtendedInfo($adminUserChangedExtendedInfo)
-            ->seeUserExtendedInformation($adminUserChangedExtendedInfo);
-
-        $adminUsersPage->editExtendedInfo($userOriginalExtendedInfo)
-            ->seeUserExtendedInformation($userOriginalExtendedInfo);
+            ->seeUserAddress($address2);
     }
 
-    #[Group('session')]
-    public function updatePassword(AcceptanceTester $I): void
+    public function historyTab(AcceptanceTester $I): void
     {
-        $I->wantToTest('that admin can update his own password');
-        $newPass = uniqid('new-pass-', true);
-        $userData = Fixtures::get('adminUser');
-        $I->amGoingTo('log the existing admin in, find him in the list and update his password');
-        $I->expect('that admin will be logged-out after password change, but can log-in with the new one');
+        $I->wantToTest('functionality on the History tab');
+
+        $I->amGoingTo('prepare test data');
+        $user = $this->getAdminUser1();
+        $addressEmpty = new AdminUserAddress();
+        $remarkText = 'new note_šÄßüл';
+        $this->createAdminTestUser(
+            $I,
+            $user,
+            $addressEmpty
+        );
+
+        $I->comment('the first remark "usrRegistered" is added after editing user');
+        $I->amGoingTo('create/delete another remark');
         $I
-            ->openAdmin()
-            ->login($userData['userLoginName'], $userData['userPassword'])
+            ->loginAdmin()
             ->openUsers()
-            ->findByUserName($userData['userId'])
-            ->updatePassword($newPass)
-            ->login($userData['userLoginName'], $newPass);
+            ->findByUserName(
+                $user->getUsername()
+            )
+            ->editUserInformation(
+                $user,
+                $addressEmpty
+            )
+            ->openHistoryTab()
+            ->createNewRemark($remarkText)
+            ->openHistoryTab()
+            ->selectUserRemark('0')
+            ->seeRemarkText($remarkText)
+            ->deleteRemark()
+            ->selectUserRemark('0')
+            ->dontSeeRemarkText($remarkText);
+
     }
 
-    public function testChangeUserEmail(AcceptanceTester $I): void
+    public function addressesTab(AcceptanceTester $I): void
     {
-        $I->wantToTest('changing user email addresses with validation in admin');
+        $I->wantToTest('functionality on the Addresses tab');
 
-        $userData = Fixtures::get('existingUser');
-        $guestUserData = Fixtures::get('existingGuestUser');
-        $adminUserData = Fixtures::get('adminUser');
-        $newEmail = 'example02@oxid-esales.dev';
+        $I->amGoingTo('prepare test data');
+        $user = $this->getAdminUser1();
+        $address1 = $this->getAdminUserAddress1();
+        $address2 = $this->getAdminUserAddress2();
+        $addressEmpty = new AdminUserAddress();
+        $this->createAdminTestUser(
+            $I,
+            $user,
+            $addressEmpty
+        );
 
-        $I->amGoingTo('login as admin and find the test user');
-        $adminUsersPage = $I->loginAdmin()
+        $I
+            ->loginAdmin()
             ->openUsers()
-            ->findByUserName($userData['userLoginName']);
+            ->findByUserName(
+                $user->getUsername()
+            )
+            ->openAddressesTab()
+            ->createNewAddress($address1)
+            ->createNewAddress($address2)
+            ->selectAddress($address1)
+            ->seeAddressInformation($address1)
+            ->selectAddress($address2)
+            ->seeAddressInformation($address2)
+            ->deleteSelectedAddress()
+            ->selectAddress($address1)
+            ->deleteSelectedAddress()
+            ->seeAddressInformation($addressEmpty);
+    }
 
-        $I->amGoingTo('try to change email to an existing guest user email');
-        $adminUsersPage->updateUsername($guestUserData['userLoginName']);
-        $I->expect('to see an error message about existing user');
-        $I->seeText(Translator::translate('EXCEPTION_USER_USEREXISTS'));
+    public function extendedInfoTab(AcceptanceTester $I): void
+    {
+        $I->wantToTest('functionality on the Extended Info tab');
 
-        $I->amGoingTo('try to change email to an existing admin email');
-        $adminUsersPage->updateUsername($adminUserData['userLoginName']);
-        $I->expect('to see an error message about existing user');
-        $I->seeText(Translator::translate('EXCEPTION_USER_USEREXISTS'));
+        $I->amGoingTo('prepare test data');
+        $user = $this->getAdminUser1();
+        $address = $this->getAdminUserAddress1();
+        $extendedInfo1 = $this->getAdminUserExtendedInfo1();
+        $extendedInfo2 = $this->getAdminUserExtendedInfo2();
+        $this->createAdminTestUser(
+            $I,
+            $user,
+            $address
+        );
 
-        $I->amGoingTo('change user email to a new valid email address');
-        $adminUsersPage->updateUsername($newEmail);
-        $I->expect('not to see any error message');
-        $I->dontSee(Translator::translate('EXCEPTION_USER_USEREXISTS'));
-
-        $I->amGoingTo('change the email back to the original one');
-        $adminUsersPage->updateUsername($userData['userLoginName']);
+        $I->loginAdmin()
+            ->openUsers()
+            ->findByUserName(
+                $user->getUsername()
+            )
+            ->openExtendedTab()
+            ->seeUserAddress($address)
+            ->editExtendedInfo($extendedInfo1)
+            ->seeUserExtendedInformation($extendedInfo1)
+            ->editExtendedInfo($extendedInfo2)
+            ->seeUserExtendedInformation($extendedInfo2);
     }
 
     private function createAdminTestUser(
         AcceptanceTester $I,
         AdminUser $user,
-        AdminUserAddresses $userAddress,
-        AdminUserExtendedInfo $userExtendedInfo
+        AdminUserAddress $userAddress
     ): void {
         $I->haveInDatabase(
             'oxuser',
@@ -264,26 +190,34 @@ final class UserCest
                 'OXSTREETNR'  => $userAddress->getStreetNumber(),
                 'OXADDINFO'   => $userAddress->getAdditionalInfo(),
                 'OXCITY'      => $userAddress->getCity(),
-                'OXCOUNTRYID' => 'testcountry_be',
+                'OXCOUNTRYID' => $this->mapAddressToDatabaseCountryId(
+                    $userAddress->getCountryId()
+                ),
                 'OXSTATEID'   => $userAddress->getStateId(),
                 'OXZIP'       => $userAddress->getZip(),
                 'OXFON'       => $userAddress->getPhone(),
                 'OXFAX'       => $userAddress->getFax(),
                 'OXSAL'       => $userAddress->getTitle(),
-                'OXBONI'      => $userExtendedInfo->getCreditRating(),
-                'OXCREATE'    => '2010-02-05 10:22:37',
-                'OXREGISTER'  => '2010-02-05 10:22:48',
-                'OXPRIVFON'   => $userExtendedInfo->getEveningPhone(),
-                'OXMOBFON'    => $userExtendedInfo->getCellularPhone(),
-                'OXBIRTHDATE' => $user->getBirthYear() . '-' . $user->getBirthMonth() . '-' . $user->getBirthday(),
-                'OXURL'       => $userExtendedInfo->getUrl(),
-                'OXUPDATEKEY' => '',
-                'OXUPDATEEXP' => 0,
+                'OXBIRTHDATE' => "{$user->getBirthYear()}-{$user->getBirthMonth()}-{$user->getBirthday()}",
             ]
         );
     }
 
-    private function getAdminUser(): AdminUser
+    private function getAdminUser1(): AdminUser
+    {
+        $adminUser = new AdminUser();
+        $adminUser->setActive(true);
+        $adminUser->setUsername('example01@oxid-esales.dev');
+        $adminUser->setCustomerNumber('20');
+        $adminUser->setBirthday('01');
+        $adminUser->setBirthMonth('12');
+        $adminUser->setBirthYear('1980');
+        $adminUser->setUstid('111222');
+
+        return $adminUser;
+    }
+
+    private function getAdminUser2(): AdminUser
     {
         $adminUser = new AdminUser();
         $adminUser->setActive(false);
@@ -292,7 +226,6 @@ final class UserCest
         $adminUser->setUsername('example00@oxid-esales.dev');
         $adminUser->setCustomerNumber('121');
         $adminUser->setBirthday('01');
-        $adminUser->setBirthMonth('12');
         $adminUser->setBirthYear('1980');
         $adminUser->setUstid('111222');
         $adminUser->setBirthday('03');
@@ -301,9 +234,29 @@ final class UserCest
         return $adminUser;
     }
 
-    private function getAdminUserAddress(): AdminUserAddresses
+    private function getAdminUserAddress1(): AdminUserAddress
     {
-        $adminUserAddress = new AdminUserAddresses();
+        $adminUserAddress = new AdminUserAddress();
+        $adminUserAddress->setTitle('Mrs');
+        $adminUserAddress->setFirstName('Name_šÄßüл');
+        $adminUserAddress->setLastName('Surname_šÄßüл');
+        $adminUserAddress->setCompany('company_šÄßüл');
+        $adminUserAddress->setStreet('street_šÄßüл');
+        $adminUserAddress->setStreetNumber('1');
+        $adminUserAddress->setZip('3000');
+        $adminUserAddress->setCity('City_šÄßüл');
+        $adminUserAddress->setAdditionalInfo('additional info_šÄßüл');
+        $adminUserAddress->setCountryId(self::GERMANY);
+        $adminUserAddress->setStateId('BW');
+        $adminUserAddress->setPhone('111222333');
+        $adminUserAddress->setFax('222333444');
+
+        return $adminUserAddress;
+    }
+
+    private function getAdminUserAddress2(): AdminUserAddress
+    {
+        $adminUserAddress = new AdminUserAddress();
         $adminUserAddress->setTitle('Mr');
         $adminUserAddress->setFirstName('Name1');
         $adminUserAddress->setLastName('Surname1');
@@ -313,14 +266,15 @@ final class UserCest
         $adminUserAddress->setZip('30001');
         $adminUserAddress->setCity('City11');
         $adminUserAddress->setAdditionalInfo('additional info1');
-        $adminUserAddress->setCountryId('Belgium');
+        $adminUserAddress->setCountryId(self::BELGIUM);
         $adminUserAddress->setStateId('BE');
         $adminUserAddress->setPhone('1112223331');
         $adminUserAddress->setFax('2223334441');
+
         return $adminUserAddress;
     }
 
-    private function getAdminUserExtendedInfo(): AdminUserExtendedInfo
+    private function getAdminUserExtendedInfo1(): AdminUserExtendedInfo
     {
         $adminUserExtendedInfo = new AdminUserExtendedInfo();
         $adminUserExtendedInfo->setEveningPhone('5554445551');
@@ -330,5 +284,27 @@ final class UserCest
         $adminUserExtendedInfo->setCreditRating('1000');
         $adminUserExtendedInfo->setUrl('https://www.example1.com');
         return $adminUserExtendedInfo;
+    }
+
+    private function getAdminUserExtendedInfo2(): AdminUserExtendedInfo
+    {
+        $adminUserChangedExtendedInfo = new AdminUserExtendedInfo();
+        $adminUserChangedExtendedInfo->setEveningPhone('555444555');
+        $adminUserChangedExtendedInfo->setCellularPhone('666555666');
+        $adminUserChangedExtendedInfo->setReceivesNewsletter(true);
+        $adminUserChangedExtendedInfo->setEmailInvalid(true);
+        $adminUserChangedExtendedInfo->setCreditRating('1500');
+        $adminUserChangedExtendedInfo->setUrl('https://www.example.com');
+
+        return $adminUserChangedExtendedInfo;
+    }
+
+    private function mapAddressToDatabaseCountryId(string $countryName): string
+    {
+        return match ($countryName) {
+            self::GERMANY => 'testcountry_de',
+            self::BELGIUM => 'testcountry_be',
+            '' => '',
+        };
     }
 }

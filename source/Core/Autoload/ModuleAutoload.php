@@ -55,10 +55,6 @@ class ModuleAutoload
      */
     public static function autoload($class)
     {
-        if (!static::getInstance()->isAutoloaderReady()) {
-            return false;
-        }
-
         /**
          * Classes from unified namespace cannot be loaded by this auto loader.
          * Do not try to load them in order to avoid strange errors in edge cases.
@@ -123,10 +119,5 @@ class ModuleAutoload
         );
         $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
         return new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
-    }
-
-    private function isAutoloaderReady(): bool
-    {
-        return class_exists(SubShopSpecificFileCache::class, false);
     }
 }

@@ -15,7 +15,6 @@
 - Order totals display in admin with non-default base currency [#0005922](https://bugs.oxid-esales.com/view.php?id=5922)
 - An exception is thrown if a product is deleted while someone has it in their basket [0007391](https://bugs.oxid-esales.com/view.php?id=7391)
 - Module file cache on a heavy load
-- Class loading error on module removal
 
 ### Changed
 - Raised minimum required version of Symfony components to 6.4

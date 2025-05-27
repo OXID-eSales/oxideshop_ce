@@ -13,10 +13,6 @@ interface ShopAdapterInterface
 {
     public function translateString($string): string;
 
-    public function invalidateModuleCache(string $moduleId);
-
-    public function invalidateModulesCache();
-
     /**
      * @deprecated use Id::generate() instead
      */

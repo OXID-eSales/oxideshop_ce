@@ -72,3 +72,4 @@
 - Remove deprecated Interface `CacheConnectorInterface`
 - Remove `DateFormatHelper`
 - Deprecated promotions
+- `ShopAdapterInterface::invalidateModulesCache()` and `ShopAdapterInterface::invalidateModuleCache()`

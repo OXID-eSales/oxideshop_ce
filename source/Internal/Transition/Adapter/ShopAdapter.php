@@ -24,35 +24,6 @@ class ShopAdapter implements ShopAdapterInterface
     }
 
     /**
-     * @deprecated since v7.0.0 (2023-03-14).
-     * Please use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheInterface instead.
-     */
-    public function invalidateModuleCache(string $moduleId): void
-    {
-        /**
-         * @TODO we have to implement it in ModuleCacheServiceInterface or use ModuleCache::resetCache() method.
-         */
-
-        $this->invalidateModulesCache();
-    }
-
-    /**
-     * @deprecated since v7.0.0 (2023-03-14).
-     * Please use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface instead.
-     */
-    public function invalidateModulesCache(): void
-    {
-        $utils = Registry::getUtils();
-        $utils->resetLanguageCache();
-        $utils->resetMenuCache();
-        $utils->oxResetFileCache(true);
-
-        if (extension_loaded('apc') && ini_get('apc.enabled')) {
-            apc_clear_cache();
-        }
-    }
-
-    /**
      * @deprecated use Id::generate() instead
      */
     public function generateUniqueId(): string

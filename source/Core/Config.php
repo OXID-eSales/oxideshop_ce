@@ -536,6 +536,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns active shop ID.
      *
+     * @deprecated
+     * @see ContextInterface::getCurrentShopId()
+     *
      * @return int
      */
     public function getShopId()
@@ -1581,6 +1584,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Function returns default shop ID
      *
+     * @deprecated
+     * @see BasicContextInterface::getDefaultShopId()
+     *
      * @return string
      */
     public function getBaseShopId()
@@ -1730,6 +1736,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Return active shop ids
+     *
+     * @deprecated
+     * @see ContextInterface::getAllShopIds()
      *
      * @return array
      */

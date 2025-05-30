@@ -24,7 +24,10 @@ class QueryLogger implements SQLLogger
     ) {
     }
 
-    public function startQuery($sql, ?array $params = null, ?array $types = null): void
+    /**
+     * @deprecated will be removed in next major version
+     */
+    public function startQuery($query, ?array $params = null, ?array $types = null): void
     {
         if ($this->filterPass($sql)) {
             $queryData = $this->getQueryData($sql, $params ?? []);

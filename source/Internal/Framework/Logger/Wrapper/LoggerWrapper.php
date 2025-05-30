@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Wrapper;
 
 use Psr\Log\LoggerInterface;
 
+/**
+ * @deprecated will be removed in next major version
+ */
 class LoggerWrapper implements LoggerInterface
 {
     public function __construct(private LoggerInterface $logger)

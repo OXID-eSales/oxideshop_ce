@@ -13,6 +13,8 @@ use Doctrine\DBAL\Logging\SQLLogger;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
+ * @deprecated will be removed in next major version
+ *
  * @internal
  */
 readonly class DatabaseLoggerFactory implements DatabaseLoggerFactoryInterface

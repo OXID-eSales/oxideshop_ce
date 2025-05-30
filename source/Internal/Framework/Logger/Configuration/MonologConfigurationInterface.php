@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Logger\Configuration;
 
+/**
+ * @deprecated will be removed in next major version
+ */
 interface MonologConfigurationInterface extends PsrLoggerConfigurationInterface
 {
     /**

@@ -44,3 +44,7 @@
   - `ShopConfigurationDaoInterface::deleteAll()`
   - `ShopConfiguration::deleteModuleConfiguration()`
   - `ModuleConfigurationDaoInterface::deleteAll()`
+- Logger configuration will be simplified in next major, related classes and interfaces removed:
+`MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`, `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
+- Using fetch mode in database query results
+- Database adapter loggers

@@ -22,11 +22,15 @@ class DatabaseProvider
 {
     /**
      * @var int Fetch mode - numeric
+     *
+     * @deprecated will be removed in next major version
      */
     const FETCH_MODE_NUM = DatabaseInterface::FETCH_MODE_NUM;
 
     /**
      * @var int Fetch mode - associative
+     *
+     * @deprecated will be removed in next major version
      */
     const FETCH_MODE_ASSOC = DatabaseInterface::FETCH_MODE_ASSOC;
 

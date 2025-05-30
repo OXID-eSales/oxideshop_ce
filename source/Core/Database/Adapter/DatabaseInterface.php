@@ -24,20 +24,31 @@ interface DatabaseInterface
     /**
      * The default fetch mode as implemented by the database driver, in Doctrine this is usually FETCH_MODE_BOTH
      *
-     * @deprecated since 6.0 (2016-04-19); This constant is confusing as the shop uses a different default fetch mode.
+     * @deprecated since 6.0 (2016-04-19); This constant is confusing as the shop uses a different default fetch mode,
+     * will be removed in next major version
      */
     const FETCH_MODE_DEFAULT = 0;
 
     /**
      * Fetch the query result into an array with integer keys.
      * This is the default fetch mode as it is set by OXID eShop on opening a database connection.
+     *
+     * @deprecated will be removed in next major version
      */
     const FETCH_MODE_NUM = 1;
 
-    /** Fetch the query result into an array with string keys */
+    /**
+     * Fetch the query result into an array with string keys
+     *
+     * @deprecated will be removed in next major version
+     */
     const FETCH_MODE_ASSOC = 2;
 
-    /** Fetch the query result into a mixed array with both integer and string keys */
+    /**
+     * Fetch the query result into an array with string keys
+     *
+     * @deprecated will be removed in next major version
+     */
     const FETCH_MODE_BOTH = 3;
 
     /**
@@ -99,6 +110,8 @@ interface DatabaseInterface
      * NOTE: This implies, that it is not safe to make any assumptions about the current fetch mode of the connection.
      *
      * @param int $fetchMode See DatabaseInterface::FETCH_MODE_* for valid values
+     *
+     * @deprecated will be removed in next major version
      */
     public function setFetchMode($fetchMode);
 

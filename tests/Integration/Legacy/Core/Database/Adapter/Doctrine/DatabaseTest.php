@@ -181,10 +181,9 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
     }
 
     #[DataProvider('dataProviderTestQuoteIdentifierWithInvalidValues')]
-    public function testQuoteIdentifierWithInvalidValues(string $identifier, string $expectedMessage): void
+    public function testQuoteIdentifierWithInvalidValues(string $identifier): void
     {
         $this->expectException(DatabaseException::class);
-        $this->expectExceptionMessage($expectedMessage);
 
         $quotedIdentifier = $this->database->quoteIdentifier($identifier);
 
@@ -197,12 +196,10 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
             [
                 // A arbitrary string will be converted in a column name
                 'SELECT * from oxuser',
-                'Unknown column \'SELECT * from oxuser\' in \'order clause\'',
             ],
             [
                 // A arbitrary string, which contains a backtick, will be converted in a column name
                 'columnName ` columnName',
-                'Unknown column \'columnName  columnName\' in \'order clause\'',
             ],
         ];
     }

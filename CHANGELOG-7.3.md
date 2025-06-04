@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.3.1 - unreleased
+
+### Fixed
+- Environment variables via .env file now work in console commands
+
 ## v7.3.0 - unreleased
 
 ### Added

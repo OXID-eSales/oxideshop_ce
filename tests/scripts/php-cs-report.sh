@@ -18,6 +18,8 @@ if [ ! -d "${TESTDIR}" ]; then
     fi
 fi
 
+PHPCS_CONFIG="$(pwd)/phpcs.xml.dist"
+
 if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
     echo -e "\033[0;35m###  Use git diff for phpcs using filter '${PHPCS_DIFF_FILTER}' ###\033[0m"
     if [ "${GITHUB_EVENT_NAME}" == 'pull_request' ]; then
@@ -46,26 +48,26 @@ if [ "${PHPCS_DIFF_ONLY}" == "true" ]; then
     fi
     rm -rf .changed-files.txt .phpcs
     vendor/bin/phpcs \
-        --standard=${TESTDIR}/phpcs.xml \
+        --standard="${PHPCS_CONFIG}" \
         --report=json \
         --report-file=${TESTDIR}/Reports/phpcs.report.json \
         ${FILES} \
     ||true
     # As the first one does not produce legible output, this gives us something to see in the log
     vendor/bin/phpcs \
-        --standard=${TESTDIR}/phpcs.xml \
+        --standard="${PHPCS_CONFIG}" \
         --report=full \
         ${FILES}
 else
     echo -e "\033[0;35m###  Use full file list for phpcs using filter '${PHPCS_DIFF_FILTER}' ###\033[0m"
     cd .phpcs
     vendor/bin/phpcs \
-        --standard=${TESTDIR}/phpcs.xml \
+        --standard="${PHPCS_CONFIG}" \
         --report=json \
         --report-file=${TESTDIR}/Reports/phpcs.report.json \
     ||true
     # As the first one does not produce legible output, this gives us something to see in the log
     vendor/bin/phpcs \
-        --standard=${TESTDIR}/phpcs.xml \
+        --standard="${PHPCS_CONFIG}" \
         --report=full
 fi

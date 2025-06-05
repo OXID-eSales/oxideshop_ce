@@ -3,7 +3,6 @@
     <description>The coding standard for PHP_CodeSniffer itself.</description>
     <file>source</file>
     <exclude-pattern>*source/Application/views/.*$</exclude-pattern>
-    <exclude-pattern>*source/tmp/.*$</exclude-pattern>
     <arg name="colors"/>
     <arg value="p"/>
     <arg value="n"/>

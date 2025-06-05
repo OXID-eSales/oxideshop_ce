@@ -3,11 +3,6 @@
 /source/log/*
 !/source/log/.htaccess
 
-# Cache
-!/source/cache/
-/source/cache/*
-!/source/cache/.htaccess
-!/source/cache/dir.txt
 /.phpunit.result.cache
 
 # Export

@@ -1,9 +1,7 @@
 User-agent: *
 Disallow: /admin/
 Disallow: /Core/
-Disallow: /tmp/
 Disallow: /views/
-Disallow: /Setup/
 Disallow: /log/
 #
 Disallow: /newsletter/

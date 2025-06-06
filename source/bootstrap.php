@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-use OxidEsales\Eshop\Core\Exception\ExceptionHandler;
+use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
 use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;

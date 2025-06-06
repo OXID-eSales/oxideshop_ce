@@ -80,3 +80,4 @@
 - Database `NullLogger` and `DatabaseLoggerFactoryInterface`
 - Redundant Logger classes and interfaces: `MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`,
 `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
+- Redudant shop state and configuration classes and services: `ShopStateService`, `ShopStateServiceInterface`, `ProjectConfigurationDao`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`

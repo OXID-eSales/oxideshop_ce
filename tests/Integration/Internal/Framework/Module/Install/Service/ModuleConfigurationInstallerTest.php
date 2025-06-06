@@ -11,12 +11,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\ClassExtensionsChainDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
     ModuleConfiguration\ModuleSettingsDataMapper};
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ProjectConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
@@ -34,15 +32,12 @@ final class ModuleConfigurationInstallerTest extends IntegrationTestCase
      * @see TestData/TestModule/metadata.php
      */
     private string $testModuleId = 'test-module';
-    /** @var ProjectConfigurationDaoInterface */
-    private $projectConfigurationDao;
 
     public function setUp(): void
     {
         parent::setUp();
 
         $this->modulePath = realpath(__DIR__ . '/../../TestData/TestModule/');
-        $this->projectConfigurationDao = $this->get(ProjectConfigurationDaoInterface::class);
         $this->prepareTestProjectConfiguration();
     }
 
@@ -150,10 +145,7 @@ final class ModuleConfigurationInstallerTest extends IntegrationTestCase
         $moduleConfigurationInstaller = $this->get(ModuleConfigurationInstallerInterface::class);
         $moduleConfigurationInstaller->install($this->modulePath);
 
-        $shopConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration()
-            ->getShopConfiguration(1);
+        $shopConfiguration = $this->get(ShopConfigurationDaoInterface::class)->get(1);
 
         $this->assertStringContainsString(
             $shopConfiguration->getModuleConfiguration($this->testModuleId)->getModuleSource(),
@@ -163,11 +155,7 @@ final class ModuleConfigurationInstallerTest extends IntegrationTestCase
 
     private function assertProjectConfigurationHasModuleConfigurationForAllShops(): void
     {
-        $environmentConfiguration = $this
-            ->projectConfigurationDao
-            ->getConfiguration();
-
-        foreach ($environmentConfiguration->getShopConfigurations() as $shopConfiguration) {
+        foreach ($this->get(ShopConfigurationDaoInterface::class)->getAll() as $shopConfiguration) {
             $this->assertContains(
                 $this->testModuleId,
                 $shopConfiguration->getModuleIdsOfModuleConfigurations()
@@ -199,11 +187,8 @@ final class ModuleConfigurationInstallerTest extends IntegrationTestCase
 
         $shopConfigurationWithoutChain = new ShopConfiguration();
 
-        $projectConfiguration = new ProjectConfiguration();
-        $projectConfiguration->addShopConfiguration(1, $shopConfigurationWithChain);
-        $projectConfiguration->addShopConfiguration(2, $shopConfigurationWithoutChain);
-
-        $this->projectConfigurationDao->save($projectConfiguration);
+        $this->get(ShopConfigurationDaoInterface::class)->save($shopConfigurationWithChain, 1);
+        $this->get(ShopConfigurationDaoInterface::class)->save($shopConfigurationWithoutChain, 2);
     }
 
     private function configureModuleInEnvironmentFile(): void

@@ -17,10 +17,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\TemplateExtensionChainDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Chain\TemplateExtensionChainDao
 
-  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDaoInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ProjectConfigurationDao
-    public: true
-
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ModuleConfigurationCacheInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Cache\ClassPropertyModuleConfigurationCache
 

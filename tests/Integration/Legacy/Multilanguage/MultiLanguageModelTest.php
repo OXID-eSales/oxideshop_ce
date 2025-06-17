@@ -9,13 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Multilanguage;
 
+use OxidEsales\Eshop\Core\DbMetaDataHandler;
 use OxidEsales\Eshop\Core\Model\MultiLanguageModel;
-use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\TestCase;
 
-final class MultiLanguageModelTest extends MultilanguageTestCase
+#[Group('triggers-implicit-transaction-commit')]
+final class MultiLanguageModelTest extends TestCase
 {
     use ContainerTrait;
 
@@ -28,17 +31,11 @@ final class MultiLanguageModelTest extends MultilanguageTestCase
         $this->addTableToMultilanguageConfiguration();
     }
 
-    public function tearDown(): void
-    {
-        $this->removeTableFromMultilanguageConfiguration();
-        parent::tearDown();
-    }
-
     public function testGetAvailableInLangsReturnsLanguagesWithData(): void
     {
         $this->removeTestTable();
         $this->createTestTableWithUppercaseFields();
-        $this->updateViews();
+        oxNew(DbMetaDataHandler::class)->updateViews();
 
         $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
         $queryBuilder
@@ -55,7 +52,7 @@ final class MultiLanguageModelTest extends MultilanguageTestCase
                 'testField1' => 'test_en',
                 'testField2' => '',
             ])
-            ->execute();
+            ->executeStatement();
 
         $multiLanguageModel = oxNew(MultiLanguageModel::class);
         $multiLanguageModel->init($this->testTableName);
@@ -69,7 +66,7 @@ final class MultiLanguageModelTest extends MultilanguageTestCase
     {
         $this->removeTestTable();
         $this->createTestTableWithLowercaseFields();
-        $this->updateViews();
+        oxNew(DbMetaDataHandler::class)->updateViews();
 
         $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
         $queryBuilder
@@ -84,7 +81,7 @@ final class MultiLanguageModelTest extends MultilanguageTestCase
                 'testField' => 'test',
                 'testField1' => 'test_en',
             ])
-            ->execute();
+            ->executeStatement();
 
         $multiLanguageModel = oxNew(MultiLanguageModel::class);
         $multiLanguageModel->init($this->testTableName);
@@ -98,7 +95,7 @@ final class MultiLanguageModelTest extends MultilanguageTestCase
     {
         $this->removeTestTable();
         $this->createTestTableWithUppercaseFields();
-        $this->updateViews();
+        oxNew(DbMetaDataHandler::class)->updateViews();
 
         $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
         $queryBuilder
@@ -113,7 +110,7 @@ final class MultiLanguageModelTest extends MultilanguageTestCase
                 'testField' => '',
                 'testField1' => null,
             ])
-            ->execute();
+            ->executeStatement();
 
         $multiLanguageModel = oxNew(MultiLanguageModel::class);
         $multiLanguageModel->init($this->testTableName);
@@ -161,17 +158,7 @@ final class MultiLanguageModelTest extends MultilanguageTestCase
 
     private function addTableToMultilanguageConfiguration(): void
     {
-        $shopConfiguration = Registry::getConfig();
-        $multiLanguageTables = $shopConfiguration->getConfigParam('aMultiLangTables') ?: [];
-        $multiLanguageTables[] = $this->testTableName;
-        $shopConfiguration->setConfigParam('aMultiLangTables', $multiLanguageTables);
-    }
-
-    private function removeTableFromMultilanguageConfiguration(): void
-    {
-        $shopConfiguration = Registry::getConfig();
-        $multiLanguageTables = $shopConfiguration->getConfigParam('aMultiLangTables') ?: [];
-        $multiLanguageTables = array_diff($multiLanguageTables, [$this->testTableName]);
-        $shopConfiguration->setConfigParam('aMultiLangTables', $multiLanguageTables);
+        $this->setParameter('oxid_esales.multilingual_tables', [$this->testTableName]);
+        $this->replaceContainerInstance();
     }
 }

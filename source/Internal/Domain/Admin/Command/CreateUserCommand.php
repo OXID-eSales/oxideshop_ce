@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Domain\Admin\Command;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\EmailAlreadyTakenException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Service\AdminUserServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Console\Command\NamedArgumentsTrait;
@@ -52,20 +53,25 @@ class CreateUserCommand extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int
      * @throws InvalidEmailException
+     * @throws EmailAlreadyTakenException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->checkRequiredCommandOptions($this->getDefinition()->getOptions(), $input);
 
-        $this->validateAdminEmail($input->getOption(self::ADMIN_EMAIL));
+        $email = $input->getOption(self::ADMIN_EMAIL);
+        $password = $input->getOption(self::ADMIN_PASSWORD);
+        $shopId = $this->basicContext->getDefaultShopId();
+
+        $this->validateAdminEmail($email);
 
         $output->writeln('<info>Creating administrator account...</info>');
-        $this->createAdmin($input);
+        $this->createAdmin($email, $password, $shopId);
 
         $output->writeln('<info>Administrator account has been created.</info>');
 
@@ -84,16 +90,13 @@ class CreateUserCommand extends Command
         }
     }
 
-    /**
-     * @param InputInterface $input
-     */
-    private function createAdmin(InputInterface $input): void
+    private function createAdmin(string $email, string $password, int $shopId): void
     {
         $this->adminService->createAdmin(
-            $input->getOption(self::ADMIN_EMAIL),
-            $input->getOption(self::ADMIN_PASSWORD),
+            $email,
+            $password,
             Admin::MALL_ADMIN,
-            $this->basicContext->getDefaultShopId()
+            $shopId,
         );
     }
 }

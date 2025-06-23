@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Admin\Command;
 
 use OxidEsales\EshopCommunity\Application\Model\User;
+use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\EmailAlreadyTakenException;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Exception\InvalidEmailException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -64,6 +65,34 @@ final class CreateUserCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $exitCode);
         $this->assertUserExists();
     }
+
+    public function testThrowsEmailAlreadyTakenExceptionWhenAdminExists(): void
+    {
+        $this->expectException(EmailAlreadyTakenException::class);
+
+        $commandTester = new CommandTester($this->getCommand());
+        $commandTester->execute([
+            'admin-email' => $this->createTestAdminUser(),
+            'admin-password' => uniqid(),
+        ]);
+    }
+
+    private function createTestAdminUser(): string
+    {
+        $email = sprintf('%s@%s.com', uniqid(), uniqid());
+        $user = oxNew(User::class);
+        $user->assign([
+            'oxusername' => $email,
+            'oxpassword' => md5(uniqid()),
+            'oxrights'   => uniqid(),
+            'oxactive'   => 1,
+            'oxshopid'   => 1,
+        ]);
+        $user->save();
+
+        return $email;
+    }
+
 
     private function getCommandTester(): CommandTester
     {

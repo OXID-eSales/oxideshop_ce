@@ -64,7 +64,7 @@ class AdminDao implements AdminDaoInterface
             ])
             ->setMaxResults(1);
 
-        if ($queryBuilder->execute()->fetchOne()) {
+        if ($queryBuilder->executeQuery()->fetchOne()) {
             throw new EmailAlreadyTakenException("Can not create an admin, the email '$email' is already in use.");
         }
     }

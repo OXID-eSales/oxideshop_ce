@@ -70,10 +70,10 @@ final class CreateUserCommandTest extends TestCase
     {
         $this->expectException(EmailAlreadyTakenException::class);
 
-        $commandTester = new CommandTester($this->getCommand());
-        $commandTester->execute([
-            'admin-email' => $this->createTestAdminUser(),
-            'admin-password' => uniqid(),
+        $this->getCommandTester()
+            ->execute([
+                'admin-email' => $this->createTestAdminUser(),
+                'admin-password' => uniqid(),
         ]);
     }
 

@@ -37,12 +37,10 @@ final class AdminDaoTest extends IntegrationTestCase
     }
 
     #[Test]
-    public function testCreateThrowsIfEmailAlreadyExists(): void
+    public function testCreateThrowsExceptionIfEmailAlreadyExists(): void
     {
         $email = $this->generateEmail();
         $shopId = rand(1, 10);
-
-        $this->createTestAdminUser(email: $email, shopId: $shopId);
 
         $admin = new Admin(
             id: uniqid(),
@@ -52,27 +50,11 @@ final class AdminDaoTest extends IntegrationTestCase
             shopId: $shopId,
         );
 
+        $this->getAdminDao()->create($admin);
+
         $this->expectException(EmailAlreadyTakenException::class);
 
         $this->getAdminDao()->create($admin);
-    }
-
-    private function createTestAdminUser(
-        ?string $email = null,
-        ?string $password = null,
-        ?string $rights = null,
-        ?int $shopId = 1
-    ): void
-    {
-        $user = oxNew(User::class);
-        $user->assign([
-            'oxusername' => $email ?? $this->generateEmail(),
-            'oxpassword' => $password ?? md5(uniqid()),
-            'oxrights'   => $rights ?? uniqid(),
-            'oxactive'   => 1,
-            'oxshopid'   => $shopId ?? rand(1, 10),
-        ]);
-        $user->save();
     }
 
     private function generateEmail(): string

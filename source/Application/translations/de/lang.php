@@ -512,6 +512,7 @@ $aLang = [
 'VAT_MESSAGE_ID_NOT_VALID'                                    => 'USt-ID ist ungültig',
 'VAT_MESSAGE_COMPANY_MISSING'                                 => 'Bitte geben Sie zur USt-ID auch Ihren Firmennamen an!',
 'VAT_MESSAGE_MISSING_COUNTRY_PREFIX'                          => 'Die Prüfung der Umsatzsteuer-ID ist für das gewählte Land derzeit nicht möglich. Bitte wenden Sie sich an den Shopbetreiber, um den Einkauf fortzusetzen.',
+'ERROR_MESSAGE_INPUT_VAT_PREFIX_EMPTY'                        => 'Bitte geben Sie ein gültiges Präfix zur Umsatzsteuer-Identifikationsnummer ein, wenn die Option "Keine Mehrwertsteuer berechnen, wenn eine Mehrwertsteuer-ID angegeben ist" ausgewählt ist.',
 'VENDOR'                                                      => 'Lieferant',
 'VENDOR_S'                                                    => '| Lieferant: %s',
 'VERIFICATION_CODE'                                           => 'Prüfcode',

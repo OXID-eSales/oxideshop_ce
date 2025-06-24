@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Admin\Dao;
 
-use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao\AdminDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Dao\AdminDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\DataObject\Admin;

@@ -17,5 +17,4 @@ interface AdminDaoInterface
      * @param Admin $admin
      */
     public function create(Admin $admin): void;
-
 }

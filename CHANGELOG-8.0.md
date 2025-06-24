@@ -1,5 +1,31 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v8.0.0-alpha.2 - Unreleased
+
+### Added
+
+- ClearShopCacheEvent
+
+### Changed
+
+- Module environment configuration file paths
+- Updated doctrine/dbal dependency to ^4.2
+- `ResultSet` constructor now strictly requires `$statement` to be a `Doctrine\DBAL\Statement`
+- Refactored database query logging configuration.
+- Database adapter fetcher methods now return associative results by default
+- Method `getLastInsertId` of `DatabaseInterface` Adapter will throw `DatabaseErrorException` if no insert ID is available.
+- The `DatabaseConfiguration` namespace has been renamed for consistency, and the `getScheme` method has been replaced with `getDriver`
+
+### Removed
+
+- Remove `DateFormatHelper`
+- Deprecated promotions
+- Fetch mode support from `DatabaseInterface` and `DatabaseProvider`
+- Database `NullLogger` and `DatabaseLoggerFactoryInterface`
+- Redundant Logger classes and interfaces: `MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`,
+  `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
+- Redundant shop state and configuration classes and services: `ShopStateService`, `ShopStateServiceInterface`, `ProjectConfigurationDao`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`
+
 ## v8.0.0-alpha.1 - 2025-02-03
 
 ### Added
@@ -9,7 +35,6 @@
 - Registration of environment variables via Symfony Dotenv Component
 - Interface for storing Symfony Service Container parameters in configuration
 - Support Symfony caching interface with tags
-- ClearShopCacheEvent
 
 ### Deprecated
 
@@ -33,13 +58,6 @@
 - Browser-based application setup was discontinued. Only console-based setup is available
 - Replace file caching in `Utils` with Symfony cache
 - Removed $includePermanentCache parameter from `oxResetFileCache` method, all cache files are now cleared without exclusions.
-- Module environment configuration file paths
-- Updated doctrine/dbal dependency to ^4.2
-- `ResultSet` constructor now strictly requires `$statement` to be a `Doctrine\DBAL\Statement`
-- Refactored database query logging configuration.
-- Database adapter fetcher methods now return associative results by default
-- Method `getLastInsertId` of `DatabaseInterface` Adapter will throw `DatabaseErrorException` if no insert ID is available.
-- The `DatabaseConfiguration` namespace has been renamed for consistency, and the `getScheme` method has been replaced with `getDriver`
 
 ### Removed
 
@@ -74,10 +92,3 @@
 - `FileCache` and `SubShopSpecificFileCache` classes. Use `ContextInterface::getCurrentShopId()` instead
 - Legacy file-based caching methods from `Utils` class
 - Remove deprecated Interface `CacheConnectorInterface`
-- Remove `DateFormatHelper`
-- Deprecated promotions
-- Fetch mode support from `DatabaseInterface` and `DatabaseProvider`
-- Database `NullLogger` and `DatabaseLoggerFactoryInterface`
-- Redundant Logger classes and interfaces: `MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`,
-`LoggerConfigurationValidatorInterface`, `LoggerWrapper`
-- Redudant shop state and configuration classes and services: `ShopStateService`, `ShopStateServiceInterface`, `ProjectConfigurationDao`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`

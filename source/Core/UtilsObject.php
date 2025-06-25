@@ -201,6 +201,8 @@ class UtilsObject
     /**
      * Returns generated unique ID.
      *
+     * @deprecated use Id::generate() instead
+     *
      * @return string
      */
     public function generateUId()

@@ -291,6 +291,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
      * Returns belboon parameter
      *
      * @return string $sBelboon
+     *
+     * @deprecated This method is deprecated and will be removed in version 8.0
      */
     public function getBelboonParam()
     {

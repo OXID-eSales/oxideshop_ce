@@ -222,6 +222,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
         // checks if object field data is not empty in all available languages
         // and formats not available in languages array
         if (isset($rs[0]) && is_array($rs[0]) && count($rs[0])) {
+            $rs[0] = array_change_key_case($rs[0], CASE_UPPER);
             foreach ($multiLangFields as $fieldId => $multiLangIds) {
                 foreach ($multiLangIds as $multiLangId) {
                     $fieldName = ($multiLangId == 0) ? $fieldId : $fieldId . '_' . $multiLangId;

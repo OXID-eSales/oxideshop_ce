@@ -287,26 +287,6 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
     }
 
     /**
-     * Returns belboon parameter
-     *
-     * @return string $sBelboon
-     *
-     * @deprecated This method is deprecated and will be removed in version 8.0
-     */
-    public function getBelboonParam()
-    {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        if ($sBelboon = $session->getVariable('belboon')) {
-            return $sBelboon;
-        }
-        if (($sBelboon = Registry::getRequest()->getRequestEscapedParameter('belboon'))) {
-            $session->setVariable('belboon', $sBelboon);
-        }
-
-        return $sBelboon;
-    }
-
-    /**
      * Returns view config object
      *
      * @return \OxidEsales\Eshop\Core\ViewConfig

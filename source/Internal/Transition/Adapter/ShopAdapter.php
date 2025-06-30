@@ -51,6 +51,9 @@ class ShopAdapter implements ShopAdapterInterface
         }
     }
 
+    /**
+     * @deprecated use Id::generate() instead
+     */
     public function generateUniqueId(): string
     {
         return Registry::getUtilsObject()->generateUId();

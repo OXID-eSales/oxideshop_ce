@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Module\ModuleVariablesLocator;
 use OxidEsales\Eshop\Core\NamespaceInformationProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
+use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Application\Model\Shop;
 
@@ -138,5 +139,10 @@ class ShopAdapter implements ShopAdapterInterface
         $theme = oxNew(Theme::class);
         $theme->load($themeId);
         $theme->activate();
+    }
+
+    public function generateDatabaseViewName(string $tableName, int $languageId, int $shopId): string
+    {
+        return oxNew(TableViewNameGenerator::class)->getViewName($tableName, $languageId, $shopId);
     }
 }

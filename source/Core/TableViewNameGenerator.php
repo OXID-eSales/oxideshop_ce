@@ -7,9 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-/**
- * Generates view name for given table name.
- */
 class TableViewNameGenerator
 {
     /** @var \OxidEsales\Eshop\Core\Config */
@@ -36,6 +33,8 @@ class TableViewNameGenerator
     }
 
     /**
+     * @deprecated use ShopAdapterInterface::generateDatabaseViewName() instead
+     *
      * Return the view name of the given table if a view exists, otherwise the table name itself.
      * Views usage can be disabled with blSkipViewUsage config option in case admin area is not reachable
      * due to broken views, so that they could be regenerated.

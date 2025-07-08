@@ -6,6 +6,7 @@
 - `oe:admin:create-user` command displays an error message when attempting to create an admin user that already exists
 - Display a clear error message if the VAT-ID prefix is missing during user registration
 - Value object for Oxid Unique Id
+- Useful interfaces RequestInterface and SessionInterface
 
 ### Deprecated
 
@@ -13,6 +14,10 @@
 - `UtilsObject::generateUId()` use `Id::generate()` instead
 - The partner related method `getBelboonParam()` of class `BaseController`
 - `ContainerBuilderFactory` will be removed
+- `Request::getRequestParameter()` use `get` instead
+- Methods `hasVariable`, `setVariable`, `getVariable` and `deleteVariable` of `Session` use new methods of `SessionInterface`
+- Method `Language::translateString()` use `ShopAdapterInterface::translateString()`
+- Method `TableViewNameGenerator::getViewName()` use `ShopAdapterInterface::generateDatabaseViewName()`
 
 ### Fixed
 - Multilanguage field detection with lowercase field names [#0005244](https://bugs.oxid-esales.com/view.php?id=5244)

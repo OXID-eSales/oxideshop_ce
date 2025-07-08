@@ -407,6 +407,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated use ShopAdapterInterface::translateString() instead
+     *
      * Searches for translation string in file and on success returns translation,
      * otherwise returns initial string.
      *

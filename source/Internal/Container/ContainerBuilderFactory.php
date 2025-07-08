@@ -14,6 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ShopStateSe
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 
+/**
+ * @deprecated This class is deprecated and will be removed in version 8.0
+ */
 class ContainerBuilderFactory
 {
     /**

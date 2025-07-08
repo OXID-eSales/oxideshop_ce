@@ -10,10 +10,9 @@
 
 - `ShopAdapterInterface::generateUniqueId()` use `Id::generate()` instead
 - `UtilsObject::generateUId()` use `Id::generate()` instead
+- The partner related method `getBelboonParam()` of class `BaseController`
+- `ContainerBuilderFactory` will be removed
 
 ### Fixed
 - Multilanguage field detection with lowercase field names [#0005244](https://bugs.oxid-esales.com/view.php?id=5244)
 - Allow "Core" to be used as manufacturer name in URLs [#0005242](https://bugs.oxid-esales.com/view.php?id=5242)
-
-### Deprecated
-- The partner related method `getBelboonParam()` of class `BaseController`

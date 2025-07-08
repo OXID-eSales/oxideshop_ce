@@ -25,7 +25,7 @@
 - Redundant Logger classes and interfaces: `MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`,
   `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
 - Redundant shop state and configuration classes and services: `ShopStateService`, `ShopStateServiceInterface`, `ProjectConfigurationDao`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`
-- A deprecated partner-related method
+- A deprecated partner-related method `getBelboonParam()` of class `BaseController` [0006140](https://bugs.oxid-esales.com/view.php?id=6140)
 
 ## v8.0.0-alpha.1 - 2025-02-03
 

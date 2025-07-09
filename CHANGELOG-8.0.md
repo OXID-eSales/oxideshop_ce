@@ -26,6 +26,7 @@
   `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
 - Redundant shop state and configuration classes and services: `ShopStateService`, `ShopStateServiceInterface`, `ProjectConfigurationDao`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`
 - A deprecated partner-related method `getBelboonParam()` of class `BaseController` [0006140](https://bugs.oxid-esales.com/view.php?id=6140)
+- `ContainerBuilderFactory`
 
 ## v8.0.0-alpha.1 - 2025-02-03
 

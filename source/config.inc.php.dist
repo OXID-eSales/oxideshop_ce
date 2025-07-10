@@ -175,7 +175,11 @@ $this->blSkipViewUsage = false;
  * This options have no effect on Community/Professional Editions.
  */
 
-//Time limit in ms to be notified about slow queries
+/**
+ * @deprecated This parameter will be removed in the next version
+ *
+ * Time limit in ms to be notified about slow queries
+ */
 $this->iDebugSlowQueryTime = 20;
 
 /**

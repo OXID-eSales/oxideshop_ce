@@ -511,6 +511,7 @@ $aLang = [
 'VAT_ID_NUMBER'                                               => 'VAT ID',
 'VAT_MESSAGE_ID_NOT_VALID'                                    => 'VAT ID is invalid',
 'VAT_MESSAGE_COMPANY_MISSING'                                 => 'Please enter your company name along with your VAT ID!',
+'VAT_MESSAGE_MISSING_COUNTRY_PREFIX'                          => 'It is currently not possible to check the VAT ID for the selected country. Please contact the store operator to continue shopping.',
 'VENDOR'                                                      => 'Vendor',
 'VENDOR_S'                                                    => '|Vendor: %s',
 'VERIFICATION_CODE'                                           => 'Verification code',

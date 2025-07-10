@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Model\CompanyVatIn;
 use OxidEsales\Eshop\Application\Model\Country;
 
 /**
@@ -44,24 +45,36 @@ class CompanyVatInCountryChecker extends \OxidEsales\Eshop\Core\CompanyVatInChec
         return $this->_oCountry;
     }
 
-    /**
-     * Validates.
-     *
-     * @param \OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn
-     *
-     * @return bool
-     */
-    public function validate(\OxidEsales\Eshop\Application\Model\CompanyVatIn $vatIn)
+    public function validate(CompanyVatIn $vatIn)
     {
-        $result = false;
         $country = $this->getCountry();
-        if (!is_null($country)) {
-            $result = ($country->getVATIdentificationNumberPrefix() === $vatIn->getCountryCode());
-            if (!$result) {
-                $this->setError(self::ERROR_ID_NOT_VALID);
-            }
+
+        if (is_null($country)) {
+            return false;
         }
 
-        return $result;
+        if (!$this->hasValidVatPrefix($country)) {
+            $this->setError('MISSING_COUNTRY_PREFIX');
+            return false;
+        }
+
+        return $this->isVatPrefixMatching($country, $vatIn);
+    }
+
+    private function hasValidVatPrefix(Country $country): bool
+    {
+        return !empty($country->getVATIdentificationNumberPrefix());
+    }
+
+    private function isVatPrefixMatching(Country $country, CompanyVatIn $companyVatIn): bool
+    {
+        $prefix = $country->getVATIdentificationNumberPrefix();
+        $isValid = ($prefix === $companyVatIn->getCountryCode());
+
+        if (!$isValid) {
+            $this->setError(self::ERROR_ID_NOT_VALID);
+        }
+
+        return $isValid;
     }
 }

@@ -511,6 +511,7 @@ $aLang = [
 'VAT_ID_NUMBER'                                               => 'USt-ID',
 'VAT_MESSAGE_ID_NOT_VALID'                                    => 'USt-ID ist ungültig',
 'VAT_MESSAGE_COMPANY_MISSING'                                 => 'Bitte geben Sie zur USt-ID auch Ihren Firmennamen an!',
+'VAT_MESSAGE_MISSING_COUNTRY_PREFIX'                          => 'Die Prüfung der Umsatzsteuer-ID ist für das gewählte Land derzeit nicht möglich. Bitte wenden Sie sich an den Shopbetreiber, um den Einkauf fortzusetzen.',
 'VENDOR'                                                      => 'Lieferant',
 'VENDOR_S'                                                    => '| Lieferant: %s',
 'VERIFICATION_CODE'                                           => 'Prüfcode',

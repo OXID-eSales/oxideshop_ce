@@ -5,6 +5,11 @@
 ### Added
 
 - ClearShopCacheEvent
+- Validation for country VAT number prefix in the admin area
+
+### Fixed
+
+- Creating a new country does not check the VAT-ID prefix [#0007205](https://bugs.oxid-esales.com/view.php?id=7205)
 
 ### Changed
 

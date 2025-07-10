@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Country;
 use stdClass;
 use OxidEsales\Eshop\Core\Registry;
 
@@ -24,7 +25,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         $soxId = $this->_aViewData["oxid"] = $this->getEditObjectId();
         if (isset($soxId) && $soxId != "-1") {
             // load object
-            $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+            $oCountry = oxNew(Country::class);
             $oCountry->loadInLang($this->_iEditLang, $soxId);
 
             if ($oCountry->isForeignCountry()) {
@@ -40,7 +41,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $this->_aViewData["edit"] = $oCountry;
 
             // remove already created languages
-            $aLang = array_diff(\OxidEsales\Eshop\Core\Registry::getLang()->getLanguageNames(), $oOtherLang);
+            $aLang = array_diff(Registry::getLang()->getLanguageNames(), $oOtherLang);
             if (count($aLang)) {
                 $this->_aViewData["posslang"] = $aLang;
             }
@@ -65,30 +66,33 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         parent::save();
 
-        $soxId = $this->getEditObjectId();
-        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
+        $oxidId = $this->getEditObjectId();
+        $queryParameters = Registry::getRequest()->getRequestEscapedParameter("editval");
 
-        if (!isset($aParams['oxcountry__oxactive'])) {
-            $aParams['oxcountry__oxactive'] = 0;
+        if ($queryParameters['oxcountry__oxvatstatus'] === '1' && empty($queryParameters['oxcountry__oxvatinprefix'])) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_INPUT_VAT_PREFIX_EMPTY');
+            return;
         }
 
-        $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+        if (!isset($queryParameters['oxcountry__oxactive'])) {
+            $queryParameters['oxcountry__oxactive'] = 0;
+        }
 
-        if ($soxId != "-1") {
-            $oCountry->loadInLang($this->_iEditLang, $soxId);
+        $country = oxNew(Country::class);
+
+        if ($oxidId != "-1") {
+            $country->loadInLang($this->_iEditLang, $oxidId);
         } else {
-            $aParams['oxcountry__oxid'] = null;
+            $queryParameters['oxcountry__oxid'] = null;
         }
 
-        //$aParams = $oCountry->ConvertNameArray2Idx( $aParams);
-        $oCountry->setLanguage(0);
-        $oCountry->assign($aParams);
-        $oCountry->setLanguage($this->_iEditLang);
-        $oCountry = \OxidEsales\Eshop\Core\Registry::getUtilsFile()->processFiles($oCountry);
-        $oCountry->save();
+        $country->setLanguage(0);
+        $country->assign($queryParameters);
+        $country->setLanguage($this->_iEditLang);
+        $country = Registry::getUtilsFile()->processFiles($country);
+        $country->save();
 
-        // set oxid if inserted
-        $this->setEditObjectId($oCountry->getId());
+        $this->setEditObjectId($country->getId());
     }
 
     /**
@@ -103,7 +107,7 @@ class CountryMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
             $aParams['oxcountry__oxactive'] = 0;
         }
 
-        $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
+        $oCountry = oxNew(Country::class);
 
         if ($soxId != "-1") {
             $oCountry->loadInLang($this->_iEditLang, $soxId);

@@ -176,13 +176,6 @@ $this->blSkipViewUsage = false;
  */
 
 /**
- * @deprecated This parameter will be removed in the next version
- *
- * Time limit in ms to be notified about slow queries
- */
-$this->iDebugSlowQueryTime = 20;
-
-/**
  * Enables Rights and Roles engine
  * 0 - off,
  * 1 - only in admin,

@@ -4,6 +4,7 @@
 
 ### Added
 - `oe:admin:create-user` command displays an error message when attempting to create an admin user that already exists
+- Display a clear error message if the VAT-ID prefix is missing during user registration
 - Value object for Oxid Unique Id
 
 ### Deprecated

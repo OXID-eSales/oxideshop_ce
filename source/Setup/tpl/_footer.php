@@ -10,5 +10,6 @@
 <div id="footer">
     <?php $this->getText('FOOTER_OXID_ESALES'); ?>
 </div>
+</div>
 </body>
 </html>

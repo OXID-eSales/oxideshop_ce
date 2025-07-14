@@ -45,7 +45,7 @@ class ModuleDeactivateCommand extends Command
      * @param InputInterface  $input
      * @param OutputInterface $output
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $moduleId = $input->getArgument('module-id');
 

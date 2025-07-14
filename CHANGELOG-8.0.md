@@ -6,6 +6,7 @@
 
 - ClearShopCacheEvent
 - Validation for country VAT number prefix in the admin area
+- Upgrade to Symfony version 7.3
 
 ### Fixed
 

@@ -38,7 +38,7 @@ class InstallModuleAssetsCommand extends Command
         );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $shopConfiguration = $this->shopConfigurationDao->get($this->context->getDefaultShopId());
 

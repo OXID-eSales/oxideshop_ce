@@ -5,6 +5,9 @@
 ### Fixed
 - Environment variables via .env file now work in console commands
 
+### Deprecated
+- Unused configuration parameter `iDebugSlowQueryTime`
+
 ## v7.3.0 - 2025-04-10
 
 ### Added

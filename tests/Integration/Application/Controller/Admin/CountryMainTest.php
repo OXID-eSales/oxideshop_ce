@@ -15,6 +15,23 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class CountryMainTest extends IntegrationTestCase
 {
+    private bool $allowSharedEdit;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->allowSharedEdit = (bool) Registry::getConfig()->getConfigParam('blAllowSharedEdit');
+        Registry::getConfig()->setConfigParam('blAllowSharedEdit', true);
+    }
+
+    public function tearDown(): void
+    {
+        Registry::getConfig()->setConfigParam('blAllowSharedEdit', $this->allowSharedEdit);
+
+        parent::tearDown();
+    }
+
     public function testSaveWithEmptyVatPrefixAndVatStatusIsActivated(): void
     {
         $this->mockSubmitFormData([

@@ -97,7 +97,7 @@ $aLang = [
                                                    '<li class="pass"> - Die Voraussetzung ist erfüllt.</li>' .
                                                    '<li class="pmin"> - Die Voraussetzung ist nicht oder nur teilweise erfüllt. Der OXID eShop funktioniert trotzdem und kann installiert werden.</li>' .
                                                    '<li class="fail"> - Die Voraussetzung ist nicht erfüllt. Der OXID eShop funktioniert nicht ohne diese Voraussetzung und kann nicht installiert werden.</li>' .
-                                                   '<li class="null"> - Die Voraussetzung konnte nicht überprüft werden.' .
+                                                   '<li class="null"> - Die Voraussetzung konnte nicht überprüft werden.</li>' .
                                                    '</ul>',
 'STEP_0_DESC'                                   => 'In diesem Schritt wird überprüft, ob Ihr System die Voraussetzungen erfüllt:',
 'STEP_0_TITLE'                                  => 'Systemvoraussetzungen überprüfen',

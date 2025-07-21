@@ -22,3 +22,4 @@
 ### Fixed
 - Multilanguage field detection with lowercase field names [#0005244](https://bugs.oxid-esales.com/view.php?id=5244)
 - Allow "Core" to be used as manufacturer name in URLs [#0005242](https://bugs.oxid-esales.com/view.php?id=5242)
+- Mismatching html tags in setup templates [#0006144](https://bugs.oxid-esales.com/view.php?id=6144)

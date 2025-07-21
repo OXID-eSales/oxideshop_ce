@@ -426,6 +426,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated use SessionInterface::has() instead
+     *
      * Checks if variable is set in session. Returns true on success.
      *
      * @param string $name Name to check
@@ -438,6 +440,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated use SessionInterface::set() instead
+     *
      * Sets parameter and its value to global session mixedvar array.
      *
      * @param string $name  Name of parameter to store
@@ -449,6 +453,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated use SessionInterface::get() instead
+     *
      * IF available returns value of parameter, stored in session array.
      *
      * @param string $name Name of parameter
@@ -461,6 +467,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated use SessionInterface::remove() instead
+     *
      * Destroys a single element (passed to method) of an session array.
      *
      * @param string $name Name of parameter to destroy

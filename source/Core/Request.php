@@ -15,6 +15,8 @@ use OxidEsales\Eshop\Core\Str;
 class Request
 {
     /**
+     * @deprecated use RequestInterface::get() instead
+     *
      * Returns raw value of parameter stored in POST,GET.
      *
      * @param string $name         Name of parameter.

@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Session\SessionInterface:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Session\SessionAdapter

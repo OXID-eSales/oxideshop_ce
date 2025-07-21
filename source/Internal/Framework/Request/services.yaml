@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Request\RequestAdapter

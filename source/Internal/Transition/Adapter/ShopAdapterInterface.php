@@ -41,4 +41,6 @@ interface ShopAdapterInterface
     public function themeExists(string $themeId): bool;
 
     public function activateTheme(string $themeId): void;
+
+    public function generateDatabaseViewName(string $tableName, int $languageId, int $shopId): string;
 }

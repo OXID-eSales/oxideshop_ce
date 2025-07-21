@@ -175,6 +175,9 @@ $this->blSkipViewUsage = false;
  * This options have no effect on Community/Professional Editions.
  */
 
+//Time limit in ms to be notified about slow queries
+$this->iDebugSlowQueryTime = 20;
+
 /**
  * Enables Rights and Roles engine
  * 0 - off,

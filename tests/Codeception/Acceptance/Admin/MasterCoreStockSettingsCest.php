@@ -15,26 +15,29 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 #[Group('admin', 'core', 'stock')]
 final class MasterCoreStockSettingsCest
 {
-    public function setActiveCategoryAtStart(AcceptanceTester $I): void
+    public function testStockDefaultMessageSettings(AcceptanceTester $I): void
     {
-        $I->wantToTest('Activate and deactivate default stock message');
+        $I->wantToTest('stock default message settings management');
 
         $adminPanel = $I->loginAdmin();
         $coreSettings = $adminPanel->openCoreSettings();
         $settingsTab = $coreSettings->openSettingsTab();
 
-        $I->amGoingTo('Check Low stock default message option');
-        $stockDropdown =  $settingsTab->openStockSettings();
-        $stockDropdown->checkLowStockMessageOption();
+        $I->amGoingTo('check that all stock default message options are activated');
+        $stockSettings = $settingsTab->openStockSettings();
+        $stockSettings->seeInStockMessageSelected();
+        $stockSettings->seeLowStockMessageSelected();
+        $stockSettings->seeOutOfStockMessageSelected();
+
+        $I->amGoingTo('deactivate all stock default message settings and verify the changes');
+        $stockSettings->uncheckInStockMessageOption();
+        $stockSettings->uncheckLowStockMessageOption();
+        $stockSettings->uncheckOutOfStockMessageOption();
         $settingsTab->save();
 
-        $stockDropdown->seeLowStockMessageSelected();
-
-        $I->amGoingTo('Uncheck Low stock default message option');
-        $stockDropdown =  $settingsTab->openStockSettings();
-        $stockDropdown->uncheckLowStockMessageOption();
-        $settingsTab->save();
-
-        $stockDropdown->dontSeeLowStockMessageSelected();
+        $stockSettings = $settingsTab->openStockSettings();
+        $stockSettings->dontSeeLowStockMessageSelected();
+        $stockSettings->dontSeeInStockMessageSelected();
+        $stockSettings->dontSeeOutOfStockMessageSelected();
     }
 }

@@ -24,3 +24,4 @@
 - Allow "Core" to be used as manufacturer name in URLs [#0005242](https://bugs.oxid-esales.com/view.php?id=5242)
 - Mismatching html tags in setup templates [#0006144](https://bugs.oxid-esales.com/view.php?id=6144)
 - Fixed incorrect email validation error when wrong password is entered in delivery address form [#0006026](https://bugs.oxid-esales.com/view.php?id=6026)
+- Order remark no longer defaults to 1 when the input field is missing in the frontend [#0007721](https://bugs.oxid-esales.com/view.php?id=7721)

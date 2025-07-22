@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ContextStub extends BasicContextStub implements ContextInterface
@@ -19,27 +19,19 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private array $shopIds;
     private array $requiredContactFormFields = [];
     private string $adminLogFilePath;
+    private bool $doLogAdminQueries;
     private bool $isAdmin;
     private array $skipLogTags;
-    private ?string $adminUserId;
+    private string $adminUserId;
     private bool $productiveMode;
     private bool $demoMode;
 
+    private ContextInterface $context;
+
     public function __construct(private int $shopId = 1)
     {
+        $this->context = new Context();
         parent::__construct();
-        $context = ContainerFacade::get(ContextInterface::class);
-        $this->logLevel = $context->getLogLevel();
-        $this->shopIds = $context->getAllShopIds();
-        $this->logFilePath = $context->getLogFilePath();
-        $this->adminLogFilePath = $context->getAdminLogFilePath();
-        $this->isAdmin = $context->isAdmin();
-        $this->adminUserId = null;
-        $this->skipLogTags = $context->getSkipLogTags();
-        $this->demoMode = $context->isShopInDemoMode();
-        $this->productiveMode = $context->isShopInProductiveMode();
-
-        $this->activeModuleServicesFilePath = $context->getActiveModuleServicesFilePath($this->getCurrentShopId());
     }
 
     public function setLogLevel(string $logLevel): void
@@ -54,17 +46,17 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function getLogLevel(): string
     {
-        return $this->logLevel;
+        return $this->logLevel ?? $this->context->getLogLevel();
     }
 
     public function getLogFilePath(): string
     {
-        return $this->logFilePath;
+        return $this->logFilePath ?? $this->context->getLogFilePath();
     }
 
     public function getRequiredContactFormFields(): array
     {
-        return $this->requiredContactFormFields;
+        return $this->requiredContactFormFields ?? $this->context->getRequiredContactFormFields();
     }
 
     public function setRequiredContactFormFields(array $requiredContactFormFields): void
@@ -74,7 +66,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function getAllShopIds(): array
     {
-        return $this->shopIds;
+        return $this->shopIds ?? $this->context->getAllShopIds();
     }
 
     public function setAllShopIds(array $shopIds): void
@@ -89,12 +81,22 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function getAdminLogFilePath(): string
     {
-        return $this->adminLogFilePath;
+        return $this->adminLogFilePath ?? $this->context->getAdminLogFilePath();
+    }
+
+    public function setIsEnabledAdminQueryLog(bool $doLogAdminQueries): void
+    {
+        $this->doLogAdminQueries = $doLogAdminQueries;
+    }
+
+    public function isEnabledAdminQueryLog(): bool
+    {
+        return $this->doLogAdminQueries ?? $this->context->isEnabledAdminQueryLog();
     }
 
     public function isAdmin(): bool
     {
-        return $this->isAdmin;
+        return $this->isAdmin ?? $this->context->isAdmin();
     }
 
     public function setIsAdmin(bool $isAdmin): void
@@ -104,12 +106,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function getAdminUserId(): string
     {
-        if ($this->adminUserId === null) {
-            $this->adminUserId = ContainerFacade::get(ContextInterface::class)
-                ->getAdminUserId();
-        }
-
-        return $this->adminUserId;
+        return $this->adminUserId ?? $this->context->getAdminUserId();
     }
 
     public function setAdminUserId(string $userId): void
@@ -119,7 +116,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function getSkipLogTags(): array
     {
-        return $this->skipLogTags;
+        return $this->skipLogTags ?? $this->context->getSkipLogTags();
     }
 
     public function setSkipLogTags(array $skipLogTags): void
@@ -129,7 +126,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function isShopInProductiveMode(): bool
     {
-        return $this->productiveMode;
+        return $this->productiveMode ?? $this->context->isShopInProductiveMode();
     }
 
     public function setShopInProductiveMode(bool $productiveMode): void
@@ -139,7 +136,7 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function isShopInDemoMode(): bool
     {
-        return $this->demoMode;
+        return $this->demoMode ?? $this->context->isShopInDemoMode();
     }
 
     public function setShopInDemoMode(bool $demoMode): void
@@ -149,11 +146,6 @@ class ContextStub extends BasicContextStub implements ContextInterface
 
     public function getCurrentShopId(): int
     {
-        return $this->shopId;
-    }
-
-    public function setCurrentShopId(int $shopId): void
-    {
-        $this->shopId = $shopId;
+        return $this->context->getCurrentShopId();
     }
 }

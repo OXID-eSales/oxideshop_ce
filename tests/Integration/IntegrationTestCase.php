@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
+use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
@@ -26,6 +27,8 @@ class IntegrationTestCase extends TestCase
 
         $this->backupVarDirectory();
         $this->beginTransaction();
+        TestContainerFactory::resetContainer();
+        $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
     }
 
     public function tearDown(): void

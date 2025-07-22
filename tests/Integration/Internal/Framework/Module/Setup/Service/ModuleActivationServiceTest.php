@@ -112,14 +112,14 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         ContainerFacade::get(ModuleActivationBridgeInterface::class)
             ->activate('test-module', $this->shopId);
 
-        ContainerFactory::resetContainer();
+        TestContainerFactory::resetContainer();
 
         ContainerFacade::get(SomeModuleService::class);
 
         ContainerFacade::get(ModuleActivationBridgeInterface::class)
             ->deactivate('test-module', $this->shopId);
 
-        ContainerFactory::resetContainer();
+        TestContainerFactory::resetContainer();
 
         $this->expectException(ServiceNotFoundException::class);
         ContainerFacade::get(SomeModuleService::class);

@@ -9,10 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -42,59 +38,19 @@ trait ContainerTrait
 
     private function setParameter(string $name, array|bool|string|int|float|UnitEnum|null $value): void
     {
-        if (!$this->container) {
-            $this->createContainer();
-        }
-        $this->container->setParameter($name, $value);
+        $container = (new TestContainerFactory())->create();
+        $container->setParameter($name, $value);
+        $container->compile(true);
+
+        TestContainerFactory::setContainer($container);
+        $this->container = $container;
     }
 
     private function prepareContainer(): void
     {
         if ($this->container === null) {
-            $this->createContainer();
-            $this->compileContainer();
+            $this->container = TestContainerFactory::get();
         }
-    }
-
-    private function createContainer(): void
-    {
-        $this->container = (new TestContainerFactory())->create();
-    }
-
-    private function compileContainer(): void
-    {
-        $this->container->compile(true);
-    }
-
-    private function loadYamlFixture(string $fixtureDir): void
-    {
-        $loader = new YamlFileLoader($this->container, new FileLocator(__DIR__));
-        $loader->load(Path::join($fixtureDir, 'services.yaml'));
-    }
-
-    private function replaceService(string $id, object $service): void
-    {
-        $this->container->set($id, $service);
-        $this->container->autowire($id, $id);
-    }
-
-    private function replaceContainerInstance(): void
-    {
-        $this->prepareContainer();
-        $this->attachContainerToContainerFactory();
-    }
-
-    /**
-     * Run tests in a separate process if you use this function.
-     */
-    private function attachContainerToContainerFactory(): void
-    {
-        if (!$this->container->isCompiled()) {
-            $this->compileContainer();
-        }
-        $reflectionClass = new ReflectionClass(ContainerFactory::getInstance());
-        $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
-        $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
     }
 
     private function rewriteProjectConfiguration(array $config): void

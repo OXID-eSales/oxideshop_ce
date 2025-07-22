@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Env;
 
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\EnvTrait;
+use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -65,9 +66,11 @@ final class EnvLoaderTest extends TestCase
             JSON_THROW_ON_ERROR
         );
         $this->loadEnvFixture($this->fixtures, ["$this->serializedEnvKey='$serializedValue'"]);
-        $this->createContainer();
+
+        $this->container = (new TestContainerFactory())->create();
         $this->loadYamlFixture($this->fixtures);
-        $this->compileContainer();
+        $this->container->compile(true);
+        TestContainerFactory::setContainer($this->container);
 
         $containerParameter = $this->getParameter($this->serializedParameterKey);
 

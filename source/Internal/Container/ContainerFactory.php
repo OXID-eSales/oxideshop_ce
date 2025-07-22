@@ -18,7 +18,10 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ContainerFactory
+/**
+ * @deprecated use OxidEsales\EshopCommunity\Core\Di\ContainerFacade
+ */
+class ContainerFactory implements ContainerProviderInterface
 {
     private static $instance;
     private ContainerInterface $symfonyContainer;
@@ -33,8 +36,18 @@ class ContainerFactory
         $this->cache = new FilesystemContainerCache(new BasicContext(), new Filesystem());
     }
 
+    public static function get(): ContainerInterface
+    {
+        return self::getInstance()->getContainer();
+    }
+
     public function getContainer(): ContainerInterface
     {
+        $customContainerProvider = getenv('OXID_CONTAINER_PROVIDER');
+        if ($customContainerProvider) {
+           return $customContainerProvider::get();
+        }
+
         if (!isset($this->symfonyContainer)) {
             $this->initializeContainer();
         }
@@ -69,6 +82,11 @@ class ContainerFactory
 
     public static function resetContainer(): void
     {
+        $customContainerProvider = getenv('OXID_CONTAINER_PROVIDER');
+        if ($customContainerProvider) {
+            return $customContainerProvider::resetContainer();
+        }
+
         self::$shopId = null;
         self::getInstance()->cache->invalidate(self::getShopId());
         self::$instance = null;

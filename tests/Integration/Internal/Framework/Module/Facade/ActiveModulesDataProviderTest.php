@@ -23,10 +23,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActi
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
-final class ActiveModulesDataProviderTest extends TestCase
+final class ActiveModulesDataProviderTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
@@ -39,7 +39,7 @@ final class ActiveModulesDataProviderTest extends TestCase
 
     private BasicContext $context;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -47,7 +47,7 @@ final class ActiveModulesDataProviderTest extends TestCase
         $this->prepareTestShopConfiguration();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->cleanUpTestData();
 

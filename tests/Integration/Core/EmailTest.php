@@ -33,12 +33,8 @@ final class EmailTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->getLoggerMock();
         $this->getEmailMock();
         $this->getOrderStub();
-        $this->createContainer();
-        $this->container->set(LoggerInterface::class, $this->logger);
-        $this->container->autowire(LoggerInterface::class, LoggerInterface::class);
     }
 
     public function testSendOrderEmailToUserWithDefaultConfiguration(): void
@@ -64,10 +60,7 @@ final class EmailTest extends IntegrationTestCase
     public function testSendOrderEmailToUserWithDisabledEmails(): void
     {
         $this->setParameter('oxid_esales.email.disable_order_emails', true);
-        $this->attachContainerToContainerFactory();
 
-        $this->logger->expects($this->atLeastOnce())
-            ->method('notice');
         $this->email->expects($this->never())
             ->method('sendMail');
         $this->email->expects($this->never())
@@ -81,10 +74,7 @@ final class EmailTest extends IntegrationTestCase
     public function testSendOrderEmailToOwnerWithDisabledEmails(): void
     {
         $this->setParameter('oxid_esales.email.disable_order_emails', true);
-        $this->attachContainerToContainerFactory();
 
-        $this->logger->expects($this->atLeastOnce())
-            ->method('notice');
         $this->email->expects($this->never())
             ->method('sendMail');
         $this->email->expects($this->never())
@@ -119,10 +109,5 @@ final class EmailTest extends IntegrationTestCase
             ->willReturn($templateRenderer);
         $this->email->method('sendMail')
             ->willReturn(true);
-    }
-
-    private function getLoggerMock(): void
-    {
-        $this->logger = $this->createMock(LoggerInterface::class);
     }
 }

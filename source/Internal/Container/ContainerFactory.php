@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Container;
 
 use OxidEsales\Eshop\Core\FileCache;
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\FilesystemContainerCache;
@@ -18,7 +17,10 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-class ContainerFactory
+/**
+ * @deprecated use OxidEsales\EshopCommunity\Core\Di\ContainerFacade
+ */
+class ContainerFactory implements ContainerProviderInterface
 {
     /**
      * @var self
@@ -43,11 +45,21 @@ class ContainerFactory
         $this->cache = new FilesystemContainerCache(new BasicContext(), new Filesystem());
     }
 
+    public static function get(): ContainerInterface
+    {
+        return self::getInstance()->getContainer();
+    }
+
     /**
      * @return ContainerInterface
      */
     public function getContainer()
     {
+        $customContainerProvider = getenv('OXID_CONTAINER_PROVIDER');
+        if ($customContainerProvider) {
+           return $customContainerProvider::get();
+        }
+
         if ($this->symfonyContainer === null) {
             $this->initializeContainer();
         }
@@ -89,11 +101,13 @@ class ContainerFactory
         return self::$instance;
     }
 
-    /**
-     * Forces reload of the ContainerFactory on next request.
-     */
     public static function resetContainer()
     {
+        $customContainerProvider = getenv('OXID_CONTAINER_PROVIDER');
+        if ($customContainerProvider) {
+            return $customContainerProvider::resetContainer();
+        }
+
         self::getInstance()->cache->invalidate(self::getShopId());
         self::$instance = null;
     }

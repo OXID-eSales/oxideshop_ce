@@ -9,28 +9,27 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
-use org\bovigo\vfs\vfsStream;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 
 /**
  * @internal
  */
-class TestContainerFactory
+class TestContainerFactory implements ContainerProviderInterface
 {
-    /**
-     * @var BasicContextStub
-     */
-    private $context;
+    private static $symfonyContainer;
+
+    private ContextStub $context;
 
     public function __construct()
     {
-        $this->prepareVFS();
-        $this->context = $this->getContextStub();
+        $this->context = new ContextStub();
     }
 
     public function create(): SymfonyContainerBuilder
@@ -43,6 +42,26 @@ class TestContainerFactory
         $container = $this->setContextStub($container);
 
         return $container;
+    }
+
+    public static function get(): ContainerInterface
+    {
+        if (self::$symfonyContainer === null) {
+            self::$symfonyContainer = (new self())->create();
+            self::$symfonyContainer->compile(true);
+        }
+
+        return self::$symfonyContainer;
+    }
+
+    public static function setContainer(ContainerInterface $container): void
+    {
+        self::$symfonyContainer = $container;
+    }
+
+    public static function resetContainer(): void
+    {
+        self::$symfonyContainer = null;
     }
 
     private function setAllServicesAsPublic(SymfonyContainerBuilder $container): SymfonyContainerBuilder
@@ -68,24 +87,5 @@ class TestContainerFactory
         $container->autowire(ContextInterface::class, ContextStub::class);
 
         return $container;
-    }
-
-    private function getContextStub(): ContextStub
-    {
-        $context = new ContextStub();
-        $context->setProjectConfigurationDirectory($this->getTestProjectConfigurationDirectory());
-
-        return $context;
-    }
-
-    private function prepareVFS(): void
-    {
-        $vfsStreamDirectory = vfsStream::setup('configuration');
-        vfsStream::create([], $vfsStreamDirectory);
-    }
-
-    private function getTestProjectConfigurationDirectory(): string
-    {
-        return vfsStream::url('configuration/');
     }
 }

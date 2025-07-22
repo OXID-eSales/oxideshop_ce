@@ -9,188 +9,124 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal;
 
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ContextStub extends BasicContextStub implements ContextInterface
 {
-    private $logLevel;
-    private $logFilePath;
-    private $shopIds;
-    private $requiredContactFormFields = [];
-    private $adminLogFilePath;
-    private $doLogAdminQueries;
-    private $isAdmin;
-    private $skipLogTags;
-    private $adminUserId;
+    private string $logLevel;
+    private string $logFilePath;
+    private array $shopIds;
+    private array $requiredContactFormFields = [];
+    private string $adminLogFilePath;
+    private bool $doLogAdminQueries;
+    private bool $isAdmin;
+    private array $skipLogTags;
+    private string $adminUserId;
     private bool $productiveMode;
-    private $demoMode;
+    private bool $demoMode;
+
+    private ContextInterface $context;
 
     public function __construct()
     {
+        $this->context = new Context();
         parent::__construct();
-        $context = ContainerFacade::get(ContextInterface::class);
-        $this->logLevel = $context->getLogLevel();
-        $this->shopIds = $context->getAllShopIds();
-        $this->logFilePath = $context->getLogFilePath();
-        $this->adminLogFilePath = $context->getAdminLogFilePath();
-        $this->doLogAdminQueries = $context->isEnabledAdminQueryLog();
-        $this->isAdmin = $context->isAdmin();
-        $this->skipLogTags = $context->getSkipLogTags();
-        $this->demoMode = $context->isShopInDemoMode();
-        $this->productiveMode = $context->isShopInProductiveMode();
     }
 
-    /**
-     * @param string $logLevel
-     */
-    public function setLogLevel($logLevel)
+    public function setLogLevel(string $logLevel): void
     {
         $this->logLevel = $logLevel;
     }
 
-    /**
-     * @param string $logFilePath
-     */
-    public function setLogFilePath($logFilePath)
+    public function setLogFilePath(string $logFilePath): void
     {
         $this->logFilePath = $logFilePath;
     }
 
-    /**
-     * @return string
-     */
     public function getLogLevel(): string
     {
-        return $this->logLevel;
+        return $this->logLevel ?? $this->context->getLogLevel();
     }
 
-    /**
-     * @return string
-     */
     public function getLogFilePath(): string
     {
-        return $this->logFilePath;
+        return $this->logFilePath ?? $this->context->getLogFilePath();
     }
 
-    /**
-     * @return array
-     */
     public function getRequiredContactFormFields(): array
     {
-        return $this->requiredContactFormFields;
+        return $this->requiredContactFormFields ?? $this->context->getRequiredContactFormFields();
     }
 
-    /**
-     * @param array $requiredContactFormFields
-     */
-    public function setRequiredContactFormFields(array $requiredContactFormFields)
+    public function setRequiredContactFormFields(array $requiredContactFormFields): void
     {
         $this->requiredContactFormFields = $requiredContactFormFields;
     }
 
-    /**
-     * @return array
-     */
     public function getAllShopIds(): array
     {
-        return $this->shopIds;
+        return $this->shopIds ?? $this->context->getAllShopIds();
     }
 
-    /**
-     * @param array $shopIds
-     */
-    public function setAllShopIds(array $shopIds)
+    public function setAllShopIds(array $shopIds): void
     {
         $this->shopIds = $shopIds;
     }
 
-
-    /**
-     * @param string $logFilePath
-     */
-    public function setAdminLogFilePath($logFilePath)
+    public function setAdminLogFilePath(string $logFilePath): void
     {
         $this->adminLogFilePath = $logFilePath;
     }
 
-    /**
-     * @return string
-     */
     public function getAdminLogFilePath(): string
     {
-        return $this->adminLogFilePath;
+        return $this->adminLogFilePath ?? $this->context->getAdminLogFilePath();
     }
 
-    /**
-     * @param bool $doLogAdminQueries
-     */
-    public function setIsEnabledAdminQueryLog(bool $doLogAdminQueries)
+    public function setIsEnabledAdminQueryLog(bool $doLogAdminQueries): void
     {
         $this->doLogAdminQueries = $doLogAdminQueries;
     }
 
-    /**
-     * @return bool
-     */
     public function isEnabledAdminQueryLog(): bool
     {
-        return $this->doLogAdminQueries;
+        return $this->doLogAdminQueries ?? $this->context->isEnabledAdminQueryLog();
     }
 
-    /**
-     * @return bool
-     */
     public function isAdmin(): bool
     {
-        return $this->isAdmin;
+        return $this->isAdmin ?? $this->context->isAdmin();
     }
 
-    /**
-     * @param bool $isAdmin
-     */
-    public function setIsAdmin(bool $isAdmin)
+    public function setIsAdmin(bool $isAdmin): void
     {
         $this->isAdmin = $isAdmin;
     }
 
-    /**
-     * @return string
-     */
     public function getAdminUserId(): string
     {
-        if (!isset($this->adminUserId)) {
-            $this->adminUserId = ContainerFacade::get(ContextInterface::class)
-                ->getAdminUserId();
-        }
-
-        return $this->adminUserId;
+        return $this->adminUserId ?? $this->context->getAdminUserId();
     }
 
-    /**
-     * @param string $userId
-     */
-    public function setAdminUserId(string $userId)
+    public function setAdminUserId(string $userId): void
     {
         $this->adminUserId = $userId;
     }
 
-    /**
-     * @return array
-     */
     public function getSkipLogTags(): array
     {
-        return $this->skipLogTags;
+        return $this->skipLogTags ?? $this->context->getSkipLogTags();
     }
 
-    public function setSkipLogTags(array $skipLogTags)
+    public function setSkipLogTags(array $skipLogTags): void
     {
         $this->skipLogTags = $skipLogTags;
     }
 
     public function isShopInProductiveMode(): bool
     {
-        return $this->productiveMode;
+        return $this->productiveMode ?? $this->context->isShopInProductiveMode();
     }
 
     public function setShopInProductiveMode(bool $productiveMode): void
@@ -198,19 +134,18 @@ class ContextStub extends BasicContextStub implements ContextInterface
         $this->productiveMode = $productiveMode;
     }
 
-    /**
-     * @return bool
-     */
     public function isShopInDemoMode(): bool
     {
-        return $this->demoMode;
+        return $this->demoMode ?? $this->context->isShopInDemoMode();
     }
 
-    /**
-     * @param bool $demoMode
-     */
-    public function setShopInDemoMode(bool $demoMode)
+    public function setShopInDemoMode(bool $demoMode): void
     {
         $this->demoMode = $demoMode;
+    }
+
+    public function getCurrentShopId(): int
+    {
+        return $this->context->getCurrentShopId();
     }
 }

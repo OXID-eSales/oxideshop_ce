@@ -21,11 +21,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
-use Symfony\Component\Filesystem\Path;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ShopConfigurationDaoTest extends TestCase
+final class ShopConfigurationDaoTest extends IntegrationTestCase
 {
     use ContainerTrait;
 

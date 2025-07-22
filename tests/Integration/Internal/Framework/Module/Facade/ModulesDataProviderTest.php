@@ -15,10 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModulesDataProvid
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
-final class ModulesDataProviderTest extends TestCase
+final class ModulesDataProviderTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
@@ -32,7 +32,7 @@ final class ModulesDataProviderTest extends TestCase
     /** @var BasicContext */
     private $context;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -40,7 +40,7 @@ final class ModulesDataProviderTest extends TestCase
         $this->prepareTestShopConfiguration();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->cleanUpTestData();
 

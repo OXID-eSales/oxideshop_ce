@@ -41,7 +41,7 @@ class ShopDbManager implements ShopDbManagerInterface
         $connection = $this->databaseConnectionFactory->getServerConnection($this->databaseConfiguration);
         $connection->executeStatement(
             sprintf(
-                'CREATE DATABASE `%s` CHARACTER SET utf8 COLLATE utf8_general_ci;',
+                'CREATE DATABASE IF NOT EXISTS `%s` CHARACTER SET utf8 COLLATE utf8_general_ci;',
                 $this->databaseConfiguration->getName()
             )
         );

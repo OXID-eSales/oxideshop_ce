@@ -264,6 +264,9 @@ final class CheckoutProcessCest
         $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 1], ['OXID' => 'testcatdiscount']);
 
         $I->updateConfigInDatabase('iMinOrderPrice', '49', 'str');
+        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'hide', 'select');
+        $I->updateConfigInDatabase('miniBasketLowOrderDisplayOrderButton', 'hide', 'select');
+
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -278,8 +281,9 @@ final class CheckoutProcessCest
         //add Product to basket
         $basket = new Basket($I);
         $basket->addProductToBasket($productData['id'], 1);
-        $basketPage = $homePage->openMiniBasket()
-            ->openBasketDisplay()
+        $miniBasket = $homePage->openMiniBasket();
+
+        $basketPage = $miniBasket->openBasketDisplay()
             ->seeBasketContains([$productData], '50,00 €');
         $I->dontSee(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->seeNextStep();
@@ -287,6 +291,27 @@ final class CheckoutProcessCest
         $basketPage = $basketPage->loginUser($userData['userLoginName'], $userData['userPassword']);
         $I->seeText(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
         $basketPage->dontSeeNextStep();
+
+        //Minibasket message and button
+        $miniBasket->openMiniBasket();
+        $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
+        $I->dontSeeElement(sprintf('//a[contains(text(),"%s")]', Translator::translate('CHECKOUT'))); //Minibasket checkout button
+
+        //Update to display buttons
+        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'show', 'select');
+        $I->updateConfigInDatabase('miniBasketLowOrderDisplayOrderButton', 'show', 'select');
+
+        $I->openShop()->openBasket();
+        $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
+        $I->see(Translator::translate('CHECKOUT'));
+
+        $basket->openMiniBasket();
+        $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
+        $I->seeElement(sprintf('//a[contains(text(),"%s")]', Translator::translate('CHECKOUT'))); //Minibasket checkout button
+        $basket->closeMiniBasket();
+
+        //Reset to default settings
+        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'hide', 'select');
 
         $productData['amount'] = 2;
         $productData['totalPrice'] = '90,00 €';

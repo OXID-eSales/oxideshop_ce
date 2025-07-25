@@ -126,13 +126,17 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
                 $message = Registry::getLang()->translateString('ERROR_MESSAGE_INPUT_NOTALLFIELDS');
                 $exception = oxNew(InputException::class, $message);
 
-                return $this->addValidationError("oxuser__oxpassword", $exception);
+                $this->addValidationError("oxuser__oxpassword", $exception);
+
+                return $login;
             } else {
                 if (!$user->isSamePassword($newPassword)) {
                     $message = Registry::getLang()->translateString('ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH');
                     $exception = oxNew(UserException::class, $message);
 
-                    return $this->addValidationError("oxuser__oxpassword", $exception);
+                    $this->addValidationError("oxuser__oxpassword", $exception);
+
+                    return $login;
                 }
             }
         }
@@ -141,7 +145,9 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
             $message = Registry::getLang()->translateString('ERROR_MESSAGE_USER_USEREXISTS');
             $exception = oxNew(UserException::class, $message);
 
-            return $this->addValidationError("oxuser__oxusername", $exception);
+            $this->addValidationError("oxuser__oxusername", $exception);
+
+            return $login;
         }
 
         return $login;

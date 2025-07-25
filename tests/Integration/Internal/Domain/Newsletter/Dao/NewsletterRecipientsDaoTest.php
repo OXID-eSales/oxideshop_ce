@@ -29,7 +29,6 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
 
         $this->queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
         $this->prepareTestData();
-
     }
 
     public function testGetNewsletterRecipients(): void
@@ -79,7 +78,7 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
         $queryBuilder->execute();
 
         $this->createSubscribedUserWithGroups();
-        $this->createSubscribedUserWithoutGroups();
+        $this->createSubscribedUserWithoutGroupsAndSpacedSalutation();
         $this->createSubscribedUserInOtherSubshop();
     }
 
@@ -195,7 +194,7 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
         $queryBuilder->execute();
     }
 
-    private function createSubscribedUserWithoutGroups(): void
+    private function createSubscribedUserWithoutGroupsAndSpacedSalutation(): void
     {
         $shopAdapter = $this->get(ShopAdapterInterface::class);
 
@@ -236,7 +235,7 @@ class NewsletterRecipientsDaoTest extends IntegrationTestCase
             ->setParameters([
                 'id' => $shopAdapter->generateUniqueId(),
                 'userId' => $testUserId,
-                'sal' => "MS",
+                'sal' => "MS ",
                 'fistname' => "christine&#039;s welt&quot;",
                 'lastname' => "Doe",
                 'email' => "test_user2@test.com",

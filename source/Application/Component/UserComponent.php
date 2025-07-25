@@ -677,7 +677,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             $this->resetPermissions();
 
-            $orderRemark = Registry::getRequest()->getRequestParameter('order_remark', true);
+            $orderRemark = Registry::getRequest()->getRequestParameter('order_remark');
             if ($orderRemark) {
                 $session->setVariable('ordrem', $orderRemark);
             } else {

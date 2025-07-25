@@ -120,6 +120,29 @@ final class UserComponentTest extends IntegrationTestCase
         $this->assertFalse($return);
     }
 
+    public function testChangeUserWithoutOrderRemark(): void
+    {
+        $_POST = $this->getUserFormData();
+        $this->getUserComponent()->createUser();
+
+        $this->getUserComponent()->changeUser();
+
+        $this->assertFalse(Registry::getSession()->hasVariable('ordrem'));
+    }
+
+    public function testChangeUserWithOrderRemark(): void
+    {
+        $_POST = $this->getUserFormData();
+        $this->getUserComponent()->createUser();
+
+        $orderRemark = 'Some order remark';
+        $_POST['order_remark'] = $orderRemark;
+
+        $this->getUserComponent()->changeUser();
+
+        $this->assertEquals($orderRemark, Registry::getSession()->getVariable('ordrem'));
+    }
+
     public function testChangeUserWithExtraFormDataWillNotUpdateNonAddressUserFields(): void
     {
         $_POST = $this->getUserFormData();

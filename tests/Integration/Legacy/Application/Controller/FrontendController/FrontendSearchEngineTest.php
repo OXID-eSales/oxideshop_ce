@@ -56,9 +56,10 @@ final class FrontendSearchEngineTest extends IntegrationTestCase
         Registry::getConfig()->setConfigParam('blProductive', $productive);
 
         $context = ContainerFacade::get(ContextInterface::class);
-        $this->setParameter('oxid_esales.log_not_seo_urls', $seoLogging);
-        $this->setParameter('oxid_esales.build_directory', $context->getCacheDirectory());
-        $this->attachContainerToContainerFactory();
+        $this->createContainer();
+        $this->container->setParameter('oxid_esales.log_not_seo_urls', $seoLogging);
+        $this->container->setParameter('oxid_esales.build_directory', $context->getCacheDirectory());
+        $this->replaceContainerInstance();
 
         $frontend = $this->getFrontendSeoLoggingSpy();
 

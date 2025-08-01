@@ -19,10 +19,7 @@ final class SystemRequirementsTest extends IntegrationTestCase
 
     public function testGetPermissionIssuesList(): void
     {
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.build_directory', 'some wrong directory');
-        $this->container->compile();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.build_directory', 'some wrong directory');
 
         $checkResults = (new SystemRequirements())->getPermissionIssuesList();
 

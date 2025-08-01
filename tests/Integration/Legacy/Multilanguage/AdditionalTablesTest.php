@@ -77,10 +77,7 @@ final class AdditionalTablesTest extends TestCase
 
         DatabaseProvider::getDb()->execute($sql);
 
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.multilingual_tables', ['addtest']);
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.multilingual_tables', ['addtest']);
     }
 
     private function insertTestData(int $languageId): void

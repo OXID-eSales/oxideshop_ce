@@ -22,10 +22,8 @@ final class ShopControlTest extends IntegrationTestCase
 
     public function testStartWithExceptionAndDisabledDebugModeWillRedirect(): void
     {
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.debug_mode', false);
-        $this->container->compile();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.debug_mode', false);
+
         $shopControl = $this->getMockBuilder(ShopControl::class)
             ->onlyMethods(['isAdmin', 'runOnce'])
             ->getMock();

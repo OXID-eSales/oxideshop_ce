@@ -24,10 +24,9 @@ class IntegrationTestCase extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
+        TestContainerFactory::resetContainer();
         $this->backupVarDirectory();
         $this->beginTransaction();
-        TestContainerFactory::resetContainer();
         $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
     }
 

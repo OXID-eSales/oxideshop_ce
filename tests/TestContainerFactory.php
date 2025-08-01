@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -31,10 +33,10 @@ class TestContainerFactory implements ContainerProviderInterface
 
     public function create(): SymfonyContainerBuilder
     {
-        $contextStub = new ContextStub();
-        $container = (new ContainerBuilder($contextStub, $contextStub->getCurrentShopId()))
-            ->getContainer();
+        $shopId = (new ShopIdCalculator(new UtilsServer()))->getShopId();
+        $contextStub = new ContextStub($shopId);
 
+        $container = (new ContainerBuilder($contextStub, $shopId))->getContainer();
         $container->set(ContextInterface::class, $contextStub);
         $container->set(BasicContextInterface::class, $contextStub);
         $container->autowire(BasicContextInterface::class, BasicContextStub::class);

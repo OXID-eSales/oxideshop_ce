@@ -16,15 +16,17 @@ use Symfony\Component\Filesystem\Path;
 
 class BasicContextStub implements BasicContextInterface
 {
-    private string $communityEditionSourcePath;
-    private string $edition;
-    private string $enterpriseEditionRootPath;
+    private string $ceSourcePath;
+    private string $peSourcePath;
+    private string $eeSourcePath;
+    private Edition $edition;
     private string $generatedServicesFilePath;
     private string $sourcePath;
     private string $projectConfigurationDirectory;
-    private string $templateCacheDirectory;
-    private string $activeModuleServicesFilePath;
-    private int $currentShopId;
+    private string $cacheDirectory;
+    private string $databaseUrl;
+    protected string $activeModuleServicesFilePath;
+    private string $shopBaseUrl;
 
     private BasicContextInterface $basicContext;
 
@@ -165,11 +167,6 @@ class BasicContextStub implements BasicContextInterface
         return $this->basicContext->getVendorPath();
     }
 
-    public function setVendorPath(string $path): void
-    {
-        $this->vendorPath = $path;
-    }
-
     public function getComposerVendorName(): string
     {
         return $this->basicContext->getComposerVendorName();
@@ -177,7 +174,7 @@ class BasicContextStub implements BasicContextInterface
 
     public function getCacheDirectory(): string
     {
-        return $this->basicContext->getCacheDirectory();
+        return $this->cacheDirectory ?? $this->basicContext->getCacheDirectory();
     }
 
     public function setCacheDirectory(string $cacheDirectory): void
@@ -207,7 +204,7 @@ class BasicContextStub implements BasicContextInterface
 
     public function getDatabaseUrl(): string
     {
-        return $this->databaseUrl;
+        return $this->databaseUrl ?? $this->basicContext->getDatabaseUrl();
     }
 
     public function setDatabaseUrl(string $databaseUrl): string
@@ -217,7 +214,7 @@ class BasicContextStub implements BasicContextInterface
 
     public function getShopBaseUrl(): string
     {
-        return $this->shopBaseUrl;
+        return $this->shopBaseUrl ?? $this->basicContext->getShopBaseUrl();
     }
 
     public function setShopBaseUrl(string $shopBaseUrl): void
@@ -227,11 +224,10 @@ class BasicContextStub implements BasicContextInterface
 
     public function getEditionSourcePath(Edition $edition): string
     {
-        $basicContext = BootstrapContainerFactory::getBootstrapContainer()->get(BasicContextInterface::class);
         return match ($edition) {
-            Edition::Community => $this->ceSourcePath ?? $basicContext->getEditionSourcePath(Edition::Community),
-            Edition::Professional => $this->peSourcePath ?? $basicContext->getEditionSourcePath(Edition::Professional),
-            Edition::Enterprise => $this->eeSourcePath ?? $basicContext->getEditionSourcePath(Edition::Enterprise),
+            Edition::Community => $this->ceSourcePath ?? $this->basicContext->getEditionSourcePath(Edition::Community),
+            Edition::Professional => $this->peSourcePath ?? $this->basicContext->getEditionSourcePath(Edition::Professional),
+            Edition::Enterprise => $this->eeSourcePath ?? $this->basicContext->getEditionSourcePath(Edition::Enterprise),
         };
     }
 

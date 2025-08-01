@@ -66,7 +66,6 @@ final class BasketComponentTest extends IntegrationTestCase
     {
         $cleanupRate = 123;
         $this->setParameter('oxid_esales.basket_reservation_cleanup_rate', $cleanupRate);
-        $this->attachContainerToContainerFactory();
         Registry::getConfig()->reinitialize();
         Registry::getConfig()->setConfigParam('blPsBasketReservationEnabled', true);
         $basketReservations = $this->prophesize(BasketReservation::class);

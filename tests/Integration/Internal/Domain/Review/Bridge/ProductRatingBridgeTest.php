@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Bridge;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDaoInterface;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\TestCase;
 use ReflectionProperty;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Rating;
@@ -18,19 +21,19 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingService;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ProductRatingBridgeTest extends IntegrationTestCase
+final class ProductRatingBridgeTest extends TestCase
 {
+    use ContainerTrait;
     public function testUpdateProductRating(): void
     {
         $this->createTestProduct();
         $this->createTestRatings();
 
-        $productRatingBridge = ContainerFacade::get(ProductRatingBridgeInterface::class);
+        $productRatingBridge = $this->get(ProductRatingBridgeInterface::class);
         $productRatingBridge->updateProductRating('testProduct');
 
-        $productRatingDao = $this->getProductRatingDao();
+        $productRatingDao = $this->get(ProductRatingDaoInterface::class);
         $productRating = $productRatingDao->getProductRatingById('testProduct');
 
         $this->assertEquals(

@@ -76,18 +76,4 @@ final class ProjectYamlDaoTest extends TestCase
         $this->assertEquals($relativePath, $projectYaml->getImportFileNames()[0]);
         $this->assertTrue(Path::isRelative($projectYaml->getImportFileNames()[1]));
     }
-
-    public function testSaveProjectConfigFileWillClearContainerCache(): void
-    {
-        $cacheFile = $this->get(ContextInterface::class)->getContainerCacheFilePath(
-            $this->get(BasicContextInterface::class)->getDefaultShopId()
-        );
-        $this->assertFileExists($cacheFile);
-
-        $this->get(ProjectYamlDaoInterface::class)->saveProjectConfigFile(
-            $this->get(ProjectYamlDaoInterface::class)->loadProjectConfigFile()
-        );
-
-        $this->assertFileDoesNotExist($cacheFile);
-    }
 }

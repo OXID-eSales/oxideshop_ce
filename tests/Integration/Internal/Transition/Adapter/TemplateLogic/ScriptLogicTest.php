@@ -28,10 +28,7 @@ final class ScriptLogicTest extends IntegrationTestCase
     public function setup(): void
     {
         parent::setUp();
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.debug_mode', true);
-        $this->container->compile();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.debug_mode', true);
 
         $this->config = Registry::getConfig();
         $this->scriptLogic = new ScriptLogic();
@@ -39,10 +36,7 @@ final class ScriptLogicTest extends IntegrationTestCase
 
     public function testIncludeFileNotExists(): void
     {
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.debug_mode', false);
-        $this->container->compile();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.debug_mode', false);
 
         $this->scriptLogic->include('somescript.js');
 

@@ -31,7 +31,6 @@ final class SessionTest extends TestCase
     public function testGetSidFromRequestWithForceSidInRequestAndDisabledConfig(): void
     {
         $this->setParameter('oxid_esales.disallow_force_session_id', true);
-        $this->attachContainerToContainerFactory();
         $sessionId = uniqid('session-id-', true);
         $_GET['force_sid'] = $sessionId;
         $session = oxNew(Session::class);
@@ -57,7 +56,7 @@ final class SessionTest extends TestCase
     public function testProcessUrlWithDisabledConfig(): void
     {
         $this->setParameter('oxid_esales.disallow_force_session_id', true);
-        $this->attachContainerToContainerFactory();
+
         $sessionId = uniqid('session-id-', true);
         $url = 'https://myshop.abc';
         $session = oxNew(Session::class);
@@ -85,7 +84,7 @@ final class SessionTest extends TestCase
     public function testAllowSessionStartWithSidInRequestAndDisabledConfig(): void
     {
         $this->setParameter('oxid_esales.disallow_force_session_id', true);
-        $this->attachContainerToContainerFactory();
+
         $utilsSever = $this->createMock(UtilsServer::class);
         Registry::set(UtilsServer::class, $utilsSever);
         $session = oxNew(Session::class);
@@ -115,7 +114,7 @@ final class SessionTest extends TestCase
     public function testAllowSessionStartWithForceSidInRequestAndDisabledConfig(): void
     {
         $this->setParameter('oxid_esales.disallow_force_session_id', true);
-        $this->attachContainerToContainerFactory();
+
         $utilsSever = $this->createMock(UtilsServer::class);
         Registry::set(UtilsServer::class, $utilsSever);
         $session = oxNew(Session::class);
@@ -195,7 +194,6 @@ final class SessionTest extends TestCase
         $this->assertFalse(oxNew(Session::class)->isSidNeeded());
 
         $this->setParameter('oxid_esales.force_session_start', true);
-        $this->attachContainerToContainerFactory();
 
         $needSid = oxNew(Session::class)->isSidNeeded();
 
@@ -207,7 +205,6 @@ final class SessionTest extends TestCase
         $this->assertFalse(oxNew(Session::class)->isSidNeeded());
 
         $this->setParameter('oxid_esales.cookies_session', false);
-        $this->attachContainerToContainerFactory();
 
         $needSid = oxNew(Session::class)->isSidNeeded();
 
@@ -253,7 +250,6 @@ final class SessionTest extends TestCase
                 'abc' => true,
             ]
         ]);
-        $this->attachContainerToContainerFactory();
 
         $_GET['cl'] = 'abc';
         $sidNeeded = oxNew(Session::class)->isSidNeeded();
@@ -269,7 +265,6 @@ final class SessionTest extends TestCase
                 'register' => false,
             ]
         ]);
-        $this->attachContainerToContainerFactory();
 
         $_GET['cl'] = 'register';
         $sidNeeded = oxNew(Session::class)->isSidNeeded();
@@ -289,7 +284,6 @@ final class SessionTest extends TestCase
             ],
             'ghi' => true,
         ]);
-        $this->attachContainerToContainerFactory();
 
         $_GET[$param] = $value;
         $sidNeeded = oxNew(Session::class)->isSidNeeded();
@@ -306,7 +300,6 @@ final class SessionTest extends TestCase
         $this->setParameter('oxid_esales.session_init_params', [
             'cl' => true,
         ]);
-        $this->attachContainerToContainerFactory();
 
         $sidNeeded = oxNew(Session::class)->isSidNeeded();
 

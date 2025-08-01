@@ -29,9 +29,7 @@ final class PictureHandlerTest extends IntegrationTestCase
     public function testGetAltImageUrlWithEmptyParameter(): void
     {
         $this->createContainer();
-        $this->container->setParameter('oxid_esales.alternative_image_url', '');
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.alternative_image_url', '');
 
         $altImageUrl = $this->pictureHandler->getAltImageUrl('random/file/path', 'file.txt');
         $this->assertEmpty($altImageUrl);
@@ -41,9 +39,7 @@ final class PictureHandlerTest extends IntegrationTestCase
     {
         $altImageUrlParameter = 'somevalue';
         $this->createContainer();
-        $this->container->setParameter('oxid_esales.alternative_image_url', $altImageUrlParameter);
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.alternative_image_url', $altImageUrlParameter);
 
         $altImageUrl = $this->pictureHandler->getAltImageUrl('random/file/path', null);
         $this->assertEquals($altImageUrlParameter, $altImageUrl);

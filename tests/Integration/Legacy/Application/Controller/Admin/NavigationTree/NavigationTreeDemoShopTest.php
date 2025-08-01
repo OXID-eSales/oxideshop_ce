@@ -38,7 +38,6 @@ class NavigationTreeDemoShopTest extends IntegrationTestCase
     public function testDisabledLinksRemoval(bool $isDemoShop, string $disabled, int $expected, string $msg): void
     {
         $this->setParameter('oxid_esales.demo_shop_mode', $isDemoShop);
-        $this->attachContainerToContainerFactory();
 
         $navTree = oxNew('oxNavigationTree');
         $domMenuXml = $this->getDomMenuXml();

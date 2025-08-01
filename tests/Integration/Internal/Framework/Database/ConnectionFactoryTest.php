@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -165,22 +166,15 @@ final class ConnectionFactoryTest extends TestCase
         $this->createContainer();
         $this->stubAdminContext();
         $this->container->setParameter('oxid_esales.log_admin_queries', false);
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->replaceContainerInstance();
     }
 
     private function stubAdminContext(): void
     {
-        $this->replaceService(
-            ContextInterface::class,
-            $this->createConfiguredMock(
-                ContextInterface::class,
-                [
-                    'isAdmin' => true,
-                    'getAdminLogFilePath' => $this->logFile
-                ]
-            )
-        );
+        /** @var ContextStub $context */
+        $context = $this->container->get(ContextInterface::class);
+        $context->setIsAdmin(true);
+        $context->setAdminLogFilePath($this->logFile);
     }
 
     private function setAdminWithLoggingEnabled(): void
@@ -188,7 +182,6 @@ final class ConnectionFactoryTest extends TestCase
         $this->createContainer();
         $this->stubAdminContext();
         $this->container->setParameter('oxid_esales.log_admin_queries', true);
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->replaceContainerInstance();
     }
 }

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -38,12 +40,10 @@ trait ContainerTrait
 
     private function setParameter(string $name, array|bool|string|int|float|UnitEnum|null $value): void
     {
-        $container = (new TestContainerFactory())->create();
-        $container->setParameter($name, $value);
-        $container->compile(true);
-
-        TestContainerFactory::setContainer($container);
-        $this->container = $container;
+        $this->createContainer();
+        $this->container->setParameter($name, $value);
+        $this->compileContainer();
+        $this->replaceContainerInstance();
     }
 
     private function prepareContainer(): void
@@ -51,6 +51,36 @@ trait ContainerTrait
         if ($this->container === null) {
             $this->container = TestContainerFactory::get();
         }
+    }
+
+    private function createContainer(): void
+    {
+        $this->container = (new TestContainerFactory())->create();
+    }
+
+    private function compileContainer(): void
+    {
+        $this->container->compile(true);
+    }
+
+    private function replaceContainerInstance(): void
+    {
+        if (!$this->container->isCompiled()) {
+            $this->container->compile(true);
+        }
+        TestContainerFactory::setContainer($this->container);
+    }
+
+    private function loadYamlFixture(string $fixtureDir): void
+    {
+        $loader = new YamlFileLoader($this->container, new FileLocator(__DIR__));
+        $loader->load(Path::join($fixtureDir, 'services.yaml'));
+    }
+
+    private function replaceService(string $id, object $service): void
+    {
+        $this->container->set($id, $service);
+        $this->container->autowire($id, $id);
     }
 
     private function rewriteProjectConfiguration(array $config): void

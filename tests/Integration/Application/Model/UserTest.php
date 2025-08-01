@@ -57,8 +57,9 @@ final class UserTest extends TestCase
     public function testGetBoniWithModifiedConfig(): void
     {
         $configValue = 123;
-        $this->setParameter('oxid_esales.shop_credit_rating', $configValue);
-        $this->setParameter('oxid_esales.build_directory', getenv('OXID_BUILD_DIRECTORY'));
+        $this->createContainer();
+        $this->container->setParameter('oxid_esales.shop_credit_rating', $configValue);
+        $this->container->setParameter('oxid_esales.build_directory', getenv('OXID_BUILD_DIRECTORY'));
         $this->replaceContainerInstance();
 
         $rating = oxNew(User::class)->getBoni();

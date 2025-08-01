@@ -25,12 +25,11 @@ class ContextStub extends BasicContextStub implements ContextInterface
     private string $adminUserId;
     private bool $productiveMode;
     private bool $demoMode;
-
     private ContextInterface $context;
 
     public function __construct(private int $shopId = 1)
     {
-        $this->context = new Context();
+        $this->context = new Context($this->shopId);
         parent::__construct();
     }
 

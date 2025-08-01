@@ -31,8 +31,7 @@ final class UtilsServerTest extends TestCase
             ->willReturn('some-hash');
         $this->createContainer();
         $this->replaceService(PasswordServiceBridgeInterface::class, $passwordService->reveal());
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->replaceContainerInstance();
 
         $utilsServer = oxNew(UtilsServer::class);
         $utilsServer->setUserCookie('some-user-name', $password);
@@ -51,10 +50,8 @@ final class UtilsServerTest extends TestCase
     {
         $someIp = '255.255.255.255';
         $_SERVER['HTTP_CLIENT_IP'] = $someIp;
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.trusted_ips', [$someIp]);
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+
+        $this->setParameter('oxid_esales.trusted_ips', [$someIp]);
 
         $isTrusted = oxNew(UtilsServer::class)->isTrustedClientIp();
 
@@ -65,10 +62,7 @@ final class UtilsServerTest extends TestCase
     {
         $someIp = '255.255.255.255';
         $_SERVER['HTTP_CLIENT_IP'] = $someIp;
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.trusted_ips', ['1.2.3.4', '5.6.7.8']);
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.trusted_ips', ['1.2.3.4', '5.6.7.8']);
 
         $isTrusted = oxNew(UtilsServer::class)->isTrustedClientIp();
 

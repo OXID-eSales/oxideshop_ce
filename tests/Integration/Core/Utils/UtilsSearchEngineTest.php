@@ -32,18 +32,20 @@ final class UtilsSearchEngineTest extends IntegrationTestCase
     #[DataProvider('providerSearchEngineNoneAdminMode')]
     public function testIsSearchEngineNonAdmin(bool $debug, array $robots, string $searchEngine, bool $expected): void
     {
-        $this->setParameter('oxid_esales.debug_mode', $debug);
-        $this->setParameter('oxid_esales.search_engine_list', $robots);
-        $this->attachContainerToContainerFactory();
+        $this->createContainer();
+        $this->container->setParameter('oxid_esales.debug_mode', $debug);
+        $this->container->setParameter('oxid_esales.search_engine_list', $robots);
+        $this->replaceContainerInstance();
 
         $this->assertSame($expected, (new Utils())->isSearchEngine($searchEngine));
     }
 
     public function testIsSearchEngineAdminAndDebugOn(): void
     {
-        $this->setParameter('oxid_esales.debug_mode', true);
-        $this->setParameter('oxid_esales.search_engine_list', ['googlebot', 'xxx']);
-        $this->attachContainerToContainerFactory();
+        $this->createContainer();
+        $this->container->setParameter('oxid_esales.debug_mode', true);
+        $this->container->setParameter('oxid_esales.search_engine_list', ['googlebot', 'xxx']);
+        $this->replaceContainerInstance();
 
         $utils = $this->getUtils();
 

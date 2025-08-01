@@ -84,7 +84,7 @@ class ContainerFactory implements ContainerProviderInterface
     {
         $customContainerProvider = getenv('OXID_CONTAINER_PROVIDER');
         if ($customContainerProvider) {
-            return $customContainerProvider::resetContainer();
+            $customContainerProvider::resetContainer();
         }
 
         self::$shopId = null;

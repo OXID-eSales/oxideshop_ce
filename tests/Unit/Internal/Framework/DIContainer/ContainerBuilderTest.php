@@ -18,10 +18,8 @@ final class ContainerBuilderTest extends TestCase
     public function testContainerParametersAreSet(): void
     {
         $sourcePath = uniqid('source-path-', true);
-        $cachePath = uniqid('cache-path-', true);
         $contextStub = new BasicContextStub();
         $contextStub->setSourcePath($sourcePath);
-        $contextStub->setCacheDirectory($cachePath);
         $containerBuilder = new ContainerBuilder($contextStub);
         $symfonyContainerBuilder = $containerBuilder->getContainer();
 

@@ -53,12 +53,14 @@ final class ShopEnvironmentMisconfigurationEventSubscriberTest extends Integrati
     private function prepareLogger(): void
     {
         /** @var ContextStub $context */
+        $this->createContainer();
         $context = $this->get(ContextInterface::class);
         $logDirectory = Path::getDirectory($context->getLogFilePath());
         $testLogFile = uniqid('test.log.', true);
         $this->testLog = Path::join($logDirectory, $testLogFile);
         $context->setLogFilePath($this->testLog);
         $context->setLogLevel(LogLevel::WARNING);
+        $this->replaceContainerInstance();
     }
 
     private function cleanupTestLog(): void

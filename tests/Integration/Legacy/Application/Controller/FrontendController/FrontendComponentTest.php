@@ -22,7 +22,6 @@ final class FrontendComponentTest extends IntegrationTestCase
         $componentName = get_class($this->getComponentClass());
 
         $this->setParameter('oxid_esales.cacheable_user_components', [$componentName => 1]);
-        $this->attachContainerToContainerFactory();
 
         $componentNames = [
             'oxcmp_user' => true,

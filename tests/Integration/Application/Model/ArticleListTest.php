@@ -85,8 +85,9 @@ final class ArticleListTest extends IntegrationTestCase
 
     public function testUpdateUpcomingPricesWithModifiedCronEnabledSetting(): void
     {
-        $this->setParameter('oxid_esales.cron_enabled', true);
-        $this->setParameter('oxid_esales.build_directory', getenv('OXID_BUILD_DIRECTORY'));
+        $this->createContainer();
+        $this->container->setParameter('oxid_esales.cron_enabled', true);
+        $this->container->setParameter('oxid_esales.build_directory', getenv('OXID_BUILD_DIRECTORY'));
         $this->replaceContainerInstance();
 
         $this->prepareCategories('value');

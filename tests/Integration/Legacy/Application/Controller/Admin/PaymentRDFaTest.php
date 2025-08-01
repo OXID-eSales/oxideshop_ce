@@ -12,21 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Control
 use OxidEsales\Eshop\Application\Controller\Admin\PaymentRdfa;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class PaymentRDFaTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-
     private string $paymentId;
     private string $descriptionInDefaultLanguage = 'description-in-default-language';
-
-    public function setUp(): void
-    {
-        $this->replaceContainerInstance();
-        parent::setUp();
-    }
 
     public function testRenderWithDefaultLanguage(): void
     {

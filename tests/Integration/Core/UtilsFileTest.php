@@ -68,8 +68,6 @@ final class UtilsFileTest extends IntegrationTestCase
     private function setAllowedFileExtensions(array $parameter): void
     {
         $this->createContainer();
-        $this->container->setParameter('oxid_esales.allowed_uploaded_types', $parameter);
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.allowed_uploaded_types', $parameter);
     }
 }

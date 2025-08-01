@@ -79,10 +79,7 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         Registry::getConfig()->reinitialize();
         Registry::getConfig()->setConfigParam('sTheme', $this->initialThemeId);
 
-        $this->createContainer();
-        $this->container->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
-        $this->compileContainer();
-        $this->attachContainerToContainerFactory();
+        $this->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
     }
 
     private function createCommandTester(): CommandTester

@@ -19,21 +19,6 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 final class ContainerTest extends IntegrationTestCase
 {
-    public function testCompileContainerWillCreateCacheFile(): void
-    {
-        $cacheFile = $this->getContainer()->get(BasicContextInterface::class)->getContainerCacheFilePath(
-            $this->getContainer()->get(BasicContextInterface::class)->getDefaultShopId()
-        );
-        $this->assertFileExists($cacheFile);
-        unlink($cacheFile);
-        $this->assertFileDoesNotExist($cacheFile);
-
-        ContainerFactory::resetContainer();
-        $this->getContainer()->get(BasicContextInterface::class);
-
-        $this->assertFileExists($cacheFile);
-    }
-
     public function testResetCacheWorks(): void
     {
         $this->expectException(ServiceNotFoundException::class);

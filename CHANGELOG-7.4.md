@@ -7,9 +7,9 @@
 - Display a clear error message if the VAT-ID prefix is missing during user registration
 - Value object for Oxid Unique Id
 - Useful interfaces RequestInterface and SessionInterface
+- Support for edition and project root locator classes 
 
 ### Deprecated
-
 - `ShopAdapterInterface::generateUniqueId()` use `Id::generate()` instead
 - `UtilsObject::generateUId()` use `Id::generate()` instead
 - The partner related method `getBelboonParam()` of class `BaseController`

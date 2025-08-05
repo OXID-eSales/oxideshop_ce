@@ -33,7 +33,7 @@ class NewsletterRecipientsDao implements NewsletterRecipientsDaoInterface
 
         foreach ($subscribersList as $row) {
             $recipient = new NewsletterRecipient();
-            $recipient->setSalutation($row['Salutation']);
+            $recipient->setSalutation(trim($row['Salutation']));
             $recipient->setFistName($this->decodeHtmlEntities($row['Firstname']));
             $recipient->setLastName($this->decodeHtmlEntities($row['Lastname']));
             $recipient->setEmail($row['Email']);

@@ -171,7 +171,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param int    $iLang     language to fetch
      * @param int    $iShopId   shop id
      *
-     * @return string
+     * @return ?string
      */
     protected function getSeoUrl($sObjectId, $iLang, $iShopId)
     {
@@ -182,7 +182,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             'oxshopid' => $iShopId,
         ]);
 
-        if ('oxarticle' == $aInfo['oxtype']) {
+        if (isset($aInfo['oxtype']) &&'oxarticle' == $aInfo['oxtype']) {
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sMainCatId = $oDb->getOne("select oxcatnid from " . $tableViewNameGenerator->getViewName("oxobject2category") . " where oxobjectid = :oxobjectid order by oxtime", [
                 'oxobjectid' => $sObjectId
@@ -200,7 +200,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             }
         }
 
-        return $aInfo['oxseourl'];
+        return $aInfo['oxseourl'] ?? null;
     }
 
     /**

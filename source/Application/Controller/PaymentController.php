@@ -533,7 +533,7 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
             // #646
             $oPaymentList = $this->getPaymentList();
-            if (isset($oPaymentList) && $oPaymentList && !isset($oPaymentList[$sCheckedId])) {
+            if (isset($oPaymentList) && $oPaymentList && isset($sCheckedId) && !isset($oPaymentList[$sCheckedId])) {
                 end($oPaymentList);
                 $sCheckedId = key($oPaymentList);
             }

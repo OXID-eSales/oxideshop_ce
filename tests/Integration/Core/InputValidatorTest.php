@@ -9,13 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
+use Generator;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Application\Model\Country;
 use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\InputValidator;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Exception\UserException;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class InputValidatorTest extends IntegrationTestCase
 {
@@ -143,6 +146,92 @@ final class InputValidatorTest extends IntegrationTestCase
         );
     }
 
+
+    #[DataProvider('provideCheckLoginReturnsUsername')]
+    public function testCheckLoginReturnsUsername($userLogged, $inputPassword, $exception): void
+    {
+        $userNameLogin = rand();
+        $submittedData = [];
+
+        $user = oxNew(User::class);
+        if ($userLogged) {
+            $user->assign([
+                'oxuser__oxusername' => rand(),
+                'oxuser__oxsalt'     => '',
+                'oxuser__oxpassword' => password_hash(md5(uniqid()), PASSWORD_DEFAULT),
+            ]);
+        }
+
+        //Send password with request
+        if ($inputPassword) {
+            $this->setRequestParameter('user_password', $inputPassword);
+            $submittedData['oxuser__oxpassword'] = $inputPassword;
+        }
+
+        $validationResult = $this->inputValidator->checkLogin(
+            $user,
+            $userNameLogin,
+            $submittedData
+        );
+
+        $this->assertSame($userNameLogin, $validationResult);
+
+        if ($exception) {
+            $this->assertInstanceOf(
+                $exception,
+                $this->inputValidator->getFieldValidationErrors()['oxuser__oxpassword'][0]
+            );
+        }
+
+        $this->assertSame(
+            (bool) $exception,
+            !empty($this->inputValidator->getFieldValidationErrors())
+        );
+    }
+
+    public static function provideCheckLoginReturnsUsername(): Generator
+    {
+        yield 'User not logged in, no password provided' => [
+            'userLogged'    => false,
+            'inputPassword' => null,
+            'exception'     => false
+        ];
+
+        yield 'User logged in, no password passed' => [
+            'userLogged'    => true,
+            'inputPassword' => null,
+            'exception'     => InputException::class
+        ];
+
+        yield 'User logged in, password are different' => [
+            'userLogged'    => true,
+            'inputPassword' => md5(uniqid()),
+            'exception'     => UserException::class
+        ];
+    }
+
+    public function testCheckLoginWithExistingEmail(): void
+    {
+        $userNameLogin = rand();
+
+        $user = $this->createMock(User::class);
+        $user->method('checkIfEmailExists')->willReturn(true);
+
+        $validationResult = $this->inputValidator->checkLogin(
+            $user,
+            $userNameLogin,
+            []
+        );
+
+        $this->assertSame($userNameLogin, $validationResult);
+        $this->assertNotEmpty($this->inputValidator->getFieldValidationErrors());
+        $this->assertInstanceOf(
+            UserException::class,
+            $this->inputValidator->getFieldValidationErrors()['oxuser__oxusername'][0]
+        );
+    }
+
+
     private function createCountry(): void
     {
         $country = new Country();
@@ -151,5 +240,10 @@ final class InputValidatorTest extends IntegrationTestCase
         $country->oxcountry__oxvatstatus = new Field(1);
         $country->oxcountry__oxvatinprefix = new Field('DD');
         $country->save();
+    }
+
+    private function setRequestParameter(string $key, string $value): void
+    {
+        $_POST[$key] = $value;
     }
 }

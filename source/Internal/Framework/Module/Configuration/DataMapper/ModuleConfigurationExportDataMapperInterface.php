@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Data
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 
-interface ModuleConfigurationDataMapperInterface extends ModuleConfigurationExportDataMapperInterface
+interface ModuleConfigurationExportDataMapperInterface
 {
-    public function fromData(ModuleConfiguration $moduleConfiguration, array $data): ModuleConfiguration;
+    public function toData(ModuleConfiguration $configuration): array;
 }

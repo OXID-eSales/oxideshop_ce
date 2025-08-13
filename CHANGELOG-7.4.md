@@ -7,7 +7,8 @@
 - Display a clear error message if the VAT-ID prefix is missing during user registration
 - Value object for Oxid Unique Id
 - Useful interfaces RequestInterface and SessionInterface
-- Support for edition and project root locator classes 
+- Support for edition and project root locator classes
+- Send additional module metadata to OLIS
 
 ### Deprecated
 - `ShopAdapterInterface::generateUniqueId()` use `Id::generate()` instead

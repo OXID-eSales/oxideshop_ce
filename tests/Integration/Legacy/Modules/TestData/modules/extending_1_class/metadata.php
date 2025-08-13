@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
+
 $sMetadataVersion = '2.0';
 $aModule = [
     'id' => 'extending_1_class',
@@ -17,5 +19,8 @@ $aModule = [
     'author' => 'OXID eSales AG',
     'extend' => [
         'oxorder' => 'oeTest/extending_1_class/myorder',
+    ],
+    'controllers' => [
+        FrontendController::class => 'oeTest/controller_1_class/myFrontendController',
     ],
 ];

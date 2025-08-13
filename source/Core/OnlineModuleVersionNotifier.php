@@ -8,8 +8,9 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\{
+    ModuleConfigurationDataMapperBridgeInterface, ShopConfigurationDaoBridgeInterface
+};
 use stdClass;
 
 /**
@@ -17,7 +18,9 @@ use stdClass;
  *
  * The Online Module Version Notification is used for checking if newer versions of modules are available.
  * Will be used by the upcoming online one click installer.
- * Is still under development - still changes at the remote server are necessary - therefore ignoring the results for now
+ * Is still under development
+ * - still changes at the remote server are necessary
+ * - therefore ignoring the results for now
  *
  * @internal Do not make a module extension for this class.
  *
@@ -49,32 +52,31 @@ class OnlineModuleVersionNotifier
     }
 
     /**
-     * Collects only required modules information and returns as array.
-     *
-     * @return null
+     * @deprecated Will return an array[] instead of stdClass[] in the next major version.
      */
     protected function prepareModulesInformation()
     {
+        $shopConfiguration = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)->get();
+
         $preparedModules = [];
-
-        $shopConfiguration = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)
-            ->get();
-        $moduleActivationBridge = ContainerFacade::get(ModuleActivationBridgeInterface::class);
-
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
-            /** @var \OxidEsales\Eshop\Core\Module\Module $oModule */
+            $preparedModuleData = ContainerFacade::get(ModuleConfigurationDataMapperBridgeInterface::class)
+                ->toData($moduleConfiguration);
 
             $preparedModule = new stdClass();
-            $preparedModule->id = $moduleConfiguration->getId();
-            $preparedModule->version = $moduleConfiguration->getVersion();
+            $preparedModule->id = $preparedModuleData['id'];
+            $preparedModule->title = $preparedModuleData['title'];
+            $preparedModule->description = $preparedModuleData['description'];
+            $preparedModule->version = $preparedModuleData['version'];
+            $preparedModule->author = $preparedModuleData['author'];
+            $preparedModule->url = $preparedModuleData['url'];
+            $preparedModule->email = $preparedModuleData['email'];
+            $preparedModule->classExtensions = $preparedModuleData['classExtensions'];
+            $preparedModule->controllers = $preparedModuleData['controllers'];
 
             $preparedModule->activeInShops = new stdClass();
-            $preparedModule->activeInShops->activeInShop = [];
-            if ($moduleActivationBridge->isActive($moduleConfiguration->getId(), Registry::getConfig()->getShopId())) {
-                $preparedModule
-                    ->activeInShops
-                    ->activeInShop[] = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl();
-            }
+            $preparedModule->activeInShops->activeInShop = $preparedModuleData['activeInShops']['activeInShop'];
+
             $preparedModules[] = $preparedModule;
         }
 

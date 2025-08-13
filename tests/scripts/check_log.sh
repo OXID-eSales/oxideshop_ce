@@ -38,7 +38,7 @@ while read -r LINE ; do
             grep -E "${LINE}" "${LOG_FILE}"
             RESULT=1
         else
-            echo -e "\033[0;32m Log dioes not contain matching pattern ${LINE}"
+            echo -e "\033[0;32m Log does not contain matching pattern ${LINE}"
         fi
     fi
 done <"${PATTERN_FILE}"

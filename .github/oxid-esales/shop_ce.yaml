@@ -1,9 +1,4 @@
-# {{ $org := "oxid-esales" }}organisation: {{ $org }}
-# {{ $name := "oxideshop-ce" }}name: {{ $name }}
-
-install: &install
-  add_services: 'selenium-chrome-126'
-  method: script
+install:
   script: 'source/.github/oxid-esales/install.sh'
   cache:
     prepared_shop: true
@@ -11,51 +6,42 @@ install: &install
     root_url: ''
     transform: |
       {
-          "preferred-install": {
-            "oxid-esales/*": "source",
-            "oxid-professional-services/*": "source",
-            "ddoe/*": "source"
-          },
-          "require": {
-            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
-            "oxid-esales/twig-admin-theme": "{{ .Data.global.composer.dev_ref }}",
-            "oxid-esales/apex-theme": "{{ .Data.global.composer.dev_ref }}"
-          }
+        "preferred-install": {
+          "oxid-esales/*": "source",
+          "oxid-professional-services/*": "source",
+          "ddoe/*": "source"
+        },
+        "require": {
+          "oxid-esales/apex-theme": "{{ .Data.install.composer.dev_ref }}",
+          "oxid-esales/twig-admin-theme": "{{ .Data.install.composer.dev_ref }}",
+          "oxid-esales/twig-component": "{{ .Data.install.composer.dev_ref }}"
+        }
       }
-  output:
-    files: |
-      docker-compose.yml
-      source/composer.json*
-      source/composer.lock
-      source/source/config.inc.php
-      source/vendor/oxid-esales/oxideshop-ce/source/config.inc.php
-      data/php/logs/error_log.txt
 
-install_shop_with_modules: *install
-
-runscript: &runscript
+runscript:
   matrix:
     script: |
       [
         "shop:~/unit.sh",
         "shop:~/integration.sh",
-        "shop:~/codeception.sh",
-        "setup:~/shop-setup.sh"
+        "shop:~/codeception.sh"
       ]
-  shop: &shop
-    path: ''
-    container:
-      # {{ $selenium_options := "-e SELENIUM_SERVER_HOST=selenium -e BROWSER_NAME=chrome" }}
-      options: '-e XDEBUG_MODE=coverage -e CODECEPTION_OPTIONS="--ext DotReporter --skip-group flow_theme" {{ $selenium_options }} -e GITHUB_EVENT_NAME="{{ .Github.EventName }}" -e GITHUB_BASE_REF="{{ .Github.BaseRef }}" -e GITHUB_REF="refs/heads/{{ .Data.global.git.shop_ref }}" -e GITHUB_REF_NAME="{{ .Data.global.git.shop_ref }}"'
-  setup:
-    <<: *shop
-    load_shop: '{{ .Data.install_shop_with_modules.cache.prepared_shop_prefix }}'
+  container:
+    options:
+      -e XDEBUG_MODE=coverage
+      -e CODECEPTION_OPTIONS="--ext DotReporter --skip-group flow_theme"
+      -e THEME_ID=apex
+      -e SELENIUM_SERVER_HOST=selenium
+      -e BROWSER_NAME=chrome
+      -e GITHUB_EVENT_NAME="{{ .Github.EventName }}"
+      -e GITHUB_BASE_REF="{{ .Github.BaseRef }}"
+      -e GITHUB_REF="refs/heads/{{ .Data.install.git.ref }}"
+      -e GITHUB_REF_NAME="{{ .Data.install.git.ref }}"
 
 sonarcloud:
   matrix:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
-  strip_path: '/var/www/vendor/{{ print $org }}/{{ print $name}}/'
+  strip_path: '/var/www/vendor/oxid-esales/oxideshop-ce/'
 
 finish:
-  slack_title: 'Shop CE ({{ .Data.global.git.ref }}) by {{ .Github.Actor }}'
-  slack_compact: true
+  slack_title: 'Shop CE ({{ .Data.install.git.ref }}) by {{ .Github.Actor }}'

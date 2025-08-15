@@ -30,3 +30,4 @@
 
 ### Changed
 - Newsletter export trims salutation values, preventing discrepancies between empty string and spaces
+- Synchronize the database schema and initial data for both visual and command-line setups

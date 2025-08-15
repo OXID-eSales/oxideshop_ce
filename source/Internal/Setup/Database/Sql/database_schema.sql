@@ -353,7 +353,7 @@ CREATE TABLE `oxcategories` (
   `OXSHOWSUFFIX` tinyint(1) NOT NULL default '1' COMMENT 'Show SEO Suffix in Category',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
    PRIMARY KEY  (`OXID`),
-   KEY `OXROOTID` (`OXROOTID`),
+   KEY `OXROOTID` (`OXROOTID`, `OXLEFT`, `OXRIGHT`),
    KEY `OXPARENTID` (`OXPARENTID`),
    KEY `OXPRICEFROM` (`OXPRICEFROM`),
    KEY `OXPRICETO` (`OXPRICETO`),
@@ -874,7 +874,7 @@ CREATE TABLE `oxobject2group` (
   PRIMARY KEY  (`OXID`),
   KEY `OXOBJECTID` (`OXOBJECTID`),
   UNIQUE INDEX `UNIQ_OBJECTGROUP` (`OXGROUPSID`, `OXOBJECTID`, `OXSHOPID`)
-) ENGINE=InnoDB COMMENT 'Shows many-to-many relationship between users and groups';
+) ENGINE=InnoDB;
 
 #
 # Table structure for table `oxobject2list`
@@ -1540,7 +1540,7 @@ CREATE TABLE `oxuserbaskets` (
   `OXUSERID` char(32) character set latin1 collate latin1_general_ci NOT NULL default '' COMMENT 'User id (oxuser)',
   `OXTITLE` varchar(255) NOT NULL default '' COMMENT 'Basket title',
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
-  `OXPUBLIC` tinyint(1) DEFAULT '1' NOT NULL COMMENT 'Is public',
+  `OXPUBLIC` tinyint(1) DEFAULT '0' NOT NULL COMMENT 'Is public',
   `OXUPDATE` INT NOT NULL default 0 COMMENT 'Update timestamp',
   PRIMARY KEY  (`OXID`),
   KEY `OXUPDATE` (`OXUPDATE`),

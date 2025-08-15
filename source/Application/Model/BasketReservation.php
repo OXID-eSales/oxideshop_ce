@@ -264,13 +264,13 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
      * periodic cleanup: discards timed out reservations even if they are not
      * for the current user
      *
-     * @param int $limit limit for discarding (performance related)
+     * @param int $iLimit limit for discarding (performance related)
      *
      * @throws Exception
      *
      * @return null
      */
-    public function discardUnusedReservations($limit)
+    public function discardUnusedReservations($iLimit)
     {
         $database = DatabaseProvider::getMaster(DatabaseProvider::FETCH_MODE_ASSOC);
 
@@ -282,7 +282,7 @@ class BasketReservation extends \OxidEsales\Eshop\Core\Base
             "SELECT oxid FROM oxuserbaskets
             WHERE oxtitle = :oxtitle
                 AND oxupdate <= :oxupdate
-            LIMIT $limit",
+            LIMIT $iLimit",
             [
                 ':oxtitle' => 'reservations',
                 ':oxupdate' => $startTime,

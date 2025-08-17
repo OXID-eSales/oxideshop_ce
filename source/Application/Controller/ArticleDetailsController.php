@@ -7,13 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
@@ -563,15 +560,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         return $this->_aPicGallery;
     }
 
-    /**
-     * Template variable getter. Returns id of active picture
-     *
-     * @return string
-     */
-    public function getActPictureId()
-    {
-        return $this->getPictureGallery()['ActPicID'];
-    }
 
     /**
      * Template variable getter. Returns active picture
@@ -580,7 +568,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function getActPicture()
     {
-        return $this->getPictureGallery()['ActPic'];
+        return $this->getPictureGallery()['activeMedia'];
     }
 
     /**
@@ -1172,15 +1160,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("blShowRDFaProductStock");
     }
 
-    /**
-     * Template variable getter. Returns if to show zoom pictures
-     *
-     * @return bool
-     */
-    public function showZoomPics()
-    {
-        return $this->getPictureGallery()['ZoomPic'];
-    }
 
     /**
      * Template variable getter. Returns if review module is on

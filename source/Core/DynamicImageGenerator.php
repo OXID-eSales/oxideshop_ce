@@ -117,24 +117,19 @@ namespace OxidEsales\EshopCommunity\Core {
          *
          * @var array
          */
-        protected $_aConfParamToPath = [ // ** product
-            "sIconsize"             => '/.*\/generated\/product\/(icon|\d+)\/\d+\_\d+\_\d+$/', // Icon size
-            "sThumbnailsize"        => '/.*\/generated\/product\/(thumb|\d+)\/\d+\_\d+\_\d+$/', // Thumbnail size
-            "sZoomImageSize"        => '/.*\/generated\/product\/\d+\/\d+\_\d+\_\d+$/', // Zoom picture size
-            "aDetailImageSizes"     => '/.*\/generated\/product\/\d+\/\d+\_\d+\_\d+$/', // Product picture size
-
-            // ** manufacturer/vendor
-            "sManufacturerIconsize" => '/.*\/generated\/(manufacturer|vendor)\/icon\/\d+\_\d+\_\d+$/', // Manufacturer's|brand logo size
-            "sManufacturerPicturesize" => '/.*\/generated\/(manufacturer|vendor)\/picture\/\d+\_\d+\_\d+$/', // Manufacturer's|brand picture size
-            "sManufacturerThumbnailsize" => '/.*\/generated\/(manufacturer|vendor)\/thumb\/\d+\_\d+\_\d+$/', // Manufacturer's|brand thumbnail size
-            "sManufacturerPromotionsize" => '/.*\/generated\/(manufacturer|vendor)\/promo_icon\/\d+\_\d+\_\d+$/', // Manufacturer's|brand promotion picture size
-
-            // ** category
-            "sCatThumbnailsize"     => '/.*\/generated\/category\/thumb\/\d+\_\d+\_\d+$/', // Category picture size
-            "sCatIconsize"          => '/.*\/generated\/category\/icon\/\d+\_\d+\_\d+$/', // Size of a subcategory's picture
-            "sCatPromotionsize"     => '/.*\/generated\/category\/promo_icon\/\d+\_\d+\_\d+$/' // Category picture size for promotion on startpage
+        protected array $resolutionConfigParameters = [
+            "sIconsize",
+            "sThumbnailsize",
+            "sZoomImageSize",
+            "sDetailImageSize",
+            "sManufacturerIconsize",
+            "sManufacturerPicturesize",
+            "sManufacturerThumbnailsize",
+            "sManufacturerPromotionsize",
+            "sCatThumbnailsize",
+            "sCatIconsize",
+            "sCatPromotionsize"
         ];
-
         /**
          * Creates and returns picture generator instance
          *
@@ -227,6 +222,19 @@ namespace OxidEsales\EshopCommunity\Core {
             }
 
             return $path;
+        }
+
+        private function parseMediaPathFromUrl(): string
+        {
+            $uri = $this->getImageUri();
+
+            $originalImageDirectory = preg_replace('~(^|/)generated/~', '$1', dirname($uri, 2));
+
+            return Path::join(
+                $this->getShopBasePath(),
+                $originalImageDirectory,
+                $this->getImageName()
+            );
         }
 
         /**
@@ -416,15 +424,9 @@ namespace OxidEsales\EshopCommunity\Core {
                 $config = Registry::getConfig();
                 $db = DatabaseProvider::getDb();
 
-                // parameter names
                 $names = [];
-                foreach ($this->_aConfParamToPath as $paramName => $pathReg) {
-                    if (preg_match($pathReg, $path)) {
-                        $names[] = $db->quote($paramName);
-                        if ($paramName == "sManufacturerIconsize" || $paramName == "sCatIconsize") {
-                            $names[] = $db->quote("sIconsize");
-                        }
-                    }
+                foreach ($this->resolutionConfigParameters as $paramName) {
+                    $names[] = $db->quote($paramName);
                 }
                 $names = implode(', ', $names);
 
@@ -629,6 +631,10 @@ namespace OxidEsales\EshopCommunity\Core {
 
             // building base path + extracting image name + extracting master image path
             $masterImagePath = $this->getShopBasePath() . $masterPath . $this->getImageName();
+
+            if (!file_exists($masterImagePath)) {
+                $masterImagePath = $this->parseMediaPathFromUrl();
+            }
 
             if (
                 Registry::getConfig()->getConfigParam('blConvertImagesToWebP') &&

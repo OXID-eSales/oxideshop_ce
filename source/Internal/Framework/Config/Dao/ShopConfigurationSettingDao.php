@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
@@ -22,7 +22,6 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     public function __construct(
         private QueryBuilderFactoryInterface $queryBuilderFactory,
         private ShopSettingEncoderInterface $shopSettingEncoder,
-        private ShopAdapterInterface $shopAdapter,
         private EventDispatcherInterface $eventDispatcher
     ) {
     }
@@ -45,7 +44,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
                 'oxvarvalue'    => ':value',
             ])
             ->setParameters([
-                'id'        => $this->shopAdapter->generateUniqueId(),
+                'id'        => Id::generate(),
                 'shopId'    => $shopConfigurationSetting->getShopId(),
                 'name'      => $shopConfigurationSetting->getName(),
                 'type'      => $shopConfigurationSetting->getType(),

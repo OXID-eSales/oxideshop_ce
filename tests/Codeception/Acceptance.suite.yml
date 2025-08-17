@@ -16,8 +16,6 @@ modules:
                 chromeOptions:
                     prefs:
                         'credentials_enable_service': false
-                goog:chromeOptions:
-                    args: [ "--headless" ]
         - OxidEsales\Codeception\Module\ShopSetup:
             dump: '%DUMP_PATH%'
             fixtures: '%FIXTURES_PATH%'

@@ -17,7 +17,6 @@ interface ProductMediaDaoInterface
 {
     public function add(ProductMedia $productMedia): void;
 
-    /** @throws EntryDoesNotExistDaoException */
     public function get(Id $id): ProductMedia;
 
     public function getAllProductMedia(Id $productId): ArrayCollection;
@@ -27,4 +26,12 @@ interface ProductMediaDaoInterface
     public function delete(Id $id): void;
 
     public function sort(ProductMediaSorting $sorting): void;
+
+    public function getActiveByProductId(Id $productId): ArrayCollection;
+
+    public function getByType(Id $productId, ProductMediaType $type): ?ProductMedia;
+
+    public function getFirstActive(Id $productId): ?ProductMedia;
+
+    public function getByPosition(Id $productId, int $position): ?ProductMedia;
 }

@@ -41,7 +41,7 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('5i1c49faf83b3fe3d6bdbfa301e2704d',	1,	'',	'iLinkExpirationTime',	'str',	'168'),
 ('5i1d215fe1d6f0e1061ba1134e0ee4f2',	1,	'',	'iDownloadExpirationTime',	'str',	'24'),
 ('603a1a28ff2a421b64c631ffaf97f324',	1,	'',	'sGiCsvFieldEncloser',	'str',	'\"'),
-('62642dfaa1d87d064.50653921',	1,	'',	'aDetailImageSizes',	'aarr',	'a:12:{s:6:\"oxpic1\";s:7:\"250*200\";s:6:\"oxpic2\";s:7:\"250*200\";s:6:\"oxpic3\";s:7:\"250*200\";s:6:\"oxpic4\";s:7:\"250*200\";s:6:\"oxpic5\";s:7:\"250*200\";s:6:\"oxpic6\";s:7:\"250*200\";s:6:\"oxpic7\";s:7:\"250*200\";s:6:\"oxpic8\";s:7:\"250*200\";s:6:\"oxpic9\";s:7:\"250*200\";s:7:\"oxpic10\";s:7:\"250*200\";s:7:\"oxpic11\";s:7:\"250*200\";s:7:\"oxpic12\";s:7:\"250*200\";}'),
+('62642dfaa1d87d064.50653921',	1,	'',	'sDetailImageSize',	'str',	'250*200'),
 ('62642dfaa1d88b1b2.94593071',	1,	'',	'sZoomImageSize',	'str',	'450*450'),
 ('6ec4235c2aa997942.70260123',	1,	'',	'blWarnOnSameArtNums',	'bool',	'1'),
 ('6ec4235c2aaa45d77.87437919',	1,	'',	'sIconsize',	'str',	'56*42'),

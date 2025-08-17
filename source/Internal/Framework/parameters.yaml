@@ -12,7 +12,8 @@ parameters:
   oxid_esales.demo_shop_mode: false
   oxid_esales.smtp_debug_mode: false
   oxid_esales.cron_enabled: false
-  oxid_esales.alternative_image_url:
+  oxid_esales.alternative_image_url: ''
+  oxid_esales.max_product_picture_size: '10000000'
   oxid_esales.allowed_uploaded_types:
     - 'avi'
     - 'doc'

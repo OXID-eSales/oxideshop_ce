@@ -18,8 +18,11 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
-use oxList;
 
 // defining supported link types
 define('OXARTICLE_LINKTYPE_CATEGORY', 0);
@@ -2376,74 +2379,26 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
      */
     public function getPictureGallery()
     {
-        $morePic = false;
-        $articlePics = [];
-        $articleIcons = [];
-        $articlePicId = 1;
-        $articlePic = $this->getPictureUrl($articlePicId);
-
-        if (Registry::getRequest()->getRequestEscapedParameter('actpicid')) {
-            $articlePicId = Registry::getRequest()->getRequestEscapedParameter('actpicid');
-        }
-
-        $str = Str::getStr();
-        $pictureCounter = 0;
-        $activePicId = true;
-        $maxPicPerProduct = ContainerFacade::getParameter('oxid_esales.max_product_picture_count');
-
-        for ($i = 1; $i <= $maxPicPerProduct; $i++) {
-            $picture = $this->getPictureUrl($i);
-            $icon = $this->getIconUrl($i);
-            if (
-                !$str->strstr($icon, 'nopic_ico.jpg') && !$str->strstr($icon, 'nopic.jpg') &&
-                !$str->strstr($picture, 'nopic_ico.jpg') && !$str->strstr($picture, 'nopic.jpg') &&
-                !$str->strstr($icon, 'nopic.webp') && !$str->strstr($picture, 'nopic.webp') &&
-                $picture !== null
-            ) {
-                if ($pictureCounter) {
-                    $morePic = true;
-                }
-                $articleIcons[$i] = $icon;
-                $articlePics[$i] = $picture;
-                $pictureCounter++;
-
-                if ($articlePicId == $i) {
-                    $articlePic = $picture;
-                    $activePicId = false;
-                }
-            } elseif ($activePicId && $articlePicId <= $i) {
-                // if picture is empty, setting active pic id to next
-                $articlePicId++;
-            }
-        }
-
-        $zoomPic = false;
-        $zoomPics = [];
-
-        for ($j = 1, $c = 1; $j <= $maxPicPerProduct; $j++) {
-            $zoomPicUrl = $this->getZoomPictureUrl($j);
-
-            if ($zoomPicUrl && !$str->strstr($zoomPicUrl, 'nopic.jpg')) {
-                $zoomPic = true;
-                $zoomPics[$c]['id'] = $c;
-                $zoomPics[$c]['file'] = $zoomPicUrl;
-                //anything is better than empty name, because <img src=""> calls shop once more = x2 SLOW.
-                if (!$zoomPicUrl) {
-                    $zoomPics[$c]['file'] = "nopic.jpg";
-                }
-                $c++;
-            }
-        }
+        $mediaItems = ContainerFacade::get(ProductMediaViewServiceInterface::class)
+            ->getActiveByProductId(Id::fromUid($this->getId()));
+        $activeMedia = $this->determineActiveMedia($mediaItems);
 
         return [
-            'ActPicID' => $articlePicId,
-            'ActPic'   => $articlePic,
-            'MorePics' => $morePic,
-            'Pics'     => $articlePics,
-            'Icons'    => $articleIcons,
-            'ZoomPic'  => $zoomPic,
-            'ZoomPics' => $zoomPics
+            'activeMedia' => $activeMedia,
+            'mediaItems' => $mediaItems,
+            'hasMultipleImages' => count($mediaItems) > 1
         ];
+    }
+
+    private function determineActiveMedia(array $mediaItems): MediaView
+    {
+        $requestedMediaId = Registry::getRequest()->getRequestEscapedParameter('actmediaid');
+
+        if ($requestedMediaId && isset($mediaItems[$requestedMediaId])) {
+            return $mediaItems[$requestedMediaId];
+        }
+
+        return reset($mediaItems);
     }
 
     /**
@@ -3126,101 +3081,24 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         $this->_aDispSelList = $aSelList;
     }
 
-    /**
-     * Returns article picture
-     *
-     * @param int $iIndex picture index
-     *
-     * @return string
-     */
-    public function getPictureUrl($iIndex = 1)
+    public function getMedia(int $position): MediaView
     {
-        if ($iIndex) {
-            $sImgName = false;
-            if (!$this->isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
-                $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
-            }
-
-            $sSize = Registry::getConfig()->getConfigParam('aDetailImageSizes');
-
-            return Registry::getPictureHandler()
-                ->getProductPicUrl("product/{$iIndex}/", $sImgName, $sSize, 'oxpic' . $iIndex);
-        }
+        return ContainerFacade::get(ProductMediaViewServiceInterface::class)
+            ->getMedia(Id::fromUid($this->getId()), $position);
     }
 
-    /**
-     * Returns article icon picture url. If no index specified, will
-     * return main icon url.
-     *
-     * @param int $iIndex picture index
-     *
-     * @return string
-     */
-    public function getIconUrl($iIndex = 0)
+    public function getIcon(): MediaView
     {
-        $sImgName = false;
-        $sDirname = "product/1/";
-        if ($iIndex && !$this->isFieldEmpty("oxarticles__oxpic{$iIndex}")) {
-            $sImgName = basename($this->{"oxarticles__oxpic$iIndex"}->value);
-            $sDirname = "product/{$iIndex}/";
-        } elseif (!$this->isFieldEmpty("oxarticles__oxicon")) {
-            $sImgName = basename($this->oxarticles__oxicon->value);
-            $sDirname = "product/icon/";
-        } elseif (!$this->isFieldEmpty("oxarticles__oxpic1")) {
-            $sImgName = basename($this->oxarticles__oxpic1->value);
-        }
-
-        $sSize = Registry::getConfig()->getConfigParam('sIconsize');
-
-        $sIconUrl = Registry::getPictureHandler()->getProductPicUrl($sDirname, $sImgName, $sSize, $iIndex);
-
-        return $sIconUrl;
+        return ContainerFacade::get(ProductMediaViewServiceInterface::class)
+            ->getIcon(Id::fromUid($this->getId()));
     }
 
-    /**
-     * Returns article thumbnail picture url
-     *
-     * @param bool $bSsl to force SSL
-     *
-     * @return string
-     */
-    public function getThumbnailUrl($bSsl = null)
+    public function getThumbnail(): MediaView
     {
-        $sImgName = false;
-        $sDirname = "product/1/";
-        if (!$this->isFieldEmpty("oxarticles__oxthumb")) {
-            $sImgName = basename($this->oxarticles__oxthumb->value);
-            $sDirname = "product/thumb/";
-        } elseif (!$this->isFieldEmpty("oxarticles__oxpic1")) {
-            $sImgName = basename($this->oxarticles__oxpic1->value);
-        }
-
-        $sSize = Registry::getConfig()->getConfigParam('sThumbnailsize');
-
-        return Registry::getPictureHandler()->getProductPicUrl($sDirname, $sImgName, $sSize, 0, $bSsl);
+        return ContainerFacade::get(ProductMediaViewServiceInterface::class)
+            ->getThumbnail(Id::fromUid($this->getId()));
     }
 
-    /**
-     * Returns article zoom picture url
-     *
-     * @param int $iIndex picture index
-     *
-     * @return string
-     */
-    public function getZoomPictureUrl($iIndex = 0)
-    {
-        if ($iIndex > 0 && !$this->isFieldEmpty("oxarticles__oxpic" . $iIndex)) {
-            $sImgName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
-            $sSize = Registry::getConfig()->getConfigParam("sZoomImageSize");
-
-            return Registry::getPictureHandler()->getProductPicUrl(
-                "product/{$iIndex}/",
-                $sImgName,
-                $sSize,
-                'oxpic' . $iIndex
-            );
-        }
-    }
 
     /**
      * apply article and article use
@@ -3497,27 +3375,6 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         return '';
     }
 
-    /**
-     * Get master zoom picture url
-     *
-     * @param int $iIndex picture index
-     *
-     * @return string
-     */
-    public function getMasterZoomPictureUrl($iIndex)
-    {
-        $sPicUrl = false;
-        $sPicName = basename($this->{"oxarticles__oxpic" . $iIndex}->value);
-
-        if ($sPicName && $sPicName != "nopic.jpg") {
-            $sPicUrl = Registry::getConfig()->getPictureUrl("master/product/" . $iIndex . "/" . $sPicName);
-            if (!$sPicUrl || basename($sPicUrl) == "nopic.jpg") {
-                $sPicUrl = false;
-            }
-        }
-
-        return $sPicUrl;
-    }
 
     /**
      * @param string $file
@@ -4770,16 +4627,13 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
      */
     protected function deletePics()
     {
-        $pictureHandler = Registry::getPictureHandler();
+        $productMediaDao = ContainerFacade::get(ProductMediaDaoInterface::class);
+        $productId = Id::fromUid($this->getId());
 
-        //deleting custom main icon
-        $pictureHandler->deleteMainIcon($this);
+        $mediaCollection = $productMediaDao->getByProductId($productId);
 
-        //deleting custom thumbnail
-        $pictureHandler->deleteThumbnail($this);
-
-        for ($i = 1; $i <= ContainerFacade::getParameter('oxid_esales.max_product_picture_count'); $i++) {
-            $pictureHandler->deleteArticleMasterPicture($this, $i);
+        foreach ($mediaCollection as $productMedia) {
+            $productMediaDao->delete($productMedia->getId());
         }
     }
 

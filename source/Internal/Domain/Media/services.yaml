@@ -7,3 +7,9 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Domain\Media\DataMapper\DataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Media\DataMapper\DataMapper
+
+  OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGenerator
+    public: true
+    arguments:
+      $alternativeImageUrl: '%oxid_esales.alternative_image_url%'

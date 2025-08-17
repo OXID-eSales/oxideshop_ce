@@ -296,4 +296,70 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             }
         }
     }
+
+    public function getActiveByProductId(Id $productId): ArrayCollection
+    {
+        $collection = new ArrayCollection();
+        $rows = $this->prepareSelectWithJoin()
+            ->where('pm.article_id = :productId')
+            ->andWhere('pm.active = 1')
+            ->setParameter('productId', $productId)
+            ->orderBy('pm.position', 'ASC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($rows as $row) {
+            $collection->add(
+                $this->productMediaDataMapper->fromData($row)
+            );
+        }
+
+        return $collection;
+    }
+
+    public function getByType(Id $productId, ProductMediaType $type): ?ProductMedia
+    {
+        $row = $this->prepareSelectWithJoin()
+            ->where('pm.article_id = :productId')
+            ->andWhere('pm.type = :type')
+            ->andWhere('pm.active = 1')
+            ->setParameter('productId', $productId)
+            ->setParameter('type', $type->value())
+            ->orderBy('pm.position', 'ASC')
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        return $row ? $this->productMediaDataMapper->fromData($row) : null;
+    }
+
+    public function getFirstActive(Id $productId): ?ProductMedia
+    {
+        $row = $this->prepareSelectWithJoin()
+            ->where('pm.article_id = :productId')
+            ->andWhere('pm.active = 1')
+            ->setParameter('productId', $productId)
+            ->orderBy('pm.position', 'ASC')
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        return $row ? $this->productMediaDataMapper->fromData($row) : null;
+    }
+
+    public function getByPosition(Id $productId, int $position): ?ProductMedia
+    {
+        $row = $this->prepareSelectWithJoin()
+            ->where('pm.article_id = :productId')
+            ->andWhere('pm.position = :position')
+            ->andWhere('pm.active = 1')
+            ->setParameter('productId', $productId)
+            ->setParameter('position', $position)
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        return $row ? $this->productMediaDataMapper->fromData($row) : null;
+    }
+
 }

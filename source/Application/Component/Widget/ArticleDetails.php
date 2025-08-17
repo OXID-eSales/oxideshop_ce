@@ -515,64 +515,14 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
         return $this->_aPicGallery;
     }
 
-    /**
-     * Template variable getter. Returns active picture.
-     *
-     * @return object
-     */
-    public function getActPicture()
+    public function hasMultipleImages(): bool
     {
-        $aPicGallery = $this->getPictureGallery();
-
-        return $aPicGallery['ActPic'];
+        return $this->getPictureGallery()['hasMultipleImages'];
     }
 
-    /**
-     * Template variable getter. Returns true if there more pictures.
-     *
-     * @return bool
-     */
-    public function morePics()
+    public function getMediaItems(): array
     {
-        $aPicGallery = $this->getPictureGallery();
-
-        return $aPicGallery['MorePics'];
-    }
-
-    /**
-     * Template variable getter. Returns icons of current article.
-     *
-     * @return array
-     */
-    public function getIcons()
-    {
-        $aPicGallery = $this->getPictureGallery();
-
-        return $aPicGallery['Icons'];
-    }
-
-    /**
-     * Template variable getter. Returns if to show zoom pictures.
-     *
-     * @return bool
-     */
-    public function showZoomPics()
-    {
-        $aPicGallery = $this->getPictureGallery();
-
-        return $aPicGallery['ZoomPic'];
-    }
-
-    /**
-     * Template variable getter. Returns zoom pictures.
-     *
-     * @return array
-     */
-    public function getZoomPics()
-    {
-        $aPicGallery = $this->getPictureGallery();
-
-        return $aPicGallery['ZoomPics'];
+        return $this->getPictureGallery()['mediaItems'];
     }
 
     /**

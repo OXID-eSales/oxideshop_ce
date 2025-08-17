@@ -11,6 +11,7 @@ use oxRegistry;
 use oxArticleInputException;
 use oxOutOfStockException;
 use oxNoArticleException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
 use stdClass;
 
 /**
@@ -195,19 +196,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      */
     protected $_iLanguageId = null;
 
-    /**
-     * Ssl mode
-     *
-     * @var bool
-     */
-    protected $_blSsl = null;
-
-    /**
-     * Icon url
-     *
-     * @var string
-     */
-    protected $_sIconUrl = null;
+    protected $_oIcon = null;
 
 
     /**
@@ -439,19 +428,13 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_oPrice->multiply($this->getAmount());
     }
 
-    /**
-     * Returns article icon picture url
-     *
-     * @return string
-     */
-    public function getIconUrl()
+    public function getIcon(): MediaView
     {
-        // icon url must be (re)loaded in case icon is not set or shop was switched between ssl/nonssl
-        if ($this->_sIconUrl === null || $this->_blSsl != \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl()) {
-            $this->_sIconUrl = $this->getArticle()->getIconUrl();
+        if ($this->_oIcon === null) {
+            $this->_oIcon = $this->getArticle()->getIcon();
         }
 
-        return $this->_sIconUrl;
+        return $this->_oIcon;
     }
 
     /**
@@ -731,11 +714,6 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_sTitle = null;
         $this->_sVarSelect = null;
         $this->getTitle();
-
-        // icon and details URL's
-        $this->_sIcon = $oArticle->oxarticles__oxicon->value;
-        $this->_sIconUrl = $oArticle->getIconUrl();
-        $this->_blSsl = $oConfig->isSsl();
 
         // removing force_sid from the link (in case it'll change)
         $this->_sLink = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->cleanUrl($oArticle->getLink(), ['force_sid']);

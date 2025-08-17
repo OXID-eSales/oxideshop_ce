@@ -38,6 +38,10 @@
 - Redundant shop state and configuration classes and services: `ShopStateServiceInterface`, `ProjectConfigurationDaoInterface`, `ProjectConfiguration`
 - A deprecated partner-related method `getBelboonParam()` of class `BaseController` [0006140](https://bugs.oxid-esales.com/view.php?id=6140)
 - `ContainerBuilderFactory` class
+- Media refactoring — replaced with MediaView-based access
+  - `Article`: `getThumbnailUrl()`, `getIconUrl()`, `getPictureUrl()`, `getMasterZoomPictureUrl()`, `getZoomPictureUrl()`, `getPictureFieldValue()`, `getMasterPicturePath()`, `getPicturesProduct()`, `getMasterZoomPicture()`, `getZoomMedia()`
+  - `ArticleDetails`: `getActPicture()`, `morePics()`, `getIcons()`, `showZoomPics()`, `getZoomPics()`
+  - `ArticleDetailsController`: `getActPictureId()`, `showZoomPics()`
 
 ## v8.0.0-alpha.1 - 2025-02-03
 

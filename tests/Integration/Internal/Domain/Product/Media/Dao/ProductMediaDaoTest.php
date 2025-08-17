@@ -453,4 +453,265 @@ final class ProductMediaDaoTest extends TestCase
             ])
             ->executeQuery();
     }
+
+    public function testGetActiveByProductId(): void
+    {
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 1,
+                type: ProductMediaType::detail(),
+                active: true
+            )
+        );
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 2,
+                type: ProductMediaType::detail(),
+                active: false
+            )
+        );
+
+        $activeList = $this->productMediaDao->getActiveByProductId($this->productId);
+
+        $this->assertCount(1, $activeList);
+        $this->assertTrue($activeList->get(0)->isActive());
+    }
+
+    public function testGetActiveByProductIdWithEmptyResult(): void
+    {
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 1,
+                type: ProductMediaType::detail(),
+                active: false
+            )
+        );
+
+        $activeList = $this->productMediaDao->getActiveByProductId($this->productId);
+
+        $this->assertTrue($activeList->isEmpty());
+    }
+
+    public function testGetByType(): void
+    {
+        $productMedia = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media,
+            position: 1,
+            type: ProductMediaType::thumbnail(),
+            active: true
+        );
+        $this->productMediaDao->add($productMedia);
+
+        $fetched = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+
+        $this->assertEquals($productMedia->getId(), $fetched->getId());
+    }
+
+    public function testGetByTypeReturnsNullWhenNotFound(): void
+    {
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 1,
+                type: ProductMediaType::detail(),
+                active: true
+            )
+        );
+
+        $result = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+
+        $this->assertNull($result);
+    }
+
+    public function testGetByTypeIgnoresInactive(): void
+    {
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 1,
+                type: ProductMediaType::thumbnail(),
+                active: false
+            )
+        );
+
+        $result = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+
+        $this->assertNull($result);
+    }
+
+    public function testGetByTypeReturnsFirstByPosition(): void
+    {
+        $id1 = Id::generate();
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 2,
+                type: ProductMediaType::thumbnail(),
+                active: true
+            )
+        );
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: $id1,
+                productId: $this->productId,
+                media: $this->media,
+                position: 1,
+                type: ProductMediaType::thumbnail(),
+                active: true
+            )
+        );
+
+        $result = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+
+        $this->assertEquals($id1, $result->getId());
+    }
+
+    public function testGetFirstActive(): void
+    {
+        $productMedia = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media,
+            position: 1,
+            type: ProductMediaType::detail(),
+            active: true
+        );
+        $this->productMediaDao->add($productMedia);
+
+        $fetched = $this->productMediaDao->getFirstActive($this->productId);
+
+        $this->assertEquals($productMedia->getId(), $fetched->getId());
+    }
+
+    public function testGetFirstActiveReturnsNullWhenNoActiveMedia(): void
+    {
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 1,
+                type: ProductMediaType::detail(),
+                active: false
+            )
+        );
+
+        $result = $this->productMediaDao->getFirstActive($this->productId);
+
+        $this->assertNull($result);
+    }
+
+    public function testGetFirstActiveReturnsNullForNonExistentProduct(): void
+    {
+        $result = $this->productMediaDao->getFirstActive(Id::generate());
+
+        $this->assertNull($result);
+    }
+
+    public function testGetByPosition(): void
+    {
+        $productMedia = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media,
+            position: 5,
+            type: ProductMediaType::detail(),
+            active: true
+        );
+        $this->productMediaDao->add($productMedia);
+
+        $fetched = $this->productMediaDao->getByPosition($this->productId, 5);
+
+        $this->assertEquals($productMedia->getId(), $fetched->getId());
+    }
+
+    public function testGetByPositionReturnsNullWhenNotFound(): void
+    {
+        $this->productMediaDao->add(
+            new ProductMedia(
+                id: Id::generate(),
+                productId: $this->productId,
+                media: $this->media,
+                position: 1,
+                type: ProductMediaType::detail(),
+                active: true
+            )
+        );
+
+        $result = $this->productMediaDao->getByPosition($this->productId, 99);
+
+        $this->assertNull($result);
+    }
+
+    public function testGetByPositionReturnsCorrectMediaForMultipleProducts(): void
+    {
+        // Create another product
+        $anotherProductId = Id::generate();
+        $this->get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->insert('oxarticles')
+            ->values([
+                'OXID' => ':id',
+                'OXTITLE' => ':title',
+                'OXACTIVE' => ':active',
+            ])
+            ->setParameters([
+                'id' => (string)$anotherProductId,
+                'title' => 'Another Product',
+                'active' => 1,
+            ])
+            ->executeQuery();
+
+        // Add media for first product
+        $media1 = new ProductMedia(
+            id: Id::generate(),
+            productId: $this->productId,
+            media: $this->media,
+            position: 1,
+            type: ProductMediaType::detail(),
+            active: true
+        );
+        $this->productMediaDao->add($media1);
+
+        // Add media for second product with same position
+        $media2 = new ProductMedia(
+            id: Id::generate(),
+            productId: $anotherProductId,
+            media: $this->media,
+            position: 1,
+            type: ProductMediaType::detail(),
+            active: true
+        );
+        $this->productMediaDao->add($media2);
+
+        $result1 = $this->productMediaDao->getByPosition($this->productId, 1);
+        $result2 = $this->productMediaDao->getByPosition($anotherProductId, 1);
+
+        $this->assertEquals($media1->getId(), $result1->getId());
+        $this->assertEquals($media2->getId(), $result2->getId());
+    }
+
+    public function testGetByPositionReturnsNullForNonExistentProduct(): void
+    {
+        $result = $this->productMediaDao->getByPosition(Id::generate(), 1);
+
+        $this->assertNull($result);
+    }
 }

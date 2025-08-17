@@ -236,36 +236,6 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
         return $this->normalizeDir(Registry::getConfig()->getPictureDir(false)) . "{$sFolder}/";
     }
 
-    /**
-     * Returns array of sizes which are used to resize images. If size is not
-     * defined - NULL will be returned
-     *
-     * @param string $sImgType image type (TH, TC, ICO etc), can be useful for modules
-     * @param int    $iImgNum  number of image (e.g. numper of ZOOM1 is 1)
-     * @param string $sImgConf config parameter name, which keeps size info
-     *
-     * @return array|null
-     */
-    protected function getImageSize($sImgType, $iImgNum, $sImgConf)
-    {
-        $myConfig = Registry::getConfig();
-
-        switch ($sImgConf) {
-            case 'aDetailImageSizes':
-                $aDetailImageSizes = $myConfig->getConfigParam($sImgConf);
-                $sSize = $myConfig->getConfigParam('sDetailImageSize');
-                if (isset($aDetailImageSizes['oxpic' . $iImgNum])) {
-                    $sSize = $aDetailImageSizes['oxpic' . $iImgNum];
-                }
-                break;
-            default:
-                $sSize = $myConfig->getConfigParam($sImgConf);
-                break;
-        }
-        if ($sSize) {
-            return explode('*', $sSize);
-        }
-    }
 
     /**
      * Uploaded file processor (filters, etc), sets configuration parameters to

@@ -13,13 +13,26 @@ use DateTimeImmutable;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaType;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\Filesystem\Path;
 
 final class ArticleTest extends IntegrationTestCase
 {
     private static string $timeFormat = 'Y-m-d H:i:s';
     private static string $defaultTimestamp = '0000-00-00 00:00:00';
+
+    private ProductMediaServiceInterface $productMediaService;
+    private ProductMediaViewServiceInterface $productMediaViewService;
 
     public function setUp(): void
     {
@@ -27,6 +40,9 @@ final class ArticleTest extends IntegrationTestCase
 
         Registry::getConfig()->init();
         Registry::getConfig()->setConfigParam('blUseStock', false);
+
+        $this->productMediaService = ContainerFacade::get(ProductMediaServiceInterface::class);
+        $this->productMediaViewService = ContainerFacade::get(ProductMediaViewServiceInterface::class);
     }
 
     public function testIsVisibleWithInactive(): void
@@ -249,5 +265,132 @@ final class ArticleTest extends IntegrationTestCase
         ]);
 
         $this->assertEquals(-1, $product->getStockStatus());
+    }
+
+    public function testGetIconReturnsMediaViewFromService(): void
+    {
+        [$article, $productId] = $this->createArticleWithMedia();
+
+        $expectedUrl = $this->productMediaViewService
+            ->getIcon($productId)
+            ->getUrl();
+
+        $this->assertSame($expectedUrl, $article->getIcon()->getUrl());
+    }
+
+    public function testGetThumbnailReturnsMediaViewFromService(): void
+    {
+        [$article, $productId] = $this->createArticleWithMedia();
+
+        $expectedUrl = $this->productMediaViewService
+            ->getThumbnail($productId)
+            ->getUrl();
+
+        $this->assertSame($expectedUrl, $article->getThumbnail()->getUrl());
+    }
+
+    public function testGetMediaReturnsDetailImageForRequestedPosition(): void
+    {
+        [$article, $productId] = $this->createArticleWithMedia();
+
+        $expectedUrl = $this->productMediaViewService
+            ->getMedia($productId, 1)
+            ->getUrl();
+
+        $this->assertSame($expectedUrl, $article->getMedia(1)->getUrl());
+    }
+
+
+    private function createArticleWithMedia(): array
+    {
+        $productId = Id::generate();
+        $this->createPersistedArticle($productId);
+        $this->addProductMedia($productId, 'article-icon.jpg', 0, ProductMediaType::icon());
+        $this->addProductMedia($productId, 'article-thumb.jpg', 0, ProductMediaType::thumbnail());
+        $this->addProductMedia($productId, 'article-detail.jpg', 1, ProductMediaType::detail());
+
+        $article = oxNew(Article::class);
+        $article->load((string) $productId);
+
+        return [$article, $productId];
+    }
+
+    private function createPersistedArticle(Id $productId): void
+    {
+        $article = oxNew(Article::class);
+        $article->setId((string) $productId);
+        $article->oxarticles__oxshopid = new Field((string) Registry::getConfig()->getShopId());
+        $article->oxarticles__oxactive = new Field(true);
+        $article->oxarticles__oxtitle = new Field('Article with media');
+        $article->oxarticles__oxprice = new Field(12.5);
+        $article->save();
+    }
+
+    public function testGetPictureGalleryReturnsCorrectActiveMedia(): void
+    {
+        [$article, $productId] = $this->createArticleWithMedia();
+
+        $expectedMediaItems = $this->productMediaViewService
+            ->getActiveByProductId($productId);
+        $expectedActiveMedia = reset($expectedMediaItems);
+
+        $gallery = $article->getPictureGallery();
+
+        $this->assertSame($expectedActiveMedia->getUrl(), $gallery['activeMedia']->getUrl());
+    }
+
+    public function testGetPictureGalleryReturnsAllMediaItems(): void
+    {
+        [$article, $productId] = $this->createArticleWithMedia();
+
+        $expectedMediaItems = $this->productMediaViewService
+            ->getActiveByProductId($productId);
+
+        $gallery = $article->getPictureGallery();
+
+        $this->assertCount(count($expectedMediaItems), $gallery['mediaItems']);
+    }
+
+    public function testGetPictureGalleryHasMultipleImagesTrue(): void
+    {
+        [$article] = $this->createArticleWithMedia();
+
+        $gallery = $article->getPictureGallery();
+
+        $this->assertTrue($gallery['hasMultipleImages']);
+    }
+
+    public function testGetPictureGalleryHasMultipleImagesFalse(): void
+    {
+        $productId = Id::generate();
+        $this->createPersistedArticle($productId);
+        $this->addProductMedia($productId, 'single-image.jpg', 1, ProductMediaType::detail());
+
+        $article = oxNew(Article::class);
+        $article->load((string) $productId);
+
+        $gallery = $article->getPictureGallery();
+
+        $this->assertFalse($gallery['hasMultipleImages']);
+    }
+
+    private function addProductMedia(Id $productId, string $fileName, int $position, ProductMediaType $type): void
+    {
+        $media = new Media(
+            Id::generate(),
+            new MediaPath(Path::join('out', 'pictures', 'media', $fileName)),
+            new MediaType('image/jpeg')
+        );
+
+        $this->productMediaService->add(
+            new ProductMedia(
+                Id::generate(),
+                $productId,
+                $media,
+                $position,
+                $type,
+                true
+            )
+        );
     }
 }

@@ -574,7 +574,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $debugLevel = Registry::getConfig()->getConfigParam('iDebug');
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-            $logId = md5(time() . rand() . rand());
+            $logId = Registry::getUtilsObject()->generateUId();
             $header = $debugInfo->formatGeneralInfo();
             $display = ($debugLevel == -1) ? 'none' : 'block';
             $monitorMessage = $this->formMonitorMessage($view);

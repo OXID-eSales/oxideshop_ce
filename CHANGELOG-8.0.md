@@ -22,6 +22,7 @@
 - Method `getLastInsertId` of `DatabaseInterface` Adapter will throw `DatabaseErrorException` if no insert ID is available.
 - The `DatabaseConfiguration` namespace has been renamed for consistency, and the `getScheme` method has been replaced with `getDriver`
 - Shop setup proceeds with an empty database
+- The method `prepareModulesInformation` now returns module data as arrays instead of stdClass objects
 
 ### Removed
 

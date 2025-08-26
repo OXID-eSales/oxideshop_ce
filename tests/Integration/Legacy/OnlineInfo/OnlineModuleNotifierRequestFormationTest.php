@@ -181,8 +181,8 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
             $fileSystem->remove($this->xmlLog);
         }
         try {
-            $this->uninstallModule($this->moduleId1);
-            $this->uninstallModule($this->moduleId2);
+            $this->uninstallModule($this->module1Id);
+            $this->uninstallModule($this->module2Id);
         } catch (Throwable) {
         }
     }

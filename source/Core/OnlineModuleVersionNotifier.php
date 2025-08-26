@@ -51,33 +51,14 @@ class OnlineModuleVersionNotifier
         $oOMNCaller->doRequest($this->formRequest());
     }
 
-    /**
-     * @deprecated Will return an array[] instead of stdClass[] in the next major version.
-     */
     protected function prepareModulesInformation()
     {
         $shopConfiguration = ContainerFacade::get(ShopConfigurationDaoBridgeInterface::class)->get();
 
         $preparedModules = [];
         foreach ($shopConfiguration->getModuleConfigurations() as $moduleConfiguration) {
-            $preparedModuleData = ContainerFacade::get(ModuleConfigurationDataMapperBridgeInterface::class)
+            $preparedModules[] = ContainerFacade::get(ModuleConfigurationDataMapperBridgeInterface::class)
                 ->toData($moduleConfiguration);
-
-            $preparedModule = new stdClass();
-            $preparedModule->id = $preparedModuleData['id'];
-            $preparedModule->title = $preparedModuleData['title'];
-            $preparedModule->description = $preparedModuleData['description'];
-            $preparedModule->version = $preparedModuleData['version'];
-            $preparedModule->author = $preparedModuleData['author'];
-            $preparedModule->url = $preparedModuleData['url'];
-            $preparedModule->email = $preparedModuleData['email'];
-            $preparedModule->classExtensions = $preparedModuleData['classExtensions'];
-            $preparedModule->controllers = $preparedModuleData['controllers'];
-
-            $preparedModule->activeInShops = new stdClass();
-            $preparedModule->activeInShops->activeInShop = $preparedModuleData['activeInShops']['activeInShop'];
-
-            $preparedModules[] = $preparedModule;
         }
 
         return $preparedModules;

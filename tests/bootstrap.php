@@ -25,3 +25,5 @@ require_once Path::join(OX_BASE_PATH, 'oxfunctions.php');
 require_once Path::join(OX_BASE_PATH, 'overridablefunctions.php');
 
 (new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
+
+date_default_timezone_set(getenv('OXID_DEFAULT_TIMEZONE') ?: 'Europe/Berlin');

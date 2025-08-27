@@ -21,7 +21,7 @@ final class SystemInfoCest
 
         $I->loginAdmin()
             ->openSystemInfo()
-            ->setRowInDateTable(
+            ->seeRowInDateTable(
                 'Default timezone',
                 getenv('OXID_DEFAULT_TIMEZONE')
             );

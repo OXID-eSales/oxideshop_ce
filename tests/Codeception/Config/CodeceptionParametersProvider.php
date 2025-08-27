@@ -68,7 +68,7 @@ class CodeceptionParametersProvider
     {
         return Path::join(
             $this->getShopTestPath(),
-            '/Codeception/Support/Data/dump.sql',
+            '/Codeception/Support/Data/test-fixtures.sql',
         );
     }
 

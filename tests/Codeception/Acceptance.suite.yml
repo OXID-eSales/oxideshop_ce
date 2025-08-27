@@ -25,6 +25,7 @@ modules:
             db_name: '%DB_NAME%'
             out_directory_fixtures: '%OUT_DIRECTORY_FIXTURES%'
             out_directory: '%OUT_DIRECTORY%'
+            theme_id: '%THEME_ID%'
         - Db:
             dsn: 'mysql:host=%DB_HOST%;dbname=%DB_NAME%;charset=utf8'
             user: '%DB_USERNAME%'
@@ -55,10 +56,6 @@ modules:
                 - 'Application/views/%THEME_ID%'
             paths_admin:
                 - 'Application/views/admin_twig'
-        - OxidEsales\Codeception\Module\SelectTheme:
-              depends:
-                  - OxidEsales\Codeception\Module\Database
-              theme_id: '%THEME_ID%'
         - OxidEsales\Codeception\Module\OxideshopModules:
         - Mailpit:
             url: '%MAIL_HOST%'

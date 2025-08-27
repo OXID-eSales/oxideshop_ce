@@ -13,7 +13,7 @@ use Codeception\Attribute\Group;
 use DateTime;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
-#[Group('admin')]
+#[Group('admin', 'order')]
 final class OrderTotalsAndCurrencyDisplayCest
 {
     public function testOrderTotalsAndCurrencyPosition(AcceptanceTester $I): void

@@ -8,9 +8,6 @@
 declare(strict_types=1);
 
 use OxidEsales\Codeception\Module\FixturesHelper;
-use Symfony\Component\Filesystem\Path;
-
-require_once Path::join(dirname(__DIR__, 2), 'bootstrap.php');
 
 $helper = new FixturesHelper();
 $helper->loadRuntimeFixtures(codecept_data_dir('user.php'));
@@ -19,3 +16,5 @@ $helper->loadRuntimeFixtures(codecept_data_dir('order.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('product.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('shop.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('category.php'));
+
+date_default_timezone_set(getenv('OXID_DEFAULT_TIMEZONE') ?: 'Europe/Berlin');

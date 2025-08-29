@@ -548,10 +548,34 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
                 self::FIXTURE_OXID_1 . '\'" and the query result will be [' . self::FIXTURE_OXID_1 . ']',
             ],
             [
-                '1',
+                1,
                 "'1'",
                 [],
                 'The integer 1  will be converted into the string "1" and the query result will be empty'
+            ],
+            [
+                1.5,
+                "'1.5'",
+                [],
+                'The float 1.5 will be converted into the string "1.5" and the query result will be empty',
+            ],
+            [
+                false,
+                "''",
+                [],
+                'The boolean false will be converted into the empty string and the query result will be empty',
+            ],
+            [
+                true,
+                "'1'",
+                [],
+                'The boolean true will be converted into the string "1" and the query result will be empty',
+            ],
+            [
+                null,
+                "''",
+                [],
+                'The null value will be converted into the empty string and the query result will be empty',
             ],
         ];
     }

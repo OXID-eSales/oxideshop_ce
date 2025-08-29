@@ -147,7 +147,7 @@ class Database implements DatabaseInterface
 
     public function quote($value)
     {
-        if (!is_scalar($value)) {
+        if (!is_scalar($value) && $value !== null) {
             return false;
         }
 

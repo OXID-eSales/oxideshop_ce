@@ -175,11 +175,11 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
     {
         return [
             [
-                // A arbitrary string will be converted in a column name
+                // An arbitrary string will be converted in a column name
                 'SELECT * from oxuser',
             ],
             [
-                // A arbitrary string, which contains a backtick, will be converted in a column name
+                // An arbitrary string, which contains a backtick, will be converted in a column name
                 'columnName ` columnName',
             ],
         ];
@@ -200,7 +200,7 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
 
         $this->expectException($expectedException);
 
-        $query = 'SELECT OXID FROM ' . self::TABLE_NAME . " WHERE OXID = {$actualQuotedValue}";
+        $query = 'SELECT OXID FROM ' . self::TABLE_NAME . " WHERE OXID = $actualQuotedValue";
         $resultSet = $this->database->select($query);
         $resultSet->fetchAll();
     }
@@ -210,10 +210,10 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
         $tableName = self::TABLE_NAME;
         $id = self::FIXTURE_OXID_1;
         $this->database->execute('ALTER TABLE `oxdoctrinetest`ADD UNIQUE `oxid` (`oxid`);');
-        $this->database->execute("INSERT INTO {$tableName} (OXID) VALUES ('{$id}');");
+        $this->database->execute("INSERT INTO $tableName (OXID) VALUES ('$id');");
 
         try {
-            $this->database->execute("INSERT INTO {$tableName} (OXID) VALUES ('{$id}');");
+            $this->database->execute("INSERT INTO $tableName (OXID) VALUES ('$id');");
         } catch (DatabaseErrorException $e) {
             $this->assertEquals(DatabaseInterface::DUPLICATE_KEY_ERROR_CODE, $e->getCode());
             return;
@@ -277,16 +277,16 @@ final class DatabaseTest extends DatabaseInterfaceImplementation
         $exampleOxId = self::FIXTURE_OXID_1;
 
         $affectedRows = $this->database->execute(
-            'INSERT INTO ' . self::TABLE_NAME . " (OXID) VALUES ('{$exampleOxId}');"
+            'INSERT INTO ' . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');"
         );
 
         $this->assertSame(1, $affectedRows);
         $this->assertTestTableHasOnly($exampleOxId);
 
-        $affectedRows = $this->database->execute('DELETE FROM ' . self::TABLE_NAME . " WHERE OXID = '{$exampleOxId}';");
+        $affectedRows = $this->database->execute('DELETE FROM ' . self::TABLE_NAME . " WHERE OXID = '$exampleOxId';");
 
         $this->assertSame(1, $affectedRows);
-        $this->assertTestTableIsEmpty();
+        $this->assertEmpty($this->fetchAllTestTableRows());
     }
 
     /**

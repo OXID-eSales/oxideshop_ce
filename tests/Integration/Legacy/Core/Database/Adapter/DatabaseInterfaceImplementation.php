@@ -13,9 +13,7 @@ use Doctrine\DBAL\TransactionIsolationLevel;
 use InvalidArgumentException;
 use oxDb;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
-use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
-use ReflectionClass;
 
 abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplementationBase
 {
@@ -192,7 +190,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
     {
         $this->expectException(DatabaseErrorException::class);
 
-        oxDb::getMaster()->select('SELECT SOME INVALID QUERY', []);
+        oxDb::getMaster()->select('SELECT SOME INVALID QUERY');
     }
 
     public function testSetTransactionIsolationLevel(): void
@@ -215,7 +213,10 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
         $result = $this->database->getCol('SELECT OXID FROM ' . self::TABLE_NAME);
 
         $this->assertIsArray($result);
-        $this->assertSame(0, count($result));
+        $this->assertCount(
+            0,
+            $result
+        );
     }
 
     public function testGetColWithoutParameters(): void
@@ -225,7 +226,10 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
         $result = $this->database->getCol('SELECT OXUSERID FROM ' . self::TABLE_NAME);
 
         $this->assertIsArray($result);
-        $this->assertSame(3, count($result));
+        $this->assertCount(
+            3,
+            $result
+        );
         $this->assertSame([self::FIXTURE_OXUSERID_1, self::FIXTURE_OXUSERID_2, self::FIXTURE_OXUSERID_3], $result);
     }
 
@@ -239,7 +243,10 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
         );
 
         $this->assertIsArray($result);
-        $this->assertSame(1, count($result));
+        $this->assertCount(
+            1,
+            $result
+        );
         $this->assertSame([self::FIXTURE_OXUSERID_2], $result);
     }
 
@@ -256,7 +263,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
 
         $this->truncateTestTable();
         $this->database->startTransaction();
-        $this->database->execute('INSERT INTO ' . self::TABLE_NAME . " (OXID) VALUES ('{$exampleOxId}');", []);
+        $this->database->execute('INSERT INTO ' . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');");
 
         // assure, that the changes are made in this transaction
         $this->assertTestTableHasOnly($exampleOxId);
@@ -273,7 +280,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
 
         $this->truncateTestTable();
         $this->database->startTransaction();
-        $this->database->execute('INSERT INTO ' . self::TABLE_NAME . " (OXID) VALUES ('{$exampleOxId}');", []);
+        $this->database->execute('INSERT INTO ' . self::TABLE_NAME . " (OXID) VALUES ('$exampleOxId');");
 
         // assure, that the changes are made in this transaction
         $this->assertTestTableHasOnly($exampleOxId);
@@ -351,7 +358,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
     {
         $this->expectException(DatabaseErrorException::class);
 
-        $this->database->getAll('SOME INVALID QUERY', []);
+        $this->database->getAll('SOME INVALID QUERY');
     }
 
     public function testInsertIdOnNonAutoIncrement(): void
@@ -438,7 +445,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
     {
         $this->loadFixtureToTestTable();
 
-        $result = $this->database->getOne('SELECT OXUSERID FROM ' . self::TABLE_NAME, []);
+        $result = $this->database->getOne('SELECT OXUSERID FROM ' . self::TABLE_NAME);
 
         $this->assertEquals(self::FIXTURE_OXUSERID_1, $result);
     }
@@ -459,20 +466,11 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
     {
         $this->truncateTestTable();
 
-        /**
-         * An exception will be logged as part of the BC layer, when calling the getRow with a wrong SQL statement
-         * The exception log will be cleared at the end of this test
-         */
         $this->expectException(InvalidArgumentException::class);
-        $result = $this->database->getRow(
+
+        $this->database->getRow(
             'INSERT INTO ' . self::TABLE_NAME . " (oxid) VALUES ('" . self::FIXTURE_OXID_1 . "')"
         );
-
-        $this->assertIsArray($result);
-        $this->assertEmpty($result);
-
-        $expectedExceptionClass = DatabaseErrorException::class;
-        $this->assertLoggedException($expectedExceptionClass);
     }
 
     public function testGetRowNonEmptyTableWithParameters(): void
@@ -530,7 +528,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
 
         $this->assertSame($expectedQuotedValue, $actualQuotedValue, $message);
 
-        $query = 'SELECT OXID FROM ' . self::TABLE_NAME . " WHERE OXID = {$actualQuotedValue}";
+        $query = 'SELECT OXID FROM ' . self::TABLE_NAME . " WHERE OXID = $actualQuotedValue";
         $resultSet = $this->database->select($query);
         $actualResult = $resultSet->fetchAll();
 
@@ -580,21 +578,12 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
         ];
     }
 
-    public static function resetDbProperty($class): void
-    {
-        $reflectionClass = new ReflectionClass(DatabaseProvider::class);
-
-        $reflectionProperty = $reflectionClass->getProperty('db');
-        $reflectionProperty->setAccessible(true);
-        $reflectionProperty->setValue($class, null);
-    }
-
     /*
-     * There is a another special table needed for testMetaColumns.
+     * There is another special table needed for testMetaColumns.
      *
      * @param string $metaColumnsTestTable The name of the table to create
      */
-    protected function createTableForTestMetaColumns(string $metaColumnsTestTable)
+    protected function createTableForTestMetaColumns(string $metaColumnsTestTable): void
     {
         $dbh = self::getDatabaseHandler();
         $dbh->exec('CREATE TABLE IF NOT EXISTS ' . $metaColumnsTestTable . " (
@@ -728,46 +717,16 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
      *
      * @param string $oxId The oxId we want to be the only one in the oxdoctrinetest table.
      */
-    protected function assertTestTableHasOnly($oxId)
+    protected function assertTestTableHasOnly(string $oxId): void
     {
         $oxIds = $this->fetchAllTestTableRows();
 
         $this->assertNotEmpty($oxIds);
-        $this->assertSame(1, count($oxIds));
+        $this->assertCount(
+            1,
+            $oxIds
+        );
         $this->assertArrayHasKey('0', $oxIds);
-
         $this->assertSame($oxId, $oxIds[0]['oxid']);
-    }
-
-    /**
-     * Assert, that the table oxdoctrinetest is empty.
-     */
-    protected function assertTestTableIsEmpty()
-    {
-        $this->assertTrue($this->isEmptyTestTable());
-    }
-
-    /**
-     * Fetch the oxId of the first oxdoctrinetest table row.
-     *
-     * @return array|false The oxId of the first oxdoctrinetest table row.
-     */
-    protected function fetchFirstTestTableOxId()
-    {
-        $masterDb = oxDb::getMaster();
-
-        $rows = $masterDb->select('SELECT OXID FROM ' . self::TABLE_NAME, []);
-
-        return $rows->fetchRow();
-    }
-
-    /**
-     * Check, if the table oxdoctrinetest is empty.
-     *
-     * @return bool Is the table oxdoctrinetest empty?
-     */
-    protected function isEmptyTestTable(): bool
-    {
-        return empty($this->fetchAllTestTableRows());
     }
 }

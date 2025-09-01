@@ -2499,6 +2499,8 @@ class FrontendController extends \OxidEsales\Eshop\Core\Controller\BaseControlle
     /**
      * Template variable getter. Returns more category
      *
+     * @deprecated will be removed in v8.0
+     *
      * @return object
      */
     public function getCatMoreUrl()

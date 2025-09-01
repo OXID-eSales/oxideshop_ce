@@ -47,6 +47,8 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     /**
      * New layout list template
      *
+     * @deprecated will be removed in v8.0
+     *
      * @var string
      */
     protected $_sThisMoreTemplate = 'page/list/morecategories';
@@ -206,12 +208,14 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $this->_blIsCat = false;
 
         // A. checking for fake "more" category
+        // @deprecated oxmore feature will be removed in v8.0
         if ('oxmore' == Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             // overriding some standard value and parameters
             $this->_sThisTemplate = $this->_sThisMoreTemplate;
             $category = oxNew(Category::class);
             $category->oxcategories__oxactive = new Field(1, Field::T_RAW);
             $this->setActiveCategory($category);
+        // END deprecated
         } elseif (($category = $this->getActiveCategory())) {
             $this->_blIsCat = true;
             $this->_blBargainAction = true;
@@ -391,9 +395,11 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     public function getActPage()
     {
         //Fake oxmore category has no subpages so we can set the page number to zero
+        // @deprecated oxmore feature will be removed in v8.0
         if ('oxmore' == Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             return 0;
         }
+        // END deprecated
 
         return $this->getRequestPageNr();
     }
@@ -906,6 +912,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         $paths = [];
 
+        // @deprecated oxmore feature will be removed in v8.0
         if ('oxmore' == Registry::getRequest()->getRequestEscapedParameter('cnid')) {
             $path = [];
             $path['title'] = Registry::getLang()->translateString(
@@ -919,6 +926,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
             return $paths;
         }
+        // END deprecated
 
         if (($categoryTree = $this->getCategoryTree()) && ($categoryPaths = $categoryTree->getPath())) {
             foreach ($categoryPaths as $category) {
@@ -993,11 +1001,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     {
         if ($this->_sCatTitle === null) {
             $this->_sCatTitle = false;
+            // @deprecated oxmore feature will be removed in v8.0
             if ($this->getCategoryId() == 'oxmore') {
                 $language = Registry::getLang();
                 $baseLanguageId = $language->getBaseLanguage();
 
                 $this->_sCatTitle = $language->translateString('CATEGORY_OVERVIEW', $baseLanguageId, false);
+            // END deprecated
             } elseif (($category = $this->getActiveCategory())) {
                 $this->_sCatTitle = $category->oxcategories__oxtitle->value;
             }

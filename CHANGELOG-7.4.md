@@ -19,6 +19,7 @@
 - Methods `hasVariable`, `setVariable`, `getVariable` and `deleteVariable` of `Session` use new methods of `SessionInterface`
 - Method `Language::translateString()` use `ShopAdapterInterface::translateString()`
 - Method `TableViewNameGenerator::getViewName()` use `ShopAdapterInterface::generateDatabaseViewName()`
+- The oxmore feature functionality
 
 ### Fixed
 - Multilanguage field detection with lowercase field names [#0005244](https://bugs.oxid-esales.com/view.php?id=5244)

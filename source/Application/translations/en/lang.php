@@ -64,7 +64,9 @@ $aLang = [
 'CART'                                                        => 'Cart',
 'CATEGORIES'                                                  => 'Categories',
 'CATEGORY'                                                    => 'Category',
+// @deprecated oxmore feature will be removed in v8.0
 'CATEGORY_OVERVIEW'                                           => 'Category overview',
+// END deprecated
 'CATEGORY_PRODUCTS_S'                                         => 'Category/%s',
 'CATEGORY_S'                                                  => 'Category: %s',
 'CELLUAR_PHONE'                                               => 'Cell phone',

@@ -16,18 +16,12 @@ final class Version20201029110624 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->connection->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-
-        $table = $schema->getTable('oxuser');
-        $table->addIndex(['oxrights'], 'OXRIGHTS');
+        $this->addSql('CREATE INDEX OXRIGHTS ON oxuser (oxrights)');
     }
 
     public function down(Schema $schema): void
     {
-        $this->connection->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
-
-        $table = $schema->getTable('oxuser');
-        $table->dropIndex('oxrights');
+        $this->addSql('DROP INDEX OXRIGHTS ON oxuser');
     }
 
     public function isTransactional(): bool

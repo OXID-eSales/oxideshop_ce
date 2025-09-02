@@ -2449,6 +2449,8 @@ class FrontendController extends BaseController
     /**
      * Template variable getter. Returns more category
      *
+     * @deprecated will be removed in v8.0
+     *
      * @return object
      */
     public function getCatMoreUrl()

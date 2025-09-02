@@ -20,3 +20,26 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopEnvironmentMisconfigurationEventSubscriber:
     tags:
       - { name: kernel.event_subscriber }
+
+  oxid_esales.module.configuration.class_extensions_export_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ClassExtensionsExportDataMapper
+
+  oxid_esales.module.configuration.controllers_export_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ControllersExportDataMapper
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleConfigurationExportDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfigurationExportDataMapper
+    arguments:
+      $moduleStateService: '@OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface'
+      $dataMappers:
+        - '@oxid_esales.module.configuration.class_extensions_export_data_mapper'
+        - '@oxid_esales.module.configuration.controllers_export_data_mapper'
+
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDataMapperBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDataMapperBridge
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\ModuleConfiguration\ModuleConfigurationExportDataMapperInterface'
+    public: true
+

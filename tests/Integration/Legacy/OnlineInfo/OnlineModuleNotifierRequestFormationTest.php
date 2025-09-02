@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Core\OnlineServerEmailBuilder;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\Eshop\Core\SimpleXml;
+use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
@@ -27,27 +28,26 @@ use Throwable;
 final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
 {
     private ContainerInterface $container;
-
     private string $clusterId;
-
     private string $documentName = 'omvnRequest';
-
     private string $edition;
-
-    private string $moduleId1 = 'extending_1_class';
-
-    private string $moduleId2 = 'extending_1_class_3_extensions';
-
+    private string $module1Id = 'extending_1_class';
+    private string $module1Title = 'Test extending 1 shop class';
+    private string $module1Description = 'Module testing extending 1 shop class';
+    private string $module1ClassExtensionsShopClass = 'OxidEsales\Eshop\Application\Model\Order';
+    private string $module1ClassExtensionsModuleClass = 'oeTest/extending_1_class/myorder';
+    private string $module1ControllerId = FrontendController::class;
+    private string $module1ControllerClassNameSpace = 'oeTest/controller_1_class/myFrontendController';
+    private string $module2Id = 'extending_1_class_3_extensions';
+    private string $module2Title = 'Test extending 1 shop class with 3 extensions';
+    private string $module2Description = 'Module testing extending 1 shop class with 3 extensions';
+    private string $module2ClassExtensionsShopClass = 'OxidEsales\Eshop\Application\Model\Order';
+    private string $module2ClassExtensionsModuleClass = 'oeTest/extending_1_class_3_extensions/myorder1';
     private string $moduleVersion = '1.0';
-
     private string $pVersion = '1.1';
-
     private string $productId = 'eShop';
-
     private string $shopUrl;
-
     private string $shopVersion;
-
     private string $xmlLog;
 
     public function setUp(): void
@@ -84,16 +84,48 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
         $this->assertEquals($this->productId, $xml->productId);
         $this->assertEquals(2, $xml->modules->children()->count());
         /** module 1 */
-        $this->assertEquals(3, $xml->modules->module[0]->children()->count());
-        $this->assertEquals($this->moduleId1, $xml->modules->module[0]->id);
+        $this->assertEquals(10, $xml->modules->module[0]->children()->count());
+        $this->assertEquals($this->module1Id, $xml->modules->module[0]->id);
         $this->assertEquals($this->moduleVersion, $xml->modules->module[0]->version);
+        $this->assertEquals($this->module1Title, $xml->modules->module[0]->title);
+        $this->assertEquals($this->module1Description, $xml->modules->module[0]->description);
+        $this->assertEquals(1, $xml->modules->module[0]->classExtensions->children()->count());
+        $this->assertEquals(
+            $this->module1ClassExtensionsShopClass,
+            $xml->modules->module[0]->classExtensions->children()->children()->shopClass
+        );
+        $this->assertEquals(
+            $this->module1ClassExtensionsModuleClass,
+            $xml->modules->module[0]->classExtensions->children()->children()->moduleClass
+        );
+        $this->assertEquals(1, $xml->modules->module[0]->controllers->children()->count());
+        $this->assertEquals(
+            $this->module1ControllerId,
+            $xml->modules->module[0]->controllers->children()->children()->id
+        );
+        $this->assertEquals(
+            $this->module1ControllerClassNameSpace,
+            $xml->modules->module[0]->controllers->children()->children()->controllerClassNameSpace
+        );
         /** active in shops */
         $this->assertEquals(1, $xml->modules->module[0]->activeInShops->children()->count());
         $this->assertEquals($this->shopUrl, $xml->modules->module[0]->activeInShops->activeInShop);
         /** module 2 */
-        $this->assertEquals(3, $xml->modules->module[1]->children()->count());
-        $this->assertEquals($this->moduleId2, $xml->modules->module[1]->id);
+        $this->assertEquals(10, $xml->modules->module[1]->children()->count());
+        $this->assertEquals($this->module2Id, $xml->modules->module[1]->id);
         $this->assertEquals($this->moduleVersion, $xml->modules->module[1]->version);
+        $this->assertEquals($this->module2Title, $xml->modules->module[1]->title);
+        $this->assertEquals($this->module2Description, $xml->modules->module[1]->description);
+        $this->assertCount(1, $xml->modules->module[0]->classExtensions->children());
+        $this->assertEquals(
+            $this->module2ClassExtensionsShopClass,
+            $xml->modules->module[1]->classExtensions->children()->children()->shopClass
+        );
+        $this->assertEquals(
+            $this->module2ClassExtensionsModuleClass,
+            $xml->modules->module[1]->classExtensions->children()->children()->moduleClass
+        );
+        $this->assertEmpty($xml->modules->module[1]->controllers->children());
         /** active in shops */
         $this->assertEquals(1, $xml->modules->module[1]->activeInShops->children()->count());
         $this->assertEquals($this->shopUrl, $xml->modules->module[1]->activeInShops->activeInShop);
@@ -113,11 +145,11 @@ final class OnlineModuleNotifierRequestFormationTest extends IntegrationTestCase
             ->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')
             ->generate();
 
-        $this->installModule($this->moduleId1);
-        $this->activateModule($this->moduleId1);
+        $this->installModule($this->module1Id);
+        $this->activateModule($this->module1Id);
 
-        $this->installModule($this->moduleId2);
-        $this->activateModule($this->moduleId2);
+        $this->installModule($this->module2Id);
+        $this->activateModule($this->module2Id);
     }
 
     private function installModule(string $moduleId): void

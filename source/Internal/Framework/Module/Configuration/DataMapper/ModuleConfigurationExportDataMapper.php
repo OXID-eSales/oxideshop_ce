@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -38,7 +39,7 @@ class ModuleConfigurationExportDataMapper implements ModuleConfigurationExportDa
         ];
 
         if ($this->moduleStateService->isActive($configuration->getId(), $this->context->getCurrentShopId())) {
-            $data['activeInShops'] = ['activeInShop' => [$this->context->getFacts()->getShopUrl()]];
+            $data['activeInShops'] = ['activeInShop' => [ContainerFacade::getParameter('oxid_esales.shop_url')]];
         } else {
             $data['activeInShops'] = ['activeInShop' => []];
         }

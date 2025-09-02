@@ -80,7 +80,7 @@ final class OnlineModuleVersionNotifierTest extends TestCase
                 'email' => 'test@email.com',
                 'classExtensions' => [],
                 'controllers' => [],
-                'activeInShop' => [Registry::getConfig()->getShopUrl()],
+                'activeInShops' => ['activeInShop' => [Registry::getConfig()->getShopUrl()]],
             ],
             [
                 'id' => 'NotActiveModuleWithMissingData',
@@ -92,31 +92,13 @@ final class OnlineModuleVersionNotifierTest extends TestCase
                 'email' => '',
                 'classExtensions' => [],
                 'controllers' => [],
-                'activeInShop' => [],
+                'activeInShops' => ['activeInShop' => []],
             ],
         ];
 
-        $modules = [];
-        foreach ($modulesData as $moduleData) {
-            $module = new stdClass();
-            $module->id = $moduleData['id'];
-            $module->version = $moduleData['version'];
-            $module->title = $moduleData['title'];
-            $module->description = $moduleData['description'];
-            $module->author = $moduleData['author'];
-            $module->url = $moduleData['url'];
-            $module->email = $moduleData['email'];
-            $module->classExtensions = $moduleData['classExtensions'];
-            $module->controllers = $moduleData['controllers'];
-            $module->activeInShops = new stdClass();
-            $module->activeInShops->activeInShop = $moduleData['activeInShop'];
-
-            $modules[] = $module;
-        }
-
         $request = new OnlineModulesNotifierRequest();
         $request->modules = new stdClass();
-        $request->modules->module = $modules;
+        $request->modules->module = $modulesData;
 
         return $request;
     }

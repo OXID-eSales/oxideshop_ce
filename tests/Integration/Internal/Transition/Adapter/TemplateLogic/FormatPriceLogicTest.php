@@ -9,9 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\TemplateLogic;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use OxidEsales\Eshop\Core\Price;
-use stdClass;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FormatPriceLogic;
 use PHPUnit\Framework\TestCase;
 
@@ -25,110 +23,185 @@ final class FormatPriceLogicTest extends TestCase
         $this->formatPriceLogic = new FormatPriceLogic();
     }
 
-
-    #[DataProvider('getFormatPriceProvider')]
-    public function testFormatPrice(array $params, string $expected): void
+    public function testFormatPriceWithInt(): void
     {
-        $price = $this->formatPriceLogic->formatPrice($params);
-        $this->assertEquals($expected, $price);
+        $price = $this->formatPriceLogic->formatPrice(['price' => 1]);
+
+        $this->assertEquals(
+            '1,00 €',
+            $price
+        );
     }
 
-    public static function getFormatPriceProvider(): array
+    public function testFormatPriceWithNull()
     {
-        return [
+        $price = $this->formatPriceLogic->formatPrice(['price' => null]);
+
+        $this->assertEquals(
+            '',
+            $price
+        );
+    }
+
+    public function testFormatPriceWithIncorrectString(): void
+    {
+        $price = $this->formatPriceLogic->formatPrice(['price' => 'incorrect']);
+
+        $this->assertEquals(
+            '0,00 €',
+            $price
+        );
+    }
+
+    public function testFormatPriceWithIncorrectPriceObject(): void
+    {
+        $priceObject = new Price();
+        $priceObject->setPrice(false);
+
+        $price = $this->formatPriceLogic->formatPrice(['price' => $priceObject]);
+
+        $this->assertEquals(
+            '0,00 €',
+            $price
+        );
+    }
+
+    public function testFormatPriceWithCorrectPriceObject(): void
+    {
+        $priceObject = new Price();
+        $priceObject->setPrice(120);
+
+        $calculatedOxPrice = $this->formatPriceLogic->formatPrice(['price' => $priceObject]);
+
+        $this->assertEquals(
+            '120,00 €',
+            $calculatedOxPrice
+        );
+    }
+
+    public function testGetFormattedPriceWithEmptyCurrencyAndInteger(): void
+    {
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
             [
-                ['price' => 100],
-                '100,00 €'
-            ],
-            [
-                ['price' => null],
-                ''
+                'currency' => '',
+                'price' => 10_000
             ]
-        ];
+        );
+
+        $this->assertEquals(
+            '10.000,00',
+            $formattedPrice
+        );
     }
 
-    #[DataProvider('getCalculatePriceProvider')]
-    public function testCalculatePrice(int|string|Price $inputPrice, string $expected): void
+    public function testGetFormattedPriceWithEmptyCurrencyAndNegativeInteger(): void
     {
-        $params['price'] = $inputPrice;
-        $calculatedOxPrice = $this->formatPriceLogic->formatPrice($params);
-        $this->assertEquals($expected, $calculatedOxPrice);
-    }
-
-    public static function getCalculatePriceProvider(): array
-    {
-        $incorrectPriceObj = new Price();
-        $incorrectPriceObj->setPrice(false);
-        $correctPriceObj = new Price();
-        $correctPriceObj->setPrice(120);
-
-        return [
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
             [
-                1, '1,00 €'
-            ],
-            [
-                'incorrect', '0,00 €'
-            ],
-            [
-                $incorrectPriceObj, '0,00 €'
-            ],
-            [
-                $incorrectPriceObj, '0,00 €'
-            ],
-            [
-                $correctPriceObj, '120,00 €'
+                'currency' => '',
+                'price' => -100
             ]
-        ];
+        );
+
+        $this->assertEquals(
+            '',
+            $formattedPrice
+        );
     }
 
-    #[DataProvider('getFormattedPriceProvider')]
-    public function testGetFormattedPrice(string|stdClass $currency, int $price, string $expected): void
+    public function testGetFormattedPriceWithCustomDecimalSeparator(): void
     {
-        $params['currency'] = $currency;
-        $params['price'] = $price;
-        $formattedPrice = $this->formatPriceLogic->formatPrice($params);
-        $this->assertEquals($expected, $formattedPrice);
-    }
-
-    public static function getFormattedPriceProvider(): array
-    {
-        $price = 10000;
-
-        return [
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
             [
-                '', $price, '10.000,00'
-            ],
-            [
-                '', -100, ''
-            ],
-            [
-                self::getCurrencyWithSeparator(['dec' => '-']), $price, '10.000-00'
-            ],
-            [
-                self::getCurrencyWithSeparator(['thousand' => '-']), $price, '10-000,00'
-            ],
-            [
-                self::getCurrencyWithSeparator(['sign' => '$']), $price, '10.000,00 $'
-            ],
-            [
-                self::getCurrencyWithSeparator(['decimal' => 4]), $price, '10.000,0000'
-            ],
-            [
-                self::getCurrencyWithSeparator(['sign' => '$', 'side' => 'Front']), $price, '$10.000,00'
-            ],
-            [
-                self::getCurrencyWithSeparator(['sign' => '$', 'side' => 'incorrect']), $price, '10.000,00 $'
+                'currency' => (object)['dec' => '-'],
+                'price' => 10_000
             ]
-        ];
+        );
+
+        $this->assertEquals(
+            '10.000-00',
+            $formattedPrice
+        );
     }
 
-    private static function getCurrencyWithSeparator(array $currency_array): stdClass
+    public function testGetFormattedPriceWithCustomThousandSeparator(): void
     {
-        $currency = new stdClass();
-        foreach ($currency_array as $key => $value) {
-            $currency->$key = $value;
-        }
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
+            [
+                'currency' => (object)['thousand' => '-'],
+                'price' => 10_000
+            ]
+        );
 
-        return $currency;
+        $this->assertEquals(
+            '10-000,00',
+            $formattedPrice
+        );
+    }
+
+    public function testGetFormattedPriceWithCustomSign(): void
+    {
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
+            [
+                'currency' => (object)['sign' => '$'],
+                'price' => 10_000
+            ]
+        );
+
+        $this->assertEquals(
+            '10.000,00 $',
+            $formattedPrice
+        );
+    }
+
+    public function testGetFormattedPriceWithCustomDecimalPlaces(): void
+    {
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
+            [
+                'currency' => (object)['decimal' => 4],
+                'price' => 10_000
+            ]
+        );
+
+        $this->assertEquals(
+            '10.000,0000',
+            $formattedPrice
+        );
+    }
+
+    public function testGetFormattedPriceWithSignOnFront(): void
+    {
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
+            [
+                'currency' => (object)[
+                    'sign' => '$',
+                    'side' => 'Front'
+                ],
+                'price' => 10_000
+            ]
+        );
+
+        $this->assertEquals(
+            '$10.000,00',
+            $formattedPrice
+        );
+    }
+
+    public function testGetFormattedPriceWithSignOnIncorrectSide(): void
+    {
+        $formattedPrice = $this->formatPriceLogic->formatPrice(
+            [
+                'currency' => (object)[
+                    'sign' => '$',
+                    'side' => 'incorrect'
+                ],
+                'price' => 10_000
+            ]
+        );
+
+        $this->assertEquals(
+            '10.000,00 $',
+            $formattedPrice
+        );
     }
 }

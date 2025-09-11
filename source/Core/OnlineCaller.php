@@ -172,7 +172,7 @@ abstract class OnlineCaller
         $oCurl = $this->getCurl();
         $oCurl->setMethod('POST');
         $oCurl->setUrl($sUrl);
-        $oCurl->setParameters(['xmlRequest' => $sXml]);
+        $oCurl->setQuery(http_build_query(['xmlRequest' => $sXml]));
         $oCurl->setOption(
             \OxidEsales\Eshop\Core\Curl::EXECUTION_TIMEOUT_OPTION,
             static::CURL_EXECUTION_TIMEOUT

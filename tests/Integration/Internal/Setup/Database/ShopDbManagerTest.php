@@ -21,6 +21,11 @@ final class ShopDbManagerTest extends TestCase
     use ContainerTrait;
     use DatabaseTrait;
 
+    public function tearDown(): void
+    {
+        $this->setupShopDatabase();
+    }
+
     public function testCreateOnNonExistingDatabase(): void
     {
         $dbManager = $this->get(ShopDbManagerInterface::class);
@@ -37,17 +42,6 @@ final class ShopDbManagerTest extends TestCase
         $dbManager = $this->get(ShopDbManagerInterface::class);
         $databaseConfig = $this->getDatabaseConfig();
         $this->recreateEmptyDatabase($databaseConfig);
-
-        $dbManager->create($databaseConfig);
-
-        $this->assertDatabaseIsCreated($databaseConfig);
-    }
-
-    public function testCreateOnNotEmptyDatabase(): void
-    {
-        $this->setupShopDatabase();
-        $dbManager = $this->get(ShopDbManagerInterface::class);
-        $databaseConfig = $this->getDatabaseConfig();
 
         $dbManager->create($databaseConfig);
 

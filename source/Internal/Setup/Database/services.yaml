@@ -13,3 +13,6 @@ services:
 
     OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidatorInterface:
         class: OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidator
+
+    OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbValidatorInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbValidator

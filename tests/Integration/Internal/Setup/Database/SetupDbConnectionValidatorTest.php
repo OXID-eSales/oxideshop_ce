@@ -11,11 +11,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Setup\Database;
 
 use Doctrine\DBAL\Exception\ConnectionException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
-use OxidEsales\EshopCommunity\Internal\Setup\Database\DatabaseNotEmptyException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\UnsupportedDatabaseConfigurationException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -93,35 +91,5 @@ final class SetupDbConnectionValidatorTest extends TestCase
         $this->expectException(ConnectionException::class);
 
         $this->get(SetupDbConnectionValidatorInterface::class)->validate($dbConfig->reveal());
-    }
-
-    #[DoesNotPerformAssertions]
-    public function testValidateWithNonExistingDb(): void
-    {
-        $currentDbConfig = new DatabaseConfiguration(getenv('OXID_DB_URL'));
-        $nonExistentDb = uniqid('db-name-', true);
-        $configWithNonexistentDatabase = new DatabaseConfiguration(
-            sprintf(
-                '%s://%s:%s@%s:%s/%s',
-                parse_url(getenv('OXID_DB_URL'), PHP_URL_SCHEME),
-                $currentDbConfig->getUser(),
-                $currentDbConfig->getPass(),
-                $currentDbConfig->getHost(),
-                $currentDbConfig->getPort(),
-                $nonExistentDb
-            )
-        );
-
-        $this->get(SetupDbConnectionValidatorInterface::class)
-            ->validate($configWithNonexistentDatabase);
-    }
-
-    public function testValidateWithCurrentConnection(): void
-    {
-        $dbConfig = new DatabaseConfiguration(getenv('OXID_DB_URL'));
-
-        $this->expectException(DatabaseNotEmptyException::class);
-
-        $this->get(SetupDbConnectionValidatorInterface::class)->validate($dbConfig);
     }
 }

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
-use Doctrine\DBAL\Exception;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 
 readonly class SetupDbConnectionValidator implements SetupDbConnectionValidatorInterface
@@ -18,9 +17,6 @@ readonly class SetupDbConnectionValidator implements SetupDbConnectionValidatorI
     {
     }
 
-    /**
-     * @inheritdoc
-     */
     public function validate(DatabaseConfiguration $databaseConfiguration): void
     {
         if (
@@ -34,29 +30,11 @@ readonly class SetupDbConnectionValidator implements SetupDbConnectionValidatorI
             );
         }
         $this->canConnectToServer($databaseConfiguration);
-        $this->assertDatabaseIsEmpty($databaseConfiguration);
     }
 
     private function canConnectToServer(DatabaseConfiguration $databaseConfiguration): void
     {
         $connection = $this->databaseConnectionFactory->getServerConnection($databaseConfiguration);
         $connection->close();
-    }
-
-    private function assertDatabaseIsEmpty(DatabaseConfiguration $databaseConfiguration): void
-    {
-        try {
-            $connection = $this->databaseConnectionFactory->getDatabaseConnection($databaseConfiguration);
-
-            if (count($connection->createSchemaManager()->listTables()) === 0) {
-                return;
-            }
-        } catch (Exception) {
-            return;
-        }
-
-        throw new DatabaseNotEmptyException(
-            sprintf('Database `%s` is not empty.', $databaseConfiguration->getName())
-        );
     }
 }

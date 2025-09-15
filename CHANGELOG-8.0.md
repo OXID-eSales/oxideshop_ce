@@ -23,6 +23,8 @@
 - The `DatabaseConfiguration` namespace has been renamed for consistency, and the `getScheme` method has been replaced with `getDriver`
 - Shop setup proceeds with an empty database
 - The method `prepareModulesInformation` now returns module data as arrays instead of stdClass objects
+- `SetupDbValidatorInterface` no longer throws `DatabaseNotEmptyException`; database checks are now handled by a separate validator.
+- `database_schema.sql` no longer removes existing `oxmigrations` tables during shop setup. The schema dump should only be applied to an empty database.
 
 ### Removed
 

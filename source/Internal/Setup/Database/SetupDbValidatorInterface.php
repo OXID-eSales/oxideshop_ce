@@ -9,8 +9,8 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 
-interface SetupDbConnectionValidatorInterface
+interface SetupDbValidatorInterface
 {
-    /** @throws UnsupportedDatabaseConfigurationException */
+    /** @throws DatabaseNotEmptyException */
     public function validate(DatabaseConfiguration $databaseConfiguration): void;
 }

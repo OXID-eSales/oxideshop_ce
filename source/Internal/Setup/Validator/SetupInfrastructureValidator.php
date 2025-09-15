@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Setup\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Directory\DirectoryValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Htaccess\HtaccessDaoFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Parameters\SetupParameters;
@@ -22,6 +23,7 @@ class SetupInfrastructureValidator implements SetupInfrastructureValidatorInterf
         private readonly DirectoryValidatorInterface $directoriesValidator,
         private readonly HtaccessDaoFactoryInterface $htaccessDaoFactory,
         private readonly SetupDbConnectionValidatorInterface $setupDbConnectionValidator,
+        private readonly SetupDbValidatorInterface $setupDbValidator,
     ) {
     }
 
@@ -31,6 +33,7 @@ class SetupInfrastructureValidator implements SetupInfrastructureValidatorInterf
         $this->checkShopDirectoryPermissions();
         $this->checkWebServerConfigFilePermissions();
         $this->checkDatabaseServerConnectivity();
+        $this->checkDatabaseCanBeSetUp();
     }
 
     private function checkShopDirectoryPermissions(): void
@@ -53,6 +56,14 @@ class SetupInfrastructureValidator implements SetupInfrastructureValidatorInterf
     private function checkDatabaseServerConnectivity(): void
     {
         $this->setupDbConnectionValidator
+            ->validate(
+                $this->parameters->getDbConfig()
+            );
+    }
+
+    private function checkDatabaseCanBeSetUp(): void
+    {
+        $this->setupDbValidator
             ->validate(
                 $this->parameters->getDbConfig()
             );

@@ -1680,8 +1680,3 @@ CREATE TABLE `oxwrapping` (
   `OXTIMESTAMP` timestamp NOT NULL default CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP COMMENT 'Timestamp',
   PRIMARY KEY  (`OXID`)
 ) ENGINE=InnoDB COMMENT 'Wrappings';
-
-DROP TABLE IF EXISTS `oxmigrations_ce`;
-DROP TABLE IF EXISTS `oxmigrations_project`;
-DROP TABLE IF EXISTS `oxmigrations_pe`;
-DROP TABLE IF EXISTS `oxmigrations_ee`;

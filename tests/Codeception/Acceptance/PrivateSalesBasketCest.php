@@ -118,9 +118,6 @@ final class PrivateSalesBasketCest
         $I
             ->amGoingTo('wait for the basket to expire')
             ->wait($basketExpirationTimeout + 0.1);
-
-        $I->dontSee('expired products are still visible in basket popup...', 'modalbasketFlyout');
-
         $I
             ->openShop()
             ->checkBasketEmpty()

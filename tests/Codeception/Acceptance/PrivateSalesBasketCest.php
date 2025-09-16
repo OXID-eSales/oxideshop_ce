@@ -96,9 +96,10 @@ final class PrivateSalesBasketCest
     {
         $I->wantToTest('private basket reservation expiration');
 
+        $basketExpirationTimeout = 15;
         $I->updateInDatabase('oxarticles', ['oxstock' => '2', 'oxstockflag' => '2'], ['oxid' => '1000']);
         $I->updateConfigInDatabase('blPsBasketReservationEnabled', 'true', 'bool');
-        $I->updateConfigInDatabase('iPsBasketReservationTimeout', '10', 'str');
+        $I->updateConfigInDatabase('iPsBasketReservationTimeout', (string)$basketExpirationTimeout, 'str');
 
         $I->clearShopCache();
         $homePage = $I->openShop();
@@ -111,14 +112,15 @@ final class PrivateSalesBasketCest
 
         $I->openShop()->searchFor('1000');
         $I->see(Translator::translate('NO_ITEMS_FOUND'));
-        //we need to wait for the timeout
-        $I->wait(12);
 
-        $I->dontSee("expired products are still visible in basket popup...", "modalbasketFlyout");
+        $I
+            ->amGoingTo('wait for the basket to expire')
+            ->wait($basketExpirationTimeout + 0.1);
+        $I
+            ->openShop()
+            ->checkBasketEmpty()
+            ->searchFor('1000');
 
-        $homePage = $I->openShop();
-        $homePage->checkBasketEmpty();
-        $homePage->searchFor('1000');
         $I->dontSee(Translator::translate('NO_ITEMS_FOUND'));
     }
 }

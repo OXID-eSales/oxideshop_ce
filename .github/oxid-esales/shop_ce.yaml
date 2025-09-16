@@ -4,19 +4,6 @@ install:
     prepared_shop: true
   composer:
     root_url: ''
-    transform: |
-      {
-        "preferred-install": {
-          "oxid-esales/*": "source",
-          "oxid-professional-services/*": "source",
-          "ddoe/*": "source"
-        },
-        "require": {
-          "oxid-esales/apex-theme": "{{ .Data.install.composer.dev_ref }}",
-          "oxid-esales/twig-admin-theme": "{{ .Data.install.composer.dev_ref }}",
-          "oxid-esales/twig-component": "{{ .Data.install.composer.dev_ref }}"
-        }
-      }
 
 runscript:
   matrix:
@@ -24,7 +11,7 @@ runscript:
       [
         "shop:~/unit.sh",
         "shop:~/integration.sh",
-        "shop:~/codeception.sh"
+        "shop:~/codeception.sh",
       ]
   container:
     options:
@@ -42,6 +29,8 @@ sonarcloud:
   matrix:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
   strip_path: '/var/www/vendor/oxid-esales/oxideshop-ce/'
+  run_cleanup: false
+  target_branch: 'b-7.4.x'
 
 finish:
   slack_title: 'Shop CE ({{ .Data.install.git.ref }}) by {{ .Github.Actor }}'

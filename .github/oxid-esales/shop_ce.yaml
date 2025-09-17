@@ -33,7 +33,7 @@ sonarcloud:
     testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
   strip_path: '/var/www/vendor/oxid-esales/oxideshop-ce/'
   run_cleanup: false
-  target_branch: 'b-7.4.x'
+  target_branch: 'b-8.0.x'
 
 finish:
   slack_title: 'Shop CE ({{ .Data.install.git.ref }}) by {{ .Github.Actor }}'

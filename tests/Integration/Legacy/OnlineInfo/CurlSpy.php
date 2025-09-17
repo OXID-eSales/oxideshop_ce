@@ -28,9 +28,11 @@ final class CurlSpy extends Curl
         return true;
     }
 
-    public function setParameters($parameters): void
+    public function setQuery($query): void
     {
-        file_put_contents($this->logPath, $parameters['xmlRequest']);
-        parent::setParameters($parameters);
+        $xmlContent = urldecode(substr($query, strlen('xmlRequest=')));
+
+        file_put_contents($this->logPath, $xmlContent);
+        parent::setQuery($query);
     }
 }

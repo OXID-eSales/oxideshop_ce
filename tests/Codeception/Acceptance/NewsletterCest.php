@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\Codeception\Page\Info\NewsletterSubscription;
+use OxidEsales\EshopCommunity\Application\Enum\SubscriptionOptedInStatus;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class NewsletterCest
@@ -47,16 +48,50 @@ final class NewsletterCest
         $I->see(Translator::translate('DD_FORM_VALIDATION_VALIDEMAIL'));
     }
 
-    public function subscribeForNewsletter(AcceptanceTester $I): void
+    public function subscribeForNewsletterDoubleOptInOn(AcceptanceTester $I): void
     {
-        $I->wantToTest('Subscribe for newsletter');
+        $I->wantToTest('Subscribe for a newsletter with double opt-in on');
 
+        $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
         $email = 'example01@oxid-esales.dev';
+
+        $I->amGoingTo('Subscribe for newsletter');
         $newsletterPage = $this->openNewsletterPage($I, $email);
         $newsletterPage->enterUserData($email)->subscribe();
 
         $I->see(Translator::translate('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'));
-        $I->seeInDatabase('oxnewssubscribed', ['OXEMAIL' => $email]);
+        $I->seeInDatabase(
+            'oxnewssubscribed',
+            [
+                'OXEMAIL' => $email,
+                'OXDBOPTIN' => SubscriptionOptedInStatus::Pending->value
+            ]
+        );
+
+        $I->amGoingTo('Verify the opt-in confirmation link');
+        $I->amOnUrl($this->getOptInConfirmationLink($I));
+
+        $I->seeInDatabase(
+            'oxnewssubscribed',
+            [
+                'OXEMAIL' => $email,
+                'OXDBOPTIN' => SubscriptionOptedInStatus::Active->value
+            ]
+        );
+        $I->see(Translator::translate('MESSAGE_NEWSLETTER_SUBSCRIPTION_ACTIVATED'));
+
+        $I->amGoingTo('Resubscribe for newsletter');
+        $newsletterPage = $this->openNewsletterPage($I, $email);
+        $newsletterPage->enterUserData($email)->subscribe();
+
+        $I->see(Translator::translate('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'));
+        $I->seeInDatabase(
+            'oxnewssubscribed',
+            [
+                'OXEMAIL' => $email,
+                'OXDBOPTIN' => SubscriptionOptedInStatus::Active->value
+            ]
+        );
     }
 
     public function unsubscribeFromNewsletterWithWrongEmail(AcceptanceTester $I): void
@@ -72,7 +107,7 @@ final class NewsletterCest
 
     public function unsubscribeFromNewsletter(AcceptanceTester $I): void
     {
-        $I->wantToTest('Unsubscribe from newsletter');
+        $I->wantToTest('Unsubscribe from a newsletter');
 
         $email = 'example01@oxid-esales.dev';
         $newsletterPage = $this->openNewsletterPage($I, $email);
@@ -85,10 +120,48 @@ final class NewsletterCest
         $I->seeInDatabase('oxnewssubscribed', ['OXEMAIL' => $email, 'OXUNSUBSCRIBED !=' => '0000-00-00 00:00:00']);
     }
 
+    public function resendsOptInEmailWhenSubscriptionIsPending(AcceptanceTester $I): void
+    {
+        $I->wantToTest('Subscribe for a newsletter with will resend email when the subscription is pending');
+
+        $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
+        $email = 'example01@oxid-esales.dev';
+
+        $I->amGoingTo('Subscribe for newsletter');
+        $newsletterPage = $this->openNewsletterPage($I, $email);
+        $newsletterPage->enterUserData($email)->subscribe();
+
+        $I->see(Translator::translate('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'));
+        $I->seeInDatabase(
+            'oxnewssubscribed',
+            [
+                'OXEMAIL' => $email,
+                'OXDBOPTIN' => SubscriptionOptedInStatus::Pending->value
+            ]
+        );
+        $I->openRecentEmail();
+        $I->seeInEmailSubject(Translator::translate('NEWSLETTER'));
+
+        $I->amGoingTo('Resubscribe for newsletter');
+        $newsletterPage = $this->openNewsletterPage($I, $email);
+        $newsletterPage->enterUserData($email)->subscribe();
+
+        $I->see(Translator::translate('MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS'));
+        $I->seeInDatabase(
+            'oxnewssubscribed',
+            [
+                'OXEMAIL' => $email,
+                'OXDBOPTIN' => SubscriptionOptedInStatus::Pending->value
+            ]
+        );
+        $I->openRecentEmail();
+        $I->seeInEmailSubject(Translator::translate('NEWSLETTER'));
+    }
+
 
     public function subscribeForNewsletterDoubleOptInOff(AcceptanceTester $I): void
     {
-        $I->wantToTest('Subscribe for newsletter');
+        $I->wantToTest('Subscribe for newsletter with double opt-in off');
 
         $I->updateConfigInDatabase('blOrderOptInEmail', false, 'bool');
 
@@ -102,7 +175,19 @@ final class NewsletterCest
 
     private function openNewsletterPage(AcceptanceTester $I, string $email = ''): NewsletterSubscription
     {
-        $homePage = $I->openShop();
-        return $homePage->subscribeForNewsletter($email);
+        return $I->openShop()->subscribeForNewsletter($email);
+    }
+
+    private function getOptInConfirmationLink(AcceptanceTester $I): string
+    {
+        $I->openRecentEmail();
+        $htmlContent = $I->grabHtmlBodyFromEmail();
+        preg_match(
+            '/<a\s[^>]*href=["\']([^"\']*newsletter[^"\']*)["\'][^>]*>/i',
+            $htmlContent,
+            $newsletterLinks
+        );
+
+        return html_entity_decode($newsletterLinks[1], ENT_QUOTES | ENT_HTML5);
     }
 }

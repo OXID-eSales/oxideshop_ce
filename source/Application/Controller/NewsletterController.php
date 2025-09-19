@@ -7,8 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Application\Enum\NewsletterSubscriptionStatus;
+use OxidEsales\EshopCommunity\Application\Enum\SubscriptionOptedInStatus;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 
 /**
@@ -94,70 +97,67 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      */
     public function send()
     {
-        $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
+        $requestParameters = Registry::getRequest()->getRequestEscapedParameter("editval");
         $emailValidator = $this->getContainer()->get(EmailValidatorServiceBridgeInterface::class);
 
         // loads submited values
-        $this->_aRegParams = $aParams;
+        $this->_aRegParams = $requestParameters;
 
-        if (!$aParams['oxuser__oxusername']) {
+        if (!$requestParameters['oxuser__oxusername']) {
             Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_COMPLETE_FIELDS_CORRECTLY');
 
             return;
-        } elseif (!$emailValidator->isEmailValid($aParams['oxuser__oxusername'])) {
+        } elseif (!$emailValidator->isEmailValid($requestParameters['oxuser__oxusername'])) {
             // #1052C - eMail validation added
             Registry::getUtilsView()->addErrorToDisplay('MESSAGE_INVALID_EMAIL');
 
             return;
         }
 
-        $blSubscribe = Registry::getRequest()->getRequestEscapedParameter("subscribeStatus");
+        $subscribeRequest = Registry::getRequest()->getRequestEscapedParameter("subscribeStatus");
 
-        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        $oUser->oxuser__oxusername = new Field($aParams['oxuser__oxusername'], Field::T_RAW);
+        $user = oxNew(User::class);
+        $user->oxuser__oxusername = new Field($requestParameters['oxuser__oxusername'], Field::T_RAW);
 
         // if such user does not exist
-        if (!$oUser->exists()) {
+        if (!$user->exists()) {
             // and subscribe is off - error, on - create
-            if (!$blSubscribe) {
+            if (!$subscribeRequest) {
                 Registry::getUtilsView()->addErrorToDisplay('NEWSLETTER_EMAIL_NOT_EXIST');
 
                 return;
             } else {
-                $oUser->oxuser__oxactive = new \OxidEsales\Eshop\Core\Field(1, \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxrights = new \OxidEsales\Eshop\Core\Field('user', \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxshopid = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxfname = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxfname'], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxlname = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxlname'], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxsal = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxsal'], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $oUser->oxuser__oxcountryid = new \OxidEsales\Eshop\Core\Field($aParams['oxuser__oxcountryid'], \OxidEsales\Eshop\Core\Field::T_RAW);
-                $blUserLoaded = $oUser->save();
+                $user->oxuser__oxactive = new Field(1, Field::T_RAW);
+                $user->oxuser__oxrights = new Field('user', Field::T_RAW);
+                $user->oxuser__oxshopid = new Field(Registry::getConfig()->getShopId(), Field::T_RAW);
+                $user->oxuser__oxfname = new Field($requestParameters['oxuser__oxfname'], Field::T_RAW);
+                $user->oxuser__oxlname = new Field($requestParameters['oxuser__oxlname'], Field::T_RAW);
+                $user->oxuser__oxsal = new Field($requestParameters['oxuser__oxsal'], Field::T_RAW);
+                $user->oxuser__oxcountryid = new Field($requestParameters['oxuser__oxcountryid'], Field::T_RAW);
+                $userExist = $user->save();
             }
         } else {
-            $blUserLoaded = $oUser->load($oUser->getId());
+            $userExist = $user->load($user->getId());
         }
 
 
         // if user was added/loaded successfully and subscribe is on - subscribing to newsletter
-        if ($blSubscribe && $blUserLoaded) {
-            //removing user from subscribe list before adding
-            $oUser->setNewsSubscription(false, false);
-
-            $blOrderOptInEmail = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOrderOptInEmail');
-            if ($oUser->setNewsSubscription(true, $blOrderOptInEmail)) {
+        if ($subscribeRequest && $userExist) {
+            $blOrderOptInEmail = Registry::getConfig()->getConfigParam('blOrderOptInEmail');
+            if ($user->setNewsSubscription(true, $blOrderOptInEmail)) {
                 // done, confirmation required?
                 if ($blOrderOptInEmail) {
-                    $this->_iNewsletterStatus = 1;
+                    $this->_iNewsletterStatus = NewsletterSubscriptionStatus::Subscribed->value;
                 } else {
-                    $this->_iNewsletterStatus = 2;
+                    $this->_iNewsletterStatus = NewsletterSubscriptionStatus::SubscriptionConfirmed->value;
                 }
             } else {
                 Registry::getUtilsView()->addErrorToDisplay('MESSAGE_NOT_ABLE_TO_SEND_EMAIL');
             }
-        } elseif (!$blSubscribe && $blUserLoaded) {
+        } elseif (!$subscribeRequest && $userExist) {
             // unsubscribing user
-            $oUser->setNewsSubscription(false, false);
-            $this->_iNewsletterStatus = 3;
+            $user->setNewsSubscription(false, false);
+            $this->_iNewsletterStatus = NewsletterSubscriptionStatus::Canceled->value;
         }
     }
 
@@ -170,14 +170,14 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function addme()
     {
         // user exists ?
-        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
+        $oUser = oxNew(User::class);
         if ($oUser->load(Registry::getRequest()->getRequestEscapedParameter('uid'))) {
             $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
             if (Registry::getRequest()->getRequestEscapedParameter('confirm') == $sConfirmCode) {
-                $oUser->getNewsSubscription()->setOptInStatus(1);
+                $oUser->getNewsSubscription()->setOptInStatus(SubscriptionOptedInStatus::Active->value);
                 $oUser->addToGroup('oxidnewsletter');
-                $this->_iNewsletterStatus = 2;
+                $this->_iNewsletterStatus = NewsletterSubscriptionStatus::SubscriptionConfirmed->value;
             }
         }
     }
@@ -188,14 +188,14 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     public function removeme()
     {
         // existing user ?
-        $oUser = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
-        if ($oUser->load(Registry::getRequest()->getRequestEscapedParameter('uid'))) {
-            $oUser->getNewsSubscription()->setOptInStatus(0);
+        $user = oxNew(User::class);
+        if ($user->load(Registry::getRequest()->getRequestEscapedParameter('uid'))) {
+            $user->getNewsSubscription()->setOptInStatus(SubscriptionOptedInStatus::Disabled->value);
 
             // removing from group ..
-            $oUser->removeFromGroup('oxidnewsletter');
+            $user->removeFromGroup('oxidnewsletter');
 
-            $this->_iNewsletterStatus = 3;
+            $this->_iNewsletterStatus = NewsletterSubscriptionStatus::Canceled->value;
         }
     }
 
@@ -217,7 +217,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         if ($this->_oActionArticles === null) {
             $this->_oActionArticles = false;
-            if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfLoadAktion')) {
+            if (Registry::getConfig()->getConfigParam('bl_perfLoadAktion')) {
                 $oArtList = oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class);
                 $oArtList->loadActionArticles('OXTOPSTART');
                 if ($oArtList->count()) {
@@ -257,7 +257,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
     {
         if ($this->_sHomeCountryId === null) {
             $this->_sHomeCountryId = false;
-            $aHomeCountry = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry');
+            $aHomeCountry = Registry::getConfig()->getConfigParam('aHomeCountry');
             if (is_array($aHomeCountry)) {
                 $this->_sHomeCountryId = current($aHomeCountry);
             }
@@ -311,16 +311,13 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
      */
     public function getTitle()
     {
-        if ($this->getNewsletterStatus() == 4 || !$this->getNewsletterStatus()) {
-            $sConstant = 'STAY_INFORMED';
-        } elseif ($this->getNewsletterStatus() == 1) {
-            $sConstant = 'MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS';
-        } elseif ($this->getNewsletterStatus() == 2) {
-            $sConstant = 'MESSAGE_NEWSLETTER_CONGRATULATIONS';
-        } elseif ($this->getNewsletterStatus() == 3) {
-            $sConstant = 'SUCCESS';
-        }
+        $constant = match ($this->getNewsletterStatus()) {
+            NewsletterSubscriptionStatus::Subscribed->value => 'MESSAGE_THANKYOU_FOR_SUBSCRIBING_NEWSLETTERS',
+            NewsletterSubscriptionStatus::SubscriptionConfirmed->value => 'MESSAGE_NEWSLETTER_CONGRATULATIONS',
+            NewsletterSubscriptionStatus::Canceled->value => 'SUCCESS',
+            default => 'STAY_INFORMED',
+        };
 
-        return Registry::getLang()->translateString($sConstant, Registry::getLang()->getBaseLanguage(), false);
+        return Registry::getLang()->translateString($constant, Registry::getLang()->getBaseLanguage(), false);
     }
 }

@@ -30,6 +30,7 @@
 - Order remark no longer defaults to 1 when the input field is missing in the frontend [#0007721](https://bugs.oxid-esales.com/view.php?id=7721)
 - Notice list and wish list data loss caused by basket expiration [#0007293](https://bugs.oxid-esales.com/view.php?id=7293)
 - Handle possible null values [PR-995](https://github.com/OXID-eSales/oxideshop_ce/pull/995)
+- Fixed newsletter re-subscription behavior to preserve existing confirmed subscription [#0002777](https://bugs.oxid-esales.com/view.php?id=2777)
 
 ### Changed
 - Newsletter export trims salutation values, preventing discrepancies between empty string and spaces

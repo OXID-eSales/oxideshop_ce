@@ -7,6 +7,14 @@ install:
     prepared_shop: true
   composer:
     root_url: ''
+    transform: |
+      {
+          "require": {
+            "oxid-esales/twig-component": "{{ .Data.global.composer.dev_ref }}",
+            "oxid-esales/twig-admin-theme": "dev-b-8.0.x-images-OXDEV-9008",
+            "oxid-esales/apex-theme": "dev-b-8.0.x-images-OXDEV-9008"
+          }
+      }
 
 runscript:
   matrix:

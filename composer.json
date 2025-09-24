@@ -40,7 +40,9 @@
         "symfony/lock": "^7.3",
         "symfony/mime": "^7.3",
         "symfony/string": "^7.3",
-        "symfony/yaml": "^7.3"
+        "symfony/yaml": "^7.3",
+        "oxid-esales/twig-admin-theme": "dev-b-8.0.x-images-OXDEV-9008",
+        "oxid-esales/apex-theme": "dev-b-8.0.x-images-OXDEV-9008"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",
@@ -51,8 +53,8 @@
         "composer/composer": "^2.0",
         "incenteev/composer-parameter-handler": "^2.1.4",
         "mikey179/vfsstream": "~1.6.8",
-        "oxid-esales/codeception-modules": "dev-b-8.0.x",
-        "oxid-esales/codeception-page-objects": "dev-b-8.0.x",
+        "oxid-esales/codeception-modules": "dev-b-8.0.x-images-OXDEV-9008",
+        "oxid-esales/codeception-page-objects": "dev-b-8.0.x-images-OXDEV-9008",
         "oxid-esales/developer-tools": "dev-b-8.0.x",
         "oxid-esales/oxideshop-ide-helper": "dev-b-8.0.x",
         "phpspec/prophecy-phpunit": "^2.0.1",

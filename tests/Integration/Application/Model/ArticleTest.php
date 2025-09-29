@@ -18,7 +18,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaType;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
@@ -305,9 +307,9 @@ final class ArticleTest extends IntegrationTestCase
     {
         $productId = Id::generate();
         $this->createPersistedArticle($productId);
-        $this->addProductMedia($productId, 'article-icon.jpg', 0, ProductMediaType::icon());
-        $this->addProductMedia($productId, 'article-thumb.jpg', 0, ProductMediaType::thumbnail());
-        $this->addProductMedia($productId, 'article-detail.jpg', 1, ProductMediaType::detail());
+        $this->addProductMedia($productId, 'article-icon.jpg', 0, SystemProductMediaRole::Icon);
+        $this->addProductMedia($productId, 'article-thumb.jpg', 0, SystemProductMediaRole::Thumb);
+        $this->addProductMedia($productId, 'article-detail.jpg', 1, SystemProductMediaRole::Detail);
 
         $article = oxNew(Article::class);
         $article->load((string) $productId);
@@ -364,7 +366,7 @@ final class ArticleTest extends IntegrationTestCase
     {
         $productId = Id::generate();
         $this->createPersistedArticle($productId);
-        $this->addProductMedia($productId, 'single-image.jpg', 1, ProductMediaType::detail());
+        $this->addProductMedia($productId, 'single-image.jpg', 1, SystemProductMediaRole::Detail);
 
         $article = oxNew(Article::class);
         $article->load((string) $productId);
@@ -374,7 +376,7 @@ final class ArticleTest extends IntegrationTestCase
         $this->assertFalse($gallery['hasMultipleImages']);
     }
 
-    private function addProductMedia(Id $productId, string $fileName, int $position, ProductMediaType $type): void
+    private function addProductMedia(Id $productId, string $fileName, int $position, SystemProductMediaRole $role): void
     {
         $media = new Media(
             Id::generate(),
@@ -382,15 +384,14 @@ final class ArticleTest extends IntegrationTestCase
             new MediaType('image/jpeg')
         );
 
-        $this->productMediaService->add(
-            new ProductMedia(
-                Id::generate(),
-                $productId,
-                $media,
-                $position,
-                $type,
-                true
-            )
+        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from($role->value));
+        $productMedia = new ProductMedia(
+            Id::generate(),
+            $productId,
+            $media,
+            $roleSet
         );
+        $productMedia->setPosition($position);
+        $this->productMediaService->add($productMedia);
     }
 }

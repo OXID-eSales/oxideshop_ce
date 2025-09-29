@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaType;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
@@ -50,13 +50,13 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
 
     public function getIcon(Id $productId): MediaView
     {
-        $productMedia = $this->getMediaWithFallback($productId, ProductMediaType::icon());
+        $productMedia = $this->getMediaWithFallback($productId, SystemProductMediaRole::Icon);
         return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
     }
 
     public function getThumbnail(Id $productId): MediaView
     {
-        $productMedia = $this->getMediaWithFallback($productId, ProductMediaType::thumbnail());
+        $productMedia = $this->getMediaWithFallback($productId, SystemProductMediaRole::Thumb);
         return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
     }
 
@@ -75,9 +75,9 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         return $mediaViews;
     }
 
-    private function getMediaWithFallback(Id $productId, ProductMediaType $type): ?ProductMedia
+    private function getMediaWithFallback(Id $productId, SystemProductMediaRole $role): ?ProductMedia
     {
-        $productMedia = $this->productMediaDao->getByType($productId, $type);
+        $productMedia = $this->productMediaDao->getByRole($productId, $role->value);
         return $productMedia ?: $this->productMediaDao->getFirstActive($productId);
     }
 

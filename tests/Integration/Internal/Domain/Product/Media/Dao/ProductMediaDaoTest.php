@@ -456,26 +456,14 @@ final class ProductMediaDaoTest extends TestCase
 
     public function testGetActiveByProductId(): void
     {
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 1,
-                type: ProductMediaType::detail(),
-                active: true
-            )
-        );
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 2,
-                type: ProductMediaType::detail(),
-                active: false
-            )
-        );
+        $productMedia1 = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia1->setPosition(1);
+        $this->productMediaDao->add($productMedia1);
+
+        $productMedia2 = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia2->setPosition(2);
+        $productMedia2->deactivate();
+        $this->productMediaDao->add($productMedia2);
 
         $activeList = $this->productMediaDao->getActiveByProductId($this->productId);
 
@@ -485,114 +473,76 @@ final class ProductMediaDaoTest extends TestCase
 
     public function testGetActiveByProductIdWithEmptyResult(): void
     {
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 1,
-                type: ProductMediaType::detail(),
-                active: false
-            )
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia->setPosition(1);
+        $productMedia->deactivate();
+        $this->productMediaDao->add($productMedia);
 
         $activeList = $this->productMediaDao->getActiveByProductId($this->productId);
 
         $this->assertTrue($activeList->isEmpty());
     }
 
-    public function testGetByType(): void
+    public function testGetByRole(): void
     {
-        $productMedia = new ProductMedia(
-            id: Id::generate(),
-            productId: $this->productId,
-            media: $this->media,
-            position: 1,
-            type: ProductMediaType::thumbnail(),
-            active: true
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Thumb);
+        $productMedia->setPosition(1);
         $this->productMediaDao->add($productMedia);
 
-        $fetched = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+        $fetched = $this->productMediaDao->getByRole($this->productId, SystemProductMediaRole::Thumb->value);
 
         $this->assertEquals($productMedia->getId(), $fetched->getId());
     }
 
-    public function testGetByTypeReturnsNullWhenNotFound(): void
+    public function testGetByRoleReturnsNullWhenNotFound(): void
     {
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 1,
-                type: ProductMediaType::detail(),
-                active: true
-            )
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia->setPosition(1);
+        $this->productMediaDao->add($productMedia);
 
-        $result = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+        $result = $this->productMediaDao->getByRole($this->productId, SystemProductMediaRole::Thumb->value);
 
         $this->assertNull($result);
     }
 
-    public function testGetByTypeIgnoresInactive(): void
+    public function testGetByRoleIgnoresInactive(): void
     {
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 1,
-                type: ProductMediaType::thumbnail(),
-                active: false
-            )
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Thumb);
+        $productMedia->setPosition(1);
+        $productMedia->deactivate();
+        $this->productMediaDao->add($productMedia);
 
-        $result = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+        $result = $this->productMediaDao->getByRole($this->productId, SystemProductMediaRole::Thumb->value);
 
         $this->assertNull($result);
     }
 
-    public function testGetByTypeReturnsFirstByPosition(): void
+    public function testGetByRoleReturnsFirstByPosition(): void
     {
-        $id1 = Id::generate();
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 2,
-                type: ProductMediaType::thumbnail(),
-                active: true
-            )
-        );
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: $id1,
-                productId: $this->productId,
-                media: $this->media,
-                position: 1,
-                type: ProductMediaType::thumbnail(),
-                active: true
-            )
-        );
+        $productMedia1 = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Thumb);
+        $productMedia1->setPosition(2);
+        $this->productMediaDao->add($productMedia1);
 
-        $result = $this->productMediaDao->getByType($this->productId, ProductMediaType::thumbnail());
+        $productMediaId2 = Id::generate();
+        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Thumb->value));
+        $productMedia2 = new ProductMedia(
+            id: $productMediaId2,
+            productId: $this->productId,
+            media: $this->media1,
+            roleSet: $roleSet
+        );
+        $productMedia2->setPosition(1);
+        $this->productMediaDao->add($productMedia2);
 
-        $this->assertEquals($id1, $result->getId());
+        $result = $this->productMediaDao->getByRole($this->productId, SystemProductMediaRole::Thumb->value);
+
+        $this->assertEquals($productMediaId2, $result->getId());
     }
 
     public function testGetFirstActive(): void
     {
-        $productMedia = new ProductMedia(
-            id: Id::generate(),
-            productId: $this->productId,
-            media: $this->media,
-            position: 1,
-            type: ProductMediaType::detail(),
-            active: true
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia->setPosition(1);
         $this->productMediaDao->add($productMedia);
 
         $fetched = $this->productMediaDao->getFirstActive($this->productId);
@@ -602,16 +552,10 @@ final class ProductMediaDaoTest extends TestCase
 
     public function testGetFirstActiveReturnsNullWhenNoActiveMedia(): void
     {
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 1,
-                type: ProductMediaType::detail(),
-                active: false
-            )
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia->setPosition(1);
+        $productMedia->deactivate();
+        $this->productMediaDao->add($productMedia);
 
         $result = $this->productMediaDao->getFirstActive($this->productId);
 
@@ -627,14 +571,8 @@ final class ProductMediaDaoTest extends TestCase
 
     public function testGetByPosition(): void
     {
-        $productMedia = new ProductMedia(
-            id: Id::generate(),
-            productId: $this->productId,
-            media: $this->media,
-            position: 5,
-            type: ProductMediaType::detail(),
-            active: true
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia->setPosition(5);
         $this->productMediaDao->add($productMedia);
 
         $fetched = $this->productMediaDao->getByPosition($this->productId, 5);
@@ -644,16 +582,9 @@ final class ProductMediaDaoTest extends TestCase
 
     public function testGetByPositionReturnsNullWhenNotFound(): void
     {
-        $this->productMediaDao->add(
-            new ProductMedia(
-                id: Id::generate(),
-                productId: $this->productId,
-                media: $this->media,
-                position: 1,
-                type: ProductMediaType::detail(),
-                active: true
-            )
-        );
+        $productMedia = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $productMedia->setPosition(1);
+        $this->productMediaDao->add($productMedia);
 
         $result = $this->productMediaDao->getByPosition($this->productId, 99);
 
@@ -680,25 +611,13 @@ final class ProductMediaDaoTest extends TestCase
             ->executeQuery();
 
         // Add media for first product
-        $media1 = new ProductMedia(
-            id: Id::generate(),
-            productId: $this->productId,
-            media: $this->media,
-            position: 1,
-            type: ProductMediaType::detail(),
-            active: true
-        );
+        $media1 = $this->createProductMedia($this->productId, $this->media1, SystemProductMediaRole::Detail);
+        $media1->setPosition(1);
         $this->productMediaDao->add($media1);
 
         // Add media for second product with same position
-        $media2 = new ProductMedia(
-            id: Id::generate(),
-            productId: $anotherProductId,
-            media: $this->media,
-            position: 1,
-            type: ProductMediaType::detail(),
-            active: true
-        );
+        $media2 = $this->createProductMedia($anotherProductId, $this->media1, SystemProductMediaRole::Detail);
+        $media2->setPosition(1);
         $this->productMediaDao->add($media2);
 
         $result1 = $this->productMediaDao->getByPosition($this->productId, 1);
@@ -713,5 +632,16 @@ final class ProductMediaDaoTest extends TestCase
         $result = $this->productMediaDao->getByPosition(Id::generate(), 1);
 
         $this->assertNull($result);
+    }
+
+    private function createProductMedia(Id $productId, Media $media, SystemProductMediaRole $role): ProductMedia
+    {
+        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from($role->value));
+        return new ProductMedia(
+            id: Id::generate(),
+            productId: $productId,
+            media: $media,
+            roleSet: $roleSet
+        );
     }
 }

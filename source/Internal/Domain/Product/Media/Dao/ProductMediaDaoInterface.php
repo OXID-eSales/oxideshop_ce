@@ -10,7 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao;
 use Doctrine\Common\Collections\ArrayCollection;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaSorting;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 interface ProductMediaDaoInterface
@@ -29,7 +28,7 @@ interface ProductMediaDaoInterface
 
     public function getActiveByProductId(Id $productId): ArrayCollection;
 
-    public function getByType(Id $productId, ProductMediaType $type): ?ProductMedia;
+    public function getByRole(Id $productId, string $role): ?ProductMedia;
 
     public function getFirstActive(Id $productId): ?ProductMedia;
 

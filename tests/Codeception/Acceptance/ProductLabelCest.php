@@ -26,11 +26,11 @@ final class ProductLabelCest
             ->loginAdmin()
             ->openProducts();
         $productList
-            ->find($productList->searchNumberInput, '1000')
+            ->findByProductNumber('1000')
             ->openExtendedTab()
             ->enableProductCustomization();
         $productList
-            ->find($productList->searchNumberInput, '1001')
+            ->findByProductNumber( '1001')
             ->openExtendedTab()
             ->enableProductCustomization();
 

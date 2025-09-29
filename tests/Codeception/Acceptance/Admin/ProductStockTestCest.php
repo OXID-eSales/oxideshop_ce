@@ -22,7 +22,7 @@ final class ProductStockTestCest
         $I->wantToTest('Set low stock message for product');
 
         $productsMainPage = $I->loginAdmin()->openProducts();
-        $productMainTab = $productsMainPage->find($productsMainPage->searchNumberInput, $this->productID);
+        $productMainTab = $productsMainPage->findByProductNumber($this->productID);
         $stockTab = $productMainTab->openStockTab();
         $lowStockMessage = 'This product is in low stock' . $this->productID;
         $remindAmount = 20.5;

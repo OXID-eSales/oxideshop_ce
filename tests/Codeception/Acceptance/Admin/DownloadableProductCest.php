@@ -99,7 +99,7 @@ final class DownloadableProductCest
     private function setDownloadableFileForAProduct(AcceptanceTester $I, AdminPanel $adminPanel): void
     {
         $products = $adminPanel->openProducts();
-        $products->find("where[oxarticles][oxartnum]", $this->productId);
+        $products->findByProductNumber($this->productId);
         $products->openDownloadsTab();
         $I->checkOption('editval[oxarticles__oxisdownloadable]');
         $I->clickAndWait(['name' => 'save']);

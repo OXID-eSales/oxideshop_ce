@@ -25,7 +25,7 @@ readonly class MediaUrlGenerator implements MediaUrlGeneratorInterface
 
     public function generateSizedImageUrl(Media $media, string $size): string
     {
-        $mediaPath = (string) $media->getPath();
+        $mediaPath = (string) $media->getMediaPath();
 
         $baseUrl = $this->alternativeImageUrl
             ? Path::join($this->alternativeImageUrl, 'generated')

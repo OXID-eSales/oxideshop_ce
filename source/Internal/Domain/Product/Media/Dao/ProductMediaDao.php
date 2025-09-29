@@ -301,7 +301,7 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
     {
         $collection = new ArrayCollection();
         $rows = $this->prepareSelectWithJoin()
-            ->where('pm.article_id = :productId')
+            ->where('pm.product_id = :productId')
             ->andWhere('pm.active = 1')
             ->setParameter('productId', $productId)
             ->orderBy('pm.position', 'ASC')
@@ -317,14 +317,14 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
         return $collection;
     }
 
-    public function getByType(Id $productId, ProductMediaType $type): ?ProductMedia
+    public function getByRole(Id $productId, string $role): ?ProductMedia
     {
         $row = $this->prepareSelectWithJoin()
-            ->where('pm.article_id = :productId')
-            ->andWhere('pm.type = :type')
+            ->where('pm.product_id = :productId')
             ->andWhere('pm.active = 1')
+            ->andWhere('pmr.role = :role')
             ->setParameter('productId', $productId)
-            ->setParameter('type', $type->value())
+            ->setParameter('role', $role)
             ->orderBy('pm.position', 'ASC')
             ->setMaxResults(1)
             ->executeQuery()
@@ -336,7 +336,7 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
     public function getFirstActive(Id $productId): ?ProductMedia
     {
         $row = $this->prepareSelectWithJoin()
-            ->where('pm.article_id = :productId')
+            ->where('pm.product_id = :productId')
             ->andWhere('pm.active = 1')
             ->setParameter('productId', $productId)
             ->orderBy('pm.position', 'ASC')
@@ -350,7 +350,7 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
     public function getByPosition(Id $productId, int $position): ?ProductMedia
     {
         $row = $this->prepareSelectWithJoin()
-            ->where('pm.article_id = :productId')
+            ->where('pm.product_id = :productId')
             ->andWhere('pm.position = :position')
             ->andWhere('pm.active = 1')
             ->setParameter('productId', $productId)

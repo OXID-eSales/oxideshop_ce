@@ -2390,8 +2390,12 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         ];
     }
 
-    private function determineActiveMedia(array $mediaItems): MediaView
+    private function determineActiveMedia(array $mediaItems): ?MediaView
     {
+        if (empty($mediaItems)) {
+            return null;
+        }
+
         $requestedMediaId = Registry::getRequest()->getRequestEscapedParameter('actmediaid');
 
         if ($requestedMediaId && isset($mediaItems[$requestedMediaId])) {

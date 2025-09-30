@@ -29,6 +29,8 @@
 !/pictures/media
 /pictures/media/*
 !/pictures/media/.gitkeep
+!/pictures/media/nopic.jpg
+!/pictures/media/nopic.webp
 
 !/pictures/promo
 /pictures/promo/*

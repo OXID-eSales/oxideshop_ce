@@ -36,7 +36,7 @@ final class GenericImportCest
 
         $I->amGoingTo('check if product detail page contains updated data');
         $products = $adminPanel->openProducts();
-        $mainProductPage = $products->find($products->searchNumberInput, '1001');
+        $mainProductPage = $products->findByProductNumber('1001');
         $I->seeInField($mainProductPage->longDescriptionInput, 'long desc DE with header');
         $mainProductPage->switchLanguage('English');
         $I->seeInField($mainProductPage->longDescriptionInput, 'long desc EN with header');
@@ -66,7 +66,7 @@ final class GenericImportCest
 
         $I->amGoingTo('check if product detail page contains updated data');
         $products = $adminPanel->openProducts();
-        $mainProductPage = $products->find($products->searchNumberInput, '1001');
+        $mainProductPage = $products->findByProductNumber('1001');
         $I->seeInField($mainProductPage->longDescriptionInput, 'long desc DE no header');
         $mainProductPage->switchLanguage('English');
         $I->seeInField($mainProductPage->longDescriptionInput, 'long desc EN no header');

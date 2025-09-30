@@ -27,7 +27,7 @@ final class GenericExportCest
         $renderedDescription = $contents . date('Y');
         $products = $adminPanel->openProducts();
         $products
-            ->find($products->searchNumberInput, value: '1000')
+            ->findByProductNumber('1000')
             ->setLongDescription($descriptionWithTags)
             ->save();
 

@@ -23,7 +23,7 @@ final class ProductVariantWithSelectionsCest
         $products = $admin->openProducts();
         $productsMainPage = $products->switchLanguage('Deutsch');
 
-        $parentMainPage = $productsMainPage->find($productsMainPage->searchNumberInput, '1002');
+        $parentMainPage = $productsMainPage->findByProductNumber('1002');
         $parentSelectionPage = $parentMainPage->openSelectionTab();
         $parentSelectionPage
             ->openAssignSelectionListPopup()

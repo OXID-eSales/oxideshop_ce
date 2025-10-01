@@ -20,6 +20,8 @@
 - Method `Language::translateString()` use `ShopAdapterInterface::translateString()`
 - Method `TableViewNameGenerator::getViewName()` use `ShopAdapterInterface::generateDatabaseViewName()`
 - The oxmore feature functionality
+- Product picture related methods in `Article` class: `getPictureUrl()`, `getIconUrl()`, `getThumbnailUrl()`, `getZoomPictureUrl()`, `getMasterZoomPictureUrl()`
+- Product picture management methods in `ArticlePictures` controller: `resetMasterPicture()`, `deleteMainIcon()`, `deleteThumbnail()`, `cleanupCustomFields()`, `updateArticle()`, `canResetMasterPicture()`, `canDeleteMainIcon()`, `canDeleteThumbnail()`
 
 ### Fixed
 - Multilanguage field detection with lowercase field names [#0005244](https://bugs.oxid-esales.com/view.php?id=5244)

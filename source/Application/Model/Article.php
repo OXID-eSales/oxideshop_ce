@@ -3076,6 +3076,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns article picture
      *
+     * @deprecated will be removed in the next major
+     *
      * @param int $iIndex picture index
      *
      * @return string
@@ -3098,6 +3100,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns article icon picture url. If no index specified, will
      * return main icon url.
+     *
+     * @deprecated will be removed in the next major
      *
      * @param int $iIndex picture index
      *
@@ -3127,6 +3131,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
     /**
      * Returns article thumbnail picture url
      *
+     * @deprecated will be removed in the next major
+     *
      * @param bool $bSsl to force SSL
      *
      * @return string
@@ -3149,6 +3155,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Returns article zoom picture url
+     *
+     * @deprecated will be removed in the next major
      *
      * @param int $iIndex picture index
      *
@@ -3443,6 +3451,8 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
 
     /**
      * Get master zoom picture url
+     *
+     * @deprecated will be removed in the next major
      *
      * @param int $iIndex picture index
      *

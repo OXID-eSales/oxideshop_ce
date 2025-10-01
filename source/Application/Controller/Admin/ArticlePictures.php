@@ -147,6 +147,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Deletes selected master picture and all pictures generated
      * from master picture
      *
+     * @deprecated will be removed in the next major
+     *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle       article object
      * @param int                                         $iIndex         master picture index
      * @param bool                                        $blDeleteMaster if TRUE - deletes and unsets master image file
@@ -178,6 +180,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     /**
      * Deletes main icon file
      *
+     * @deprecated will be removed in the next major
+     *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
     protected function deleteMainIcon($oArticle)
@@ -195,6 +199,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     /**
      * Deletes thumbnail file
+     *
+     * @deprecated will be removed in the next major
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
@@ -215,6 +221,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      * Cleans up article custom fields oxicon and oxthumb. If there is custom
      * icon or thumb picture, leaves records untouched.
      *
+     * @deprecated will be removed in the next major
+     *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle article object
      */
     protected function cleanupCustomFields($oArticle)
@@ -234,6 +242,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     /**
      * Method is used for overloading to update article object.
      *
+     * @deprecated will be removed in the next major
+     *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      *
      * @return \OxidEsales\Eshop\Application\Model\Article
@@ -245,6 +255,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     /**
      * Checks if possible to reset master picture.
+     *
+     * @deprecated will be removed in the next major
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      * @param int                                         $masterPictureIndex
@@ -259,6 +271,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     /**
      * Checks if possible to delete main icon of article.
      *
+     * @deprecated will be removed in the next major
+     *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      *
      * @return bool
@@ -270,6 +284,8 @@ class ArticlePictures extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     /**
      * Checks if possible to delete thumbnail of article.
+     *
+     * @deprecated will be removed in the next major
      *
      * @param \OxidEsales\Eshop\Application\Model\Article $oArticle
      *

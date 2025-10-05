@@ -84,6 +84,7 @@ class PriceList
      */
     public function getVatInfo($isNettoMode = true)
     {
+        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
         $aVatValues = [];
         $aPrices = [];
         foreach ($this->_aList as $oPrice) {
@@ -92,16 +93,14 @@ class PriceList
                 $aPrices[$sKey]['sum'] = 0;
                 $aPrices[$sKey]['vat'] = $oPrice->getVat();
             }
-            $aPrices[$sKey]['sum'] += $oPrice->getPrice();
-        }
 
-        foreach ($aPrices as $sKey => $aPrice) {
             if ($isNettoMode) {
-                $dPrice = $aPrice['sum'] * $aPrice['vat'] / 100;
+                $dPrice = $oPrice->getPrice() * $oPrice->getVat() / 100;
             } else {
-                $dPrice = $aPrice['sum'] * $aPrice['vat'] / (100 + $aPrice['vat']);
+                $dPrice = $oPrice->getPrice() * $oPrice->getVat() / (100 + $oPrice->getVat());
             }
-            $aVatValues[$sKey] = $dPrice;
+
+            $aVatValues[$sKey] += $oUtils->fRound($dPrice);
         }
 
         return $aVatValues;

@@ -24,13 +24,6 @@ class TestContainerFactory implements ContainerProviderInterface
 {
     private static $symfonyContainer;
 
-    private ContextStub $context;
-
-    public function __construct()
-    {
-        $this->context = new ContextStub();
-    }
-
     public function create(): SymfonyContainerBuilder
     {
         $shopId = (new ShopIdCalculator(new UtilsServer()))->getShopId();
@@ -41,6 +34,8 @@ class TestContainerFactory implements ContainerProviderInterface
         $container->set(BasicContextInterface::class, $contextStub);
         $container->autowire(BasicContextInterface::class, BasicContextStub::class);
         $container->autowire(ContextInterface::class, ContextStub::class);
+
+        $this->setAllServicesAsPublic($container);
 
         return $container;
     }
@@ -65,28 +60,10 @@ class TestContainerFactory implements ContainerProviderInterface
         self::$symfonyContainer = null;
     }
 
-    private function setAllServicesAsPublic(SymfonyContainerBuilder $container): SymfonyContainerBuilder
+    private function setAllServicesAsPublic(SymfonyContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $definition) {
             $definition->setPublic(true);
         }
-
-        return $container;
-    }
-
-    private function setBasicContextStub(SymfonyContainerBuilder $container): SymfonyContainerBuilder
-    {
-        $container->set(BasicContextInterface::class, $this->context);
-        $container->autowire(BasicContextInterface::class, BasicContextStub::class);
-
-        return $container;
-    }
-
-    private function setContextStub(SymfonyContainerBuilder $container): SymfonyContainerBuilder
-    {
-        $container->set(ContextInterface::class, $this->context);
-        $container->autowire(ContextInterface::class, ContextStub::class);
-
-        return $container;
     }
 }

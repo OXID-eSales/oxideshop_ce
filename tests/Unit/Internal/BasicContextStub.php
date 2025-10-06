@@ -27,6 +27,8 @@ class BasicContextStub implements BasicContextInterface
     private string $databaseUrl;
     protected string $activeModuleServicesFilePath;
     private string $shopBaseUrl;
+    private string $configurableServicesFilePath;
+    private string $shopConfigurableServicesFilePath;
 
     private BasicContextInterface $basicContext;
 
@@ -37,12 +39,7 @@ class BasicContextStub implements BasicContextInterface
 
     public function getCommunityEditionSourcePath(): string
     {
-        return $this->communityEditionSourcePath ?? $this->basicContext->getCommunityEditionSourcePath();
-    }
-
-    public function setCommunityEditionSourcePath(string $communityEditionSourcePath): void
-    {
-        $this->communityEditionSourcePath = $communityEditionSourcePath;
+        return $this->ceSourcePath ?? $this->basicContext->getCommunityEditionSourcePath();
     }
 
     public function getContainerCacheFilePath(int $shopId): string
@@ -62,12 +59,12 @@ class BasicContextStub implements BasicContextInterface
 
     public function getEnterpriseEditionRootPath(): string
     {
-        return $this->enterpriseEditionRootPath ?? $this->basicContext->getEnterpriseEditionRootPath();
+        return $this->eeSourcePath ?? $this->basicContext->getEnterpriseEditionRootPath();
     }
 
     public function setEnterpriseEditionRootPath(string $enterpriseEditionRootPath): void
     {
-        $this->enterpriseEditionRootPath = $enterpriseEditionRootPath;
+        $this->eeSourcePath = $enterpriseEditionRootPath;
     }
 
     public function getGeneratedServicesFilePath(): string
@@ -104,12 +101,12 @@ class BasicContextStub implements BasicContextInterface
 
     public function getProfessionalEditionRootPath(): string
     {
-        return $this->professionalEditionRootPath ?? $this->basicContext->getProfessionalEditionRootPath();
+        return $this->peSourcePath ?? $this->basicContext->getProfessionalEditionRootPath();
     }
 
     public function setProfessionalEditionRootPath(string $professionalEditionRootPath): void
     {
-        $this->professionalEditionRootPath = $professionalEditionRootPath;
+        $this->peSourcePath = $professionalEditionRootPath;
     }
 
     public function getSourcePath(): string

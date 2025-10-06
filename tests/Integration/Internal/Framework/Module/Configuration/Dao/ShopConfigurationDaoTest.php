@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class ShopConfigurationDaoTest extends IntegrationTestCase
 {

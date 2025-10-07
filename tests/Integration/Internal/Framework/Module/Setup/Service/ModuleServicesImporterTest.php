@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfig
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleServicesImporterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Group;
 use Symfony\Component\Yaml\Yaml;
@@ -20,6 +21,8 @@ use Symfony\Component\Filesystem\Path;
 
 final class ModuleServicesImporterTest extends IntegrationTestCase
 {
+    use ContainerTrait;
+
     private int $shopId = 1;
 
     #[Group('exclude-from-compilation')]
@@ -35,15 +38,15 @@ final class ModuleServicesImporterTest extends IntegrationTestCase
             Path::getDirectory($this->getActiveModuleServicesFilePath())
         );
 
-        $this->assertContains(
-            $expectedImport,
+        $this->assertEquals(
+            [$expectedImport],
             $this->getDIConfigWrapper()->getImportFileNames()
         );
 
         $importer->removeImport($moduleDirectory, 1);
 
-        $this->assertNotContains(
-            $expectedImport,
+        $this->assertEquals(
+            [],
             $this->getDIConfigWrapper()->getImportFileNames()
         );
     }

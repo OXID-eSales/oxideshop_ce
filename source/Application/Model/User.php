@@ -17,6 +17,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Application\Enum\SubscriptionOptedInStatus;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
@@ -1178,41 +1179,59 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setNewsSubscription($blSubscribe, $blSendOptIn, $blForceCheckOptIn = false)
     {
-        // assigning to newsletter
-        $blSuccess = false;
-
-        // user wants to get newsletter messages or no ?
-        $oNewsSubscription = $this->getNewsSubscription();
-        if ($oNewsSubscription) {
-            if ($blSubscribe && ($blForceCheckOptIn || ($iOptInStatus = $oNewsSubscription->getOptInStatus()) != 1)) {
-                if (!$blSendOptIn) {
-                    // double-opt-in check is disabled - assigning automatically
-                    $this->addToGroup('oxidnewsletter');
-                    // and setting subscribed status
-                    $oNewsSubscription->setOptInStatus(1);
-                    $blSuccess = true;
-                } else {
-                    // double-opt-in check enabled - sending confirmation email and setting waiting status
-                    if ($iOptInStatus != 2) {
-                        // sending double-opt-in mail
-                        $oEmail = oxNew(Email::class);
-                        $blSuccess = $oEmail->sendNewsletterDbOptInMail($this);
-                    } else {
-                        // mail already was sent, so just confirming that
-                        $blSuccess = true;
-                    }
-
-                    $oNewsSubscription->setOptInStatus(2);
-                }
-            } elseif (!$blSubscribe) {
-                // removing user from newsletter subscribers
-                $this->removeFromGroup('oxidnewsletter');
-                $oNewsSubscription->setOptInStatus(0);
-                $blSuccess = true;
-            }
+        $newsSubscription = $this->getNewsSubscription();
+        if (!$newsSubscription) {
+            return false;
         }
 
-        return $blSuccess;
+        if (!$blSubscribe) {
+            return $this->handleUnsubscription($newsSubscription);
+        }
+
+        return $this->handleSubscription($newsSubscription, $blSendOptIn, $blForceCheckOptIn);
+    }
+
+    private function handleUnsubscription($newsSubscription): bool
+    {
+        $this->removeFromGroup('oxidnewsletter');
+        $newsSubscription->setOptInStatus(SubscriptionOptedInStatus::Disabled->value);
+
+        return true;
+    }
+
+    private function handleSubscription($newsSubscription, $blSendOptIn, $blForceCheckOptIn): bool
+    {
+        $optInStatus = $newsSubscription->getOptInStatus();
+
+        if (!$blForceCheckOptIn && $optInStatus == SubscriptionOptedInStatus::Active->value) {
+            return true;
+        }
+
+        if (!$blSendOptIn) {
+            return $this->activateDirectly($newsSubscription);
+        }
+
+        return $this->processOptInEmail($newsSubscription);
+    }
+
+    private function activateDirectly($newsSubscription): bool
+    {
+        $this->addToGroup('oxidnewsletter');
+        $newsSubscription->setOptInStatus(SubscriptionOptedInStatus::Active->value);
+
+        return true;
+    }
+
+    private function processOptInEmail($newsSubscription): bool
+    {
+        $email = oxNew(Email::class);
+        if (!$email->sendNewsletterDbOptInMail($this)) {
+            return false;
+        }
+
+        $newsSubscription->setOptInStatus(SubscriptionOptedInStatus::Pending->value);
+
+        return true;
     }
 
     /**

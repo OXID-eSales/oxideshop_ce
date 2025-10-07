@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use ReflectionClass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -36,19 +38,42 @@ trait ContainerTrait
 
     private function setParameter(string $name, array|bool|string|int|float|UnitEnum|null $value): void
     {
-        $container = (new TestContainerFactory())->create();
-        $container->setParameter($name, $value);
-        $container->compile(true);
-
-        TestContainerFactory::setContainer($container);
-        $this->container = $container;
+        if (!$this->container) {
+            $this->createContainer();
+        }
+        $this->container->setParameter($name, $value);
     }
 
     private function prepareContainer(): void
     {
         if ($this->container === null) {
-            $this->container = TestContainerFactory::get();
+            $this->createContainer();
+            $this->compileContainer();
         }
+    }
+
+    private function createContainer(): void
+    {
+        $this->container = (new TestContainerFactory())->create();
+    }
+
+    private function compileContainer(): void
+    {
+        $this->container->compile(true);
+        $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
+    }
+
+    /**
+     * Run tests in a separate process if you use this function.
+     */
+    private function attachContainerToContainerFactory(): void
+    {
+        if (!$this->container->isCompiled()) {
+            $this->compileContainer();
+        }
+        $reflectionClass = new ReflectionClass(ContainerFactory::getInstance());
+        $reflectionProperty = $reflectionClass->getProperty('symfonyContainer');
+        $reflectionProperty->setValue(ContainerFactory::getInstance(), $this->container);
     }
 
     private function loadYamlFixture(string $fixtureDir): void

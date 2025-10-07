@@ -47,9 +47,10 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
 
     public function setup(): void
     {
-        parent::setUp();
         $this->container = $this->setupAndConfigureContainer();
         $this->persistModuleConfiguration($this->getTestModuleConfiguration());
+
+        parent::setUp();
     }
 
     public function tearDown(): void
@@ -112,14 +113,14 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         ContainerFacade::get(ModuleActivationBridgeInterface::class)
             ->activate('test-module', $this->shopId);
 
-        TestContainerFactory::resetContainer();
+        ContainerFactory::resetContainer();
 
         ContainerFacade::get(SomeModuleService::class);
 
         ContainerFacade::get(ModuleActivationBridgeInterface::class)
             ->deactivate('test-module', $this->shopId);
 
-        TestContainerFactory::resetContainer();
+        ContainerFactory::resetContainer();
 
         $this->expectException(ServiceNotFoundException::class);
         ContainerFacade::get(SomeModuleService::class);

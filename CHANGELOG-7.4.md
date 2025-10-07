@@ -7,7 +7,6 @@
 - Display a clear error message if the VAT-ID prefix is missing during user registration
 - Value object for Oxid Unique Id
 - Useful interfaces RequestInterface and SessionInterface
-- Possibility to customize ContainerFactory/Provider via env variable `OXID_CONTAINER_PROVIDER`
 - Support for edition and project root locator classes
 - Send additional module metadata to OLIS
 
@@ -24,7 +23,7 @@
 
 ### Fixed
 - Multilanguage field detection with lowercase field names [#0005244](https://bugs.oxid-esales.com/view.php?id=5244)
-- Allow "Core" to be used as a manufacturer name in URLs [#0005242](https://bugs.oxid-esales.com/view.php?id=5242)
+- Allow "Core" to be used as manufacturer name in URLs [#0005242](https://bugs.oxid-esales.com/view.php?id=5242)
 - Mismatching html tags in setup templates [#0006144](https://bugs.oxid-esales.com/view.php?id=6144)
 - Fixed incorrect email validation error when wrong password is entered in delivery address form [#0006026](https://bugs.oxid-esales.com/view.php?id=6026)
 - Order remark no longer defaults to 1 when the input field is missing in the frontend [#0007721](https://bugs.oxid-esales.com/view.php?id=7721)

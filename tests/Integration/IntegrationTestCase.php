@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Tests\CachingTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use OxidEsales\EshopCommunity\Tests\RequestTrait;
-use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 
 class IntegrationTestCase extends TestCase
@@ -29,8 +28,6 @@ class IntegrationTestCase extends TestCase
         $this->backupRequestData();
         $this->cleanupCaching();
         $this->beginTransaction();
-        TestContainerFactory::resetContainer();
-        $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
     }
 
     public function tearDown(): void

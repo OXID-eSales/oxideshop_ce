@@ -21,7 +21,4 @@
             <directory>./source/Internal</directory>
         </include>
     </source>
-    <php>
-        <env name="OXID_CONTAINER_PROVIDER" value="OxidEsales\EshopCommunity\Tests\TestContainerFactory" force="true"/>
-    </php>
 </phpunit>

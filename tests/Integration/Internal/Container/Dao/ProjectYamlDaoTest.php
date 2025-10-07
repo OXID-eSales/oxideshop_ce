@@ -121,6 +121,33 @@ EOT;
         $this->assertEquals('some/path', $projectYaml->getConfigAsArray()['imports'][0]['resource']);
     }
 
+    public function testClearingCacheOnWriting()
+    {
+        $container = (new ContainerBuilder(new BasicContext()))->getContainer();
+        $container->getDefinition(ProjectYamlDaoInterface::class)->setPublic(true);
+        $container->compile();
+
+        $dao = $container->get(ProjectYamlDaoInterface::class);
+        $context = $container->get(BasicContextInterface::class);
+
+        $projectYaml = $dao->loadProjectConfigFile();
+
+        // Make sure that the cache file exists
+        ContainerFactory::resetContainer();
+        ContainerFactory::getInstance()->getContainer();
+        $this->assertFileExists($context->getContainerCacheFilePath($context->getCurrentShopId()));
+
+        // This should trigger the event that deletes the cachefile
+        $dao->saveProjectConfigFile($projectYaml);
+
+        $this->assertFileDoesNotExist($context->getContainerCacheFilePath($context->getCurrentShopId()));
+
+        ContainerFactory::resetContainer();
+        ContainerFactory::getInstance()->getContainer();
+        // Verify container has been rebuild be checking that a cachefile exists
+        $this->assertFileExists($context->getContainerCacheFilePath($context->getCurrentShopId()));
+    }
+
     private function getTestGeneratedServicesFilePath(): string
     {
         return __DIR__ . DIRECTORY_SEPARATOR . 'generated_project.yaml';

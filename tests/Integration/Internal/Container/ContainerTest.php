@@ -110,6 +110,14 @@ final class ContainerTest extends IntegrationTestCase
         );
     }
 
+    /**
+     * Checks that the cachefile has been created
+     */
+    public function testCacheIsCreated(): void
+    {
+        $this->assertFileExists($this->getCacheFilePath());
+    }
+
     public function testEventDispatcher(): void
     {
         $this->assertInstanceOf(

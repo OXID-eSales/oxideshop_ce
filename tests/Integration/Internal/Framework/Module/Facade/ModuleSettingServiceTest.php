@@ -15,10 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Facade\ModuleSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\TestCase;
 use function Symfony\Component\String\u;
 
-final class ModuleSettingServiceTest extends IntegrationTestCase
+final class ModuleSettingServiceTest extends TestCase
 {
     use ContainerTrait;
 
@@ -26,7 +26,7 @@ final class ModuleSettingServiceTest extends IntegrationTestCase
     private ModuleSettingServiceInterface $settingFacade;
 
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->settingFacade = $this->get(ModuleSettingServiceInterface::class);

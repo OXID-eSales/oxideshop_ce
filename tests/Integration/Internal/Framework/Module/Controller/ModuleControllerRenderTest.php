@@ -10,20 +10,19 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Controller;
 
 use OxidEsales\Eshop\Core\ShopControl;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
-use PHPUnit\Framework\TestCase;
 
 #[RunTestsInSeparateProcesses]
-final class ModuleControllerRenderTest extends TestCase
+final class ModuleControllerRenderTest extends IntegrationTestCase
 {
 	private ShopControl $shopControl;
 
-	protected function setUp(): void
+	public function setUp(): void
     {
         parent::setUp();
 
@@ -36,7 +35,7 @@ final class ModuleControllerRenderTest extends TestCase
         $this->shopControl = new ShopControl();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->uninstallModuleFixture('module1');
 
@@ -79,11 +78,6 @@ final class ModuleControllerRenderTest extends TestCase
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
         $this->assertStringContainsString('Init Decorator', $output);
-    }
-
-    private function get(string $serviceId)
-    {
-        return ContainerFacade::get($serviceId);
     }
 
     private function setupModuleFixture(string $moduleId): void

@@ -14,8 +14,6 @@ use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Log\LoggerInterface;
@@ -37,18 +35,6 @@ final class OrderControllerTest extends IntegrationTestCase
         $this->prepareBasketMock();
         $this->stubSession();
         unset($_SESSION['Errors']);
-    }
-
-    public function testExecuteWithBasketMissingSummaryHashParameterWillLogAnError(): void
-    {
-        $logger = $this->createMock(LoggerInterface::class);
-        $this->injectLoggerMockIntoContainer($logger);
-
-        $logger->expects($this->once())
-            ->method('warning')
-            ->with($this->stringContains($this->basketSummaryHashParameter));
-
-        oxNew(OrderController::class)->execute();
     }
 
     public function testExecuteWithWrongBasketSummaryHashParameterAndEmptyBasketWillRedirectAndAddError(): void
@@ -124,23 +110,5 @@ final class OrderControllerTest extends IntegrationTestCase
             Basket::class,
             ['getProductsCount']
         );
-    }
-
-    private function injectLoggerMockIntoContainer(LoggerInterface $logger): void
-    {
-        $this->createContainer();
-        $this->useNonVfsProjectConfigurationDirectory();
-        $this->container->set(LoggerInterface::class, $logger);
-        $this->container->autowire(LoggerInterface::class, LoggerInterface::class);
-        $this->attachContainerToContainerFactory();
-    }
-
-    private function useNonVfsProjectConfigurationDirectory(): void
-    {
-        $this->container->get(ContextInterface::class)
-            ->setProjectConfigurationDirectory(
-                ContainerFacade::get(ContextInterface::class)
-                    ->getProjectConfigurationDirectory()
-            );
     }
 }

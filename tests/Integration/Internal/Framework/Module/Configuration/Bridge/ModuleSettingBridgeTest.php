@@ -13,9 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\Module
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleSettingBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class ModuleSettingBridgeTest extends TestCase
+final class ModuleSettingBridgeTest extends IntegrationTestCase
 {
     use ContainerTrait;
 

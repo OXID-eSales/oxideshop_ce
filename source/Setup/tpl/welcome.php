@@ -76,23 +76,6 @@ require "_header.php"; ?>
     <input type="checkbox" id="check_for_updates_ckbox" value="true" name="check_for_updates" valign="" style="vertical-align:middle; width:20px; height:22px;" >
     <?php $this->getText('STEP_1_CHECK_UPDATES'); ?>
 
-    <?php if ($facts->isCommunity()) { ?>
-    <table cellpadding="0" cellspacing="0" border="0" height="29">
-        <td>
-            <input type="hidden" value="false" name="send_technical_information_to_oxid">
-            <input type="checkbox" value="true" id="send_technical_information_to_oxid_checkbox" name="send_technical_information_to_oxid" valign="" style="vertical-align:middle; width:20px; height:22px;" >
-            <?php $this->getText('SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'); ?>
-            &nbsp;
-        </td>
-        <td>
-            <a href="#" class="helpicon" onmouseover="document.getElementById('send_technical_information_to_oxid_description').style.display = 'block';" onmouseout="document.getElementById('send_technical_information_to_oxid_description').style.display = 'none';">?</a>
-            <div id="send_technical_information_to_oxid_description" class="helpbox">
-                <?php $this->getText('HELP_SHOP_CONFIG_SEND_TECHNICAL_INFORMATION_TO_OXID'); ?>
-            </div>
-        </td>
-    </table>
-    <?php } ?>
-
     <br><br>
     <?php $this->getText('STEP_1_TEXT'); ?>
     <br><br>

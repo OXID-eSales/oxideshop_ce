@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
-use OxidEsales\Facts\Facts;
 use PDO;
 use PDOException;
 
@@ -187,11 +186,6 @@ class Database extends Core
 
         $oPdo = $this->getConnection();
 
-        $blSendTechnicalInformationToOxid = true;
-        $facts = new Facts();
-        if ($facts->isCommunity()) {
-            $blSendTechnicalInformationToOxid = isset($aParams["send_technical_information_to_oxid"]) ? $aParams["send_technical_information_to_oxid"] : $oSession->getSessionParam('send_technical_information_to_oxid');
-        }
         $blCheckForUpdates = isset($aParams["check_for_updates"]) ? $aParams["check_for_updates"] : $oSession->getSessionParam('check_for_updates');
         $sCountryLang = isset($aParams["country_lang"]) ? $aParams["country_lang"] : $oSession->getSessionParam('country_lang');
         $sShopLang = isset($aParams["sShopLang"]) ? $aParams["sShopLang"] : $oSession->getSessionParam('sShopLang');
@@ -202,22 +196,11 @@ class Database extends Core
         $oUpdate = $oPdo->prepare("update oxcountry set oxactive = '1' where oxid = :countryLang");
         $oUpdate->execute([':countryLang' => $sCountryLang]);
 
-        $oPdo->exec("delete from oxconfig where oxvarname = 'blSendTechnicalInformationToOxid'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'blCheckForUpdates'");
         $oPdo->exec("delete from oxconfig where oxvarname = 'sDefaultLang'");
 
         $oInsert = $oPdo->prepare("insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
                                              values (:oxid, :shopId, :name, :type, :value)");
-        $oInsert->execute(
-            [
-                ':oxid' => $oUtils->generateUid(),
-                ':shopId' => $sBaseShopId,
-                ':name' => 'blSendTechnicalInformationToOxid',
-                ':type' => 'bool',
-                ':value' => $blSendTechnicalInformationToOxid
-            ]
-        );
-
         $oInsert->execute(
             [
                 ':oxid' => $oUtils->generateUid(),
@@ -237,8 +220,6 @@ class Database extends Core
                 ':value' => $sShopLang
             ]
         );
-
-        $this->addConfigValueIfShopInfoShouldBeSent($oUtils, $sBaseShopId, $aParams, $oSession);
 
         //set only one active language
         $oStatement = $oPdo->query("select oxvarname, oxvartype, oxvarvalue from oxconfig where oxvarname='aLanguageParams'");
@@ -351,30 +332,7 @@ class Database extends Core
         );
     }
 
-    /**
-     * Adds config value if shop info should be set.
-     *
-     * @param Utilities $utilities Setup utilities
-     * @param string $baseShopId Shop id
-     * @param array $parameters Parameters
-     * @param Session $session Setup session manager
-     */
-    protected function addConfigValueIfShopInfoShouldBeSent($utilities, $baseShopId, $parameters, $session)
-    {
-        $blSendShopDataToOxid = isset($parameters["blSendShopDataToOxid"]) ? $parameters["blSendShopDataToOxid"] : $session->getSessionParam('blSendShopDataToOxid');
 
-        $sID = $utilities->generateUid();
-        $this->execSql("delete from oxconfig where oxvarname = 'blSendShopDataToOxid'");
-        $this->execSql(
-            "insert into oxconfig (oxid, oxshopid, oxvarname, oxvartype, oxvarvalue)
-                             values(:oxid, :oxshopid, 'blSendShopDataToOxid', 'bool', :oxvarvalue)",
-            [
-                ':oxid' => $sID,
-                ':oxshopid' => $baseShopId,
-                ':oxvarvalue' => (bool) $blSendShopDataToOxid
-            ]
-        );
-    }
 
     /**
      * @param $parameters

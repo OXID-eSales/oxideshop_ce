@@ -151,12 +151,6 @@ class Session extends Core
             $this->setSessionParam('sShopLang', $sShopLang);
         }
 
-        //storing if send information to OXID
-        $blSendInformation = $oUtils->getRequestVar("send_technical_information_to_oxid", "post");
-        if (isset($blSendInformation)) {
-            $this->setSessionParam('send_technical_information_to_oxid', $blSendInformation);
-        }
-
         //storing check for updates settings to session
         $blCheckForUpdates = $oUtils->getRequestVar("check_for_updates", "post");
         if (isset($blCheckForUpdates)) {

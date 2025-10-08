@@ -24,10 +24,6 @@ final class WelcomeStepCest
             ->selectInstallationLanguage('English')
             ->proceedToWelcomeStep();
 
-        if ($I->isCommunityEdition()) {
-            $welcomeStep->seeAllowDataCollectionInput();
-        } else {
-            $welcomeStep->dontSeeAllowDataCollectionInput();
-        }
+        $welcomeStep->dontSeeAllowDataCollectionInput();
     }
 }

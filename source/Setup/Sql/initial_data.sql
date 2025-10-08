@@ -122,7 +122,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('d144175015dcd2a39.15131643',	1,	'',	'aHomeCountry',	'arr',	'a:1:{i:0;s:26:\"a7c40f631fc920687.20179984\";}'),
 ('e1142ca231becd5c4.00590616',	1,	'',	'blConfirmAGB',	'bool',	''),
 ('e8e41bda6fa7631d8.13775806',	1,	'',	'iSessionTimeout',	'str',	'60'),
-('fd770460540c32422b415a65fefb8f90',	1,	'',	'blSendTechnicalInformationToOxid',	'bool',	''),
 ('fde4559837789b3c7.26965372',	1,	'',	'aCMSfolder',	'aarr',	'a:4:{s:16:\"CMSFOLDER_EMAILS\";s:7:\"#706090\";s:18:\"CMSFOLDER_USERINFO\";s:7:\"#303030\";s:21:\"CMSFOLDER_PRODUCTINFO\";s:7:\"#303030\";s:14:\"CMSFOLDER_NONE\";s:7:\"#904040\";}'),
 ('fecfcd8dbd01a491a94557448425acc8',	1,	'',	'blShowTSInternationalFeesMessage',	'bool',	'1'),
 ('l8g3e140a4bc7993d7d715df951dfe25',	1,	'',	'iMaxDownloadsCountUnregistered',	'str',	'1'),

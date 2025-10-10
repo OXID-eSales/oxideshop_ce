@@ -13,12 +13,15 @@ use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Field;
+use OxidEsales\EshopCommunity\Internal\Framework\Mailing\Adapter\EmailAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email as SymfonyEmail;
 
 #[RunTestsInSeparateProcesses]
 final class EmailTest extends IntegrationTestCase
@@ -124,5 +127,63 @@ final class EmailTest extends IntegrationTestCase
     private function getLoggerMock(): void
     {
         $this->logger = $this->createMock(LoggerInterface::class);
+    }
+
+    public function testSendWithSymfonyMailerEnabled(): void
+    {
+        $this->setParameter('oxid_esales.mailing.use_symfony_mailer', true);
+
+        $symfonyEmail = new SymfonyEmail();
+        $symfonyMailer = $this->createMock(MailerInterface::class);
+        $symfonyMailer->expects($this->once())
+            ->method('send')
+            ->with($this->isInstanceOf(SymfonyEmail::class));
+
+        $adapter = $this->createMock(EmailAdapterInterface::class);
+        $adapter->method('convertToSymfonyEmail')->willReturn($symfonyEmail);
+
+        $this->container->set(MailerInterface::class, $symfonyMailer);
+        $this->container->set(EmailAdapterInterface::class, $adapter);
+        $this->attachContainerToContainerFactory();
+
+        $email = oxNew(Email::class);
+        $email->setRecipient('test@example.com', 'Test User');
+        $email->setFrom('shop@example.com', 'Shop');
+        $email->setSubject('Test');
+        $email->setBody('Body');
+
+        $result = $email->send();
+
+        $this->assertTrue($result);
+    }
+
+    public function testSendWithSymfonyMailerFallback(): void
+    {
+        $this->setParameter('oxid_esales.mailing.use_symfony_mailer', true);
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with($this->stringContains('Symfony Mailer failed'));
+
+        $this->container->set(LoggerInterface::class, $logger);
+        $this->container->autowire(LoggerInterface::class, LoggerInterface::class);
+
+        $symfonyMailer = $this->createMock(MailerInterface::class);
+        $symfonyMailer->method('send')->willThrowException(new \Exception('Symfony Mailer error'));
+
+        $this->container->set(MailerInterface::class, $symfonyMailer);
+        $this->attachContainerToContainerFactory();
+
+        $email = $this->createPartialMock(Email::class, ['sendMail']);
+        $email->expects($this->once())
+            ->method('sendMail')
+            ->willReturn(true);
+
+        $email->setRecipient('test@example.com', 'Test User');
+
+        $result = $email->send();
+
+        $this->assertTrue($result);
     }
 }

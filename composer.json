@@ -40,7 +40,8 @@
         "symfony/lock": "^6.4",
         "symfony/string": "^6.4",
         "symfony/yaml": "^6.4",
-        "symfony/mime": "^6.4"
+        "symfony/mime": "^6.4",
+        "symfony/mailer": "^7.1"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

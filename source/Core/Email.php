@@ -16,7 +16,9 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Domain\Admin\Event\AdminModeChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Mailing\Adapter\EmailAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use Symfony\Component\Mailer\MailerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -336,6 +338,18 @@ class Email extends PHPMailer
                 $myConfig->getImageDir(),
                 $myConfig->getPictureDir(false)
             );
+        }
+
+        if (ContainerFacade::getParameter('oxid_esales.mailing.use_symfony_mailer')) {
+            try {
+                $symfonyEmail = ContainerFacade::get(EmailAdapterInterface::class)->convertToSymfonyEmail($this);
+                ContainerFacade::get(MailerInterface::class)->send($symfonyEmail);
+
+                return true;
+            } catch (\Throwable $e) {
+                ContainerFacade::get(LoggerInterface::class)
+                    ->error('Symfony Mailer failed, falling back to PHPMailer: ' . $e->getMessage(), [$e]);
+            }
         }
 
         $this->makeOutputProcessing();
@@ -1374,6 +1388,26 @@ class Email extends PHPMailer
     public function getRecipient()
     {
         return $this->_aRecipients;
+    }
+
+    /**
+     * Gets CC recipients array.
+     *
+     * @return array
+     */
+    public function getCc(): array
+    {
+        return $this->cc;
+    }
+
+    /**
+     * Gets BCC recipients array.
+     *
+     * @return array
+     */
+    public function getBcc(): array
+    {
+        return $this->bcc;
     }
 
     /**

@@ -14,11 +14,13 @@ use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\EmailAdapterInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Mime\Email as SymfonyEmail;
 
 #[RunTestsInSeparateProcesses]
 final class EmailTest extends IntegrationTestCase
@@ -124,5 +126,55 @@ final class EmailTest extends IntegrationTestCase
     private function getLoggerMock(): void
     {
         $this->logger = $this->createMock(LoggerInterface::class);
+    }
+
+    public function testSendWithUnconfiguredDsnFallsBackToPhpMailer(): void
+    {
+        $this->setParameter('oxid_esales.mailing.use_symfony_mailer', true);
+        $this->setParameter('oxid_esales.mailing.dsn', null);
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with($this->stringContains('Mailer failed'));
+
+        $adapter = $this->createMock(EmailAdapterInterface::class);
+        $adapter->method('convertToSymfonyEmail')->willReturn(new SymfonyEmail());
+
+        $this->container->set(LoggerInterface::class, $logger);
+        $this->container->autowire(LoggerInterface::class, LoggerInterface::class);
+        $this->container->set(EmailAdapterInterface::class, $adapter);
+        $this->attachContainerToContainerFactory();
+
+        $email = oxNew(Email::class);
+        $email->setRecipient('test@example.com', 'Test User');
+        $email->setFrom('shop@example.com', 'Shop');
+        $email->setSubject('Test');
+        $email->setBody('Body');
+
+        $email->send();
+    }
+
+    public function testSendWithValidDsn(): void
+    {
+        $this->setParameter('oxid_esales.mailing.use_symfony_mailer', true);
+        $this->setParameter('oxid_esales.mailing.dsn', 'null://null');
+
+        $symfonyEmail = new SymfonyEmail();
+        $adapter = $this->createMock(EmailAdapterInterface::class);
+        $adapter->method('convertToSymfonyEmail')->willReturn($symfonyEmail);
+
+        $this->container->set(EmailAdapterInterface::class, $adapter);
+        $this->attachContainerToContainerFactory();
+
+        $email = oxNew(Email::class);
+        $email->setRecipient('test@example.com', 'Test User');
+        $email->setFrom('shop@example.com', 'Shop');
+        $email->setSubject('Test');
+        $email->setBody('Body');
+
+        $result = $email->send();
+
+        $this->assertTrue($result);
     }
 }

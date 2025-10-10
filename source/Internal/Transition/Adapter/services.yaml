@@ -14,3 +14,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoder
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\EmailAdapterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\SymfonyMailerAdapter
+    public: true

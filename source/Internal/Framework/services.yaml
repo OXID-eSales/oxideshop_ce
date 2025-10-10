@@ -15,3 +15,4 @@ imports:
   - { resource: Request/services.yaml }
   - { resource: Session/services.yaml }
   - { resource: Html/services.yaml }
+  - { resource: Mailing/services.yaml }

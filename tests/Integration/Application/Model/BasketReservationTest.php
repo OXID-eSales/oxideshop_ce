@@ -35,10 +35,10 @@ class BasketReservationTest extends IntegrationTestCase
         parent::setUp();
 
         $this->basketReservationTimeout = (int) Registry::getConfig()->getConfigParam('iPsBasketReservationTimeout');
-        Registry::getConfig()->setConfigParam('iPsBasketReservationTimeout', 1);
+        Registry::getConfig()->setConfigParam('iPsBasketReservationTimeout', 10);
         $this->database = DatabaseProvider::getDb();
         $this->basketReservation = new BasketReservation();
-        $this->oldTimestamp = time() - 3600;
+        $this->oldTimestamp = Registry::getUtilsDate()->getTime() - 3600;
     }
 
     public function tearDown(): void
@@ -132,11 +132,12 @@ class BasketReservationTest extends IntegrationTestCase
         string $savedBasketUser2,
         string $reservationsUser2
     ): void {
+        $timeNow = Registry::getUtilsDate()->getTime();
         $this->createBasket($noticeListId, $shopId, $user1Id, $this->noticeList, $this->oldTimestamp, $productId);
         $this->createBasket(uniqid(), $shopId, $user1Id, $this->savedBasket, $this->oldTimestamp, $productId);
         $this->createBasket(uniqid(), $shopId, $user1Id, $this->reservations, $this->oldTimestamp, $productId);
-        $this->createBasket($savedBasketUser2, $shopId, $user2Id, $this->savedBasket, time(), $productId);
-        $this->createBasket($reservationsUser2, $shopId, $user2Id, $this->reservations, time(), $productId);
+        $this->createBasket($savedBasketUser2, $shopId, $user2Id, $this->savedBasket, $timeNow, $productId);
+        $this->createBasket($reservationsUser2, $shopId, $user2Id, $this->reservations, $timeNow, $productId);
     }
 
     private function setupMultiShopTestData(
@@ -210,7 +211,7 @@ class BasketReservationTest extends IntegrationTestCase
         $basket->oxuserbaskets__oxshopid = new Field($shopId);
         $basket->oxuserbaskets__oxuserid = new Field($userId);
         $basket->oxuserbaskets__oxtitle = new Field($basketTitle);
-        $basket->oxuserbaskets__oxtimestamp = new Field(date('Y-m-d H:i:s'));
+        $basket->oxuserbaskets__oxtimestamp = new Field(date('Y-m-d H:i:s', Registry::getUtilsDate()->getTime()));
         $basket->oxuserbaskets__oxpublic = new Field(0);
         $basket->oxuserbaskets__oxupdate = new Field($updated);
 

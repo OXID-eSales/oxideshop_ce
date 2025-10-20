@@ -206,19 +206,19 @@ final class ProductMediaServiceTest extends TestCase
         ]);
 
         $this->assertEquals(
-            2,
+            1,
             $this->service
                 ->get($media1->getId())
                 ->getPosition()
         );
         $this->assertEquals(
-            1,
+            0,
             $this->service
                 ->get($media2->getId())
                 ->getPosition()
         );
         $this->assertEquals(
-            3,
+            2,
             $this->service
                 ->get($media3->getId())
                 ->getPosition()

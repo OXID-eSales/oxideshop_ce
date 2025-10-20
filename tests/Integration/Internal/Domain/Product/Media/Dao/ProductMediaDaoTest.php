@@ -408,19 +408,19 @@ final class ProductMediaDaoTest extends TestCase
                 ->getId()
         );
         $this->assertEquals(
-            1,
+            0,
             $list
                 ->get(0)
                 ->getPosition()
         );
         $this->assertEquals(
-            2,
+            1,
             $list
                 ->get(1)
                 ->getPosition()
         );
         $this->assertEquals(
-            3,
+            2,
             $list
                 ->get(2)
                 ->getPosition()

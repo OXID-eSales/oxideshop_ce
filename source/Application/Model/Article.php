@@ -4634,7 +4634,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         $productMediaDao = ContainerFacade::get(ProductMediaDaoInterface::class);
         $productId = Id::fromUid($this->getId());
 
-        $mediaCollection = $productMediaDao->getByProductId($productId);
+        $mediaCollection = $productMediaDao->getAllProductMedia($productId);
 
         foreach ($mediaCollection as $productMedia) {
             $productMediaDao->delete($productMedia->getId());

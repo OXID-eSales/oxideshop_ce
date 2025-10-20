@@ -129,7 +129,7 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             $caseClauses .= sprintf(
                 " WHEN '%s' THEN %d ",
                 $id,
-                $position + 1
+                $position
             );
         }
         $this->connectionFactory

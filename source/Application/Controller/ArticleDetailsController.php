@@ -571,27 +571,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
         return $this->getPictureGallery()['activeMedia']?->getUrl();
     }
 
-    /**
-     * Template variable getter. Returns pictures of current article
-     *
-     * @return array
-     */
-    public function getPictures()
-    {
-        return $this->getPictureGallery()['Pics'];
-    }
-
-    /**
-     * Template variable getter. Returns selected picture
-     *
-     * @param string $pictureNumber
-     *
-     * @return string
-     */
-    public function getArtPic($pictureNumber)
-    {
-        return $this->getPictureGallery()['Pics'][$pictureNumber];
-    }
 
     /**
      * Template variable getter. Returns selectLists of current article

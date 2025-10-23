@@ -24,7 +24,7 @@ jobs:
           fi
           # shellcheck disable=SC2088
           case "${REF_TO_CHECK}" in
-            refs/heads/b-7.4.x*) TESTPLAN="~/defaults/7.4.x.yaml,${LIMIT}~/shop_ce.yaml" ;;
+            refs/heads/b-7.5.x*) TESTPLAN="~/defaults/7.5.x.yaml,${LIMIT}~/shop_ce.yaml" ;;
             *)
               echo "Can't match ${REF_TO_CHECK} to a version, can't determine test plan."
               echo "Branch names should start with b-<major>.<minor>.x"

@@ -12,5 +12,5 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface MediaUploaderInterface
 {
-    public function upload(UploadedFile $uploadedFile): MediaPath;
+    public function uploadTo(UploadedFile $uploadedFile, MediaPath $targetPath): MediaPath;
 }

@@ -34,5 +34,4 @@ final class MediaPathTest extends TestCase
 
         new MediaPath('/absolute/path.jpg');
     }
-
 }

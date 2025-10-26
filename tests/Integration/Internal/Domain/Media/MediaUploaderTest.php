@@ -7,19 +7,16 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Integration\Internal\Domain\Media;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Media;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUploader;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaPathResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 final class MediaUploaderTest extends TestCase
 {
-    use ProphecyTrait;
-
     public function testUploadReturnsMediaPath(): void
     {
         $fileName = 'file.jpg';
@@ -34,23 +31,17 @@ final class MediaUploaderTest extends TestCase
             true
         );
 
-        $mediaPathResolver = $this->prophesize(ProductMediaPathResolverInterface::class);
-        $resolvedPath = 'media/' . $fileName;
-        $mediaPathResolver
-            ->getRelativePath($fileName)
-            ->willReturn($resolvedPath);
-        $imageHandler = $this->prophesize(ImageHandlerInterface::class);
+        $imageHandler = $this->createMock(ImageHandlerInterface::class);
         $imageHandler
-            ->upload($filePath, $resolvedPath)
-            ->shouldBeCalledOnce();
+            ->expects($this->once())
+            ->method('upload')
+            ->with($filePath, 'media/' . $fileName);
 
-        $uploader = new MediaUploader(
-            $mediaPathResolver->reveal(),
-            $imageHandler->reveal()
-        );
+        $uploader = new MediaUploader($imageHandler);
 
-        $result = $uploader->upload($uploadedFile);
+        $target = new MediaPath('media/' . $fileName);
+        $result = $uploader->uploadTo($uploadedFile, $target);
 
-        $this->assertSame($resolvedPath, (string)$result);
+        $this->assertSame('media/' . $fileName, (string)$result);
     }
 }

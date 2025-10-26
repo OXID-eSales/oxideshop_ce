@@ -21,7 +21,7 @@ interface ProductMediaViewServiceInterface
     public function getThumbnail(Id $productId): MediaView;
 
     /**
-     * @return MediaView[]
+     * @return array<string, MediaView>
      */
     public function getActiveByProductId(Id $productId): array;
 }

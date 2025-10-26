@@ -9,37 +9,38 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileSizeTooLargeException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileSizeTooSmallException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class FilesizeConstraintValidator implements MediaConstraintValidatorInterface
+class FileSizeConstraintValidator implements MediaConstraintValidatorInterface
 {
     private int $minSizeBytes;
     private int $maxSizeBytes;
 
     public function __construct(
-        private readonly string $minSize,
-        private readonly string $maxSize
+        private readonly int $minSizeKb,
+        private readonly int $maxSizeKb
     ) {
-        $this->minSizeBytes = (int)$minSize * 1024;
-        $this->maxSizeBytes = (int)$maxSize * 1024;
+        $this->minSizeBytes = $minSizeKb * 1024;
+        $this->maxSizeBytes = $maxSizeKb * 1024;
     }
 
     public function validate(UploadedFile $uploadedFile): void
     {
         $filesize = $uploadedFile->getSize();
+
         if ($filesize < $this->minSizeBytes) {
-            throw new InvalidMediaException(
-                'File size %d bytes is smaller than the minimum allowed %d KB.',
+            throw new FileSizeTooSmallException(
                 $filesize,
-                (int)$this->minSize
+                $this->minSizeKb
             );
         }
 
         if ($filesize > $this->maxSizeBytes) {
-            throw new InvalidMediaException(
-                'File size %d bytes exceeds the maximum allowed %d KB.',
+            throw new FileSizeTooLargeException(
                 $filesize,
-                (int)$this->maxSize
+                $this->maxSizeKb
             );
         }
     }

@@ -21,7 +21,7 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
         $curl->execute();
         $status = $curl->getStatusCode();
 
-        $this->assertEquals(404, $status, );
+        $this->assertEquals(404, $status);
     }
 
     public function testValidImageGeneration(): void

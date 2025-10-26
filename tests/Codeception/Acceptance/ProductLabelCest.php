@@ -30,7 +30,7 @@ final class ProductLabelCest
             ->openExtendedTab()
             ->enableProductCustomization();
         $productList
-            ->findByProductNumber( '1001')
+            ->findByProductNumber('1001')
             ->openExtendedTab()
             ->enableProductCustomization();
 

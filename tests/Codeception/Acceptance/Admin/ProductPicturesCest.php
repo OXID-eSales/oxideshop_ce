@@ -13,6 +13,7 @@ use Codeception\Attribute\Group;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 use Symfony\Component\Filesystem\Path;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\FileSizeLogic;
 
 use function sprintf;
 
@@ -43,23 +44,19 @@ final class ProductPicturesCest
             ->uploadFile($this->image1)
             ->seeUploadedImage(1)
             ->seeUploadedImageIsActive(1)
-            ->seeUploadedImageIsNotThumbnail(1)
-            ->seeUploadedImageIsNotIcon(1)
+            ->seeEmptyThumbnailPlaceholder()
+            ->seeEmptyIconPlaceholder()
             ->canSeeUploadedImageInLightbox(1)
-            ->setUploadedImageAsThumb(1)
-            ->seeUploadedImageIsThumbnail(1)
-            ->canSeeThumbnailInLightbox()
-            ->setUploadedImageAsIcon(1)
-            ->seeUploadedImageIsIcon(1)
-            ->canSeeIconInLightbox()
+            ->uploadThumbnail($this->image1)
+            ->seeThumbnailEndsWith(basename($this->image1))
+            ->uploadIcon($this->image1)
+            ->seeIconEndsWith(basename($this->image1))
             ->deactivateUploadedImage(1)
             ->seeUploadedImageIsInactive(1)
             ->activateUploadedImage(1)
             ->seeUploadedImageIsActive(1)
             ->deleteUploadedImage(1)
-            ->dontSeeUploadedImage(1)
-            ->seeEmptyThumbnailPlaceholder()
-            ->seeEmptyIconPlaceholder();
+            ->dontSeeUploadedImage(1);
     }
 
     public function uploadMultipleImages(AcceptanceTester $I): void
@@ -75,12 +72,12 @@ final class ProductPicturesCest
             ->uploadFile($this->image1)
             ->uploadFile($this->image2)
             ->uploadFile($this->image3)
-            ->setUploadedImageAsThumb(1)
-            ->setUploadedImageAsIcon(3)
-            ->seeThumbnailImage()
-            ->seeIconImage()
-            ->seeUploadedImageIsThumbnail(1)
-            ->seeUploadedImageIsIcon(3)
+            ->uploadThumbnail($this->image1)
+            ->uploadIcon($this->image3)
+            ->seeThumbnail()
+            ->seeIcon()
+            ->seeThumbnailEndsWith(basename($this->image1))
+            ->seeIconEndsWith(basename($this->image3))
             ->seeUploadedImageAtPosition(basename($this->image1), 1)
             ->seeUploadedImageAtPosition(basename($this->image2), 2)
             ->seeUploadedImageAtPosition(basename($this->image3), 3);
@@ -103,16 +100,16 @@ final class ProductPicturesCest
             ->uploadFile($this->image1)
             ->seeImageUploadError(
                 sprintf(
-                    Translator::translate(
-                        'File size %d bytes is smaller than the minimum allowed %d KB.',
-                    ),
-                    filesize(
-                        Path::join(
-                            codecept_data_dir(),
-                            $this->image1
+                    Translator::translate('ERR_MEDIA_SIZE_TOO_SMALL'),
+                    (new FileSizeLogic())->getFileSize(
+                        filesize(
+                            Path::join(
+                                codecept_data_dir(),
+                                $this->image1
+                            )
                         )
                     ),
-                    $minSize
+                    (new FileSizeLogic())->getFileSize(((int) $minSize) * 1024)
                 )
             );
     }

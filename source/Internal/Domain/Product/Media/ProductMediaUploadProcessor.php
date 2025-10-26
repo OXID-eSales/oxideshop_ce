@@ -22,6 +22,7 @@ readonly class ProductMediaUploadProcessor implements ProductMediaUploadProcesso
         private MediaConstraintValidatorInterface $mediaConstraintValidator,
         private MediaUploaderInterface $mediaUploader,
         private ProductMediaFactoryInterface $productMediaFactory,
+        private ProductMediaPathResolverInterface $productMediaPathResolver,
     ) {
     }
 
@@ -29,9 +30,16 @@ readonly class ProductMediaUploadProcessor implements ProductMediaUploadProcesso
     {
         $this->mediaConstraintValidator->validate($uploadedFile);
 
+        $targetPath = $this->productMediaPathResolver->resolve(
+            (string) $productId,
+            $uploadedFile->getClientOriginalName()
+        );
+
+        $this->mediaUploader->uploadTo($uploadedFile, $targetPath);
+
         return $this->productMediaFactory->create(
             $productId,
-            $this->mediaUploader->upload($uploadedFile),
+            $targetPath,
             new MediaType($uploadedFile->getClientMimeType())
         );
     }

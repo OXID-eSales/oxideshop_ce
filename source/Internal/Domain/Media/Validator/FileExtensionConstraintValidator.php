@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileExtensionMismatchException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Mime\MimeTypes;
 
@@ -21,18 +22,15 @@ readonly class FileExtensionConstraintValidator implements MediaConstraintValida
 
     public function validate(UploadedFile $uploadedFile): void
     {
-        $clientMimeType = $uploadedFile->getClientMimeType();
-        $clientExtension = $uploadedFile->getClientOriginalExtension();
+        $clientExtension = strtolower($uploadedFile->getClientOriginalExtension());
+        $guessedMimeType = $this->mimeTypeGuesser->guessMimeType($uploadedFile->getPathname());
+        $validExtensions = array_map(
+            'strtolower',
+            $this->mimeTypeGuesser->getExtensions($guessedMimeType)
+        );
 
-        $validExtensions = $this->mimeTypeGuesser->getExtensions($clientMimeType);
-
-        if (!$validExtensions || !\in_array($clientExtension, $validExtensions, true)) {
-            throw new InvalidMediaException(
-                'File extension "%s" does not match the client-provided MIME type "%s". Valid extensions: %s.',
-                $clientExtension,
-                $clientMimeType,
-                implode(', ', $validExtensions)
-            );
+        if (empty($validExtensions) || !in_array($clientExtension, $validExtensions, true)) {
+            throw new FileExtensionMismatchException($clientExtension, $validExtensions);
         }
     }
 }

@@ -17,7 +17,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\DataMappe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +33,7 @@ final class DataMapperTest extends TestCase
                 new MediaType('image/jpeg')
             ),
             new ProductMediaRoleSet(
-                ProductMediaRole::from(SystemProductMediaRole::Icon->value),
+                ProductMediaRole::from(ProductMediaRole::ICON),
                 ProductMediaRole::from('custom')
             ),
         );
@@ -76,7 +75,7 @@ final class DataMapperTest extends TestCase
             'media_path' => 'path/to/file.jpg',
             'media_mime_type' => 'image/jpeg',
             'position' => 5,
-            'roles' => 'icon,custom,thumb,detail',
+            'roles' => 'icon,custom,thumbnail,detail',
             'active' => true,
         ]);
 
@@ -92,21 +91,9 @@ final class DataMapperTest extends TestCase
             5,
             $result->getPosition()
         );
-        $this->assertTrue(
-            $result
-                ->getRoleSet()
-                ->is(SystemProductMediaRole::Icon->value),
-        );
-        $this->assertTrue(
-            $result
-                ->getRoleSet()
-                ->is(SystemProductMediaRole::Thumb->value),
-        );
-        $this->assertTrue(
-            $result
-                ->getRoleSet()
-                ->is(SystemProductMediaRole::Detail->value),
-        );
+        $this->assertTrue($result->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::ICON)));
+        $this->assertTrue($result->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::THUMBNAIL)));
+        $this->assertTrue($result->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::DETAIL)));
         $this->assertTrue($result->isActive());
         $this->assertEquals(
             'media123',
@@ -116,13 +103,13 @@ final class DataMapperTest extends TestCase
         );
         $this->assertEquals(
             'path/to/file.jpg',
-            $result
+            (string) $result
                 ->getMedia()
                 ->getMediaPath()
         );
         $this->assertEquals(
             'image/jpeg',
-            $result
+            (string) $result
                 ->getMedia()
                 ->getMediaType()
         );

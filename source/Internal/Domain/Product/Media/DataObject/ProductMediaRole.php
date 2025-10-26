@@ -11,31 +11,21 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject;
 
 class ProductMediaRole
 {
-    private bool $isSingleAssignmentRole;
+    public const ICON = 'icon';
+    public const THUMBNAIL = 'thumbnail';
+    public const DETAIL = 'detail';
 
-    private function __construct(private readonly string $code)
+    public static function from(string $role): ProductMediaRole
     {
-        $this->isSingleAssignmentRole = true;
-    }
-
-    public static function from(string $code): ProductMediaRole
-    {
-        return new self($code);
+        return new self($role);
     }
 
     public function value(): string
     {
-        return $this->code;
+        return $this->role;
     }
 
-    public function isSingleAssignmentRole(): bool
+    private function __construct(private readonly string $role)
     {
-        return $this->isSingleAssignmentRole;
-    }
-
-    public function allowMultipleAssignments(): static
-    {
-        $this->isSingleAssignmentRole = false;
-        return $this;
     }
 }

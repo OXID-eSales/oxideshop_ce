@@ -11,39 +11,38 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Product\Media\Dat
 
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use PHPUnit\Framework\TestCase;
 
 final class ProductMediaRoleSetTest extends TestCase
 {
     public function testAddRoleAddsNewRole(): void
     {
-        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Icon->value));
-        $roleSet->addRole(ProductMediaRole::from(SystemProductMediaRole::Thumb->value));
+        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from(ProductMediaRole::ICON));
+        $roleSet->addRole(ProductMediaRole::from(ProductMediaRole::THUMBNAIL));
 
-        $this->assertCount(2, $roleSet->getRoleIterator());
-        $this->assertTrue($roleSet->is(SystemProductMediaRole::Icon->value));
-        $this->assertTrue($roleSet->is(SystemProductMediaRole::Thumb->value));
+        $this->assertCount(2, $roleSet->getRoles());
+        $this->assertTrue($roleSet->has(ProductMediaRole::from(ProductMediaRole::ICON)));
+        $this->assertTrue($roleSet->has(ProductMediaRole::from(ProductMediaRole::THUMBNAIL)));
     }
 
     public function testAddRoleDoesNotAddDuplicate(): void
     {
-        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Icon->value));
-        $roleSet->addRole(ProductMediaRole::from(SystemProductMediaRole::Icon->value));
+        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from(ProductMediaRole::ICON));
+        $roleSet->addRole(ProductMediaRole::from(ProductMediaRole::ICON));
 
-        $this->assertCount(1, $roleSet->getRoleIterator());
+        $this->assertCount(1, $roleSet->getRoles());
     }
 
     public function testRemoveRole(): void
     {
         $roleSet = new ProductMediaRoleSet(
-            ProductMediaRole::from(SystemProductMediaRole::Icon->value),
-            ProductMediaRole::from(SystemProductMediaRole::Thumb->value),
+            ProductMediaRole::from(ProductMediaRole::ICON),
+            ProductMediaRole::from(ProductMediaRole::THUMBNAIL),
         );
-        $roleSet->removeRole(ProductMediaRole::from(SystemProductMediaRole::Icon->value));
+        $roleSet->removeRole(ProductMediaRole::from(ProductMediaRole::ICON));
 
-        $this->assertCount(1, $roleSet->getRoleIterator());
-        $this->assertFalse($roleSet->is(SystemProductMediaRole::Icon->value));
-        $this->assertTrue($roleSet->is(SystemProductMediaRole::Thumb->value));
+        $this->assertCount(1, $roleSet->getRoles());
+        $this->assertFalse($roleSet->has(ProductMediaRole::from(ProductMediaRole::ICON)));
+        $this->assertTrue($roleSet->has(ProductMediaRole::from(ProductMediaRole::THUMBNAIL)));
     }
 }

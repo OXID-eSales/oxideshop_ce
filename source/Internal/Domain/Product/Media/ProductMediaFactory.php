@@ -13,9 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 readonly class ProductMediaFactory implements ProductMediaFactoryInterface
@@ -30,12 +28,7 @@ readonly class ProductMediaFactory implements ProductMediaFactoryInterface
                 $path,
                 $mimeType
             ),
-            new ProductMediaRoleSet(
-                ProductMediaRole::from(
-                    SystemProductMediaRole::Detail->value
-                )
-                    ->allowMultipleAssignments()
-            ),
+            new ProductMediaRoleSet(),
         );
     }
 }

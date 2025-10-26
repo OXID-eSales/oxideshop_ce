@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaSorting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
@@ -46,22 +45,6 @@ readonly class ProductMediaService implements ProductMediaServiceInterface
         $this->mediaDao->delete(
             $productMedia->getMedia()->getId()
         );
-    }
-
-    public function addMediaRole(ProductMedia $productMedia, ProductMediaRole $role): void
-    {
-        $productMedia
-            ->getRoleSet()
-            ->addRole($role);
-        $this->productMediaDao->update($productMedia);
-    }
-
-    public function removeMediaRole(ProductMedia $productMedia, ProductMediaRole $role): void
-    {
-        $productMedia
-            ->getRoleSet()
-            ->removeRole($role);
-        $this->productMediaDao->update($productMedia);
     }
 
     public function sort(array $idsSorted): void

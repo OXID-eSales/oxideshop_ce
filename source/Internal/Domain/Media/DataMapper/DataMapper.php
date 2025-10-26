@@ -19,9 +19,9 @@ class DataMapper implements DataMapperInterface
     public function toData(Media $media): array
     {
         return [
-            'id' => $media->getId(),
-            'path' => $media->getMediaPath(),
-            'type' => $media->getMediaType(),
+            'id'   => (string) $media->getId(),
+            'path' => (string) $media->getMediaPath(),
+            'type' => (string) $media->getMediaType(),
         ];
     }
 

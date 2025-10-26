@@ -19,17 +19,16 @@ final class ProductMediaResolverTest extends TestCase
 {
     use ContainerTrait;
 
-    public function testGetRelativePath(): void
+    public function testResolveBuildsExpectedPath(): void
     {
         $mediaFile = 'media.jpg';
 
-        $relativePath = $this->get(ProductMediaPathResolverInterface::class)->getRelativePath($mediaFile);
+        $path = (string) $this->get(ProductMediaPathResolverInterface::class)->resolve('product123', $mediaFile);
 
         $this->assertStringStartsWith(
-            basename($this->get(ContextInterface::class)->getOutPath()),
-            $relativePath
+            Path::join('out', 'pictures', 'media', 'products', 'product123'),
+            $path
         );
-        $this->assertStringEndsWith($mediaFile, $relativePath);
-        $this->assertTrue(Path::isRelative($relativePath));
+        $this->assertStringEndsWith($mediaFile, $path);
     }
 }

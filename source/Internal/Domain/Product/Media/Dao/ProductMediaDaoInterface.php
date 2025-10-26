@@ -5,6 +5,8 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;

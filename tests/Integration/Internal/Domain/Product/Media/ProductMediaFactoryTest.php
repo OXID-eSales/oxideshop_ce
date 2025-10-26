@@ -16,7 +16,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoI
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -37,9 +36,7 @@ final class ProductMediaFactoryTest extends IntegrationTestCase
                 $mediaPath,
                 $mediaType
             ),
-            new ProductMediaRoleSet(
-                ProductMediaRole::from(SystemProductMediaRole::Detail->value)
-            ),
+            new ProductMediaRoleSet(ProductMediaRole::from(ProductMediaRole::DETAIL)),
         );
         $this
             ->get(ProductMediaDaoInterface::class)

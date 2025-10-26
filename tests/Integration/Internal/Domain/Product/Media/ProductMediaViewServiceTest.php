@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
@@ -58,7 +57,6 @@ final class ProductMediaViewServiceTest extends TestCase
         parent::setUp();
 
         $this->setParameter('oxid_esales.alternative_image_url', '');
-        $this->attachContainerToContainerFactory();
 
         $this->beginTransaction($this->get(ConnectionFactoryInterface::class)->create());
 
@@ -203,7 +201,7 @@ final class ProductMediaViewServiceTest extends TestCase
             new MediaType('image/jpeg')
         );
 
-        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from(SystemProductMediaRole::Detail->value));
+        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from(ProductMediaRole::DETAIL));
         $productMedia = new ProductMedia(
             Id::generate(),
             $otherProductId,
@@ -302,7 +300,7 @@ final class ProductMediaViewServiceTest extends TestCase
             $otherProductId,
             Path::join('out', 'pictures', 'media', 'fallback.jpg'),
             1,
-            SystemProductMediaRole::Detail
+            ProductMediaRole::DETAIL
         );
 
         $iconResult = $this->service->getIcon($otherProductId);
@@ -320,26 +318,26 @@ final class ProductMediaViewServiceTest extends TestCase
             $this->productId,
             Path::join('out', 'pictures', 'media', 'icon.jpg'),
             0,
-            SystemProductMediaRole::Icon
+            ProductMediaRole::ICON
         );
         $this->addProductMedia(
             $this->productId,
             Path::join('out', 'pictures', 'media', 'thumb.jpg'),
             0,
-            SystemProductMediaRole::Thumb
+            ProductMediaRole::THUMBNAIL
         );
         $this->addProductMedia(
             $this->productId,
             Path::join('out', 'pictures', 'media', 'detail.jpg'),
             1,
-            SystemProductMediaRole::Detail
+            ProductMediaRole::DETAIL
         );
     }
 
-    private function addProductMedia(Id $productId, string $path, int $position, SystemProductMediaRole $role): void
+    private function addProductMedia(Id $productId, string $path, int $position, string $role): void
     {
         $media = new Media(Id::generate(), new MediaPath($path), new MediaType('image/jpeg'));
-        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from($role->value));
+        $roleSet = new ProductMediaRoleSet(ProductMediaRole::from($role));
         $productMedia = new ProductMedia(Id::generate(), $productId, $media, $roleSet);
         $productMedia->setPosition($position);
         $this->productMediaService->add($productMedia);

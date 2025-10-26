@@ -17,6 +17,11 @@ readonly class MediaPath
         $this->validate($path);
     }
 
+    public function __toString(): string
+    {
+        return $this->path;
+    }
+
     private function validate(string $path): void
     {
         if ($path === '') {
@@ -28,10 +33,5 @@ readonly class MediaPath
         if (str_starts_with($path, '/') || str_starts_with($path, '\\')) {
             throw new \InvalidArgumentException('Media path must be relative, not absolute.');
         }
-    }
-
-    public function __toString(): string
-    {
-        return $this->path;
     }
 }

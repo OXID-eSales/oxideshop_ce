@@ -182,7 +182,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             Registry::getUtilsUrl()->processUrl(
                 $url .
                 'index.php?editlanguage=' .
-                $this->_iEditLang, false
+                $this->_iEditLang,
+                false
             )
         );
         $oViewConf->setViewConfigParam(
@@ -193,7 +194,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
                 Registry::getUtilsUrl()->processUrl(
                     $url .
                     'oxajax.php?editlanguage=' .
-                    $this->_iEditLang, false
+                    $this->_iEditLang,
+                    false
                 )
             )
         );

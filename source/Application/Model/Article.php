@@ -2386,7 +2386,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         return [
             'activeMedia' => $activeMedia,
             'mediaItems' => $mediaItems,
-            'hasMultipleImages' => count($mediaItems) > 1
+            'hasMultipleImages' => count($mediaItems) > 1,
         ];
     }
 

@@ -361,5 +361,4 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
 
         return $row ? $this->productMediaDataMapper->fromData($row) : null;
     }
-
 }

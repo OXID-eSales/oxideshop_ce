@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Validator;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeBaseTypeMismatchException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeGuessMismatchException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Mime\MimeTypes;
 
@@ -28,16 +30,14 @@ readonly class MimeTypeConstraintValidator implements MediaConstraintValidatorIn
         $clientMimeType = $uploadedFile->getClientMimeType();
 
         if (!str_starts_with($guessedMimeType, $this->baseTypePrefix)) {
-            throw new InvalidMediaException(
-                'MIME type "%s" does not match required base type "%s".',
+            throw new MimeBaseTypeMismatchException(
                 $guessedMimeType,
                 $this->baseTypePrefix
             );
         }
 
         if ($guessedMimeType !== $clientMimeType) {
-            throw new InvalidMediaException(
-                'Guessed MIME type "%s" does not match client-provided MIME type "%s".',
+            throw new MimeGuessMismatchException(
                 $guessedMimeType,
                 $clientMimeType
             );

@@ -1021,11 +1021,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         return $this->getViewConfigParam('ajaxlink');
     }
 
-    public function getAjaxUrl(): string
-    {
-        return $this->getViewConfigParam('ajax_url');
-    }
-
     /**
      * Returns multishop status
      *

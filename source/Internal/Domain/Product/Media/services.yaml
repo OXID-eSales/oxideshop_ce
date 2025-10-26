@@ -43,10 +43,10 @@ services:
       - { name: oxid.product_media.constraint_validator }
 
   oxid_esales.product.media.constraint_validator.size:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\FilesizeConstraintValidator
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\FileSizeConstraintValidator
     arguments:
-      $minSize: "%oxid_esales.product.media.file.min_size_kb%"
-      $maxSize: "%oxid_esales.product.media.file.max_size_kb%"
+      $minSizeKb: '%oxid_esales.product.media.file.min_size_kb%'
+      $maxSizeKb: '%oxid_esales.product.media.file.max_size_kb%'
     tags:
       - { name: oxid.product_media.constraint_validator }
 

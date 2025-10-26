@@ -9,51 +9,38 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject;
 
-use ArrayIterator;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class ProductMediaRoleSet
 {
-    private ArrayIterator $roles;
+    private Collection $roles;
 
-    public function __construct(
-        ProductMediaRole ...$roles
-    ) {
-        $this->roles = new ArrayIterator($roles);
+    public function __construct(ProductMediaRole ...$roles)
+    {
+        $this->roles = new ArrayCollection();
+        foreach ($roles as $r) {
+            $this->roles->set($r->value(), $r);
+        }
     }
 
-    /** @return ArrayIterator<int, ProductMediaRole> */
-    public function getRoleIterator(): ArrayIterator
+    public function getRoles(): Collection
     {
         return $this->roles;
     }
 
     public function addRole(ProductMediaRole $role): void
     {
-        foreach ($this->roles as $existingRole) {
-            if ($existingRole->value() === $role->value()) {
-                return;
-            }
-        }
-        $this->roles->append($role);
+        $this->roles->set($role->value(), $role);
     }
 
     public function removeRole(ProductMediaRole $role): void
     {
-        foreach ($this->roles as $key => $existingRole) {
-            if ($existingRole->value() === $role->value()) {
-                $this->roles->offsetUnset($key);
-            }
-        }
+        $this->roles->remove($role->value());
     }
 
-    public function is(string $roleCode): bool
+    public function has(ProductMediaRole $role): bool
     {
-        foreach ($this->roles as $existingRoles) {
-            if ($existingRoles->value() === $roleCode) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->roles->containsKey($role->value());
     }
 }

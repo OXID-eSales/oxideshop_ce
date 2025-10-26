@@ -28,10 +28,7 @@ readonly class DataMapper implements DataMapperInterface
             'product_id' => (string)$productMedia->getProductId(),
             'media_id' => (string)$productMedia->getMedia()->getId(),
             'position' => $productMedia->getPosition(),
-            'roles' => array_map(
-                static fn(ProductMediaRole $role) => $role->value(),
-                iterator_to_array($productMedia->getRoleSet()->getRoleIterator())
-            ),
+            'roles' => $this->getRolesAsValues($productMedia),
             'active' => $productMedia->isActive(),
 
         ];
@@ -63,5 +60,14 @@ readonly class DataMapper implements DataMapperInterface
         }
 
         return $productMedia;
+    }
+
+    private function getRolesAsValues(ProductMedia $productMedia): array
+    {
+        return $productMedia
+            ->getRoleSet()
+            ->getRoles()
+            ->map(static fn(ProductMediaRole $role) => $role->value())
+            ->getValues();
     }
 }

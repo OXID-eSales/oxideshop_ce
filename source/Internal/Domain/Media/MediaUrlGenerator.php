@@ -25,19 +25,28 @@ readonly class MediaUrlGenerator implements MediaUrlGeneratorInterface
 
     public function generateSizedImageUrl(Media $media, string $size): string
     {
-        $mediaPath = (string) $media->getMediaPath();
-
-        $baseUrl = $this->alternativeImageUrl
-            ? Path::join($this->alternativeImageUrl, 'generated')
-            : Path::join($this->context->getShopBaseUrl(), 'out', 'pictures', 'generated');
+        $picturesRoot = Path::join(
+            Path::makeRelative($this->context->getOutPath(), $this->context->getSourcePath()),
+            'pictures'
+        );
+        $relativeMediaPath = Path::makeRelative((string) $media->getMediaPath(), $picturesRoot);
 
         return Path::join(
-            $baseUrl,
-            basename(dirname($mediaPath)),
+            $this->getGeneratedBaseUrl(),
+            dirname($relativeMediaPath),
             $this->buildSizePath($size),
-            basename($mediaPath)
+            rawurlencode(basename($relativeMediaPath))
         );
     }
+
+    private function getGeneratedBaseUrl(): string
+    {
+        return $this->alternativeImageUrl
+            ? Path::join($this->alternativeImageUrl, 'generated')
+            : Path::join($this->context->getShopBaseUrl(), 'out', 'pictures', 'generated');
+    }
+
+
 
     private function buildSizePath(string $size): string
     {

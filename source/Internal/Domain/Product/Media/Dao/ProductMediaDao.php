@@ -10,11 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\DataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaSorting;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
@@ -91,6 +89,8 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
                 $this->getNextPosition($productMedia->getProductId())
             );
         }
+        $data = $this->productMediaDataMapper->toData($productMedia);
+
         $this->queryBuilderFactory
             ->create()
             ->insert(self::PRODUCT_MEDIA_TABLE)
@@ -102,15 +102,17 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
                 'active' => ':active'
             ])
             ->setParameters(
-                $this->productMediaDataMapper->toData($productMedia)
+                $data
             )
             ->executeStatement();
 
-        $this->updateRoles($productMedia);
+        $this->addRoles($productMedia->getId(), $data['roles']);
     }
 
     public function delete(Id $id): void
     {
+        $this->removeRoles($id);
+
         $this->queryBuilderFactory
             ->create()
             ->delete(self::PRODUCT_MEDIA_TABLE)
@@ -147,9 +149,9 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
 
     public function update(ProductMedia $productMedia): void
     {
-        if (!$this->get($productMedia->getId())) {
-            throw new EntryDoesNotExistDaoException();
-        }
+        $this->get($productMedia->getId());
+        $data = $this->productMediaDataMapper->toData($productMedia);
+
         $this->queryBuilderFactory
             ->create()
             ->update(self::PRODUCT_MEDIA_TABLE)
@@ -171,130 +173,11 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             )
             ->where('id = :id')
             ->setParameters(
-                $this->productMediaDataMapper->toData($productMedia)
+                $data
             )
             ->executeStatement();
 
-        $this->updateRoles($productMedia);
-    }
-
-    private function prepareSelectWithJoin(): QueryBuilder
-    {
-        return $this->queryBuilderFactory
-            ->create()
-            ->select(
-                'pm.id as id',
-                'pm.product_id as product_id',
-                'pm.position as position',
-                'pm.active as active',
-                'm.id as media_id',
-                'm.path as media_path',
-                'm.type as media_mime_type',
-                'GROUP_CONCAT(pmr.role) as roles',
-            )
-            ->from(
-                self::PRODUCT_MEDIA_TABLE,
-                'pm'
-            )
-            ->join(
-                'pm',
-                self::MEDIA_TABLE,
-                'm',
-                'pm.media_id = m.id'
-            )
-            ->leftJoin(
-                'pm',
-                self::PRODUCT_MEDIA_ROLES_TABLE,
-                'pmr',
-                'pm.id = pmr.product_media_id'
-            )
-            ->groupBy('pm.id');
-    }
-
-    private function getNextPosition(Id $productId): int
-    {
-        $maxPosition = $this->queryBuilderFactory
-            ->create()
-            ->select('MAX(pm.position) as maxPosition')
-            ->from(
-                self::PRODUCT_MEDIA_TABLE,
-                'pm'
-            )
-            ->where('pm.product_id = :productId')
-            ->setParameter(
-                'productId',
-                $productId
-            )
-            ->executeQuery()
-            ->fetchOne();
-
-        return $maxPosition === null ? 0 : ++$maxPosition;
-    }
-
-    private function updateRoles(ProductMedia $productMedia): void
-    {
-        $this->removePreviousRecords($productMedia);
-        $this->removeRecordsIfUnique($productMedia);
-
-        $insertQuery = $this->queryBuilderFactory
-            ->create()
-            ->insert(self::PRODUCT_MEDIA_ROLES_TABLE)
-            ->values([
-                'product_media_id' => ':product_media_id',
-                'role' => ':role'
-            ]);
-
-        foreach ($productMedia->getRoleSet()->getRoleIterator() as $role) {
-            $query = clone $insertQuery;
-            $query
-                ->setParameters([
-                    'product_media_id' => $productMedia->getId(),
-                    'role' => $role->value()
-                ])
-                ->executeStatement();
-        }
-    }
-
-    private function removePreviousRecords(ProductMedia $productMedia): void
-    {
-        $this->queryBuilderFactory
-            ->create()
-            ->delete(self::PRODUCT_MEDIA_ROLES_TABLE)
-            ->where('product_media_id = :product_media_id')
-            ->setParameter(
-                'product_media_id',
-                $productMedia->getId()
-            )
-            ->executeStatement();
-    }
-
-    private function removeRecordsIfUnique(ProductMedia $productMedia): void
-    {
-        $relatedProductMediaIds = $this->queryBuilderFactory
-            ->create()
-            ->select('id')
-            ->from(self::PRODUCT_MEDIA_TABLE)
-            ->where('product_id = :product_id')
-            ->setParameter('product_id', $productMedia->getProductId())
-            ->executeQuery()
-            ->fetchFirstColumn();
-
-        if (empty($relatedProductMediaIds)) {
-            return;
-        }
-        /** @var ProductMediaRole $role */
-        foreach ($productMedia->getRoleSet()->getRoleIterator() as $role) {
-            if ($role->isSingleAssignmentRole()) {
-                $this->queryBuilderFactory
-                    ->create()
-                    ->delete(self::PRODUCT_MEDIA_ROLES_TABLE)
-                    ->where('role = :role')
-                    ->andWhere('product_media_id IN (:media_ids)')
-                    ->setParameter('role', $role->value())
-                    ->setParameter('media_ids', $relatedProductMediaIds, ArrayParameterType::STRING)
-                    ->executeStatement();
-            }
-        }
+        $this->replaceRoles($productMedia->getId(), $data['roles']);
     }
 
     public function getActiveByProductId(Id $productId): ArrayCollection
@@ -360,5 +243,98 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             ->fetchAssociative();
 
         return $row ? $this->productMediaDataMapper->fromData($row) : null;
+    }
+
+    private function prepareSelectWithJoin(): QueryBuilder
+    {
+        return $this->queryBuilderFactory
+            ->create()
+            ->select(
+                'pm.id as id',
+                'pm.product_id as product_id',
+                'pm.position as position',
+                'pm.active as active',
+                'm.id as media_id',
+                'm.path as media_path',
+                'm.type as media_mime_type',
+                'GROUP_CONCAT(pmr.role) as roles',
+            )
+            ->from(
+                self::PRODUCT_MEDIA_TABLE,
+                'pm'
+            )
+            ->join(
+                'pm',
+                self::MEDIA_TABLE,
+                'm',
+                'pm.media_id = m.id'
+            )
+            ->leftJoin(
+                'pm',
+                self::PRODUCT_MEDIA_ROLES_TABLE,
+                'pmr',
+                'pm.id = pmr.product_media_id'
+            )
+            ->groupBy('pm.id');
+    }
+
+    private function getNextPosition(Id $productId): int
+    {
+        $maxPosition = $this->queryBuilderFactory
+            ->create()
+            ->select('MAX(pm.position) as maxPosition')
+            ->from(
+                self::PRODUCT_MEDIA_TABLE,
+                'pm'
+            )
+            ->where('pm.product_id = :productId')
+            ->setParameter(
+                'productId',
+                $productId
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+        return $maxPosition === null ? 0 : ++$maxPosition;
+    }
+
+    private function removeRoles(Id $productMediaId): void
+    {
+        $this->queryBuilderFactory
+            ->create()
+            ->delete(self::PRODUCT_MEDIA_ROLES_TABLE)
+            ->where('product_media_id = :id')
+            ->setParameter('id', $productMediaId)
+            ->executeStatement();
+    }
+
+    private function addRoles(Id $productMediaId, array $roles): void
+    {
+        if (empty($roles)) {
+            return;
+        }
+
+        $insertQuery = $this->queryBuilderFactory
+            ->create()
+            ->insert(self::PRODUCT_MEDIA_ROLES_TABLE)
+            ->values([
+                'product_media_id' => ':product_media_id',
+                'role' => ':role'
+            ]);
+
+        foreach ($roles as $role) {
+            $insertQuery
+                ->setParameters([
+                    'product_media_id' => $productMediaId,
+                    'role' => $role
+                ])
+                ->executeStatement();
+        }
+    }
+
+    private function replaceRoles(Id $productMediaId, array $roles): void
+    {
+        $this->removeRoles($productMediaId);
+        $this->addRoles($productMediaId, $roles);
     }
 }

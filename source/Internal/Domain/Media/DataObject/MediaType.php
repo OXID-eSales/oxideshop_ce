@@ -17,16 +17,15 @@ readonly class MediaType
         $this->validate($type);
     }
 
-    private function validate(string $type): void
-    {
-        // Basic validation for MIME type format (e.g., image/png)
-        if (!preg_match('#^[\w.\-]+/[\w.\-+]+$#', $type)) {
-            throw new \InvalidArgumentException('Invalid MIME type format.');
-        }
-    }
-
     public function __toString(): string
     {
         return $this->type;
+    }
+
+    private function validate(string $type): void
+    {
+        if (!preg_match('#^[\w.\-]+/[\w.\-+]+$#', $type)) {
+            throw new \InvalidArgumentException('Invalid MIME type format.');
+        }
     }
 }

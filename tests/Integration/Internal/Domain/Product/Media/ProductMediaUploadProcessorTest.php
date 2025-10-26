@@ -11,14 +11,16 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Me
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUploaderInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\InvalidMediaException;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaPathResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileExtensionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileSizeTooLargeException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileSizeTooSmallException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeBaseTypeMismatchException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeGuessMismatchException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\UploadInvalidException;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaUploadProcessorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -27,7 +29,6 @@ use const UPLOAD_ERR_NO_FILE;
 final class ProductMediaUploadProcessorTest extends IntegrationTestCase
 {
     use ContainerTrait;
-    use ProphecyTrait;
 
     private const VALID_IMAGE = 'valid_image.jpg';
     private const INVALID_IMAGE = 'invalid_image.jpg';
@@ -36,8 +37,7 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
     private readonly Id $productId;
     private readonly string $destinationPath;
     private readonly ProductMediaUploadProcessorInterface $productMediaUploadProcessor;
-    private readonly MediaUploaderInterface|ObjectProphecy $mediaUploader;
-    private readonly InvalidMediaException $exception;
+    private MediaUploaderInterface $mediaUploader;
 
     public function testUploadWithValidImage(): void
     {
@@ -55,17 +55,24 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
             null,
             true
         );
-        $this->stubMediaUploaderService($uploadedFile);
+        $this->mediaUploader
+            ->expects($this->once())
+            ->method('uploadTo')
+            ->with($uploadedFile, $this->isInstanceOf(MediaPath::class))
+            ->willReturn(new MediaPath(
+                Path::join('out/pictures/media/products/placeholder', $uploadedFile->getClientOriginalName())
+            ));
 
-        $this->get(ProductMediaUploadProcessorInterface::class)
+        $productId = Id::generate();
+        $result = $this->get(ProductMediaUploadProcessorInterface::class)
             ->process(
-                Id::generate(),
+                $productId,
                 $uploadedFile
             );
 
-        $this->mediaUploader
-            ->upload($uploadedFile)
-            ->shouldHaveBeenCalledOnce();
+        $this->assertEquals((string) $productId, (string) $result->getProductId());
+        $this->assertStringEndsWith(self::VALID_IMAGE, (string) $result->getMedia()->getMediaPath());
+        $this->assertEquals($uploadedFile->getClientMimeType(), (string) $result->getMedia()->getMediaType());
     }
 
     public function testUploadWithFileTooSmall(): void
@@ -90,14 +97,13 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
         );
         $this->stubMediaUploaderService($uploadedFile);
 
-        $this->processAndExpectException($uploadedFile);
-
-        $this->assertEquals(
-            'File size %d bytes is smaller than the minimum allowed %d KB.',
-            $this->exception->getFormat()
-        );
-        $this->assertEquals(filesize($fixture), $this->exception->getValues()[0]);
-        $this->assertEquals(1024, $this->exception->getValues()[1]);
+        try {
+            $this->get(ProductMediaUploadProcessorInterface::class)->process(Id::generate(), $uploadedFile);
+            $this->fail('Expected FileSizeTooSmallException was not thrown.');
+        } catch (FileSizeTooSmallException $e) {
+            $this->assertSame(filesize($fixture), $e->getActualBytes());
+            $this->assertSame(1024, $e->getMinKb());
+        }
     }
 
     public function testUploadWithFileTooBig(): void
@@ -123,14 +129,13 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
         );
         $this->stubMediaUploaderService($uploadedFile);
 
-        $this->processAndExpectException($uploadedFile);
-
-        $this->assertEquals(
-            'File size %d bytes exceeds the maximum allowed %d KB.',
-            $this->exception->getFormat()
-        );
-        $this->assertEquals(filesize($fixture), $this->exception->getValues()[0]);
-        $this->assertEquals(1, $this->exception->getValues()[1]);
+        try {
+            $this->get(ProductMediaUploadProcessorInterface::class)->process(Id::generate(), $uploadedFile);
+            $this->fail('Expected FileSizeTooLargeException was not thrown.');
+        } catch (FileSizeTooLargeException $e) {
+            $this->assertSame(filesize($fixture), $e->getActualBytes());
+            $this->assertSame(1, $e->getMaxKb());
+        }
     }
 
     public function testUploadWithNonImageMimeTypeFile(): void
@@ -150,14 +155,13 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
         );
         $this->stubMediaUploaderService($uploadedFile);
 
-        $this->processAndExpectException($uploadedFile);
-
-        $this->assertEquals(
-            'MIME type "%s" does not match required base type "%s".',
-            $this->exception->getFormat()
-        );
-        $this->assertEquals('text/plain', $this->exception->getValues()[0]);
-        $this->assertEquals('image/', $this->exception->getValues()[1]);
+        try {
+            $this->get(ProductMediaUploadProcessorInterface::class)->process(Id::generate(), $uploadedFile);
+            $this->fail('Expected MimeBaseTypeMismatchException was not thrown.');
+        } catch (MimeBaseTypeMismatchException $e) {
+            $this->assertSame('text/plain', $e->getGuessedMime());
+            $this->assertSame('image/', $e->getRequiredBasePrefix());
+        }
     }
 
     public function testUploadWitMimeTypeSpoofing(): void
@@ -177,14 +181,13 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
         );
         $this->stubMediaUploaderService($uploadedFile);
 
-        $this->processAndExpectException($uploadedFile);
-
-        $this->assertEquals(
-            'Guessed MIME type "%s" does not match client-provided MIME type "%s".',
-            $this->exception->getFormat()
-        );
-        $this->assertEquals('image/jpeg', $this->exception->getValues()[0]);
-        $this->assertEquals($uploadedFile->getClientMimeType(), $this->exception->getValues()[1]);
+        try {
+            $this->get(ProductMediaUploadProcessorInterface::class)->process(Id::generate(), $uploadedFile);
+            $this->fail('Expected MimeGuessMismatchException was not thrown.');
+        } catch (MimeGuessMismatchException $e) {
+            $this->assertSame('image/jpeg', $e->getGuessedMime());
+            $this->assertSame($uploadedFile->getClientMimeType(), $e->getClientMime());
+        }
     }
 
     public function testUploadWithImageFileHavingInvalidFileExtension(): void
@@ -204,15 +207,13 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
         );
         $this->stubMediaUploaderService($uploadedFile);
 
-        $this->processAndExpectException($uploadedFile);
-
-        $this->assertEquals(
-            'File extension "%s" does not match the client-provided MIME type "%s". Valid extensions: %s.',
-            $this->exception->getFormat()
-        );
-        $this->assertEquals('png', $this->exception->getValues()[0]);
-        $this->assertEquals($uploadedFile->getClientMimeType(), $this->exception->getValues()[1]);
-        $this->assertNotEmpty($this->exception->getValues()[2]);
+        try {
+            $this->get(ProductMediaUploadProcessorInterface::class)->process(Id::generate(), $uploadedFile);
+            $this->fail('Expected FileExtensionMismatchException was not thrown.');
+        } catch (FileExtensionMismatchException $e) {
+            $this->assertSame('png', $e->getClientExtension());
+            $this->assertNotEmpty($e->getValidExtensions());
+        }
     }
 
     public function testUploadWithFileHavingAnErrorSetDuringUploading(): void
@@ -232,22 +233,21 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
         );
         $this->stubMediaUploaderService($uploadedFile);
 
-        $this->processAndExpectException($uploadedFile);
-
-        $this->assertEquals(
-            'Media file upload error: %s',
-            $this->exception->getFormat()
-        );
-        $this->assertEquals($uploadedFile->getErrorMessage(), $this->exception->getValues()[0]);
+        try {
+            $this->get(ProductMediaUploadProcessorInterface::class)->process(Id::generate(), $uploadedFile);
+            $this->fail('Expected UploadInvalidException was not thrown.');
+        } catch (UploadInvalidException $e) {
+            $this->assertSame(UPLOAD_ERR_NO_FILE, $e->getErrorCode());
+        }
     }
 
     private function replaceMediaUploaderServiceInstance(): void
     {
         $this->createContainer();
-        $this->mediaUploader = $this->prophesize(MediaUploaderInterface::class);
+        $this->mediaUploader = $this->createMock(MediaUploaderInterface::class);
         $this->container->set(
             'oxid_esales.product.media.media_uploader',
-            $this->mediaUploader->reveal()
+            $this->mediaUploader
         );
         $this->compileContainer();
     }
@@ -255,18 +255,11 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
     private function stubMediaUploaderService(UploadedFile $uploadedFile): void
     {
         $this->mediaUploader
-            ->upload($uploadedFile)
+            ->method('uploadTo')
+            ->with($uploadedFile, $this->isInstanceOf(MediaPath::class))
             ->willReturn(new MediaPath(
-                Path::join(
-                    $this->getMediaPathResolved(),
-                    $uploadedFile->getClientOriginalName()
-                )
+                Path::join('out/pictures/media/products/placeholder', $uploadedFile->getClientOriginalName())
             ));
-    }
-
-    private function getMediaPathResolved(): string
-    {
-        return $this->get(ProductMediaPathResolverInterface::class)->getRelativePath('product_media');
     }
 
     public function allowSmallFilesUploadInConfiguration(): void
@@ -276,16 +269,5 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
                 'oxid_esales.product.media.file.min_size_kb' => '0',
             ]
         ]);
-    }
-
-    private function processAndExpectException(UploadedFile $uploadedFile): void
-    {
-        try {
-            $this->get(ProductMediaUploadProcessorInterface::class)->process(Id::generate(), $uploadedFile);
-
-            $this->fail('Expected InvalidMediaException was not thrown.');
-        } catch (InvalidMediaException $e) {
-            $this->exception = $e;
-        }
     }
 }

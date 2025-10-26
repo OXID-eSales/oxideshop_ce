@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSet
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
 final class MediaUrlGeneratorTest extends TestCase
@@ -27,11 +28,10 @@ final class MediaUrlGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->context = $this->createMock(ContextInterface::class);
+        $this->context = new ContextStub();
         $this->configDao = $this->createMock(ShopConfigurationSettingDaoInterface::class);
 
-        $this->context->method('getShopBaseUrl')->willReturn('https://shop.example.com/');
-        $this->context->method('getCurrentShopId')->willReturn(1);
+        $this->context->setShopBaseUrl('https://shop.example.com/');
 
         $qualitySetting = $this->createMock(ShopConfigurationSetting::class);
         $qualitySetting->method('getValue')->willReturn('75');
@@ -47,14 +47,14 @@ final class MediaUrlGeneratorTest extends TestCase
 
         $media = new Media(
             Id::generate(),
-            new MediaPath('out/pictures/media/product.jpg'),
+            new MediaPath('out/pictures/media/products/1001/product.jpg'),
             new MediaType('image/jpeg')
         );
 
         $result = $this->urlGenerator->generateSizedImageUrl($media, '300*200');
 
         $this->assertEquals(
-            'https://shop.example.com/out/pictures/generated/media/300_200_75/product.jpg',
+            'https://shop.example.com/out/pictures/generated/media/products/1001/300_200_75/product.jpg',
             $result
         );
     }
@@ -69,14 +69,14 @@ final class MediaUrlGeneratorTest extends TestCase
 
         $media = new Media(
             Id::generate(),
-            new MediaPath('out/pictures/media/product.jpg'),
+            new MediaPath('out/pictures/media/products/1001/product.jpg'),
             new MediaType('image/jpeg')
         );
 
         $result = $this->urlGenerator->generateSizedImageUrl($media, '300*200');
 
         $this->assertEquals(
-            'https://cdn.example.com/generated/media/300_200_75/product.jpg',
+            'https://cdn.example.com/generated/media/products/1001/300_200_75/product.jpg',
             $result
         );
     }
@@ -87,7 +87,7 @@ final class MediaUrlGeneratorTest extends TestCase
 
         $media = new Media(
             Id::generate(),
-            new MediaPath('out/pictures/media/test.png'),
+            new MediaPath('out/pictures/media/products/1001/test.png'),
             new MediaType('image/png')
         );
 
@@ -95,12 +95,30 @@ final class MediaUrlGeneratorTest extends TestCase
         $detail = $this->urlGenerator->generateSizedImageUrl($media, '600*600');
 
         $this->assertEquals(
-            'https://shop.example.com/out/pictures/generated/media/87_87_75/test.png',
+            'https://shop.example.com/out/pictures/generated/media/products/1001/87_87_75/test.png',
             $thumbnail
         );
         $this->assertEquals(
-            'https://shop.example.com/out/pictures/generated/media/600_600_75/test.png',
+            'https://shop.example.com/out/pictures/generated/media/products/1001/600_600_75/test.png',
             $detail
+        );
+    }
+
+    public function testGeneratesUrlWithEncodedFilename(): void
+    {
+        $this->urlGenerator = new MediaUrlGenerator($this->context, $this->configDao);
+
+        $media = new Media(
+            Id::generate(),
+            new MediaPath('out/pictures/media/products/1001/Foto 1+#.jpg'),
+            new MediaType('image/jpeg')
+        );
+
+        $result = $this->urlGenerator->generateSizedImageUrl($media, '300*200');
+
+        $this->assertEquals(
+            'https://shop.example.com/out/pictures/generated/media/products/1001/300_200_75/Foto%201%2B%23.jpg',
+            $result
         );
     }
 
@@ -111,21 +129,21 @@ final class MediaUrlGeneratorTest extends TestCase
 
         $configDao = $this->createMock(ShopConfigurationSettingDaoInterface::class);
         $configDao->method('get')
-            ->with('sDefaultImageQuality')
+            ->with('sDefaultImageQuality', $this->context->getCurrentShopId())
             ->willReturn($qualitySetting);
 
         $this->urlGenerator = new MediaUrlGenerator($this->context, $configDao);
 
         $media = new Media(
             Id::generate(),
-            new MediaPath('out/pictures/media/hq.jpg'),
+            new MediaPath('out/pictures/media/products/1001/hq.jpg'),
             new MediaType('image/jpeg')
         );
 
         $result = $this->urlGenerator->generateSizedImageUrl($media, '400*300');
 
         $this->assertEquals(
-            'https://shop.example.com/out/pictures/generated/media/400_300_95/hq.jpg',
+            'https://shop.example.com/out/pictures/generated/media/products/1001/400_300_95/hq.jpg',
             $result
         );
     }

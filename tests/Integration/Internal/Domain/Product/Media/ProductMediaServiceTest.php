@@ -16,7 +16,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\SystemProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
@@ -34,8 +33,6 @@ final class ProductMediaServiceTest extends TestCase
     private readonly ProductMediaServiceInterface $service;
     private readonly MediaDaoInterface $mediaDao;
     private readonly Id $productId;
-    private readonly ProductMediaRole $singleAssignmentRole;
-    private readonly ProductMediaRole $multipleAssignmentsRole;
 
     public function setUp(): void
     {
@@ -47,14 +44,6 @@ final class ProductMediaServiceTest extends TestCase
         );
         $this->service = $this->get(ProductMediaServiceInterface::class);
         $this->mediaDao = $this->get(MediaDaoInterface::class);
-        $this->singleAssignmentRole = ProductMediaRole::from(
-            SystemProductMediaRole::Thumb->value
-        );
-        $this->multipleAssignmentsRole = ProductMediaRole::from(
-            SystemProductMediaRole::Detail->value
-        )
-            ->allowMultipleAssignments();
-
         $this->createTestProductMedia();
     }
 
@@ -128,68 +117,6 @@ final class ProductMediaServiceTest extends TestCase
         $this->assertFalse($fetched->isActive());
     }
 
-    public function testAddMediaRoleWithMultipleAndSingleRolesAllowedPerProduct(): void
-    {
-        $this->createTestProductMedia();
-        $media1 = $this->productMedia;
-        $this->createTestProductMedia();
-        $media2 = $this->productMedia;
-
-        $this->service->addMediaRole($media1, $this->singleAssignmentRole);
-
-        $this->assertTrue(
-            $this->service
-                ->get($media1->getId())
-                ->getRoleSet()
-                ->is($this->singleAssignmentRole->value())
-        );
-        $this->assertFalse(
-            $this->service
-                ->get($media2->getId())
-                ->getRoleSet()
-                ->is($this->singleAssignmentRole->value())
-        );
-        $this->assertTrue(
-            $this->service
-                ->get($media1->getId())
-                ->getRoleSet()
-                ->is($this->multipleAssignmentsRole->value())
-        );
-        $this->assertTrue(
-            $this->service
-                ->get($media2->getId())
-                ->getRoleSet()
-                ->is($this->multipleAssignmentsRole->value())
-        );
-
-        $this->service->addMediaRole($media2, $this->singleAssignmentRole);
-
-        $this->assertFalse(
-            $this->service
-                ->get($media1->getId())
-                ->getRoleSet()
-                ->is($this->singleAssignmentRole->value())
-        );
-        $this->assertTrue(
-            $this->service
-                ->get($media2->getId())
-                ->getRoleSet()
-                ->is($this->singleAssignmentRole->value())
-        );
-        $this->assertTrue(
-            $this->service
-                ->get($media1->getId())
-                ->getRoleSet()
-                ->is($this->multipleAssignmentsRole->value())
-        );
-        $this->assertTrue(
-            $this->service
-                ->get($media2->getId())
-                ->getRoleSet()
-                ->is($this->multipleAssignmentsRole->value())
-        );
-    }
-
     public function testSorting(): void
     {
         $this->createTestProductMedia();
@@ -255,7 +182,7 @@ final class ProductMediaServiceTest extends TestCase
             ),
             $this->getSameProductIdForAllMedia(),
             $media,
-            new ProductMediaRoleSet($this->multipleAssignmentsRole),
+            new ProductMediaRoleSet(ProductMediaRole::from(ProductMediaRole::DETAIL)),
         );
         $this->service->add($this->productMedia);
     }

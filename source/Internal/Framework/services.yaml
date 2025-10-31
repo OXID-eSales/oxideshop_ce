@@ -2,15 +2,17 @@ imports:
   - { resource: parameters.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Console/services.yaml }
-  - { resource: DIContainer/services.yaml }
   - { resource: Database/services.yaml }
+  - { resource: DIContainer/services.yaml }
   - { resource: Event/services.yaml }
   - { resource: FileSystem/services.yaml }
   - { resource: Form/services.yaml }
+  - { resource: Html/services.yaml }
   - { resource: Logger/services.yaml }
   - { resource: Migration/services.yaml }
   - { resource: Module/services.yaml }
+  - { resource: Request/services.yaml }
+  - { resource: Session/services.yaml }
   - { resource: SystemRequirements/services.yaml }
   - { resource: Templating/services.yaml }
   - { resource: Theme/services.yaml }
-  - { resource: Request/services.yaml }

@@ -1,0 +1,2 @@
+parameters:
+  oxid_esales.html_sanitizer_enabled: false

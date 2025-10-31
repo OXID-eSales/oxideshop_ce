@@ -8,7 +8,11 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use Exception;
+use OxidEsales\Eshop\Core\Dao\ApplicationServerDao;
+use OxidEsales\Eshop\Core\Module\ModuleList;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Service\ApplicationServerExporter;
+use OxidEsales\Eshop\Core\Service\ApplicationServerService;
 
 /**
  * Contains system event handler methods
@@ -60,7 +64,7 @@ class SystemEventHandler
             /** @var \OxidEsales\Eshop\Core\UserCounter $userCounter */
             $userCounter = oxNew(\OxidEsales\Eshop\Core\UserCounter::class);
 
-            /** @var \OxidEsales\Eshop\Core\Service\ApplicationServerExporter $appServerExporter */
+            /** @var ApplicationServerExporter $appServerExporter */
             $appServerExporter = $this->getApplicationServerExporter();
 
             /** @var \OxidEsales\Eshop\Core\OnlineLicenseCheck $OLC */
@@ -82,7 +86,7 @@ class SystemEventHandler
     protected function getApplicationServerExporter()
     {
         $appServerService = $this->getAppServerService();
-        return oxNew(\OxidEsales\Eshop\Core\Service\ApplicationServerExporter::class, $appServerService);
+        return oxNew(ApplicationServerExporter::class, $appServerService);
     }
 
     /**
@@ -124,7 +128,7 @@ class SystemEventHandler
             $onlineModuleVersionNotifier = oxNew(
                 \OxidEsales\Eshop\Core\OnlineModuleVersionNotifier::class,
                 $onlineModuleVersionNotifierCaller,
-                oxNew(\OxidEsales\Eshop\Core\Module\ModuleList::class)
+                oxNew(ModuleList::class)
             );
 
             $this->setOnlineModuleVersionNotifier($onlineModuleVersionNotifier);
@@ -139,9 +143,7 @@ class SystemEventHandler
     public function onAdminLogin()
     {
         try {
-            if ($this->isSendingShopDataEnabled()) {
-                $this->getOnlineModuleVersionNotifier()->versionNotify();
-            }
+            $this->getOnlineModuleVersionNotifier()->versionNotify();
         } catch (Exception $o) {
         }
     }
@@ -175,22 +177,12 @@ class SystemEventHandler
                 $appServerService->updateAppServerInformationInFrontend();
             }
 
-            if ($this->isSendingShopDataEnabled() && !\OxidEsales\Eshop\Core\Registry::getUtils()->isSearchEngine()) {
+            if (!Registry::getUtils()->isSearchEngine()) {
                 $this->sendShopInformation();
             }
         } catch (Exception $exception) {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
-    }
-
-    /**
-     * Checks if sending shop data is enabled.
-     *
-     * @return bool
-     */
-    protected function isSendingShopDataEnabled()
-    {
-        return (bool) Registry::getConfig()->getConfigParam('blSendTechnicalInformationToOxid');
     }
 
     /**
@@ -235,7 +227,7 @@ class SystemEventHandler
         $hourToCheck = $this->getCheckTime();
 
         /** @var \OxidEsales\Eshop\Core\UtilsDate $utilsDate */
-        $utilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
+        $utilsDate = Registry::getUtilsDate();
         $nextCheckTime = $utilsDate->formTime('tomorrow', $hourToCheck);
 
         Registry::getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseNextCheckTime', $nextCheckTime);
@@ -270,7 +262,7 @@ class SystemEventHandler
     private function getCurrentTime()
     {
         /** @var \OxidEsales\Eshop\Core\UtilsDate $utilsDate */
-        $utilsDate = \OxidEsales\Eshop\Core\Registry::getUtilsDate();
+        $utilsDate = Registry::getUtilsDate();
 
         return $utilsDate->getTime();
     }
@@ -290,14 +282,14 @@ class SystemEventHandler
     protected function getAppServerService()
     {
         $appServerService = oxNew(
-            \OxidEsales\Eshop\Core\Service\ApplicationServerService::class,
+            ApplicationServerService::class,
             oxNew(
-                \OxidEsales\Eshop\Core\Dao\ApplicationServerDao::class,
+                ApplicationServerDao::class,
                 \OxidEsales\Eshop\Core\DatabaseProvider::getDb(),
                 Registry::getConfig()
             ),
             oxNew(\OxidEsales\Eshop\Core\UtilsServer::class),
-            \OxidEsales\Eshop\Core\Registry::get("oxUtilsDate")->getTime()
+            Registry::get("oxUtilsDate")->getTime()
         );
 
         return $appServerService;

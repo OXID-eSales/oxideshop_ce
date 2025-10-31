@@ -13,3 +13,4 @@ imports:
   - { resource: SystemRequirements/services.yaml }
   - { resource: Templating/services.yaml }
   - { resource: Theme/services.yaml }
+  - { resource: Request/services.yaml }

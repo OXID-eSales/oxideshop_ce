@@ -1,0 +1,34 @@
+imports:
+  - { resource: parameters.yaml }
+
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizerConfigFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizerConfigFactory
+
+  oxid_esales.html_sanitizer.config:
+    class: Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizerConfigFactoryInterface', 'create']
+
+  Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface:
+    class: Symfony\Component\HtmlSanitizer\HtmlSanitizer
+    arguments:
+      - '@oxid_esales.html_sanitizer.config'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizer:
+    arguments:
+      - '@Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Html\AllowAllHtmlSanitizer:
+
+  OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizerFactory:
+    arguments:
+      - '%oxid_esales.html_sanitizer_enabled%'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizer'
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Html\AllowAllHtmlSanitizer'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizerInterface:
+    factory: [ '@OxidEsales\EshopCommunity\Internal\Framework\Html\HtmlSanitizerFactory', 'create' ]
+    public: true

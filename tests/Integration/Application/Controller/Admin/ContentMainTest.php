@@ -43,7 +43,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testSanitizerShouldRemoveUnsafeHtmlContent(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', true);
-        $this->attachContainerToContainerFactory();
         $this->mockContentRequest($this->unsafeHtml);
 
         $this->contentMain->save();
@@ -55,7 +54,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testSaveShouldPreserveEmptyContent(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', true);
-        $this->attachContainerToContainerFactory();
         $this->mockContentRequest('');
 
         $this->contentMain->save();
@@ -67,7 +65,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testDisabledSanitizerShouldPreserveAllElements(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', false);
-        $this->attachContainerToContainerFactory();
         $this->mockContentRequest($this->unsafeHtml);
 
         $this->contentMain->save();
@@ -79,7 +76,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testSanitizerShouldHandleMalformedHtml(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', true);
-        $this->attachContainerToContainerFactory();
         $malformedHtml = '<div><span>missing closing div';
         $this->mockContentRequest($malformedHtml);
 
@@ -92,7 +88,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testIdentShouldBePreparedAndPersisted(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', true);
-        $this->attachContainerToContainerFactory();
 
         $this->mockPostRequest([
             'oxid' => $this->contentId,
@@ -108,7 +103,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testDuplicateIdentShouldTriggerError(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', true);
-        $this->attachContainerToContainerFactory();
 
         $ident = 'abc';
         $this->mockPostRequest([
@@ -131,7 +125,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testSaveinnlangShouldRemoveUnsafeHtmlWhenSanitizerEnabled(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', true);
-        $this->attachContainerToContainerFactory();
 
         $newLang = 1;
         $this->mockPostRequest([
@@ -150,7 +143,6 @@ final class ContentMainTest extends IntegrationTestCase
     public function testSaveinnlangShouldPreserveUnsafeHtmlWhenSanitizerDisabled(): void
     {
         $this->setParameter('oxid_esales.html_sanitizer_enabled', false);
-        $this->attachContainerToContainerFactory();
 
         $newLang = 1;
         $this->mockPostRequest([
@@ -168,9 +160,11 @@ final class ContentMainTest extends IntegrationTestCase
 
     private function createContentMain(): ContentMain
     {
+        $contentMain = new ContentMain();
         Registry::getConfig()->setAdminMode(true);
         Registry::getSession()->setVariable('blIsAdmin', true);
-        return new ContentMain();
+
+        return $contentMain;
     }
 
     private function mockContentRequest(string $content): void

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Media;
 
+use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
@@ -150,6 +151,27 @@ final class ProductMediaServiceTest extends TestCase
                 ->get($media3->getId())
                 ->getPosition()
         );
+    }
+
+    public function testSortWithMaliciousValues(): void
+    {
+        $this->createTestProductMedia();
+        $media1 = $this->productMedia;
+        $this->createTestProductMedia();
+        $media2 = $this->productMedia;
+        $this->createTestProductMedia();
+        $media3 = $this->productMedia;
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->service->sort([
+            $media2->getId() . "' OR '1'='1",
+            $media1->getId() . "') OR SLEEP(5) --",
+            $media3->getId() . "'; DROP TABLE oxproduct_media; --",
+            "' OR SLEEP(5) OR '",
+            "' OR 1=1 --",
+            "'; DELETE FROM oxproduct_media WHERE '1'='1",
+        ]);
     }
 
     private function createTestProductMedia(): void

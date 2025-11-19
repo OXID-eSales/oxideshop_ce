@@ -127,24 +127,34 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
     public function sort(ProductMediaSorting $sorting): void
     {
         $caseClauses = '';
+        $parameters = [];
+        $inClausePlaceholders = [];
+
         foreach ($sorting->getSorting() as $position => $id) {
+            $idParamName = 'id_' . $position;
+            $positionParamName = 'position_' . $position;
+
             $caseClauses .= sprintf(
-                " WHEN '%s' THEN %d ",
-                $id,
-                $position
+                " WHEN :%s THEN :%s ",
+                $idParamName,
+                $positionParamName
             );
+
+            $parameters[$idParamName] = (string) $id;
+            $parameters[$positionParamName] = $position;
+            $inClausePlaceholders[] = ':' . $idParamName;
         }
+
+        $query = sprintf(
+            'UPDATE `%s` SET `position` = CASE `id` %s END WHERE `id` IN (%s)',
+            self::PRODUCT_MEDIA_TABLE,
+            $caseClauses,
+            implode(', ', $inClausePlaceholders)
+        );
+
         $this->connectionFactory
             ->create()
-            ->prepare(
-                sprintf(
-                    'UPDATE `%s` SET `position` = CASE `id` %s END WHERE `id` in (%s)',
-                    self::PRODUCT_MEDIA_TABLE,
-                    $caseClauses,
-                    $sorting
-                )
-            )
-            ->executeQuery();
+            ->executeStatement($query, $parameters);
     }
 
     public function update(ProductMedia $productMedia): void

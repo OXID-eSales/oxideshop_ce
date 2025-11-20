@@ -71,19 +71,16 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
         stopProfile("loadinglists");
     }
 
-    /**
-     * Get history article id's from session or cookie.
-     *
-     * @return array
-     */
-    public function getHistoryArticles()
+    public function getHistoryArticles(): array
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        if ($aArticlesIds = $session->getVariable('aHistoryArticles')) {
-            return $aArticlesIds;
-        } elseif ($sArticlesIds = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('aHistoryArticles')) {
-            return explode('|', $sArticlesIds);
+        $sessionHistory = Registry::getSession()->getVariable('aHistoryArticles');
+        if (is_array($sessionHistory)) {
+            return $sessionHistory;
         }
+
+        $cookieHistory = Registry::getUtilsServer()->getOxCookie('aHistoryArticles');
+
+        return is_string($cookieHistory) ? explode('|', $cookieHistory) : [];
     }
 
     /**
@@ -93,13 +90,13 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function setHistoryArticles($aArticlesIds)
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
         if ($session->getId()) {
             $session->setVariable('aHistoryArticles', $aArticlesIds);
             // clean cookie, if session started
-            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', '');
+            Registry::getUtilsServer()->setOxCookie('aHistoryArticles', '');
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsServer()->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
+            Registry::getUtilsServer()->setOxCookie('aHistoryArticles', implode('|', $aArticlesIds));
         }
     }
 

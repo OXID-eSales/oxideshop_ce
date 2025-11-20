@@ -181,7 +181,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
             Registry::getUtilsUrl()->processUrl(
                 $url .
                 'index.php?editlanguage=' .
-                $this->_iEditLang, false
+                $this->_iEditLang,
+                false
             )
         );
         $oViewConf->setViewConfigParam(
@@ -192,7 +193,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
                 Registry::getUtilsUrl()->processUrl(
                     $url .
                     'oxajax.php?editlanguage=' .
-                    $this->_iEditLang, false
+                    $this->_iEditLang,
+                    false
                 )
             )
         );
@@ -245,26 +247,18 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
     }
 
-    /**
-     * Store navigation history parameters to cookie
-     *
-     * @param string $sNode active view id
-     */
-    protected function addNavigationHistory($sNode)
+    protected function addNavigationHistory(string $nodeId): void
     {
-        $myUtilsServer = Registry::getUtilsServer();
+        $utilsServer = Registry::getUtilsServer();
 
-        // store navigation history
-        $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
-        if (!is_array($aHistory)) {
-            $aHistory = [];
+        $historyCookie = $utilsServer->getOxCookie('oxidadminhistory');
+        $history = is_string($historyCookie) ? explode('|', $historyCookie) : [];
+
+        if (!in_array($nodeId, $history, true)) {
+            $history[] = $nodeId;
         }
 
-        if (!in_array($sNode, $aHistory)) {
-            $aHistory[] = $sNode;
-        }
-
-        $myUtilsServer->setOxCookie('oxidadminhistory', implode('|', $aHistory));
+        $utilsServer->setOxCookie('oxidadminhistory', implode('|', $history));
     }
 
     /** @inheritdoc */

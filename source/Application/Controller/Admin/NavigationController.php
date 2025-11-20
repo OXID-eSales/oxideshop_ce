@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -27,71 +28,65 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     public function render()
     {
         parent::render();
-        $myUtilsServer = Registry::getUtilsServer();
 
-        $sItem = Registry::getRequest()->getRequestEscapedParameter("item");
-        $sItem = $sItem ? basename($sItem) : false;
-        if (!$sItem) {
-            $sItem = "nav_frame";
-            $aFavorites = Registry::getRequest()->getRequestEscapedParameter("favorites");
-            if (is_array($aFavorites)) {
-                $myUtilsServer->setOxCookie('oxidadminfavorites', implode('|', $aFavorites));
+        $request = Registry::getRequest();
+        $session = Registry::getSession();
+        $utilsServer = Registry::getUtilsServer();
+
+        $itemParam = $request->getRequestEscapedParameter('item');
+        $item = $itemParam ? basename($itemParam) : false;
+
+        if (!$item) {
+            $item = 'nav_frame';
+            $favoritesParam = $request->getRequestEscapedParameter('favorites');
+            if (is_array($favoritesParam)) {
+                $utilsServer->setOxCookie('oxidadminfavorites', implode('|', $favoritesParam));
             }
         } else {
-            $oNavTree = $this->getNavigation();
-
-            // set menu structure
-            $this->_aViewData["menustructure"] = $oNavTree->getDomXml()->documentElement->childNodes;
-
-            // version patch string
+            $navTree = $this->getNavigation();
+            $this->_aViewData["menustructure"] = $navTree->getDomXml()->documentElement->childNodes;
             $this->_aViewData["sVersion"] = ShopVersion::getVersion();
 
-            //checking requirements if this is not nav frame reload
-            if (!Registry::getRequest()->getRequestEscapedParameter("navReload")) {
-                // #661 execute stuff we run each time when we start admin once
+            if (!$request->getRequestEscapedParameter("navReload")) {
                 $templateExtension = ContainerFacade::getParameter('oxid_esales.templating.engine_template_extension');
-                if ($sItem === "home.$templateExtension") {
+                if ($item === "home.$templateExtension") {
                     $this->_aViewData['aMessage'] = $this->doStartUpChecks();
                 }
             } else {
-                //removing reload param to force requirements checking next time
-                Registry::getSession()->deleteVariable("navReload");
+                $session->remove('navReload');
             }
 
-            // favorite navigation
-            $aFavorites = explode('|', $myUtilsServer->getOxCookie('oxidadminfavorites'));
-
-            if (is_array($aFavorites) && count($aFavorites)) {
-                $this->_aViewData["menufavorites"] = $oNavTree->getListNodes($aFavorites);
-                $this->_aViewData["aFavorites"] = $aFavorites;
+            $favoritesCookie = $utilsServer->getOxCookie('oxidadminfavorites');
+            $favorites = is_string($favoritesCookie) ? explode('|', $favoritesCookie) : [];
+            if ($favorites) {
+                $this->_aViewData["menufavorites"] = $navTree->getListNodes($favorites);
+                $this->_aViewData["aFavorites"] = $favorites;
             }
 
-            // history navigation
-            $aHistory = explode('|', $myUtilsServer->getOxCookie('oxidadminhistory'));
-            if (is_array($aHistory) && count($aHistory)) {
-                $this->_aViewData["menuhistory"] = $oNavTree->getListNodes($aHistory);
+            $historyCookie = $utilsServer->getOxCookie('oxidadminhistory');
+            $history = is_string($historyCookie) ? explode('|', $historyCookie) : [];
+            if ($history) {
+                $this->_aViewData["menuhistory"] = $navTree->getListNodes($history);
             }
 
-            // open history node ?
-            $this->_aViewData["blOpenHistory"] = Registry::getRequest()->getRequestEscapedParameter('openHistory');
+            $this->_aViewData["blOpenHistory"] = $request->getRequestEscapedParameter('openHistory');
         }
 
-        $blisMallAdmin = Registry::getSession()->getVariable('malladmin');
-        $oShoplist = oxNew(\OxidEsales\Eshop\Application\Model\ShopList::class);
-        if (!$blisMallAdmin) {
-            // we only allow to see our shop
-            $iShopId = Registry::getSession()->getVariable("actshop");
-            $oShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
-            $oShop->load($iShopId);
-            $oShoplist->add($oShop);
+        $isMallAdmin = $session->getVariable('malladmin');
+        $shopList = oxNew(\OxidEsales\Eshop\Application\Model\ShopList::class);
+        if ($isMallAdmin) {
+            $shopList->getIdTitleList();
         } else {
-            $oShoplist->getIdTitleList();
+            $shopId = $session->getVariable('actshop');
+            $shop = oxNew(Shop::class);
+            $shop->load($shopId);
+            $shopList->add($shop);
         }
 
-        $this->_aViewData['shoplist'] = $oShoplist;
+        $this->_aViewData['shoplist'] = $shopList;
         $this->_aViewData["shopURL"] = Registry::getConfig()->getShopURL();
 
-        return $sItem;
+        return $item;
     }
 
     /**

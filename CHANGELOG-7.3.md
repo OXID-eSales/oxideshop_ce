@@ -5,6 +5,12 @@
 ### Fixed
 - Environment variables via .env file now work in console commands
 
+### Deprecated
+- Logger configuration will be simplified in next major, related classes and interfaces removed:
+  `MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`, `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
+- Using fetch mode in database query results
+- Database adapter loggers
+
 ## v7.3.0 - 2025-04-10
 
 ### Added
@@ -49,7 +55,3 @@
   - `ShopConfigurationDaoInterface::deleteAll()`
   - `ShopConfiguration::deleteModuleConfiguration()`
   - `ModuleConfigurationDaoInterface::deleteAll()`
-- Logger configuration will be simplified in next major, related classes and interfaces removed:
-`MonologConfigurationInterface`, `PsrLoggerConfigurationInterface`, `LoggerConfigurationValidatorInterface`, `LoggerWrapper`
-- Using fetch mode in database query results
-- Database adapter loggers

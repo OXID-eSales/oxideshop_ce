@@ -39,10 +39,11 @@ final class MediaTypeTest extends TestCase
         new MediaType('invalidtype');
     }
 
-    public function testEmptyMimeTypeThrowsException(): void
+    public function testEmptyMimeTypeIsAccepted(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        new MediaType('');
+        $mediaType = new MediaType('');
+
+        $this->assertEquals('', (string)$mediaType);
     }
 
     public function testMimeTypeWithSpaceThrowsException(): void

@@ -24,7 +24,7 @@ readonly class MediaType
 
     private function validate(string $type): void
     {
-        if (!preg_match('#^[\w.\-]+/[\w.\-+]+$#', $type)) {
+        if ($type !== '' && !preg_match('#^[\w.\-]+/[\w.\-+]+$#', $type)) {
             throw new \InvalidArgumentException('Invalid MIME type format.');
         }
     }

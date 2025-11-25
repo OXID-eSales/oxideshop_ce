@@ -16,6 +16,10 @@ define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 const OX_BASE_PATH = INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR;
 const VENDOR_PATH = INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR;
 
+require_once VENDOR_PATH . 'autoload.php';
+
+(new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
+
 if (!function_exists('oxTriggerOfflinePageDisplay')) {
     function oxTriggerOfflinePageDisplay(): void
     {
@@ -34,14 +38,15 @@ if (!function_exists('oxTriggerOfflinePageDisplay')) {
 register_shutdown_function(
     static function () {
         $lastError = error_get_last();
-        if ($lastError) {
+        $fatalErrors = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR];
+        if ($lastError && in_array($lastError['type'], $fatalErrors, true)) {
             file_put_contents(
                 OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'oxideshop.log',
                 "Application has shut down with an UNCAUGHT ERROR: '" . print_r($lastError, true) . "'\n",
                 FILE_APPEND
             );
-            $fatalErrors = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR];
-            if (in_array($lastError['type'], $fatalErrors, true) && !getenv('OXID_DEBUG_MODE)')) {
+
+            if (!filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)) {
                 oxTriggerOfflinePageDisplay();
             }
             if ($lastError['type'] === E_ERROR) {
@@ -52,14 +57,13 @@ register_shutdown_function(
     }
 );
 
-require_once VENDOR_PATH . 'autoload.php';
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
 spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
 /** Set exception handler before including modules/functions.php, so it can be overwritten by shop operators. */
 set_exception_handler(
     [
-        new ExceptionHandler((bool) getenv('OXID_DEBUG_MODE')),
+        new ExceptionHandler(filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)),
         'handleUncaughtException'
     ]
 );
@@ -74,7 +78,5 @@ ini_set('session.name', 'sid');
 ini_set('session.use_cookies', 0);
 ini_set('session.use_trans_sid', 0);
 ini_set('url_rewriter.tags', '');
-
-(new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
 
 date_default_timezone_set(getenv('OXID_DEFAULT_TIMEZONE') ?: 'Europe/Berlin');

@@ -30,10 +30,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\DataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\DataMapper
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\ViewDataMapperInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\ViewDataMapper
-    public: true
-
   oxid_esales.product.media.media_uploader:
     class: OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUploader
 

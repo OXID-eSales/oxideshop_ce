@@ -11,6 +11,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDao
+    public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSettingDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSettingDao

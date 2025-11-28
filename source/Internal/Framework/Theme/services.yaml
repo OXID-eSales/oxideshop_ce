@@ -1,5 +1,10 @@
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'
+  oxid_esales.theme.admin.media.image_grid_size: '200*200'
+  oxid_esales.theme.admin.media.image_zoom_size: '800*800'
+  oxid_esales.theme.media.allowed_image_sizes:
+    - '%oxid_esales.theme.admin.media.image_grid_size%'
+    - '%oxid_esales.theme.admin.media.image_zoom_size%'
 
 services:
   _defaults:

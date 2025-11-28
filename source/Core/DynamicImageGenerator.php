@@ -7,6 +7,8 @@
 
 namespace {
 
+    use OxidEsales\Eshop\Core\DynamicImageGenerator;
+
     /** Checks if instance name getter does not exist */
     if (!function_exists("getGeneratorInstanceName")) {
         /**
@@ -16,7 +18,7 @@ namespace {
          */
         function getGeneratorInstanceName()
         {
-            return \OxidEsales\Eshop\Core\DynamicImageGenerator::class;
+            return DynamicImageGenerator::class;
         }
     }
 
@@ -59,6 +61,7 @@ namespace {
 }
 namespace OxidEsales\EshopCommunity\Core {
 
+    use OxidEsales\Eshop\Core\Exception\StandardException;
     use OxidEsales\Eshop\Core\Exception\SystemComponentException;
     use OxidEsales\Eshop\Core\Registry;
     use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -130,6 +133,7 @@ namespace OxidEsales\EshopCommunity\Core {
             "sCatIconsize",
             "sCatPromotionsize"
         ];
+
         /**
          * Creates and returns picture generator instance
          *
@@ -332,7 +336,16 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function generateJpg($source, $target, $width, $height, $quality)
         {
-            return resizeJpeg($source, $target, $width, $height, @getimagesize($source), getGdVersion(), null, $quality);
+            return resizeJpeg(
+                $source,
+                $target,
+                $width,
+                $height,
+                @getimagesize($source),
+                getGdVersion(),
+                null,
+                $quality
+            );
         }
 
         /**
@@ -349,7 +362,15 @@ namespace OxidEsales\EshopCommunity\Core {
         {
             $imageInfo = @getimagesize($source);
 
-            return resizeGif($source, $target, $width, $height, $imageInfo[0], $imageInfo[1], $this->validateGdVersion());
+            return resizeGif(
+                $source,
+                $target,
+                $width,
+                $height,
+                $imageInfo[0],
+                $imageInfo[1],
+                $this->validateGdVersion()
+            );
         }
 
         protected function generateWebp(string $source, string $target, int $width, int $height, int $quality): string
@@ -417,10 +438,10 @@ namespace OxidEsales\EshopCommunity\Core {
          */
         protected function isValidPath($path)
         {
-            $valid = false;
-
             list($width, $height, $quality) = $this->getImageInfo();
             if ($width && $height && $quality) {
+                $checkSize = "$width*$height";
+
                 $config = Registry::getConfig();
                 $db = DatabaseProvider::getDb();
 
@@ -451,9 +472,6 @@ namespace OxidEsales\EshopCommunity\Core {
 
                     // any shop matching quality
                     if ($shopIds) {
-                        //
-                        $checkSize = "$width*$height";
-
                         // selecting config variables to check
                         $q = "select oxvartype, oxvarvalue from oxconfig
                            where oxvarname in ( {$names} ) and oxshopid in ( {$shopIds} ) order by oxshopid";
@@ -463,16 +481,26 @@ namespace OxidEsales\EshopCommunity\Core {
                             $confValues = (array) $config->decodeValue($value["oxvartype"], $value["oxvarvalue"]);
                             foreach ($confValues as $confValue) {
                                 if (strcmp($checkSize, $confValue) == 0) {
-                                    $valid = true;
-                                    break;
+                                    return true;
                                 }
                             }
                         }
                     }
                 }
+
+                return $this->isSizeAllowed($checkSize);
             }
 
-            return $valid;
+            return false;
+        }
+
+        private function isSizeAllowed(string $checkSize): bool
+        {
+            return in_array(
+                $checkSize,
+                ContainerFacade::getParameter('oxid_esales.theme.media.allowed_image_sizes'),
+                true
+            );
         }
 
         /**
@@ -481,7 +509,7 @@ namespace OxidEsales\EshopCommunity\Core {
          * @param string $imageSource File path of the source image
          * @param string $imageTarget File path of the image to be generated
          *
-         * @throws \OxidEsales\Eshop\Core\Exception\StandardException If the path of imageTarget and generated image are not the same
+         * @throws StandardException If the path of imageTarget and generated image are not the same
          *
          * @return bool|string Return false on failure or file path of the generated image on success
          */
@@ -523,24 +551,46 @@ namespace OxidEsales\EshopCommunity\Core {
                 // extracting image info - size/quality
                 switch ($fileExtensionSource) {
                     case "png":
-                        $generatedImagePath = $this->generatePng($imageSource, $imageTarget, $targetWidth, $targetHeight);
+                        $generatedImagePath = $this->generatePng(
+                            $imageSource,
+                            $imageTarget,
+                            $targetWidth,
+                            $targetHeight
+                        );
                         break;
                     case "jpeg":
                     case "jpg":
-                        $generatedImagePath = $this->generateJpg($imageSource, $imageTarget, $targetWidth, $targetHeight, $targetQuality);
+                        $generatedImagePath = $this->generateJpg(
+                            $imageSource,
+                            $imageTarget,
+                            $targetWidth,
+                            $targetHeight,
+                            $targetQuality
+                        );
                         break;
                     case "gif":
-                        $generatedImagePath = $this->generateGif($imageSource, $imageTarget, $targetWidth, $targetHeight);
+                        $generatedImagePath = $this->generateGif(
+                            $imageSource,
+                            $imageTarget,
+                            $targetWidth,
+                            $targetHeight
+                        );
                         break;
                     case "webp":
-                        $generatedImagePath = $this->generateWebp($imageSource, $imageTarget, $targetWidth, $targetHeight, $targetQuality);
+                        $generatedImagePath = $this->generateWebp(
+                            $imageSource,
+                            $imageTarget,
+                            $targetWidth,
+                            $targetHeight,
+                            $targetQuality
+                        );
                         break;
                 }
                 // target must always be unlocked, no matter what the result of the former image generation was.
                 $this->unlock($imageTarget);
             }
             if ($generatedImagePath && $generatedImagePath != $imageTarget) {
-                throw new \OxidEsales\Eshop\Core\Exception\StandardException('imageTarget path and generatedImage path differ');
+                throw new StandardException('imageTarget path and generatedImage path differ');
             }
 
             return $generatedImagePath;

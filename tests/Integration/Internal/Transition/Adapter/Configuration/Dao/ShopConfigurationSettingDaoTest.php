@@ -9,13 +9,17 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\Configuration\Dao;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -139,6 +143,60 @@ final class ShopConfigurationSettingDaoTest extends TestCase
             1,
             $this->getRowCount()
         );
+    }
+
+    public function testGetDoesNotReturnCachedReference(): void
+    {
+        $settingDao = $this->getConfigurationSettingDao();
+
+        $shopConfigurationSetting = new ShopConfigurationSetting();
+        $shopConfigurationSetting
+            ->setShopId(1)
+            ->setName('cloning_test')
+            ->setType('str')
+            ->setValue('initial');
+
+        $settingDao->save($shopConfigurationSetting);
+
+        $first = $settingDao->get('cloning_test', 1);
+        $first->setValue('changed');
+
+        $second = $settingDao->get('cloning_test', 1);
+
+        $this->assertSame('initial', $second->getValue());
+    }
+
+    public function testGetUsesDatabaseOnlyOnceForSameSetting(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+
+        $queryBuilder
+            ->expects($this->once())
+            ->method('fetchAssociative')
+            ->willReturn([
+                'type' => 'str',
+                'value' => 'test',
+                'name' => 'test',
+            ]);
+
+        $queryBuilderFactory = $this->createMock(QueryBuilderFactoryInterface::class);
+        $queryBuilderFactory
+            ->expects($this->once())
+            ->method('create')
+            ->willReturn($queryBuilder);
+
+        $encoder = $this->createMock(ShopSettingEncoderInterface::class);
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+
+        $settingDao = new ShopConfigurationSettingDao(
+            $queryBuilderFactory,
+            $encoder,
+            $eventDispatcher
+        );
+
+        $settingDao->get('test', 1);
+        $settingDao->get('test', 1);
     }
 
     public static function settingValueDataProvider(): array

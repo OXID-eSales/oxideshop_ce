@@ -28,11 +28,13 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
     ) {
     }
 
-    public function save(ThemeConfigurationSetting $themeConfigurationSetting): void
-    {
-        $this->delete($themeConfigurationSetting);
+    private array $cache = [];
 
-        $moduleIdentifier = $this->getModuleIdentifier($themeConfigurationSetting->getThemeId());
+    public function save(ThemeConfigurationSetting $setting): void
+    {
+        $this->delete($setting);
+
+        $moduleIdentifier = $this->getModuleIdentifier($setting->getThemeId());
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->insert('oxconfig')
@@ -46,13 +48,13 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
             ])
             ->setParameters([
                 'id' => Id::generate(),
-                'shopId' => $themeConfigurationSetting->getShopId(),
+                'shopId' => $setting->getShopId(),
                 'module' => $moduleIdentifier,
-                'name' => $themeConfigurationSetting->getName(),
-                'type' => $themeConfigurationSetting->getType(),
+                'name' => $setting->getName(),
+                'type' => $setting->getType(),
                 'value' => $this->shopSettingEncoder->encode(
-                    $themeConfigurationSetting->getType(),
-                    $themeConfigurationSetting->getValue()
+                    $setting->getType(),
+                    $setting->getValue()
                 ),
             ]);
 
@@ -60,8 +62,8 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
 
         $this->eventDispatcher->dispatch(
             new ThemeSettingChangedEvent(
-                $themeConfigurationSetting->getName(),
-                $themeConfigurationSetting->getShopId(),
+                $setting->getName(),
+                $setting->getShopId(),
                 $moduleIdentifier
             )
         );
@@ -71,42 +73,44 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
     {
         $moduleIdentifier = $this->getModuleIdentifier($themeId);
 
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder
-            ->select('oxvarvalue as value, oxvartype as type, oxvarname as name')
-            ->from('oxconfig')
-            ->where('oxshopid = :shopId')
-            ->andWhere('oxvarname = :name')
-            ->andWhere('oxmodule = :module')
-            ->setParameters([
-                'shopId' => $shopId,
-                'name' => $name,
-                'module' => $moduleIdentifier,
-            ]);
+        if (!isset($this->cache[$shopId][$themeId][$name])) {
+            $queryBuilder = $this->queryBuilderFactory->create();
+            $queryBuilder
+                ->select('oxvarvalue as value, oxvartype as type, oxvarname as name')
+                ->from('oxconfig')
+                ->where('oxshopid = :shopId')
+                ->andWhere('oxvarname = :name')
+                ->andWhere('oxmodule = :module')
+                ->setParameters([
+                    'shopId' => $shopId,
+                    'name' => $name,
+                    'module' => $moduleIdentifier,
+                ]);
 
-        $result = $queryBuilder->fetchAssociative();
+            $result = $queryBuilder->fetchAssociative();
 
-        if ($result === false) {
-            throw new EntryDoesNotExistDaoException(
-                'Setting ' . $name . ' for theme ' . $themeId . ' does not exist in the shop with id ' . $shopId
-            );
+            if ($result === false) {
+                throw new EntryDoesNotExistDaoException(
+                    'Setting ' . $name . ' for theme ' . $themeId . ' does not exist in the shop with id ' . $shopId
+                );
+            }
+
+            $setting = new ThemeConfigurationSetting();
+            $setting
+                ->setThemeId($themeId)
+                ->setName($name)
+                ->setShopId($shopId)
+                ->setType($result['type'])
+                ->setValue($this->shopSettingEncoder->decode($result['type'], $result['value']));
+
+            $this->cache[$shopId][$themeId][$name] = $setting;
         }
 
-        $setting = new ThemeConfigurationSetting();
-        $setting
-            ->setThemeId($themeId)
-            ->setName($name)
-            ->setShopId($shopId)
-            ->setType($result['type'])
-            ->setValue($this->shopSettingEncoder->decode($result['type'], $result['value']));
-
-        return $setting;
+        return clone $this->cache[$shopId][$themeId][$name];
     }
 
-    public function delete(ThemeConfigurationSetting $themeConfigurationSetting): void
+    public function delete(ThemeConfigurationSetting $setting): void
     {
-        $moduleIdentifier = $this->getModuleIdentifier($themeConfigurationSetting->getThemeId());
-
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder
             ->delete('oxconfig')
@@ -114,12 +118,14 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
             ->andWhere('oxvarname = :name')
             ->andWhere('oxmodule = :module')
             ->setParameters([
-                'shopId' => $themeConfigurationSetting->getShopId(),
-                'name' => $themeConfigurationSetting->getName(),
-                'module' => $moduleIdentifier,
+                'shopId' => $setting->getShopId(),
+                'name' => $setting->getName(),
+                'module' => $this->getModuleIdentifier($setting->getThemeId()),
             ]);
 
         $queryBuilder->executeStatement();
+
+        unset($this->cache[$setting->getShopId()][$setting->getThemeId()][$setting->getName()]);
     }
 
     private function getModuleIdentifier(string $themeId): string

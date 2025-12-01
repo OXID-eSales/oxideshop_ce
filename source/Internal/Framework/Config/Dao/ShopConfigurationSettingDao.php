@@ -26,6 +26,8 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
     ) {
     }
 
+    private array $cache = [];
+
     /**
      * @param ShopConfigurationSetting $shopConfigurationSetting
      */
@@ -72,34 +74,38 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
      */
     public function get(string $name, int $shopId): ShopConfigurationSetting
     {
-        $queryBuilder = $this->queryBuilderFactory->create();
-        $queryBuilder
-            ->select('oxvarvalue as value, oxvartype as type, oxvarname as name')
-            ->from('oxconfig')
-            ->where('oxshopid = :shopId')
-            ->andWhere('oxvarname = :name')
-            ->andWhere('oxmodule = ""')
-            ->setParameters([
-                'shopId'    => $shopId,
-                'name'      => $name,
-            ]);
+        if (!isset($this->cache[$shopId][$name])) {
+            $queryBuilder = $this->queryBuilderFactory->create();
+            $queryBuilder
+                ->select('oxvarvalue as value, oxvartype as type, oxvarname as name')
+                ->from('oxconfig')
+                ->where('oxshopid = :shopId')
+                ->andWhere('oxvarname = :name')
+                ->andWhere('oxmodule = ""')
+                ->setParameters([
+                    'shopId'    => $shopId,
+                    'name'      => $name,
+                ]);
 
-        $result = $queryBuilder->fetchAssociative();
+            $result = $queryBuilder->fetchAssociative();
 
-        if (false === $result) {
-            throw new EntryDoesNotExistDaoException(
-                'Setting ' . $name . ' doesn\'t exist in the shop with id ' . $shopId
-            );
+            if (false === $result) {
+                throw new EntryDoesNotExistDaoException(
+                    'Setting ' . $name . ' doesn\'t exist in the shop with id ' . $shopId
+                );
+            }
+
+            $setting = new ShopConfigurationSetting();
+            $setting
+                ->setName($name)
+                ->setValue($this->shopSettingEncoder->decode($result['type'], $result['value']))
+                ->setShopId($shopId)
+                ->setType($result['type']);
+
+            $this->cache[$shopId][$name] = $setting;
         }
 
-        $setting = new ShopConfigurationSetting();
-        $setting
-            ->setName($name)
-            ->setValue($this->shopSettingEncoder->decode($result['type'], $result['value']))
-            ->setShopId($shopId)
-            ->setType($result['type']);
-
-        return $setting;
+        return clone $this->cache[$shopId][$name];
     }
 
     /**
@@ -119,5 +125,7 @@ class ShopConfigurationSettingDao implements ShopConfigurationSettingDaoInterfac
             ]);
 
         $queryBuilder->executeStatement();
+
+        unset($this->cache[$setting->getShopId()][$setting->getName()]);
     }
 }

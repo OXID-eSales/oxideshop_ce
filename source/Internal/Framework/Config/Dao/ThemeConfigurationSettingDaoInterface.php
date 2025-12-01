@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoExcepti
 
 interface ThemeConfigurationSettingDaoInterface
 {
-    public function save(ThemeConfigurationSetting $themeConfigurationSetting): void;
+    public function save(ThemeConfigurationSetting $setting): void;
 
     /**
      * @throws EntryDoesNotExistDaoException

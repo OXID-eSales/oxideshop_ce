@@ -272,9 +272,10 @@ final class ArticleTest extends IntegrationTestCase
     {
         [$article, $productId] = $this->createArticleWithMedia();
 
-        $expectedUrl = $this->productMediaViewService
-            ->getIcon($productId)
-            ->getUrl();
+        $expectedUrl = $this->productMediaViewService->getByRole(
+            $productId,
+            ProductMediaRole::from(ProductMediaRole::ICON)
+        )->getUrl();
 
         $this->assertSame($expectedUrl, $article->getIcon()->getUrl());
     }
@@ -283,9 +284,10 @@ final class ArticleTest extends IntegrationTestCase
     {
         [$article, $productId] = $this->createArticleWithMedia();
 
-        $expectedUrl = $this->productMediaViewService
-            ->getThumbnail($productId)
-            ->getUrl();
+        $expectedUrl = $this->productMediaViewService->getByRole(
+            $productId,
+            ProductMediaRole::from(ProductMediaRole::THUMBNAIL)
+        )->getUrl();
 
         $this->assertSame($expectedUrl, $article->getThumbnail()->getUrl());
     }
@@ -294,9 +296,7 @@ final class ArticleTest extends IntegrationTestCase
     {
         [$article, $productId] = $this->createArticleWithMedia();
 
-        $expectedUrl = $this->productMediaViewService
-            ->getMedia($productId, 1)
-            ->getUrl();
+        $expectedUrl = $this->productMediaViewService->getByPosition($productId, 1)->getUrl();
 
         $this->assertSame($expectedUrl, $article->getMedia(1)->getUrl());
     }
@@ -309,6 +309,7 @@ final class ArticleTest extends IntegrationTestCase
         $this->addProductMedia($productId, 'article-icon.jpg', 0, ProductMediaRole::ICON);
         $this->addProductMedia($productId, 'article-thumb.jpg', 0, ProductMediaRole::THUMBNAIL);
         $this->addProductMedia($productId, 'article-detail.jpg', 1, ProductMediaRole::DETAIL);
+        $this->addProductMedia($productId, 'article-detail-2.jpg', 2, ProductMediaRole::DETAIL);
 
         $article = oxNew(Article::class);
         $article->load((string) $productId);
@@ -331,8 +332,10 @@ final class ArticleTest extends IntegrationTestCase
     {
         [$article, $productId] = $this->createArticleWithMedia();
 
-        $expectedMediaItems = $this->productMediaViewService
-            ->getActiveByProductId($productId);
+        $expectedMediaItems = $this->productMediaViewService->getAllByRole(
+            $productId,
+            ProductMediaRole::from(ProductMediaRole::DETAIL)
+        );
         $expectedActiveMedia = reset($expectedMediaItems);
 
         $gallery = $article->getPictureGallery();
@@ -344,8 +347,10 @@ final class ArticleTest extends IntegrationTestCase
     {
         [$article, $productId] = $this->createArticleWithMedia();
 
-        $expectedMediaItems = $this->productMediaViewService
-            ->getActiveByProductId($productId);
+        $expectedMediaItems = $this->productMediaViewService->getAllByRole(
+            $productId,
+            ProductMediaRole::from(ProductMediaRole::DETAIL)
+        );
 
         $gallery = $article->getPictureGallery();
 

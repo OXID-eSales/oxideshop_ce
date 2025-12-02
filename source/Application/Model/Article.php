@@ -20,6 +20,7 @@ use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
@@ -2379,8 +2380,10 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
      */
     public function getPictureGallery()
     {
-        $mediaItems = ContainerFacade::get(ProductMediaViewServiceInterface::class)
-            ->getActiveByProductId(Id::fromUid($this->getId()));
+        $mediaItems = ContainerFacade::get(ProductMediaViewServiceInterface::class)->getAllByRole(
+            Id::fromUid($this->getId()),
+            ProductMediaRole::from(ProductMediaRole::DETAIL)
+        );
         $activeMedia = $this->determineActiveMedia($mediaItems);
 
         return [
@@ -3088,19 +3091,23 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
     public function getMedia(int $position): MediaView
     {
         return ContainerFacade::get(ProductMediaViewServiceInterface::class)
-            ->getMedia(Id::fromUid($this->getId()), $position);
+            ->getByPosition(Id::fromUid($this->getId()), $position);
     }
 
     public function getIcon(): MediaView
     {
-        return ContainerFacade::get(ProductMediaViewServiceInterface::class)
-            ->getIcon(Id::fromUid($this->getId()));
+        return ContainerFacade::get(ProductMediaViewServiceInterface::class)->getByRole(
+            Id::fromUid($this->getId()),
+            ProductMediaRole::from(ProductMediaRole::ICON)
+        );
     }
 
     public function getThumbnail(): MediaView
     {
-        return ContainerFacade::get(ProductMediaViewServiceInterface::class)
-            ->getThumbnail(Id::fromUid($this->getId()));
+        return ContainerFacade::get(ProductMediaViewServiceInterface::class)->getByRole(
+            Id::fromUid($this->getId()),
+            ProductMediaRole::from(ProductMediaRole::THUMBNAIL)
+        );
     }
 
 
@@ -4634,7 +4641,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         $productMediaDao = ContainerFacade::get(ProductMediaDaoInterface::class);
         $productId = Id::fromUid($this->getId());
 
-        $mediaCollection = $productMediaDao->getAllProductMedia($productId);
+        $mediaCollection = $productMediaDao->getAll($productId);
 
         foreach ($mediaCollection as $productMedia) {
             $productMediaDao->delete($productMedia->getId());

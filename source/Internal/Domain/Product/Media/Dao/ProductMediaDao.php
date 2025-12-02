@@ -14,6 +14,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\DataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaSorting;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
@@ -32,54 +33,6 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
         private ConnectionFactoryInterface $connectionFactory,
         private DataMapperInterface $productMediaDataMapper
     ) {
-    }
-
-    public function get(Id $id): ProductMedia
-    {
-        $row = $this
-            ->prepareSelectWithJoin()
-            ->where('pm.id = :id')
-            ->setParameter(
-                'id',
-                $id
-            )
-            ->executeQuery()
-            ->fetchAssociative();
-        if (!isset($row['id'])) {
-            throw new EntryDoesNotExistDaoException(
-                sprintf(
-                    'Product media with ID %s was not found.',
-                    $id
-                )
-            );
-        }
-
-        return $this->productMediaDataMapper->fromData($row);
-    }
-
-    public function getAllProductMedia(Id $productId): ArrayCollection
-    {
-        $collection = new ArrayCollection();
-        $rows = $this
-            ->prepareSelectWithJoin()
-            ->where('pm.product_id = :productId')
-            ->setParameter(
-                'productId',
-                $productId
-            )
-            ->orderBy(
-                'pm.position',
-                'ASC'
-            )
-            ->executeQuery()
-            ->fetchAllAssociative();
-        foreach ($rows as $row) {
-            $collection->add(
-                $this->productMediaDataMapper-> fromData($row)
-            );
-        }
-
-        return $collection;
     }
 
     public function add(ProductMedia $productMedia): void
@@ -107,6 +60,39 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             ->executeStatement();
 
         $this->addRoles($productMedia->getId(), $data['roles']);
+    }
+
+    public function update(ProductMedia $productMedia): void
+    {
+        $this->get($productMedia->getId());
+        $data = $this->productMediaDataMapper->toData($productMedia);
+
+        $this->queryBuilderFactory
+            ->create()
+            ->update(self::PRODUCT_MEDIA_TABLE)
+            ->set(
+                'product_id',
+                ':product_id'
+            )
+            ->set(
+                'media_id',
+                ':media_id'
+            )
+            ->set(
+                'position',
+                ':position'
+            )
+            ->set(
+                'active',
+                ':active'
+            )
+            ->where('id = :id')
+            ->setParameters(
+                $data
+            )
+            ->executeStatement();
+
+        $this->replaceRoles($productMedia->getId(), $data['roles']);
     }
 
     public function delete(Id $id): void
@@ -157,68 +143,71 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             ->executeStatement($query, $parameters);
     }
 
-    public function update(ProductMedia $productMedia): void
+    public function get(Id $id): ProductMedia
     {
-        $this->get($productMedia->getId());
-        $data = $this->productMediaDataMapper->toData($productMedia);
-
-        $this->queryBuilderFactory
-            ->create()
-            ->update(self::PRODUCT_MEDIA_TABLE)
-            ->set(
-                'product_id',
-                ':product_id'
+        $row = $this
+            ->prepareSelectWithJoin()
+            ->where('pm.id = :id')
+            ->setParameter(
+                'id',
+                $id
             )
-            ->set(
-                'media_id',
-                ':media_id'
-            )
-            ->set(
-                'position',
-                ':position'
-            )
-            ->set(
-                'active',
-                ':active'
-            )
-            ->where('id = :id')
-            ->setParameters(
-                $data
-            )
-            ->executeStatement();
-
-        $this->replaceRoles($productMedia->getId(), $data['roles']);
-    }
-
-    public function getActiveByProductId(Id $productId): ArrayCollection
-    {
-        $collection = new ArrayCollection();
-        $rows = $this->prepareSelectWithJoin()
-            ->where('pm.product_id = :productId')
-            ->andWhere('pm.active = 1')
-            ->setParameter('productId', $productId)
-            ->orderBy('pm.position', 'ASC')
             ->executeQuery()
-            ->fetchAllAssociative();
-
-        foreach ($rows as $row) {
-            $collection->add(
-                $this->productMediaDataMapper->fromData($row)
+            ->fetchAssociative();
+        if (!isset($row['id'])) {
+            throw new EntryDoesNotExistDaoException(
+                sprintf(
+                    'Product media with ID %s was not found.',
+                    $id
+                )
             );
         }
 
-        return $collection;
+        return $this->productMediaDataMapper->fromData($row);
     }
 
-    public function getByRole(Id $productId, string $role): ?ProductMedia
+    /** @return ArrayCollection<int, ProductMedia> */
+    public function getAll(Id $productId): ArrayCollection
+    {
+        return $this->getAllByActive($productId, false);
+    }
+
+    /** @return ArrayCollection<int, ProductMedia> */
+    public function getAllActive(Id $productId): ArrayCollection
+    {
+        return $this->getAllByActive($productId, true);
+    }
+
+    /** @return ArrayCollection<int, ProductMedia> */
+    public function getAllByRole(Id $productId, ProductMediaRole $role): ArrayCollection
+    {
+        return $this->getAllByRoleAndActive($productId, $role, false);
+    }
+
+    /** @return ArrayCollection<int, ProductMedia> */
+    public function getAllActiveByRole(Id $productId, ProductMediaRole $role): ArrayCollection
+    {
+        return $this->getAllByRoleAndActive($productId, $role, true);
+    }
+
+    public function getByRole(Id $productId, ProductMediaRole $role): ?ProductMedia
+    {
+        return $this->getByRoleAndActive($productId, $role, false);
+    }
+
+    public function getActiveByRole(Id $productId, ProductMediaRole $role): ?ProductMedia
+    {
+        return $this->getByRoleAndActive($productId, $role, true);
+    }
+
+    public function getActiveByPosition(Id $productId, int $position): ?ProductMedia
     {
         $row = $this->prepareSelectWithJoin()
             ->where('pm.product_id = :productId')
+            ->andWhere('pm.position = :position')
             ->andWhere('pm.active = 1')
-            ->andWhere('pmr.role = :role')
             ->setParameter('productId', $productId)
-            ->setParameter('role', $role)
-            ->orderBy('pm.position', 'ASC')
+            ->setParameter('position', $position)
             ->setMaxResults(1)
             ->executeQuery()
             ->fetchAssociative();
@@ -233,21 +222,6 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             ->andWhere('pm.active = 1')
             ->setParameter('productId', $productId)
             ->orderBy('pm.position', 'ASC')
-            ->setMaxResults(1)
-            ->executeQuery()
-            ->fetchAssociative();
-
-        return $row ? $this->productMediaDataMapper->fromData($row) : null;
-    }
-
-    public function getByPosition(Id $productId, int $position): ?ProductMedia
-    {
-        $row = $this->prepareSelectWithJoin()
-            ->where('pm.product_id = :productId')
-            ->andWhere('pm.position = :position')
-            ->andWhere('pm.active = 1')
-            ->setParameter('productId', $productId)
-            ->setParameter('position', $position)
             ->setMaxResults(1)
             ->executeQuery()
             ->fetchAssociative();
@@ -286,6 +260,92 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
                 'pm.id = pmr.product_media_id'
             )
             ->groupBy('pm.id');
+    }
+
+    /** @return ArrayCollection<int, ProductMedia> */
+    private function getAllByActive(Id $productId, bool $filterActive): ArrayCollection
+    {
+        $collection = new ArrayCollection();
+
+        $queryBuilder = $this
+            ->prepareSelectWithJoin()
+            ->where('pm.product_id = :productId')
+            ->setParameter('productId', $productId)
+            ->orderBy('pm.position', 'ASC');
+
+        if ($filterActive) {
+            $queryBuilder
+                ->andWhere('pm.active = :active')
+                ->setParameter('active', 1);
+        }
+
+        $rows = $queryBuilder
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($rows as $row) {
+            $collection->add(
+                $this->productMediaDataMapper->fromData($row)
+            );
+        }
+
+        return $collection;
+    }
+
+    /** @return ArrayCollection<int, ProductMedia> */
+    private function getAllByRoleAndActive(Id $productId, ProductMediaRole $role, bool $onlyActive): ArrayCollection
+    {
+        $collection = new ArrayCollection();
+
+        $queryBuilder = $this
+            ->prepareSelectWithJoin()
+            ->where('pm.product_id = :productId')
+            ->andWhere('pmr.role = :role')
+            ->setParameter('productId', $productId)
+            ->setParameter('role', $role->value())
+            ->orderBy('pm.position', 'ASC');
+
+        if ($onlyActive) {
+            $queryBuilder
+                ->andWhere('pm.active = :active')
+                ->setParameter('active', 1);
+        }
+
+        $rows = $queryBuilder
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        foreach ($rows as $row) {
+            $collection->add(
+                $this->productMediaDataMapper->fromData($row)
+            );
+        }
+
+        return $collection;
+    }
+
+    private function getByRoleAndActive(Id $productId, ProductMediaRole $role, bool $onlyActive): ?ProductMedia
+    {
+        $queryBuilder = $this
+            ->prepareSelectWithJoin()
+            ->where('pm.product_id = :productId')
+            ->andWhere('pmr.role = :role')
+            ->setParameter('productId', $productId)
+            ->setParameter('role', $role->value())
+            ->orderBy('pm.position', 'ASC')
+            ->setMaxResults(1);
+
+        if ($onlyActive) {
+            $queryBuilder
+                ->andWhere('pm.active = :active')
+                ->setParameter('active', 1);
+        }
+
+        $row = $queryBuilder
+            ->executeQuery()
+            ->fetchAssociative();
+
+        return $row ? $this->productMediaDataMapper->fromData($row) : null;
     }
 
     private function getNextPosition(Id $productId): int

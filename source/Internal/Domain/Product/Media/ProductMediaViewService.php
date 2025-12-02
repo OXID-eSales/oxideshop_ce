@@ -37,9 +37,15 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
     ) {
     }
 
-    public function getMedia(Id $productId, int $position): MediaView
+    public function getByRole(Id $productId, ProductMediaRole $role): MediaView
     {
-        $productMedia = $this->productMediaDao->getByPosition($productId, $position);
+        $productMedia = $this->getMediaWithFallback($productId, $role);
+        return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
+    }
+
+    public function getByPosition(Id $productId, int $position): MediaView
+    {
+        $productMedia = $this->productMediaDao->getActiveByPosition($productId, $position);
 
         if (!$productMedia) {
             return $this->createFallbackMediaView();
@@ -48,28 +54,18 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         return $this->createMediaViewWithAllSizes($productMedia);
     }
 
-    public function getIcon(Id $productId): MediaView
+    /** @return array<string, MediaView> */
+    public function getAllByRole(Id $productId, ProductMediaRole $role): array
     {
-        $productMedia = $this->getMediaWithFallback($productId, ProductMediaRole::from(ProductMediaRole::ICON));
-        return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
-    }
-
-    public function getThumbnail(Id $productId): MediaView
-    {
-        $productMedia = $this->getMediaWithFallback($productId, ProductMediaRole::from(ProductMediaRole::THUMBNAIL));
-        return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
-    }
-
-    /**
-     * @return array<string, MediaView>
-     */
-    public function getActiveByProductId(Id $productId): array
-    {
-        $productMediaCollection = $this->productMediaDao->getActiveByProductId($productId);
+        $productMediaCollection = $this->productMediaDao->getAllActiveByRole(
+            $productId,
+            $role
+        );
         $mediaViews = [];
 
         foreach ($productMediaCollection as $productMedia) {
-            $mediaViews[(string)$productMedia->getMedia()->getId()] = $this->createMediaViewWithAllSizes($productMedia);
+            $mediaViews[(string) $productMedia->getMedia()->getId()] =
+                $this->createMediaViewWithAllSizes($productMedia);
         }
 
         return $mediaViews;
@@ -77,7 +73,7 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
 
     private function getMediaWithFallback(Id $productId, ProductMediaRole $role): ?ProductMedia
     {
-        $productMedia = $this->productMediaDao->getByRole($productId, $role->value());
+        $productMedia = $this->productMediaDao->getActiveByRole($productId, $role);
         return $productMedia ?: $this->productMediaDao->getFirstActive($productId);
     }
 

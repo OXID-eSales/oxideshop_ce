@@ -82,7 +82,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetIconReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->service->getIcon($this->productId);
+        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg'),
@@ -100,7 +100,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetIconReturnsFallbackWhenMissing(): void
     {
-        $result = $this->service->getIcon(Id::generate());
+        $result = $this->service->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.jpg'),
@@ -119,7 +119,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetThumbnailReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->service->getThumbnail($this->productId);
+        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::THUMBNAIL));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'thumb.jpg'),
@@ -137,7 +137,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetMediaReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->service->getMedia($this->productId, 1);
+        $result = $this->service->getByPosition($this->productId, 1);
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
@@ -155,7 +155,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetMediaReturnsFallbackForMissingPosition(): void
     {
-        $result = $this->service->getMedia($this->productId, 999);
+        $result = $this->service->getByPosition($this->productId, 999);
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.jpg'),
@@ -176,7 +176,7 @@ final class ProductMediaViewServiceTest extends TestCase
     {
         $this->setStringConfigValue(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, '95');
 
-        $result = $this->service->getIcon($this->productId);
+        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg', '95'),
             $result->getUrl()
@@ -211,7 +211,7 @@ final class ProductMediaViewServiceTest extends TestCase
         $productMedia->setPosition(1);
         $this->productMediaService->add($productMedia);
 
-        $result = $this->service->getIcon($otherProductId);
+        $result = $this->service->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
             $result->getUrl()
@@ -229,7 +229,7 @@ final class ProductMediaViewServiceTest extends TestCase
     public function testFallbackUsesWebPWhenEnabled(): void
     {
         $this->setBooleanConfigValue(self::CONFIG_KEY_CONVERT_IMAGES_TO_WEBP, true);
-        $result = $this->service->getIcon(Id::generate());
+        $result = $this->service->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.webp'),
             $result->getUrl()
@@ -244,37 +244,48 @@ final class ProductMediaViewServiceTest extends TestCase
         );
     }
 
-    public function testGetActiveByProductIdReturnsMediaViews(): void
+    public function testGetAllActiveDetailReturnsMediaViews(): void
     {
-        $results = $this->service->getActiveByProductId($this->productId);
+        $results = $this->service->getAllByRole(
+            $this->productId,
+            ProductMediaRole::from(ProductMediaRole::DETAIL)
+        );
 
         $this->assertCount(3, $results);
         $urls = array_map(fn($result) => $result->getUrl(), $results);
 
         $this->assertContains(
+            $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
+            $urls
+        );
+        $this->assertContains(
+            $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail-2.jpg'),
+            $urls
+        );
+        $this->assertContains(
+            $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail-3.jpg'),
+            $urls
+        );
+        $this->assertNotContains(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg'),
             $urls
         );
-        $this->assertContains(
+        $this->assertNotContains(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'thumb.jpg'),
-            $urls
-        );
-        $this->assertContains(
-            $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
             $urls
         );
     }
 
-    public function testGetActiveByProductIdReturnsEmptyForNonExistentProduct(): void
+    public function testGetAllActiveDetailReturnsEmptyForNonExistentProduct(): void
     {
-        $results = $this->service->getActiveByProductId(Id::generate());
+        $results = $this->service->getAllByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::DETAIL));
 
         $this->assertEmpty($results);
     }
 
     public function testGetThumbnailUrl(): void
     {
-        $result = $this->service->getIcon($this->productId);
+        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_THUMBNAIL_SIZE, 'icon.jpg'),
@@ -284,7 +295,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testFallbackHasThumbnailUrl(): void
     {
-        $result = $this->service->getIcon(Id::generate());
+        $result = $this->service->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_THUMBNAIL_SIZE, 'nopic.jpg'),
@@ -303,7 +314,7 @@ final class ProductMediaViewServiceTest extends TestCase
             ProductMediaRole::DETAIL
         );
 
-        $iconResult = $this->service->getIcon($otherProductId);
+        $iconResult = $this->service->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'fallback.jpg'),
@@ -330,6 +341,18 @@ final class ProductMediaViewServiceTest extends TestCase
             $this->productId,
             Path::join('out', 'pictures', 'media', 'detail.jpg'),
             1,
+            ProductMediaRole::DETAIL
+        );
+        $this->addProductMedia(
+            $this->productId,
+            Path::join('out', 'pictures', 'media', 'detail-2.jpg'),
+            2,
+            ProductMediaRole::DETAIL
+        );
+        $this->addProductMedia(
+            $this->productId,
+            Path::join('out', 'pictures', 'media', 'detail-3.jpg'),
+            3,
             ProductMediaRole::DETAIL
         );
     }

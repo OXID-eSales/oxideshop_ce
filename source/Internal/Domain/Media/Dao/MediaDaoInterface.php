@@ -13,10 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 interface MediaDaoInterface
 {
-    public function add(Media $media): void;
-
     /** @throws EntryDoesNotExistDaoException */
     public function get(Id $id): Media;
+
+    public function add(Media $media): void;
 
     public function delete(Id $id): void;
 }

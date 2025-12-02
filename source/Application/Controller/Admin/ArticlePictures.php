@@ -24,7 +24,7 @@ class ArticlePictures extends AdminDetailsController
         $this->_aViewData['productImages'] = ContainerFacade::get(ViewDataMapperInterface::class)
             ->toData(
                 ContainerFacade::get(ProductMediaDaoInterface::class)
-                    ->getAllProductMedia(
+                    ->getAll(
                         Id::fromUid(
                             $this->getEditObjectId()
                         )

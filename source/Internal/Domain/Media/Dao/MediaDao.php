@@ -27,22 +27,6 @@ readonly class MediaDao implements MediaDaoInterface
     ) {
     }
 
-    public function add(Media $media): void
-    {
-        $this->queryBuilderFactory
-            ->create()
-            ->insert(self::MEDIA_TABLE)
-            ->values([
-                'id' => ':id',
-                'path' => ':path',
-                'type' => ':type'
-            ])
-            ->setParameters(
-                $this->dataMapper->toData($media)
-            )
-            ->executeStatement();
-    }
-
     public function get(Id $id): Media
     {
         $result = $this->queryBuilderFactory
@@ -60,6 +44,22 @@ readonly class MediaDao implements MediaDaoInterface
         }
 
         return $this->dataMapper->fromData($result);
+    }
+
+    public function add(Media $media): void
+    {
+        $this->queryBuilderFactory
+            ->create()
+            ->insert(self::MEDIA_TABLE)
+            ->values([
+                'id' => ':id',
+                'path' => ':path',
+                'type' => ':type'
+            ])
+            ->setParameters(
+                $this->dataMapper->toData($media)
+            )
+            ->executeStatement();
     }
 
     public function delete(Id $id): void

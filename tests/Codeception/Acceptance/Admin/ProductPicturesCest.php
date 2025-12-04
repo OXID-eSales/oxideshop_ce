@@ -24,7 +24,6 @@ final class ProductPicturesCest
     private string $image1 = 'media/product/image_1.webp';
     private string $image2 = 'media/product/image_2.webp';
     private string $image3 = 'media/product/image_3.webp';
-    private string $imageInvalid = 'media/product/image_invalid.jpg';
 
     public function _after(AcceptanceTester $I): void
     {
@@ -88,7 +87,7 @@ final class ProductPicturesCest
 
     public function uploadInvalidImage(AcceptanceTester $I): void
     {
-        $I->wantToTest('uploading invalid image will display an error message');
+        $I->wantToTest('uploading invalid image will display an error message with filename');
         $minSize = '1024';
         $I->amGoingTo("set the minimum image size to make previously valid image fixtures invalid");
         $I->updateProjectConfigurations(['oxid_esales.product.media.file.min_size_kb' => $minSize], []);
@@ -98,6 +97,8 @@ final class ProductPicturesCest
             ->findByProductNumber($this->productNumber)
             ->openPicturesTab()
             ->uploadFile($this->image1)
+            ->uploadFile($this->image2)
+            ->seeImageUploadError(basename($this->image1))
             ->seeImageUploadError(
                 sprintf(
                     Translator::translate('ERR_MEDIA_SIZE_TOO_SMALL'),
@@ -106,6 +107,21 @@ final class ProductPicturesCest
                             Path::join(
                                 codecept_data_dir(),
                                 $this->image1
+                            )
+                        )
+                    ),
+                    (new FileSizeLogic())->getFileSize(((int) $minSize) * 1024)
+                )
+            )
+            ->seeImageUploadError(basename($this->image2))
+            ->seeImageUploadError(
+                sprintf(
+                    Translator::translate('ERR_MEDIA_SIZE_TOO_SMALL'),
+                    (new FileSizeLogic())->getFileSize(
+                        filesize(
+                            Path::join(
+                                codecept_data_dir(),
+                                $this->image2
                             )
                         )
                     ),

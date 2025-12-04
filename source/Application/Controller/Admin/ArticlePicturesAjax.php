@@ -46,17 +46,21 @@ class ArticlePicturesAjax extends ListComponentAjax
 
     public function addMedia(): void
     {
+        $errors = [];
         $productId = Id::fromUid($this->requestData->getString('productId'));
         $role = ProductMediaRole::from($this->requestData->getString('role'));
         foreach ($this->requestFiles->get('uploadedFiles') as $uploadedFile) {
             try {
                 $productMedia = $this->productMediaUploadProcessor->process($productId, $uploadedFile);
             } catch (MediaValidationException $e) {
-                $this->sendErrorResponse($e);
-                return;
+                $errors[] = $this->formatErrorWithFilename($e, $uploadedFile->getClientOriginalName());
+                continue;
             }
             $productMedia->getRoleSet()->addRole($role);
             $this->productMediaService->add($productMedia);
+        }
+        if ($errors !== []) {
+            $this->sendErrorsResponse($errors);
         }
     }
 
@@ -133,12 +137,18 @@ class ArticlePicturesAjax extends ListComponentAjax
         };
     }
 
-    private function sendErrorResponse(\Throwable $e): void
+    private function formatErrorWithFilename(\Throwable $e, string $filename): string
     {
         [$key, $values] = $this->mapExceptionToTranslation($e);
+        $errorMessage = \sprintf(Registry::getLang()->translateString($key), ...$values);
 
+        return \sprintf('%s: %s', $filename, $errorMessage);
+    }
+
+    private function sendErrorsResponse(array $errors): void
+    {
         (new JsonResponse([
-            'error' => \sprintf(Registry::getLang()->translateString($key), ...$values),
+            'errors' => $errors,
         ]))->send();
     }
 }

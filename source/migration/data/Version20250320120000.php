@@ -27,6 +27,7 @@ final class Version20250320120000 extends AbstractMigration
                 `path` varchar(255) NOT NULL,
                 `type` varchar(32) NOT NULL,
                 `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`)
             )'
         );
@@ -37,10 +38,9 @@ final class Version20250320120000 extends AbstractMigration
                 `product_id` char(32) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
                 `media_id` char(32) NOT NULL,
                 `position` int(11) NOT NULL DEFAULT 0,
-                `type` varchar(32) NOT NULL,
                 `active` tinyint(1) NOT NULL DEFAULT 1,
                 `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                `updated` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+                `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (`id`),
                 INDEX `product_id` (`product_id`),
                 INDEX `media_id` (`media_id`)
@@ -52,8 +52,7 @@ final class Version20250320120000 extends AbstractMigration
                 `product_media_id` char(32) NOT NULL,
                 `role` varchar(32) NOT NULL,
                 `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                `updated` datetime NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-                 PRIMARY KEY (`product_media_id`, `role`)
+                PRIMARY KEY (`product_media_id`, `role`)
                 )'
         );
     }

@@ -8,6 +8,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopierInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use stdClass;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -140,7 +143,9 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         // #0004473
         $oArticle->resetRemindStatus();
 
-        if ($sOXID == "-1") {
+        $isNewVariant = ($sOXID === "-1");
+
+        if ($isNewVariant) {
             if ($oParent = $this->getProductParent($oArticle->oxarticles__oxparentid->value)) {
                 // assign field from parent for new variant
                 // #4406
@@ -150,6 +155,13 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         }
 
         $oArticle->save();
+
+        if ($isNewVariant && $oArticle->oxarticles__oxparentid->value) {
+            ContainerFacade::get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant(
+                Id::fromUid($oArticle->oxarticles__oxparentid->value),
+                Id::fromUid($oArticle->getId())
+            );
+        }
     }
 
     /**

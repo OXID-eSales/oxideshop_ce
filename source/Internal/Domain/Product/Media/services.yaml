@@ -17,6 +17,10 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewService
     public: true
 
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopierInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopier
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaUploadProcessorInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaUploadProcessor
     arguments:

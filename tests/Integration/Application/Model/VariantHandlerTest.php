@@ -74,9 +74,12 @@ final class VariantHandlerTest extends IntegrationTestCase
     private function createSelectList(): string
     {
         $selectList = oxNew(SelectList::class);
+        $selectList->setEnableMultilang(false);
         $selectList->oxselectlist__oxshopid = new Field(1);
         $selectList->oxselectlist__oxtitle = new Field('Size');
+        $selectList->oxselectlist__oxtitle_1 = new Field('Size');
         $selectList->oxselectlist__oxvaldesc = new Field('S__@@M__@@L__@@');
+        $selectList->oxselectlist__oxvaldesc_1 = new Field('S__@@M__@@L__@@');
         $selectList->save();
 
         return $selectList->getId();

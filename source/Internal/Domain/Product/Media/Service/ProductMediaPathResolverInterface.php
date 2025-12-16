@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media;
+namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 

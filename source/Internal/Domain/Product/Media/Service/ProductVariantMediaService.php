@@ -7,21 +7,21 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media;
+namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
-readonly class VariantMediaCopier implements VariantMediaCopierInterface
+readonly class ProductVariantMediaService implements ProductVariantMediaServiceInterface
 {
     public function __construct(
         private ProductMediaDaoInterface $productMediaDao,
     ) {
     }
 
-    public function copyMediaFromParentToVariant(Id $parentProductId, Id $variantProductId): void
+    public function assignFromParentToVariant(Id $parentProductId, Id $variantProductId): void
     {
         $parentMediaCollection = $this->productMediaDao->getAll($parentProductId);
 

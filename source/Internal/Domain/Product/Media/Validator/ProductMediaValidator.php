@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media;
+namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\MediaConstraintValidatorInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;

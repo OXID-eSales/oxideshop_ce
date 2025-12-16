@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopierInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use oxRegistry;
 use oxDb;
@@ -271,7 +271,7 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
 
     private function copyMediaFromParent(string $parentId, string $variantId): void
     {
-        ContainerFacade::get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant(
+        ContainerFacade::get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant(
             Id::fromUid($parentId),
             Id::fromUid($variantId)
         );

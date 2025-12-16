@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media;
+namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;

@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopierInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use stdClass;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
@@ -157,7 +157,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
         $oArticle->save();
 
         if ($isNewVariant && $oArticle->oxarticles__oxparentid->value) {
-            ContainerFacade::get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant(
+            ContainerFacade::get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant(
                 Id::fromUid($oArticle->oxarticles__oxparentid->value),
                 Id::fromUid($oArticle->getId())
             );

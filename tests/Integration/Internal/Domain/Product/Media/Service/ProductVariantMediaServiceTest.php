@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Media;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Media\Service;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
@@ -16,12 +16,12 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoI
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopierInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class VariantMediaCopierTest extends IntegrationTestCase
+final class ProductVariantMediaServiceTest extends IntegrationTestCase
 {
     private Id $parentId;
     private Id $variantId;
@@ -38,7 +38,7 @@ final class VariantMediaCopierTest extends IntegrationTestCase
         $parentMedia = $this->createProductMedia($this->parentId);
         $this->get(ProductMediaServiceInterface::class)->add($parentMedia);
 
-        $this->get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant($this->parentId, $this->variantId);
+        $this->get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant($this->parentId, $this->variantId);
 
         $variantMediaCollection = $this->get(ProductMediaDaoInterface::class)->getAll($this->variantId);
 
@@ -58,7 +58,7 @@ final class VariantMediaCopierTest extends IntegrationTestCase
         );
         $this->get(ProductMediaServiceInterface::class)->add($parentMedia);
 
-        $this->get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant($this->parentId, $this->variantId);
+        $this->get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant($this->parentId, $this->variantId);
 
         $variantMedia = $this->get(ProductMediaDaoInterface::class)->getAll($this->variantId)->first();
 
@@ -72,7 +72,7 @@ final class VariantMediaCopierTest extends IntegrationTestCase
         $parentMedia->setPosition(5);
         $this->get(ProductMediaServiceInterface::class)->add($parentMedia);
 
-        $this->get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant($this->parentId, $this->variantId);
+        $this->get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant($this->parentId, $this->variantId);
 
         $this->assertEquals(5, $this->get(ProductMediaDaoInterface::class)->getAll($this->variantId)->first()->getPosition());
     }
@@ -83,7 +83,7 @@ final class VariantMediaCopierTest extends IntegrationTestCase
         $parentMedia->deactivate();
         $this->get(ProductMediaServiceInterface::class)->add($parentMedia);
 
-        $this->get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant($this->parentId, $this->variantId);
+        $this->get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant($this->parentId, $this->variantId);
 
         $this->assertFalse($this->get(ProductMediaDaoInterface::class)->getAll($this->variantId)->first()->isActive());
     }
@@ -94,14 +94,14 @@ final class VariantMediaCopierTest extends IntegrationTestCase
         $this->get(ProductMediaServiceInterface::class)->add($this->createProductMedia($this->parentId));
         $this->get(ProductMediaServiceInterface::class)->add($this->createProductMedia($this->parentId));
 
-        $this->get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant($this->parentId, $this->variantId);
+        $this->get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant($this->parentId, $this->variantId);
 
         $this->assertCount(3, $this->get(ProductMediaDaoInterface::class)->getAll($this->variantId));
     }
 
     public function testCopyFromParentWithNoMedia(): void
     {
-        $this->get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant($this->parentId, $this->variantId);
+        $this->get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant($this->parentId, $this->variantId);
 
         $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll($this->variantId));
     }
@@ -111,7 +111,7 @@ final class VariantMediaCopierTest extends IntegrationTestCase
         $parentMedia = $this->createProductMedia($this->parentId);
         $this->get(ProductMediaServiceInterface::class)->add($parentMedia);
 
-        $this->get(VariantMediaCopierInterface::class)->copyMediaFromParentToVariant($this->parentId, $this->variantId);
+        $this->get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant($this->parentId, $this->variantId);
 
         $this->assertNotEquals(
             (string) $parentMedia->getId(),

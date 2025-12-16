@@ -6,30 +6,30 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDao
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaFactoryInterface:
-      class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaFactory
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\ProductMediaFactoryInterface:
+      class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\ProductMediaFactory
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaService
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaService
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaViewService
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewService
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopierInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\VariantMediaCopier
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaService
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaUploadProcessorInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaUploadProcessor
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaUploadProcessorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaUploadProcessor
     arguments:
-      $mediaConstraintValidator: '@OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaValidator'
+      $mediaConstraintValidator: '@OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Validator\ProductMediaValidator'
       $mediaUploader: '@oxid_esales.product.media.media_uploader'
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaPathResolverInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaPathResolver
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaPathResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaPathResolver
 
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\DataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataMapper\DataMapper
@@ -65,6 +65,6 @@ services:
     tags:
       - { name: oxid.product_media.constraint_validator }
 
-  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\ProductMediaValidator:
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Validator\ProductMediaValidator:
     arguments:
       $validators: !tagged_iterator oxid.product_media.constraint_validator

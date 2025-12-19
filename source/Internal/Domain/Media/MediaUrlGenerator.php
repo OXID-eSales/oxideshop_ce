@@ -14,49 +14,46 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSet
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Filesystem\Path;
 
-readonly class MediaUrlGenerator implements MediaUrlGeneratorInterface
+class MediaUrlGenerator implements MediaUrlGeneratorInterface
 {
+    private string $generatedBaseUrl;
+    private string $picturesRoot;
+    private int $imageQuality;
+
     public function __construct(
-        private ContextInterface $context,
-        private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
-        private string $alternativeImageUrl = ''
+        ContextInterface $context,
+        ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
+        string $alternativeImageUrl = ''
     ) {
+        $this->generatedBaseUrl = $alternativeImageUrl
+            ? Path::join($alternativeImageUrl, 'generated')
+            : Path::join($context->getShopBaseUrl(), 'out', 'pictures', 'generated');
+
+        $this->picturesRoot = Path::join(
+            Path::makeRelative($context->getOutPath(), $context->getSourcePath()),
+            'pictures'
+        );
+
+        $this->imageQuality = (int) $shopConfigurationSettingDao
+            ->get('sDefaultImageQuality', $context->getCurrentShopId())
+            ->getValue();
     }
 
     public function generateSizedImageUrl(Media $media, string $size): string
     {
-        $picturesRoot = Path::join(
-            Path::makeRelative($this->context->getOutPath(), $this->context->getSourcePath()),
-            'pictures'
-        );
-        $relativeMediaPath = Path::makeRelative((string) $media->getMediaPath(), $picturesRoot);
+        $relativeMediaPath = Path::makeRelative((string) $media->getMediaPath(), $this->picturesRoot);
 
         return Path::join(
-            $this->getGeneratedBaseUrl(),
+            $this->generatedBaseUrl,
             dirname($relativeMediaPath),
             $this->buildSizePath($size),
             rawurlencode(basename($relativeMediaPath))
         );
     }
 
-    private function getGeneratedBaseUrl(): string
-    {
-        return $this->alternativeImageUrl
-            ? Path::join($this->alternativeImageUrl, 'generated')
-            : Path::join($this->context->getShopBaseUrl(), 'out', 'pictures', 'generated');
-    }
-
-
-
     private function buildSizePath(string $size): string
     {
-        $setting = $this->shopConfigurationSettingDao->get(
-            'sDefaultImageQuality',
-            $this->context->getCurrentShopId()
-        );
-        $quality = (int) $setting->getValue();
-
         [$width, $height] = explode('*', $size);
-        return "{$width}_{$height}_{$quality}";
+        return "{$width}_{$height}_{$this->imageQuality}";
     }
 }

@@ -23,6 +23,7 @@ use function sprintf;
 class BasicContext implements BasicContextInterface
 {
     private string $projectRoot;
+    private string $outPath;
     private Edition $edition;
 
     public function getContainerCacheFilePath(int $shopId): string
@@ -64,7 +65,10 @@ class BasicContext implements BasicContextInterface
 
     public function getOutPath(): string
     {
-        return (new ProjectDirectoriesLocator())->getOutPath();
+        if (!isset($this->outPath)) {
+            $this->outPath = (new ProjectDirectoriesLocator())->getOutPath();
+        }
+        return $this->outPath;
     }
 
     public function getDefaultShopId(): int

@@ -23,35 +23,73 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
+use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\Filesystem\Path;
 
-readonly class ProductMediaViewService implements ProductMediaViewServiceInterface
+class ProductMediaViewService implements ProductMediaViewServiceInterface
 {
+    private string $detailSize;
+    private string $iconSize;
+    private string $zoomSize;
+    private string $thumbnailSize;
+
     public function __construct(
         private ProductMediaDaoInterface $productMediaDao,
         private MediaUrlGeneratorInterface $mediaUrlGenerator,
         private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
         private ThemeConfigurationSettingDaoInterface $themeConfigurationSettingDao,
         private ShopAdapterInterface $shopAdapter,
-        private ContextInterface $context
+        private ContextInterface $context,
+        private TagAwareAdapterInterface $cache
     ) {
+        $this->detailSize = $this->getConfiguredSize('sDetailImageSize');
+        $this->iconSize = $this->getConfiguredSize('sIconsize');
+        $this->zoomSize = $this->getConfiguredSize('sZoomImageSize');
+        $this->thumbnailSize = $this->getConfiguredSize('sThumbnailsize');
     }
 
     public function getByRole(Id $productId, ProductMediaRole $role): MediaView
     {
+        $cacheKey = $this->getCacheKey('role', $productId, $role->value());
+        $cacheItem = $this->cache->getItem($cacheKey);
+
+        if ($cacheItem->isHit()) {
+            return $cacheItem->get();
+        }
+
         $productMedia = $this->getMediaWithFallback($productId, $role);
-        return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
+        $mediaView = $productMedia
+            ? $this->createMediaViewWithAllSizes($productMedia)
+            : $this->createFallbackMediaView();
+
+        $cacheItem->set($mediaView);
+        $cacheItem->tag(['product_media', 'product_' . $productId]);
+        $cacheItem->expiresAfter(100);
+        $this->cache->save($cacheItem);
+
+        return $mediaView;
     }
 
     public function getByPosition(Id $productId, int $position): MediaView
     {
-        $productMedia = $this->productMediaDao->getActiveByPosition($productId, $position);
+        $cacheKey = $this->getCacheKey('pos', $productId, (string) $position);
+        $cacheItem = $this->cache->getItem($cacheKey);
 
-        if (!$productMedia) {
-            return $this->createFallbackMediaView();
+        if ($cacheItem->isHit()) {
+            return $cacheItem->get();
         }
 
-        return $this->createMediaViewWithAllSizes($productMedia);
+        $productMedia = $this->productMediaDao->getActiveByPosition($productId, $position);
+        $mediaView = $productMedia
+            ? $this->createMediaViewWithAllSizes($productMedia)
+            : $this->createFallbackMediaView();
+
+        $cacheItem->set($mediaView);
+        $cacheItem->tag(['product_media', 'product_' . $productId]);
+        $cacheItem->expiresAfter(100);
+        $this->cache->save($cacheItem);
+
+        return $mediaView;
     }
 
     /** @return array<string, MediaView> */
@@ -89,16 +127,11 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
 
     private function createMediaView(Media $media, bool $isFallback): MediaView
     {
-        $detailSize = $this->getConfiguredSize('sDetailImageSize');
-        $iconSize = $this->getConfiguredSize('sIconsize');
-        $zoomSize = $this->getConfiguredSize('sZoomImageSize');
-        $thumbnailSize = $this->getConfiguredSize('sThumbnailsize');
-
         return new MediaView(
-            url: $this->mediaUrlGenerator->generateSizedImageUrl($media, $detailSize),
-            iconUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $iconSize),
-            zoomUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $zoomSize),
-            thumbnailUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $thumbnailSize),
+            url: $this->mediaUrlGenerator->generateSizedImageUrl($media, $this->detailSize),
+            iconUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $this->iconSize),
+            zoomUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $this->zoomSize),
+            thumbnailUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $this->thumbnailSize),
             isFallback: $isFallback
         );
     }
@@ -141,5 +174,10 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         }
 
         return (string) $setting->getValue();
+    }
+
+    private function getCacheKey(string $type, Id $productId, string $qualifier): string
+    {
+        return sprintf('product_media_%s_%s_%s', $type, $productId, $qualifier);
     }
 }

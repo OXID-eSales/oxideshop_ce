@@ -55,22 +55,7 @@ class ModuleAutoload
      */
     public static function autoload($class)
     {
-        /**
-         * Classes from unified namespace cannot be loaded by this auto loader.
-         * Do not try to load them in order to avoid strange errors in edge cases.
-         */
-        if (false !== strpos($class, 'OxidEsales\Eshop\\')) {
-            return false;
-        }
-
-        $instance = static::getInstance();
-        $class = strtolower(basename($class));
-        $class = preg_replace('/_parent$/i', '', $class);
-
-        if (!in_array($class, $instance->triedClasses)) {
-            $instance->triedClasses[] = $class;
-            $instance->createExtensionClassChain($class);
-        }
+        return false;
     }
 
     /**
@@ -85,39 +70,5 @@ class ModuleAutoload
         }
 
         return static::$instance;
-    }
-
-    /**
-     * When module is extending other module's extension (module class, which is extending shop class),
-     * this class comes to autoload and class chain has to be created.
-     *
-     * @param string $class
-     */
-    protected function createExtensionClassChain($class)
-    {
-        $extensions = $this->getModuleVariablesLocator()
-            ->getModuleVariable('aModules');
-
-        if (is_array($extensions)) {
-            $class = preg_quote($class, '/');
-
-            foreach ($extensions as $parentClass => $extensionPaths) {
-                foreach ($extensionPaths as $extensionPath) {
-                    if (preg_match('/\b' . $class . '($|\&)/i', $extensionPath)) {
-                        Registry::getUtilsObject()->getClassName($parentClass);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    private function getModuleVariablesLocator(): ModuleVariablesLocator
-    {
-        $shopIdCalculator = new ShopIdCalculator(
-            new FileCache()
-        );
-        $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
-        return new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
     }
 }

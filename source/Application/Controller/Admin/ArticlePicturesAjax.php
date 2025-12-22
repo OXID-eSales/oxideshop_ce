@@ -23,6 +23,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaUploadProcessorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
+use Symfony\Component\HttpFoundation\FileBag;
+use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,20 +32,23 @@ class ArticlePicturesAjax extends ListComponentAjax
 {
     private readonly ProductMediaUploadProcessorInterface $productMediaUploadProcessor;
     private readonly ProductMediaServiceInterface $productMediaService;
+    private readonly InputBag $requestData;
+    private readonly FileBag $requestFiles;
 
     public function __construct()
     {
         parent::__construct();
         $this->productMediaUploadProcessor = ContainerFacade::get(ProductMediaUploadProcessorInterface::class);
         $this->productMediaService = ContainerFacade::get(ProductMediaServiceInterface::class);
+        $this->requestData = ContainerFacade::get(Request::class)->request;
+        $this->requestFiles = ContainerFacade::get(Request::class)->files;
     }
 
     public function addMedia(): void
     {
-        $request = Request::createFromGlobals();
-        $productId = Id::fromUid($request->get('productId'));
-        $role = ProductMediaRole::from((string) $request->get('role'));
-        foreach ($request->files->get('uploadedFiles') as $uploadedFile) {
+        $productId = Id::fromUid($this->requestData->getString('productId'));
+        $role = ProductMediaRole::from($this->requestData->getString('role'));
+        foreach ($this->requestFiles->get('uploadedFiles') as $uploadedFile) {
             try {
                 $productMedia = $this->productMediaUploadProcessor->process($productId, $uploadedFile);
             } catch (MediaValidationException $e) {
@@ -65,9 +70,7 @@ class ArticlePicturesAjax extends ListComponentAjax
     {
         $this->productMediaService
             ->remove(
-                Id::fromUid(
-                    Request::createFromGlobals()->get('productMediaId')
-                )
+                Id::fromUid($this->requestData->getString('productMediaId'))
             );
     }
 
@@ -85,7 +88,7 @@ class ArticlePicturesAjax extends ListComponentAjax
     {
         $this->productMediaService->sort(
             json_decode(
-                Request::createFromGlobals()->get('sorting'),
+                $this->requestData->getString('sorting'),
                 true,
                 512,
                 JSON_THROW_ON_ERROR
@@ -97,9 +100,7 @@ class ArticlePicturesAjax extends ListComponentAjax
     {
         return $this->productMediaService
             ->get(
-                Id::fromUid(
-                    Request::createFromGlobals()->get('productMediaId')
-                )
+                Id::fromUid($this->requestData->getString('productMediaId'))
             );
     }
 

@@ -31,6 +31,10 @@
 - `SetupDbValidatorInterface` no longer throws `DatabaseNotEmptyException`; database checks are now handled by a separate validator.
 - `database_schema.sql` no longer removes existing `oxmigrations` tables during shop setup. The schema dump should only be applied to an empty database.
 
+### Deprecated
+
+- `RequestInterface` - use `Symfony\Component\HttpFoundation\Request` instead
+
 ### Removed
 
 - Deprecated helper class `DateFormatHelper`
@@ -45,6 +49,7 @@
   - `Article`: `getThumbnailUrl()`, `getIconUrl()`, `getPictureUrl()`, `getMasterZoomPictureUrl()`, `getZoomPictureUrl()`, `getPictureFieldValue()`, `getMasterPicturePath()`, `getPicturesProduct()`, `getMasterZoomPicture()`, `getZoomMedia()`
   - `ArticleDetails`: `getActPicture()`, `morePics()`, `getIcons()`, `showZoomPics()`, `getZoomPics()`
   - `ArticleDetailsController`: `getActPictureId()`, `showZoomPics()`
+- `RequestAdapter`  - use `Symfony\Component\HttpFoundation\Request` instead
 
 ## v8.0.0-alpha.1 - 2025-02-03
 

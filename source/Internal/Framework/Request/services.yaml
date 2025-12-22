@@ -3,5 +3,9 @@ services:
     autowire: true
     public: false
 
+  Symfony\Component\HttpFoundation\Request:
+    factory: ['Symfony\Component\HttpFoundation\Request', 'createFromGlobals']
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface:
-    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Request\RequestAdapter
+    alias: Symfony\Component\HttpFoundation\Request

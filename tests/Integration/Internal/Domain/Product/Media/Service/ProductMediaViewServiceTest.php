@@ -22,20 +22,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSe
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ThemeConfigurationSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
-final class ProductMediaViewServiceTest extends TestCase
+final class ProductMediaViewServiceTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-    use DatabaseTrait;
-
     private const CONFIG_KEY_ICON_SIZE = 'sIconsize';
     private const CONFIG_KEY_THUMBNAIL_SIZE = 'sThumbnailsize';
     private const CONFIG_KEY_DETAIL_IMAGE_SIZE = 'sDetailImageSize';
@@ -43,27 +37,15 @@ final class ProductMediaViewServiceTest extends TestCase
     private const CONFIG_KEY_DEFAULT_IMAGE_QUALITY = 'sDefaultImageQuality';
     private const CONFIG_KEY_CONVERT_IMAGES_TO_WEBP = 'blConvertImagesToWebP';
 
-    private ProductMediaViewServiceInterface $service;
-    private ProductMediaServiceInterface $productMediaService;
-    private ShopConfigurationSettingDaoInterface $configDao;
-    private ThemeConfigurationSettingDaoInterface $themeConfigDao;
     private Id $productId;
     private string $baseUrl;
     private int $shopId;
     private string $themeId;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
-        $this->setParameter('oxid_esales.alternative_image_url', '');
-
-        $this->beginTransaction($this->get(ConnectionFactoryInterface::class)->create());
-
-        $this->service = $this->get(ProductMediaViewServiceInterface::class);
-        $this->productMediaService = $this->get(ProductMediaServiceInterface::class);
-        $this->configDao = $this->get(ShopConfigurationSettingDaoInterface::class);
-        $this->themeConfigDao = $this->get(ThemeConfigurationSettingDaoInterface::class);
         $context = $this->get(ContextInterface::class);
         $this->baseUrl = $context->getShopBaseUrl();
         $this->shopId = $context->getCurrentShopId();
@@ -74,15 +56,9 @@ final class ProductMediaViewServiceTest extends TestCase
         $this->setupTestData();
     }
 
-    protected function tearDown(): void
-    {
-        $this->rollBackTransaction($this->get(ConnectionFactoryInterface::class)->create());
-        parent::tearDown();
-    }
-
     public function testGetIconReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg'),
@@ -100,7 +76,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetIconReturnsFallbackWhenMissing(): void
     {
-        $result = $this->service->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.jpg'),
@@ -119,7 +95,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetThumbnailReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::THUMBNAIL));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::THUMBNAIL));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'thumb.jpg'),
@@ -137,7 +113,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetMediaReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->service->getByPosition($this->productId, 1);
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByPosition($this->productId, 1);
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
@@ -155,7 +131,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetMediaReturnsFallbackForMissingPosition(): void
     {
-        $result = $this->service->getByPosition($this->productId, 999);
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByPosition($this->productId, 999);
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.jpg'),
@@ -176,7 +152,7 @@ final class ProductMediaViewServiceTest extends TestCase
     {
         $this->setStringConfigValue(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, '95');
 
-        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg', '95'),
             $result->getUrl()
@@ -209,9 +185,9 @@ final class ProductMediaViewServiceTest extends TestCase
             $roleSet
         );
         $productMedia->setPosition(1);
-        $this->productMediaService->add($productMedia);
+        $this->get(ProductMediaServiceInterface::class)->add($productMedia);
 
-        $result = $this->service->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
             $result->getUrl()
@@ -229,7 +205,7 @@ final class ProductMediaViewServiceTest extends TestCase
     public function testFallbackUsesWebPWhenEnabled(): void
     {
         $this->setBooleanConfigValue(self::CONFIG_KEY_CONVERT_IMAGES_TO_WEBP, true);
-        $result = $this->service->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.webp'),
             $result->getUrl()
@@ -246,7 +222,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetAllActiveDetailReturnsMediaViews(): void
     {
-        $results = $this->service->getAllByRole(
+        $results = $this->get(ProductMediaViewServiceInterface::class)->getAllByRole(
             $this->productId,
             ProductMediaRole::from(ProductMediaRole::DETAIL)
         );
@@ -278,14 +254,14 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testGetAllActiveDetailReturnsEmptyForNonExistentProduct(): void
     {
-        $results = $this->service->getAllByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::DETAIL));
+        $results = $this->get(ProductMediaViewServiceInterface::class)->getAllByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::DETAIL));
 
         $this->assertEmpty($results);
     }
 
     public function testGetThumbnailUrl(): void
     {
-        $result = $this->service->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_THUMBNAIL_SIZE, 'icon.jpg'),
@@ -295,7 +271,7 @@ final class ProductMediaViewServiceTest extends TestCase
 
     public function testFallbackHasThumbnailUrl(): void
     {
-        $result = $this->service->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_THUMBNAIL_SIZE, 'nopic.jpg'),
@@ -314,7 +290,7 @@ final class ProductMediaViewServiceTest extends TestCase
             ProductMediaRole::DETAIL
         );
 
-        $iconResult = $this->service->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $iconResult = $this->get(ProductMediaViewServiceInterface::class)->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'fallback.jpg'),
@@ -363,7 +339,7 @@ final class ProductMediaViewServiceTest extends TestCase
         $roleSet = new ProductMediaRoleSet(ProductMediaRole::from($role));
         $productMedia = new ProductMedia(Id::generate(), $productId, $media, $roleSet);
         $productMedia->setPosition($position);
-        $this->productMediaService->add($productMedia);
+        $this->get(ProductMediaServiceInterface::class)->add($productMedia);
     }
 
     private function configureImageSettings(): void
@@ -394,14 +370,14 @@ final class ProductMediaViewServiceTest extends TestCase
 
     private function getSizeFromConfig(string $key): array
     {
-        $value = (string) $this->themeConfigDao->get($key, $this->shopId, $this->themeId)->getValue();
+        $value = (string) $this->get(ThemeConfigurationSettingDaoInterface::class)->get($key, $this->shopId, $this->themeId)->getValue();
         [$width, $height] = explode('*', $value);
         return ['width' => (int) $width, 'height' => (int) $height];
     }
 
     private function getQualityFromConfig(): string
     {
-        return (string) $this->configDao->get(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, $this->shopId)->getValue();
+        return (string) $this->get(ShopConfigurationSettingDaoInterface::class)->get(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, $this->shopId)->getValue();
     }
 
     private function setThemeStringConfigValue(string $name, string $value): void
@@ -412,7 +388,7 @@ final class ProductMediaViewServiceTest extends TestCase
         $setting->setType(ShopSettingType::STRING);
         $setting->setShopId($this->shopId);
         $setting->setThemeId($this->themeId);
-        $this->themeConfigDao->save($setting);
+        $this->get(ThemeConfigurationSettingDaoInterface::class)->save($setting);
     }
 
     private function setStringConfigValue(string $name, string $value): void
@@ -422,7 +398,7 @@ final class ProductMediaViewServiceTest extends TestCase
         $setting->setValue($value);
         $setting->setType(ShopSettingType::STRING);
         $setting->setShopId($this->shopId);
-        $this->configDao->save($setting);
+        $this->get(ShopConfigurationSettingDaoInterface::class)->save($setting);
     }
 
     private function setBooleanConfigValue(string $name, bool $value): void
@@ -432,6 +408,6 @@ final class ProductMediaViewServiceTest extends TestCase
         $setting->setValue($value);
         $setting->setType(ShopSettingType::BOOLEAN);
         $setting->setShopId($this->shopId);
-        $this->configDao->save($setting);
+        $this->get(ShopConfigurationSettingDaoInterface::class)->save($setting);
     }
 }

@@ -415,7 +415,7 @@ namespace OxidEsales\EshopCommunity\Core {
             $done = false;
             if ($picFolderPath && is_dir($picFolderPath)) {
                 // if its in main path..
-                if (strcmp($picFolderPath, substr($dir, 0, strlen($picFolderPath))) == 0) {
+                if (Path::isBasePath($picFolderPath, $dir)) {
                     // folder does not exist yet?
                     if (!($done = file_exists($dir))) {
                         clearstatcache();

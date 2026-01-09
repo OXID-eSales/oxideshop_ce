@@ -18,7 +18,12 @@
 
 ### Changed
 
-- Product Pictures management page has been redesigned
+- Product pictures functionality has been redesigned
+  - Unlimited product images (no longer limited to 12)
+  - Images stored in separate tables (removed from `oxarticles`)
+  - New reusable media handling infrastructure (`Internal\Domain\Media`)
+  - New product media services (`Internal\Domain\Product\Media`)
+  - Redesigned Admin UI for image management
 - Module environment configuration file paths
 - Updated doctrine/dbal dependency to ^4.2
 - `ResultSet` constructor now strictly requires `$statement` to be a `Doctrine\DBAL\Statement`

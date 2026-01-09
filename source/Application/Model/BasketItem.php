@@ -11,7 +11,7 @@ use oxRegistry;
 use oxArticleInputException;
 use oxOutOfStockException;
 use oxNoArticleException;
-use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
 use stdClass;
 
 /**
@@ -428,7 +428,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         $this->_oPrice->multiply($this->getAmount());
     }
 
-    public function getIcon(): MediaView
+    public function getIcon(): ProductMediaView
     {
         if ($this->_oIcon === null) {
             $this->_oIcon = $this->getArticle()->getIcon();

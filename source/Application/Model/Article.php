@@ -18,9 +18,9 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
@@ -2393,7 +2393,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         ];
     }
 
-    private function determineActiveMedia(array $mediaItems): ?MediaView
+    private function determineActiveMedia(array $mediaItems): ?ProductMediaView
     {
         if (empty($mediaItems)) {
             return null;
@@ -3088,13 +3088,13 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         $this->_aDispSelList = $aSelList;
     }
 
-    public function getMedia(int $position): MediaView
+    public function getMedia(int $position): ProductMediaView
     {
         return ContainerFacade::get(ProductMediaViewServiceInterface::class)
             ->getByPosition(Id::fromUid($this->getId()), $position);
     }
 
-    public function getIcon(): MediaView
+    public function getIcon(): ProductMediaView
     {
         return ContainerFacade::get(ProductMediaViewServiceInterface::class)->getByRole(
             Id::fromUid($this->getId()),
@@ -3102,7 +3102,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         );
     }
 
-    public function getThumbnail(): MediaView
+    public function getThumbnail(): ProductMediaView
     {
         return ContainerFacade::get(ProductMediaViewServiceInterface::class)->getByRole(
             Id::fromUid($this->getId()),

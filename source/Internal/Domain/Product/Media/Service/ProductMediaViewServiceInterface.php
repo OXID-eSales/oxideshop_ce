@@ -9,16 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 interface ProductMediaViewServiceInterface
 {
-    public function getByRole(Id $productId, ProductMediaRole $role): MediaView;
+    public function getByRole(Id $productId, ProductMediaRole $role): ProductMediaView;
 
-    /** @return array<string, MediaView> */
+    /** @return array<string, ProductMediaView> */
     public function getAllByRole(Id $productId, ProductMediaRole $role): array;
 
-    public function getByPosition(Id $productId, int $position): MediaView;
+    public function getByPosition(Id $productId, int $position): ProductMediaView;
 }

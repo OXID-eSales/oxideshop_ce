@@ -12,13 +12,13 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
-use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaView;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -31,19 +31,19 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         private ProductMediaDaoInterface $productMediaDao,
         private MediaUrlGeneratorInterface $mediaUrlGenerator,
         private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
-        private ThemeConfigurationSettingDaoInterface $themeConfigurationSettingDao,
+        private ThemeSettingDaoInterface $themeSettingDao,
         private ShopAdapterInterface $shopAdapter,
         private ContextInterface $context
     ) {
     }
 
-    public function getByRole(Id $productId, ProductMediaRole $role): MediaView
+    public function getByRole(Id $productId, ProductMediaRole $role): ProductMediaView
     {
         $productMedia = $this->getMediaWithFallback($productId, $role);
         return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
     }
 
-    public function getByPosition(Id $productId, int $position): MediaView
+    public function getByPosition(Id $productId, int $position): ProductMediaView
     {
         $productMedia = $this->productMediaDao->getActiveByPosition($productId, $position);
 
@@ -54,7 +54,7 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         return $this->createMediaViewWithAllSizes($productMedia);
     }
 
-    /** @return array<string, MediaView> */
+    /** @return array<string, ProductMediaView> */
     public function getAllByRole(Id $productId, ProductMediaRole $role): array
     {
         $productMediaCollection = $this->productMediaDao->getAllActiveByRole(
@@ -77,25 +77,25 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         return $productMedia ?: $this->productMediaDao->getFirstActive($productId);
     }
 
-    private function createMediaViewWithAllSizes(ProductMedia $productMedia): MediaView
+    private function createMediaViewWithAllSizes(ProductMedia $productMedia): ProductMediaView
     {
         return $this->createMediaView($productMedia->getMedia(), false);
     }
 
-    private function createFallbackMediaView(): MediaView
+    private function createFallbackMediaView(): ProductMediaView
     {
         return $this->createMediaView($this->createFallbackMedia(), true);
     }
 
-    private function createMediaView(Media $media, bool $isFallback): MediaView
+    private function createMediaView(Media $media, bool $isFallback): ProductMediaView
     {
         $detailSize = $this->getConfiguredSize('sDetailImageSize');
         $iconSize = $this->getConfiguredSize('sIconsize');
         $zoomSize = $this->getConfiguredSize('sZoomImageSize');
         $thumbnailSize = $this->getConfiguredSize('sThumbnailsize');
 
-        return new MediaView(
-            url: $this->mediaUrlGenerator->generateSizedImageUrl($media, $detailSize),
+        return new ProductMediaView(
+            detailUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $detailSize),
             iconUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $iconSize),
             zoomUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $zoomSize),
             thumbnailUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $thumbnailSize),
@@ -128,7 +128,7 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
     private function getConfiguredSize(string $sizeConfigKey): string
     {
         try {
-            $setting = $this->themeConfigurationSettingDao->get(
+            $setting = $this->themeSettingDao->get(
                 $sizeConfigKey,
                 $this->context->getCurrentShopId(),
                 $this->shopAdapter->getActiveThemeId()

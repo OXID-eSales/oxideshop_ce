@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject;
 
-class ThemeConfigurationSetting
+class ThemeSetting
 {
     private int $shopId;
     private string $name;

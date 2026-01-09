@@ -18,10 +18,10 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ThemeConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -62,7 +62,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'icon.jpg'),
@@ -80,7 +80,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.jpg'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'nopic.jpg'),
@@ -99,7 +99,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'thumb.jpg'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'thumb.jpg'),
@@ -117,7 +117,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'detail.jpg'),
@@ -135,7 +135,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.jpg'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'nopic.jpg'),
@@ -155,7 +155,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg', '95'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'icon.jpg', '95'),
@@ -190,7 +190,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'detail.jpg'),
@@ -208,7 +208,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.webp'),
-            $result->getUrl()
+            $result->getDetailUrl()
         );
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_ICON_SIZE, 'nopic.webp'),
@@ -228,7 +228,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         );
 
         $this->assertCount(3, $results);
-        $urls = array_map(fn($result) => $result->getUrl(), $results);
+        $urls = array_map(fn($result) => $result->getDetailUrl(), $results);
 
         $this->assertContains(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
@@ -294,7 +294,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'fallback.jpg'),
-            $iconResult->getUrl()
+            $iconResult->getDetailUrl()
         );
         $this->assertFalse($iconResult->isFallback());
     }
@@ -370,7 +370,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     private function getSizeFromConfig(string $key): array
     {
-        $value = (string) $this->get(ThemeConfigurationSettingDaoInterface::class)->get($key, $this->shopId, $this->themeId)->getValue();
+        $value = (string) $this->get(ThemeSettingDaoInterface::class)->get($key, $this->shopId, $this->themeId)->getValue();
         [$width, $height] = explode('*', $value);
         return ['width' => (int) $width, 'height' => (int) $height];
     }
@@ -382,13 +382,13 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     private function setThemeStringConfigValue(string $name, string $value): void
     {
-        $setting = new ThemeConfigurationSetting();
+        $setting = new ThemeSetting();
         $setting->setName($name);
         $setting->setValue($value);
         $setting->setType(ShopSettingType::STRING);
         $setting->setShopId($this->shopId);
         $setting->setThemeId($this->themeId);
-        $this->get(ThemeConfigurationSettingDaoInterface::class)->save($setting);
+        $this->get(ThemeSettingDaoInterface::class)->save($setting);
     }
 
     private function setStringConfigValue(string $name, string $value): void

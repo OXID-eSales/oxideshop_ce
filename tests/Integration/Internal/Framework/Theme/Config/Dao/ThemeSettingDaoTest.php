@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapter\Configuration\Dao;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Config\Dao;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSettingDao;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ThemeConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ThemeConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDao;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
@@ -23,7 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-final class ThemeConfigurationSettingDaoTest extends TestCase
+final class ThemeSettingDaoTest extends TestCase
 {
     use ContainerTrait;
     use DatabaseTrait;
@@ -47,21 +47,21 @@ final class ThemeConfigurationSettingDaoTest extends TestCase
     #[DataProvider('settingValueDataProvider')]
     public function testSave(string $name, string $type, string|int|float|bool|array $value): void
     {
-        $settingDao = $this->getConfigurationSettingDao();
+        $settingDao = $this->getSettingDao();
 
-        $themeConfigurationSetting = $this->createSetting($name, $type, $value);
+        $themeSetting = $this->createSetting($name, $type, $value);
 
-        $settingDao->save($themeConfigurationSetting);
+        $settingDao->save($themeSetting);
 
         $this->assertEquals(
-            $themeConfigurationSetting,
+            $themeSetting,
             $settingDao->get($name, 1, self::THEME_ID)
         );
     }
 
     public function testGetNonExistentSetting(): void
     {
-        $settingDao = $this->getConfigurationSettingDao();
+        $settingDao = $this->getSettingDao();
 
         $this->expectException(EntryDoesNotExistDaoException::class);
         $settingDao->get('nonExisting', 1, self::THEME_ID);
@@ -69,12 +69,12 @@ final class ThemeConfigurationSettingDaoTest extends TestCase
 
     public function testDelete(): void
     {
-        $settingDao = $this->getConfigurationSettingDao();
-        $themeConfigurationSetting = $this->createSetting('testDelete', 'str', 'value');
+        $settingDao = $this->getSettingDao();
+        $themeSetting = $this->createSetting('testDelete', 'str', 'value');
 
-        $settingDao->save($themeConfigurationSetting);
+        $settingDao->save($themeSetting);
 
-        $settingDao->delete($themeConfigurationSetting);
+        $settingDao->delete($themeSetting);
 
         $this->expectException(EntryDoesNotExistDaoException::class);
         $settingDao->get('testDelete', 1, self::THEME_ID);
@@ -82,17 +82,17 @@ final class ThemeConfigurationSettingDaoTest extends TestCase
 
     public function testUpdate(): void
     {
-        $settingDao = $this->getConfigurationSettingDao();
-        $themeConfigurationSetting = $this->createSetting('testUpdate', 'str', 'first');
+        $settingDao = $this->getSettingDao();
+        $themeSetting = $this->createSetting('testUpdate', 'str', 'first');
 
-        $settingDao->save($themeConfigurationSetting);
+        $settingDao->save($themeSetting);
 
-        $themeConfigurationSetting->setValue('second');
+        $themeSetting->setValue('second');
 
-        $settingDao->save($themeConfigurationSetting);
+        $settingDao->save($themeSetting);
 
         $this->assertEquals(
-            $themeConfigurationSetting,
+            $themeSetting,
             $settingDao->get('testUpdate', 1, self::THEME_ID)
         );
     }
@@ -101,26 +101,26 @@ final class ThemeConfigurationSettingDaoTest extends TestCase
     {
         $this->assertSame(0, $this->getRowCount());
 
-        $settingDao = $this->getConfigurationSettingDao();
-        $themeConfigurationSetting = $this->createSetting('testDuplications', 'str', 'first');
+        $settingDao = $this->getSettingDao();
+        $themeSetting = $this->createSetting('testDuplications', 'str', 'first');
 
-        $settingDao->save($themeConfigurationSetting);
+        $settingDao->save($themeSetting);
 
         $this->assertSame(1, $this->getRowCount());
 
-        $themeConfigurationSetting->setValue('second');
+        $themeSetting->setValue('second');
 
-        $settingDao->save($themeConfigurationSetting);
+        $settingDao->save($themeSetting);
 
         $this->assertSame(1, $this->getRowCount());
     }
 
     public function testGetDoesNotReturnCachedReference(): void
     {
-        $settingDao = $this->getConfigurationSettingDao();
-        $themeConfigurationSetting = $this->createSetting('cloning_test', 'str', 'initial');
+        $settingDao = $this->getSettingDao();
+        $themeSetting = $this->createSetting('cloning_test', 'str', 'initial');
 
-        $settingDao->save($themeConfigurationSetting);
+        $settingDao->save($themeSetting);
 
         $first = $settingDao->get('cloning_test', 1, self::THEME_ID);
         $first->setValue('changed');
@@ -153,7 +153,7 @@ final class ThemeConfigurationSettingDaoTest extends TestCase
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $settingDao = new ThemeConfigurationSettingDao(
+        $settingDao = new ThemeSettingDao(
             $queryBuilderFactory,
             $encoder,
             $eventDispatcher
@@ -174,9 +174,9 @@ final class ThemeConfigurationSettingDaoTest extends TestCase
         ];
     }
 
-    private function createSetting(string $name, string $type, string|int|float|bool|array $value): ThemeConfigurationSetting
+    private function createSetting(string $name, string $type, string|int|float|bool|array $value): ThemeSetting
     {
-        $setting = new ThemeConfigurationSetting();
+        $setting = new ThemeSetting();
         $setting
             ->setShopId(1)
             ->setThemeId(self::THEME_ID)
@@ -187,9 +187,9 @@ final class ThemeConfigurationSettingDaoTest extends TestCase
         return $setting;
     }
 
-    private function getConfigurationSettingDao(): ThemeConfigurationSettingDaoInterface
+    private function getSettingDao(): ThemeSettingDaoInterface
     {
-        return $this->get(ThemeConfigurationSettingDaoInterface::class);
+        return $this->get(ThemeSettingDaoInterface::class);
     }
 
     private function getRowCount(): int

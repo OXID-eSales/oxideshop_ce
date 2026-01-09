@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject;
+namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject;
 
-readonly class MediaView
+readonly class ProductMediaView
 {
     public function __construct(
-        private string $url,
+        private string $detailUrl,
         private string $iconUrl,
         private string $zoomUrl,
         private string $thumbnailUrl,
@@ -20,9 +20,9 @@ readonly class MediaView
     ) {
     }
 
-    public function getUrl(): string
+    public function getDetailUrl(): string
     {
-        return $this->url;
+        return $this->detailUrl;
     }
 
     public function getIconUrl(): string

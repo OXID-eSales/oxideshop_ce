@@ -568,7 +568,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function getActPicture()
     {
-        return $this->getPictureGallery()['activeMedia']?->getUrl();
+        return $this->getPictureGallery()['activeMedia']?->getDetailUrl();
     }
 
 

@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Config\Dao;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ThemeConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterface
+class ThemeSettingDao implements ThemeSettingDaoInterface
 {
     private const THEME_MODULE_PREFIX = 'theme:';
 
@@ -30,7 +30,7 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
 
     private array $cache = [];
 
-    public function save(ThemeConfigurationSetting $setting): void
+    public function save(ThemeSetting $setting): void
     {
         $this->delete($setting);
 
@@ -69,7 +69,7 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
         );
     }
 
-    public function get(string $name, int $shopId, string $themeId): ThemeConfigurationSetting
+    public function get(string $name, int $shopId, string $themeId): ThemeSetting
     {
         $moduleIdentifier = $this->getModuleIdentifier($themeId);
 
@@ -95,7 +95,7 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
                 );
             }
 
-            $setting = new ThemeConfigurationSetting();
+            $setting = new ThemeSetting();
             $setting
                 ->setThemeId($themeId)
                 ->setName($name)
@@ -109,7 +109,7 @@ class ThemeConfigurationSettingDao implements ThemeConfigurationSettingDaoInterf
         return clone $this->cache[$shopId][$themeId][$name];
     }
 
-    public function delete(ThemeConfigurationSetting $setting): void
+    public function delete(ThemeSetting $setting): void
     {
         $queryBuilder = $this->queryBuilderFactory->create();
         $queryBuilder

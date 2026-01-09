@@ -275,9 +275,9 @@ final class ArticleTest extends IntegrationTestCase
         $expectedUrl = $this->productMediaViewService->getByRole(
             $productId,
             ProductMediaRole::from(ProductMediaRole::ICON)
-        )->getUrl();
+        )->getDetailUrl();
 
-        $this->assertSame($expectedUrl, $article->getIcon()->getUrl());
+        $this->assertSame($expectedUrl, $article->getIcon()->getDetailUrl());
     }
 
     public function testGetThumbnailReturnsMediaViewFromService(): void
@@ -287,18 +287,18 @@ final class ArticleTest extends IntegrationTestCase
         $expectedUrl = $this->productMediaViewService->getByRole(
             $productId,
             ProductMediaRole::from(ProductMediaRole::THUMBNAIL)
-        )->getUrl();
+        )->getDetailUrl();
 
-        $this->assertSame($expectedUrl, $article->getThumbnail()->getUrl());
+        $this->assertSame($expectedUrl, $article->getThumbnail()->getDetailUrl());
     }
 
     public function testGetMediaReturnsDetailImageForRequestedPosition(): void
     {
         [$article, $productId] = $this->createArticleWithMedia();
 
-        $expectedUrl = $this->productMediaViewService->getByPosition($productId, 1)->getUrl();
+        $expectedUrl = $this->productMediaViewService->getByPosition($productId, 1)->getDetailUrl();
 
-        $this->assertSame($expectedUrl, $article->getMedia(1)->getUrl());
+        $this->assertSame($expectedUrl, $article->getMedia(1)->getDetailUrl());
     }
 
 
@@ -340,7 +340,7 @@ final class ArticleTest extends IntegrationTestCase
 
         $gallery = $article->getPictureGallery();
 
-        $this->assertSame($expectedActiveMedia->getUrl(), $gallery['activeMedia']->getUrl());
+        $this->assertSame($expectedActiveMedia->getDetailUrl(), $gallery['activeMedia']->getDetailUrl());
     }
 
     public function testGetPictureGalleryReturnsAllMediaItems(): void

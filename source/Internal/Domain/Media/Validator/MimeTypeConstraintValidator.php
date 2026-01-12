@@ -11,14 +11,15 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Validator;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeBaseTypeMismatchException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeGuessMismatchException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeTypeGuessFailedException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Mime\MimeTypeGuesserInterface;
 
 readonly class MimeTypeConstraintValidator implements MediaConstraintValidatorInterface
 {
     public function __construct(
         private string $baseTypePrefix,
-        private MimeTypes $mimeTypeGuesser
+        private MimeTypeGuesserInterface $mimeTypeGuesser
     ) {
     }
 
@@ -26,7 +27,9 @@ readonly class MimeTypeConstraintValidator implements MediaConstraintValidatorIn
     {
         $path = $uploadedFile->getPathname();
 
-        $guessedMimeType = $this->mimeTypeGuesser->guessMimeType($path);
+        $guessedMimeType = $this->mimeTypeGuesser->guessMimeType($path)
+            ?? throw new MimeTypeGuessFailedException($path);
+
         $clientMimeType = $uploadedFile->getClientMimeType();
 
         if (!str_starts_with($guessedMimeType, $this->baseTypePrefix)) {

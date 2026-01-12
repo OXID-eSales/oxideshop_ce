@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileSize
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\FileSizeTooSmallException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeBaseTypeMismatchException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeGuessMismatchException;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeTypeGuessFailedException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\UploadInvalidException;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
@@ -122,6 +123,9 @@ class ArticlePicturesAjax extends ListComponentAjax
 
             $e instanceof MimeGuessMismatchException =>
                 ['ERR_MEDIA_MIME_GUESS_MISMATCH', [$e->getGuessedMime(), $e->getClientMime()]],
+
+            $e instanceof MimeTypeGuessFailedException =>
+                ['ERR_MEDIA_MIME_GUESS_FAILED', []],
 
             $e instanceof FileExtensionMismatchException =>
                 ['ERR_MEDIA_EXTENSION_MISMATCH', [$e->getClientExtension(), \implode(', ', $e->getValidExtensions())]],

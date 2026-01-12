@@ -91,13 +91,14 @@ final class ProductPicturesCest
         $minSize = '1024';
         $I->amGoingTo("set the minimum image size to make previously valid image fixtures invalid");
         $I->updateProjectConfigurations(['oxid_esales.product.media.file.min_size_kb' => $minSize], []);
-        $I
+        $picturesPage = $I
             ->loginAdmin()
             ->openProducts()
             ->findByProductNumber($this->productNumber)
-            ->openPicturesTab()
+            ->openPicturesTab();
+
+        $picturesPage
             ->uploadFile($this->image1)
-            ->uploadFile($this->image2)
             ->seeImageUploadError(basename($this->image1))
             ->seeImageUploadError(
                 sprintf(
@@ -112,7 +113,10 @@ final class ProductPicturesCest
                     ),
                     (new FileSizeLogic())->getFileSize(((int) $minSize) * 1024)
                 )
-            )
+            );
+
+        $picturesPage
+            ->uploadFile($this->image2)
             ->seeImageUploadError(basename($this->image2))
             ->seeImageUploadError(
                 sprintf(

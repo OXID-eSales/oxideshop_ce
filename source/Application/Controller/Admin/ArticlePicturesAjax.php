@@ -19,7 +19,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeBase
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeGuessMismatchException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\MimeTypeGuessFailedException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Validator\Exception\UploadInvalidException;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaUploadProcessorInterface;
@@ -47,19 +46,8 @@ class ArticlePicturesAjax extends ListComponentAjax
 
     public function addMedia(): void
     {
-        $errors = [];
-        $productId = Id::fromUid($this->requestData->getString('productId'));
-        $role = ProductMediaRole::from($this->requestData->getString('role'));
-        foreach ($this->requestFiles->get('uploadedFiles') as $uploadedFile) {
-            try {
-                $productMedia = $this->productMediaUploadProcessor->process($productId, $uploadedFile);
-            } catch (MediaValidationException $e) {
-                $errors[] = $this->formatErrorWithFilename($e, $uploadedFile->getClientOriginalName());
-                continue;
-            }
-            $productMedia->getRoleSet()->addRole($role);
-            $this->productMediaService->add($productMedia);
-        }
+        $errors = $this->processUploadedFiles();
+
         if ($errors !== []) {
             $this->sendErrorsResponse($errors);
         }
@@ -67,21 +55,25 @@ class ArticlePicturesAjax extends ListComponentAjax
 
     public function replaceMedia(): void
     {
-        $this->addMedia();
-        $this->removeMedia();
+        $errors = $this->processUploadedFiles();
+
+        if ($errors !== []) {
+            $this->sendErrorsResponse($errors);
+            return;
+        }
+
+        $this->productMediaService->remove($this->getProductMediaId());
     }
 
     public function removeMedia(): void
     {
-        $this->productMediaService
-            ->remove(
-                Id::fromUid($this->requestData->getString('productMediaId'))
-            );
+        $this->productMediaService->remove($this->getProductMediaId());
     }
 
     public function toggleMediaActiveState(): void
     {
-        $productMedia = $this->getProductMedia();
+        $productMedia = $this->productMediaService->get($this->getProductMediaId());
+
         if ($productMedia->isActive()) {
             $this->productMediaService->deactivate($productMedia);
         } else {
@@ -101,12 +93,30 @@ class ArticlePicturesAjax extends ListComponentAjax
         );
     }
 
-    private function getProductMedia(): ProductMedia
+    private function processUploadedFiles(): array
     {
-        return $this->productMediaService
-            ->get(
-                Id::fromUid($this->requestData->getString('productMediaId'))
-            );
+        $errors = [];
+        $productId = Id::fromUid($this->requestData->getString('productId'));
+        $role = ProductMediaRole::from($this->requestData->getString('role'));
+
+        foreach ($this->requestFiles->get('uploadedFiles') as $uploadedFile) {
+            try {
+                $productMedia = $this->productMediaUploadProcessor->process($productId, $uploadedFile);
+            } catch (MediaValidationException $e) {
+                $errors[] = $this->formatErrorWithFilename($e, $uploadedFile->getClientOriginalName());
+                continue;
+            }
+
+            $productMedia->getRoleSet()->addRole($role);
+            $this->productMediaService->add($productMedia);
+        }
+
+        return $errors;
+    }
+
+    private function getProductMediaId(): Id
+    {
+        return Id::fromUid($this->requestData->getString('productMediaId'));
     }
 
     private function mapExceptionToTranslation(\Throwable $e): array

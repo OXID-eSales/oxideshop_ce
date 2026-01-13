@@ -198,6 +198,40 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $this->assertNotEquals((string) $existingMediaId, (string) $allMedia->first()->getId());
     }
 
+    public function testReplaceMediaKeepsExistingWhenValidationFails(): void
+    {
+        $fixture = Path::join(__DIR__, self::FIXTURES_PATH, self::VALID_IMAGE);
+        $uploadedFile = new UploadedFile($fixture, self::VALID_IMAGE, 'image/jpeg', null, true);
+        $productId = Id::generate();
+        $existingMediaId = Id::generate();
+
+        $this->rewriteProjectConfiguration([
+            'parameters' => [
+                'oxid_esales.product.media.file.min_size_kb' => '1048576',
+            ]
+        ]);
+
+        $this->setupContainerWithRequest(
+            [
+                'productId' => (string) $productId,
+                'role' => ProductMediaRole::ICON,
+                'productMediaId' => (string) $existingMediaId,
+            ],
+            [$uploadedFile]
+        );
+
+        $this->createArticleWithId((string) $productId);
+        $this->addProductMediaWithId($existingMediaId, $productId, ProductMediaRole::ICON);
+
+        ob_start();
+        $controller = oxNew(ArticlePicturesAjax::class);
+        $controller->replaceMedia();
+        ob_end_clean();
+
+        $allMedia = $this->get(ProductMediaDaoInterface::class)->getAll($productId);
+        $this->assertEquals((string) $existingMediaId, (string) $allMedia->first()->getId());
+    }
+
     private function createArticleWithId(string $id): void
     {
         $article = oxNew(Article::class);

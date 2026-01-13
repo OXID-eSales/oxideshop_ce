@@ -40,11 +40,7 @@ readonly class ProductMediaService implements ProductMediaServiceInterface
 
     public function remove(Id $mediaId): void
     {
-        $productMedia = $this->productMediaDao->get($mediaId);
         $this->productMediaDao->delete($mediaId);
-        $this->mediaDao->delete(
-            $productMedia->getMedia()->getId()
-        );
     }
 
     public function sort(array $idsSorted): void

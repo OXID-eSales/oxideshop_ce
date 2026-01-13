@@ -85,17 +85,17 @@ final class ProductMediaServiceTest extends TestCase
         $this->service->get($this->productMedia->getId());
     }
 
-    public function testRemoveWillDeleteMediaRecord(): void
+    public function testRemoveWillNotDeleteMediaRecord(): void
     {
         $this->service->remove($this->productMedia->getId());
-
-        $this->expectException(EntryDoesNotExistDaoException::class);
 
         $this->mediaDao->get(
             $this->productMedia
                 ->getMedia()
                 ->getId()
         );
+
+        $this->expectNotToPerformAssertions();
     }
 
     public function testActivate(): void

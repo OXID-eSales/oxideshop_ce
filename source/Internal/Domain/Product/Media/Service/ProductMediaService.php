@@ -43,6 +43,11 @@ readonly class ProductMediaService implements ProductMediaServiceInterface
         $this->productMediaDao->delete($mediaId);
     }
 
+    public function update(ProductMedia $productMedia): void
+    {
+        $this->productMediaDao->update($productMedia);
+    }
+
     public function sort(array $idsSorted): void
     {
         $this->productMediaDao->sort(

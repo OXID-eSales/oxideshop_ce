@@ -18,6 +18,8 @@ interface ProductMediaServiceInterface
 
     public function remove(Id $mediaId): void;
 
+    public function update(ProductMedia $productMedia): void;
+
     public function sort(array $idsSorted): void;
 
     public function activate(ProductMedia $productMedia): void;

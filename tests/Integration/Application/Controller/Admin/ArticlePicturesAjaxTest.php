@@ -43,6 +43,7 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
 
         $this->setupContainerWithRequest([
             'productMediaId' => (string) $productMediaId,
+            'role' => ProductMediaRole::DETAIL,
         ]);
 
         $this->createArticleWithId((string) $productId);
@@ -52,6 +53,30 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $controller->removeMedia();
 
         $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll($productId));
+    }
+
+    public function testRemoveMediaRemovesOnlyRoleWhenMultipleRolesExist(): void
+    {
+        $productMediaId = Id::generate();
+        $productId = Id::generate();
+
+        $this->setupContainerWithRequest([
+            'productMediaId' => (string) $productMediaId,
+            'role' => ProductMediaRole::ICON,
+        ]);
+
+        $this->createArticleWithId((string) $productId);
+        $this->addProductMediaWithId($productMediaId, $productId, ProductMediaRole::ICON, ProductMediaRole::THUMBNAIL);
+
+        $controller = oxNew(ArticlePicturesAjax::class);
+        $controller->removeMedia();
+
+        $allMedia = $this->get(ProductMediaDaoInterface::class)->getAll($productId);
+        $this->assertCount(1, $allMedia);
+
+        $existingMedia = $this->get(ProductMediaDaoInterface::class)->get($productMediaId);
+        $this->assertFalse($existingMedia->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::ICON)));
+        $this->assertTrue($existingMedia->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::THUMBNAIL)));
     }
 
     public function testToggleMediaActiveStateDeactivates(): void
@@ -232,6 +257,36 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $this->assertEquals((string) $existingMediaId, (string) $allMedia->first()->getId());
     }
 
+    public function testReplaceMediaRemovesOnlyRoleWhenMultipleRolesExist(): void
+    {
+        $fixture = Path::join(__DIR__, self::FIXTURES_PATH, self::VALID_IMAGE);
+        $uploadedFile = new UploadedFile($fixture, self::VALID_IMAGE, 'image/jpeg', null, true);
+        $productId = Id::generate();
+        $existingMediaId = Id::generate();
+
+        $this->setupContainerWithRequestAndMocks(
+            [
+                'productId' => (string) $productId,
+                'role' => ProductMediaRole::ICON,
+                'productMediaId' => (string) $existingMediaId,
+            ],
+            [$uploadedFile]
+        );
+
+        $this->createArticleWithId((string) $productId);
+        $this->addProductMediaWithId($existingMediaId, $productId, ProductMediaRole::ICON, ProductMediaRole::THUMBNAIL);
+
+        $controller = oxNew(ArticlePicturesAjax::class);
+        $controller->replaceMedia();
+
+        $allMedia = $this->get(ProductMediaDaoInterface::class)->getAll($productId);
+        $this->assertCount(2, $allMedia);
+
+        $existingMedia = $this->get(ProductMediaDaoInterface::class)->get($existingMediaId);
+        $this->assertFalse($existingMedia->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::ICON)));
+        $this->assertTrue($existingMedia->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::THUMBNAIL)));
+    }
+
     private function createArticleWithId(string $id): void
     {
         $article = oxNew(Article::class);
@@ -243,13 +298,18 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $article->save();
     }
 
-    private function addProductMediaWithId(Id $mediaId, Id $productId, string $role): ProductMedia
+    private function addProductMediaWithId(Id $mediaId, Id $productId, string ...$roles): ProductMedia
     {
+        $roleSet = new ProductMediaRoleSet(...array_map(
+            fn(string $role) => ProductMediaRole::from($role),
+            $roles
+        ));
+
         $productMedia = new ProductMedia(
             $mediaId,
             $productId,
             new Media(Id::generate(), new MediaPath('out/pictures/media/test.jpg'), new MediaType('image/jpeg')),
-            new ProductMediaRoleSet(ProductMediaRole::from($role)),
+            $roleSet,
         );
         $this->get(ProductMediaServiceInterface::class)->add($productMedia);
 

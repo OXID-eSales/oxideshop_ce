@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Product\Media\DataObject;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Exception\EmptyProductMediaRoleException;
 use PHPUnit\Framework\TestCase;
 
 final class ProductMediaRoleTest extends TestCase
@@ -28,5 +29,12 @@ final class ProductMediaRoleTest extends TestCase
             ProductMediaRole::from(ProductMediaRole::DETAIL)->value(),
             ProductMediaRole::from(ProductMediaRole::DETAIL)->value(),
         );
+    }
+
+    public function testFromWithEmptyStringThrowsException(): void
+    {
+        $this->expectException(EmptyProductMediaRoleException::class);
+
+        ProductMediaRole::from('');
     }
 }

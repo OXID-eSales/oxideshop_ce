@@ -62,12 +62,12 @@ class ArticlePicturesAjax extends ListComponentAjax
             return;
         }
 
-        $this->productMediaService->remove($this->getProductMediaId());
+        $this->removeRoleFromMedia();
     }
 
     public function removeMedia(): void
     {
-        $this->productMediaService->remove($this->getProductMediaId());
+        $this->removeRoleFromMedia();
     }
 
     public function toggleMediaActiveState(): void
@@ -91,6 +91,18 @@ class ArticlePicturesAjax extends ListComponentAjax
                 JSON_THROW_ON_ERROR
             )
         );
+    }
+
+    private function removeRoleFromMedia(): void
+    {
+        $productMedia = $this->productMediaService->get($this->getProductMediaId());
+        $productMedia->getRoleSet()->removeRole(ProductMediaRole::from($this->requestData->getString('role')));
+
+        if ($productMedia->getRoleSet()->getRoles()->isEmpty()) {
+            $this->productMediaService->remove($productMedia->getId());
+        } else {
+            $this->productMediaService->update($productMedia);
+        }
     }
 
     private function processUploadedFiles(): array

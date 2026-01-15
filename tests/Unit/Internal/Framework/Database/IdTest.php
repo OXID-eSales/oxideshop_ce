@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Database;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
@@ -23,15 +22,15 @@ class IdTest extends TestCase
         $this->assertNotEquals($id1, $id2);
     }
 
-    public function testFromString(): void
+    public function testFromUid(): void
     {
-        $id = md5('12345');
+        $id = 'some string';
         $this->assertEquals($id, Id::fromUid($id));
     }
 
-    public function testFromInvalidString(): void
+    public function testFromString(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        Id::fromUid('notMd5');
+        $id = 'notMd5';
+        $this->assertEquals($id, Id::fromString($id));
     }
 }

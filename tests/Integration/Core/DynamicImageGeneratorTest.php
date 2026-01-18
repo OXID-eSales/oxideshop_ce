@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\EshopCommunity\Core\Curl;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class DynamicImageGeneratorTest extends IntegrationTestCase
 {
@@ -28,7 +30,7 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
     {
         $this->createTestMasterImage();
 
-        $url = '/out/pictures/generated/media/product/100_100_75/test-image.jpg';
+        $url = '/out/pictures/generated/media/products/100_100_75/test-image.jpg';
 
         $curl = new Curl();
         $curl->setMethod('GET');
@@ -45,12 +47,11 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
 
     private function createTestMasterImage(): void
     {
-        $masterDir = __DIR__ . '/../../../source/out/pictures/media/product';
-        if (!is_dir($masterDir)) {
-            mkdir($masterDir, 0755, true);
+        $imagePath = $this->getTestImagePath();
+        $imageDirectory = dirname($imagePath);
+        if (!is_dir($imageDirectory)) {
+            mkdir($imageDirectory, 0755, true);
         }
-
-        $imagePath = $masterDir . '/test-image.jpg';
 
         $image = imagecreate(200, 200);
         $textColor = imagecolorallocate($image, 0, 0, 0);
@@ -62,9 +63,21 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
 
     private function cleanupTestFiles(): void
     {
-        $filePath = __DIR__ . '/../../../source/out/pictures/media/product/test-image.jpg';
-        if (file_exists($filePath)) {
-            unlink($filePath);
+        $imagePath = $this->getTestImagePath();
+        if (file_exists($imagePath)) {
+            unlink($imagePath);
         }
+    }
+
+    private function getTestImagePath(): string
+    {
+        return Path::join(
+            $this->get(BasicContextInterface::class)->getSourcePath(),
+            'out',
+            'pictures',
+            'media',
+            'products',
+            'test-image.jpg'
+        );
     }
 }

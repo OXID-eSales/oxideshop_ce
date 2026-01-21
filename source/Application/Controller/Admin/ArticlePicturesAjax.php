@@ -108,7 +108,7 @@ class ArticlePicturesAjax extends ListComponentAjax
     private function processUploadedFiles(): array
     {
         $errors = [];
-        $productId = Id::fromUid($this->requestData->getString('productId'));
+        $productId = Id::fromString($this->requestData->getString('productId'));
         $role = ProductMediaRole::from($this->requestData->getString('role'));
 
         foreach ($this->requestFiles->get('uploadedFiles') as $uploadedFile) {
@@ -128,7 +128,7 @@ class ArticlePicturesAjax extends ListComponentAjax
 
     private function getProductMediaId(): Id
     {
-        return Id::fromUid($this->requestData->getString('productMediaId'));
+        return Id::fromString($this->requestData->getString('productMediaId'));
     }
 
     private function mapExceptionToTranslation(\Throwable $e): array

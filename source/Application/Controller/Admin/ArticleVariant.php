@@ -158,8 +158,8 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         if ($isNewVariant && $oArticle->oxarticles__oxparentid->value) {
             ContainerFacade::get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant(
-                Id::fromUid($oArticle->oxarticles__oxparentid->value),
-                Id::fromUid($oArticle->getId())
+                Id::fromString($oArticle->oxarticles__oxparentid->value),
+                Id::fromString($oArticle->getId())
             );
         }
     }

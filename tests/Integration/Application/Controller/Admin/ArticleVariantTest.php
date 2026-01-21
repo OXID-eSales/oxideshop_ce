@@ -28,42 +28,42 @@ final class ArticleVariantTest extends IntegrationTestCase
     public function testSaveNewVariantCopiesMediaFromParent(): void
     {
         $parentId = $this->createParentArticle();
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::DETAIL);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::DETAIL);
 
         $controller = oxNew(ArticleVariant::class);
         $controller->setEditObjectId($parentId);
         $controller->savevariant('-1', ['oxarticles__oxvarselect' => 'Test Variant']);
 
         $variantId = $this->getVariantId($parentId);
-        $this->assertCount(1, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromUid($variantId)));
+        $this->assertCount(1, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromString($variantId)));
     }
 
     public function testSaveNewVariantCopiesMultipleMedia(): void
     {
         $parentId = $this->createParentArticle();
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::ICON);
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::THUMBNAIL);
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::DETAIL);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::ICON);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::THUMBNAIL);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::DETAIL);
 
         $controller = oxNew(ArticleVariant::class);
         $controller->setEditObjectId($parentId);
         $controller->savevariant('-1', ['oxarticles__oxvarselect' => 'Test Variant']);
 
         $variantId = $this->getVariantId($parentId);
-        $this->assertCount(3, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromUid($variantId)));
+        $this->assertCount(3, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromString($variantId)));
     }
 
     public function testSaveNewVariantPreservesMediaRoles(): void
     {
         $parentId = $this->createParentArticle();
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::ICON);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::ICON);
 
         $controller = oxNew(ArticleVariant::class);
         $controller->setEditObjectId($parentId);
         $controller->savevariant('-1', ['oxarticles__oxvarselect' => 'Test Variant']);
 
         $variantId = $this->getVariantId($parentId);
-        $variantMedia = $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromUid($variantId))->first();
+        $variantMedia = $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromString($variantId))->first();
         $this->assertTrue($variantMedia->getRoleSet()->has(ProductMediaRole::from(ProductMediaRole::ICON)));
     }
 
@@ -71,13 +71,13 @@ final class ArticleVariantTest extends IntegrationTestCase
     {
         $parentId = $this->createParentArticle();
         $variantId = $this->createVariantArticle($parentId);
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::DETAIL);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::DETAIL);
 
         $controller = oxNew(ArticleVariant::class);
         $controller->setEditObjectId($parentId);
         $controller->savevariant($variantId, ['oxarticles__oxvarselect' => 'Updated Variant']);
 
-        $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromUid($variantId)));
+        $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromString($variantId)));
     }
 
     private function createParentArticle(): string

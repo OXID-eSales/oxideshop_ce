@@ -28,7 +28,7 @@ class DataMapper implements DataMapperInterface
     public function fromData(array $data): Media
     {
         return new Media(
-            Id::fromUid($data['id']),
+            Id::fromString($data['id']),
             new MediaPath($data['path']),
             new MediaType($data['type']),
         );

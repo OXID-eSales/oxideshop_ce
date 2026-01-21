@@ -25,10 +25,10 @@ final class DataMapperTest extends TestCase
     public function testToData(): void
     {
         $productMedia = new ProductMedia(
-            Id::fromUid('pm789'),
-            Id::fromUid('product456'),
+            Id::fromString('pm789'),
+            Id::fromString('product456'),
             new Media(
-                Id::fromUid('media123'),
+                Id::fromString('media123'),
                 new MediaPath('path/to/file.jpg'),
                 new MediaType('image/jpeg')
             ),

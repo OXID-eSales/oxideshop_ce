@@ -22,7 +22,7 @@ readonly class ProductMediaSorting
         $this->sorting = new ArrayIterator([]);
         foreach ($sortedIds as $id) {
             $this->sorting->append(
-                Id::fromUid($id)
+                Id::fromString($id)
             );
         }
     }

@@ -39,7 +39,7 @@ class ArticlePictures extends AdminDetailsController
     {
         parent::render();
 
-        $productId = Id::fromUid($this->getEditObjectId());
+        $productId = Id::fromString($this->getEditObjectId());
 
         $icon = $this->productMediaDao->getByRole($productId, ProductMediaRole::from(ProductMediaRole::ICON));
         $thumbnail = $this->productMediaDao->getByRole($productId, ProductMediaRole::from(ProductMediaRole::THUMBNAIL));

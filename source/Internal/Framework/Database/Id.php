@@ -23,12 +23,6 @@ readonly class Id
         return new self();
     }
 
-    /** @deprecated This method will be removed in the next major version. Please use the fromString() method instead.*/
-    public static function fromUid(string $id): self
-    {
-        return self::fromString($id);
-    }
-
     public static function fromString(string $string): self
     {
         return new self($string);

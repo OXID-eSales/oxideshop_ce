@@ -272,8 +272,8 @@ class VariantHandler extends \OxidEsales\Eshop\Core\Base
     private function copyMediaFromParent(string $parentId, string $variantId): void
     {
         ContainerFacade::get(ProductVariantMediaServiceInterface::class)->assignFromParentToVariant(
-            Id::fromUid($parentId),
-            Id::fromUid($variantId)
+            Id::fromString($parentId),
+            Id::fromString($variantId)
         );
     }
 

@@ -55,6 +55,7 @@
   - `ArticleDetails`: `getActPicture()`, `morePics()`, `getIcons()`, `showZoomPics()`, `getZoomPics()`
   - `ArticleDetailsController`: `getActPictureId()`, `showZoomPics()`
 - `RequestAdapter`  - use `Symfony\Component\HttpFoundation\Request` instead
+- Deprecated method `Id::fromUid()`
 
 ## v8.0.0-alpha.1 - 2025-02-03
 

@@ -30,7 +30,7 @@ final class VariantHandlerTest extends IntegrationTestCase
     {
         $parentId = $this->createParentArticle();
         $selectListId = $this->createSelectList();
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::DETAIL);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::DETAIL);
 
         $article = oxNew(Article::class);
         $article->load($parentId);
@@ -39,15 +39,15 @@ final class VariantHandlerTest extends IntegrationTestCase
         $variantHandler->genVariantFromSell([$selectListId], $article);
 
         $variantId = $this->getVariantId($parentId);
-        $this->assertCount(1, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromUid($variantId)));
+        $this->assertCount(1, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromString($variantId)));
     }
 
     public function testGenVariantFromSellCopiesMultipleMedia(): void
     {
         $parentId = $this->createParentArticle();
         $selectListId = $this->createSelectList();
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::ICON);
-        $this->addProductMedia(Id::fromUid($parentId), ProductMediaRole::THUMBNAIL);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::ICON);
+        $this->addProductMedia(Id::fromString($parentId), ProductMediaRole::THUMBNAIL);
 
         $article = oxNew(Article::class);
         $article->load($parentId);
@@ -56,7 +56,7 @@ final class VariantHandlerTest extends IntegrationTestCase
         $variantHandler->genVariantFromSell([$selectListId], $article);
 
         $variantId = $this->getVariantId($parentId);
-        $this->assertCount(2, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromUid($variantId)));
+        $this->assertCount(2, $this->get(ProductMediaDaoInterface::class)->getAll(Id::fromString($variantId)));
     }
 
     private function createParentArticle(): string

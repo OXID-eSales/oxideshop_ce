@@ -2381,7 +2381,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
     public function getPictureGallery()
     {
         $mediaItems = ContainerFacade::get(ProductMediaViewServiceInterface::class)->getAllByRole(
-            Id::fromUid($this->getId()),
+            Id::fromString($this->getId()),
             ProductMediaRole::from(ProductMediaRole::DETAIL)
         );
         $activeMedia = $this->determineActiveMedia($mediaItems);
@@ -3091,13 +3091,13 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
     public function getMedia(int $position): ProductMediaView
     {
         return ContainerFacade::get(ProductMediaViewServiceInterface::class)
-            ->getByPosition(Id::fromUid($this->getId()), $position);
+            ->getByPosition(Id::fromString($this->getId()), $position);
     }
 
     public function getIcon(): ProductMediaView
     {
         return ContainerFacade::get(ProductMediaViewServiceInterface::class)->getByRole(
-            Id::fromUid($this->getId()),
+            Id::fromString($this->getId()),
             ProductMediaRole::from(ProductMediaRole::ICON)
         );
     }
@@ -3105,7 +3105,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
     public function getThumbnail(): ProductMediaView
     {
         return ContainerFacade::get(ProductMediaViewServiceInterface::class)->getByRole(
-            Id::fromUid($this->getId()),
+            Id::fromString($this->getId()),
             ProductMediaRole::from(ProductMediaRole::THUMBNAIL)
         );
     }
@@ -4639,7 +4639,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
     protected function deletePics()
     {
         $productMediaDao = ContainerFacade::get(ProductMediaDaoInterface::class);
-        $productId = Id::fromUid($this->getId());
+        $productId = Id::fromString($this->getId());
 
         $mediaCollection = $productMediaDao->getAll($productId);
 

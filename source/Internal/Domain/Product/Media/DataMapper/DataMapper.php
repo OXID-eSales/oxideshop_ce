@@ -43,8 +43,8 @@ readonly class DataMapper implements DataMapperInterface
             }
         }
         $productMedia = new ProductMedia(
-            Id::fromUid($data['id']),
-            Id::fromUid($data['product_id']),
+            Id::fromString($data['id']),
+            Id::fromString($data['product_id']),
             $this->mediaDataMapper->fromData(
                 [
                     'id' => $data['media_id'],

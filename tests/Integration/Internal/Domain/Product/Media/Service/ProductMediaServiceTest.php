@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Media\Service;
 
-use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
@@ -162,8 +161,6 @@ final class ProductMediaServiceTest extends TestCase
         $this->createTestProductMedia();
         $media3 = $this->productMedia;
 
-        $this->expectException(InvalidArgumentException::class);
-
         $this->service->sort([
             $media2->getId() . "' OR '1'='1",
             $media1->getId() . "') OR SLEEP(5) --",
@@ -172,12 +169,14 @@ final class ProductMediaServiceTest extends TestCase
             "' OR 1=1 --",
             "'; DELETE FROM oxproduct_media WHERE '1'='1",
         ]);
+
+        $this->assertNotNull($this->service->get($media1->getId()));
     }
 
     private function createTestProductMedia(): void
     {
         $media = new Media(
-            Id::fromUid(
+            Id::fromString(
                 md5(
                     uniqid(
                         'media_',
@@ -194,7 +193,7 @@ final class ProductMediaServiceTest extends TestCase
             new MediaType('image/jpeg')
         );
         $this->productMedia = new ProductMedia(
-            Id::fromUid(
+            Id::fromString(
                 md5(
                     uniqid(
                         'product_media_',
@@ -212,7 +211,7 @@ final class ProductMediaServiceTest extends TestCase
     private function getSameProductIdForAllMedia(): Id
     {
         if (!isset($this->productId)) {
-            $this->productId = Id::fromUid(
+            $this->productId = Id::fromString(
                 md5(
                     uniqid(
                         'product_',

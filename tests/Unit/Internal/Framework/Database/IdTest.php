@@ -22,12 +22,6 @@ final class IdTest extends TestCase
         $this->assertNotEquals($id1, $id2);
     }
 
-    public function testFromUid(): void
-    {
-        $id = 'some string';
-        $this->assertEquals($id, Id::fromUid($id));
-    }
-
     public function testFromString(): void
     {
         $id = 'notMd5';

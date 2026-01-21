@@ -45,7 +45,8 @@ final class ProductListStatusTestCest
         );
 
         $productList->filterByProductNumber($this->productID);
-        $I->waitForDocumentReadyState();
+        $I->selectListFrame();
+        $I->waitForElement($productList->productStatusClass);
 
         $I->assertStringContainsString(
             'temp-active',
@@ -67,7 +68,8 @@ final class ProductListStatusTestCest
         );
 
         $productList->filterByProductNumber($this->productID);
-        $I->waitForDocumentReadyState();
+        $I->selectListFrame();
+        $I->waitForElement($productList->productStatusClass);
 
         $I->assertStringContainsString(
             'temp-inactive',

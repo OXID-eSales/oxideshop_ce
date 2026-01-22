@@ -22,39 +22,15 @@ final class IdTest extends TestCase
         $this->assertNotEquals($id1, $id2);
     }
 
-    public function testFromUidWithMd5String(): void
+    public function testFromUid(): void
     {
-        $md5 = md5('1');
-
-        $id = Id::fromUid($md5);
-
-        $this->assertEquals($id, $md5);
+        $id = 'some string';
+        $this->assertEquals($id, Id::fromUid($id));
     }
 
-    public function testFromUidWithLegacyIdsWillNotFail(): void
+    public function testFromString(): void
     {
-        $legacyId = str_repeat('z1-.', 4);
-
-        $id = Id::fromUid($legacyId);
-
-        $this->assertEquals($id, $legacyId);
-    }
-
-    public function testFromUidWithEmptyStringWillThrow(): void
-    {
-        $string = '';
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        Id::fromUid($string);
-    }
-
-    public function testFromUidWithStringTooLongWillThrow(): void
-    {
-        $string = str_repeat('1', 33);
-
-        $this->expectException(\InvalidArgumentException::class);
-
-        Id::fromUid($string);
+        $id = 'notMd5';
+        $this->assertEquals($id, Id::fromString($id));
     }
 }

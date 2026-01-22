@@ -189,8 +189,10 @@ class ContentMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
     private function prepareAndSaveContent(array $requestParams, $contentId, $lang): void
     {
-        $requestParams['oxcontents__oxcontent'] = ContainerFacade::get(HtmlSanitizerInterface::class)
-            ->sanitize($requestParams['oxcontents__oxcontent']);
+        if (isset($requestParams['oxcontents__oxcontent'])) {
+            $requestParams['oxcontents__oxcontent'] = ContainerFacade::get(HtmlSanitizerInterface::class)
+                ->sanitize($requestParams['oxcontents__oxcontent']);
+        }
 
         if (!isset($requestParams['oxcontents__oxactive'])) {
             $requestParams['oxcontents__oxactive'] = 0;

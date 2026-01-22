@@ -9,18 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Database;
 
-use InvalidArgumentException;
-
 readonly class Id
 {
     private string $uid;
 
     private function __construct(?string $uid = null)
     {
-        if (!is_null($uid) && !$this->isValidUid($uid)) {
-            throw new InvalidArgumentException("Invalid ID format: $uid");
-        }
-
         $this->uid = $uid ?? $this->generateUid();
     }
 
@@ -29,19 +23,20 @@ readonly class Id
         return new self();
     }
 
+    /** @deprecated This method will be removed in the next major version. Please use the fromString() method instead.*/
     public static function fromUid(string $id): self
     {
-        return new self($id);
+        return self::fromString($id);
+    }
+
+    public static function fromString(string $string): self
+    {
+        return new self($string);
     }
 
     public function __toString(): string
     {
         return $this->uid;
-    }
-
-    private function isValidUid(string $id): bool
-    {
-        return (bool) preg_match('/^.{1,32}$/', $id);
     }
 
     private function generateUid(): string

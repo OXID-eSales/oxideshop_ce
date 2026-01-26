@@ -8,6 +8,7 @@
 - API entry points functionality with Symfony RouterListener for route handling
 - API rate limiter
 - Alternative email transport integration
+- PHP v8.5 support
 
 ### Changed
 - Filter unsafe HTML elements and attributes from CMS content in the admin area
@@ -16,3 +17,6 @@
 
 ### Deprecated
 - Method `Id::fromUid()` use `Id::fromString()` instead
+
+### Removed
+- PHP v8.2 support

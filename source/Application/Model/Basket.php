@@ -2754,7 +2754,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
         $blIsBelowMinOrderPrice = false;
         $sConfValue = Registry::getConfig()->getConfigParam('iMinOrderPrice');
         if (is_numeric($sConfValue) && $this->getProductsCount()) {
-            $dMinOrderPrice = Price::getPriceInActCurrency((double) $sConfValue);
+            $dMinOrderPrice = Price::getPriceInActCurrency((float) $sConfValue);
             $dNotDiscountedProductPrice = 0;
             if ($oPrice = $this->getNotDiscountProductsPrice()) {
                 $dNotDiscountedProductPrice = $oPrice->getBruttoSum();

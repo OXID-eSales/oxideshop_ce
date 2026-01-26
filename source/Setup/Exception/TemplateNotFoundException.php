@@ -7,21 +7,23 @@
 
 namespace OxidEsales\EshopCommunity\Setup\Exception;
 
+use Exception;
+
 /**
  * Class TemplateNotFoundException.
  *
  * Exception class to indicate absence of template
  */
-class TemplateNotFoundException extends \Exception
+class TemplateNotFoundException extends Exception
 {
     /**
      * TemplateNotFoundException constructor.
      *
      * @param string          $message
      * @param int             $code
-     * @param \Exception|null $previous
+     * @param Exception|null $previous
      */
-    public function __construct($message = '', $code = 0, \Exception $previous = null)
+    public function __construct($message = '', $code = 0, ?Exception $previous = null)
     {
         $message = sprintf("Template named '%s' was not found.", $message);
 

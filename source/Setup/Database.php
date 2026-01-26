@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database as DatabaseAdapter;
 use OxidEsales\EshopCommunity\Setup\Exception\LanguageParamsException;
 use PDO;
 use PDOException;
@@ -374,7 +375,7 @@ class Database extends Core
             $dsn,
             $parameters['dbUser'],
             $parameters['dbPwd'],
-            [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+            [DatabaseAdapter::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
         );
         $this->_oConn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->_oConn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

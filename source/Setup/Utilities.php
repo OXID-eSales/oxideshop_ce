@@ -422,10 +422,10 @@ class Utilities extends Core
     /**
      * Calls external database migration command.
      *
-     * @param ConsoleOutput $output Add a possibility to provide a custom output handler.
-     * @param Facts|null    $facts  A possible facts mock
+     * @param ConsoleOutput|null $output Add a possibility to provide a custom output handler.
+     * @param Facts|null $facts  A possible facts mock
      */
-    public function executeExternalDatabaseMigrationCommand(ConsoleOutput $output = null, Facts $facts = null)
+    public function executeExternalDatabaseMigrationCommand(?ConsoleOutput $output = null, ?Facts $facts = null)
     {
         $migrations = $this->createMigrations($facts);
         $migrations->setOutput($output);
@@ -555,11 +555,11 @@ class Utilities extends Core
     }
 
     /**
-     * @param Facts $facts The facts object to use for the creation of the migrations.
+     * @param Facts|null $facts The facts object to use for the creation of the migrations.
      *
      * @return Migrations
      */
-    protected function createMigrations(Facts $facts = null)
+    protected function createMigrations(?Facts $facts = null)
     {
         $migrationsBuilder = new MigrationsBuilder();
 

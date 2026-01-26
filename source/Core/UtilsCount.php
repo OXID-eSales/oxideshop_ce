@@ -170,12 +170,12 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $sSelect = "SELECT count({$sTable}.oxid) FROM {$sTable} WHERE oxvarminprice >= 0";
         if ($dPriceTo) {
             $sSelect .= " AND oxvarminprice <= :oxvarpriceto";
-            $params[':oxvarpriceto'] = (double) $dPriceTo;
+            $params[':oxvarpriceto'] = (float) $dPriceTo;
         }
 
         if ($dPriceFrom) {
             $sSelect .= " AND oxvarminprice  >= :oxvarpricefrom";
-            $params[':oxvarpricefrom'] = (double) $dPriceFrom;
+            $params[':oxvarpricefrom'] = (float) $dPriceFrom;
         }
 
         $sSelect .=  " AND {$sTable}.oxissearch = 1 AND " . $oArticle->getSqlActiveSnippet();
@@ -327,8 +327,8 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
 
             // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
             $rs = \OxidEsales\Eshop\Core\DatabaseProvider::getMaster()->select($sSelect, [
-                ':oxpricefrom' => (double) $iPrice,
-                ':oxpriceto' => (double) $iPrice
+                ':oxpricefrom' => (float) $iPrice,
+                ':oxpriceto' => (float) $iPrice
             ]);
             if ($rs != false && $rs->count() > 0) {
                 while (!$rs->EOF) {

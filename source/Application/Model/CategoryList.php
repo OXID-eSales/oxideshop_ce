@@ -328,7 +328,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     protected function ppLoadFullCategory($sId)
     {
-        if (isset($this->_aArray[$sId])) {
+        if ($sId !== null && isset($this->_aArray[$sId])) {
             $oNewCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
             if ($oNewCat->load($sId)) {
                 // replace aArray object with fully loaded category

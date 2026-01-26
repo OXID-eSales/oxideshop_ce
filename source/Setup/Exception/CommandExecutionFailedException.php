@@ -7,12 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Setup\Exception;
 
+use Exception;
+
 /**
  * Class CommandExecutionFailedException.
  *
  * Exception class to indicate absence of template
  */
-class CommandExecutionFailedException extends \Exception
+class CommandExecutionFailedException extends Exception
 {
     private $command = null;
 
@@ -25,9 +27,9 @@ class CommandExecutionFailedException extends \Exception
      *
      * @param string          $message  Name of the command which was executed.
      * @param int             $code     Exception code.
-     * @param \Exception|null $previous Link to previous exception.
+     * @param Exception|null $previous Link to previous exception.
      */
-    public function __construct($message = '', $code = 0, \Exception $previous = null)
+    public function __construct($message = '', $code = 0, ?Exception $previous = null)
     {
         $this->command = $message;
 

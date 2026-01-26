@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeI
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingService;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use ReflectionProperty;
 
 class ProductRatingBridgeTest extends IntegrationTestCase
 {
@@ -80,11 +81,9 @@ class ProductRatingBridgeTest extends IntegrationTestCase
     private function getProductRatingDao()
     {
         $bridge = $this->get(ProductRatingBridgeInterface::class);
-        $serviceProperty = new \ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
-        $serviceProperty->setAccessible(true);
+        $serviceProperty = new ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
         $service = $serviceProperty->getValue($bridge);
-        $daoProperty = new \ReflectionProperty(ProductRatingService::class, 'productRatingDao');
-        $daoProperty->setAccessible(true);
+        $daoProperty = new ReflectionProperty(ProductRatingService::class, 'productRatingDao');
 
         return $daoProperty->getValue($service);
     }

@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Core\Registry;
 use oxRegistry;
 use oxPrice;
 
@@ -118,7 +119,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
         }
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
+        if (Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && (float) $dPrice == 0) {
             $dPrice = $this->oxarticles__oxprice->value;
         }
 
@@ -132,7 +133,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      */
     public function getPrice()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
         // 0002030 No need to return price if it disabled for better performance.
         if (!$myConfig->getConfigParam('bl_perfLoadPrice')) {
             return;
@@ -176,7 +177,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     protected function applyCurrency(\OxidEsales\Eshop\Core\Price $oPrice, $oCur = null)
     {
         if (!$oCur) {
-            $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
+            $oCur = Registry::getConfig()->getActShopCurrencyObject();
         }
 
         $oPrice->multiply($oCur->rate);
@@ -201,7 +202,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      */
     protected function applyParentVat($oPrice)
     {
-        if (($oParent = $this->getParent()) && !\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
+        if (($oParent = $this->getParent()) && !Registry::getConfig()->getConfigParam('bl_perfCalcVatOnlyForBasketOrder')) {
             $oParent->applyVats($oPrice);
         }
     }
@@ -225,7 +226,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
     {
         $sPrice = null;
         if (($oPrice = $this->getPrice())) {
-            $sPrice = \OxidEsales\Eshop\Core\Registry::getLang()->formatCurrency($oPrice->getBruttoPrice());
+            $sPrice = Registry::getLang()->formatCurrency($oPrice->getBruttoPrice());
         }
 
         return $sPrice;
@@ -355,7 +356,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
      */
     public function getBaseSeoLink($iLang)
     {
-        return \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class)->getArticleUrl($this, $iLang, $iLinkType);
+        return Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderArticle::class)->getArticleUrl($this, $iLang, $iLinkType);
     }
 
     /**
@@ -371,7 +372,7 @@ class SimpleVariant extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impl
             $iLang = (int) $this->getLanguage();
         }
 
-        if (!\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive()) {
+        if (!Registry::getUtils()->seoIsActive()) {
             return $this->getStdLink($iLang);
         }
 

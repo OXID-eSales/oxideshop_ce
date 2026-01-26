@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseExistsException;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\DatabaseConnectionException;
 use PDO;
@@ -58,7 +59,7 @@ class DatabaseCreator implements DatabaseCreatorInterface
                 sprintf('mysql:host=%s;port=%s', $host, $port),
                 $username,
                 $password,
-                [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+                [Database::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
             );
             $this->dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->dbConnection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

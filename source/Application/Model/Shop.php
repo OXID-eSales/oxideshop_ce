@@ -178,7 +178,7 @@ class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sStart = 'CREATE OR REPLACE SQL SECURITY INVOKER VIEW';
 
         if (!is_array($aLanguages)) {
-            $aLanguages = [null => null];
+            $aLanguages = [0 => null];
         }
 
         foreach ($aLanguages as $iLang => $sLang) {

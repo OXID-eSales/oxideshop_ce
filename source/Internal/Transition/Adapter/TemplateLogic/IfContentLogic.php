@@ -10,12 +10,12 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 class IfContentLogic
 {
     /**
-     * @param string $sIdent
-     * @param string $sOxid
+     * @param string|null $sIdent
+     * @param string|null $sOxid
      *
      * @return mixed
      */
-    public function getContent(string $sIdent = null, string $sOxid = null)
+    public function getContent(?string $sIdent = null, ?string $sOxid = null)
     {
         static $aContentCache = [];
 

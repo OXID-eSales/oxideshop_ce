@@ -40,6 +40,9 @@ use Psr\Log\LogLevel;
  */
 class Database implements DatabaseInterface
 {
+    /** @deprecated will be removed starting from php version 8.4 please use Pdo\Mysql::ATTR_INIT_COMMAND **/
+    public const int MYSQL_ATTR_INIT_COMMAND = 1002;
+
     /** @var int code of Mysql duplicated key error. */
     const MYSQL_DUPLICATE_KEY_ERROR_CODE = 1062;
 
@@ -171,7 +174,7 @@ class Database implements DatabaseInterface
      * user (string): Username to use when connecting to the database.
      * password (string): Password to use when connecting to the database.
      * host (string): Hostname of the database to connect to.
-     * port (integer): Port of the database to connect to.
+     * port (int): Port of the database to connect to.
      * dbname (string): Name of the database/schema to connect to.
      * charset (string): The charset used when connecting to the database.
      * unix_socket (string): Name of the socket used to connect to the database.
@@ -216,7 +219,7 @@ class Database implements DatabaseInterface
     protected function addDriverOptions(array &$existingParameters)
     {
         $default = [
-            PDO::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
+            self::MYSQL_ATTR_INIT_COMMAND => $this->getMySqlInitCommand(),
         ];
 
         // options defined in config override the default
@@ -934,7 +937,7 @@ class Database implements DatabaseInterface
             case $exception instanceof DBALException:
                 /**
                  * Doctrine passes the message and the code of the PDO Exception, which would break backward
-                 * compatibility as it uses SQLSTATE error code (string), but the shop used to the (My)SQL errors (integer)
+                 * compatibility as it uses SQLSTATE error code (string), but the shop used to the (My)SQL errors (int)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
@@ -949,7 +952,7 @@ class Database implements DatabaseInterface
                 break;
             case $exception instanceof PDOException:
                 /**
-                 * The shop uses the (My)SQL errors (integer) in the error code, but $pdoException uses SQLSTATE error code (string)
+                 * The shop uses the (My)SQL errors (int) in the error code, but $pdoException uses SQLSTATE error code (string)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately in some cases we can access PDOException and recover the original SQL error code and message.
                  */

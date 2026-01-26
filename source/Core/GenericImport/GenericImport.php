@@ -259,7 +259,7 @@ class GenericImport
      * master loop should run import again.
      *
      * after importing, fills $this->_aStatistics[$this->_iIdx] with array
-     * of r=>(boolean)result, m=>(string)error message
+     * of r=>(bool)result, m=>(string)error message
      *
      * @param array $data
      *

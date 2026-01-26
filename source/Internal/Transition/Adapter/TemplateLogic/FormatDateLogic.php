@@ -11,12 +11,12 @@ class FormatDateLogic
 {
     /**
      * @param object|string $oConvObject
-     * @param string        $sFieldType
-     * @param bool          $blPassedValue
+     * @param string|null $sFieldType
+     * @param bool $blPassedValue
      *
      * @return string
      */
-    public function formdate($oConvObject, string $sFieldType = null, bool $blPassedValue = false): ?string
+    public function formdate($oConvObject, ?string $sFieldType = null, bool $blPassedValue = false): ?string
     {
         // creating fake bject
         if ($blPassedValue || is_string($oConvObject)) {

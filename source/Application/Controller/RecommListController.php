@@ -341,13 +341,13 @@ class RecommListController extends \OxidEsales\Eshop\Application\Controller\Arti
     public function getRatingValue()
     {
         if ($this->_dRatingValue === null) {
-            $this->_dRatingValue = (double) 0;
+            $this->_dRatingValue = 0.0;
             if ($this->isReviewActive() && ($oActiveRecommList = $this->getActiveRecommList())) {
                 $this->_dRatingValue = round($oActiveRecommList->oxrecommlists__oxrating->value, 1);
             }
         }
 
-        return (double) $this->_dRatingValue;
+        return (float) $this->_dRatingValue;
     }
 
     /**

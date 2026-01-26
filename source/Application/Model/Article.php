@@ -873,9 +873,9 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         }
 
         $oPrice = null;
-        if ((double) $this->getUnitQuantity() && $this->oxarticles__oxunitname->value) {
+        if ((float) $this->getUnitQuantity() && $this->oxarticles__oxunitname->value) {
             $oPrice = clone $this->getPrice();
-            $oPrice->divide((double) $this->getUnitQuantity());
+            $oPrice->divide((float) $this->getUnitQuantity());
         }
 
         return $oPrice;
@@ -2251,7 +2251,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         // article is not variant - should be updated current amount
         if (!$this->oxarticles__oxparentid->value) {
             //updating by SQL query, due to wrong behaviour if saving article using not admin mode
-            $dAmount = (double) $dAmount;
+            $dAmount = (float) $dAmount;
             $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
             $query = "update oxarticles
                       set oxarticles.oxsoldamount = (oxarticles.oxsoldamount + :amount)
@@ -3875,7 +3875,7 @@ class Article extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements
         $dPrice = $this->$sVarName->value;
 
         // #1437/1436C - added config option, and check for zero A,B,C price values
-        if (Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && (double) $dPrice == 0) {
+        if (Registry::getConfig()->getConfigParam('blOverrideZeroABCPrices') && (float) $dPrice == 0) {
             $dPrice = $this->oxarticles__oxprice->value;
         }
 

@@ -78,11 +78,11 @@ class QueryLogger implements SQLLogger
      * Collect query information.
      *
      * @param string $query  The query to be executed.
-     * @param array  $params The query parameters.
+     * @param array|null $params The query parameters.
      *
      * @return array
      */
-    private function getQueryData($query, array $params = null): array
+    private function getQueryData($query, ?array $params = null): array
     {
         $backTraceInfo = $this->getQueryTrace();
 

@@ -40,7 +40,6 @@ final class QueryBuilderFactoryTest extends \PHPUnit\Framework\TestCase
 
         $reflectionClassConnection = new ReflectionClass($connection);
         $fetchMode = $reflectionClassConnection->getProperty('defaultFetchMode');
-        $fetchMode->setAccessible(true);
         $this->assertSame($fetchMode->getValue($connection), PDO::FETCH_ASSOC);
     }
 }

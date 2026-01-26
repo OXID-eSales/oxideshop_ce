@@ -14,6 +14,7 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Module\ModuleVariablesLocator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
+use ReflectionClass;
 use Symfony\Component\Filesystem\Filesystem;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
@@ -52,9 +53,8 @@ trait CachingTrait
 
     private function removeClassCache(string $class, string $property, $default): void
     {
-        $reflectionClass = new \ReflectionClass($class);
+        $reflectionClass = new ReflectionClass($class);
         $reflectionProperty = $reflectionClass->getProperty($property);
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($reflectionClass, $default);
     }
 

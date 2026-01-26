@@ -64,14 +64,14 @@ class Rating extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
     public function getRatingValue()
     {
         if ($this->_dRatingValue === null) {
-            $this->_dRatingValue = (double) 0;
+            $this->_dRatingValue = 0.0;
             $dValue = $this->getViewParameter("dRatingValue");
             if ($dValue) {
                 $this->_dRatingValue = round($dValue, 1);
             }
         }
 
-        return (double) $this->_dRatingValue;
+        return (float) $this->_dRatingValue;
     }
 
     /**

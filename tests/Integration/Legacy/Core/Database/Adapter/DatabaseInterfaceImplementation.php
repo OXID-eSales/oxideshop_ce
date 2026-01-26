@@ -1117,7 +1117,6 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
         $reflectionClass = new ReflectionClass(DatabaseProvider::class);
 
         $reflectionProperty = $reflectionClass->getProperty('db');
-        $reflectionProperty->setAccessible(true);
         $reflectionProperty->setValue($class, null);
     }
 

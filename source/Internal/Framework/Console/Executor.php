@@ -31,10 +31,10 @@ class Executor implements ExecutorInterface
     /**
      * Executes commands.
      *
-     * @param InputInterface|null  $input
+     * @param InputInterface|null $input
      * @param OutputInterface|null $output
      */
-    public function execute(InputInterface $input = null, OutputInterface $output = null)
+    public function execute(?InputInterface $input = null, ?OutputInterface $output = null)
     {
         $this->application->addCommands($this->servicesCommandsProvider->getCommands());
         $this->application->run($input, $output);

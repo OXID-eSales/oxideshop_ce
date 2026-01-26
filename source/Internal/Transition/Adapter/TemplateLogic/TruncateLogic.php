@@ -21,7 +21,7 @@ class TruncateLogic
      * @return string
      */
     public function truncate(
-        string $sString = null,
+        ?string $sString = null,
         int $iLength = 80,
         string $sSufix = '...',
         bool $blBreakWords = false,

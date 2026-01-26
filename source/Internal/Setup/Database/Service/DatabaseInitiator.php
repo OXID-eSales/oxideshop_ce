@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
+use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\InitiateDatabaseException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -99,7 +100,7 @@ class DatabaseInitiator implements DatabaseInitiatorInterface
             sprintf('mysql:host=%s;port=%s;dbname=%s', $host, $port, $name),
             $username,
             $password,
-            [PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+            [Database::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
         );
         $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $dbConnection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);

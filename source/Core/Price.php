@@ -107,11 +107,11 @@ class Price
     /**
      * Sets new VAT percent, and recalculates price.
      *
-     * @param double $dVat vat percent
+     * @param float $dVat vat percent
      */
     public function setVat($dVat)
     {
-        $this->_dVat = (double) $dVat;
+        $this->_dVat = (float) $dVat;
     }
 
     /**
@@ -122,14 +122,14 @@ class Price
      * USE ONLY TO CHANGE BASE VAT (in case when local VAT differs from user VAT),
      * USE setVat() in usual case !!!
      *
-     * @param double $newVat vat percent
+     * @param float $newVat vat percent
      */
     public function setUserVat($newVat)
     {
         if (!$this->isNettoMode() && $newVat != $this->_dVat) {
-            $this->_dBrutto = self::Netto2Brutto(self::Brutto2Netto($this->_dBrutto, $this->_dVat), (double) $newVat);
+            $this->_dBrutto = self::Netto2Brutto(self::Brutto2Netto($this->_dBrutto, $this->_dVat), (float) $newVat);
         }
-        $this->_dVat = (double) $newVat;
+        $this->_dVat = (float) $newVat;
     }
 
     /**
@@ -337,11 +337,11 @@ class Price
      * @param double $dValue   value
      * @param double $dPercent percent
      *
-     * @return double
+     * @return float
      */
     public static function percent($dValue, $dPercent)
     {
-        return ((double) $dValue * (double) $dPercent) / 100.0;
+        return ((float) $dValue * (float) $dPercent) / 100.0;
     }
 
     /**
@@ -364,7 +364,7 @@ class Price
             return 0;
         }
 
-        return (double) ((double) $dBrutto * 100.0) / (100.0 + (double) $dVat);
+        return (float) $dBrutto * 100.0 / (100.0 + (float) $dVat);
     }
 
     /**
@@ -372,14 +372,14 @@ class Price
      * X = $dNetto + $dVat%
      * returns X
      *
-     * @param double $dNetto netto price
-     * @param double $dVat   vat
+     * @param float $dNetto netto price
+     * @param float $dVat   vat
      *
-     * @return double
+     * @return float
      */
     public static function netto2Brutto($dNetto, $dVat)
     {
-        return (double) $dNetto + self::percent($dNetto, $dVat);
+        return (float) $dNetto + self::percent($dNetto, $dVat);
     }
 
     /**
@@ -387,13 +387,13 @@ class Price
      *
      * @param string $dPrice price value
      *
-     * @return double
+     * @return float
      */
     public static function getPriceInActCurrency($dPrice)
     {
         $oCur = \OxidEsales\Eshop\Core\Registry::getConfig()->getActShopCurrencyObject();
 
-        return ((double) $dPrice) * $oCur->rate;
+        return ((float) $dPrice) * $oCur->rate;
     }
 
 

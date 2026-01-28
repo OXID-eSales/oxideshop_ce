@@ -151,7 +151,7 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
         $this->database = oxDb::getMaster();
     }
 
-    protected function loadFixtureToTestTable(DatabaseInterface $database = null): void
+    protected function loadFixtureToTestTable(?DatabaseInterface $database = null): void
     {
         if ($database === null) {
             $database = $this->database;

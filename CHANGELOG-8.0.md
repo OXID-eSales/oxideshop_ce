@@ -3,6 +3,10 @@
 ## v8.0.0-alpha.3 - Unreleased
 *Compilation release*
 
+### Removed
+- Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
+- PHP v8.3 support
+
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*
 

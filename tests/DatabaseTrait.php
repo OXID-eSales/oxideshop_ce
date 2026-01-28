@@ -17,13 +17,13 @@ use ReflectionClass;
 
 trait DatabaseTrait
 {
-    public function beginTransaction(Connection $connection = null): void
+    public function beginTransaction(?Connection $connection = null): void
     {
         $connection ??= $this->getDbConnection();
         $connection->beginTransaction();
     }
 
-    public function rollBackTransaction(Connection $connection = null): void
+    public function rollBackTransaction(?Connection $connection = null): void
     {
         $connection ??= $this->getDbConnection();
         if ($connection->isTransactionActive()) {

@@ -60,7 +60,7 @@ final class ContainerTest extends IntegrationTestCase
     {
         $testContainer = (new TestContainerFactory())->create();
         $this->generateShopConfigurationStubForVfs();
-        $testContainer->compile();
+        $testContainer->compile(true);
         foreach ($testContainer->getDefinitions() as $key => $definition) {
             if ($definition->isPublic()) {
                 $testContainer->get($key);

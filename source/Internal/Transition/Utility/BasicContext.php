@@ -245,6 +245,14 @@ class BasicContext implements BasicContextInterface
     }
 
     /**
+     * @return string
+     */
+    public function getBundlesConfigFilePath(): string
+    {
+        return Path::join($this->getShopRootPath(), 'var', 'configuration', 'bundles.yaml');
+    }
+
+    /**
      * @return Facts
      */
     public function getFacts(): Facts

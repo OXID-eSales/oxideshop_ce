@@ -46,5 +46,7 @@ class Api
         $response->send();
 
         $kernel->terminate($request, $response);
+
+        ContainerFactory::getInstance()->shutdownBundles();
     }
 }

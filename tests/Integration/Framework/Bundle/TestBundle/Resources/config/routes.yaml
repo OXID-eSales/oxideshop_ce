@@ -1,0 +1,4 @@
+test_bundle_yaml_route:
+    path: /test-bundle/yaml-route
+    controller: OxidEsales\EshopCommunity\Tests\Integration\Framework\Bundle\TestBundle\Controller\TestController::hello
+    methods: [GET]

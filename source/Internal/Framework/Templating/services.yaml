@@ -6,6 +6,18 @@ services:
   _defaults:
     autowire: true
 
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\BundleTemplateDirectoryResolver:
+    arguments:
+      - '%kernel.bundles_metadata%'
+
+  OxidEsales\Twig\Resolver\TemplateDirectoryResolverInterface:
+    class: OxidEsales\Twig\Resolver\TemplateDirectoryResolverAggregate
+    arguments:
+      -
+        - '@OxidEsales\Twig\Resolver\ShopTemplateDirectoryResolver'
+        - '@OxidEsales\Twig\Resolver\ModulesTemplateDirectoryResolver'
+        - '@OxidEsales\EshopCommunity\Internal\Framework\Templating\BundleTemplateDirectoryResolver'
+
   OxidEsales\Eshop\Core\Config:
     factory: ['OxidEsales\Eshop\Core\Registry', 'getConfig']
 

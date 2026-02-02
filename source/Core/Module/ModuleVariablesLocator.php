@@ -158,6 +158,8 @@ class ModuleVariablesLocator
         } catch (ShopConfigurationNotFoundException $exception) {
             $chain = [];
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
+        } catch (\LogicException) {
+            $chain = [];
         }
 
         return $chain;

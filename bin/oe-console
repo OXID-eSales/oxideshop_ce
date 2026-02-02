@@ -14,6 +14,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 $autoloadFileExist = false;
 $autoloadFiles = [
@@ -53,8 +54,12 @@ $_POST['shp'] = $shopId;
 $bootstrapFilePath = Path::join((new Facts())->getSourcePath(), 'bootstrap.php');
 require_once $bootstrapFilePath;
 
-$container = (new ContainerBuilderFactory())->create()->getContainer();
+$containerBuilder = (new ContainerBuilderFactory())->create();
+$container = $containerBuilder->getContainer();
 $container->compile(true);
+$kernelStub = $containerBuilder->createKernelStub();
+$kernelStub->setContainer($container);
+$container->set('kernel', $kernelStub);
 
 $commandLoader = $container->get('console.command_loader');
 
@@ -63,7 +68,17 @@ foreach ($container->getParameter('console.command.ids') as $id) {
     $idCommands[] = $container->get($id);
 }
 
-$application = new Application();
+$application = new class($kernelStub) extends Application {
+    public function __construct(private readonly KernelInterface $kernel)
+    {
+        parent::__construct();
+    }
+
+    public function getKernel(): KernelInterface
+    {
+        return $this->kernel;
+    }
+};
 $application->setCommandLoader($commandLoader);
 $application->setDispatcher($container->get(EventDispatcherInterface::class));
 $application->addCommands(

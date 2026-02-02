@@ -41,6 +41,7 @@ class BasicContextStub implements BasicContextInterface
     private string $templateCacheDirectory;
     private int $currentShopId;
     private string $activeModuleServicesFilePath;
+    private string $bundlesConfigFilePath;
 
     public function __construct()
     {
@@ -70,6 +71,7 @@ class BasicContextStub implements BasicContextInterface
         $this->shopConfigurableServicesFilePath = $basicContext->getShopConfigurableServicesFilePath(
             $this->getCurrentShopId()
         );
+        $this->bundlesConfigFilePath = $basicContext->getBundlesConfigFilePath();
     }
 
     public function getCommunityEditionSourcePath(): string
@@ -207,6 +209,11 @@ class BasicContextStub implements BasicContextInterface
         return $this->shopRootPath;
     }
 
+    public function setShopRootPath(string $shopRootPath): void
+    {
+        $this->shopRootPath = $shopRootPath;
+    }
+
     public function getOutPath(): string
     {
         return $this->outPath;
@@ -265,5 +272,15 @@ class BasicContextStub implements BasicContextInterface
     public function setCurrentShopId(int $shopId): void
     {
         $this->currentShopId = $shopId;
+    }
+
+    public function getBundlesConfigFilePath(): string
+    {
+        return $this->bundlesConfigFilePath;
+    }
+
+    public function setBundlesConfigFilePath(string $bundlesConfigFilePath): void
+    {
+        $this->bundlesConfigFilePath = $bundlesConfigFilePath;
     }
 }

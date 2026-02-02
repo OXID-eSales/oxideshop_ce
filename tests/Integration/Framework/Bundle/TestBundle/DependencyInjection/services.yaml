@@ -1,0 +1,3 @@
+services:
+  OxidEsales\EshopCommunity\Tests\Integration\Framework\Bundle\TestBundle\Controller\TestController:
+    public: true

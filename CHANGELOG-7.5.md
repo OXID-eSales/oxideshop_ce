@@ -11,6 +11,7 @@
 - PHP v8.5 support
 - PHPUnit v12.5 support
 - `ThemeActivatedEvent` dispatched on theme activation
+- `ProductSearchServiceInterface` for custom product search implementations
 
 ### Changed
 - Filter unsafe HTML elements and attributes from CMS content in the admin area

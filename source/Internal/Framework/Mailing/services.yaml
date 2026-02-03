@@ -1,0 +1,22 @@
+imports:
+  - { resource: parameters.yaml }
+
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Mailing\Factory\TransportFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Mailing\Factory\TransportFactory
+    arguments:
+      $dsn: '%oxid_esales.mailing.dsn%'
+
+  Symfony\Component\Mailer\Transport\TransportInterface:
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Mailing\Factory\TransportFactoryInterface', 'create']
+
+  Symfony\Component\Mailer\MailerInterface:
+    class: Symfony\Component\Mailer\Mailer
+    arguments:
+      $transport: '@Symfony\Component\Mailer\Transport\TransportInterface'
+      $bus: null
+      $dispatcher: '@Symfony\Component\EventDispatcher\EventDispatcherInterface'
+    public: true

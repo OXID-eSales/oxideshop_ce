@@ -16,3 +16,4 @@ imports:
   - { resource: SystemRequirements/services.yaml }
   - { resource: Templating/services.yaml }
   - { resource: Theme/services.yaml }
+  - { resource: Mailing/services.yaml }

@@ -1,0 +1,4 @@
+parameters:
+  oxid_esales.mailing.native_transport_dsn: 'native://default'
+  oxid_esales.mailing.use_symfony_mailer: '%env(default::bool:OXID_MAILING_SYMFONY_MAILER)%'
+  oxid_esales.mailing.dsn: '%env(default:oxid_esales.mailing.native_transport_dsn:OXID_MAILING_DSN)%'

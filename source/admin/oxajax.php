@@ -23,6 +23,7 @@ require_once dirname(__FILE__) . "/../bootstrap.php";
 $blAjaxCall = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
 if ($blAjaxCall) {
     $myConfig = Registry::getConfig();
+    $myConfig->init();
 
     // Includes Utility module.
     $sUtilModule = $myConfig->getConfigParam('sUtilModule');

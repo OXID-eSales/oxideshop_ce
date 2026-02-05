@@ -1,5 +1,6 @@
 imports:
   - { resource: parameters.yaml }
+  - { resource: Api/services.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Console/services.yaml }
   - { resource: Database/services.yaml }
@@ -17,3 +18,4 @@ imports:
   - { resource: Templating/services.yaml }
   - { resource: Theme/services.yaml }
   - { resource: Mailing/services.yaml }
+  - { resource: RateLimiter/services.yaml }

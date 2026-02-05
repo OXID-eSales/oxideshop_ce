@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass\ViewControllerPass;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass\RoutePass;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
@@ -50,6 +51,7 @@ class ContainerBuilder
         $this->containerBuilder->addCompilerPass(new RegisterListenersPass());
         $this->containerBuilder->addCompilerPass(new AddConsoleCommandPass());
         $this->containerBuilder->addCompilerPass(new ViewControllerPass());
+        $this->containerBuilder->addCompilerPass(new RoutePass());
 
         $this->loadEditionServices();
         $this->loadComponentServices();

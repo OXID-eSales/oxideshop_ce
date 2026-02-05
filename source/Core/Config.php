@@ -160,11 +160,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Indicates if Config::init() method has been already run.
      * Is checked for loading config variables on demand.
-     * Used in Config::getConfigParam() method
      *
      * @var bool
      */
     protected $_blInit = false;
+
+    private bool $initVars = false;
 
     /**
      * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
@@ -183,7 +184,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getConfigParam($name, $default = null)
     {
-        $this->init();
+        $this->initVars($this->getShopId());
 
         if (isset($this->_aConfigParams[$name])) {
             $value = $this->_aConfigParams[$name];
@@ -232,6 +233,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function initVars($shopId)
     {
+        if ($this->initVars === true) {
+            return;
+        }
+        $this->initVars = true;
+
         $this->setDefaults();
 
         $configLoaded = $this->loadVarsFromDb($shopId);
@@ -276,6 +282,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             return;
         }
         $this->_blInit = true;
+        $this->initVars = false;
 
         try {
             // config params initialization
@@ -298,6 +305,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function reinitialize()
     {
         $this->_blInit = false;
+        $this->initVars = false;
         $this->init();
     }
 

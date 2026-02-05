@@ -42,7 +42,11 @@
         "symfony/mailer": "^7.3",
         "symfony/mime": "^7.3",
         "symfony/string": "^7.3",
-        "symfony/yaml": "^7.3"
+        "symfony/yaml": "^7.3",
+        "symfony/http-kernel": "^7.3",
+        "symfony/routing": "^7.3",
+        "symfony/error-handler": "^7.3",
+        "symfony/rate-limiter": "^7.3"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

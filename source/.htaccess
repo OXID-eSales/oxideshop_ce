@@ -3,8 +3,12 @@
     RewriteEngine On
     RewriteBase /
 
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
     RewriteRule ^graphql/?$    widget.php?cl=graphql&skipSession=1   [QSA,NC,L]
 
+    RewriteRule ^api/(.*)$ api.php/$1 [QSA,NC,L]
 
     RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
     RewriteRule .* - [F]

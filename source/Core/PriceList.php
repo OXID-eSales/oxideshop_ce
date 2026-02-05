@@ -99,6 +99,9 @@ class PriceList
                 $dPrice = $oPrice->getPrice() * $oPrice->getVat() / (100 + $oPrice->getVat());
             }
 
+            if (!isset($aVatValues[$sKey])) {
+                $aVatValues[$sKey] = 0;
+            }
             $aVatValues[$sKey] += $oUtils->fRound($dPrice);
         }
 

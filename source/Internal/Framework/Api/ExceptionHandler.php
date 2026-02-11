@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Api;
 
+use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,7 +19,7 @@ class ExceptionHandler
 {
     public function handle(\Throwable $throwable): void
     {
-        (new LoggerServiceFactory(new Context()))
+        (new LoggerServiceFactory(new Context(ShopIdCalculator::BASE_SHOP_ID)))
             ->getLogger()
             ->error($throwable);
 

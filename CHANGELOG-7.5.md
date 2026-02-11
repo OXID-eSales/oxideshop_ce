@@ -14,6 +14,7 @@
 - Filter unsafe HTML elements and attributes from CMS content in the admin area
 - Config::getConfigParam() no longer triggers full shop initialization
 - No MD5-style hash validation in the `Id::fromUid()` method
+- Avoid repeated forced basket recalculations in `BasketComponent::render()`
 
 ### Deprecated
 - Method `Id::fromUid()` use `Id::fromString()` instead

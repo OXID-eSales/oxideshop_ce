@@ -77,7 +77,7 @@ final class WidgetUrlTest extends IntegrationTestCase
 
     public static function providerGetWidgetUrlAddCorrectLanguage(): array
     {
-        return [[1], [2]];
+        return [[0], [1]];
     }
 
     /**

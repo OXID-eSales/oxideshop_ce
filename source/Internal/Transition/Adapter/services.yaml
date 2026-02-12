@@ -1,4 +1,5 @@
 imports:
+  - { resource: Authentication/services.yaml }
   - { resource: TemplateLogic/services.yaml }
   - { resource: Translator/services.yaml }
 

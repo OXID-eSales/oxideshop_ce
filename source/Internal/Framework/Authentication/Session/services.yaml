@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\OxidSessionAuthenticator: ~
+
+  OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\SessionAuthListener:
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\OxidSessionAuthenticator'
+    tags:
+      - { name: kernel.event_subscriber }

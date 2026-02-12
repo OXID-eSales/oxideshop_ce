@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Authentication\Fixtures\testModule\src\Controller\SessionAuthTestController:
+    public: true

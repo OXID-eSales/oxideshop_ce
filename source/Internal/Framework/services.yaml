@@ -18,3 +18,4 @@ imports:
   - { resource: Html/services.yaml }
   - { resource: Mailing/services.yaml }
   - { resource: RateLimiter/services.yaml }
+  - { resource: Authentication/Session/services.yaml }

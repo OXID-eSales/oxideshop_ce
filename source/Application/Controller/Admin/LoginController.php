@@ -28,7 +28,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function __construct()
     {
-        \OxidEsales\Eshop\Core\Registry::getConfig()->setConfigParam('blAdmin', true);
+        Registry::getConfig()->setConfigParam('blAdmin', true);
         $this->_sThisAction = "login";
     }
 
@@ -40,9 +40,8 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function render()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
-        // automatically redirect to SSL login
         if (!$myConfig->isSsl()) {
             $adminUrl = ContainerFacade::getParameter('oxid_esales.shop_admin_url');
             if ($adminUrl && str_starts_with($adminUrl, 'https://')) {
@@ -64,7 +63,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             $this->addTplParam("pwd", "admin");
         }
         //#533 user profile
-        $this->addTplParam("profiles", \OxidEsales\Eshop\Core\Registry::getUtils()->loadAdminProfile($myConfig->getConfigParam('aInterfaceProfiles')));
+        $this->addTplParam("profiles", Registry::getUtils()->loadAdminProfile($myConfig->getConfigParam('aInterfaceProfiles')));
 
         $aLanguages = $this->getAvailableLanguages();
         $this->addTplParam("aLanguages", $aLanguages);
@@ -72,7 +71,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
         // setting templates language to selected language id
         foreach ($aLanguages as $iKey => $oLang) {
             if ($aLanguages[$iKey]->selected) {
-                \OxidEsales\Eshop\Core\Registry::getLang()->setTplLanguage($iKey);
+                Registry::getLang()->setTplLanguage($iKey);
                 break;
             }
         }
@@ -85,7 +84,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function setShopConfigParameters()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $myConfig = Registry::getConfig();
 
         $oBaseShop = oxNew(\OxidEsales\Eshop\Application\Model\Shop::class);
         $oBaseShop->load($myConfig->getBaseShopId());
@@ -99,15 +98,15 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function checklogin()
     {
-        $myUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
-        $myUtilsView = \OxidEsales\Eshop\Core\Registry::getUtilsView();
+        $myUtilsServer = Registry::getUtilsServer();
+        $myUtilsView = Registry::getUtilsView();
 
         $sUser = Registry::getRequest()->getRequestParameter('user');
         $sPass = Registry::getRequest()->getRequestParameter('pwd');
         $sProfile = Registry::getRequest()->getRequestEscapedParameter('profile');
 
         try { // trying to login
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
             $adminProfiles = $session->getVariable("aAdminProfiles");
             $session->initNewSession();
             $session->setVariable("aAdminProfiles", $adminProfiles);
@@ -122,9 +121,9 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
             $iSubshop = (int) $oUser->oxuser__oxrights->value;
             if ($iSubshop) {
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("shp", $iSubshop);
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable('currentadminshop', $iSubshop);
-                \OxidEsales\Eshop\Core\Registry::getConfig()->setShopId($iSubshop);
+                Registry::getSession()->setVariable("shp", $iSubshop);
+                Registry::getSession()->setVariable('currentadminshop', $iSubshop);
+                Registry::getConfig()->setShopId($iSubshop);
             }
         } catch (UserException|CookieException $oEx) {
             $myUtilsView->addErrorToDisplay($oEx);
@@ -140,15 +139,15 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         //execute onAdminLogin() event
         $oEvenHandler = oxNew(\OxidEsales\Eshop\Core\SystemEventHandler::class);
-        $oEvenHandler->onAdminLogin(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopId());
+        $oEvenHandler->onAdminLogin(Registry::getConfig()->getShopId());
 
         // #533
         if (isset($sProfile)) {
-            $aProfiles = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable("aAdminProfiles");
+            $aProfiles = Registry::getSession()->getVariable("aAdminProfiles");
             if ($aProfiles && isset($aProfiles[$sProfile])) {
                 // setting cookie to store last locally used profile
                 $myUtilsServer->setOxCookie("oxidadminprofile", $sProfile . "@" . implode("@", $aProfiles[$sProfile]), time() + 31536000, "/");
-                \OxidEsales\Eshop\Core\Registry::getSession()->setVariable("profile", $aProfiles[$sProfile]);
+                Registry::getSession()->setVariable("profile", $aProfiles[$sProfile]);
             }
         } else {
             //deleting cookie info, as setting profile to default
@@ -157,8 +156,8 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         // languages
         $iLang = Registry::getRequest()->getRequestEscapedParameter("chlanguage");
-        $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getAdminTplLanguageArray();
-        if (!isset($aLanguages[$iLang])) {
+        $aLanguages = Registry::getLang()->getAdminTplLanguageArray();
+        if ($iLang === null || !isset($aLanguages[$iLang])) {
             $iLang = key($aLanguages);
         }
 
@@ -166,7 +165,7 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
         //P
         //\OxidEsales\Eshop\Core\Registry::getSession()->setVariable( "blAdminTemplateLanguage", $iLang );
-        \OxidEsales\Eshop\Core\Registry::getLang()->setTplLanguage($iLang);
+        Registry::getLang()->setTplLanguage($iLang);
 
         return "admin_start";
     }
@@ -199,10 +198,10 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function getAvailableLanguages()
     {
-        $sDefLang = \OxidEsales\Eshop\Core\Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
+        $sDefLang = Registry::getUtilsServer()->getOxCookie('oxidadminlanguage');
         $sDefLang = $sDefLang ? $sDefLang : $this->getBrowserLanguage();
 
-        $aLanguages = \OxidEsales\Eshop\Core\Registry::getLang()->getAdminTplLanguageArray();
+        $aLanguages = Registry::getLang()->getAdminTplLanguageArray();
         foreach ($aLanguages as $oLang) {
             $oLang->selected = ($sDefLang == $oLang->abbr) ? 1 : 0;
         }

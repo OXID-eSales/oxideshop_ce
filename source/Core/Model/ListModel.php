@@ -116,8 +116,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
     #[ReturnTypeWillChange]
     public function offsetUnset($offset)
     {
-        $key = $this->key();
-        if ($key !== null && strcmp($offset, $key) === 0) {
+        if ((string)$offset === (string)$this->key()) {
             // #0002184: active element removed, next element will be prev / first
             $this->_blRemovedActive = true;
         }

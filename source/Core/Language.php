@@ -409,37 +409,36 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @param string $sStringToTranslate Initial string
+     * @param int $iLang optional language number
+     * @param bool|null $blAdminMode on special case you can force mode,
+     *  to load language constant from admin/shops language file
+     *
+     * @return string|array
      * @deprecated use ShopAdapterInterface::translateString() instead
      *
      * Searches for translation string in file and on success returns translation,
      * otherwise returns initial string.
-     *
-     * @param string $sStringToTranslate Initial string
-     * @param int    $iLang              optional language number
-     * @param bool   $blAdminMode        on special case you can force mode, to load language constant from admin/shops language file
-     *
-     * @return string|array
      */
     public function translateString($sStringToTranslate, $iLang = null, $blAdminMode = null)
     {
-        $this->setIsTranslated();
-        // checking if in cache exist
-        $aLang = $this->getLangTranslationArray($iLang, $blAdminMode);
-        if (isset($aLang[$sStringToTranslate])) {
-            return $aLang[$sStringToTranslate];
-        }
-
-        // checking if in map exist
-        $aMap = $this->getLanguageMap($iLang, $blAdminMode);
-        if (isset($aMap[$sStringToTranslate], $aLang[$aMap[$sStringToTranslate]])) {
-            return $aLang[$aMap[$sStringToTranslate]];
-        }
-
-        // checking if in theme options exist
-        if (count($this->_aAdditionalLangFiles)) {
-            $aLang = $this->getLangTranslationArray($iLang, $blAdminMode, $this->_aAdditionalLangFiles);
+        if ($sStringToTranslate !== null) {
+            $this->setIsTranslated();
+            $aLang = $this->getLangTranslationArray($iLang, $blAdminMode);
             if (isset($aLang[$sStringToTranslate])) {
                 return $aLang[$sStringToTranslate];
+            }
+
+            $aMap = $this->getLanguageMap($iLang, $blAdminMode);
+            if (isset($aMap[$sStringToTranslate], $aLang[$aMap[$sStringToTranslate]])) {
+                return $aLang[$aMap[$sStringToTranslate]];
+            }
+
+            if (count($this->_aAdditionalLangFiles)) {
+                $aLang = $this->getLangTranslationArray($iLang, $blAdminMode, $this->_aAdditionalLangFiles);
+                if (isset($aLang[$sStringToTranslate])) {
+                    return $aLang[$sStringToTranslate];
+                }
             }
         }
 
@@ -527,7 +526,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
         $sValue = Registry::getUtils()->fRound($dValue, $oActCur);
 
-        return number_format((double) $sValue, $oActCur->decimal, $oActCur->dec, $oActCur->thousand);
+        return number_format($sValue, $oActCur->decimal, $oActCur->dec, $oActCur->thousand);
     }
 
     /**
@@ -550,7 +549,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $oActCur = $oActCur ? $oActCur : Registry::getConfig()->getActShopCurrencyObject();
         $iDecPos = ($iDecPos < $oActCur->decimal) ? $iDecPos : $oActCur->decimal;
 
-        return number_format((double) $dValue, $iDecPos, $oActCur->dec, $oActCur->thousand);
+        return number_format((float) $dValue, $iDecPos, $oActCur->dec, $oActCur->thousand);
     }
 
     /**

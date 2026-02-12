@@ -388,7 +388,6 @@ class Curl
      */
     protected function close()
     {
-        curl_close($this->getResource());
         $this->setResource(null);
     }
 

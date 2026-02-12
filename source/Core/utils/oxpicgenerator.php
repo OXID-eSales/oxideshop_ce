@@ -129,8 +129,6 @@ if (!function_exists("resizeGif")) {
             imagecopyresampled($hDestinationImage, $hSourceImage, 0, 0, 0, 0, $iNewWidth, $iNewHeight, $iOriginalWidth, $iOriginalHeight);
 
             imagegif($hDestinationImage, $sTarget);
-            imagedestroy($hDestinationImage);
-            imagedestroy($hSourceImage);
         }
 
         return $sTarget;
@@ -173,10 +171,18 @@ if (!function_exists("resizePng")) {
                 imagealphablending($hDestinationImage, false);
                 imagesavealpha($hDestinationImage, true);
             }
-            if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {
+            if (
+                copyAlteredImage(
+                    $hDestinationImage,
+                    $hSourceImage,
+                    $iNewWidth,
+                    $iNewHeight,
+                    $aImageInfo,
+                    $sTarget,
+                    $iGdVer
+                )
+            ) {
                 imagepng($hDestinationImage, $sTarget);
-                imagedestroy($hDestinationImage);
-                imagedestroy($hSourceImage);
             }
         }
 
@@ -210,10 +216,18 @@ if (!function_exists("resizeJpeg")) {
                 $hDestinationImage = imagecreatetruecolor($iNewWidth, $iNewHeight);
             }
             $hSourceImage = imagecreatefromstring(file_get_contents($sSrc));
-            if (copyAlteredImage($hDestinationImage, $hSourceImage, $iNewWidth, $iNewHeight, $aImageInfo, $sTarget, $iGdVer)) {
+            if (
+                copyAlteredImage(
+                    $hDestinationImage,
+                    $hSourceImage,
+                    $iNewWidth,
+                    $iNewHeight,
+                    $aImageInfo,
+                    $sTarget,
+                    $iGdVer
+                )
+            ) {
                 imagejpeg($hDestinationImage, $sTarget, $iDefQuality);
-                imagedestroy($hDestinationImage);
-                imagedestroy($hSourceImage);
             }
         }
 
@@ -237,8 +251,6 @@ if (!function_exists("resizeWebp")) {
 
             if (copyAlteredImage($destinationImage, $sourceImage, $newWidth, $newHeight, [$origWidth, $origHeight])) {
                 imagewebp($destinationImage, $target, $quality);
-                imagedestroy($destinationImage);
-                imagedestroy($sourceImage);
             }
         }
 

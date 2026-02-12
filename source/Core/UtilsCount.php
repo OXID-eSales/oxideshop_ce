@@ -49,8 +49,8 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
      * Returns category article count price
      *
      * @param string $sCatId     Category Id
-     * @param double $dPriceFrom from price
-     * @param double $dPriceTo   to price
+     * @param float $dPriceFrom from price
+     * @param float $dPriceTo   to price
      *
      * @return int
      */
@@ -170,12 +170,12 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
         $sSelect = "SELECT count({$sTable}.oxid) FROM {$sTable} WHERE oxvarminprice >= 0";
         if ($dPriceTo) {
             $sSelect .= " AND oxvarminprice <= :oxvarpriceto";
-            $params['oxvarpriceto'] = (double) $dPriceTo;
+            $params['oxvarpriceto'] = (float) $dPriceTo;
         }
 
         if ($dPriceFrom) {
             $sSelect .= " AND oxvarminprice  >= :oxvarpricefrom";
-            $params['oxvarpricefrom'] = (double) $dPriceFrom;
+            $params['oxvarpricefrom'] = (float) $dPriceFrom;
         }
 
         $sSelect .=  " AND {$sTable}.oxissearch = 1 AND " . $oArticle->getSqlActiveSnippet();
@@ -330,8 +330,8 @@ class UtilsCount extends \OxidEsales\Eshop\Core\Base
                     $tableViewNameGenerator->getViewName('oxcategories')
                 ),
                 [
-                    'oxpricefrom' => (double) $iPrice,
-                    'oxpriceto' => (double) $iPrice
+                    'oxpricefrom' => (float) $iPrice,
+                    'oxpriceto' => (float) $iPrice
                 ]
             );
             foreach ($categoriesIds as $categoryId) {

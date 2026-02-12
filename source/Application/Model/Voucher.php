@@ -151,16 +151,16 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @throws \OxidEsales\Eshop\Core\Exception\VoucherException
      *
-     * @return double
+     * @return float
      */
     public function getDiscountValue($dPrice)
     {
         if ($this->isProductVoucher()) {
-            return $this->getProductDiscountValue((double) $dPrice);
+            return $this->getProductDiscountValue((float) $dPrice);
         } elseif ($this->isCategoryVoucher()) {
-            return $this->getCategoryDiscountValue((double) $dPrice);
+            return $this->getCategoryDiscountValue((float) $dPrice);
         } else {
-            return $this->getGenericDiscountValue((double) $dPrice);
+            return $this->getGenericDiscountValue((float) $dPrice);
         }
     }
 

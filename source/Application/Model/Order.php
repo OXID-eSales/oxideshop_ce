@@ -1685,7 +1685,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         ];
 
         // We force reading from master to prevent issues with slow replications or open transactions (see ESDEV-3804).
-        return (double) DatabaseProvider::getMaster()->getOne($sSelect, $params);
+        return (float) DatabaseProvider::getMaster()->getOne($sSelect, $params);
     }
 
     /**
@@ -1935,7 +1935,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         $oCur = Registry::getConfig()->getActShopCurrencyObject();
 
-        return number_format((double) $this->oxorder__oxtotalordersum->value, $oCur->decimal, '.', '');
+        return number_format((float) $this->oxorder__oxtotalordersum->value, $oCur->decimal, '.', '');
     }
 
     /**

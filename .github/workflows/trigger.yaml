@@ -20,7 +20,7 @@ jobs:
           else
             REF_TO_CHECK='${{ github.ref }}'
             # shellcheck disable=SC2088
-            LIMIT="~/defaults/php8.4_mysql8.0_only.yaml,"
+            LIMIT="~/defaults/php8.5_mysql8.4_only.yaml,"
           fi
           # shellcheck disable=SC2088
           case "${REF_TO_CHECK}" in

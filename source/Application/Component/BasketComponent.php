@@ -407,7 +407,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
             //If we already changed articles so they now exactly match existing ones,
             //we need to make sure we get the amounts correct
-            if (isset($basketItemAmounts[$data['oldBasketItemId']])) {
+            if ($data['oldBasketItemId'] !== null && isset($basketItemAmounts[$data['oldBasketItemId']])) {
                 $data['amount'] = $data['amount'] + $basketItemAmounts[$data['oldBasketItemId']];
             }
 

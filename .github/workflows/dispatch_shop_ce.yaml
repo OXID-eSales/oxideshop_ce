@@ -21,11 +21,13 @@ on:
           - 'PHP8.4/MySQL5.7'
           - 'PHP8.4/MySQL8.0'
           - 'PHP8.4/MySQL8.4'
-        default: 'PHP8.4/MySQL8.4'
+          - 'PHP8.5/MySQL8.0'
+          - 'PHP8.5/MySQL8.4'
+        default: 'PHP8.5/MySQL8.4'
       custom_testplan:
         type: string
         description: 'Custom testplan'
-        default: '~/defaults/php8.4_mysql8.4_only.yaml,~/shop_ce.yaml'
+        default: '~/defaults/php8.5_mysql8.4_only.yaml,~/shop_ce.yaml'
       runs_on:
         type: string
         description: 'JSON string/array describing the runner'
@@ -57,6 +59,8 @@ jobs:
             "PHP8.4/MySQL5.7") LIMIT='~/defaults/php8.4_mysql5.7_only.yaml,' ;;
             "PHP8.4/MySQL8.0") LIMIT='~/defaults/php8.4_mysql8.0_only.yaml,' ;;
             "PHP8.4/MySQL8.4") LIMIT='~/defaults/php8.4_mysql8.4_only.yaml,' ;;
+            "PHP8.5/MySQL8.0") LIMIT='~/defaults/php8.5_mysql8.0_only.yaml,' ;;
+            "PHP8.5/MySQL8.4") LIMIT='~/defaults/php8.5_mysql8.4_only.yaml,' ;;
             *) echo "Illegal choice, fix the workflow"
               exit 1
               ;;

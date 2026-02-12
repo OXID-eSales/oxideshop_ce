@@ -372,7 +372,7 @@ class Database implements DatabaseInterface
                 /**
                  * Doctrine passes the message and the code of the PDO Exception, which would break backward
                  * compatibility as it uses SQLSTATE error code (string),
-                 * but the shop used to the (My)SQL errors (integer)
+                 * but the shop used to the (My)SQL errors (int)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately we can access PDOException and recover the original SQL error code and message.
                  */
@@ -387,7 +387,7 @@ class Database implements DatabaseInterface
                 break;
             case $exception instanceof PDOException:
                 /**
-                 * The shop uses the (My)SQL errors (integer) in the error code,
+                 * The shop uses the (My)SQL errors (int) in the error code,
                  * but $pdoException uses SQLSTATE error code (string)
                  * See http://php.net/manual/de/class.pdoexception.php For details and discussion.
                  * Fortunately in some cases we can access PDOException and recover the original SQL error.

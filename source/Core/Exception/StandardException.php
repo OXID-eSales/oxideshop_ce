@@ -7,10 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Core\Exception;
 
+use Exception;
+
 /**
  * Basic exception class
  */
-class StandardException extends \Exception
+class StandardException extends Exception
 {
     /**
      * Exception type, currently old class name is used.
@@ -39,9 +41,9 @@ class StandardException extends \Exception
      *
      * @param string          $sMessage exception message
      * @param integer         $iCode    exception code
-     * @param \Exception|null $previous previous exception
+     * @param Exception|null $previous previous exception
      */
-    public function __construct($sMessage = 'not set', $iCode = 0, ?\Exception $previous = null)
+    public function __construct($sMessage = 'not set', $iCode = 0, ?Exception $previous = null)
     {
         parent::__construct($sMessage, $iCode, $previous);
     }

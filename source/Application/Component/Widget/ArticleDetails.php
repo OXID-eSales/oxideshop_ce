@@ -703,14 +703,14 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
     public function getRatingValue()
     {
         if ($this->_dRatingValue === null) {
-            $this->_dRatingValue = (double) 0;
+            $this->_dRatingValue = 0.0;
             if ($this->isReviewActive() && ($oDetailsProduct = $this->getProduct())) {
                 $blShowVariantsReviews = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowVariantReviews');
                 $this->_dRatingValue = round($oDetailsProduct->getArticleRatingAverage($blShowVariantsReviews), 1);
             }
         }
 
-        return (double) $this->_dRatingValue;
+        return (float) $this->_dRatingValue;
     }
 
     /**

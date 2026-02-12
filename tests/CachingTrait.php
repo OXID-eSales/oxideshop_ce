@@ -9,11 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests;
 
-use ReflectionClass;
 use OxidEsales\Eshop\Core\ConfigFile;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
+use ReflectionClass;
 use Symfony\Component\Filesystem\Filesystem;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;

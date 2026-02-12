@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Dao;
 
 use PHPUnit\Framework\TestCase;
-use ReflectionProperty;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridge;
@@ -18,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeI
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\DataObject\ProductRating;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingService;
+use ReflectionProperty;
 
 final class ProductRatingDaoTest extends TestCase
 {
@@ -58,10 +58,8 @@ final class ProductRatingDaoTest extends TestCase
     {
         $bridge = ContainerFacade::get(ProductRatingBridgeInterface::class);
         $serviceProperty = new ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
-        $serviceProperty->setAccessible(true);
         $service = $serviceProperty->getValue($bridge);
         $daoProperty = new ReflectionProperty(ProductRatingService::class, 'productRatingDao');
-        $daoProperty->setAccessible(true);
 
         return $daoProperty->getValue($service);
     }

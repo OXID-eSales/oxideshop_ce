@@ -86,10 +86,8 @@ final class ProductRatingBridgeTest extends TestCase
     {
         $bridge = ContainerFacade::get(ProductRatingBridgeInterface::class);
         $serviceProperty = new ReflectionProperty(ProductRatingBridge::class, 'productRatingService');
-        $serviceProperty->setAccessible(true);
         $service = $serviceProperty->getValue($bridge);
         $daoProperty = new ReflectionProperty(ProductRatingService::class, 'productRatingDao');
-        $daoProperty->setAccessible(true);
 
         return $daoProperty->getValue($service);
     }

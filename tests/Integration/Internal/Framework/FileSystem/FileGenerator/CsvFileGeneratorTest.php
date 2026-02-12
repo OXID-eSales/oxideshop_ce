@@ -78,4 +78,23 @@ final class CsvFileGeneratorTest extends TestCase
 
         $this->assertEquals($expected, file_get_contents($this->filename));
     }
+
+    public function testGenerateEscapesSpecialCharacters(): void
+    {
+        $csvGenerator = new CsvFileGenerator();
+
+        $this->filesystem->touch($this->filename);
+
+        $csvGenerator->generate($this->filename, [
+            ["Name", "Description"],
+            ["Test", "Value with \"quotes\" inside"],
+            ["Another", "Backslash \\ test"]
+        ]);
+
+        $expected = "Name,Description\n"
+            . "Test,\"Value with \"\"quotes\"\" inside\"\n"
+            . "Another,\"Backslash \\ test\"\n";
+
+        $this->assertEquals($expected, file_get_contents($this->filename));
+    }
 }

@@ -14,6 +14,6 @@ class ShopVersion
      */
     public static function getVersion()
     {
-        return '8.0.0-alpha.1';
+        return '8.0.0-alpha.2';
     }
 }

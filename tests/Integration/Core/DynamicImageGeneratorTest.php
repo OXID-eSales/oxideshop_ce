@@ -58,7 +58,6 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
 
         imagestring($image, 5, 50, 90, 'TEST', $textColor);
         imagejpeg($image, $imagePath);
-        imagedestroy($image);
     }
 
     private function cleanupTestFiles(): void

@@ -41,6 +41,8 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      */
     protected $_sLastCallFnc = null;
 
+    protected bool $isBasketCalculated = false;
+
     /**
      * Parameters which are kept when redirecting after user
      * puts something to basket
@@ -101,7 +103,10 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $session = Registry::getSession();
 
         if ($basket = $session->getBasket()) {
-            $basket->calculateBasket(true);
+            if (!$this->isBasketCalculated) {
+                $basket->calculateBasket(true);
+                $this->isBasketCalculated = true;
+            }
         }
 
         parent::render();

@@ -86,10 +86,7 @@ class LoggerTest extends \PHPUnit\Framework\TestCase
      */
     private function getContextStub($logLevelFromConfig = null)
     {
-        $context = $this
-            ->getMockBuilder(ContextInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $context = $this->createStub(ContextInterface::class);
 
         $context
             ->method('getLogFilePath')

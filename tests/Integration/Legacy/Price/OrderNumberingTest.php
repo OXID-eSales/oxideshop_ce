@@ -40,13 +40,13 @@ final class OrderNumberingTest extends IntegrationTestCase
 
         $user = $basket->getBasketUser();
 
-        $order1 = $this->getOrderMock();
+        $order1 = $this->getOrderStub();
 
         if ($basket->getProductsCount()) {
             $order1->finalizeOrder($basket, $user);
         }
 
-        $order2 = $this->getOrderMock();
+        $order2 = $this->getOrderStub();
         // If separate numbering, then it must be restarted.
         $order2->setSeparateNumbering($options['separateNumbering']);
 
@@ -80,13 +80,13 @@ final class OrderNumberingTest extends IntegrationTestCase
 
         $user = $basket->getBasketUser();
 
-        $order1 = $this->getOrderMock();
+        $order1 = $this->getOrderStub();
 
         if ($basket->getProductsCount()) {
             $order1->finalizeOrder($basket, $user);
         }
 
-        $order2 = $this->getOrderMock();
+        $order2 = $this->getOrderStub();
 
         if ($basket->getProductsCount()) {
             $order2->finalizeOrder($basket, $user);
@@ -94,7 +94,7 @@ final class OrderNumberingTest extends IntegrationTestCase
 
         $order2->delete();
 
-        $order3 = $this->getOrderMock();
+        $order3 = $this->getOrderStub();
         // If separate numbering, then it must be restarted.
         $order3->setSeparateNumbering($options['separateNumbering']);
 
@@ -128,16 +128,16 @@ final class OrderNumberingTest extends IntegrationTestCase
 
         $user = $basket->getBasketUser();
 
-        $order1 = $this->getOrderMock();
+        $order1 = $this->getOrderStub();
 
         if ($basket->getProductsCount()) {
             $order1->finalizeOrder($basket, $user);
         }
 
-        $order2 = $this->getOrderMock();
+        $order2 = $this->getOrderStub();
         $order2->save();
 
-        $order3 = $this->getOrderMock();
+        $order3 = $this->getOrderStub();
         // If separate numbering, then it must be restarted.
         $order3->setSeparateNumbering($options['separateNumbering']);
 
@@ -158,13 +158,24 @@ final class OrderNumberingTest extends IntegrationTestCase
         }
     }
 
-    private function getOrderMock(): Order
+    private function getOrderStub(): Order
     {
-        $order = $this->createPartialMock(
-            Order::class,
-            ['sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment', 'getCoreTableName']
-        );
+        $order = $this
+            ->getStubBuilder(Order::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([
+                'sendOrderByEmail',
+                'validateDeliveryAddress',
+                'validateDelivery',
+                'validatePayment',
+                'getCoreTableName',
+            ])
+            ->getStub();
+
         $order->method('sendOrderByEmail')->willReturn(0);
+        $order->method('validateDeliveryAddress')->willReturn(null);
+        $order->method('validateDelivery')->willReturn(null);
+        $order->method('validatePayment')->willReturn(null);
         $order->method('getCoreTableName')->willReturn('oxorder');
 
         return $order;

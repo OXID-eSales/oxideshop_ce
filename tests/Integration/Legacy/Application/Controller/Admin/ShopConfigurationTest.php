@@ -33,10 +33,11 @@ final class ShopConfigurationTest extends IntegrationTestCase
             'stringSetting' => 'newValue',
         ];
 
-        $shopConfigurationController = $this->getMockBuilder(ShopConfiguration::class)
+        $shopConfigurationController = $this
+            ->getStubBuilder(ShopConfiguration::class)
             ->onlyMethods(['getModuleForConfigVars'])
             ->disableOriginalConstructor()
-            ->getMock();
+            ->getStub();
         $shopConfigurationController->method('getModuleForConfigVars')
             ->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();
@@ -55,7 +56,11 @@ final class ShopConfigurationTest extends IntegrationTestCase
             'nonExisting' => 'newValue',
         ];
 
-        $shopConfigurationController = $this->createPartialMock(ShopConfiguration::class, ['getModuleForConfigVars']);
+        $shopConfigurationController = $this
+            ->getStubBuilder(ShopConfiguration::class)
+            ->onlyMethods(['getModuleForConfigVars'])
+            ->disableOriginalConstructor()
+            ->getStub();
         $shopConfigurationController->method('getModuleForConfigVars')
             ->willReturn('module:testModuleId');
         $shopConfigurationController->saveConfVars();

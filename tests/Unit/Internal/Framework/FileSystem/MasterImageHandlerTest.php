@@ -133,12 +133,11 @@ class MasterImageHandlerTest extends TestCase
 
     private function initImageHandler(): void
     {
-        $contextMock = $this->createConfiguredMock(ContextInterface::class, [
-            'getSourcePath' => vfsStream::url('root/shop-source-path')
-        ]);
+        $contextStub = $this->createStub(ContextInterface::class);
+        $contextStub->method('getSourcePath')->willReturn(vfsStream::url('root/shop-source-path'));
         $this->imageHandler = new MasterImageHandler(
             new Filesystem(),
-            $contextMock
+            $contextStub
         );
     }
 }

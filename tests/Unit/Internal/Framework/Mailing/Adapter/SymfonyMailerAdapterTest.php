@@ -186,7 +186,7 @@ class SymfonyMailerAdapterTest extends TestCase
         $cid = 'abc123def456';
         $body = '<p>Image: <img src="cid:' . $cid . '"></p>';
 
-        $legacyEmail = $this->createMock(Email::class);
+        $legacyEmail = $this->createStub(Email::class);
         $legacyEmail->method('getRecipient')->willReturn([['test@example.com', 'Test']]);
         $legacyEmail->method('getFrom')->willReturn('from@example.com');
         $legacyEmail->method('getFromName')->willReturn('From Name');
@@ -226,7 +226,7 @@ class SymfonyMailerAdapterTest extends TestCase
         $cid = 'abc123@example.com';
         $body = '<p>Image: <img src="cid:' . $cid . '"></p>';
 
-        $legacyEmail = $this->createMock(Email::class);
+        $legacyEmail = $this->createStub(Email::class);
         $legacyEmail->method('getRecipient')->willReturn([['test@example.com', 'Test']]);
         $legacyEmail->method('getFrom')->willReturn('from@example.com');
         $legacyEmail->method('getFromName')->willReturn('From Name');
@@ -267,7 +267,7 @@ class SymfonyMailerAdapterTest extends TestCase
         $cid2 = 'image2@domain.com';
         $body = '<p><img src="cid:' . $cid1 . '"><img src="cid:' . $cid2 . '"></p>';
 
-        $legacyEmail = $this->createMock(Email::class);
+        $legacyEmail = $this->createStub(Email::class);
         $legacyEmail->method('getRecipient')->willReturn([['test@example.com', 'Test']]);
         $legacyEmail->method('getFrom')->willReturn('from@example.com');
         $legacyEmail->method('getFromName')->willReturn('From Name');

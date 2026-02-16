@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopCo
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ProjectConfigurationGenerator;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * @internal
@@ -24,7 +23,7 @@ class ProjectConfigurationGeneratorTest extends TestCase
 
     public function testGenerateDefaultConfiguration(): void
     {
-        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao = $this->createMock(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao
             ->expects($this->exactly(3))
             ->method('save');
@@ -33,12 +32,9 @@ class ProjectConfigurationGeneratorTest extends TestCase
         $generator->generate();
     }
 
-    /**
-     * @return ContextInterface | MockObject
-     */
-    private function getContext(): MockObject
+    private function getContext(): ContextInterface
     {
-        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
+        $context = $this->createStub(ContextInterface::class);
         $context->method('getAllShopIds')->willReturn($this->shops);
 
         return $context;

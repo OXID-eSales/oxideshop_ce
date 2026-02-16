@@ -252,6 +252,7 @@ final class UserComponentTest extends IntegrationTestCase
     {
         $sessionMock = $this->createPartialMock(Session::class, ['checkSessionChallenge']);
         $sessionMock
+            ->expects($this->atLeastOnce())
             ->method('checkSessionChallenge')
             ->willReturn(true);
         Registry::set(Session::class, $sessionMock);

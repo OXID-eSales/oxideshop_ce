@@ -86,7 +86,7 @@ class HttpExceptionListenerTest extends TestCase
 
     private function createExceptionEvent(Throwable $exception): ExceptionEvent
     {
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = $this->createStub(HttpKernelInterface::class);
         $request = Request::create('/api/test');
 
         return new ExceptionEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $exception);

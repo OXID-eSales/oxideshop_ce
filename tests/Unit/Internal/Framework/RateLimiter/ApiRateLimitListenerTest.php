@@ -225,7 +225,7 @@ class ApiRateLimitListenerTest extends TestCase
         Request $request,
         int $requestType = HttpKernelInterface::MAIN_REQUEST
     ): RequestEvent {
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = $this->createStub(HttpKernelInterface::class);
         return new RequestEvent($kernel, $request, $requestType);
     }
 

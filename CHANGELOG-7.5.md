@@ -9,6 +9,7 @@
 - API rate limiter
 - Alternative email transport integration
 - PHP v8.5 support
+- PHPUnit v12.5 support
 
 ### Changed
 - Filter unsafe HTML elements and attributes from CMS content in the admin area
@@ -22,3 +23,4 @@
 
 ### Removed
 - PHP v8.2 support
+- PHPUnit v11 support

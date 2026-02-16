@@ -33,7 +33,7 @@ class ProjectConfigurationDaoTest extends TestCase
 
     public function testProjectConfigurationGetterThrowsExceptionIfIsEmpty(): void
     {
-        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao = $this->createStub(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->method('getAll')->willReturn([]);
 
         $projectConfigurationDao = new ProjectConfigurationDao($shopConfigurationDao);
@@ -44,7 +44,7 @@ class ProjectConfigurationDaoTest extends TestCase
 
     public function testConfigurationIsEmptyIfNoShopConfigurations(): void
     {
-        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao = $this->createStub(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->method('getAll')->willReturn([]);
 
         $projectConfigurationDao = new ProjectConfigurationDao($shopConfigurationDao);
@@ -54,7 +54,7 @@ class ProjectConfigurationDaoTest extends TestCase
 
     public function testConfigurationIsNotEmpty(): void
     {
-        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao = $this->createStub(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao->method('getAll')->willReturn([new ShopConfiguration()]);
 
         $projectConfigurationDao = new ProjectConfigurationDao($shopConfigurationDao);

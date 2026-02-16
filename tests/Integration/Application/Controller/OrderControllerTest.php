@@ -35,12 +35,16 @@ final class OrderControllerTest extends IntegrationTestCase
 
         $this->prepareUserStub();
         $this->prepareBasketMock();
-        $this->stubSession();
         unset($_SESSION['Errors']);
     }
 
     public function testExecuteWithBasketMissingSummaryHashParameterWillLogAnError(): void
     {
+        $this->stubSession();
+
+        $this->basket->expects($this->atLeastOnce())
+            ->method('getProductsCount');
+
         $logger = $this->createMock(LoggerInterface::class);
         $this->injectLoggerMockIntoContainer($logger);
 
@@ -53,8 +57,12 @@ final class OrderControllerTest extends IntegrationTestCase
 
     public function testExecuteWithWrongBasketSummaryHashParameterAndEmptyBasketWillRedirectAndAddError(): void
     {
+        $this->stubSession();
+
         $_GET[$this->basketSummaryHashParameter] = 'some-invalid-hash';
-        $this->basket->method('getProductsCount')->willReturn(0);
+        $this->basket->expects($this->atLeastOnce())
+            ->method('getProductsCount')
+            ->willReturn(0);
 
         $redirect = oxNew(OrderController::class)->execute();
 
@@ -64,8 +72,12 @@ final class OrderControllerTest extends IntegrationTestCase
 
     public function testExecuteWithWrongBasketSummaryHashParameterAndNonEmptyBasketWillRedirectAndAddError(): void
     {
+        $this->stubSession();
+
         $_GET[$this->basketSummaryHashParameter] = 'some-invalid-hash';
-        $this->basket->method('getProductsCount')->willReturn(123);
+        $this->basket->expects($this->atLeastOnce())
+            ->method('getProductsCount')
+            ->willReturn(123);
 
         $redirect = oxNew(OrderController::class)->execute();
 
@@ -75,6 +87,12 @@ final class OrderControllerTest extends IntegrationTestCase
 
     public function testRenderWillSetSessionChallenge(): void
     {
+        Registry::set(Session::class, oxNew(Session::class));
+
+        $this->basket->expects($this->never())
+            ->method('getProductsCount')
+            ->willReturn(0);
+
         $orderController = oxNew(OrderController::class);
         $orderController->setIsOrderStep(false);
 
@@ -104,7 +122,8 @@ final class OrderControllerTest extends IntegrationTestCase
                 'getBasket',
             ]
         );
-        $session->method('checkSessionChallenge')
+        $session->expects($this->atLeastOnce())
+            ->method('checkSessionChallenge')
             ->willReturn(true);
         $session->method('getBasket')
             ->willReturn($this->basket);

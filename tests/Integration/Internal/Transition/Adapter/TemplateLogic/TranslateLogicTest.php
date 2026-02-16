@@ -43,7 +43,7 @@ class TranslateLogicTest extends IntegrationTestCase
     #[DataProvider('provider')]
     public function testSimpleAssignments($ident, $languageId, $result)
     {
-        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
+        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextStub(), $this->getTranslator($languageId));
 
         $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident));
     }
@@ -66,7 +66,7 @@ class TranslateLogicTest extends IntegrationTestCase
     #[DataProvider('withArgumentsProvider')]
     public function testAssignmentsWithArguments(string $ident, int $languageId, $arguments, string $result): void
     {
-        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextMock(), $this->getTranslator($languageId));
+        $multiLangFilterLogic = new TranslateFilterLogic($this->getContextStub(), $this->getTranslator($languageId));
 
         $this->assertEquals($result, $multiLangFilterLogic->multiLang($ident, $arguments));
     }
@@ -88,12 +88,11 @@ class TranslateLogicTest extends IntegrationTestCase
     }
 
     #[DataProvider('missingTranslationProviderFrontend')]
-    public function testTranslateFrontend_isMissingTranslation(
+    public function testTranslateFrontendIsMissingTranslation(
         bool $isProductiveMode,
         string $ident,
         string $translation
-    ): void
-    {
+    ): void {
         $context = $this->prophesize(ContextInterface::class);
         $context->isShopInProductiveMode()->willReturn($isProductiveMode);
         $multiLangFilterLogic = new TranslateFilterLogic($context->reveal(), $this->getTranslator(1));
@@ -101,9 +100,9 @@ class TranslateLogicTest extends IntegrationTestCase
         $this->assertEquals($translation, $multiLangFilterLogic->multiLang($ident));
     }
 
-    private function getContextMock(): ContextInterface
+    private function getContextStub(): ContextInterface
     {
-        return $this->getMockBuilder(ContextInterface::class)->getMock();
+        return $this->createStub(ContextInterface::class);
     }
 
     private function getTranslator(int $languageId): LegacyTemplateTranslator

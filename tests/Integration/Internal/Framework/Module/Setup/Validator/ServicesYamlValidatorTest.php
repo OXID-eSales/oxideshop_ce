@@ -34,7 +34,7 @@ class ServicesYamlValidatorTest extends TestCase
         parent::setUp();
 
         $context = new BasicContextStub();
-        $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
+        $this->modulePathResolver = $this->createStub(ModulePathResolverInterface::class);
         $this->moduleConfiguration = new ModuleConfiguration();
         $this->validator = new ServicesYamlValidator(
             $context,

@@ -83,7 +83,7 @@ class ContactFormFactoryTest extends \PHPUnit\Framework\TestCase
 
     private function getContactFormFactory(FormConfigurationInterface $formConfiguration)
     {
-        $emailValidatorService = $this->getMockBuilder(EmailValidatorService::class)->getMock();
+        $emailValidatorService = $this->createStub(EmailValidatorService::class);
 
         $contactFormFactory = new ContactFormFactory(
             $formConfiguration,

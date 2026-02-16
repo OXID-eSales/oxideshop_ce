@@ -16,8 +16,6 @@ use OxidEsales\EshopCommunity\Core\UtilsObject;
 use oxRegistry;
 use PHPUnit\Framework\TestCase;
 
-require_once __DIR__ . '/Helpers/LanguageMainHelper.php';
-
 abstract class MultilanguageTestCase extends TestCase
 {
     protected $originalLanguageArray;
@@ -87,7 +85,7 @@ abstract class MultilanguageTestCase extends TestCase
         return $proxyClassName;
     }
 
-    public function getProxyClass($superClassName, array $params = null)
+    public function getProxyClass($superClassName, ?array $params = null)
     {
         $proxyClassName = $this->getProxyClassName($superClassName);
         if (!empty($params)) {
@@ -189,6 +187,7 @@ abstract class MultilanguageTestCase extends TestCase
     protected function getLanguageMain()
     {
         if ($this->languageMain === null) {
+            require_once __DIR__ . '/Helpers/LanguageMainHelper.php';
             $this->languageMain = $this->getProxyClass('LanguageMainHelper');
             $this->languageMain->render();
         }

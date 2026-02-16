@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules;
 use OxidEsales\Eshop\Application\Controller\ContentController as EshopContentController;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\EshopCommunity\Application\Model\Article as CommunityArticle;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
@@ -19,16 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidClassExtensionNamespaceException;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_chain_extension_3_1\vendor_1_module_3_1_myclass;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\ContentController as ModuleContentController;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingArticle;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingContentController;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension35\MyClass35;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension36\MyClass36;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\own_namespace_extending_unified_namespace\MyClass as own_namespace_extending_unified_namespace;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor2\ModuleChainExtension44\MyClass44;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance24\MyClass as ModuleInheritance24MyClass;
+use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules as InheritanceModules;
 use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -166,9 +158,11 @@ final class ModuleInheritanceTest extends TestCase
     /**
      * This test covers PHP inheritance between module classes.
      *
-     * The tested module class extends the other module class directly like '<module anotherclass> extends <module class>'
-     * or '<moduleA class> extends <moduleB class>'
-     * In this case the parent class of the module class must be the parent module class as instantiated with oxNew
+     * The tested module class extends the other module class directly like
+     * '<module anotherclass> extends <module class>' or
+     * '<moduleA class> extends <moduleB class>'.
+     * In this case the parent class of the module class must be the parent
+     * module class as instantiated with oxNew.
      *
      * @param array  $modulesToActivate The modules we want to activate.
      * @param string $moduleClassName    The module class we want to instantiate.
@@ -217,28 +211,28 @@ final class ModuleInheritanceTest extends TestCase
         return [
             [
                 'moduleToActivate' => $modules,
-                'extensionClass' => ModuleContentController::class,
+                'extensionClass' => InheritanceModules\module_native_extension\ContentController::class,
                 'classToExtend' => EshopContentController::class,
             ],
             [
                 'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingContentController::class,
-                'classToExtend' => ModuleContentController::class,
+                'extensionClass' => InheritanceModules\module_native_extension\NativeExtendingContentController::class,
+                'classToExtend' => InheritanceModules\module_native_extension\ContentController::class,
             ],
             [
                 'moduleToActivate' => $modules,
-                'extensionClass' => \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\Article::class,
+                'extensionClass' => InheritanceModules\module_native_extension\Article::class,
                 'classToExtend' => Article::class,
             ],
             [
                 'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingArticle::class,
-                'classToExtend' => \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\Article::class,
+                'extensionClass' => InheritanceModules\module_native_extension\NativeExtendingArticle::class,
+                'classToExtend' => InheritanceModules\module_native_extension\Article::class,
             ],
             [
                 'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingArticle::class,
-                'classToExtend' => vendor_1_module_3_1_myclass::class,
+                'extensionClass' => InheritanceModules\module_native_extension\NativeExtendingArticle::class,
+                'classToExtend' => InheritanceModules\module_chain_extension_3_1\vendor_1_module_3_1_myclass::class,
             ],
         ];
     }
@@ -248,27 +242,28 @@ final class ModuleInheritanceTest extends TestCase
         return [
             'case_1_6' => [
                 'moduleToActivate' => ['Vendor1/ModuleInheritance16'],
-                'moduleClassName' => \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance16\MyClass::class,
-                'shopClassNames' => [\OxidEsales\EshopCommunity\Application\Model\Article::class, 'oxArticle'],
+                'moduleClassName' => InheritanceModules\Vendor1\ModuleInheritance16\MyClass::class,
+                'shopClassNames' => [CommunityArticle::class, 'oxArticle'],
             ],
             'case_1_7' => [
                 'moduleToActivate' => ['Vendor1/namespaced_from_ns'],
-                'moduleClassName' => namespaced_from_ns::class,
-                'shopClassNames' => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
+                'moduleClassName' => InheritanceModules\Vendor1\namespaced_from_ns\MyClass::class,
+                'shopClassNames' => [CommunityArticle::class],
             ],
             'case_1_10' => [
                 'moduleToActivate' => ['Vendor1/own_namespace_extending_unified_namespace'],
-                'moduleClassName' => own_namespace_extending_unified_namespace::class,
+                'moduleClassName' =>
+                    InheritanceModules\Vendor1\own_namespace_extending_unified_namespace\MyClass::class,
                 'shopClassNames' => [Article::class],
             ],
             'case_3_1' => [
                 'moduleToActivate' => ['module_chain_extension_3_1'],
-                'moduleClassName' => vendor_1_module_3_1_myclass::class,
+                'moduleClassName' => InheritanceModules\module_chain_extension_3_1\vendor_1_module_3_1_myclass::class,
                 'shopClassNames' => ['oxArticle'],
             ],
             'case_3_6' => [
                 'moduleToActivate' => ['Vendor1/ModuleChainExtension36'],
-                'moduleClassName' => MyClass36::class,
+                'moduleClassName' => InheritanceModules\Vendor1\ModuleChainExtension36\MyClass36::class,
                 'shopClassNames' => [Article::class],
             ],
         ];
@@ -285,17 +280,18 @@ final class ModuleInheritanceTest extends TestCase
             'case_3_2' => [
                 //Test case 3.2 plain module chain extends namespaced OXID eShop Community class
                 'moduleToActivate' => ['module_chain_extension_3_2'],
-                'moduleClassName' => 'OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_chain_extension_3_2\vendor_1_module_3_2_myclass',
-                'shopClassNames' => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
-                'expectsException' => \OxidEsales\EshopCommunity\Application\Model\Article::class . ' => module_chain_extension_3_2/vendor_1_module_3_2_myclass',
+                'moduleClassName' => InheritanceModules\module_chain_extension_3_2\vendor_1_module_3_2_myclass::class,
+                'shopClassNames' => [CommunityArticle::class],
+                'expectsException' => CommunityArticle::class
+                    . ' => module_chain_extension_3_2/vendor_1_module_3_2_myclass',
             ],
             'case_3_5' => [
                 // Test case 3.5 namespaced module class chain extends namespaced OXID eShop Community class
                 'moduleToActivate' => ['Vendor1/ModuleChainExtension35'],
-                'moduleClassName' => MyClass35::class,
-                'shopClassNames' => [\OxidEsales\EshopCommunity\Application\Model\Article::class],
-                'expectsException' => \OxidEsales\EshopCommunity\Application\Model\Article::class .
-                                      ' => ' . MyClass35::class,
+                'moduleClassName' => InheritanceModules\Vendor1\ModuleChainExtension35\MyClass35::class,
+                'shopClassNames' => [CommunityArticle::class],
+                'expectsException' => CommunityArticle::class .
+                                      ' => ' . InheritanceModules\Vendor1\ModuleChainExtension35\MyClass35::class,
             ],
         ];
     }
@@ -311,26 +307,26 @@ final class ModuleInheritanceTest extends TestCase
             'case_2_4' => [
                 // Test case 2.4 namespaced module class extends an other modules extended namespaced module class
                 'modulesToActivate' => ['Vendor1/namespaced_from_ns', 'Vendor2/ModuleInheritance24'],
-                'moduleClassName' => ModuleInheritance24MyClass::class,
+                'moduleClassName' => InheritanceModules\Vendor2\ModuleInheritance24\MyClass::class,
                 'shopClassNames' => [
-                    namespaced_from_ns::class,
-                    \OxidEsales\EshopCommunity\Application\Model\Article::class,
+                    InheritanceModules\Vendor1\namespaced_from_ns\MyClass::class,
+                    CommunityArticle::class,
                 ],
             ],
             'case_2_8' => [
                 // Test case 2.8 namespaced module_2 extends namespaced module_1
                 'modulesToActivate' => ['Vendor1/ModuleInheritance28a', 'Vendor2/ModuleInheritance28b'],
-                'moduleClassName' => \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor2\ModuleInheritance28b\MyClass::class,
+                'moduleClassName' => InheritanceModules\Vendor2\ModuleInheritance28b\MyClass::class,
                 'shopClassNames' => [
-                    \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance28a\MyClass::class,
+                    InheritanceModules\Vendor1\ModuleInheritance28a\MyClass::class,
                 ],
             ],
             'case_4_4' => [
                 // Test case 4.4 namespaced module class chain extends other namespaced module class
                 'modulesToActivate' => ['Vendor1/ModuleChainExtension44', 'Vendor2/ModuleChainExtension44'],
-                'moduleClassName' => MyClass44::class,
+                'moduleClassName' => InheritanceModules\Vendor2\ModuleChainExtension44\MyClass44::class,
                 'shopClassNames' => [
-                    \OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension44\MyClass44::class,
+                    InheritanceModules\Vendor1\ModuleChainExtension44\MyClass44::class,
                 ],
             ],
         ];
@@ -359,9 +355,7 @@ final class ModuleInheritanceTest extends TestCase
 
     private function disableShopEditionClassExtensionProtection(ContainerBuilder $containerBuilder): ContainerBuilder
     {
-        $shopAdapter = $this
-            ->getMockBuilder(ShopAdapter::class)
-            ->getMock();
+        $shopAdapter = $this->createStub(ShopAdapter::class);
 
         $shopAdapter->method('isShopEditionNamespace')
             ->willReturn(false);

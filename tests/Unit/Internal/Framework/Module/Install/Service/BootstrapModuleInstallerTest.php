@@ -23,13 +23,13 @@ class BootstrapModuleInstallerTest extends TestCase
         $path = 'packagePath';
         $package = new OxidEshopPackage($path);
 
-        $moduleFilesInstaller = $this->getMockBuilder(ModuleFilesInstallerInterface::class)->getMock();
+        $moduleFilesInstaller = $this->createMock(ModuleFilesInstallerInterface::class);
         $moduleFilesInstaller
             ->expects($this->once())
             ->method('install')
             ->with($package);
 
-        $moduleProjectConfigurationInstaller = $this->getMockBuilder(ModuleConfigurationInstallerInterface::class)->getMock();
+        $moduleProjectConfigurationInstaller = $this->createMock(ModuleConfigurationInstallerInterface::class);
         $moduleProjectConfigurationInstaller
             ->expects($this->once())
             ->method('install')
@@ -43,10 +43,10 @@ class BootstrapModuleInstallerTest extends TestCase
     #[DataProvider('moduleInstallMatrixDataProvider')]
     public function testIsInstalled(bool $filesInstalled, bool $projectConfigurationInstalled, bool $moduleInstalled)
     {
-        $moduleFilesInstaller = $this->getMockBuilder(ModuleFilesInstallerInterface::class)->getMock();
+        $moduleFilesInstaller = $this->createStub(ModuleFilesInstallerInterface::class);
         $moduleFilesInstaller->method('isInstalled')->willReturn($filesInstalled);
 
-        $moduleProjectConfigurationInstaller = $this->getMockBuilder(ModuleConfigurationInstallerInterface::class)->getMock();
+        $moduleProjectConfigurationInstaller = $this->createStub(ModuleConfigurationInstallerInterface::class);
         $moduleProjectConfigurationInstaller->method('isInstalled')->willReturn($projectConfigurationInstalled);
 
         $moduleInstaller = new BootstrapModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);

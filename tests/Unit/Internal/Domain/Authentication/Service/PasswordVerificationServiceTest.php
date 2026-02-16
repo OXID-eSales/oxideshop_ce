@@ -53,10 +53,7 @@ class PasswordVerificationServiceTest extends TestCase
      */
     private function getPasswordVerificationService(): PasswordVerificationService
     {
-        $passwordPolicyMock = $this
-            ->getMockBuilder(PasswordPolicyInterface::class)
-            ->onlyMethods(['enforcePasswordPolicy'])
-            ->getMock();
+        $passwordPolicyMock = $this->createStub(PasswordPolicyInterface::class);
         $passwordVerificationService = new PasswordVerificationService($passwordPolicyMock);
 
         return $passwordVerificationService;

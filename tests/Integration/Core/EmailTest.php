@@ -18,7 +18,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\EmailAdapterInte
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Email as SymfonyEmail;
 
@@ -27,77 +26,85 @@ final class EmailTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    private LoggerInterface|MockObject $logger;
-    private Email|MockObject $email;
-    private Order|MockObject $order;
-
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->getLoggerMock();
-        $this->getEmailMock();
-        $this->getOrderStub();
         $this->createContainer();
-        $this->container->set(LoggerInterface::class, $this->logger);
-        $this->container->autowire(LoggerInterface::class, LoggerInterface::class);
+        $this->replaceLogger($this->createStub(LoggerInterface::class));
     }
 
     public function testSendOrderEmailToUserWithDefaultConfiguration(): void
     {
-        $this->email->expects($this->once())
+        $email = $this->createEmailMock();
+        $order = $this->createOrderStub();
+
+        $email->expects($this->once())
             ->method('sendMail');
-        $this->email->expects($this->once())
+        $email->expects($this->once())
             ->method('getRenderer');
 
-        $this->email->sendOrderEmailToUser($this->order);
+        $email->sendOrderEmailToUser($order);
     }
 
     public function testSendOrderEmailToOwnerWithDefaultConfiguration(): void
     {
-        $this->email->expects($this->once())
+        $email = $this->createEmailMock();
+        $order = $this->createOrderStub();
+
+        $email->expects($this->once())
             ->method('sendMail');
-        $this->email->expects($this->once())
+        $email->expects($this->once())
             ->method('getRenderer');
 
-        $this->email->sendOrderEmailToOwner($this->order);
+        $email->sendOrderEmailToOwner($order);
     }
 
     public function testSendOrderEmailToUserWithDisabledEmails(): void
     {
+        $email = $this->createEmailMock();
+        $order = $this->createOrderStub();
+
         $this->setParameter('oxid_esales.email.disable_order_emails', true);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->atLeastOnce())
+            ->method('notice');
+        $this->replaceLogger($logger);
         $this->attachContainerToContainerFactory();
 
-        $this->logger->expects($this->atLeastOnce())
-            ->method('notice');
-        $this->email->expects($this->never())
+        $email->expects($this->never())
             ->method('sendMail');
-        $this->email->expects($this->never())
+        $email->expects($this->never())
             ->method('getRenderer');
 
-        $return = $this->email->sendOrderEmailToUser($this->order);
+        $return = $email->sendOrderEmailToUser($order);
 
         $this->assertTrue($return);
     }
 
     public function testSendOrderEmailToOwnerWithDisabledEmails(): void
     {
+        $email = $this->createEmailMock();
+        $order = $this->createOrderStub();
+
         $this->setParameter('oxid_esales.email.disable_order_emails', true);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->atLeastOnce())
+            ->method('notice');
+        $this->replaceLogger($logger);
         $this->attachContainerToContainerFactory();
 
-        $this->logger->expects($this->atLeastOnce())
-            ->method('notice');
-        $this->email->expects($this->never())
+        $email->expects($this->never())
             ->method('sendMail');
-        $this->email->expects($this->never())
+        $email->expects($this->never())
             ->method('getRenderer');
 
-        $return = $this->email->sendOrderEmailToOwner($this->order);
+        $return = $email->sendOrderEmailToOwner($order);
 
         $this->assertTrue($return);
     }
 
-    private function getOrderStub(): void
+    private function createOrderStub(): Order
     {
         $user = new User();
         $user->oxuser__oxfname = new Field('user-first-name');
@@ -105,27 +112,28 @@ final class EmailTest extends IntegrationTestCase
         $user->oxuser__oxusername = new Field('test@example.com');
         $user->oxshops__oxorderemail = new Field('test@order.com');
 
-        $this->order = $this->createPartialMock(Order::class, ['getOrderUser']);
-        $this->order->oxorder__oxordernr = new Field('order-test-1');
-        $this->order->method('getOrderUser')
+        $order = $this
+            ->getStubBuilder(Order::class)
+            ->onlyMethods(['getOrderUser'])
+            ->getStub();
+        $order->oxorder__oxordernr = new Field('order-test-1');
+        $order->method('getOrderUser')
             ->willReturn($user);
+
+        return $order;
     }
 
-    private function getEmailMock(): void
+    private function createEmailMock(): Email
     {
-        $templateRenderer = $this->createMock(TemplateRendererInterface::class);
+        $templateRenderer = $this->createStub(TemplateRendererInterface::class);
         $templateRenderer->method('renderTemplate')
             ->willReturn('some-data');
-        $this->email = $this->createPartialMock(Email::class, ['sendMail', 'getRenderer']);
-        $this->email->method('getRenderer')
+        $email = $this->createPartialMock(Email::class, ['sendMail', 'getRenderer']);
+        $email->method('getRenderer')
             ->willReturn($templateRenderer);
-        $this->email->method('sendMail')
+        $email->method('sendMail')
             ->willReturn(true);
-    }
-
-    private function getLoggerMock(): void
-    {
-        $this->logger = $this->createMock(LoggerInterface::class);
+        return $email;
     }
 
     public function testSendWithUnconfiguredDsnFallsBackToPhpMailer(): void
@@ -138,11 +146,10 @@ final class EmailTest extends IntegrationTestCase
             ->method('error')
             ->with($this->stringContains('Mailer failed'));
 
-        $adapter = $this->createMock(EmailAdapterInterface::class);
+        $adapter = $this->createStub(EmailAdapterInterface::class);
         $adapter->method('convertToSymfonyEmail')->willReturn(new SymfonyEmail());
 
-        $this->container->set(LoggerInterface::class, $logger);
-        $this->container->autowire(LoggerInterface::class, LoggerInterface::class);
+        $this->replaceLogger($logger);
         $this->container->set(EmailAdapterInterface::class, $adapter);
         $this->attachContainerToContainerFactory();
 
@@ -161,7 +168,7 @@ final class EmailTest extends IntegrationTestCase
         $this->setParameter('oxid_esales.mailing.dsn', 'null://null');
 
         $symfonyEmail = new SymfonyEmail();
-        $adapter = $this->createMock(EmailAdapterInterface::class);
+        $adapter = $this->createStub(EmailAdapterInterface::class);
         $adapter->method('convertToSymfonyEmail')->willReturn($symfonyEmail);
 
         $this->container->set(EmailAdapterInterface::class, $adapter);
@@ -176,5 +183,11 @@ final class EmailTest extends IntegrationTestCase
         $result = $email->send();
 
         $this->assertTrue($result);
+    }
+
+    private function replaceLogger(LoggerInterface $logger): void
+    {
+        $this->container->set(LoggerInterface::class, $logger);
+        $this->container->autowire(LoggerInterface::class, LoggerInterface::class);
     }
 }

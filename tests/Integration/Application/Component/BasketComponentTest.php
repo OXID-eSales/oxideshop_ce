@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
 /**
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+
+declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
 
@@ -32,16 +32,16 @@ class BasketComponentTest extends IntegrationTestCase
         );
 
         $this->actAsSearchEngine(false);
-        $this->prepareSessionMock();
+        $this->prepareSessionStub();
 
         oxNew(BasketComponent::class)->toBasket(1000, 2);
     }
 
-    private function prepareSessionMock(): void
+    private function prepareSessionStub(): void
     {
         $basket = oxNew(Basket::class);
         $basket->setStockCheckMode(false);
-        $session = $this->createConfiguredMock(
+        $session = $this->createConfiguredStub(
             Session::class,
             [
                 'getId' => 'random-string',
@@ -61,7 +61,7 @@ class BasketComponentTest extends IntegrationTestCase
     {
         Registry::set(
             Utils::class,
-            $this->createConfiguredMock(
+            $this->createConfiguredStub(
                 Utils::class,
                 ['isSearchEngine' => $isSearchEngine]
             )

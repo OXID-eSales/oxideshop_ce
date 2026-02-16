@@ -19,7 +19,7 @@ class ModulePathResolverTest extends TestCase
 {
     public function testGetFullModulePathFromConfiguration(): void
     {
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context = $this->createStub(BasicContextInterface::class);
         $context
             ->method('getShopRootPath')
             ->willReturn('shopRoot');
@@ -29,8 +29,9 @@ class ModulePathResolverTest extends TestCase
             ->setId('testModuleId')
             ->setModuleSource('vendor/modulePath');
 
-        $moduleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
+        $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao
+            ->expects($this->once())
             ->method('get')
             ->with('testModuleId', 1)
             ->willReturn($moduleConfiguration);

@@ -25,9 +25,7 @@ class DatabaseLoggerFactoryTest extends TestCase
 
         $loggerFactory = new DatabaseLoggerFactory(
             $context,
-            $this->getMockBuilder(QueryLogger::class)
-                ->disableOriginalConstructor()
-                ->getMock(),
+            $this->createStub(QueryLogger::class),
             new NullLogger()
         );
 
@@ -45,9 +43,7 @@ class DatabaseLoggerFactoryTest extends TestCase
 
         $loggerFactory = new DatabaseLoggerFactory(
             $context,
-            $this->getMockBuilder(QueryLogger::class)
-                ->disableOriginalConstructor()
-                ->getMock(),
+            $this->createStub(QueryLogger::class),
             new NullLogger()
         );
 
@@ -65,9 +61,7 @@ class DatabaseLoggerFactoryTest extends TestCase
 
         $loggerFactory = new DatabaseLoggerFactory(
             $context,
-            $this->getMockBuilder(QueryLogger::class)
-                ->disableOriginalConstructor()
-                ->getMock(),
+            $this->createStub(QueryLogger::class),
             new NullLogger()
         );
 

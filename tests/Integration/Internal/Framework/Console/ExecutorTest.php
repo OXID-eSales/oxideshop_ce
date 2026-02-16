@@ -49,11 +49,11 @@ class ExecutorTest extends TestCase
     private function makeExecutor(): ExecutorInterface
     {
         $context = $this
-            ->getMockBuilder(BasicContext::class)
-            ->disableOriginalConstructor()
+            ->getStubBuilder(BasicContext::class)
             ->onlyMethods(['getGeneratedServicesFilePath'])
-            ->getMock();
-        $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__ . '/Fixtures/generated_project.yaml');
+            ->getStub();
+        $context->method('getGeneratedServicesFilePath')
+            ->willReturn(__DIR__ . '/Fixtures/generated_project.yaml');
 
         $containerBuilder = new ContainerBuilder($context);
 

@@ -94,7 +94,7 @@ class RateLimitHeadersListenerTest extends TestCase
         Response $response,
         int $requestType = HttpKernelInterface::MAIN_REQUEST
     ): ResponseEvent {
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = $this->createStub(HttpKernelInterface::class);
         return new ResponseEvent($kernel, $request, $requestType, $response);
     }
 }

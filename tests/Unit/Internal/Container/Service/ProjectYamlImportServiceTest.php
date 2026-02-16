@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfig
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\NoServiceYamlException;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportService;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -22,9 +21,8 @@ use PHPUnit\Framework\TestCase;
  */
 class ProjectYamlImportServiceTest extends TestCase
 {
-
     /**
-     * @var ProjectYamlDaoInterface|MockObject
+     * @var ProjectYamlDaoInterface
      */
     private $dao;
 
@@ -37,12 +35,11 @@ class ProjectYamlImportServiceTest extends TestCase
 
     public function setup(): void
     {
-        $this->dao = $this->getMockBuilder(ProjectYamlDaoInterface::class)
-            ->onlyMethods(['loadProjectConfigFile', 'saveProjectConfigFile', 'loadDIConfigFile'])->getMock();
+        $this->dao = $this->createStub(ProjectYamlDaoInterface::class);
         $this->savedArray = [];
         $this->dao->method('saveProjectConfigFile')->willReturnCallback([$this, 'getConfigWrapper']);
 
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context = $this->createStub(BasicContextInterface::class);
         $context->method('getGeneratedServicesFilePath')->willReturn(__DIR__);
         $this->service = new ProjectYamlImportService($this->dao, $context);
     }

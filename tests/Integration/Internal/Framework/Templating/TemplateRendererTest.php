@@ -45,7 +45,7 @@ final class TemplateRendererTest extends TestCase
         $container = (new ContainerBuilderFactory())
             ->create()
             ->getContainer();
-        $rendererMock = $this->createConfiguredMock(
+        $rendererMock = $this->createConfiguredStub(
             TemplateRendererInterface::class,
             [
                 'renderTemplate' => $this->someTemplateContent,

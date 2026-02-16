@@ -34,9 +34,7 @@ final class ProjectYamlDaoTest extends TestCase
     {
         parent::setUp();
 
-        $contextStub = $this->getMockBuilder(BasicContext::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(['getGeneratedServicesFilePath'])->getMock();
+        $contextStub = $this->createStub(BasicContext::class);
         $contextStub
             ->method('getGeneratedServicesFilePath')
             ->willReturn($this->getTestGeneratedServicesFilePath());

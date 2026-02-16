@@ -40,7 +40,7 @@ class BasketComponentSessionTest extends IntegrationTestCase
     public function testChangingBasketWhenSessionChallengeValidationNotPassed(): void
     {
         $this->actAsSearchEngine(false);
-        $this->initSessionMock(false);
+        $this->initSessionStub(false);
 
         oxNew(BasketComponent::class)->changeBasket($this->articleId, 2);
 
@@ -51,7 +51,7 @@ class BasketComponentSessionTest extends IntegrationTestCase
     public function testChangingBasketWhenSessionChallengeValidationPassed(): void
     {
         $this->actAsSearchEngine(false);
-        $this->initSessionMock(true);
+        $this->initSessionStub(true);
 
         $_SESSION['sess_stoken'] = 'randomtoken';
         $_POST['stoken'] = 'randomtoken';
@@ -65,7 +65,7 @@ class BasketComponentSessionTest extends IntegrationTestCase
     public function testChangingBasketWhenIsSearchEngine(): void
     {
         $this->actAsSearchEngine(true);
-        $this->initSessionMock(true);
+        $this->initSessionStub(true);
 
         oxNew(BasketComponent::class)->changeBasket($this->articleId, 2);
 
@@ -84,16 +84,16 @@ class BasketComponentSessionTest extends IntegrationTestCase
     {
         Registry::set(
             Utils::class,
-            $this->createConfiguredMock(
+            $this->createConfiguredStub(
                 Utils::class,
                 ['isSearchEngine' => $isSearchEngine]
             )
         );
     }
 
-    private function  initSessionMock(bool $checkSessionChallenge): void
+    private function initSessionStub(bool $checkSessionChallenge): void
     {
-        $session = $this->createConfiguredMock(
+        $session = $this->createConfiguredStub(
             Session::class,
             ['checkSessionChallenge' => $checkSessionChallenge]
         );

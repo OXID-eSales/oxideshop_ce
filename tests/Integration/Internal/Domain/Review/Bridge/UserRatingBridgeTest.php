@@ -71,19 +71,16 @@ class UserRatingBridgeTest extends \PHPUnit\Framework\TestCase
     private function getUserRatingBridge()
     {
         return new UserRatingBridge(
-            $this->getUserRatingServiceMock()
+            $this->getUserRatingServiceStub()
         );
     }
 
     /**
-     * @return \PHPUnit\Framework\MockObject\MockObject|UserRatingServiceInterface
+     * @return UserRatingServiceInterface
      */
-    private function getUserRatingServiceMock()
+    private function getUserRatingServiceStub()
     {
-        $userRatingServiceMock = $this->getMockBuilder(UserRatingService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        return $userRatingServiceMock;
+        return $this->createStub(UserRatingService::class);
     }
 
     private function createTestRating()

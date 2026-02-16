@@ -62,7 +62,7 @@ class PasswordHashServiceTest extends TestCase
      */
     private function getBcryptPasswordHashService(): PasswordHashServiceInterface
     {
-        $passwordPolicy = $this->getPasswordPolicyMock();
+        $passwordPolicy = $this->getPasswordPolicyStub();
 
         $passwordHashService = new BcryptPasswordHashService(
             $passwordPolicy,
@@ -77,10 +77,10 @@ class PasswordHashServiceTest extends TestCase
      */
     private function getArgon2IPasswordHashService(): PasswordHashServiceInterface
     {
-        $passwordPolicyMock = $this->getPasswordPolicyMock();
+        $passwordPolicyStub = $this->getPasswordPolicyStub();
 
         $passwordHashService = new Argon2IPasswordHashService(
-            $passwordPolicyMock,
+            $passwordPolicyStub,
             PASSWORD_ARGON2_DEFAULT_MEMORY_COST,
             PASSWORD_ARGON2_DEFAULT_TIME_COST,
             PASSWORD_ARGON2_DEFAULT_THREADS
@@ -91,15 +91,10 @@ class PasswordHashServiceTest extends TestCase
 
 
     /**
-     * @return PasswordPolicyInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @return PasswordPolicyInterface
      */
-    private function getPasswordPolicyMock(): PasswordPolicyInterface
+    private function getPasswordPolicyStub(): PasswordPolicyInterface
     {
-        $passwordPolicyMock = $this
-            ->getMockBuilder(PasswordPolicyInterface::class)
-            ->onlyMethods(['enforcePasswordPolicy'])
-            ->getMock();
-
-        return $passwordPolicyMock;
+        return $this->createStub(PasswordPolicyInterface::class);
     }
 }

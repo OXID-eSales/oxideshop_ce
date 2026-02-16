@@ -24,7 +24,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     public function testHashForGivenPasswordIsEncryptedWithProperAlgorithm()
     {
         $password = 'secret';
-        $passwordHashService = $this->getPasswordHashServiceMock();
+        $passwordHashService = $this->getPasswordHashService();
         $hash = $passwordHashService->hash($password);
         $info = password_get_info($hash);
 
@@ -35,7 +35,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     {
         $password = '';
 
-        $passwordHashService = $this->getPasswordHashServiceMock();
+        $passwordHashService = $this->getPasswordHashService();
         $hash = $passwordHashService->hash($password);
         $info = password_get_info($hash);
 
@@ -46,7 +46,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     {
         $password = 'secret';
 
-        $passwordHashService = $this->getPasswordHashServiceMock();
+        $passwordHashService = $this->getPasswordHashService();
         $hash_1 = $passwordHashService->hash($password);
         $hash_2 = $passwordHashService->hash($password);
 
@@ -57,7 +57,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     {
         $passwordHash = password_hash('secret', PASSWORD_BCRYPT, ['cost' => 4 + 1]);
 
-        $passwordHashService = $this->getPasswordHashServiceMock();
+        $passwordHashService = $this->getPasswordHashService();
 
         $this->assertTrue($passwordHashService->passwordNeedsRehash($passwordHash));
     }
@@ -66,7 +66,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     {
         $passwordHash = 'some_unrecognizable_custom_hash';
 
-        $passwordHashService = $this->getPasswordHashServiceMock();
+        $passwordHashService = $this->getPasswordHashService();
 
         $this->assertTrue($passwordHashService->passwordNeedsRehash($passwordHash));
     }
@@ -75,14 +75,14 @@ class BcryptPasswordHashServiceTest extends TestCase
     {
         $passwordHash = password_hash('secret', PASSWORD_BCRYPT, ['cost' => 4]);
 
-        $passwordHashService = $this->getPasswordHashServiceMock();
+        $passwordHashService = $this->getPasswordHashService();
 
         $this->assertFalse($passwordHashService->passwordNeedsRehash($passwordHash));
     }
 
     public function testHashWithWithValidCostOptionValue()
     {
-        $passwordHashService = $this->getPasswordHashServiceMock(4);
+        $passwordHashService = $this->getPasswordHashService(4);
 
         $hash = $passwordHashService->hash('secret');
         $info = password_get_info($hash);
@@ -95,7 +95,7 @@ class BcryptPasswordHashServiceTest extends TestCase
     {
         $this->expectException(PasswordHashException::class);
 
-        $this->getPasswordHashServiceMock($invalidCostOption);
+        $this->getPasswordHashService($invalidCostOption);
     }
 
     /**
@@ -116,9 +116,9 @@ class BcryptPasswordHashServiceTest extends TestCase
      *
      * @return PasswordHashServiceInterface
      */
-    private function getPasswordHashServiceMock(int $cost = 4): PasswordHashServiceInterface
+    private function getPasswordHashService(int $cost = 4): PasswordHashServiceInterface
     {
-        $passwordPolicy = $this->getPasswordPolicyMock();
+        $passwordPolicy = $this->getPasswordPolicyStub();
 
         $passwordHashService = new BcryptPasswordHashService(
             $passwordPolicy,
@@ -131,11 +131,8 @@ class BcryptPasswordHashServiceTest extends TestCase
     /**
      * @return PasswordPolicyInterface
      */
-    private function getPasswordPolicyMock(): PasswordPolicyInterface
+    private function getPasswordPolicyStub(): PasswordPolicyInterface
     {
-        return $this
-            ->getMockBuilder(PasswordPolicyInterface::class)
-            ->onlyMethods(['enforcePasswordPolicy'])
-            ->getMock();
+        return $this->createStub(PasswordPolicyInterface::class);
     }
 }

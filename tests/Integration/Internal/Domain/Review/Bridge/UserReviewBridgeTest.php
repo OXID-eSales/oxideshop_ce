@@ -59,16 +59,13 @@ class UserReviewBridgeTest extends \PHPUnit\Framework\TestCase
     private function getUserReviewBridge()
     {
         return new UserReviewBridge(
-            $this->getUserReviewServiceMock()
+            $this->getUserReviewServiceStub()
         );
     }
 
-    private function getUserReviewServiceMock()
+    private function getUserReviewServiceStub()
     {
-        $userReviewServiceMock = $this->getMockBuilder(UserReviewService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        return $userReviewServiceMock;
+        return $this->createStub(UserReviewService::class);
     }
 
     private function createTestReview()

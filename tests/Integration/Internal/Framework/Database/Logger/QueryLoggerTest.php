@@ -20,9 +20,7 @@ class QueryLoggerTest extends TestCase
 {
     public function testLoggingEnabled(): void
     {
-        $queryFilter = $this->getMockBuilder(QueryFilter::class)
-            ->onlyMethods(['shouldLogQuery'])
-            ->getMock();
+        $queryFilter = $this->createStub(QueryFilter::class);
 
         $queryFilter->method('shouldLogQuery')->willReturn(true);
 
@@ -34,9 +32,7 @@ class QueryLoggerTest extends TestCase
 
     public function testLoggingDisabled(): void
     {
-        $queryFilter = $this->getMockBuilder(QueryFilter::class)
-            ->onlyMethods(['shouldLogQuery'])
-            ->getMock();
+        $queryFilter = $this->createStub(QueryFilter::class);
 
         $queryFilter->method('shouldLogQuery')->willReturn(false);
 
@@ -48,24 +44,7 @@ class QueryLoggerTest extends TestCase
 
     private function getPsrLoggerMock(): LoggerInterface
     {
-        $psrLogger = $this->getMockBuilder(LoggerInterface::class)
-            ->disableOriginalConstructor()
-            ->onlyMethods(
-                [
-                    'emergency',
-                    'alert',
-                    'critical',
-                    'error',
-                    'warning',
-                    'notice',
-                    'info',
-                    'debug',
-                    'log'
-                ]
-            )
-            ->getMock();
-
-        return $psrLogger;
+        return $this->createMock(LoggerInterface::class);
     }
 
     public function runQuery(QueryFilterInterface $queryFilter, LoggerInterface $psrLogger): void

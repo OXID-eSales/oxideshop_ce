@@ -26,10 +26,10 @@ class ShopTemplateCacheServiceTest extends TestCase
     {
         parent::setUp();
 
-        $this->contextMock = $this->getMockBuilder(ContextInterface::class)->getMock();
-        $this->fileSystemMock = $this->getMockBuilder(Filesystem::class)->getMock();
+        $this->contextMock = $this->createStub(ContextInterface::class);
+        $this->fileSystemMock = $this->createStub(Filesystem::class);
 
-        $this->contextMock->expects($this->any())
+        $this->contextMock
             ->method('getCacheDirectory')
             ->willReturn($this->cacheDirectory);
 

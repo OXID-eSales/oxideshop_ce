@@ -29,7 +29,7 @@ class FromTest extends \PHPUnit\Framework\TestCase
 
     public function testValidation()
     {
-        $validator = $this->getMockBuilder(FormValidatorInterface::class)->getMock();
+        $validator = $this->createStub(FormValidatorInterface::class);
         $validator
             ->method('isValid')
             ->willReturn(false);
@@ -46,7 +46,7 @@ class FromTest extends \PHPUnit\Framework\TestCase
 
     public function testValidationErrors()
     {
-        $validator = $this->getMockBuilder(FormValidatorInterface::class)->getMock();
+        $validator = $this->createStub(FormValidatorInterface::class);
         $validator
             ->method('isValid')
             ->willReturn(false);
@@ -58,7 +58,7 @@ class FromTest extends \PHPUnit\Framework\TestCase
                 'alles ist kaput',
             ]);
 
-        $anotherValidator = $this->getMockBuilder(FormValidatorInterface::class)->getMock();
+        $anotherValidator = $this->createStub(FormValidatorInterface::class);
         $anotherValidator
             ->method('isValid')
             ->willReturn(false);

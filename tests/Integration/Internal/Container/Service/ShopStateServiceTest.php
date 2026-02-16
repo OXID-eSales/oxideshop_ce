@@ -53,7 +53,7 @@ class ShopStateServiceTest extends TestCase
 
     public function testIsLaunchedReturnsFalseIfConfigFileDoesNotExist()
     {
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context = $this->createStub(BasicContextInterface::class);
         $context
             ->method('getConfigFilePath')
             ->willReturn('nonExistentFilePath');
@@ -82,7 +82,7 @@ class ShopStateServiceTest extends TestCase
 
     public function testIsLaunchedReturnsFalseIfConfigIsWrong()
     {
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context = $this->createStub(BasicContextInterface::class);
         $context
             ->method('getConfigFilePath')
             ->willReturn(__DIR__ . '/Fixtures/wrong_config.inc.php');
@@ -99,7 +99,7 @@ class ShopStateServiceTest extends TestCase
 
     public function testIsLaunchedReturnsFalseIfConfigTableDoesNotExist()
     {
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context = $this->createStub(BasicContextInterface::class);
         $context
             ->method('getConfigTableName')
             ->willReturn('nonExistentTable');

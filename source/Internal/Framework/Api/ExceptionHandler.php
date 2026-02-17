@@ -18,12 +18,14 @@ class ExceptionHandler
 {
     public function handle(\Throwable $throwable): void
     {
-        (new LoggerServiceFactory(new Context()))
+        new LoggerServiceFactory(new Context())
             ->getLogger()
             ->error($throwable);
 
-        $error = getenv('OXID_DEBUG_MODE') ? $throwable->getMessage() : 'An error occurred';
+        $error = filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)
+            ? $throwable->getMessage()
+            : 'An error occurred';
 
-        (new JsonResponse(['error' => $error], Response::HTTP_INTERNAL_SERVER_ERROR))->send();
+        new JsonResponse(['error' => $error], Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }
 }

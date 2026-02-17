@@ -26,20 +26,20 @@ require_once VENDOR_PATH . 'autoload.php';
  * Register the backwards compatibility autoloader.
  * This autoloader will load classes for reasons of backwards compatibility like 'oxArticle'.
  */
-require_once (new Facts())->getCommunityEditionSourcePath() . '/Core/Autoload/BackwardsCompatibilityAutoload.php';
+require_once new Facts()->getCommunityEditionSourcePath() . '/Core/Autoload/BackwardsCompatibilityAutoload.php';
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
 
 require_once INSTALLATION_ROOT_PATH . '/source/oxfunctions.php';
 require_once INSTALLATION_ROOT_PATH . '/source/overridablefunctions.php';
 
-(new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
+new DotenvLoader(INSTALLATION_ROOT_PATH)->loadEnvironmentVariables();
 
 Registry::set(ConfigFile::class, new ConfigFile(OX_BASE_PATH . 'config.inc.php'));
 
 set_exception_handler([new ExceptionHandler(), 'handle']);
 
-if (getenv('OXID_DEBUG_MODE')) {
+if (filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)) {
     Debug::enable();
 }
 
-(new Api())->run();
+new Api()->run();

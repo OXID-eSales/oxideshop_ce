@@ -10,11 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Api;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Api\HttpExceptionListener;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Throwable;
 
 class HttpExceptionListenerTest extends TestCase
 {
@@ -28,9 +30,10 @@ class HttpExceptionListenerTest extends TestCase
         $this->assertSame(404, $event->getResponse()->getStatusCode());
     }
 
-    public function testReturnsGenericMessageInProductionMode(): void
+    #[DataProvider('productionModeValuesProvider')]
+    public function testReturnsGenericMessageInProductionMode(string $envValue): void
     {
-        putenv('OXID_DEBUG_MODE=');
+        putenv("OXID_DEBUG_MODE=$envValue");
 
         $listener = new HttpExceptionListener();
         $event = $this->createExceptionEvent(new NotFoundHttpException('Sensitive internal path info'));
@@ -41,9 +44,24 @@ class HttpExceptionListenerTest extends TestCase
         $this->assertSame('Not Found', $response['error']);
     }
 
-    public function testReturnsActualMessageInDebugMode(): void
+    public static function productionModeValuesProvider(): array
     {
-        putenv('OXID_DEBUG_MODE=1');
+        return [
+            'empty string' => [''],
+            'string 0' => ['0'],
+            'string false' => ['false'],
+            'string off' => ['off'],
+            'string no' => ['no'],
+            'random string' => ['random'],
+            'numeric 2' => ['2'],
+            'whitespace' => [' '],
+        ];
+    }
+
+    #[DataProvider('debugModeValuesProvider')]
+    public function testReturnsActualMessageInDebugMode(string $envValue): void
+    {
+        putenv("OXID_DEBUG_MODE=$envValue");
 
         $listener = new HttpExceptionListener();
         $event = $this->createExceptionEvent(new NotFoundHttpException('Sensitive internal path info'));
@@ -54,7 +72,19 @@ class HttpExceptionListenerTest extends TestCase
         $this->assertSame('Sensitive internal path info', $response['error']);
     }
 
-    private function createExceptionEvent(\Throwable $exception): ExceptionEvent
+    public static function debugModeValuesProvider(): array
+    {
+        return [
+            'string 1' => ['1'],
+            'string true' => ['true'],
+            'string on' => ['on'],
+            'string yes' => ['yes'],
+            'uppercase TRUE' => ['TRUE'],
+            'mixed case True' => ['True'],
+        ];
+    }
+
+    private function createExceptionEvent(Throwable $exception): ExceptionEvent
     {
         $kernel = $this->createMock(HttpKernelInterface::class);
         $request = Request::create('/api/test');

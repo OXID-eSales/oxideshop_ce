@@ -18,9 +18,7 @@ class DotenvLoader
     private string $envKey = 'OXID_ENV';
     private string $envFile = '.env';
 
-    public function __construct(
-        private readonly string $pathToEnvFiles
-    )
+    public function __construct(private readonly string $pathToEnvFiles)
     {
     }
 

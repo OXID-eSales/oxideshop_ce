@@ -15,6 +15,7 @@
 - Config::getConfigParam() no longer triggers full shop initialization
 - No MD5-style hash validation in the `Id::fromUid()` method
 - Avoid repeated forced basket recalculations in `BasketComponent::render()`
+- Cache `getModuleIds()` result in `ActiveModulesDataProvider`
 
 ### Deprecated
 - Method `Id::fromUid()` use `Id::fromString()` instead

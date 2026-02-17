@@ -62,6 +62,36 @@ final class ActiveModulesDataProviderTest extends TestCase
         );
     }
 
+    public function testGetModuleIdsUsesCacheIfItExists(): void
+    {
+        $cache = $this->getDummyCache();
+        $cache->put('active_module_ids', 1, ['cachedModuleId']);
+
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
+
+        $this->assertSame(
+            ['cachedModuleId'],
+            $activeModulesDataProvider->getModuleIds()
+        );
+    }
+
+    public function testGetModuleIdsPopulatesCacheIfItDoesNotExist(): void
+    {
+        $cache = $this->getDummyCache();
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
+
+        $this->assertSame(
+            [$this->activeModuleId],
+            $activeModulesDataProvider->getModuleIds()
+        );
+
+        $this->assertTrue($cache->exists('active_module_ids', 1));
+        $this->assertSame(
+            [$this->activeModuleId],
+            $cache->get('active_module_ids', 1)
+        );
+    }
+
     public function testGetModulePathsWillReturnSourcePathForActiveModule(): void
     {
         $this->assertEquals(

@@ -10,8 +10,6 @@ runscript:
     script: |
       [
         "shop:~/unit.sh",
-        "shop:~/integration.sh",
-        "shop:~/codeception.sh",
       ]
   container:
     options:

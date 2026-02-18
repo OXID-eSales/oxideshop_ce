@@ -27,7 +27,7 @@ runscript:
 
 sonarcloud:
   matrix:
-    testplan: '["-","~/sonarcloud_oxideshop_ce_internal.yaml"]'
+    testplan: '["-"]'
   strip_path: '/var/www/vendor/oxid-esales/oxideshop-ce/'
   run_cleanup: false
   target_branch: 'b-7.5.x'

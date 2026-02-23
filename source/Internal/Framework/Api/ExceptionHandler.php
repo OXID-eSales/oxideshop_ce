@@ -18,7 +18,7 @@ class ExceptionHandler
 {
     public function handle(\Throwable $throwable): void
     {
-        new LoggerServiceFactory(new Context())
+        (new LoggerServiceFactory(new Context()))
             ->getLogger()
             ->error($throwable);
 
@@ -26,6 +26,6 @@ class ExceptionHandler
             ? $throwable->getMessage()
             : 'An error occurred';
 
-        new JsonResponse(['error' => $error], Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+        (new JsonResponse(['error' => $error], Response::HTTP_INTERNAL_SERVER_ERROR))->send();
     }
 }

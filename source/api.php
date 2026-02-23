@@ -21,12 +21,12 @@ require_once VENDOR_PATH . 'autoload.php';
 require_once INSTALLATION_ROOT_PATH . '/source/oxfunctions.php';
 require_once INSTALLATION_ROOT_PATH . '/source/overridablefunctions.php';
 
-(new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
+new DotenvLoader(INSTALLATION_ROOT_PATH)->loadEnvironmentVariables();
 
 set_exception_handler([new ExceptionHandler(), 'handle']);
 
-if (getenv('OXID_DEBUG_MODE')) {
+if (filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)) {
     Debug::enable();
 }
 
-(new Api())->run();
+new Api()->run();

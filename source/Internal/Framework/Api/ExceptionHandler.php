@@ -14,17 +14,20 @@ use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class ExceptionHandler
 {
-    public function handle(\Throwable $throwable): void
+    public function handle(Throwable $throwable): void
     {
-        (new LoggerServiceFactory(new Context(ShopIdCalculator::BASE_SHOP_ID)))
+        new LoggerServiceFactory(new Context(ShopIdCalculator::BASE_SHOP_ID))
             ->getLogger()
             ->error($throwable);
 
-        $error = getenv('OXID_DEBUG_MODE') ? $throwable->getMessage() : 'An error occurred';
+        $error = filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)
+            ? $throwable->getMessage()
+            : 'An error occurred';
 
-        (new JsonResponse(['error' => $error], Response::HTTP_INTERNAL_SERVER_ERROR))->send();
+        new JsonResponse(['error' => $error], Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }
 }

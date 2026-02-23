@@ -41,7 +41,7 @@ class HttpExceptionListener implements EventSubscriberInterface
 
     private function getErrorMessage(HttpExceptionInterface $exception): string
     {
-        if (getenv('OXID_DEBUG_MODE')) {
+        if (filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)) {
             return $exception->getMessage();
         }
 

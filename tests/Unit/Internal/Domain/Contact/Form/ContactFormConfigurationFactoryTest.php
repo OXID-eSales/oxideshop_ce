@@ -22,9 +22,7 @@ final class ContactFormConfigurationFactoryTest extends TestCase
     {
         $context = $this->createStub(ContextInterface::class);
 
-        $formFieldsConfigurationDataProvider = $this->createStub(
-            FormFieldsConfigurationDataProviderInterface::class
-        );
+        $formFieldsConfigurationDataProvider = $this->createStub(FormFieldsConfigurationDataProviderInterface::class);
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([]);
@@ -49,9 +47,7 @@ final class ContactFormConfigurationFactoryTest extends TestCase
                 'name',
             ]);
 
-        $formFieldsConfigurationDataProvider = $this->createStub(
-            FormFieldsConfigurationDataProviderInterface::class
-        );
+        $formFieldsConfigurationDataProvider = $this->createStub(FormFieldsConfigurationDataProviderInterface::class);
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([

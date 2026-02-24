@@ -185,9 +185,9 @@ final class ShopConfigurationSettingDaoTest extends TestCase
             ->method('create')
             ->willReturn($queryBuilder);
 
-        $encoder = $this->createMock(ShopSettingEncoderInterface::class);
+        $encoder = $this->createStub(ShopSettingEncoderInterface::class);
 
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
 
         $settingDao = new ShopConfigurationSettingDao(
             $queryBuilderFactory,

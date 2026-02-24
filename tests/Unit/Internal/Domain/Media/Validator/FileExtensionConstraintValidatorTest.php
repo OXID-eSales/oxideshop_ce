@@ -22,10 +22,10 @@ final class FileExtensionConstraintValidatorTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testValidateDoesNotThrowWhenFileExtensionMatchesDetectedMimeType(): void
     {
-        $mimeTypes = $this->createMock(MimeTypesInterface::class);
+        $mimeTypes = $this->createStub(MimeTypesInterface::class);
         $validator = new FileExtensionConstraintValidator($mimeTypes);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/file.jpg');
         $uploadedFile->method('getClientOriginalExtension')->willReturn('JPEG');
         $mimeTypes->method('guessMimeType')->willReturn('image/jpeg');
@@ -36,10 +36,10 @@ final class FileExtensionConstraintValidatorTest extends TestCase
 
     public function testValidateThrowsWhenFileExtensionIsNotAllowedForMimeType(): void
     {
-        $mimeTypes = $this->createMock(MimeTypesInterface::class);
+        $mimeTypes = $this->createStub(MimeTypesInterface::class);
         $validator = new FileExtensionConstraintValidator($mimeTypes);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/file.png');
         $uploadedFile->method('getClientOriginalExtension')->willReturn('png');
         $mimeTypes->method('guessMimeType')->willReturn('image/jpeg');
@@ -51,10 +51,10 @@ final class FileExtensionConstraintValidatorTest extends TestCase
 
     public function testValidateThrowsWhenNoValidExtensionsCanBeResolved(): void
     {
-        $mimeTypes = $this->createMock(MimeTypesInterface::class);
+        $mimeTypes = $this->createStub(MimeTypesInterface::class);
         $validator = new FileExtensionConstraintValidator($mimeTypes);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/file.jpg');
         $uploadedFile->method('getClientOriginalExtension')->willReturn('jpg');
         $mimeTypes->method('guessMimeType')->willReturn('image/jpeg');
@@ -66,10 +66,10 @@ final class FileExtensionConstraintValidatorTest extends TestCase
 
     public function testValidateThrowsWhenMimeTypeCannotBeGuessed(): void
     {
-        $mimeTypes = $this->createMock(MimeTypesInterface::class);
+        $mimeTypes = $this->createStub(MimeTypesInterface::class);
         $validator = new FileExtensionConstraintValidator($mimeTypes);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/file.jpg');
         $uploadedFile->method('getClientOriginalExtension')->willReturn('jpg');
         $mimeTypes->method('guessMimeType')->willReturn(null);

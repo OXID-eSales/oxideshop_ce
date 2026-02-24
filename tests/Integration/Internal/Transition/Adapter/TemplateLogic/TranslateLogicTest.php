@@ -94,7 +94,7 @@ final class TranslateLogicTest extends IntegrationTestCase
 
     private function getContextMock(): ContextInterface
     {
-        return $this->getMockBuilder(ContextInterface::class)->getMock();
+        return $this->createStub(ContextInterface::class);
     }
 
     private function getTranslator(int $languageId): LegacyTemplateTranslator

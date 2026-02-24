@@ -22,7 +22,7 @@ final class MetaDataValidatorAggregateTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        $validatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)->getMock();
+        $validatorStub = $this->createStub(MetaDataValidatorInterface::class);
         $validatorStub->method('validate')->willThrowException(new Exception());
 
         (new MetaDataValidatorAggregate($validatorStub))->validate(['any']);

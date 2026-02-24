@@ -42,7 +42,7 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
     public function testUploadWithValidImage(): void
     {
         $this->allowSmallFilesUploadInConfiguration();
-        $this->replaceMediaUploaderServiceInstance();
+        $this->replaceMediaUploaderServiceInstanceWithMock();
         $fixture = Path::join(
             __DIR__,
             'Fixtures',
@@ -205,6 +205,17 @@ final class ProductMediaUploadProcessorTest extends IntegrationTestCase
     }
 
     private function replaceMediaUploaderServiceInstance(): void
+    {
+        $this->createContainer();
+        $this->mediaUploader = $this->createStub(MediaUploaderInterface::class);
+        $this->container->set(
+            'oxid_esales.product.media.media_uploader',
+            $this->mediaUploader
+        );
+        $this->compileContainer();
+    }
+
+    private function replaceMediaUploaderServiceInstanceWithMock(): void
     {
         $this->createContainer();
         $this->mediaUploader = $this->createMock(MediaUploaderInterface::class);

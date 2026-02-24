@@ -20,13 +20,13 @@ final class TemplateRendererTest extends TestCase
     #[DataProvider('twigTemplateNameFileDataProvider')]
     public function testRenderTemplateFilenameExtension(string $filename, string $expectedFilename): void
     {
-        $engine = $this->getEngineMock();
+        $engine = $this->getEngineStub();
         $engine->method('render')
             ->willReturnCallback(function ($templateName) {
                 return $templateName;
             });
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
+        $renderer = new TemplateRenderer($engine, $this->getContextStub(), 'html.twig');
 
         $this->assertSame($expectedFilename, $renderer->renderTemplate($filename, []));
     }
@@ -40,7 +40,7 @@ final class TemplateRendererTest extends TestCase
             ->with('template.html.twig')
             ->willReturn($response);
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
+        $renderer = new TemplateRenderer($engine, $this->getContextStub(), 'html.twig');
 
         $this->assertSame($response, $renderer->renderTemplate('template', []));
     }
@@ -54,7 +54,7 @@ final class TemplateRendererTest extends TestCase
             ->with('template')
             ->willReturn($response);
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
+        $renderer = new TemplateRenderer($engine, $this->getContextStub(), 'html.twig');
 
         $this->assertSame($response, $renderer->renderFragment('template', 'testId', []));
     }
@@ -77,9 +77,9 @@ final class TemplateRendererTest extends TestCase
 
     public function testGetExistingEngine(): void
     {
-        $engine = $this->getEngineMock();
+        $engine = $this->getEngineStub();
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock(), 'html.twig');
+        $renderer = new TemplateRenderer($engine, $this->getContextStub(), 'html.twig');
 
         $this->assertSame($engine, $renderer->getTemplateEngine());
     }
@@ -94,14 +94,19 @@ final class TemplateRendererTest extends TestCase
             ->with("$templateName.$fileNameExtension")
             ->willReturn(true);
 
-        $renderer = new TemplateRenderer($engine, $this->getContextMock(), $fileNameExtension);
+        $renderer = new TemplateRenderer($engine, $this->getContextStub(), $fileNameExtension);
 
         $this->assertTrue($renderer->exists($templateName));
     }
 
+    private function getContextStub(): ContextInterface
+    {
+        return $this->createStub(ContextInterface::class);
+    }
+
     private function getContextMock(): ContextInterface
     {
-        return $this->getMockBuilder(ContextInterface::class)->getMock();
+        return $this->createMock(ContextInterface::class);
     }
 
     private function getEngineMock(): TemplateEngineInterface
@@ -109,6 +114,11 @@ final class TemplateRendererTest extends TestCase
         return $this
             ->getMockBuilder(TemplateEngineInterface::class)
             ->getMock();
+    }
+
+    private function getEngineStub(): TemplateEngineInterface
+    {
+        return $this->createStub(TemplateEngineInterface::class);
     }
 
     public static function twigTemplateNameFileDataProvider(): array

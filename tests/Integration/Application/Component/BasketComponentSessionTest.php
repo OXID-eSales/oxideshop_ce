@@ -75,7 +75,7 @@ final class BasketComponentSessionTest extends IntegrationTestCase
     {
         Registry::set(
             Utils::class,
-            $this->createConfiguredMock(
+            $this->createConfiguredStub(
                 Utils::class,
                 ['isSearchEngine' => $isSearchEngine]
             )
@@ -84,7 +84,7 @@ final class BasketComponentSessionTest extends IntegrationTestCase
 
     private function initSessionMock(bool $checkSessionChallenge): void
     {
-        $session = $this->createConfiguredMock(
+        $session = $this->createConfiguredStub(
             Session::class,
             ['checkSessionChallenge' => $checkSessionChallenge]
         );

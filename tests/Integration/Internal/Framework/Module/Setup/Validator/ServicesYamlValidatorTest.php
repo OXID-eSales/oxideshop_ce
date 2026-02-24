@@ -34,7 +34,7 @@ final class ServicesYamlValidatorTest extends IntegrationTestCase
         parent::setUp();
 
         $context = new ContextStub();
-        $this->modulePathResolver = $this->getMockBuilder(ModulePathResolverInterface::class)->getMock();
+        $this->modulePathResolver = $this->createStub(ModulePathResolverInterface::class);
         $this->moduleConfiguration = new ModuleConfiguration();
         $this->validator = new ServicesYamlValidator(
             $context,

@@ -23,10 +23,10 @@ final class MimeTypeConstraintValidatorTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testValidateDoesNotThrowWhenMimeTypeMatches(): void
     {
-        $guesser = $this->createMock(MimeTypeGuesserInterface::class);
+        $guesser = $this->createStub(MimeTypeGuesserInterface::class);
         $validator = new MimeTypeConstraintValidator('image/', $guesser);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/valid.jpg');
         $uploadedFile->method('getClientMimeType')->willReturn('image/jpeg');
         $guesser->method('guessMimeType')->willReturn('image/jpeg');
@@ -36,10 +36,10 @@ final class MimeTypeConstraintValidatorTest extends TestCase
 
     public function testValidateThrowsWhenGuessedMimeBaseTypeDoesNotMatchRequiredPrefix(): void
     {
-        $guesser = $this->createMock(MimeTypeGuesserInterface::class);
+        $guesser = $this->createStub(MimeTypeGuesserInterface::class);
         $validator = new MimeTypeConstraintValidator('image/', $guesser);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/file.txt');
         $uploadedFile->method('getClientMimeType')->willReturn('text/plain');
         $guesser->method('guessMimeType')->willReturn('text/plain');
@@ -50,10 +50,10 @@ final class MimeTypeConstraintValidatorTest extends TestCase
 
     public function testValidateThrowsWhenClientMimeTypeDoesNotMatchGuessedMimeType(): void
     {
-        $guesser = $this->createMock(MimeTypeGuesserInterface::class);
+        $guesser = $this->createStub(MimeTypeGuesserInterface::class);
         $validator = new MimeTypeConstraintValidator('image/', $guesser);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/file.jpg');
         $uploadedFile->method('getClientMimeType')->willReturn('image/png');
         $guesser->method('guessMimeType')->willReturn('image/jpeg');
@@ -64,10 +64,10 @@ final class MimeTypeConstraintValidatorTest extends TestCase
 
     public function testValidateThrowsWhenMimeTypeCannotBeGuessed(): void
     {
-        $guesser = $this->createMock(MimeTypeGuesserInterface::class);
+        $guesser = $this->createStub(MimeTypeGuesserInterface::class);
         $validator = new MimeTypeConstraintValidator('image/', $guesser);
 
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getPathname')->willReturn('/tmp/file.jpg');
         $uploadedFile->method('getClientMimeType')->willReturn('image/jpeg');
         $guesser->method('guessMimeType')->willReturn(null);

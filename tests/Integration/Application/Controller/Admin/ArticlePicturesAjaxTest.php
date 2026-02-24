@@ -345,7 +345,7 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
             $request->files = new FileBag(['uploadedFiles' => $files]);
         }
 
-        $mediaUploader = $this->createMock(MediaUploaderInterface::class);
+        $mediaUploader = $this->createStub(MediaUploaderInterface::class);
         $mediaUploader
             ->method('uploadTo')
             ->willReturnCallback(function (UploadedFile $file, MediaPath $path) {

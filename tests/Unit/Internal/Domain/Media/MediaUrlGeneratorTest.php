@@ -29,15 +29,14 @@ final class MediaUrlGeneratorTest extends TestCase
     protected function setUp(): void
     {
         $this->context = new ContextStub();
-        $this->configDao = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $this->configDao = $this->createStub(ShopConfigurationSettingDaoInterface::class);
 
         $this->context->setShopBaseUrl('https://shop.example.com/');
 
-        $qualitySetting = $this->createMock(ShopConfigurationSetting::class);
+        $qualitySetting = $this->createStub(ShopConfigurationSetting::class);
         $qualitySetting->method('getValue')->willReturn('75');
 
         $this->configDao->method('get')
-            ->with('sDefaultImageQuality', 1)
             ->willReturn($qualitySetting);
     }
 
@@ -124,12 +123,11 @@ final class MediaUrlGeneratorTest extends TestCase
 
     public function testUsesConfiguredImageQuality(): void
     {
-        $qualitySetting = $this->createMock(ShopConfigurationSetting::class);
+        $qualitySetting = $this->createStub(ShopConfigurationSetting::class);
         $qualitySetting->method('getValue')->willReturn('95');
 
-        $configDao = $this->createMock(ShopConfigurationSettingDaoInterface::class);
+        $configDao = $this->createStub(ShopConfigurationSettingDaoInterface::class);
         $configDao->method('get')
-            ->with('sDefaultImageQuality', $this->context->getCurrentShopId())
             ->willReturn($qualitySetting);
 
         $this->urlGenerator = new MediaUrlGenerator($this->context, $configDao);

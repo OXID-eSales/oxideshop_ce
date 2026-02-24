@@ -347,8 +347,7 @@ final class ModuleInheritanceTest extends IntegrationTestCase
     private function disableShopEditionClassExtensionProtection(ContainerBuilder $containerBuilder): ContainerBuilder
     {
         $shopAdapter = $this
-            ->getMockBuilder(ShopAdapter::class)
-            ->getMock();
+            ->createStub(ShopAdapter::class);
 
         $shopAdapter->method('isShopEditionNamespace')
             ->willReturn(false);

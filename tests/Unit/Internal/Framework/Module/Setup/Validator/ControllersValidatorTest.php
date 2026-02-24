@@ -26,7 +26,7 @@ final class ControllersValidatorTest extends TestCase
     #[DoesNotPerformAssertions]
     public function testValidationWithCorrectSetting(): void
     {
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('getShopControllerClassMap')
             ->willReturn([
@@ -40,18 +40,18 @@ final class ControllersValidatorTest extends TestCase
         $shopConfiguration = new ShopConfiguration();
         $shopConfiguration->addModuleConfiguration($moduleConfiguration);
 
-        $shopConfigurationSettingDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationSettingDao = $this->createStub(ShopConfigurationDaoInterface::class);
         $shopConfigurationSettingDao
             ->method('get')
             ->willReturn($shopConfiguration);
 
-        $moduleStateService = $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock();
+        $moduleStateService = $this->createStub(ModuleStateServiceInterface::class);
         $moduleStateService->method('isActive')->willReturn(true);
 
         $validator = new ControllersValidator(
             $shopAdapter,
             $shopConfigurationSettingDao,
-            $this->getMockBuilder(LoggerInterface::class)->getMock(),
+            $this->createStub(LoggerInterface::class),
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -69,7 +69,7 @@ final class ControllersValidatorTest extends TestCase
     {
         $this->expectException(ControllersDuplicationModuleConfigurationException::class);
 
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('getShopControllerClassMap')
             ->willReturn([
@@ -78,8 +78,8 @@ final class ControllersValidatorTest extends TestCase
 
         $validator = new ControllersValidator(
             $shopAdapter,
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
-            $this->getMockBuilder(LoggerInterface::class)->getMock(),
+            $this->createStub(ShopConfigurationDaoInterface::class),
+            $this->createStub(LoggerInterface::class),
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -94,7 +94,7 @@ final class ControllersValidatorTest extends TestCase
     {
         $this->expectException(ControllersDuplicationModuleConfigurationException::class);
 
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('getShopControllerClassMap')
             ->willReturn([
@@ -103,8 +103,8 @@ final class ControllersValidatorTest extends TestCase
 
         $validator = new ControllersValidator(
             $shopAdapter,
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
-            $this->getMockBuilder(LoggerInterface::class)->getMock(),
+            $this->createStub(ShopConfigurationDaoInterface::class),
+            $this->createStub(LoggerInterface::class),
         );
 
         $moduleConfiguration = new ModuleConfiguration();
@@ -117,7 +117,7 @@ final class ControllersValidatorTest extends TestCase
 
     public function testValidatorLogsErrorIfModuleControllerAlreadyExistsInControllersMap(): void
     {
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('getShopControllerClassMap')
             ->willReturn([
@@ -129,7 +129,7 @@ final class ControllersValidatorTest extends TestCase
 
         $validator = new ControllersValidator(
             $shopAdapter,
-            $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock(),
+            $this->createStub(ShopConfigurationDaoInterface::class),
             $logger,
         );
 

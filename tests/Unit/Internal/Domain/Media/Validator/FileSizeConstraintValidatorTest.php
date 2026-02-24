@@ -23,11 +23,11 @@ final class FileSizeConstraintValidatorTest extends TestCase
     {
         $validator = new FileSizeConstraintValidator(minSizeKb: 1, maxSizeKb: 2);
 
-        $minFile = $this->createMock(UploadedFile::class);
+        $minFile = $this->createStub(UploadedFile::class);
         $minFile->method('getSize')->willReturn(1024);
         $validator->validate($minFile);
 
-        $maxFile = $this->createMock(UploadedFile::class);
+        $maxFile = $this->createStub(UploadedFile::class);
         $maxFile->method('getSize')->willReturn(2048);
         $validator->validate($maxFile);
     }
@@ -35,7 +35,7 @@ final class FileSizeConstraintValidatorTest extends TestCase
     public function testValidateThrowsWhenFileTooSmall(): void
     {
         $validator = new FileSizeConstraintValidator(minSizeKb: 1, maxSizeKb: 10);
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getSize')->willReturn(1023);
 
         $this->expectException(FileSizeTooSmallException::class);
@@ -45,7 +45,7 @@ final class FileSizeConstraintValidatorTest extends TestCase
     public function testValidateThrowsWhenFileTooLarge(): void
     {
         $validator = new FileSizeConstraintValidator(minSizeKb: 0, maxSizeKb: 2);
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('getSize')->willReturn(2049);
 
         $this->expectException(FileSizeTooLargeException::class);

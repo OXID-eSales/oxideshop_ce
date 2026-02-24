@@ -10,14 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Review\Bridge;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\MockObject\MockObject;
 use OxidEsales\Eshop\Application\Model\Rating;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Exception\RatingPermissionException;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingService;
-use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\UserRatingServiceInterface;
+
 
 final class UserRatingBridgeTest extends TestCase
 {
@@ -72,19 +70,7 @@ final class UserRatingBridgeTest extends TestCase
 
     private function getUserRatingBridge(): UserRatingBridge
     {
-        return new UserRatingBridge(
-            $this->getUserRatingServiceMock()
-        );
-    }
-
-    /**
-     * @return MockObject|UserRatingServiceInterface
-     */
-    private function getUserRatingServiceMock(): MockObject
-    {
-        return $this->getMockBuilder(UserRatingService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        return new UserRatingBridge();
     }
 
     private function createTestRating(): void

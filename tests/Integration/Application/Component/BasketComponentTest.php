@@ -86,7 +86,7 @@ final class BasketComponentTest extends IntegrationTestCase
     {
         $basket = oxNew(Basket::class);
         $basket->setStockCheckMode(false);
-        $session = $this->createConfiguredMock(
+        $session = $this->createConfiguredStub(
             Session::class,
             [
                 'getId' => 'random-string',
@@ -106,7 +106,7 @@ final class BasketComponentTest extends IntegrationTestCase
     {
         Registry::set(
             Utils::class,
-            $this->createConfiguredMock(
+            $this->createConfiguredStub(
                 Utils::class,
                 ['isSearchEngine' => $isSearchEngine]
             )

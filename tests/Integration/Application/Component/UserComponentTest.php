@@ -1,10 +1,5 @@
 <?php
 
-/**
- * Copyright © OXID eSales AG. All rights reserved.
- * See LICENSE file for license details.
- */
-
 declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
@@ -14,6 +9,7 @@ use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+
 
 final class UserComponentTest extends IntegrationTestCase
 {

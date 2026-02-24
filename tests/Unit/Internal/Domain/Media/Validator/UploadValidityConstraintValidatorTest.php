@@ -21,7 +21,7 @@ final class UploadValidityConstraintValidatorTest extends TestCase
     public function testValidateDoesNotThrowWhenUploadIsValid(): void
     {
         $validator = new UploadValidityConstraintValidator();
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('isValid')->willReturn(true);
 
         $validator->validate($uploadedFile);
@@ -30,7 +30,7 @@ final class UploadValidityConstraintValidatorTest extends TestCase
     public function testValidateThrowsWhenUploadHasError(): void
     {
         $validator = new UploadValidityConstraintValidator();
-        $uploadedFile = $this->createMock(UploadedFile::class);
+        $uploadedFile = $this->createStub(UploadedFile::class);
         $uploadedFile->method('isValid')->willReturn(false);
         $uploadedFile->method('getError')->willReturn(\UPLOAD_ERR_NO_FILE);
 

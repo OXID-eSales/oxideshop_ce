@@ -29,16 +29,10 @@ final class EmailTest extends IntegrationTestCase
     private Email|MockObject $email;
     private Order|MockObject $order;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->getEmailMock();
-        $this->getOrderStub();
-    }
-
     public function testSendOrderEmailToUserWithDefaultConfiguration(): void
     {
+        $this->getEmailMock();
+        $this->getOrderStub(true);
         $this->email->expects($this->once())
             ->method('sendMail');
         $this->email->expects($this->once())
@@ -49,6 +43,8 @@ final class EmailTest extends IntegrationTestCase
 
     public function testSendOrderEmailToOwnerWithDefaultConfiguration(): void
     {
+        $this->getEmailMock();
+        $this->getOrderStub(true);
         $this->email->expects($this->once())
             ->method('sendMail');
         $this->email->expects($this->once())
@@ -59,6 +55,8 @@ final class EmailTest extends IntegrationTestCase
 
     public function testSendOrderEmailToUserWithDisabledEmails(): void
     {
+        $this->getEmailMock();
+        $this->getOrderStub(false);
         $this->setParameter('oxid_esales.email.disable_order_emails', true);
 
         $this->email->expects($this->never())
@@ -73,6 +71,8 @@ final class EmailTest extends IntegrationTestCase
 
     public function testSendOrderEmailToOwnerWithDisabledEmails(): void
     {
+        $this->getEmailMock();
+        $this->getOrderStub(false);
         $this->setParameter('oxid_esales.email.disable_order_emails', true);
 
         $this->email->expects($this->never())
@@ -97,7 +97,7 @@ final class EmailTest extends IntegrationTestCase
             ->method('error')
             ->with($this->stringContains('Mailer failed'));
 
-        $adapter = $this->createMock(EmailAdapterInterface::class);
+        $adapter = $this->createStub(EmailAdapterInterface::class);
         $adapter->method('convertToSymfonyEmail')->willReturn(new SymfonyEmail());
 
         $this->replaceService(LoggerInterface::class, $logger);
@@ -122,7 +122,7 @@ final class EmailTest extends IntegrationTestCase
         $this->container->setParameter('oxid_esales.mailing.dsn', 'null://null');
 
         $symfonyEmail = new SymfonyEmail();
-        $adapter = $this->createMock(EmailAdapterInterface::class);
+        $adapter = $this->createStub(EmailAdapterInterface::class);
         $adapter->method('convertToSymfonyEmail')->willReturn($symfonyEmail);
 
         $this->replaceService(EmailAdapterInterface::class, $adapter);
@@ -140,7 +140,7 @@ final class EmailTest extends IntegrationTestCase
         $this->assertTrue($result);
     }
 
-    private function getOrderStub(): void
+    private function getOrderStub(bool $expectsOrderUser): void
     {
         $user = new User();
         $user->oxuser__oxfname = new Field('user-first-name');
@@ -150,13 +150,14 @@ final class EmailTest extends IntegrationTestCase
 
         $this->order = $this->createPartialMock(Order::class, ['getOrderUser']);
         $this->order->oxorder__oxordernr = new Field('order-test-1');
-        $this->order->method('getOrderUser')
+        $orderUserExpectation = $expectsOrderUser ? $this->atLeastOnce() : $this->never();
+        $this->order->expects($orderUserExpectation)->method('getOrderUser')
             ->willReturn($user);
     }
 
     private function getEmailMock(): void
     {
-        $templateRenderer = $this->createMock(TemplateRendererInterface::class);
+        $templateRenderer = $this->createStub(TemplateRendererInterface::class);
         $templateRenderer->method('renderTemplate')
             ->willReturn('some-data');
         $this->email = $this->createPartialMock(Email::class, ['sendMail', 'getRenderer']);

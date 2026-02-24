@@ -22,7 +22,7 @@ final class ActiveModulesDataProviderBridgeTest extends TestCase
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects(self::once())->method('error');
 
-        $activeModulesDataProvider = $this->createMock(ActiveModulesDataProviderInterface::class);
+        $activeModulesDataProvider = $this->createStub(ActiveModulesDataProviderInterface::class);
         $activeModulesDataProvider->method('getClassExtensions')->willThrowException(new ShopConfigurationNotFoundException());
 
         $bridge = new ActiveModulesDataProviderBridge(
@@ -43,7 +43,7 @@ final class ActiveModulesDataProviderBridgeTest extends TestCase
 
         $bridge = new ActiveModulesDataProviderBridge(
             $activeModulesDataProvider,
-            $this->createMock(LoggerInterface::class)
+            $this->createStub(LoggerInterface::class)
         );
 
         $this->assertEquals(['test' => 'test'], $bridge->getClassExtensions());

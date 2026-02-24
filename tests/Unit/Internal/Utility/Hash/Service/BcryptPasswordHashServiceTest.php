@@ -118,9 +118,6 @@ final class BcryptPasswordHashServiceTest extends TestCase
 
     private function getPasswordPolicyMock(): PasswordPolicyInterface
     {
-        return $this
-            ->getMockBuilder(PasswordPolicyInterface::class)
-            ->onlyMethods(['enforcePasswordPolicy'])
-            ->getMock();
+        return $this->createStub(PasswordPolicyInterface::class);
     }
 }

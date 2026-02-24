@@ -48,7 +48,7 @@ final class DirectoryValidatorTest extends TestCase
     {
         $this->dir->getChild('test-folder/out/pictures/promo')->chmod(0555);
 
-        $context = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $context = $this->createStub(BasicContextInterface::class);
         $context->method('getSourcePath')->willReturn($this->dir->getChild('test-folder')->url());
         $directoryValidator = new DirectoryValidator($context);
 

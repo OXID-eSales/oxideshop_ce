@@ -29,7 +29,8 @@ final class ShopControlTest extends IntegrationTestCase
             ->getMock();
         $shopControl->method('isAdmin')
             ->willReturn(false);
-        $shopControl->method('runOnce')
+        $shopControl->expects($this->once())
+            ->method('runOnce')
             ->willThrowException(new SystemComponentException());
         $utils = $this->createMock(Utils::class);
         Registry::set(Utils::class, $utils);

@@ -32,15 +32,15 @@ final class OrderControllerTest extends IntegrationTestCase
         parent::setUp();
 
         $this->prepareUserStub();
-        $this->prepareBasketMock();
-        $this->stubSession();
         unset($_SESSION['Errors']);
     }
 
     public function testExecuteWithWrongBasketSummaryHashParameterAndEmptyBasketWillRedirectAndAddError(): void
     {
+        $this->prepareBasketMock();
+        $this->stubSession();
         $_GET[$this->basketSummaryHashParameter] = 'some-invalid-hash';
-        $this->basket->method('getProductsCount')->willReturn(0);
+        $this->basket->expects($this->once())->method('getProductsCount')->willReturn(0);
 
         $redirect = oxNew(OrderController::class)->execute();
 
@@ -50,8 +50,10 @@ final class OrderControllerTest extends IntegrationTestCase
 
     public function testExecuteWithWrongBasketSummaryHashParameterAndNonEmptyBasketWillRedirectAndAddError(): void
     {
+        $this->prepareBasketMock();
+        $this->stubSession();
         $_GET[$this->basketSummaryHashParameter] = 'some-invalid-hash';
-        $this->basket->method('getProductsCount')->willReturn(123);
+        $this->basket->expects($this->once())->method('getProductsCount')->willReturn(123);
 
         $redirect = oxNew(OrderController::class)->execute();
 
@@ -92,7 +94,7 @@ final class OrderControllerTest extends IntegrationTestCase
         );
         $session->method('checkSessionChallenge')
             ->willReturn(true);
-        $session->method('getBasket')
+        $session->expects($this->atLeastOnce())->method('getBasket')
             ->willReturn($this->basket);
         $session->method('getVariable')
             ->willReturnMap(

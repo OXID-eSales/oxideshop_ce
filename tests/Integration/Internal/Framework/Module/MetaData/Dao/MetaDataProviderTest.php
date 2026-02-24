@@ -19,7 +19,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaD
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
@@ -27,14 +26,11 @@ final class MetaDataProviderTest extends TestCase
 {
     use ContainerTrait;
 
-    /** @var MockObject&\MetaDataNormalizer */
-    private MockObject $metaDataNormalizerStub;
+    private MetaDataNormalizer $metaDataNormalizerStub;
 
-    /** @var MockObject&\BasicContextInterface */
-    private MockObject $contextStub;
+    private BasicContextInterface $contextStub;
 
-    /** @var MockObject&\MetaDataValidatorInterface */
-    private MockObject $validatorStub;
+    private MetaDataValidatorInterface $validatorStub;
 
     public function setUp(): void
     {

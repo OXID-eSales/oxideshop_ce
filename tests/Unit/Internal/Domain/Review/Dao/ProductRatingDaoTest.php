@@ -22,8 +22,8 @@ final class ProductRatingDaoTest extends TestCase
     public function testGetProductByIdWithInvalidId(bool|int|string|null $invalidProductId): void
     {
         $this->expectException(InvalidObjectIdDaoException::class);
-        $queryBuilderFactory = $this->getMockBuilder(QueryBuilderFactoryInterface::class)->getMock();
-        $mapper = $this->getMockBuilder(ProductRatingDataMapperInterface::class)->getMock();
+        $queryBuilderFactory = $this->createStub(QueryBuilderFactoryInterface::class);
+        $mapper = $this->createStub(ProductRatingDataMapperInterface::class);
 
         $productRatingDao = new ProductRatingDao(
             $queryBuilderFactory,

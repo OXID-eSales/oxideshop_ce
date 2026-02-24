@@ -12,8 +12,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Price;
 use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Symfony\Component\Yaml\Yaml;
 
+#[RunTestsInSeparateProcesses]
 final class OrderNumberingTest extends IntegrationTestCase
 {
     public static function providerOrderNumbering(): array

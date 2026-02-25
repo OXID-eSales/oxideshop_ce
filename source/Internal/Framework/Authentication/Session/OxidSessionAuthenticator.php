@@ -31,7 +31,8 @@ class OxidSessionAuthenticator extends AbstractAuthenticator
             return false;
         }
 
-        return $request->cookies->has('admin_sid') || $request->cookies->has('sid');
+        $cookieName = $request->attributes->getBoolean('_admin_session') ? 'admin_sid' : 'sid';
+        return $request->cookies->has($cookieName);
     }
 
     public function authenticate(Request $request): Passport

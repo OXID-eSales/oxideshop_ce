@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\SessionUserProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -27,7 +26,8 @@ final class SessionUserProviderTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $context = ContainerFactory::getInstance()->getContainer()->get(ContextInterface::class);
+        $context = $this->createStub(ContextInterface::class);
+        $context->method('getCurrentShopId')->willReturn(1);
         $this->provider = new SessionUserProvider($context);
     }
 
@@ -54,7 +54,7 @@ final class SessionUserProviderTest extends TestCase
         $this->startSessionWithUser('auth', $userId, true);
 
         $user = $this->provider->loadSessionUser(
-            new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
+            new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
         );
 
         $this->assertSame('admin@test.com', $user->getUserIdentifier());
@@ -72,7 +72,7 @@ final class SessionUserProviderTest extends TestCase
         $this->startSessionWithUser('auth', $userId, true);
 
         $user = $this->provider->loadSessionUser(
-            new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
+            new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
         );
 
         $this->assertContains('ROLE_ADMIN', $user->getRoles());
@@ -90,7 +90,7 @@ final class SessionUserProviderTest extends TestCase
 
         try {
             $this->provider->loadSessionUser(
-                new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
+                new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
             );
         } finally {
             $this->deleteUser($userId);
@@ -145,6 +145,42 @@ final class SessionUserProviderTest extends TestCase
         );
     }
 
+    public function testAdminSidCookieWithoutAuthSessionVarIsNotAdmin(): void
+    {
+        $session = Registry::getSession();
+        $session->setAdminMode(true);
+        $session->start();
+        $_GET['stoken'] = $session->getSessionChallengeToken();
+
+        $this->expectException(AuthenticationException::class);
+
+        $this->provider->loadSessionUser(
+            new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => $session->getId()])
+        );
+    }
+
+    public function testAdminWithBothCookiesAuthenticatesAsAdmin(): void
+    {
+        $userId = $this->createUser('admin-both@test.com', 'malladmin');
+
+        $this->startSessionWithUser('auth', $userId, true);
+
+        $user = $this->provider->loadSessionUser(
+            new Request(
+                attributes: ['_admin_session' => true],
+                cookies: [
+                    'admin_sid' => Registry::getSession()->getId(),
+                    'sid' => 'some-frontend-session-id',
+                ]
+            )
+        );
+
+        $this->assertContains('ROLE_ADMIN', $user->getRoles());
+        $this->assertContains('ROLE_ADMIN_MALL', $user->getRoles());
+
+        $this->deleteUser($userId);
+    }
+
     public function testThrowsOnInsufficientAdminRights(): void
     {
         $userId = $this->createUser('noadmin@test.com', 'user');
@@ -155,7 +191,7 @@ final class SessionUserProviderTest extends TestCase
 
         try {
             $this->provider->loadSessionUser(
-                new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
+                new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
             );
         } finally {
             $this->deleteUser($userId);
@@ -186,6 +222,7 @@ final class SessionUserProviderTest extends TestCase
             'oxusername' => $username,
             'oxactive' => 1,
             'oxshopid' => 1,
+            'oxregister' => date('Y-m-d H:i:s'),
         ]);
         $user->setPassword('TestPassword123');
         $user->save();

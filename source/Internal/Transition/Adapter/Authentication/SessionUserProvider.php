@@ -21,19 +21,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 readonly class SessionUserProvider implements SessionUserProviderInterface
 {
     public function __construct(
-        private ContextInterface $context
+        private ContextInterface $context,
     ) {
     }
 
     public function loadSessionUser(Request $request): UserInterface
     {
+        $isAdmin = $request->attributes->getBoolean('_admin_session');
         $session = Registry::getSession();
-        $isAdmin = $request->cookies->has('admin_sid');
-
-        if ($isAdmin) {
-            $session->setAdminMode(true);
-        }
-
+        $session->setAdminMode($isAdmin);
         $session->start();
 
         if (!$session->checkSessionChallenge()) {

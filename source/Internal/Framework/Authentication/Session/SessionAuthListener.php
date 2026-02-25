@@ -43,6 +43,9 @@ class SessionAuthListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
+        $isAdminRoute = in_array('ROLE_ADMIN', $attribute->roles);
+        $request->attributes->set('_admin_session', $isAdminRoute);
+
         if (!$this->authenticator->supports($request)) {
             $event->setController(fn() => new JsonResponse(['error' => 'Authentication required'], 401));
             return;

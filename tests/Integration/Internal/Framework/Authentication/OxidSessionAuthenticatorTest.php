@@ -18,18 +18,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActiv
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\BrowserKit\HttpBrowser;
 
 #[RunTestsInSeparateProcesses]
 final class OxidSessionAuthenticatorTest extends TestCase
 {
     private string $testUserId;
     private string $testUsername = 'session-test@example.com';
-    private string $testPassword = 'TestPassword123';
     private string $testAdminId;
     private string $testAdminUsername = 'session-admin@example.com';
-    private string $testAdminPassword = 'AdminPassword123';
     private string $shopUrl;
 
     protected function setUp(): void
@@ -39,8 +35,8 @@ final class OxidSessionAuthenticatorTest extends TestCase
         $this->shopUrl = Registry::getConfig()->getShopUrl();
 
         $this->setupModule();
-        $this->testUserId = $this->createUser($this->testUsername, $this->testPassword, 'user');
-        $this->testAdminId = $this->createUser($this->testAdminUsername, $this->testAdminPassword, 'malladmin');
+        $this->testUserId = $this->createUser($this->testUsername, 'user');
+        $this->testAdminId = $this->createUser($this->testAdminUsername, 'malladmin');
     }
 
     protected function tearDown(): void
@@ -54,162 +50,185 @@ final class OxidSessionAuthenticatorTest extends TestCase
 
     public function testAuthenticatedFrontendUserGets200(): void
     {
-        $browser = new HttpBrowser();
+        $login = $this->login($this->testUserId, false);
 
-        $login = $this->loginViaApi($browser, $this->testUserId, false);
+        $response = $this->get('api/test/session-auth?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ]);
 
-        $browser->getCookieJar()->set(new Cookie($login['session_name'], $login['session_id']));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-auth?stoken=' . $login['stoken']);
-
-        $response = $browser->getResponse();
-        $this->assertSame(200, $response->getStatusCode(), $response->getContent());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(200, $response['status'], $response['body']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertTrue($data['authenticated']);
         $this->assertSame($this->testUsername, $data['username']);
     }
 
-    public function testAuthenticatedAdminGets200(): void
+    public function testAdminWithAdminSidOnFrontendRouteGets401(): void
     {
-        $browser = new HttpBrowser();
+        $login = $this->login($this->testAdminId, true);
 
-        $login = $this->loginViaApi($browser, $this->testAdminId, true);
+        $response = $this->get('api/test/session-auth?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ]);
 
-        $browser->getCookieJar()->set(new Cookie($login['session_name'], $login['session_id']));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-auth?stoken=' . $login['stoken']);
-
-        $response = $browser->getResponse();
-        $this->assertSame(200, $response->getStatusCode(), $response->getContent());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $this->assertTrue($data['authenticated']);
-        $this->assertSame($this->testAdminUsername, $data['username']);
+        $this->assertSame(401, $response['status']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame('Authentication required', $data['error']);
     }
 
     public function testNoCookieGets401(): void
     {
-        $browser = new HttpBrowser();
-        $browser->request('GET', $this->shopUrl . 'api/test/session-auth');
+        $response = $this->get('api/test/session-auth');
 
-        $response = $browser->getResponse();
-        $this->assertSame(401, $response->getStatusCode());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(401, $response['status']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame('Authentication required', $data['error']);
     }
 
     public function testInvalidSessionGets401(): void
     {
-        $browser = new HttpBrowser();
-        $browser->getCookieJar()->set(new Cookie('sid', 'nonexistent-session-id'));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-auth');
+        $response = $this->get('api/test/session-auth', ['sid' => 'nonexistent-session-id']);
 
-        $response = $browser->getResponse();
-        $this->assertSame(401, $response->getStatusCode());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(401, $response['status']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame('Authentication required', $data['error']);
     }
 
-    public function testRegularUserOnAdminEndpointGets403(): void
+    public function testRegularUserOnAdminEndpointGets401(): void
     {
-        $browser = new HttpBrowser();
+        $login = $this->login($this->testUserId, false);
 
-        $login = $this->loginViaApi($browser, $this->testUserId, false);
+        $response = $this->get('api/test/session-admin?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ]);
 
-        $browser->getCookieJar()->set(new Cookie($login['session_name'], $login['session_id']));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-admin?stoken=' . $login['stoken']);
-
-        $response = $browser->getResponse();
-        $this->assertSame(403, $response->getStatusCode());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $this->assertSame('Access denied', $data['error']);
+        $this->assertSame(401, $response['status']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame('Authentication required', $data['error']);
     }
 
     public function testAdminOnAdminEndpointGets200(): void
     {
-        $browser = new HttpBrowser();
+        $login = $this->login($this->testAdminId, true);
 
-        $login = $this->loginViaApi($browser, $this->testAdminId, true);
+        $response = $this->get('api/test/session-admin?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ]);
 
-        $browser->getCookieJar()->set(new Cookie($login['session_name'], $login['session_id']));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-admin?stoken=' . $login['stoken']);
-
-        $response = $browser->getResponse();
-        $this->assertSame(200, $response->getStatusCode(), $response->getContent());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(200, $response['status'], $response['body']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertTrue($data['authenticated']);
         $this->assertContains('ROLE_ADMIN', $data['roles']);
     }
 
-    public function testAdminViaFrontendSessionOnAdminEndpointGets403(): void
+    public function testAdminViaFrontendSessionOnAdminEndpointGets401(): void
     {
-        $browser = new HttpBrowser();
+        $login = $this->login($this->testAdminId, false);
 
-        $login = $this->loginViaApi($browser, $this->testAdminId, false);
+        $response = $this->get('api/test/session-admin?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ]);
 
-        $browser->getCookieJar()->set(new Cookie($login['session_name'], $login['session_id']));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-admin?stoken=' . $login['stoken']);
-
-        $response = $browser->getResponse();
-        $this->assertSame(403, $response->getStatusCode());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
-        $this->assertSame('Access denied', $data['error']);
+        $this->assertSame(401, $response['status']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame('Authentication required', $data['error']);
     }
 
     public function testXhrWithoutCsrfTokenGets401(): void
     {
-        $browser = new HttpBrowser();
+        $login = $this->login($this->testUserId, false);
 
-        $login = $this->loginViaApi($browser, $this->testUserId, false);
+        $response = $this->get('api/test/session-auth', [
+            $login['session_name'] => $login['session_id'],
+        ], ['X-Requested-With: XMLHttpRequest']);
 
-        $browser->getCookieJar()->set(new Cookie($login['session_name'], $login['session_id']));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-auth', [], [], [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ]);
-
-        $response = $browser->getResponse();
-        $this->assertSame(401, $response->getStatusCode());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(401, $response['status']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame('Authentication required', $data['error']);
     }
 
     public function testXhrWithValidCsrfTokenGets200(): void
     {
-        $browser = new HttpBrowser();
+        $login = $this->login($this->testUserId, false);
 
-        $login = $this->loginViaApi($browser, $this->testUserId, false);
+        $response = $this->get('api/test/session-auth?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ], ['X-Requested-With: XMLHttpRequest']);
 
-        $browser->getCookieJar()->set(new Cookie($login['session_name'], $login['session_id']));
-        $browser->request('GET', $this->shopUrl . 'api/test/session-auth?stoken=' . $login['stoken'], [], [], [
-            'HTTP_X-Requested-With' => 'XMLHttpRequest',
-        ]);
-
-        $response = $browser->getResponse();
-        $this->assertSame(200, $response->getStatusCode(), $response->getContent());
-
-        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame(200, $response['status'], $response['body']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertTrue($data['authenticated']);
     }
 
-    private function loginViaApi(HttpBrowser $browser, string $userId, bool $isAdmin): array
+    public function testFrontendAndAdminSessionsCoexist(): void
     {
-        $browser->request('POST', $this->shopUrl . 'api/test/session-login', [
-            'user_id' => $userId,
-            'is_admin' => $isAdmin ? '1' : '0',
-        ]);
+        $frontendLogin = $this->login($this->testUserId, false);
+        $adminLogin = $this->login($this->testAdminId, true);
 
-        $response = $browser->getResponse();
-        $this->assertSame(200, $response->getStatusCode(), $response->getContent());
+        $cookies = [
+            'sid' => $frontendLogin['session_id'],
+            'admin_sid' => $adminLogin['session_id'],
+        ];
 
-        return json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        $response = $this->get('api/test/session-auth?stoken=' . $frontendLogin['stoken'], $cookies);
+        $this->assertSame(200, $response['status'], $response['body']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame($this->testUsername, $data['username']);
+
+        $response = $this->get('api/test/session-admin?stoken=' . $adminLogin['stoken'], $cookies);
+        $this->assertSame(200, $response['status'], $response['body']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame($this->testAdminUsername, $data['username']);
     }
 
-    private function createUser(string $username, string $password, string $rights): string
+    /** @param string[] $cookies @param string[] $headers @return array{status: int, body: string} */
+    private function get(string $path, array $cookies = [], array $headers = []): array
+    {
+        $ch = curl_init($this->shopUrl . $path);
+        curl_setopt_array($ch, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_COOKIE => implode('; ', array_map(
+                static fn(string $name, string $value): string => "$name=$value",
+                array_keys($cookies),
+                array_values($cookies),
+            )),
+            CURLOPT_HTTPHEADER => $headers,
+        ]);
+        $body = curl_exec($ch);
+        $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        return ['status' => $status, 'body' => $body];
+    }
+
+    /** @return array{session_name: string, session_id: string, stoken: string} */
+    private function login(string $userId, bool $isAdmin): array
+    {
+        $session = Registry::getSession();
+
+        if ($session->isSessionStarted()) {
+            session_write_close();
+        }
+
+        session_id(bin2hex(random_bytes(16)));
+
+        $session->setAdminMode($isAdmin);
+        $session->setForceNewSession();
+        $session->start();
+        $session->setVariable($isAdmin ? 'auth' : 'usr', $userId);
+
+        $stoken = $session->getSessionChallengeToken();
+        $sessionId = $session->getId();
+
+        session_write_close();
+
+        return [
+            'session_name' => $isAdmin ? 'admin_sid' : 'sid',
+            'session_id' => $sessionId,
+            'stoken' => $stoken,
+        ];
+    }
+
+    private function createUser(string $username, string $rights): string
     {
         $user = new class extends User {
             public string $desiredRights = 'user';
@@ -224,8 +243,8 @@ final class OxidSessionAuthenticatorTest extends TestCase
             'oxusername' => $username,
             'oxactive' => 1,
             'oxshopid' => 1,
+            'oxregister' => date('Y-m-d H:i:s'),
         ]);
-        $user->setPassword($password);
         $user->save();
 
         return $user->getId();
@@ -239,11 +258,13 @@ final class OxidSessionAuthenticatorTest extends TestCase
 
     private function setupModule(): void
     {
+        $shopId = ContainerFacade::get(BasicContextInterface::class)->getDefaultShopId();
+
         ContainerFacade::get(ModuleInstallerInterface::class)
             ->install(new OxidEshopPackage(__DIR__ . '/Fixtures/testModule/'));
 
         ContainerFacade::get(ModuleActivationBridgeInterface::class)
-            ->activate('session_auth_test', ContainerFacade::get(BasicContextInterface::class)->getDefaultShopId());
+            ->activate('session_auth_test', $shopId);
     }
 
     private function uninstallModule(): void

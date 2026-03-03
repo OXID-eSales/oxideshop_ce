@@ -64,6 +64,36 @@ final class ActiveModulesDataProviderTest extends IntegrationTestCase
         );
     }
 
+    public function testGetModuleIdsUsesCacheIfItExists(): void
+    {
+        $cache = $this->getDummyCache();
+        $cache->put('active_module_ids', ['cachedModuleId']);
+
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
+
+        $this->assertSame(
+            ['cachedModuleId'],
+            $activeModulesDataProvider->getModuleIds()
+        );
+    }
+
+    public function testGetModuleIdsPopulatesCacheIfItDoesNotExist(): void
+    {
+        $cache = $this->getDummyCache();
+        $activeModulesDataProvider = $this->getActiveModulesDataProviderWithCache($cache);
+
+        $this->assertSame(
+            [$this->activeModuleId],
+            $activeModulesDataProvider->getModuleIds()
+        );
+
+        $this->assertTrue($cache->exists('active_module_ids'));
+        $this->assertSame(
+            [$this->activeModuleId],
+            $cache->get('active_module_ids')
+        );
+    }
+
     public function testGetModulePathsWillReturnSourcePathForActiveModule(): void
     {
         $this->assertEquals(

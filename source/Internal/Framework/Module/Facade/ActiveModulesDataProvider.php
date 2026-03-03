@@ -30,13 +30,19 @@ class ActiveModulesDataProvider implements ActiveModulesDataProviderInterface
     /** @inheritDoc */
     public function getModuleIds(): array
     {
-        $moduleIds = [];
+        $cacheKey = 'active_module_ids';
 
-        foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
-            $moduleIds[] = $moduleConfiguration->getId();
+        if (!$this->moduleCache->exists($cacheKey)) {
+            $moduleIds = [];
+
+            foreach ($this->getActiveModuleConfigurations() as $moduleConfiguration) {
+                $moduleIds[] = $moduleConfiguration->getId();
+            }
+
+            $this->moduleCache->put($cacheKey, $moduleIds);
         }
 
-        return $moduleIds;
+        return $this->moduleCache->get($cacheKey);
     }
 
     /** @inheritDoc */

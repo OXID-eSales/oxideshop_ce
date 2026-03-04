@@ -74,7 +74,7 @@ final class SessionTest extends TestCase
         $session = oxNew(Session::class);
         $utilsSever->expects($this->once())
             ->method('setOxCookie')
-            ->with('sid', $this->isType('string'), 0, '/', null, true, false, true);
+            ->with('sid', $this->isString(), 0, '/', null, true, false, true);
         $sessionId = uniqid('session-id-', true);
         $_GET['sid'] = $sessionId;
 
@@ -90,7 +90,7 @@ final class SessionTest extends TestCase
         $session = oxNew(Session::class);
         $utilsSever->expects($this->once())
             ->method('setOxCookie')
-            ->with('sid', $this->isType('string'), 0, '/', null, true, false, true);
+            ->with('sid', $this->isString(), 0, '/', null, true, false, true);
         $sessionId = uniqid('session-id-', true);
         $_GET['sid'] = $sessionId;
 
@@ -104,7 +104,7 @@ final class SessionTest extends TestCase
         $session = oxNew(Session::class);
         $utilsSever->expects($this->once())
             ->method('setOxCookie')
-            ->with('sid', $this->isType('string'), 0, '/', null, true, false, true);
+            ->with('sid', $this->isString(), 0, '/', null, true, false, true);
         $sessionId = uniqid('session-id-', true);
         $_GET['force_sid'] = $sessionId;
 
@@ -131,7 +131,7 @@ final class SessionTest extends TestCase
     {
         $session = oxNew(Session::class);
 
-        $utilsSever = $this->createMock(UtilsServer::class);
+        $utilsSever = $this->createStub(UtilsServer::class);
         Registry::set(UtilsServer::class, $utilsSever);
         $utilsSever
             ->method('isCurrentUrl')
@@ -144,7 +144,7 @@ final class SessionTest extends TestCase
     {
         $session = oxNew(Session::class);
 
-        $utilsSever = $this->createMock(UtilsServer::class);
+        $utilsSever = $this->createStub(UtilsServer::class);
         Registry::set(UtilsServer::class, $utilsSever);
         $utilsSever
             ->method('isCurrentUrl')

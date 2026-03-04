@@ -20,19 +20,18 @@ final class ModuleConfigurationDaoBridgeTest extends TestCase
 {
     public function testGet(): void
     {
-        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
+        $context = $this->createStub(ContextInterface::class);
         $context
             ->method('getCurrentShopId')
             ->willReturn(1789);
 
-        $moduleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
+        $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao
             ->expects($this->once())
             ->method('get')
             ->with('testModuleId', 1789);
 
-        $shopEnvironmentConfigurationDao =
-            $this->getMockBuilder(ModuleEnvironmentConfigurationDaoInterface::class)->getMock();
+        $shopEnvironmentConfigurationDao = $this->createStub(ModuleEnvironmentConfigurationDaoInterface::class);
 
         $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao, $shopEnvironmentConfigurationDao);
         $bridge->get('testModuleId');
@@ -40,7 +39,7 @@ final class ModuleConfigurationDaoBridgeTest extends TestCase
 
     public function testSave(): void
     {
-        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
+        $context = $this->createStub(ContextInterface::class);
         $context
             ->method('getCurrentShopId')
             ->willReturn(1799);
@@ -48,14 +47,13 @@ final class ModuleConfigurationDaoBridgeTest extends TestCase
         $moduleConfiguration = new ModuleConfiguration();
         $moduleConfiguration->setId('testId');
 
-        $moduleConfigurationDao = $this->getMockBuilder(ModuleConfigurationDaoInterface::class)->getMock();
+        $moduleConfigurationDao = $this->createMock(ModuleConfigurationDaoInterface::class);
         $moduleConfigurationDao
             ->expects($this->once())
             ->method('save')
             ->with($moduleConfiguration, 1799);
 
-        $shopEnvironmentConfigurationDao =
-            $this->getMockBuilder(ModuleEnvironmentConfigurationDaoInterface::class)->getMock();
+        $shopEnvironmentConfigurationDao = $this->createMock(ModuleEnvironmentConfigurationDaoInterface::class);
         $shopEnvironmentConfigurationDao->expects($this->once())->method('remove');
 
         $bridge = new ModuleConfigurationDaoBridge($context, $moduleConfigurationDao, $shopEnvironmentConfigurationDao);

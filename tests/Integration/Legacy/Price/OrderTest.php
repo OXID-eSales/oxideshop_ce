@@ -47,7 +47,7 @@ final class OrderTest extends IntegrationTestCase
 
         $basket = (new BasketConstruct())->calculateBasket($testCase);
         $user = $basket->getBasketUser();
-        $order = $this->getOrderMock();
+        $order = $this->getOrderStub();
 
         if ($basket->getProductsCount()) {
             $success = $order->finalizeOrder($basket, $user);
@@ -238,13 +238,24 @@ final class OrderTest extends IntegrationTestCase
         }
     }
 
-    private function getOrderMock(): Order
+    private function getOrderStub(): Order
     {
-        $order = $this->createPartialMock(
-            Order::class,
-            ['sendOrderByEmail', 'validateDeliveryAddress', 'validateDelivery', 'validatePayment', 'getCoreTableName']
-        );
+        $order = $this
+            ->getStubBuilder(Order::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([
+                'sendOrderByEmail',
+                'validateDeliveryAddress',
+                'validateDelivery',
+                'validatePayment',
+                'getCoreTableName',
+            ])
+            ->getStub();
+
         $order->method('sendOrderByEmail')->willReturn(0);
+        $order->method('validateDeliveryAddress')->willReturn(null);
+        $order->method('validateDelivery')->willReturn(null);
+        $order->method('validatePayment')->willReturn(null);
         $order->method('getCoreTableName')->willReturn('oxorder');
 
         return $order;

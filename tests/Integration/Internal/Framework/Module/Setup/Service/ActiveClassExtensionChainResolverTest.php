@@ -59,12 +59,12 @@ final class ActiveClassExtensionChainResolverTest extends TestCase
             ->addModuleConfiguration($activeModuleConfiguration2)
             ->addModuleConfiguration($notActiveModuleConfiguration);
 
-        $shopConfigurationDao = $this->getMockBuilder(ShopConfigurationDaoInterface::class)->getMock();
+        $shopConfigurationDao = $this->createStub(ShopConfigurationDaoInterface::class);
         $shopConfigurationDao
             ->method('get')
             ->willReturn($shopConfiguration);
 
-        $moduleStateService = $this->getMockBuilder(ModuleStateServiceInterface::class)->getMock();
+        $moduleStateService = $this->createStub(ModuleStateServiceInterface::class);
         $moduleStateService
             ->method('isActive')
             ->willReturnMap([

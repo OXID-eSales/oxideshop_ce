@@ -147,13 +147,10 @@ final class FrontendServersInformationStoringTest extends IntegrationTestCase
         $config = Registry::getConfig();
         $database = DatabaseProvider::getDb();
         $appServerDao = oxNew(ApplicationServerDao::class, $database, $config);
-        $utilsServer = $this->getMockBuilder(UtilsServer::class)
-            ->getMock();
-        $utilsServer->expects($this->any())
-            ->method('getServerNodeId')
+        $utilsServer = $this->createStub(UtilsServer::class);
+        $utilsServer->method('getServerNodeId')
             ->willReturn('serverNameHash1');
-        $utilsServer->expects($this->any())
-            ->method('getServerIp')
+        $utilsServer->method('getServerIp')
             ->willReturn('127.0.0.1');
 
         return oxNew(ApplicationServerService::class, $appServerDao, $utilsServer, $currentTime);

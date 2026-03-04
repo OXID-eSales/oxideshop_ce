@@ -28,7 +28,7 @@ final class EditionMenuFileLocatorTest extends TestCase
     {
         $this->createModuleStructure($edition);
         $locator = new EditionMenuFileLocator(
-            $this->getAdminThemeMock(),
+            $this->getAdminThemeStub(),
             $this->getContext($edition),
             new Filesystem()
         );
@@ -49,9 +49,9 @@ final class EditionMenuFileLocatorTest extends TestCase
         ];
     }
 
-    private function getAdminThemeMock(): AdminThemeBridgeInterface
+    private function getAdminThemeStub(): AdminThemeBridgeInterface
     {
-        $adminTheme = $this->getMockBuilder(AdminThemeBridgeInterface::class)->getMock();
+        $adminTheme = $this->createStub(AdminThemeBridgeInterface::class);
         $adminTheme->method('getActiveTheme')->willReturn('admin');
 
         return $adminTheme;

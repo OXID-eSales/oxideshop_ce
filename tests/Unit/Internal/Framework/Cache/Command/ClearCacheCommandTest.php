@@ -30,8 +30,8 @@ final class ClearCacheCommandTest extends TestCase
         );
 
         $command->run(
-            $this->createMock(InputInterface::class),
-            $this->createMock(OutputInterface::class),
+            $this->createStub(InputInterface::class),
+            $this->createStub(OutputInterface::class),
         );
     }
 

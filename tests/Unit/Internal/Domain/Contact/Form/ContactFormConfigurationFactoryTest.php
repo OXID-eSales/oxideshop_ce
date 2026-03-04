@@ -20,11 +20,11 @@ final class ContactFormConfigurationFactoryTest extends TestCase
 {
     public function testConfigurationGetter(): void
     {
-        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
+        $context = $this->createStub(ContextInterface::class);
 
-        $formFieldsConfigurationDataProvider = $this->getMockBuilder(
+        $formFieldsConfigurationDataProvider = $this->createStub(
             FormFieldsConfigurationDataProviderInterface::class
-        )->getMock();
+        );
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([]);
@@ -42,16 +42,16 @@ final class ContactFormConfigurationFactoryTest extends TestCase
 
     public function testFormFieldsConfiguration(): void
     {
-        $context = $this->getMockBuilder(ContextInterface::class)->getMock();
+        $context = $this->createStub(ContextInterface::class);
         $context
             ->method('getRequiredContactFormFields')
             ->willReturn([
                 'name',
             ]);
 
-        $formFieldsConfigurationDataProvider = $this->getMockBuilder(
+        $formFieldsConfigurationDataProvider = $this->createStub(
             FormFieldsConfigurationDataProviderInterface::class
-        )->getMock();
+        );
         $formFieldsConfigurationDataProvider
             ->method('getFormFieldsConfiguration')
             ->willReturn([

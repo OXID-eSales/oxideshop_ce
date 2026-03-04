@@ -20,7 +20,7 @@ final class MetaDataConverterAggregateTest extends TestCase
     public function testConvert(): void
     {
         $metaData = ['some metadata contents'];
-        $converterStub = $this->getMockBuilder(MetaDataConverterInterface::class)->getMock();
+        $converterStub = $this->createStub(MetaDataConverterInterface::class);
         $converterStub->method('convert')->willReturn($metaData);
 
         $metaDataFromConverter = (new MetaDataConverterAggregate($converterStub))->convert(['any']);

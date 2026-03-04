@@ -48,7 +48,7 @@ final class InputValidatorTest extends IntegrationTestCase
 
     public function testCheckVatIdValidationPassesForValidEU(): void
     {
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
 
         $this->createCountry();
 
@@ -79,7 +79,7 @@ final class InputValidatorTest extends IntegrationTestCase
 
     public function testCheckVatIdThrowsExceptionForMissingCompany(): void
     {
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $invAddress = [
             'oxuser__oxustid' => $this->invalidUstId,
             'oxuser__oxcountryid' => $this->countryId,
@@ -96,7 +96,7 @@ final class InputValidatorTest extends IntegrationTestCase
 
     public function testCheckVatIdThrowsExceptionForInvalidVatId(): void
     {
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $invAddress = [
             'oxuser__oxustid' => $this->invalidUstId,
             'oxuser__oxcountryid' => $this->countryId,
@@ -214,7 +214,7 @@ final class InputValidatorTest extends IntegrationTestCase
     {
         $userNameLogin = rand();
 
-        $user = $this->createMock(User::class);
+        $user = $this->createStub(User::class);
         $user->method('checkIfEmailExists')->willReturn(true);
 
         $validationResult = $this->inputValidator->checkLogin(

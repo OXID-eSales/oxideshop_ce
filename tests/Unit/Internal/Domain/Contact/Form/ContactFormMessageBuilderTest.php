@@ -24,7 +24,7 @@ final class ContactFormMessageBuilderTest extends TestCase
         $form = $this->getContactForm();
         $form->handleRequest([$name => $value]);
 
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('translateString')
             ->willReturnCallback(function ($arg) {

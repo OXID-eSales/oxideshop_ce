@@ -21,17 +21,15 @@ final class UserReviewAndRatingServiceTest extends TestCase
 {
     public function testReviewAndRatingListSorting(): void
     {
-        $reviewAndRatingMergingServiceMock = $this
-            ->getMockBuilder(ReviewAndRatingMergingServiceInterface::class)
-            ->getMock();
+        $reviewAndRatingMergingServiceMock = $this->createStub(ReviewAndRatingMergingServiceInterface::class);
 
         $reviewAndRatingMergingServiceMock
             ->method('mergeReviewAndRating')
             ->willReturn($this->getUnsortedReviewAndRatingList());
 
         $userReviewAndRatingService = new UserReviewAndRatingService(
-            $this->getUserReviewServiceMock(),
-            $this->getUserRatingServiceMock(),
+            $this->getUserReviewServiceStub(),
+            $this->getUserRatingServiceStub(),
             $reviewAndRatingMergingServiceMock
         );
 
@@ -43,17 +41,15 @@ final class UserReviewAndRatingServiceTest extends TestCase
 
     public function testReviewAndRatingListCount(): void
     {
-        $reviewAndRatingMergingServiceMock = $this
-            ->getMockBuilder(ReviewAndRatingMergingServiceInterface::class)
-            ->getMock();
+        $reviewAndRatingMergingServiceMock = $this->createStub(ReviewAndRatingMergingServiceInterface::class);
 
         $reviewAndRatingMergingServiceMock
             ->method('mergeReviewAndRating')
             ->willReturn($this->getUnsortedReviewAndRatingList());
 
         $userReviewAndRatingService = new UserReviewAndRatingService(
-            $this->getUserReviewServiceMock(),
-            $this->getUserRatingServiceMock(),
+            $this->getUserReviewServiceStub(),
+            $this->getUserRatingServiceStub(),
             $reviewAndRatingMergingServiceMock
         );
 
@@ -63,11 +59,9 @@ final class UserReviewAndRatingServiceTest extends TestCase
         );
     }
 
-    private function getUserReviewServiceMock()
+    private function getUserReviewServiceStub()
     {
-        $userReviewService = $this
-            ->getMockBuilder(UserReviewServiceInterface::class)
-            ->getMock();
+        $userReviewService = $this->createStub(UserReviewServiceInterface::class);
 
         $userReviewService
             ->method('getReviews')
@@ -76,11 +70,9 @@ final class UserReviewAndRatingServiceTest extends TestCase
         return $userReviewService;
     }
 
-    private function getUserRatingServiceMock()
+    private function getUserRatingServiceStub()
     {
-        $userRatingService = $this
-            ->getMockBuilder(UserRatingServiceInterface::class)
-            ->getMock();
+        $userRatingService = $this->createStub(UserRatingServiceInterface::class);
 
         $userRatingService
             ->method('getRatings')

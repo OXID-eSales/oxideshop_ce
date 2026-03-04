@@ -24,7 +24,7 @@ final class ClassExtensionsModuleSettingValidatorTest extends TestCase
     {
         $anyExistentClass = self::class;
 
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('isNamespace')
             ->willReturn(true);
@@ -46,7 +46,7 @@ final class ClassExtensionsModuleSettingValidatorTest extends TestCase
     public function testNamespaceOfPatchedClassMustNotBeShopEditionNamespace(): void
     {
         $this->expectException(InvalidClassExtensionNamespaceException::class);
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('isNamespace')
             ->willReturn(true);
@@ -66,7 +66,7 @@ final class ClassExtensionsModuleSettingValidatorTest extends TestCase
     public function testNamespaceOfPatchedClassIsShopUnifiedNamespaceButClassDoesNotExist(): void
     {
         $this->expectException(InvalidClassExtensionNamespaceException::class);
-        $shopAdapter = $this->getMockBuilder(ShopAdapterInterface::class)->getMock();
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
         $shopAdapter
             ->method('isNamespace')
             ->willReturn(true);

@@ -84,7 +84,7 @@ final class ContactFormFactoryTest extends TestCase
 
     private function getContactFormFactory(FormConfigurationInterface $formConfiguration): ContactFormFactory
     {
-        $emailValidatorService = $this->getMockBuilder(EmailValidatorService::class)->getMock();
+        $emailValidatorService = $this->createStub(EmailValidatorService::class);
 
         return new ContactFormFactory(
             $formConfiguration,

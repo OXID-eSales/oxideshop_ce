@@ -42,7 +42,7 @@ final class ComponentInstallerTest extends IntegrationTestCase
 
     private function createInstaller(): ComponentInstaller
     {
-        $packageStub = $this->getMockBuilder(Package::class)->disableOriginalConstructor()->getMock();
+        $packageStub = $this->createStub(Package::class);
 
         return new ComponentInstaller(
             new NullIO(),

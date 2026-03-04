@@ -39,10 +39,10 @@ final class MetaDataProviderTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->metaDataNormalizerStub = $this->getMockBuilder(MetaDataNormalizer::class)->getMock();
+        $this->metaDataNormalizerStub = $this->createStub(MetaDataNormalizer::class);
         $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
-        $this->contextStub = $this->getMockBuilder(BasicContextInterface::class)->getMock();
-        $this->validatorStub = $this->getMockBuilder(MetaDataValidatorInterface::class)->getMock();
+        $this->contextStub = $this->createStub(BasicContextInterface::class);
+        $this->validatorStub = $this->createStub(MetaDataValidatorInterface::class);
     }
 
     public function testGetDataThrowsExceptionOnNonExistingFile(): void
@@ -152,7 +152,7 @@ final class MetaDataProviderTest extends TestCase
             throw new RuntimeException('Could not write to ' . $metaDataFilePath);
         }
 
-        $basicContext = $this->getMockBuilder(BasicContextInterface::class)->getMock();
+        $basicContext = $this->createStub(BasicContextInterface::class);
         $basicContext->method('getBackwardsCompatibilityClassMap')->willReturn(
             [
                 "oxarticle" => "EShopNamespace\\ArticleClass",

@@ -2,5 +2,5 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\SessionUserProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\SessionUserProvider
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\FrontendSessionUserProvider: ~
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\AdminSessionUserProvider: ~

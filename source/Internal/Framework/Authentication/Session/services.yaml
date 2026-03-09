@@ -2,10 +2,14 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\OxidSessionAuthenticator: ~
-
   OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\SessionAuthListener:
     arguments:
-      - '@OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\OxidSessionAuthenticator'
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\FrontendSessionUserProvider'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\AdminSessionAuthListener:
+    arguments:
+      - '@OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\AdminSessionUserProvider'
     tags:
       - { name: kernel.event_subscriber }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Authentication\Fixtures\testModule\src\Controller;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\AdminSessionUser;
 use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\SessionUser;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +26,7 @@ class SessionAuthTestController
     }
 
     #[Route('/api/test/session-admin', methods: ['GET'])]
-    #[SessionUser(roles: ['ROLE_ADMIN'])]
+    #[AdminSessionUser]
     public function adminOnly(Request $request): Response
     {
         $user = $request->attributes->get('_user');

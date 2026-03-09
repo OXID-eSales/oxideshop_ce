@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-class SessionAuthListener implements EventSubscriberInterface
+class AdminSessionAuthListener implements EventSubscriberInterface
 {
     public function __construct(
         private readonly SessionUserProviderInterface $userProvider,
@@ -42,7 +42,7 @@ class SessionAuthListener implements EventSubscriberInterface
 
         $request = $event->getRequest();
 
-        if ($request->headers->has('Authorization') || !$request->cookies->has('sid')) {
+        if ($request->headers->has('Authorization') || !$request->cookies->has('admin_sid')) {
             $event->setController(fn() => new JsonResponse(['error' => 'Authentication required'], 401));
             return;
         }
@@ -54,32 +54,43 @@ class SessionAuthListener implements EventSubscriberInterface
             return;
         }
 
+        if ($attribute->roles && !$this->hasRequiredRoles($attribute->roles, $user->getRoles())) {
+            $event->setController(fn() => new JsonResponse(['error' => 'Access denied'], 403));
+            return;
+        }
+
         $request->attributes->set('_user', $user);
     }
 
-    private function resolveAttribute(ControllerEvent $event): ?SessionUser
+    private function resolveAttribute(ControllerEvent $event): ?AdminSessionUser
     {
         $controller = $event->getController();
 
         if (is_array($controller)) {
             [$object, $method] = $controller;
 
-            $attrs = (new ReflectionMethod($object, $method))->getAttributes(SessionUser::class);
+            $attrs = (new ReflectionMethod($object, $method))->getAttributes(AdminSessionUser::class);
             if ($attrs) {
                 return $attrs[0]->newInstance();
             }
 
-            $attrs = (new \ReflectionClass($object))->getAttributes(SessionUser::class);
+            $attrs = (new \ReflectionClass($object))->getAttributes(AdminSessionUser::class);
             if ($attrs) {
                 return $attrs[0]->newInstance();
             }
         } elseif (is_object($controller)) {
-            $attrs = (new \ReflectionClass($controller))->getAttributes(SessionUser::class);
+            $attrs = (new \ReflectionClass($controller))->getAttributes(AdminSessionUser::class);
             if ($attrs) {
                 return $attrs[0]->newInstance();
             }
         }
 
         return null;
+    }
+
+    /** @param string[] $required @param string[] $actual */
+    private function hasRequiredRoles(array $required, array $actual): bool
+    {
+        return array_diff($required, $actual) === [];
     }
 }

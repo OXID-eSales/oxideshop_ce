@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\SessionUserProvider;
+use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\AdminSessionUserProvider;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
@@ -19,32 +19,16 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 #[RunTestsInSeparateProcesses]
-final class SessionUserProviderTest extends TestCase
+final class AdminSessionUserProviderTest extends TestCase
 {
-    private SessionUserProvider $provider;
+    private AdminSessionUserProvider $provider;
 
     protected function setUp(): void
     {
         parent::setUp();
         $context = $this->createStub(ContextInterface::class);
         $context->method('getCurrentShopId')->willReturn(1);
-        $this->provider = new SessionUserProvider($context);
-    }
-
-    public function testLoadsFrontendUserWithRoleUser(): void
-    {
-        $userId = $this->createUser('frontend@test.com', 'user');
-
-        $this->startSessionWithUser('usr', $userId);
-
-        $user = $this->provider->loadSessionUser(
-            new Request(cookies: ['sid' => Registry::getSession()->getId()])
-        );
-
-        $this->assertSame('frontend@test.com', $user->getUserIdentifier());
-        $this->assertSame(['ROLE_USER'], $user->getRoles());
-
-        $this->deleteUser($userId);
+        $this->provider = new AdminSessionUserProvider($context);
     }
 
     public function testLoadsAdminMalladminWithRoleAdmin(): void
@@ -54,7 +38,7 @@ final class SessionUserProviderTest extends TestCase
         $this->startSessionWithUser('auth', $userId, true);
 
         $user = $this->provider->loadSessionUser(
-            new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
+            new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
         );
 
         $this->assertSame('admin@test.com', $user->getUserIdentifier());
@@ -72,7 +56,7 @@ final class SessionUserProviderTest extends TestCase
         $this->startSessionWithUser('auth', $userId, true);
 
         $user = $this->provider->loadSessionUser(
-            new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
+            new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
         );
 
         $this->assertContains('ROLE_ADMIN', $user->getRoles());
@@ -80,7 +64,7 @@ final class SessionUserProviderTest extends TestCase
         $this->deleteUser($userId);
     }
 
-    public function testSubShopAdminForDifferentShopGetsOnlyRoleUser(): void
+    public function testSubShopAdminForNonExistentShopThrowsAuthException(): void
     {
         $userId = $this->createUser('othershopadmin@test.com', '2');
 
@@ -90,59 +74,11 @@ final class SessionUserProviderTest extends TestCase
 
         try {
             $this->provider->loadSessionUser(
-                new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
+                new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
             );
         } finally {
             $this->deleteUser($userId);
         }
-    }
-
-    public function testAdminUserOnFrontendSessionGetsOnlyRoleUser(): void
-    {
-        $userId = $this->createUser('admin-frontend@test.com', 'malladmin');
-
-        $this->startSessionWithUser('usr', $userId);
-
-        $user = $this->provider->loadSessionUser(
-            new Request(cookies: ['sid' => Registry::getSession()->getId()])
-        );
-
-        $this->assertSame(['ROLE_USER'], $user->getRoles());
-
-        $this->deleteUser($userId);
-    }
-
-    public function testThrowsOnCsrfMismatch(): void
-    {
-        $userId = $this->createUser('csrf@test.com', 'user');
-
-        $session = Registry::getSession();
-        $session->start();
-        $session->setVariable('usr', $userId);
-        $_GET['stoken'] = 'wrong-token';
-
-        $this->expectException(AuthenticationException::class);
-
-        try {
-            $this->provider->loadSessionUser(
-                new Request(cookies: ['sid' => $session->getId()])
-            );
-        } finally {
-            $this->deleteUser($userId);
-        }
-    }
-
-    public function testThrowsWhenNoActiveUser(): void
-    {
-        $session = Registry::getSession();
-        $session->start();
-        $_GET['stoken'] = $session->getSessionChallengeToken();
-
-        $this->expectException(AuthenticationException::class);
-
-        $this->provider->loadSessionUser(
-            new Request(cookies: ['sid' => $session->getId()])
-        );
     }
 
     public function testAdminSidCookieWithoutAuthSessionVarIsNotAdmin(): void
@@ -155,7 +91,7 @@ final class SessionUserProviderTest extends TestCase
         $this->expectException(AuthenticationException::class);
 
         $this->provider->loadSessionUser(
-            new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => $session->getId()])
+            new Request(cookies: ['admin_sid' => $session->getId()])
         );
     }
 
@@ -167,7 +103,6 @@ final class SessionUserProviderTest extends TestCase
 
         $user = $this->provider->loadSessionUser(
             new Request(
-                attributes: ['_admin_session' => true],
                 cookies: [
                     'admin_sid' => Registry::getSession()->getId(),
                     'sid' => 'some-frontend-session-id',
@@ -191,7 +126,7 @@ final class SessionUserProviderTest extends TestCase
 
         try {
             $this->provider->loadSessionUser(
-                new Request(attributes: ['_admin_session' => true], cookies: ['admin_sid' => Registry::getSession()->getId()])
+                new Request(cookies: ['admin_sid' => Registry::getSession()->getId()])
             );
         } finally {
             $this->deleteUser($userId);

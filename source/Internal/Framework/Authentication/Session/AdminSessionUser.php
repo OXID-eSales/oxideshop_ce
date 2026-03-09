@@ -12,6 +12,11 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-readonly class SessionUser
+readonly class AdminSessionUser
 {
+    /** @param string[] $roles */
+    public function __construct(
+        public array $roles = [],
+    ) {
+    }
 }

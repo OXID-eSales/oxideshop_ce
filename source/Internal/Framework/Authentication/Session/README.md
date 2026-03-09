@@ -2,7 +2,9 @@
 
 ## Usage
 
-Add `#[SessionUser]` to a controller method or class:
+### Frontend routes
+
+Add `#[SessionUser]` to a controller method or class.
 
 ```php
 use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\SessionUser;
@@ -12,13 +14,30 @@ class MyController
     #[SessionUser]
     public function profile(Request $request): Response
     {
-        // ...
+        $user = $request->attributes->get('_user');
+    }
+}
+```
+
+### Admin routes
+
+Add `#[AdminSessionUser]` to restrict a route to admin sessions.
+
+```php
+use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\AdminSessionUser;
+
+class MyAdminController
+{
+    #[AdminSessionUser]
+    public function overview(Request $request): Response
+    {
+        // any authenticated admin
     }
 
-    #[SessionUser(roles: ['ROLE_ADMIN'])]
-    public function dashboard(Request $request): Response
+    #[AdminSessionUser(roles: ['ROLE_ADMIN_MALL'])]
+    public function globalSettings(Request $request): Response
     {
-        // admin-only
+        // malladmin only
     }
 }
 ```

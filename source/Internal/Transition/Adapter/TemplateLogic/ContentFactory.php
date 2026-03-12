@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
-use OxidEsales\EshopCommunity\Application\Model\Content;
+use OxidEsales\Eshop\Application\Model\Content;
 
 class ContentFactory
 {

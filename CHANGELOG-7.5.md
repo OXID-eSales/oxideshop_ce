@@ -21,6 +21,9 @@
 ### Deprecated
 - Method `Id::fromUid()` use `Id::fromString()` instead
 
+### Fixed
+- Model extension chain bypass [#0007881](https://bugs.oxid-esales.com/view.php?id=7881)
+
 ### Removed
 - PHP v8.2 support
 - PHPUnit v11 support

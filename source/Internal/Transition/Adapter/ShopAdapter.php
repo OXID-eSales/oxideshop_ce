@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Routing\ShopControllerMapProvider;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\Eshop\Core\Theme;
-use OxidEsales\EshopCommunity\Application\Model\Shop;
+use OxidEsales\Eshop\Application\Model\Shop;
 
 class ShopAdapter implements ShopAdapterInterface
 {

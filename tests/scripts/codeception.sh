@@ -26,7 +26,7 @@ function init() {
     fi
 
     [[ ! -d "${ABSOLUTE_PATH}/${TEST_DIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TEST_DIR}/Output"
-    [[ ! -d "${ABSOLUTE_PATH}/${TEST_DIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TEST_DIR}/Reports"
+    [[ ! -d "${ABSOLUTE_PATH}/${TEST_DIR}/Reports" ]] && mkdir "${ABSOLUTE_PATH}/${TEST_DIR}/Reports"
 
     OUTPUT_DIR="${ABSOLUTE_PATH}/${TEST_DIR}/Output"
     REPORT_DIR="${ABSOLUTE_PATH}/${TEST_DIR}/Reports"
@@ -73,7 +73,7 @@ function init() {
             echo "Argument 3 (SHARD_COUNT) must be numerical"
             exit 1
         fi
-            if [ ${SHARD_STEP} -gt ${SHARD_COUNT} ]; then
+        if [ ${SHARD_STEP} -gt ${SHARD_COUNT} ]; then
             echo "Argument 2 (SHARD_STEP) must less or equal to shards count"
             exit 1
         fi

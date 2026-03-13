@@ -27,7 +27,7 @@ function init() {
     fi
 
     [[ ! -d "${ABSOLUTE_PATH}/${TEST_DIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TEST_DIR}/Output"
-    [[ ! -d "${ABSOLUTE_PATH}/${TEST_DIR}/Output" ]] && mkdir "${ABSOLUTE_PATH}/${TEST_DIR}/Reports"
+    [[ ! -d "${ABSOLUTE_PATH}/${TEST_DIR}/Reports" ]] && mkdir "${ABSOLUTE_PATH}/${TEST_DIR}/Reports"
 
     OUTPUT_DIR="${ABSOLUTE_PATH}/${TEST_DIR}/Output"
     REPORT_DIR="${ABSOLUTE_PATH}/${TEST_DIR}/Reports"

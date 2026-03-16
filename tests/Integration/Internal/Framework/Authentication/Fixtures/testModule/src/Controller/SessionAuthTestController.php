@@ -37,4 +37,16 @@ class SessionAuthTestController
             'roles' => $user->getRoles(),
         ]);
     }
+
+    #[Route('/api/test/session-malladmin', methods: ['GET'])]
+    #[AdminSessionUser(roles: ['ROLE_ADMIN_MALL'])]
+    public function mallAdminOnly(Request $request): Response
+    {
+        $user = $request->attributes->get('_user');
+
+        return new JsonResponse([
+            'authenticated' => true,
+            'username' => $user->getUserIdentifier(),
+        ]);
+    }
 }

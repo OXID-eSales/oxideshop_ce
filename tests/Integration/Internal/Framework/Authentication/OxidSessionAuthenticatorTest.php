@@ -26,6 +26,8 @@ final class OxidSessionAuthenticatorTest extends TestCase
     private string $testUsername = 'session-test@example.com';
     private string $testAdminId;
     private string $testAdminUsername = 'session-admin@example.com';
+    private string $testShopAdminId;
+    private string $testShopAdminUsername = 'session-shopadmin@example.com';
     private string $shopUrl;
 
     protected function setUp(): void
@@ -37,12 +39,14 @@ final class OxidSessionAuthenticatorTest extends TestCase
         $this->setupModule();
         $this->testUserId = $this->createUser($this->testUsername, 'user');
         $this->testAdminId = $this->createUser($this->testAdminUsername, 'malladmin');
+        $this->testShopAdminId = $this->createUser($this->testShopAdminUsername, '1');
     }
 
     protected function tearDown(): void
     {
         $this->deleteUser($this->testUserId);
         $this->deleteUser($this->testAdminId);
+        $this->deleteUser($this->testShopAdminId);
         $this->uninstallModule();
 
         parent::tearDown();
@@ -157,6 +161,52 @@ final class OxidSessionAuthenticatorTest extends TestCase
         $this->assertSame(200, $response['status'], $response['body']);
         $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
         $this->assertTrue($data['authenticated']);
+    }
+
+    public function testRequestWithAuthorizationHeaderOnFrontendEndpointGets401(): void
+    {
+        $login = $this->login($this->testUserId, false);
+
+        $response = $this->get('api/test/session-auth?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ], ['Authorization: Bearer some-token']);
+
+        $this->assertSame(401, $response['status']);
+    }
+
+    public function testRequestWithAuthorizationHeaderOnAdminEndpointGets401(): void
+    {
+        $login = $this->login($this->testAdminId, true);
+
+        $response = $this->get('api/test/session-admin?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ], ['Authorization: Bearer some-token']);
+
+        $this->assertSame(401, $response['status']);
+    }
+
+    public function testMallAdminOnRoleRestrictedEndpointGets200(): void
+    {
+        $login = $this->login($this->testAdminId, true);
+
+        $response = $this->get('api/test/session-malladmin?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ]);
+
+        $this->assertSame(200, $response['status'], $response['body']);
+    }
+
+    public function testShopAdminOnMallAdminEndpointGets403(): void
+    {
+        $login = $this->login($this->testShopAdminId, true);
+
+        $response = $this->get('api/test/session-malladmin?stoken=' . $login['stoken'], [
+            $login['session_name'] => $login['session_id'],
+        ]);
+
+        $this->assertSame(403, $response['status']);
+        $data = json_decode($response['body'], true, 512, JSON_THROW_ON_ERROR);
+        $this->assertSame('Access denied', $data['error']);
     }
 
     public function testFrontendAndAdminSessionsCoexist(): void

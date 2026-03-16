@@ -11,11 +11,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\Exception\CsrfTokenMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\Exception\NoActiveSessionUserException;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication\FrontendSessionUserProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 #[RunTestsInSeparateProcesses]
 final class FrontendSessionUserProviderTest extends TestCase
@@ -68,7 +69,7 @@ final class FrontendSessionUserProviderTest extends TestCase
         $session->setVariable('usr', $userId);
         $_GET['stoken'] = 'wrong-token';
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(CsrfTokenMismatchException::class);
 
         try {
             $this->provider->loadSessionUser(
@@ -85,7 +86,7 @@ final class FrontendSessionUserProviderTest extends TestCase
         $session->start();
         $_GET['stoken'] = $session->getSessionChallengeToken();
 
-        $this->expectException(AuthenticationException::class);
+        $this->expectException(NoActiveSessionUserException::class);
 
         $this->provider->loadSessionUser(
             new Request(cookies: ['sid' => $session->getId()])

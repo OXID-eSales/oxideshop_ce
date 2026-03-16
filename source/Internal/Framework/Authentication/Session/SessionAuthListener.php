@@ -73,11 +73,6 @@ class SessionAuthListener implements EventSubscriberInterface
             if ($attrs) {
                 return $attrs[0]->newInstance();
             }
-        } elseif (is_object($controller)) {
-            $attrs = (new \ReflectionClass($controller))->getAttributes(SessionUser::class);
-            if ($attrs) {
-                return $attrs[0]->newInstance();
-            }
         }
 
         return null;

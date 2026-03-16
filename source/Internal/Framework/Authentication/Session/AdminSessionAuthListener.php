@@ -78,11 +78,6 @@ class AdminSessionAuthListener implements EventSubscriberInterface
             if ($attrs) {
                 return $attrs[0]->newInstance();
             }
-        } elseif (is_object($controller)) {
-            $attrs = (new \ReflectionClass($controller))->getAttributes(AdminSessionUser::class);
-            if ($attrs) {
-                return $attrs[0]->newInstance();
-            }
         }
 
         return null;

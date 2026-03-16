@@ -11,9 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Authentication;
 
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\Exception\CsrfTokenMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\Exception\NoActiveSessionUserException;
 use OxidEsales\EshopCommunity\Internal\Framework\Authentication\Session\SessionUserProviderInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\InMemoryUser;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -26,13 +27,13 @@ readonly class FrontendSessionUserProvider implements SessionUserProviderInterfa
         $session->start();
 
         if (!$session->checkSessionChallenge()) {
-            throw new AuthenticationException('CSRF token mismatch');
+            throw new CsrfTokenMismatchException();
         }
 
         $user = oxNew(User::class);
 
         if (!$user->loadActiveUser()) {
-            throw new AuthenticationException('No active session user');
+            throw new NoActiveSessionUserException();
         }
 
         return new InMemoryUser((string) $user->getFieldData('oxusername'), null, ['ROLE_USER']);

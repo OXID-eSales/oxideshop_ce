@@ -26,6 +26,8 @@ use function json_encode;
  */
 class FilesystemModuleCache implements ModuleCacheServiceInterface
 {
+    private array $cache = [];
+
     public function __construct(
         private ShopAdapterInterface $shopAdapter,
         private Filesystem $fileSystem,
@@ -39,12 +41,14 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
         $this->shopTemplateCacheService->invalidateCache($shopId);
         $this->shopAdapter->invalidateModuleCache($moduleId);
         $this->fileSystem->remove($this->getShopModulePathCacheDirectory($shopId));
+        unset($this->cache[$shopId]);
     }
 
     public function invalidateAll(): void
     {
         $this->shopTemplateCacheService->invalidateAllShopsCache();
         $this->shopAdapter->invalidateModulesCache();
+        $this->cache = [];
 
         $templateCacheDirectory = $this->basicContext->getModuleCacheDirectory();
         if ($this->fileSystem->exists($templateCacheDirectory)) {
@@ -59,6 +63,8 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
 
     public function put(string $key, int $shopId, array $data): void
     {
+        $this->cache[$shopId][$key] = $data;
+
         $this->fileSystem->dumpFile(
             $this->getModulePathCacheFilePath($key, $shopId),
             $this->encode($data)
@@ -67,18 +73,26 @@ class FilesystemModuleCache implements ModuleCacheServiceInterface
 
     public function get(string $key, int $shopId): array
     {
-        $fileContent = @file_get_contents($this->getModulePathCacheFilePath($key, $shopId));
+        if (!isset($this->cache[$shopId][$key])) {
+            $fileContent = @file_get_contents($this->getModulePathCacheFilePath($key, $shopId));
 
-        if (!$fileContent) {
-            throw new CacheNotFoundException("Cache with key '$key' for the shop with id $shopId not found.");
+            if (!$fileContent) {
+                throw new CacheNotFoundException("Cache with key '$key' for the shop with id $shopId not found.");
+            }
+
+            $this->cache[$shopId][$key] = $this->decode($fileContent);
         }
 
-        return $this->decode($fileContent);
+        return $this->cache[$shopId][$key];
     }
 
     public function exists(string $key, int $shopId): bool
     {
-        return $this->fileSystem->exists($this->getModulePathCacheFilePath($key, $shopId));
+        if (!isset($this->cache[$shopId][$key])) {
+            return $this->fileSystem->exists($this->getModulePathCacheFilePath($key, $shopId));
+        }
+
+        return true;
     }
 
     private function getModulePathCacheFilePath(string $key, int $shopId): string

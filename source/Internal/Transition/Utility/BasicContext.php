@@ -25,6 +25,9 @@ class BasicContext implements BasicContextInterface
     public const PROFESSIONAL_EDITION = EditionSelector::PROFESSIONAL;
     public const ENTERPRISE_EDITION = EditionSelector::ENTERPRISE;
 
+    private string $cacheDirectory;
+    private string $edition;
+
     /**
      * @var Facts
      */
@@ -84,7 +87,11 @@ class BasicContext implements BasicContextInterface
      */
     public function getEdition(): string
     {
-        return $this->getFacts()->getEdition();
+        if (!isset($this->edition)) {
+            $this->edition = $this->getFacts()->getEdition();
+        }
+
+        return $this->edition;
     }
 
     /**
@@ -222,7 +229,11 @@ class BasicContext implements BasicContextInterface
      */
     public function getCacheDirectory(): string
     {
-        return (new ConfigFile())->getVar('sCompileDir');
+        if (!isset($this->cacheDirectory)) {
+            $this->cacheDirectory = (new ConfigFile())->getVar('sCompileDir');
+        }
+
+        return $this->cacheDirectory;
     }
 
     public function getModuleCacheDirectory(): string

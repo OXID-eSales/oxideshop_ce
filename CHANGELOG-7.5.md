@@ -10,6 +10,7 @@
 - Alternative email transport integration
 - PHP v8.5 support
 - PHPUnit v12.5 support
+- `ThemeActivatedEvent` dispatched on theme activation
 
 ### Changed
 - Filter unsafe HTML elements and attributes from CMS content in the admin area
@@ -17,6 +18,8 @@
 - No MD5-style hash validation in the `Id::fromUid()` method
 - Avoid repeated forced basket recalculations in `BasketComponent::render()`
 - Cache `getModuleIds()` result in `ActiveModulesDataProvider`
+- Cache `getEdition()` and `getCacheDirectory()` results in `BasicContext`
+- Cache `FilesystemModuleCache` entries in memory to avoid repeated filesystem reads
 
 ### Deprecated
 - Method `Id::fromUid()` use `Id::fromString()` instead

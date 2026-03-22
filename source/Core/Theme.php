@@ -7,6 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+
 /**
  * Themes handler class.
  *
@@ -62,16 +66,19 @@ class Theme extends \OxidEsales\Eshop\Core\Base
             $oException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $sError);
             throw $oException;
         }
+
+        $config = Registry::getConfig();
         $sParent = $this->getInfo('parentTheme');
         if ($sParent) {
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sTheme', $sParent);
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sCustomTheme', $this->getId());
+            $config->saveShopConfVar("str", 'sTheme', $sParent);
+            $config->saveShopConfVar("str", 'sCustomTheme', $this->getId());
         } else {
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sTheme', $this->getId());
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar("str", 'sCustomTheme', '');
+            $config->saveShopConfVar("str", 'sTheme', $this->getId());
+            $config->saveShopConfVar("str", 'sCustomTheme', '');
         }
         $settingsHandler = oxNew(\OxidEsales\Eshop\Core\SettingsHandler::class);
         $settingsHandler->setModuleType('theme')->run($this);
+        ContainerFacade::dispatch(new ThemeActivatedEvent($config->getShopId(), $this->getId()));
     }
 
     /**

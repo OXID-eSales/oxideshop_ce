@@ -7,4 +7,5 @@ imports:
     - { resource: Newsletter/services.yaml }
     - { resource: Product/Media/parameters.yaml }
     - { resource: Product/Media/services.yaml }
+    - { resource: Product/Search/services.yaml }
     - { resource: Review/services.yaml }

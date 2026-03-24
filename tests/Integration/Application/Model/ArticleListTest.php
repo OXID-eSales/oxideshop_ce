@@ -99,7 +99,27 @@ final class ArticleListTest extends IntegrationTestCase
         $this->assertEquals($this->productPriceUpdateTime, $product->getFieldData('oxupdatepricetime'));
     }
 
-    private function prepareCategories(string $value): void
+    public function testLoadIdsRespectsGivenOrder(): void
+    {
+        $id1 = 'aaa_product_1';
+        $id2 = 'bbb_product_2';
+        $id3 = 'ccc_product_3';
+
+        foreach ([$id1, $id2, $id3] as $id) {
+            $product = oxNew(Article::class);
+            $product->setId($id);
+            $product->oxarticles__oxactive = oxNew(Field::class, true);
+            $product->save();
+        }
+
+        $productList = oxNew(ArticleList::class);
+        $productList->loadIds([$id3, $id1, $id2]);
+
+        $ids = array_keys($productList->getArray());
+        $this->assertSame([$id3, $id1, $id2], $ids);
+    }
+
+    private function prepareCategories(string|int $value): void
     {
         $this->createCategory();
         $this->createProduct();

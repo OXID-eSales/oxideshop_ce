@@ -658,17 +658,17 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
             return;
         }
 
-        $oBaseObject = $this->getBaseObject();
-        $sArticleTable = $oBaseObject->getViewName();
-        $sArticleFields = $oBaseObject->getSelectFields();
+        $baseObject = $this->getBaseObject();
+        $articleTable = $baseObject->getViewName();
+        $articleFields = $baseObject->getSelectFields();
+        $quotedIds = implode(',', DatabaseProvider::getDb()->quoteArray($aIds));
 
-        $oxIdsSql = implode(',', DatabaseProvider::getDb()->quoteArray($aIds));
-
-        $sSelect = "select $sArticleFields from $sArticleTable ";
-        $sSelect .= "where $sArticleTable.oxid in ( " . $oxIdsSql . " ) and ";
-        $sSelect .= $oBaseObject->getSqlActiveSnippet();
-
-        $this->selectString($sSelect);
+        $this->selectString(
+            "select $articleFields from $articleTable "
+            . "where $articleTable.oxid in ( $quotedIds ) and "
+            . $baseObject->getSqlActiveSnippet()
+            . " order by field($articleTable.oxid, $quotedIds)"
+        );
     }
 
     /**

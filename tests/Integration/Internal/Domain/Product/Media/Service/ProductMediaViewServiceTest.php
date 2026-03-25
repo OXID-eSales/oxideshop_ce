@@ -9,12 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Media\Service;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
@@ -25,6 +28,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSe
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
@@ -58,7 +62,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     public function testGetIconReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg'),
@@ -76,7 +81,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     public function testGetIconReturnsFallbackWhenMissing(): void
     {
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.jpg'),
@@ -95,7 +101,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     public function testGetThumbnailReturnsMediaViewWithAllUrls(): void
     {
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::THUMBNAIL));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::THUMBNAIL));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'thumb.jpg'),
@@ -152,7 +159,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     {
         $this->setStringConfigValue(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, '95');
 
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'icon.jpg', '95'),
             $result->getDetailUrl()
@@ -187,7 +195,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $productMedia->setPosition(1);
         $this->get(ProductMediaServiceInterface::class)->add($productMedia);
 
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'detail.jpg'),
             $result->getDetailUrl()
@@ -205,7 +214,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     public function testFallbackUsesWebPWhenEnabled(): void
     {
         $this->setBooleanConfigValue(self::CONFIG_KEY_CONVERT_IMAGES_TO_WEBP, true);
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'nopic.webp'),
             $result->getDetailUrl()
@@ -254,14 +264,41 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     public function testGetAllActiveDetailReturnsEmptyForNonExistentProduct(): void
     {
-        $results = $this->get(ProductMediaViewServiceInterface::class)->getAllByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::DETAIL));
+        $results = $this->get(ProductMediaViewServiceInterface::class)
+            ->getAllByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::DETAIL));
 
         $this->assertEmpty($results);
     }
 
+    public function testGetAllByRoleReturnsAltTextForEachMedia(): void
+    {
+        $productId = Id::generate();
+        $media1 = $this->addProductMediaAndReturn(
+            $productId,
+            Path::join('out', 'pictures', 'media', 'batch-a.jpg'),
+            1,
+            ProductMediaRole::DETAIL
+        );
+        $media2 = $this->addProductMediaAndReturn(
+            $productId,
+            Path::join('out', 'pictures', 'media', 'batch-b.jpg'),
+            2,
+            ProductMediaRole::DETAIL
+        );
+        $this->setAltText($media1->getMedia(), 'alt for a');
+        $this->setAltText($media2->getMedia(), 'alt for b');
+
+        $results = $this->get(ProductMediaViewServiceInterface::class)
+            ->getAllByRole($productId, ProductMediaRole::from(ProductMediaRole::DETAIL));
+
+        $this->assertSame('alt for a', $results[(string) $media1->getMedia()->getId()]->getAttributes()->getAlt());
+        $this->assertSame('alt for b', $results[(string) $media2->getMedia()->getId()]->getAttributes()->getAlt());
+    }
+
     public function testGetThumbnailUrl(): void
     {
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_THUMBNAIL_SIZE, 'icon.jpg'),
@@ -271,7 +308,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     public function testFallbackHasThumbnailUrl(): void
     {
-        $result = $this->get(ProductMediaViewServiceInterface::class)->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole(Id::generate(), ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_THUMBNAIL_SIZE, 'nopic.jpg'),
@@ -290,13 +328,80 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
             ProductMediaRole::DETAIL
         );
 
-        $iconResult = $this->get(ProductMediaViewServiceInterface::class)->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
+        $iconResult = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($otherProductId, ProductMediaRole::from(ProductMediaRole::ICON));
 
         $this->assertEquals(
             $this->expectedUrlFor(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, 'fallback.jpg'),
             $iconResult->getDetailUrl()
         );
         $this->assertFalse($iconResult->isFallback());
+    }
+
+    public function testGetByRoleReturnsAltTextWhenSet(): void
+    {
+        $productId = Id::generate();
+        $productMedia = $this->addProductMediaAndReturn(
+            $productId,
+            Path::join('out', 'pictures', 'media', 'alt-test.jpg'),
+            1,
+            ProductMediaRole::DETAIL
+        );
+        $this->setAltText($productMedia->getMedia(), 'my alt text');
+
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($productId, ProductMediaRole::from(ProductMediaRole::DETAIL));
+
+        $this->assertSame('my alt text', $result->getAttributes()->getAlt());
+    }
+
+    public function testGetByRoleReturnsNoAltTextWhenNotSet(): void
+    {
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByRole($this->productId, ProductMediaRole::from(ProductMediaRole::ICON));
+
+        $this->assertFalse($result->getAttributes()->has(MediaAttribute::ALT));
+    }
+
+    public function testGetByPositionReturnsAltTextWhenSet(): void
+    {
+        $productId = Id::generate();
+        $productMedia = $this->addProductMediaAndReturn(
+            $productId,
+            Path::join('out', 'pictures', 'media', 'pos-alt-test.jpg'),
+            1,
+            ProductMediaRole::DETAIL
+        );
+        $this->setAltText($productMedia->getMedia(), 'position alt text');
+
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByPosition($productId, 1);
+
+        $this->assertSame('position alt text', $result->getAttributes()->getAlt());
+    }
+
+    public function testGetByPositionReturnsNoAltTextWhenNotSet(): void
+    {
+        $result = $this->get(ProductMediaViewServiceInterface::class)
+            ->getByPosition($this->productId, 1);
+
+        $this->assertFalse($result->getAttributes()->has(MediaAttribute::ALT));
+    }
+
+    public function testGetAllByRoleReturnsNoAltTextWhenNotSet(): void
+    {
+        $productId = Id::generate();
+        $this->addProductMediaAndReturn(
+            $productId,
+            Path::join('out', 'pictures', 'media', 'no-alt.jpg'),
+            1,
+            ProductMediaRole::DETAIL
+        );
+
+        $results = $this->get(ProductMediaViewServiceInterface::class)
+            ->getAllByRole($productId, ProductMediaRole::from(ProductMediaRole::DETAIL));
+
+        $this->assertFalse(reset($results)->getAttributes()->has(MediaAttribute::ALT));
     }
 
     private function setupTestData(): void
@@ -335,11 +440,23 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     private function addProductMedia(Id $productId, string $path, int $position, string $role): void
     {
+        $this->addProductMediaAndReturn($productId, $path, $position, $role);
+    }
+
+    private function addProductMediaAndReturn(Id $productId, string $path, int $position, string $role): ProductMedia
+    {
         $media = new Media(Id::generate(), new MediaPath($path), new MediaType('image/jpeg'));
         $roleSet = new ProductMediaRoleSet(ProductMediaRole::from($role));
         $productMedia = new ProductMedia(Id::generate(), $productId, $media, $roleSet);
         $productMedia->setPosition($position);
         $this->get(ProductMediaServiceInterface::class)->add($productMedia);
+        return $productMedia;
+    }
+
+    private function setAltText(Media $media, string $altText): void
+    {
+        $locale = $this->get(ActiveLocaleProviderInterface::class)->getActiveLocale();
+        $this->get(MediaAttributeServiceInterface::class)->save(MediaAttribute::ALT, $altText, $media, $locale->getCode());
     }
 
     private function configureImageSettings(): void
@@ -370,14 +487,16 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     private function getSizeFromConfig(string $key): array
     {
-        $value = (string) $this->get(ThemeSettingDaoInterface::class)->get($key, $this->shopId, $this->themeId)->getValue();
+        $value = (string) $this->get(ThemeSettingDaoInterface::class)
+            ->get($key, $this->shopId, $this->themeId)->getValue();
         [$width, $height] = explode('*', $value);
         return ['width' => (int) $width, 'height' => (int) $height];
     }
 
     private function getQualityFromConfig(): string
     {
-        return (string) $this->get(ShopConfigurationSettingDaoInterface::class)->get(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, $this->shopId)->getValue();
+        return (string) $this->get(ShopConfigurationSettingDaoInterface::class)
+            ->get(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, $this->shopId)->getValue();
     }
 
     private function setThemeStringConfigValue(string $name, string $value): void

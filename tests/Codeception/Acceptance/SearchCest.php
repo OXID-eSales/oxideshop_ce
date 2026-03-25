@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
 use Codeception\Attribute\Group;
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
@@ -67,6 +68,18 @@ final class SearchCest
             ->openListPageNumber(2)
             ->seeProductData($productData, 1)
             ->seeProductData($productData3, 2);
+        $I->amGoingTo('check product image alt text in grid view');
+        $mediaFixture = Fixtures::get('productMediaAltAttributes1001');
+        $searchListPage->searchFor('100')
+            ->selectProductsPerPage('10')
+            ->selectSorting('oxtitle', 'asc')
+            ->seeProductPictureAltText($mediaFixture['primaryAltText'], 3);
+
+        $I->amGoingTo('check product image alt text in line view');
+        $searchListPage->selectListDisplayType(Translator::translate('line'))
+            ->seeLineListPictureAltText($mediaFixture['primaryAltText'], 3);
+
+        $searchListPage->selectListDisplayType(Translator::translate('grid'));
         $searchListPage->searchFor('[EN] šÄßüл')
             ->seeSearchCount(4)
             ->selectListDisplayType(Translator::translate('line'))

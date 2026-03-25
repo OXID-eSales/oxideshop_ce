@@ -194,6 +194,38 @@ final class ProductDetailsPageCest
             ->seeAttributeValue('attr value 3 [EN] šÄßüл', 2)
             ->seeAttributeName('Test attribute 2 [EN] šÄßüл', 3)
             ->seeAttributeValue('attr value 12 [EN] šÄßüл', 3);
+
+        $I->amGoingTo('check product media alt text in gallery');
+        $mediaFixture = Fixtures::get('productMediaAltAttributes1001');
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+        $detailsPage->seeActiveGalleryPictureAltText($mediaFixture['primaryAltText'])
+            ->seeGalleryThumbnailAltText($mediaFixture['primaryAltText'])
+            ->seeGalleryThumbnailAltText($mediaFixture['secondaryAltText'], 2);
+
+        $I->amGoingTo('check alt text with modal_zoom');
+        $I->updateConfigInDatabase('productZoomType', 'modal_zoom', 'str');
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+        $detailsPage->seeActiveGalleryPictureAltText($mediaFixture['primaryAltText'])
+            ->openModalZoom()
+            ->seeModalZoomPictureAltText($mediaFixture['primaryAltText'])
+            ->seeModalZoomThumbnailAltText($mediaFixture['primaryAltText'], 1)
+            ->seeModalZoomThumbnailAltText($mediaFixture['secondaryAltText'], 2)
+            ->closeModalZoom();
+
+        $I->amGoingTo('check alt text with hover_zoom');
+        $I->updateConfigInDatabase('productZoomType', 'hover_zoom', 'str');
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+        $detailsPage->seeHoverZoomPictureAltText($mediaFixture['primaryAltText']);
+
+        $I->amGoingTo('check alt text with magnifier_lens');
+        $I->updateConfigInDatabase('productZoomType', 'magnifier_lens', 'str');
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+        $detailsPage->seeMagnifierZoomPictureAltText($mediaFixture['primaryAltText']);
+
+        $I->amGoingTo('check alt text with no_zoom');
+        $I->updateConfigInDatabase('productZoomType', 'no_zoom', 'str');
+        $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
+        $detailsPage->seeNoZoomPictureAltText($mediaFixture['primaryAltText']);
     }
 
     #[Group('product', 'productVariants')]
@@ -748,8 +780,11 @@ final class ProductDetailsPageCest
         return Fixtures::get('existingUser');
     }
 
-    private function prepareAccessoriesDataForProduct(AcceptanceTester $I, string $productId, string $accessoryProductId): void
-    {
+    private function prepareAccessoriesDataForProduct(
+        AcceptanceTester $I,
+        string $productId,
+        string $accessoryProductId
+    ): void {
         $data = [
             'OXID' => 'testaccessories1',
             'OXOBJECTID' => $accessoryProductId,
@@ -758,8 +793,11 @@ final class ProductDetailsPageCest
         $I->haveInDatabase('oxaccessoire2article', $data);
     }
 
-    private function prepareCrossSellingDataForProduct(AcceptanceTester $I, string $productId, string $crossSellingProductId): void
-    {
+    private function prepareCrossSellingDataForProduct(
+        AcceptanceTester $I,
+        string $productId,
+        string $crossSellingProductId
+    ): void {
         $data = [
             'OXID' => 'testcrossselling1',
             'OXOBJECTID' => $crossSellingProductId,

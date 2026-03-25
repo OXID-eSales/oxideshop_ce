@@ -9,11 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
@@ -22,7 +26,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDa
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use Symfony\Component\Filesystem\Path;
 
 readonly class ProductMediaViewService implements ProductMediaViewServiceInterface
@@ -33,14 +36,18 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
         private ThemeSettingDaoInterface $themeSettingDao,
         private ShopAdapterInterface $shopAdapter,
-        private ContextInterface $context
+        private ContextInterface $context,
+        private MediaAttributeServiceInterface $attributeService,
+        private ActiveLocaleProviderInterface $activeLocaleProvider,
     ) {
     }
 
     public function getByRole(Id $productId, ProductMediaRole $role): ProductMediaView
     {
         $productMedia = $this->getMediaWithFallback($productId, $role);
-        return $productMedia ? $this->createMediaViewWithAllSizes($productMedia) : $this->createFallbackMediaView();
+        return $productMedia
+            ? $this->createMediaViewWithAllSizes($productMedia)
+            : $this->createFallbackMediaView();
     }
 
     public function getByPosition(Id $productId, int $position): ProductMediaView
@@ -57,15 +64,22 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
     /** @return array<string, ProductMediaView> */
     public function getAllByRole(Id $productId, ProductMediaRole $role): array
     {
-        $productMediaCollection = $this->productMediaDao->getAllActiveByRole(
-            $productId,
-            $role
-        );
-        $mediaViews = [];
+        $productMediaCollection = $this->productMediaDao->getAllActiveByRole($productId, $role);
+        if ($productMediaCollection->isEmpty()) {
+            return [];
+        }
 
+        $activeLocale = $this->activeLocaleProvider->getActiveLocale();
+
+        $mediaViews = [];
         foreach ($productMediaCollection as $productMedia) {
-            $mediaViews[(string) $productMedia->getMedia()->getId()] =
-                $this->createMediaViewWithAllSizes($productMedia);
+            $media = $productMedia->getMedia();
+            $mediaId = (string) $media->getId();
+            $mediaViews[$mediaId] = $this->createMediaView(
+                $media,
+                $this->attributeService->getAttributes($media, $activeLocale->getCode()),
+                false
+            );
         }
 
         return $mediaViews;
@@ -79,16 +93,27 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
 
     private function createMediaViewWithAllSizes(ProductMedia $productMedia): ProductMediaView
     {
-        return $this->createMediaView($productMedia->getMedia(), false);
+        $media = $productMedia->getMedia();
+        return $this->createMediaView(
+            $media,
+            $this->attributeService->getAttributes(
+                $media,
+                $this->activeLocaleProvider->getActiveLocale()->getCode()
+            ),
+            false
+        );
     }
 
     private function createFallbackMediaView(): ProductMediaView
     {
-        return $this->createMediaView($this->createFallbackMedia(), true);
+        return $this->createMediaView($this->createFallbackMedia(), new MediaAttributes(), true);
     }
 
-    private function createMediaView(Media $media, bool $isFallback): ProductMediaView
-    {
+    private function createMediaView(
+        Media $media,
+        MediaAttributes $attributes,
+        bool $isFallback
+    ): ProductMediaView {
         $detailSize = $this->getConfiguredSize('sDetailImageSize');
         $iconSize = $this->getConfiguredSize('sIconsize');
         $zoomSize = $this->getConfiguredSize('sZoomImageSize');
@@ -99,7 +124,8 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
             iconUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $iconSize),
             zoomUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $zoomSize),
             thumbnailUrl: $this->mediaUrlGenerator->generateSizedImageUrl($media, $thumbnailSize),
-            isFallback: $isFallback
+            attributes: $attributes,
+            isFallback: $isFallback,
         );
     }
 

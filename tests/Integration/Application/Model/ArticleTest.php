@@ -15,11 +15,14 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
@@ -380,8 +383,84 @@ final class ArticleTest extends IntegrationTestCase
         $this->assertFalse($gallery['hasMultipleImages']);
     }
 
-    private function addProductMedia(Id $productId, string $fileName, int $position, string $role): void
+    public function testGetIconReturnsAltTextWhenSet(): void
     {
+        $productId = Id::generate();
+        $this->createPersistedArticle($productId);
+        $iconMedia = $this->addProductMediaAndReturn($productId, 'icon.jpg', 0, ProductMediaRole::ICON);
+        $this->setAltText($iconMedia->getMedia(), 'icon alt');
+
+        $article = oxNew(Article::class);
+        $article->load((string) $productId);
+
+        $this->assertSame('icon alt', $article->getIcon()->getAttributes()->getAlt());
+    }
+
+    public function testGetIconReturnsNullAltTextWhenNotSet(): void
+    {
+        [$article] = $this->createArticleWithMedia();
+
+        $this->assertFalse($article->getIcon()->getAttributes()->has(MediaAttribute::ALT));
+    }
+
+    public function testGetThumbnailReturnsAltTextWhenSet(): void
+    {
+        $productId = Id::generate();
+        $this->createPersistedArticle($productId);
+        $thumbMedia = $this->addProductMediaAndReturn($productId, 'thumb.jpg', 0, ProductMediaRole::THUMBNAIL);
+        $this->setAltText($thumbMedia->getMedia(), 'thumb alt');
+
+        $article = oxNew(Article::class);
+        $article->load((string) $productId);
+
+        $this->assertSame('thumb alt', $article->getThumbnail()->getAttributes()->getAlt());
+    }
+
+    public function testGetMediaReturnsAltTextWhenSet(): void
+    {
+        $productId = Id::generate();
+        $this->createPersistedArticle($productId);
+        $detailMedia = $this->addProductMediaAndReturn($productId, 'detail.jpg', 1, ProductMediaRole::DETAIL);
+        $this->setAltText($detailMedia->getMedia(), 'detail alt');
+
+        $article = oxNew(Article::class);
+        $article->load((string) $productId);
+
+        $this->assertSame('detail alt', $article->getMedia(1)->getAttributes()->getAlt());
+    }
+
+    public function testGetPictureGalleryReturnsAltTextForEachMedia(): void
+    {
+        $productId = Id::generate();
+        $this->createPersistedArticle($productId);
+        $detail1 = $this->addProductMediaAndReturn($productId, 'detail-1.jpg', 1, ProductMediaRole::DETAIL);
+        $detail2 = $this->addProductMediaAndReturn($productId, 'detail-2.jpg', 2, ProductMediaRole::DETAIL);
+        $this->setAltText($detail1->getMedia(), 'detail 1 alt');
+        $this->setAltText($detail2->getMedia(), 'detail 2 alt');
+
+        $article = oxNew(Article::class);
+        $article->load((string) $productId);
+
+        $gallery = $article->getPictureGallery();
+        $altTexts = array_map(fn($view) => $view->getAttributes()->getAlt(), $gallery['mediaItems']);
+
+        $this->assertContains('detail 1 alt', $altTexts);
+        $this->assertContains('detail 2 alt', $altTexts);
+    }
+
+    private function setAltText(Media $media, string $altText): void
+    {
+        $locale = ContainerFacade::get(ActiveLocaleProviderInterface::class)->getActiveLocale();
+        ContainerFacade::get(MediaAttributeServiceInterface::class)
+            ->save(MediaAttribute::ALT, $altText, $media, $locale->getCode());
+    }
+
+    private function addProductMediaAndReturn(
+        Id $productId,
+        string $fileName,
+        int $position,
+        string $role
+    ): ProductMedia {
         $media = new Media(
             Id::generate(),
             new MediaPath(Path::join('out', 'pictures', 'media', $fileName)),
@@ -397,5 +476,11 @@ final class ArticleTest extends IntegrationTestCase
         );
         $productMedia->setPosition($position);
         $this->productMediaService->add($productMedia);
+        return $productMedia;
+    }
+
+    private function addProductMedia(Id $productId, string $fileName, int $position, string $role): void
+    {
+        $this->addProductMediaAndReturn($productId, $fileName, $position, $role);
     }
 }

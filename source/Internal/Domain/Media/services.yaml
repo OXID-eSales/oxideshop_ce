@@ -8,6 +8,14 @@ services:
   OxidEsales\EshopCommunity\Internal\Domain\Media\DataMapper\DataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Media\DataMapper\DataMapper
 
+  OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaAttributeDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaAttributeDao
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeService
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGenerator
     public: true

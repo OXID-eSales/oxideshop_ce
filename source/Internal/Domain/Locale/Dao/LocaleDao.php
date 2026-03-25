@@ -101,6 +101,22 @@ readonly class LocaleDao implements LocaleDaoInterface
     {
         $this->queryBuilderFactory
             ->create()
+            ->update('oxlocales')
+            ->set('fallback', 'code')
+            ->where('fallback = :code')
+            ->andWhere('code != :code')
+            ->setParameter('code', $code)
+            ->executeStatement();
+
+        $this->queryBuilderFactory
+            ->create()
+            ->delete('oxshop_locales')
+            ->where('code = :code')
+            ->setParameter('code', $code)
+            ->executeStatement();
+
+        $this->queryBuilderFactory
+            ->create()
             ->delete('oxlocales')
             ->where('code = :code')
             ->setParameter('code', $code)

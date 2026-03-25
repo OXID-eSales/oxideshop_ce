@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
 use Codeception\Attribute\Group;
+use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Module\Translation\Translator;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
@@ -80,9 +81,13 @@ final class CategoryProductListCest
         $homePage = $I->openShop();
         $productList = $homePage->openCategoryPage('Test category 0 [EN] šÄßüл');
 
+        $I->amGoingTo('check product image alt text in category list');
+        $mediaFixture = Fixtures::get('productMediaAltAttributes1001');
         $productList->selectSorting('oxtitle', 'asc')
             ->seeProductData($productData)
             ->seeProductData($productData2, 2)
+            ->seeProductImageAltText('', 1)
+            ->seeProductImageAltText($mediaFixture['primaryAltText'], 2)
             ->selectSorting('oxprice', 'desc')
             ->selectProductsPerPage('1')
             ->seeProductData($productData2)

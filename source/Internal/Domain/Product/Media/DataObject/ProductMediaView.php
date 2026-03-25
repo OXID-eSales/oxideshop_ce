@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
+
 readonly class ProductMediaView
 {
     public function __construct(
@@ -16,7 +18,8 @@ readonly class ProductMediaView
         private string $iconUrl,
         private string $zoomUrl,
         private string $thumbnailUrl,
-        private bool $isFallback = false
+        private MediaAttributes $attributes,
+        private bool $isFallback = false,
     ) {
     }
 
@@ -43,5 +46,10 @@ readonly class ProductMediaView
     public function isFallback(): bool
     {
         return $this->isFallback;
+    }
+
+    public function getAttributes(): MediaAttributes
+    {
+        return $this->attributes;
     }
 }

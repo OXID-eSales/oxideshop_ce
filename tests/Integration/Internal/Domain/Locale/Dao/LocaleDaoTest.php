@@ -96,6 +96,28 @@ final class LocaleDaoTest extends TestCase
         $this->assertSame('pa_PA', $fetched->getFallbackCode());
     }
 
+    public function testDeleteRemovesShopLocales(): void
+    {
+        $this->localeDao->add(new Locale(code: 'sd_SD', name: 'Shop Delete', fallbackCode: 'sd_SD'));
+        $this->localeDao->addToShop('sd_SD', 1);
+
+        $this->localeDao->delete('sd_SD');
+
+        $codes = array_map(fn(Locale $l) => $l->getCode(), $this->localeDao->getByShopId(1));
+        $this->assertNotContains('sd_SD', $codes);
+    }
+
+    public function testDeleteResetsChildFallbackToSelf(): void
+    {
+        $this->localeDao->add(new Locale(code: 'pr_PR', name: 'Parent', fallbackCode: 'pr_PR'));
+        $this->localeDao->add(new Locale(code: 'cd_CD', name: 'Child', fallbackCode: 'pr_PR'));
+
+        $this->localeDao->delete('pr_PR');
+
+        $child = $this->localeDao->getByCode('cd_CD');
+        $this->assertSame('cd_CD', $child->getFallbackCode());
+    }
+
     public function testAddToShopAndGetByShopId(): void
     {
         $this->localeDao->add(new Locale(code: 'sh_SH', name: 'Shop Locale', fallbackCode: 'sh_SH'));

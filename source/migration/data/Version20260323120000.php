@@ -24,8 +24,7 @@ final class Version20260323120000 extends AbstractMigration
                 `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 `updated` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (`code`),
-                KEY `IDX_FALLBACK` (`fallback`),
-                CONSTRAINT `FK_LOCALE_FALLBACK` FOREIGN KEY (`fallback`) REFERENCES `oxlocales` (`code`)
+                KEY `IDX_FALLBACK` (`fallback`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci
         ");
 
@@ -35,9 +34,7 @@ final class Version20260323120000 extends AbstractMigration
                 `code` varchar(10) NOT NULL,
                 `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE KEY `UNQ_SHOP_LOCALE` (`shop_id`, `code`),
-                KEY `IDX_LOCALE_CODE` (`code`),
-                KEY `IDX_SHOP_ID` (`shop_id`),
-                CONSTRAINT `FK_SHOP_LOCALES_LOCALE` FOREIGN KEY (`code`) REFERENCES `oxlocales` (`code`) ON DELETE CASCADE
+                KEY `IDX_LOCALE_CODE` (`code`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_general_ci
         ");
     }

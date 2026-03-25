@@ -68,3 +68,11 @@ services:
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Validator\ProductMediaValidator:
     arguments:
       $validators: !tagged_iterator oxid.product_media.constraint_validator
+
+  OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleImageAlt:
+    arguments:
+      $request: '@Symfony\Component\HttpFoundation\Request'
+      $thumbnailSize: '%oxid_esales.theme.admin.media.image_grid_size%'
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'article_image_alt' }
+    public: true

@@ -117,6 +117,12 @@ final class ProductCompareCest
         $comparePage->seeProductData($productData2, 2);
         $comparePage->seeProductData($productData3, 3);
 
+        $I->amGoingTo('check product image alt text on compare page');
+        $mediaFixture = Fixtures::get('productMediaAltAttributes1001');
+        $comparePage->seeProductImageAltText('', 1);
+        $comparePage->seeProductImageAltText($mediaFixture['primaryAltText'], 2);
+        $comparePage->seeProductImageAltText('', 3);
+
         //open product details page
         $detailsPage = $comparePage->openProductDetailsPage(1);
         $I->seeText($productData1['title'], $detailsPage->productTitle);

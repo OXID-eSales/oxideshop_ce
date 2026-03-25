@@ -6,7 +6,8 @@ VALUES ('1000', 1, '', 1, '1000', '[DE 4] Test product 0 šÄßüл', 'Test prod
        ('1002-1', 1, '1002', 1, '1002-1', '', '', 55, 45, 0, 0, 0, '', 0, NULL, 0, 5, 1, 'In stock [DE]', 'Out of stock [DE]', '0000-00-00', '2008-02-04', '2008-02-04 17:34:10', 0, 0, 0, '', 1, '', 0, 0, 'var1 [DE]', 0, 0, '', 'var1 [EN] šÄßüл', '', '', '', '', 'In stock [EN] šÄßüл', 'Out of stock [EN] šÄßüл', 1, '', '', 0, 0, ''),
        ('1002-2', 1, '1002', 1, '1002-2', '', '', 67, 47, 0, 0, 0, '', 0, NULL, 0, 5, 1, 'In stock [DE]', 'Out of stock [DE]', '0000-00-00', '2008-02-04', '2008-02-04 17:34:36', 0, 0, 0, '', 1, '', 0, 0, 'var2 [DE]', 0, 0, '', 'var2 [EN] šÄßüл', '', '', '', '', 'In stock [EN] šÄßüл', 'Out of stock [EN] šÄßüл', 2, '', '', 0, 0, ''),
        ('1001', 1, '', 1, '1001', '[DE 1] Test product 1 šÄßüл', 'Test product 1 short desc [DE]', 100, 0, 0, 0, 150, '', 0, 10, 0, 0, 1, '', '', '2030-01-01', '2008-02-04', '2008-02-04 17:35:49', 0, 0, 0, 'search1001', 1, '', 0, 0, '', 100, 0, '', '', 'Test product 1 [EN] šÄßüл', 'Test product 1 short desc [EN] šÄßüл', 'šÄßüл1001', '', '', '', 0, 'testdistributor', 'testmanufacturer', 0, 1, 'WEEK'),
-       ('10014', 1, '', 1, '10014', '13 DE product šÄßüл', '14 DE description', 1.6, 0, 0, 0, 0, '', 0, NULL, 0, 0, 1, '', '', '0000-00-00', '2008-04-03', '2008-04-03 12:50:20', 0, 0, 0, '', 1, 'size[DE] | color | type', 0, 12, '', 15, 25, 'size[EN] | color | type', '', '14 EN product šÄßüл', '13 EN description šÄßüл', '', '', '', '', 0, '', '', 0, 0, '');
+       ('10014', 1, '', 1, '10014', '13 DE product šÄßüл', '14 DE description', 1.6, 0, 0, 0, 0, '', 0, NULL, 0, 0, 1, '', '', '0000-00-00', '2008-04-03', '2008-04-03 12:50:20', 0, 0, 0, '', 1, 'size[DE] | color | type', 0, 12, '', 15, 25, 'size[EN] | color | type', '', '14 EN product šÄßüл', '13 EN description šÄßüл', '', '', '', '', 0, '', '', 0, 0, ''),
+       ('10181', 1, '', 1, '10181', 'Media alt Produkt', 'Media alt Testprodukt', 10, 0, 0, 0, 0, '', 0, NULL, 0, 5, 1, '', '', '0000-00-00', '2026-04-09', '2026-04-09 00:00:00', 0, 0, 0, '', 1, '', 0, 0, '', 10, 0, '', '', 'Media alt product', 'Media alt test product', '', '', '', '', 0, '', '', 0, 0, '');
 
 REPLACE INTO `oxarticles` (`OXID`, `OXSHOPID`, `OXPARENTID`, `OXACTIVE`, `OXARTNUM`, `OXPRICE`, `OXSTOCK`, `OXSTOCKFLAG`, `OXINSERT`, `OXTIMESTAMP`, `OXVARSELECT`, `OXVARSELECT_1`, `OXSUBCLASS`, `OXSORT`)
 VALUES ('1001432', 1, '10014', 1, '10014-3-2', 15, 3, 1, '2008-04-03', '2008-04-03 12:50:20', 'M | black | material [DE]', 'L | black | material', 'oxarticle', 3002),
@@ -28,7 +29,8 @@ VALUES ('1001', '<p>Test product 1 long description [DE]</p>', '<p>Test product 
        ('1002-1', '', ''),
        ('1002-2', '', ''),
        ('1000', '<p>Test product 0 long description [DE]</p>', '<p>Test product 0 long description [EN] šÄßüл</p>'),
-       ('10014', '', '');
+       ('10014', '', ''),
+       ('10181', '<p>DE media alt long description</p>', '<p>EN media alt long description</p>');
 
 REPLACE INTO `oxcategories` (`OXID`, `OXPARENTID`, `OXLEFT`, `OXRIGHT`, `OXROOTID`, `OXSORT`, `OXACTIVE`, `OXSHOPID`, `OXTITLE`, `OXDESC`, `OXLONGDESC`, `OXDEFSORT`, `OXDEFSORTMODE`, `OXPRICEFROM`, `OXPRICETO`, `OXACTIVE_1`, `OXTITLE_1`, `OXDESC_1`, `OXLONGDESC_1`, `OXVAT`, `OXSHOWSUFFIX`)
 VALUES ('testcategory0', 'oxrootid', 1, 4, 'testcategory0', 1, 1, 1, 'Test category 0 [DE] šÄßüл', 'Test category 0 desc [DE]', 'Category 0 long desc [DE]', 'oxartnum', 0, 0, 0, 1, 'Test category 0 [EN] šÄßüл', 'Test category 0 desc [EN] šÄßüл', 'Category 0 long desc [EN] šÄßüл', 5, 1),
@@ -39,6 +41,33 @@ VALUES ('testcategory0', 'oxrootid', 1, 4, 'testcategory0', 1, 1, 1, 'Test categ
 REPLACE INTO `oxobject2category` (`OXID`, `OXOBJECTID`, `OXCATNID`, `OXPOS`, `OXTIME`)
 VALUES ('6f047a71f53e3b6c2.93342239', '1000', 'testcategory0', 0, 1202134867),
        ('testobject2category', '1001', 'testcategory0', 0, 1202134867);
+
+REPLACE INTO `oxmedia` (`id`, `path`, `type`)
+VALUES ('10181000000000000000000000000001', 'out/pictures/master/product/1/test.png', 'image/png'),
+       ('10181000000000000000000000000002', 'out/pictures/master/product/1/test.png', 'image/png'),
+       ('10010000000000000000000000000001', 'out/pictures/master/product/1/test.png', 'image/png'),
+       ('10010000000000000000000000000002', 'out/pictures/master/product/1/test.png', 'image/png');
+
+REPLACE INTO `oxproduct_media` (`id`, `product_id`, `media_id`, `position`, `active`)
+VALUES ('10181000000000000000000000000011', '10181', '10181000000000000000000000000001', 0, 1),
+       ('10181000000000000000000000000012', '10181', '10181000000000000000000000000002', 1, 1),
+       ('10010000000000000000000000000011', '1001', '10010000000000000000000000000001', 0, 1),
+       ('10010000000000000000000000000012', '1001', '10010000000000000000000000000002', 1, 1);
+
+REPLACE INTO `oxproduct_media_roles` (`product_media_id`, `role`)
+VALUES ('10181000000000000000000000000011', 'thumbnail'),
+       ('10181000000000000000000000000011', 'detail'),
+       ('10181000000000000000000000000012', 'detail'),
+       ('10010000000000000000000000000011', 'thumbnail'),
+       ('10010000000000000000000000000011', 'detail'),
+       ('10010000000000000000000000000012', 'thumbnail'),
+       ('10010000000000000000000000000012', 'detail');
+
+REPLACE INTO `oxmedia_attributes` (`id`, `media_id`, `locale_code`, `shop_id`, `name`, `value`)
+VALUES ('10181000000000000000000000000023', '10181000000000000000000000000001', 'en_GB', 1, 'alt', 'EN primary alt'),
+       ('10181000000000000000000000000024', '10181000000000000000000000000002', 'en_GB', 1, 'alt', 'EN secondary alt'),
+       ('10010000000000000000000000000023', '10010000000000000000000000000001', 'en_GB', 1, 'alt', 'primary alt'),
+       ('10010000000000000000000000000024', '10010000000000000000000000000002', 'en_GB', 1, 'alt', 'secondary alt');
 
 REPLACE INTO `oxuser` (`OXID`, `OXACTIVE`, `OXRIGHTS`, `OXSHOPID`, `OXUSERNAME`, `OXPASSWORD`, `OXPASSSALT`, `OXCUSTNR`, `OXUSTID`, `OXCOMPANY`, `OXFNAME`, `OXLNAME`, `OXSTREET`, `OXSTREETNR`, `OXADDINFO`, `OXCITY`, `OXCOUNTRYID`, `OXZIP`, `OXFON`, `OXFAX`, `OXSAL`, `OXBONI`, `OXCREATE`, `OXREGISTER`, `OXPRIVFON`, `OXMOBFON`, `OXBIRTHDATE`)
 VALUES ('testuser', 1, 'user', 1, 'example_test@oxid-esales.dev', 'c9dadd994241c9e5fa6469547009328a', '7573657275736572', 8, '', 'UserCompany šÄßüл', 'UserNamešÄßüл', 'UserSurnamešÄßüл', 'Musterstr.šÄßüл', '1', 'User additional info šÄßüл', 'Musterstadt šÄßüл', 'testcountry_de', '79098', '0800 111111', '0800 111112', 'Mr', 500, '2008-02-05 14:42:42', '2008-02-05 14:42:42', '0800 111113', '0800 111114', '1980-01-01'),

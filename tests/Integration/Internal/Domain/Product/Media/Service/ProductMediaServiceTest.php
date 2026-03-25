@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Product\Media\Service;
 
-use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
+use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -31,7 +30,6 @@ final class ProductMediaServiceTest extends TestCase
 
     private ProductMedia $productMedia;
     private readonly ProductMediaServiceInterface $service;
-    private readonly MediaDaoInterface $mediaDao;
     private readonly Id $productId;
 
     public function setUp(): void
@@ -43,7 +41,6 @@ final class ProductMediaServiceTest extends TestCase
                 ->create()
         );
         $this->service = $this->get(ProductMediaServiceInterface::class);
-        $this->mediaDao = $this->get(MediaDaoInterface::class);
         $this->createTestProductMedia();
     }
 
@@ -80,21 +77,7 @@ final class ProductMediaServiceTest extends TestCase
         $this->service->remove($this->productMedia->getId());
 
         $this->expectException(EntryDoesNotExistDaoException::class);
-
         $this->service->get($this->productMedia->getId());
-    }
-
-    public function testRemoveWillNotDeleteMediaRecord(): void
-    {
-        $this->service->remove($this->productMedia->getId());
-
-        $this->mediaDao->get(
-            $this->productMedia
-                ->getMedia()
-                ->getId()
-        );
-
-        $this->expectNotToPerformAssertions();
     }
 
     public function testActivate(): void

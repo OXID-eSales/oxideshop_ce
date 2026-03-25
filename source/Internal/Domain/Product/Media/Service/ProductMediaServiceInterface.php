@@ -16,6 +16,9 @@ interface ProductMediaServiceInterface
 
     public function get(Id $mediaId): ProductMedia;
 
+    /** @return ProductMedia[] */
+    public function getByProduct(Id $productId): array;
+
     public function remove(Id $mediaId): void;
 
     public function update(ProductMedia $productMedia): void;

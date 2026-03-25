@@ -14,6 +14,7 @@ $helper->loadRuntimeFixtures(codecept_data_dir('user.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('voucher.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('order.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('product.php'));
+$helper->loadRuntimeFixtures(codecept_data_dir('product_media.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('shop.php'));
 $helper->loadRuntimeFixtures(codecept_data_dir('category.php'));
 

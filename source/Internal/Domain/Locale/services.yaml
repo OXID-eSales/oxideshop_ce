@@ -1,0 +1,22 @@
+parameters:
+  oxid_esales.locale.default_fallback: 'de_DE'
+
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Domain\Locale\DataMapper\LocaleDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Locale\DataMapper\LocaleDataMapper
+
+  OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao\LocaleDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao\LocaleDao
+
+  OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProvider
+    public: true
+    arguments:
+      $defaultFallbackLocale: '%oxid_esales.locale.default_fallback%'

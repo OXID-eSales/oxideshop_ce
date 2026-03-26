@@ -81,7 +81,7 @@ SET `OXVARVALUE` = '0'
 WHERE `OXVARNAME` = 'blUseMultidimensionVariants';
 
 UPDATE `oxconfig`
-SET `OXVARVALUE` = 'a:2:{s:2:"de";a:3:{s:6:"baseId";i:0;s:6:"active";s:1:"1";s:4:"sort";s:1:"1";}s:2:"en";a:3:{s:6:"baseId";i:1;s:6:"active";s:1:"1";s:4:"sort";s:1:"2";}}'
+SET `OXVARVALUE` = 'a:2:{s:2:"de";a:4:{s:6:"baseId";i:0;s:6:"active";s:1:"1";s:4:"sort";s:1:"1";s:6:"locale";s:5:"de_DE";}s:2:"en";a:4:{s:6:"baseId";i:1;s:6:"active";s:1:"1";s:4:"sort";s:1:"2";s:6:"locale";s:5:"en_GB";}}'
 WHERE `OXVARNAME` = 'aLanguageParams';
 
 UPDATE `oxconfig`

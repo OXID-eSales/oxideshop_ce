@@ -3,6 +3,7 @@ imports:
     - { resource: Admin/services.yaml }
     - { resource: Authentication/services.yaml }
     - { resource: Contact/services.yaml }
+    - { resource: Locale/services.yaml }
     - { resource: Media/services.yaml }
     - { resource: Newsletter/services.yaml }
     - { resource: Product/Media/parameters.yaml }

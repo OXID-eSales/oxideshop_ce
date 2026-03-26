@@ -31,4 +31,6 @@ interface ContextInterface extends BasicContextInterface
     public function isShopInDemoMode(): bool;
 
     public function isShopInProductiveMode(): bool;
+
+    public function getCurrentLanguageAbbreviation(): string;
 }

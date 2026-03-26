@@ -6,9 +6,9 @@ on:
       scenario:
         type: choice
         options:
-          - 7.5.x
+          - 7.6.x
           - use custom testplan
-        default: '7.5.x'
+        default: '7.6.x'
         description: 'Choose test scenario'
       limit:
         type: choice
@@ -67,7 +67,7 @@ jobs:
           esac
           # shellcheck disable=SC2088
           case '${{ inputs.scenario}}' in
-            "7.5.x") TESTPLAN="~/defaults/7.5.x.yaml,${LIMIT}${PLAN}" ;;
+            "7.6.x") TESTPLAN="~/defaults/7.6.x.yaml,${LIMIT}${PLAN}" ;;
             "use custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
             *)
               echo "Illegal choice, fix the workflow"

@@ -147,4 +147,9 @@ class ContextStub extends BasicContextStub implements ContextInterface
     {
         return $this->context->getCurrentShopId();
     }
+
+    public function getCurrentLanguageAbbreviation(): string
+    {
+        return $this->context->getCurrentLanguageAbbreviation();
+    }
 }

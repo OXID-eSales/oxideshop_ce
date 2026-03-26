@@ -103,6 +103,11 @@ class Context extends BasicContext implements ContextInterface
         return (bool)Registry::getConfig()->isDemoShop();
     }
 
+    public function getCurrentLanguageAbbreviation(): string
+    {
+        return Registry::getLang()->getLanguageAbbr();
+    }
+
     /**
      * @return mixed
      */

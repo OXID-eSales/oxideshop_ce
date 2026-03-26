@@ -8,6 +8,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Exception;
 
 /**
@@ -61,6 +64,8 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             $this->checkLangTranslations($sOxId);
             $this->_aViewData["edit"] = $this->getLanguageInfo($sOxId);
         }
+
+        $this->_aViewData["locales"] = $this->getAvailableLocales();
 
         return "language_main";
     }
@@ -129,6 +134,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $this->_aLangData['params'][$sOxId]['active'] = $aParams['active'];
         $this->_aLangData['params'][$sOxId]['default'] = $aParams['default'];
         $this->_aLangData['params'][$sOxId]['sort'] = $aParams['sort'];
+        $this->_aLangData['params'][$sOxId]['locale'] = $aParams['locale'] ?? '';
 
         //if setting lang as default
         if ($aParams['default'] == '1') {
@@ -186,6 +192,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $aLangData['baseurl'] = $this->_aLangData['urls'][$aLangData['baseId']];
         $aLangData['basesslurl'] = $this->_aLangData['sslUrls'][$aLangData['baseId']];
         $aLangData['default'] = ($this->_aLangData['params'][$sOxId]["baseId"] == $sDefaultLang) ? true : false;
+        $aLangData['locale'] = $this->_aLangData['params'][$sOxId]['locale'] ?? '';
 
         return $aLangData;
     }
@@ -513,6 +520,14 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         }
 
         return $blValid;
+    }
+
+    protected function getAvailableLocales(): array
+    {
+        $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
+        $locales = ContainerFacade::get(LocaleServiceInterface::class)->getForShop($shopId);
+
+        return array_map(fn($locale) => ['code' => $locale->getCode(), 'name' => $locale->getName()], $locales);
     }
 
     /**

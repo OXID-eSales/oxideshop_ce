@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use Exception;
+use OxidEsales\Eshop\Application\Model\Object2Category;
+use OxidEsales\Eshop\Application\Model\SeoEncoderArticle;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
 
@@ -239,8 +241,11 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
         $this->resetArtSeoUrl($aArticles, $sCategoryID);
         $this->resetCounter("catArticle", $sCategoryID);
 
+        Registry::get(SeoEncoderArticle::class)
+            ->removeFromCategories((array) $aArticles, [$sCategoryID]);
+
         //notify services
-        $relation = oxNew(\OxidEsales\Eshop\Application\Model\Object2Category::class);
+        $relation = oxNew(Object2Category::class);
         $relation->setCategoryId($sCategoryID);
         $this->dispatchEvent(new AfterModelUpdateEvent($relation));
     }

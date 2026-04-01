@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use Exception;
+use OxidEsales\Eshop\Application\Model\SeoEncoderArticle;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -136,6 +137,9 @@ class ArticleExtendAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
 
         $this->resetArtSeoUrl($oxId, $categoriesToRemove);
         $this->resetContentCache();
+
+        Registry::get(SeoEncoderArticle::class)
+            ->removeFromCategories([$oxId], (array) $categoriesToRemove);
 
         $this->onCategoriesRemoval($categoriesToRemove, $oxId);
     }

@@ -7,7 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use Doctrine\DBAL\Connection;
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use oxView;
 use oxRegistry;
 use oxUBase;
@@ -594,6 +600,126 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         $oDb->execute("delete from oxseohistory where oxobjectid = :oxobjectid", [
             ':oxobjectid' => $oArticle->getId()
         ]);
+    }
+
+    public function removeFromCategories(array $articleIds, array $categoryIds): void
+    {
+        $this->removeFromCategoriesForShops(
+            $articleIds,
+            $categoryIds,
+            [ContainerFacade::get(ContextInterface::class)->getCurrentShopId()]
+        );
+    }
+
+    public function removeFromCategoriesForShops(array $articleIds, array $categoryIds, array $shopIds): void
+    {
+        if ($articleIds === [] || $categoryIds === [] || $shopIds === []) {
+            return;
+        }
+
+        $shopIds = array_values(array_unique($shopIds));
+
+        $articleIds = $this->getArticleIdsWithVariants($articleIds);
+        $affectedArticleLanguages = $this->getAffectedArticleLanguages($articleIds, $categoryIds, $shopIds);
+
+        $this->addSeoUrlsToHistory($articleIds, $categoryIds, $shopIds);
+        $this->removeSeoUrls($articleIds, $categoryIds, $shopIds);
+        $this->updateMainSeoUrls($affectedArticleLanguages);
+    }
+
+    private function getArticleIdsWithVariants(array $articleIds): array
+    {
+        $variantArticleIds = ContainerFacade::get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->select('DISTINCT oxid')
+            ->from('oxarticles')
+            ->where('oxparentid IN (:articleIds)')
+            ->setParameter('articleIds', $articleIds, Connection::PARAM_STR_ARRAY)
+            ->execute()
+            ->fetchFirstColumn();
+
+        return array_values(array_unique(array_merge($articleIds, $variantArticleIds)));
+    }
+
+    private function getAffectedArticleLanguages(array $articleIds, array $categoryIds, array $shopIds): array
+    {
+        $queryBuilder = ContainerFacade::get(QueryBuilderFactoryInterface::class)->create();
+
+        return $queryBuilder
+            ->select('DISTINCT oxobjectid AS objectId', 'oxlang AS language', 'oxshopid AS shopId')
+            ->from('oxseo')
+            ->where('oxtype = :type')
+            ->andWhere('oxobjectid IN (:articleIds)')
+            ->andWhere('oxshopid IN (:shopIds)')
+            ->andWhere('oxparams IN (:categoryIds)')
+            ->setParameter('type', 'oxarticle')
+            ->setParameter('articleIds', $articleIds, Connection::PARAM_STR_ARRAY)
+            ->setParameter('shopIds', $shopIds, Connection::PARAM_INT_ARRAY)
+            ->setParameter('categoryIds', $categoryIds, Connection::PARAM_STR_ARRAY)
+            ->execute()
+            ->fetchAllAssociative();
+    }
+
+    private function addSeoUrlsToHistory(array $articleIds, array $categoryIds, array $shopIds): void
+    {
+        $connection = ContainerFacade::get(QueryBuilderFactoryInterface::class)->create()->getConnection();
+        $connection->executeStatement(
+            "REPLACE INTO oxseohistory (oxobjectid, oxident, oxshopid, oxlang, oxinsert)
+                SELECT oxobjectid, md5(lower(oxseourl)), oxshopid, oxlang, now()
+                FROM oxseo
+                WHERE oxtype = :type
+                    AND oxobjectid IN (:articleIds)
+                    AND oxshopid IN (:shopIds)
+                    AND oxparams IN (:categoryIds)",
+            [
+                'type' => 'oxarticle',
+                'articleIds' => $articleIds,
+                'shopIds' => $shopIds,
+                'categoryIds' => $categoryIds,
+            ],
+            [
+                'articleIds' => Connection::PARAM_STR_ARRAY,
+                'shopIds' => Connection::PARAM_INT_ARRAY,
+                'categoryIds' => Connection::PARAM_STR_ARRAY,
+            ]
+        );
+    }
+
+    private function removeSeoUrls(array $articleIds, array $categoryIds, array $shopIds): void
+    {
+        $queryBuilder = ContainerFacade::get(QueryBuilderFactoryInterface::class)->create();
+        $queryBuilder
+            ->delete('oxseo')
+            ->where('oxtype = :type')
+            ->andWhere('oxobjectid IN (:articleIds)')
+            ->andWhere('oxshopid IN (:shopIds)')
+            ->andWhere('oxparams IN (:categoryIds)')
+            ->setParameter('type', 'oxarticle')
+            ->setParameter('articleIds', $articleIds, Connection::PARAM_STR_ARRAY)
+            ->setParameter('shopIds', $shopIds, Connection::PARAM_INT_ARRAY)
+            ->setParameter('categoryIds', $categoryIds, Connection::PARAM_STR_ARRAY)
+            ->execute();
+    }
+
+    private function updateMainSeoUrls(array $affectedArticleLanguages): void
+    {
+        $currentShopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
+
+        try {
+            foreach ($affectedArticleLanguages as $affectedArticleLanguage) {
+                Registry::getConfig()->setShopId((int) $affectedArticleLanguage['shopId']);
+
+                $language = (int) $affectedArticleLanguage['language'];
+                $article = oxNew(Article::class);
+                $article->setSkipAssign(true);
+
+                if ($article->loadInLang($language, $affectedArticleLanguage['objectId'])) {
+                    $this->getArticleMainUri($article, $language);
+                }
+            }
+        } finally {
+            Registry::getConfig()->setShopId($currentShopId);
+        }
     }
 
     /**

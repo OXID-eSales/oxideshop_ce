@@ -7,8 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Application\Model\SeoEncoderArticle;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 /**
  * Seo encoder category
@@ -227,12 +232,10 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
     public function onDeleteCategory($category)
     {
         $this->setRelatedToCategorySeoUrlsAsExpired($category);
+        $this->removeArticleSeoUrlsForDeletedCategory($category);
 
         $database = DatabaseProvider::getDb();
 
-        $database->execute("delete from oxseo where oxseo.oxtype = 'oxarticle' and oxseo.oxparams = :oxparams", [
-            ':oxparams' => $category->getId()
-        ]);
         $database->execute("delete from oxseo where oxobjectid = :oxobjectid and oxtype = 'oxcategory'", [
             ':oxobjectid' => $category->getId()
         ]);
@@ -263,6 +266,12 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
         return $sSeoUrl;
     }
 
+    protected function removeArticleSeoUrlsForDeletedCategory(Category $category): void
+    {
+        Registry::get(SeoEncoderArticle::class)
+            ->removeFromCategories($this->getArticleIdsFromCategorySeoUrls($category), [$category->getId()]);
+    }
+
     private function setRelatedToCategorySeoUrlsAsExpired(Category $category): void
     {
         foreach ($this->getSeoUrlsForCategory($category) as $seoUrl) {
@@ -281,6 +290,20 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
             );
     }
 
+    protected function getArticleIdsFromCategorySeoUrls(Category $category): array
+    {
+        return ContainerFacade::get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->select('DISTINCT oxobjectid')
+            ->from('oxseo')
+            ->where('oxtype = :type')
+            ->andWhere('oxparams = :categoryId')
+            ->setParameter('type', 'oxarticle')
+            ->setParameter('categoryId', $category->getId())
+            ->execute()
+            ->fetchFirstColumn();
+    }
+
     private function getRelatedProductsAndSubCategories(string $rootCategoryUrl): array
     {
         return DatabaseProvider::getDb()
@@ -296,12 +319,16 @@ class SeoEncoderCategory extends \OxidEsales\Eshop\Core\SeoEncoder
 
     private function setSeoUrlsAsExpired(array $idents): void
     {
-        DatabaseProvider::getDb()
-            ->execute(
-                sprintf(
-                    "update oxseo set oxseo.oxexpired=1 where oxseo.oxident in ('%s')",
-                    implode("','", $idents)
-                )
-            );
+        if ($idents === []) {
+            return;
+        }
+
+        ContainerFacade::get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->update('oxseo')
+            ->set('oxexpired', '1')
+            ->where('oxident IN (:idents)')
+            ->setParameter('idents', $idents, Connection::PARAM_STR_ARRAY)
+            ->execute();
     }
 }

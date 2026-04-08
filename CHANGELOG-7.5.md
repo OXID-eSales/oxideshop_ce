@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.5.0 - Unreleased
+## v7.5.0 - 2026-04-08
 
 ### Added
 - API entry points with Symfony RouterListener for route handling

@@ -16,9 +16,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterf
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeResponseSendEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use ReflectionMethod;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\HttpFoundation\Response;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
@@ -230,28 +232,34 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         if (Registry::getRequest()->getRequestEscapedParameter('renderPartial')) {
             $outputManager->setOutputFormat(\OxidEsales\Eshop\Core\Output::OUTPUT_FORMAT_JSON);
-            $outputManager->output('errors', $this->getFormattedErrors($view->getClassKey()));
+            $output = json_encode([
+                'content' => $output,
+                'errors' => $this->getFormattedErrors($view->getClassKey()),
+            ]);
+        }
+
+        $response = new Response($output);
+        $response->headers->set('Content-Type', $outputManager->getContentType($view->getCharSet()));
+
+        foreach (Registry::get(\OxidEsales\Eshop\Core\Header::class)->getHeader() as $headerLine) {
+            $parts = explode(':', $headerLine, 2);
+            if (isset($parts[1])) {
+                $response->headers->set(trim($parts[0]), trim($parts[1]));
+            }
         }
 
         ContainerFacade::dispatch(new BeforeHeadersSendEvent($this, $view));
-
-        $outputManager->sendHeaders();
-
-        //Send headers that have been registered
-        $header = Registry::get(\OxidEsales\Eshop\Core\Header::class);
-        $header->sendHeader();
+        ContainerFacade::dispatch(new BeforeResponseSendEvent($response, $view));
 
         $this->sendAdditionalHeaders($view);
 
-        $outputManager->output('content', $output);
+        $response->send();
 
         $config->pageClose();
 
         stopProfile('process');
 
         $this->stopMonitoring($view);
-
-        $outputManager->flushOutput();
     }
 
     /**

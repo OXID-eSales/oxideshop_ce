@@ -9,22 +9,21 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
-use OxidEsales\Eshop\Core\ShopControl;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\EventDispatcher\Event;
 
-/** @deprecated Set headers via BeforeResponseSendEvent listener */
-class BeforeHeadersSendEvent extends Event
+class BeforeResponseSendEvent extends Event
 {
     public function __construct(
-        private ShopControl $shopControl,
+        private Response $response,
         private ViewControllerInterface $controller
     ) {
     }
 
-    public function getShopControl(): ShopControl
+    public function getResponse(): Response
     {
-        return $this->shopControl;
+        return $this->response;
     }
 
     public function getController(): ViewControllerInterface

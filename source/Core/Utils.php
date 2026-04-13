@@ -13,6 +13,8 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use Psr\Cache\CacheItemPoolInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use stdClass;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -648,11 +650,17 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     protected function simpleRedirect($sUrl, $sHeaderCode)
     {
-        $oHeader = oxNew(\OxidEsales\Eshop\Core\Header::class);
-        $oHeader->setHeader($sHeaderCode);
-        $oHeader->setHeader("Location: $sUrl");
-        $oHeader->setHeader("Connection: close");
-        $oHeader->sendHeader();
+        $statusCode = $this->parseStatusCode($sHeaderCode);
+        $response = new RedirectResponse($sUrl, $statusCode, ['Connection' => 'close']);
+        $response->send();
+    }
+
+    private function parseStatusCode(string $headerCode): int
+    {
+        if (preg_match('/\d{3}/', $headerCode, $matches)) {
+            return (int) $matches[0];
+        }
+        return 302;
     }
 
     /**
@@ -747,9 +755,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * set header sent to browser
-     *
-     * @param string $sHeader header to sent
+     * @deprecated Set headers via BeforeResponseSendEvent listener
      */
     public function setHeader($sHeader)
     {
@@ -975,9 +981,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function handlePageNotFoundError($sUrl = '')
     {
-        $this->setHeader("HTTP/1.0 404 Not Found");
-        $this->setHeader("Content-Type: text/html; charset=UTF-8");
-
         $sReturn = "Page not found.";
         $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
         $oView->init();
@@ -987,7 +990,12 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         if ($sRet = Registry::getUtilsView()->getTemplateOutput('message/err_404', $oView)) {
             $sReturn = $sRet;
         }
-        $this->showMessageAndExit($sReturn);
+
+        $response = new Response($sReturn, 404, ['Content-Type' => 'text/html; charset=UTF-8']);
+        $response->send();
+
+        $this->prepareToExit();
+        exit();
     }
 
     /**

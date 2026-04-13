@@ -184,8 +184,18 @@ class Output extends \OxidEsales\Eshop\Core\Base
         }
     }
 
+    public function getContentType(string $charset): string
+    {
+        $mimeType = match ($this->_sOutputFormat) {
+            self::OUTPUT_FORMAT_JSON => 'application/json',
+            default => 'text/html',
+        };
+
+        return "$mimeType; charset=$charset";
+    }
+
     /**
-     * send page headers (content type, charset)
+     * @deprecated Set headers via BeforeResponseSendEvent listener
      */
     public function sendHeaders()
     {

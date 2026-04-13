@@ -8,8 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * HTTP headers formator.
- * Collects HTTP headers and form HTTP header.
+ * @deprecated Set headers via BeforeResponseSendEvent listener
  */
 class Header
 {

@@ -8,123 +8,47 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
+use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\ObjectException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use Symfony\Component\HttpFoundation\Response;
 
-/**
- * Main shop actions controller. Processes user actions, logs
- * them (if needed), controls output, redirects according to
- * processed methods logic. This class is initialized from index.php
- */
 class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 {
-    /**
-     * Skip main tasks as it already handled in oxShopControl.
-     *
-     * @var bool
-     */
-    protected $_blMainTasksExecuted = true;
+    private array $parentsAdded = [];
 
-    /**
-     * Array of Views added to the view chain
-     *
-     * @var array
-     */
-    protected $parentsAdded = [];
-
-    /**
-     * Main shop widget manager. Sets needed parameters and calls parent::start method.
-     *
-     * Session variables:
-     * <b>actshop</b>
-     *
-     * @param string $class      Class name
-     * @param string $function   Function name
-     * @param array  $parameters Parameters array
-     * @param array  $viewsChain Array of views names that should be initialized also
-     */
-    public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
+    public function start(?string $class = null, ?string $function = null, ?array $parameters = null, ?array $viewsChain = null): void
     {
         if (!isset($viewsChain) && Registry::getRequest()->getRequestEscapedParameter('oxwparent')) {
             $viewsChain = explode("|", Registry::getRequest()->getRequestEscapedParameter('oxwparent'));
         }
 
-        parent::start($class, $function, $parameters, $viewsChain);
+        $response = $this->buildWidgetResponse($class, $function, $parameters, $viewsChain);
+        echo $response->getContent();
 
-        //perform tasks that should be done at the end of widget processing
         $this->runLast();
     }
 
-    /**
-     * Runs actions that should be performed at the controller finish.
-     */
-    protected function runLast()
+    private function buildWidgetResponse(?string $class, ?string $function, ?array $parameters, ?array $viewsChain): Response
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $controllerKey = $class ?? Registry::getConfig()->getRequestControllerId() ?? 'start';
 
-        if ($oConfig->hasActiveViewsChain()) {
-            // Removing current active view.
-            $oConfig->dropLastActiveView();
+        $this->initializeParentViews($viewsChain, $controllerKey);
 
-            foreach ($this->parentsAdded as $sParentClassName) {
-                $oConfig->dropLastActiveView();
-            }
-
-            // Setting back last active view.
-            $engine = $this->getRenderer()->getTemplateEngine();
-            $engine->addGlobal('oView', $oConfig->getActiveView());
-        }
+        return $this->buildResponse($controllerKey, $function, $parameters);
     }
 
-    /**
-     * Initialize and return widget view object.
-     *
-     * @param string $class      View class
-     * @param string $function   Function name
-     * @param array  $parameters Parameters array
-     * @param array  $viewsChain Array of views keys that should be initialized as well
-     *
-     * @throws ObjectException
-     *
-     * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
-     */
-    protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
+    protected function initializeViewObject(string $controllerKey, string $class, ?string $function, ?array $parameters = null): BaseController
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $activeViewsIds = $config->getActiveViewsIds();
-        $activeViewsIds = array_map("strtolower", $activeViewsIds);
-        $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
-        $classKey = !is_null($classKey) ? $classKey : $class; //fallback
+        $widgetViewObject = parent::initializeViewObject($controllerKey, $class, $function, $parameters);
 
-        // if exists views chain, initializing these view at first
-        if (is_array($viewsChain) && !empty($viewsChain)) {
-            foreach ($viewsChain as $parentClassKey) {
-                $parentClass = Registry::getControllerClassNameResolver()->getClassNameById($parentClassKey);
-
-                if ($parentClassKey != $classKey && !in_array(strtolower($parentClassKey), $activeViewsIds) && $parentClass) {
-                    // creating parent view object
-                    $viewObject = oxNew($parentClass);
-                    if ('oxubase' != strtolower($parentClassKey)) {
-                        $viewObject->setClassKey($parentClassKey);
-                    }
-                    $config->setActiveView($viewObject);
-                    $this->parentsAdded[] = $parentClassKey;
-                }
-            }
+        if (!$widgetViewObject instanceof WidgetController) {
+            throw oxNew(ObjectException::class, get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
         }
 
-        $widgetViewObject = parent::initializeViewObject($class, $function, $parameters, null);
-
-        if (!is_a($widgetViewObject, WidgetController::class)) {
-            /** @var ObjectException $exception */
-            $exception = oxNew(ObjectException::class, get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
-            throw $exception;
-        }
-
-        // Set template name for current widget.
         if (!empty($parameters['oxwtemplate'])) {
             $widgetViewObject->setTemplateName($parameters['oxwtemplate']);
         }
@@ -132,14 +56,47 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         return $widgetViewObject;
     }
 
-    /**
-     * @internal
-     *
-     * @return TemplateRendererInterface
-     */
-    private function getRenderer()
+    private function initializeParentViews(?array $viewsChain, string $classKey): void
     {
-        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
-            ->getTemplateRenderer();
+        if (empty($viewsChain)) {
+            return;
+        }
+
+        $config = Registry::getConfig();
+        $activeViewsIds = array_map('strtolower', $config->getActiveViewsIds());
+
+        foreach ($viewsChain as $parentClassKey) {
+            $parentClass = Registry::getControllerClassNameResolver()->getClassNameById($parentClassKey);
+
+            if ($parentClassKey != $classKey && !in_array(strtolower($parentClassKey), $activeViewsIds) && $parentClass) {
+                $viewObject = oxNew($parentClass);
+                if ('oxubase' != strtolower($parentClassKey)) {
+                    $viewObject->setClassKey($parentClassKey);
+                }
+                $config->setActiveView($viewObject);
+                $this->parentsAdded[] = $parentClassKey;
+            }
+        }
+    }
+
+    private function runLast(): void
+    {
+        $config = Registry::getConfig();
+
+        if ($config->hasActiveViewsChain()) {
+            $config->dropLastActiveView();
+
+            foreach ($this->parentsAdded as $parentClassName) {
+                $config->dropLastActiveView();
+            }
+
+            $engine = $this->getRenderer()->getTemplateEngine();
+            $engine->addGlobal('oView', $config->getActiveView());
+        }
+    }
+
+    private function getRenderer(): TemplateRendererInterface
+    {
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
     }
 }

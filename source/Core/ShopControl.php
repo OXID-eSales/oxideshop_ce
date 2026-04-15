@@ -7,721 +7,155 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Core\Controller\BaseController;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeHeadersSendEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeResponseSendEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
-use ReflectionMethod;
-use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
-    /**
-     * Used to force handling, it allows other place like widget controller to skip it.
-     *
-     * @var bool
-     */
-    protected $_blMainTasksExecuted = null;
+    private ?array $errors = null;
+    private ?array $allErrors = null;
+    private ?array $controllerErrors = null;
 
-    /**
-     * Profiler start time
-     *
-     * @var double
-     */
-    protected $_dTimeStart = null;
-
-    /**
-     * Profiler end time
-     *
-     * @var double
-     */
-    protected $_dTimeEnd = null;
-
-    /**
-     * errors to be displayed/returned
-     *
-     * @see _getErrors
-     *
-     * @var array
-     */
-    protected $_aErrors = null;
-
-    /**
-     * same as errors in session
-     *
-     * @see _getErrors
-     *
-     * @var array
-     */
-    protected $_aAllErrors = null;
-
-    /**
-     * same as controller errors in session
-     *
-     * @see _getErrors
-     *
-     * @var array
-     */
-    protected $_aControllerErrors = null;
-
-
-    /**
-     * output handler object
-     *
-     * @see _getOuput
-     *
-     * @var \OxidEsales\Eshop\Core\Output
-     */
-    protected $_oOutput = null;
-
-    /**
-     * Cache manager instance
-     */
-    protected $_oCache = null;
-
-    /**
-     * Main shop manager, that sets shop status, executes configuration methods.
-     * Executes \OxidEsales\Eshop\Core\ShopControl::_runOnce(), if needed sets default class (according
-     * to admin or regular activities). Additionally its possible to pass class name,
-     * function name and parameters array to view, which will be executed.
-     *
-     * @param string $controllerKey Key of the controller class to be processed
-     * @param string $function      Function name
-     * @param array  $parameters    Parameters array
-     * @param array  $viewsChain    Array of views names that should be initialized also
-     */
-    public function start($controllerKey = null, $function = null, $parameters = null, $viewsChain = null)
+    public function buildResponse(string $controllerKey, ?string $function = null, ?array $parameters = null): Response
     {
-        try {
-            $this->runOnce();
-
-            $function = !is_null($function) ? $function : Registry::getRequest()->getRequestEscapedParameter('fnc');
-            $controllerKey = !is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
-            $controllerClass = $this->getControllerClass($controllerKey);
-
-            $this->process($controllerClass, $function, $parameters, $viewsChain);
-        } catch (SystemComponentException $exception) {
-            $this->handleSystemException($exception);
-        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
-            $this->handleCookieException($exception);
-        } catch (\OxidEsales\Eshop\Core\Exception\RoutingException $exception) {
-            $this->handleRoutingException($exception);
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-            $this->handleBaseException($exception);
-        }
-    }
-
-    /**
-     * Returns the difference between stored profiler end time and start time. Works only after stopMonitoring() is
-     * called, otherwise returns 0.
-     *
-     * @return double
-     */
-    public function getTotalTime()
-    {
-        if ($this->_dTimeEnd && $this->_dTimeStart) {
-            return $this->_dTimeEnd - $this->_dTimeStart;
-        }
-
-        return 0;
-    }
-
-    /**
-     * Returns class id of controller which should be loaded.
-     * When in doubt returns default start controller class.
-     *
-     * @return string
-     */
-    protected function getStartControllerKey()
-    {
-        $controllerKey = Registry::getConfig()->getRequestControllerId();
-
-        // Use default route in case no controller id is given
-        if (!$controllerKey) {
-            $session = Registry::getSession();
-            if ($this->isAdmin()) {
-                $controllerKey = $session->getVariable("auth") ? 'admin_start' : 'login';
-            } else {
-                $controllerKey = $this->getFrontendStartControllerKey();
-            }
-            $session->setVariable('cl', $controllerKey);
-        }
-
-        return $controllerKey;
-    }
-
-    /**
-     * Returns class id of controller which should be loaded.
-     * When in doubt returns default start controller class.
-     *
-     * @param string $controllerKey Controller id
-     *
-     * @throws RoutingException
-     * @return string
-     */
-    protected function resolveControllerClass($controllerKey)
-    {
-        $resolvedClass = Registry::getControllerClassNameResolver()->getClassNameById($controllerKey);
-
-        // If unmatched controller id is requested throw exception
-        if (!$resolvedClass) {
-            throw new \OxidEsales\Eshop\Core\Exception\RoutingException(
-                sprintf('Controller "%s" cannot be resolved', $controllerKey)
-            );
-        }
-
-        return $resolvedClass;
-    }
-
-    /**
-     * Returns id of controller that should be loaded at shop start.
-     * Check whether we have to display mall start screen or not.
-     *
-     * @return string
-     */
-    protected function getFrontendStartControllerKey()
-    {
-        return 'start';
-    }
-
-    /**
-     * Initiates object (object::init()), executes passed function
-     * (\OxidEsales\Eshop\Core\ShopControl::executeFunction(), if method returns some string - will
-     * redirect page and will call another function according to returned
-     * parameters), renders object (object::render()). Performs output processing
-     * \OxidEsales\Eshop\Core\Output::ProcessViewArray(). Passes template variables to template
-     * engine witch generates output. Output is additionally processed
-     * (\OxidEsales\Eshop\Core\Output::Process()), fixed links according search engines optimization
-     * rules (configurable in Admin area). Finally echoes the output.
-     *
-     * @param string $class      Class name
-     * @param string $function   Name of function
-     * @param array  $parameters Parameters array
-     * @param array  $viewsChain Array of views names that should be initialized also
-     */
-    protected function process($class, $function, $parameters = null, $viewsChain = null)
-    {
-        startProfile('process');
-        $config = Registry::getConfig();
-
-        // executing maintenance tasks
         $this->executeMaintenanceTasks();
 
-        // starting resource monitor
-        $this->startMonitor();
+        $class = $this->resolveControllerClass($controllerKey);
+        $view = $this->initializeViewObject($controllerKey, $class, $function, $parameters);
 
-        // Initialize view object and it's components.
-        $view = $this->initializeViewObject($class, $function, $parameters, $viewsChain);
-
-        $this->executeAction($view, $view->getFncName());
+        $this->executeAction($view, $function);
 
         $output = $this->formOutput($view);
-
-        ContainerFacade::dispatch(new ViewRenderedEvent($this));
-
-        $outputManager = $this->getOutputManager();
-        $outputManager->setCharset($view->getCharSet());
+        $charset = $view->getCharSet();
 
         if (Registry::getRequest()->getRequestEscapedParameter('renderPartial')) {
-            $outputManager->setOutputFormat(\OxidEsales\Eshop\Core\Output::OUTPUT_FORMAT_JSON);
             $output = json_encode([
                 'content' => $output,
                 'errors' => $this->getFormattedErrors($view->getClassKey()),
             ]);
+            $response = new Response($output, 200, ['Content-Type' => "application/json; charset={$charset}"]);
+        } else {
+            $response = new Response($output, 200, ['Content-Type' => "text/html; charset={$charset}"]);
         }
 
-        $response = new Response($output);
-        $response->headers->set('Content-Type', $outputManager->getContentType($view->getCharSet()));
-
-        foreach (Registry::get(\OxidEsales\Eshop\Core\Header::class)->getHeader() as $headerLine) {
-            $parts = explode(':', $headerLine, 2);
-            if (isset($parts[1])) {
-                $response->headers->set(trim($parts[0]), trim($parts[1]));
-            }
-        }
-
-        ContainerFacade::dispatch(new BeforeHeadersSendEvent($this, $view));
         ContainerFacade::dispatch(new BeforeResponseSendEvent($response, $view));
 
-        $this->sendAdditionalHeaders($view);
-
-        $response->send();
-
-        $config->pageClose();
-
-        stopProfile('process');
-
-        $this->stopMonitoring($view);
+        return $response;
     }
 
-    /**
-     * Executes regular maintenance functions..
-     *
-     * @return null
-     */
-    protected function executeMaintenanceTasks()
+    protected function resolveControllerClass(string $controllerKey): string
     {
-        if (isset($this->_blMainTasksExecuted)) {
-            return;
-        }
-
-        startProfile('executeMaintenanceTasks');
-        oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class)->updateUpcomingPrices();
-        stopProfile('executeMaintenanceTasks');
+        return Registry::getControllerClassNameResolver()->getClassNameById($controllerKey)
+            ?? throw new RoutingException("Controller \"{$controllerKey}\" cannot be resolved");
     }
 
-    /**
-     * Executes provided function on view object.
-     * If this function can not be executed (is protected or so), a RoutingException is thrown
-     *
-     * @param FrontendController $view
-     * @param string             $functionName
-     */
-    protected function executeAction($view, $functionName)
+    protected function initializeViewObject(string $controllerKey, string $class, ?string $function, ?array $parameters = null): BaseController
     {
-        if (!$this->canExecuteFunction($view, $functionName)) {
-            throw new \OxidEsales\Eshop\Core\Exception\RoutingException(
-                sprintf("Non public method cannot be accessed: %s::%s", get_class($view), $functionName)
-            );
-        }
-
-        $view->executeFunction($functionName);
-    }
-
-    /**
-     * Forms output from view object.
-     *
-     * @param FrontendController $view
-     *
-     * @return string
-     */
-    protected function formOutput($view)
-    {
-        return $this->render($view);
-    }
-
-    /**
-     * Method for sending any additional headers on every page requests.
-     *
-     * @param FrontendController $view
-     */
-    protected function sendAdditionalHeaders($view)
-    {
-    }
-
-    /**
-     * Initialize and return view object.
-     *
-     * @param string $class      View class
-     * @param string $function   Function name
-     * @param array  $parameters Parameters array
-     * @param array  $viewsChain Array of views names that should be initialized also
-     *
-     * @return FrontendController
-     */
-    protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
-    {
-        $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
-        $classKey = !is_null($classKey) ? $classKey : $class; //fallback
-
-        /** @var ViewControllerInterface $controller */
-        $controller = $this->isServiceController($classKey, $class)
+        $controller = $this->isServiceController($controllerKey, $class)
             ? ContainerFacade::get($class)
             : oxNew($class);
 
-        $controller->setClassKey($classKey);
+        $controller->setClassKey($controllerKey);
         $controller->setFncName($function);
         $controller->setViewParameters($parameters);
-
         Registry::getConfig()->setActiveView($controller);
-
-        $this->onViewCreation($controller);
-
         $controller->init();
 
         return $controller;
     }
 
-    /**
-     * Event for any actions during view creation.
-     *
-     * @param FrontendController $view
-     */
-    protected function onViewCreation($view)
+    protected function executeAction(BaseController $view, ?string $function): void
     {
-    }
-
-    /**
-     * Check if method can be executed.
-     *
-     * @param FrontendController $view     View object to check if its method can be executed.
-     * @param string             $function Method to check if it can be executed.
-     *
-     * @return bool
-     */
-    protected function canExecuteFunction($view, $function)
-    {
-        $canExecute = true;
-        if ($function && method_exists($view, $function)) {
-            $reflectionMethod = new ReflectionMethod($view, $function);
-            if (!$reflectionMethod->isPublic()) {
-                $canExecute = false;
-            }
+        if ($function && method_exists($view, $function) && !(new \ReflectionMethod($view, $function))->isPublic()) {
+            throw new RoutingException("Non public method cannot be accessed: " . get_class($view) . "::{$function}");
         }
 
-        return $canExecute;
+        $view->executeFunction($function);
     }
 
-    /**
-     * Format error messages from _getErrors and return as array.
-     *
-     * @param string $controllerName a class name
-     *
-     * @return array
-     */
-    protected function getFormattedErrors($controllerName)
+    protected function formOutput(BaseController $view): string
     {
-        $errors = $this->getErrors($controllerName);
-        $formattedErrors = [];
-        if (is_array($errors) && count($errors)) {
-            foreach ($errors as $location => $ex2) {
-                foreach ($ex2 as $key => $er) {
-                    $error = unserialize($er);
-                    $formattedErrors[$location][$key] = $error->getOxMessage();
-                }
-            }
-        }
-
-        return $formattedErrors;
+        return $this->render($view);
     }
 
-    /**
-     * Render BaseController object.
-     *
-     * @param FrontendController $view view object to render
-     *
-     * @return string
-     */
-    protected function render($view)
+    protected function render(BaseController $view): string
     {
         $templateName = $view->render();
-        // Output processing. This is useful for modules. As sometimes you may want to process output manually.
-        $outputManager = $this->getOutputManager();
-        $viewData = $outputManager->processViewArray($view->getViewData(), $view->getClassKey());
-        $view->setViewData($viewData);
-
         $renderer = $this->getRenderer();
+        $viewData = $this->attachSessionErrors($view, $view->getViewData());
 
-        $viewData['oxEngineTemplateId'] = $view->getViewId();
-        $viewData = $this->passSessionErrorsToViewData($view, $viewData);
         try {
-            $output = $renderer->renderTemplate($templateName, $viewData);
-        } catch (\Throwable $exception) {
-            $this->processTemplateRenderError($templateName, $exception);
-            $viewData = $this->passSessionErrorsToViewData($view, $viewData);
-            $output = $renderer->renderTemplate('message/exception', $viewData);
+            return $renderer->renderTemplate($templateName, $viewData);
+        } catch (\Throwable $e) {
+            Registry::getLogger()->error("Template \"{$templateName}\" render failed: {$e->getMessage()}", [$e]);
+            return $renderer->renderTemplate('message/exception', $viewData);
         }
-
-
-        //Output processing - useful for modules as sometimes you may want to process output manually.
-        $output = $outputManager->process($output, $view->getClassKey());
-
-        return $outputManager->addVersionTags($output);
     }
 
-    /**
-     * @internal
-     *
-     * @return TemplateRendererInterface
-     */
-    private function getRenderer()
+    private function getFormattedErrors(string $controllerName): array
     {
-        return ContainerFacade::get(TemplateRendererBridgeInterface::class)
-            ->getTemplateRenderer();
-    }
-
-    /**
-     * Return output handler.
-     *
-     * @return \OxidEsales\Eshop\Core\Output
-     */
-    protected function getOutputManager()
-    {
-        if (!$this->_oOutput) {
-            $this->_oOutput = oxNew(\OxidEsales\Eshop\Core\Output::class);
-        }
-
-        return $this->_oOutput;
-    }
-
-    /**
-     * Return page errors array.
-     *
-     * @param string $currentControllerName Class name
-     *
-     * @return array
-     */
-    protected function getErrors($currentControllerName)
-    {
-        if (null === $this->_aErrors) {
-            $this->_aErrors = Registry::getSession()->getVariable('Errors');
-            $this->_aControllerErrors = Registry::getSession()->getVariable('ErrorController');
-            if (null === $this->_aErrors) {
-                $this->_aErrors = [];
+        $formatted = [];
+        foreach ($this->loadErrors($controllerName) as $location => $items) {
+            foreach ($items as $key => $serialized) {
+                $formatted[$location][$key] = unserialize($serialized)->getOxMessage();
             }
-            $this->_aAllErrors = $this->_aErrors;
         }
-        // resetting errors of current controller or widget from session
-        if (is_array($this->_aControllerErrors) && !empty($this->_aControllerErrors)) {
-            foreach ($this->_aControllerErrors as $errorName => $controllerName) {
-                if ($controllerName == $currentControllerName) {
-                    unset($this->_aAllErrors[$errorName]);
-                    unset($this->_aControllerErrors[$errorName]);
+        return $formatted;
+    }
+
+    protected function loadErrors(string $controllerName): array
+    {
+        if (null === $this->errors) {
+            $this->errors = Registry::getSession()->getVariable('Errors') ?? [];
+            $this->controllerErrors = Registry::getSession()->getVariable('ErrorController');
+            $this->allErrors = $this->errors;
+        }
+
+        if (!empty($this->controllerErrors) && is_array($this->controllerErrors)) {
+            foreach ($this->controllerErrors as $name => $controller) {
+                if ($controller === $controllerName) {
+                    unset($this->allErrors[$name], $this->controllerErrors[$name]);
                 }
             }
         } else {
-            $this->_aAllErrors = [];
-        }
-        Registry::getSession()->setVariable('ErrorController', $this->_aControllerErrors);
-        Registry::getSession()->setVariable('Errors', $this->_aAllErrors);
-
-        return $this->_aErrors;
-    }
-
-    /**
-     * This function is only executed one time here we perform checks if we
-     * only need once per session.
-     */
-    protected function runOnce()
-    {
-        $config = Registry::getConfig();
-
-        //Ensures config values are available, database connection is established,
-        //session is started, a possible SeoUrl is decoded, globals and environment variables are set.
-        $config->init();
-
-        $runOnceExecuted = Registry::getSession()->getVariable('blRunOnceExecuted');
-        if (!$runOnceExecuted && !$this->isAdmin() && $config->isProductiveMode()) {
-            // check if setup is still there
-            $setupIndexFile = Path::join(
-                ContainerFacade::getParameter('oxid_esales.shop_source_directory'),
-                'Setup',
-                'index.php'
-            );
-            if (file_exists($setupIndexFile)) {
-                $tpl = 'message/err_setup';
-                $activeView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
-                $context = [
-                    "oViewConf" => $activeView->getViewConfig(),
-                    "oView"     => $activeView
-                ];
-                $renderer = $this->getRenderer();
-                $errorOutput = $renderer->renderTemplate($tpl, $context);
-                Registry::getUtils()->showMessageAndExit($errorOutput);
-            }
-
-            Registry::getSession()->setVariable('blRunOnceExecuted', true);
-        }
-    }
-
-    /**
-     * Checks if shop is in debug mode.
-     *
-     * @return bool
-     */
-    protected function isDebugMode()
-    {
-        return ContainerFacade::getParameter('oxid_esales.debug_mode');
-    }
-
-    /**
-     * Starts resource monitor.
-     */
-    protected function startMonitor()
-    {
-        if ($this->isDebugMode()) {
-            $this->_dTimeStart = microtime(true);
-        }
-    }
-
-    /**
-     * Stops resource monitor, summarizes and outputs values.
-     *
-     * @param FrontendController $view View object
-     */
-    protected function stopMonitoring($view = null)
-    {
-        if (is_null($view)) {
-            $controllerKey = $this->getStartControllerKey();
-            $controllerClass = $this->getControllerClass($controllerKey);
-            $view = oxNew($controllerClass);
+            $this->allErrors = [];
         }
 
-        if ($this->isDebugMode() && !$this->isAdmin()) {
-            $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
+        Registry::getSession()->setVariable('ErrorController', $this->controllerErrors);
+        Registry::getSession()->setVariable('Errors', $this->allErrors);
 
-            $logId = md5(time() . rand() . rand());
-            $header = $debugInfo->formatGeneralInfo();
-            $display = 'none';
-            $monitorMessage = $this->formMonitorMessage($view);
-
-            $logMessage = "
-                <div id='oxidDebugInfo_$logId'>
-                    <div style='color:#630;margin:15px 0 0;cursor:pointer'
-                         onclick='var el=document.getElementById(\"debugInfoBlock_$logId\"); if (el.style.display==\"block\")el.style.display=\"none\"; else el.style.display = \"block\";'>
-                          $header(show/hide)
-                    </div>
-                    <div id='debugInfoBlock_$logId' style='display:$display' class='debugInfoBlock' align='left'>
-                        $monitorMessage
-                    </div>
-                    <script>
-                        var b = document.getElementById('oxidDebugInfo_$logId');
-                        var c = document.body;
-                        if (c) { c.appendChild(b.parentNode.removeChild(b));}
-                    </script>
-                </div>";
-
-            $this->getOutputManager()->output('debuginfo', $logMessage);
-        }
+        return $this->errors;
     }
 
-    /**
-     * Forms message for displaying monitoring information on the bottom of the page.
-     *
-     * @param FrontendController $view
-     *
-     * @return string
-     */
-    protected function formMonitorMessage($view)
+    private function attachSessionErrors(ViewControllerInterface $view, array $viewData): array
     {
-        $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
-
-        // Output timing
-        $this->_dTimeEnd = microtime(true);
-
-        $message = $debugInfo->formatMemoryUsage();
-        $message .= $debugInfo->formatTimeStamp();
-        $message .= $debugInfo->formatExecutionTime($this->getTotalTime());
-
-        return $message;
-    }
-
-    /**
-     * Shows exceptionError page.
-     * possible reason: class does not exist etc. --> just redirect to start page.
-     *
-     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
-     */
-    protected function handleSystemException($exception)
-    {
-        Registry::getLogger()->error($exception->getMessage(), [$exception]);
-
-        if ($this->isDebugMode()) {
-            Registry::getUtilsView()->addErrorToDisplay($exception);
-            $this->process('exceptionError', 'displayExceptionError');
-        } else {
-            Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start');
-        }
-    }
-
-    protected function handleRoutingException(RoutingException $exception)
-    {
-        Registry::getLogger()->error($exception->getMessage(), [$exception]);
-
-        unset($_GET['fnc'], $_POST['fnc']);
-        error_404_handler($_SERVER['REQUEST_URI']);
-    }
-
-    /**
-     * Redirect to start page, in debug mode shows error message.
-     *
-     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception Exception
-     */
-    protected function handleCookieException($exception)
-    {
-        if ($this->isDebugMode()) {
-            Registry::getUtilsView()->addErrorToDisplay($exception);
-        }
-        Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start', true, 302);
-    }
-
-    /**
-     * Handling other not caught exceptions.
-     *
-     * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
-     */
-    protected function handleBaseException($exception)
-    {
-        $this->logException($exception);
-
-        if ($this->isDebugMode()) {
-            Registry::getUtilsView()->addErrorToDisplay($exception);
-            $this->process('exceptionError', 'displayExceptionError');
-        }
-    }
-
-    /**
-     * Log an exception.
-     *
-     * This method forms part of the exception handling process. Any further exceptions must be caught.
-     *
-     * @param \Exception $exception
-     */
-    protected function logException(\Exception $exception)
-    {
-        if (!$exception instanceof \OxidEsales\Eshop\Core\Exception\StandardException) {
-            $exception = new \OxidEsales\Eshop\Core\Exception\StandardException($exception->getMessage(), $exception->getCode(), $exception);
-        }
-        Registry::getLogger()->error($exception->getMessage(), [$exception]);
-    }
-
-    /**
-     * Get controller class from key.
-     * Fallback is to use key as class if no match can be found.
-     *
-     * @param string $controllerKey
-     *
-     * @return string
-     */
-    protected function getControllerClass($controllerKey)
-    {
-        return $this->resolveControllerClass($controllerKey);
-    }
-
-    private function processTemplateRenderError(string $templateName, \Throwable $rendererError): void
-    {
-        $displayMessage = sprintf(
-            Registry::getLang()->translateString('EXCEPTION_SYSTEMCOMPONENT_TEMPLATENOTFOUND'),
-            $templateName
-        );
-        $displayedException = oxNew(Exception\SystemComponentException::class, $displayMessage);
-        $displayedException->setComponent($templateName);
-        if ($this->isDebugMode()) {
-            $this->_aErrors = null;
-            Registry::getUtilsView()->addErrorToDisplay($displayedException);
-        }
-        Registry::getLogger()->error($displayedException->getMessage(), [$rendererError]);
-    }
-
-    private function passSessionErrorsToViewData(ViewControllerInterface $view, array $viewData): array
-    {
-        $errors = $this->getErrors($view->getClassKey());
-        if (\is_array($errors) && count($errors)) {
+        $errors = $this->loadErrors($view->getClassKey());
+        if (!empty($errors)) {
             Registry::getUtilsView()->passAllErrorsToView($viewData, $errors);
         }
         return $viewData;
     }
 
-    private function isServiceController(string $classKey, string $class): bool
+    private function getRenderer(): TemplateRendererInterface
     {
-        return isset(ContainerFacade::getParameter('oxid.view_controllers_map')[$classKey]) && ContainerFacade::has($class);
+        return ContainerFacade::get(TemplateRendererBridgeInterface::class)->getTemplateRenderer();
+    }
+
+    private function isServiceController(string $controllerKey, string $class): bool
+    {
+        return isset(ContainerFacade::getParameter('oxid.view_controllers_map')[$controllerKey])
+            && ContainerFacade::has($class);
+    }
+
+    protected function executeMaintenanceTasks(): void
+    {
+        oxNew(\OxidEsales\Eshop\Application\Model\ArticleList::class)->updateUpcomingPrices();
     }
 }

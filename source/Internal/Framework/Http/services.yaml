@@ -1,0 +1,12 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyController:
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyExceptionListener:
+    arguments:
+      $debugMode: '%oxid_esales.debug_mode%'
+    tags:
+      - { name: kernel.event_subscriber }

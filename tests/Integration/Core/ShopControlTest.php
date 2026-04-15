@@ -9,10 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\ShopControl;
-use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
@@ -20,25 +18,11 @@ final class ShopControlTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    public function testStartWithExceptionAndDisabledDebugModeWillRedirect(): void
+    public function testBuildResponseWithInvalidControllerThrowsRoutingException(): void
     {
-        $this->setParameter('oxid_esales.debug_mode', false);
+        $this->expectException(RoutingException::class);
 
-        $shopControl = $this->getMockBuilder(ShopControl::class)
-            ->onlyMethods(['isAdmin', 'runOnce'])
-            ->getMock();
-        $shopControl->method('isAdmin')
-            ->willReturn(false);
-        $shopControl->expects($this->once())
-            ->method('runOnce')
-            ->willThrowException(new SystemComponentException());
-        $utils = $this->createMock(Utils::class);
-        Registry::set(Utils::class, $utils);
-
-        $utils->expects($this->once())
-            ->method('redirect')
-            ->with(Registry::getConfig()->getShopHomeUrl() . 'cl=start');
-
-        $shopControl->start();
+        $shopControl = oxNew(ShopControl::class);
+        $shopControl->buildResponse('nonexistent_controller_key');
     }
 }

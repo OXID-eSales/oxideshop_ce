@@ -11,14 +11,13 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use stdClass;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
-use Symfony\Component\Filesystem\Path;
 
 use function is_array;
 
@@ -642,28 +641,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * redirects browser to given url, nothing else done just header send
-     * may be used for redirection in case of an exception or similar things
-     *
-     * @param string $sUrl        the URL to redirect to
-     * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
-     */
-    protected function simpleRedirect($sUrl, $sHeaderCode)
-    {
-        $statusCode = $this->parseStatusCode($sHeaderCode);
-        $response = new RedirectResponse($sUrl, $statusCode, ['Connection' => 'close']);
-        $response->send();
-    }
-
-    private function parseStatusCode(string $headerCode): int
-    {
-        if (preg_match('/\d{3}/', $headerCode, $matches)) {
-            return (int) $matches[0];
-        }
-        return 302;
-    }
-
-    /**
      * Shows offline page.
      * Directly displays the offline page to the client (browser)
      * with a 500 status code header.
@@ -685,8 +662,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 302)
     {
-        //preventing possible cyclic redirection
-        //#M341 and check only if redirect parameter must be added
         if ($blAddRedirectParam && Registry::getRequest()->getRequestEscapedParameter('redirected')) {
             return;
         }
@@ -697,29 +672,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         $sUrl = str_ireplace("&amp;", "&", $sUrl);
 
-        switch ($iHeaderCode) {
-            case 301:
-                $sHeaderCode = "HTTP/1.1 301 Moved Permanently";
-                break;
-            case 500:
-                $sHeaderCode = "HTTP/1.1 500 Internal Server Error";
-                break;
-            case 302:
-            default:
-                $sHeaderCode = "HTTP/1.1 302 Found";
-        }
-
-        $this->simpleRedirect($sUrl, $sHeaderCode);
-
-        try { //may occur in case db is lost
-            $session = Registry::getSession();
-            $session->freeze();
+        try {
+            Registry::getSession()->freeze();
         } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
-            //do nothing else to make sure the redirect takes place
         }
 
-        $this->showMessageAndExit('');
+        throw new RedirectException($sUrl, $iHeaderCode);
     }
 
     /**
@@ -981,21 +940,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function handlePageNotFoundError($sUrl = '')
     {
-        $sReturn = "Page not found.";
-        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
-        $oView->init();
-        $oView->render();
-        $oView->setClassKey('oxUBase');
-        $oView->addTplParam('sUrl', $sUrl);
-        if ($sRet = Registry::getUtilsView()->getTemplateOutput('message/err_404', $oView)) {
-            $sReturn = $sRet;
-        }
-
-        $response = new Response($sReturn, 404, ['Content-Type' => 'text/html; charset=UTF-8']);
-        $response->send();
-
-        $this->prepareToExit();
-        exit();
+        throw new NotFoundHttpException(sprintf('Page not found: %s', $sUrl));
     }
 
     /**

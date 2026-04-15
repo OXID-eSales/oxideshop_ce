@@ -44,40 +44,32 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 
     public function testRenderTraditionalController(): void
     {
-        ob_start();
-	    $this->shopControl->start('module1_controller', '');
-	    $output = ob_get_clean();
+        $response = $this->shopControl->buildResponse('module1_controller', '');
 
-	    $this->assertStringContainsString('module1/module_controller', $output);
+        $this->assertStringContainsString('module1/module_controller', $response->getContent());
     }
 
     public function testRenderServiceController(): void
     {
-        ob_start();
-        $this->shopControl->start('test_module_controller_as_service', '');
-        $output = ob_get_clean();
+        $response = $this->shopControl->buildResponse('test_module_controller_as_service', '');
 
-        $this->assertStringContainsString('module1/module_controller_as_service', $output);
+        $this->assertStringContainsString('module1/module_controller_as_service', $response->getContent());
     }
 
     public function testRenderServiceControllerWithFunction(): void
     {
-        ob_start();
-        $this->shopControl->start('test_module_controller_as_service', 'testFunction');
-        $output = ob_get_clean();
+        $response = $this->shopControl->buildResponse('test_module_controller_as_service', 'testFunction');
 
-        $this->assertStringContainsString('module1/module_controller_as_service', $output);
-        $this->assertStringContainsString('Function output', $output);
+        $this->assertStringContainsString('module1/module_controller_as_service', $response->getContent());
+        $this->assertStringContainsString('Function output', $response->getContent());
     }
 
     public function testControllerDecorator(): void
     {
-        ob_start();
-        $this->shopControl->start('test_module_controller_as_service', 'testFunction');
-        $output = ob_get_clean();
+        $response = $this->shopControl->buildResponse('test_module_controller_as_service', 'testFunction');
 
-        $this->assertStringContainsString('module1/module_controller_as_service', $output);
-        $this->assertStringContainsString('Init Decorator', $output);
+        $this->assertStringContainsString('module1/module_controller_as_service', $response->getContent());
+        $this->assertStringContainsString('Init Decorator', $response->getContent());
     }
 
     private function setupModuleFixture(string $moduleId): void

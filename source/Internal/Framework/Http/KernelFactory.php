@@ -7,11 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Api;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Http;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
@@ -20,31 +19,24 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\Matcher\CompiledUrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
-class Api
+class KernelFactory
 {
-    public function run(): void
+    public function create(): HttpKernel
     {
         $container = ContainerFactory::getInstance()->getContainer();
-        $request = Request::createFromGlobals();
 
         $context = new RequestContext();
-        $context->fromRequest($request);
         $matcher = new CompiledUrlMatcher($container->getParameter('oxid.routes'), $context);
 
         $requestStack = new RequestStack();
         $dispatcher = $container->get(EventDispatcherInterface::class);
         $dispatcher->addSubscriber(new RouterListener($matcher, $requestStack));
 
-        $kernel = new HttpKernel(
+        return new HttpKernel(
             $dispatcher,
             new ContainerControllerResolver($container),
             $requestStack,
             new ArgumentResolver(namedResolvers: $container)
         );
-
-        $response = $kernel->handle($request);
-        $response->send();
-
-        $kernel->terminate($request, $response);
     }
 }

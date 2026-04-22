@@ -17,6 +17,7 @@ imports:
   - { resource: Session/services.yaml }
   - { resource: SystemRequirements/services.yaml }
   - { resource: Templating/services.yaml }
+  - { resource: Twig/services.yaml }
   - { resource: Theme/services.yaml }
   - { resource: Mailing/services.yaml }
   - { resource: RateLimiter/services.yaml }

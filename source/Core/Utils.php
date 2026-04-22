@@ -714,7 +714,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @deprecated Set headers via BeforeResponseSendEvent listener
+     * @deprecated Set headers via a kernel.response listener (KernelEvents::RESPONSE)
      */
     public function setHeader($sHeader)
     {

@@ -74,9 +74,4 @@ if (is_readable(OX_BASE_PATH . 'modules/functions.php')) {
 }
 require_once OX_BASE_PATH . 'overridablefunctions.php';
 
-ini_set('session.name', 'sid');
-ini_set('session.use_cookies', 0);
-ini_set('session.use_trans_sid', 0);
-ini_set('url_rewriter.tags', '');
-
 date_default_timezone_set(getenv('OXID_DEFAULT_TIMEZONE') ?: 'Europe/Berlin');

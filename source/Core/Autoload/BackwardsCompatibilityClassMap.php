@@ -472,7 +472,6 @@ return [
     'oxonlineserveremailbuilder' => 'OxidEsales\\Eshop\\Core\\OnlineServerEmailBuilder',
     'oxonlinevatidcheck' => 'OxidEsales\\Eshop\\Core\\OnlineVatIdCheck',
     'oxopensslfunctionalitychecker' => 'OxidEsales\\Eshop\\Core\\OpenSSLFunctionalityChecker',
-    'oxoutput' => 'OxidEsales\\Eshop\\Core\\Output',
     'oxpasswordhasher' => 'OxidEsales\\Eshop\\Core\\PasswordHasher',
     'oxpicturehandler' => 'OxidEsales\\Eshop\\Core\\PictureHandler',
     'oxprice' => 'OxidEsales\\Eshop\\Core\\Price',

@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/{path}', name: 'legacy', requirements: ['path' => '.*'], priority: -1000)]
+#[Route('/{path}', name: 'legacy', requirements: ['path' => '(?!api/).*'], priority: -1000)]
 readonly class LegacyController
 {
     public function __construct(
@@ -28,12 +28,25 @@ readonly class LegacyController
 
     public function __invoke(Request $request): Response
     {
+        if ($this->isAdminAjaxRequest($request)) {
+            return oxNew(ShopControl::class)->buildAjaxResponse(
+                (string)Registry::getRequest()->getRequestParameter('container'),
+                Registry::getRequest()->getRequestParameter('fnc')
+            );
+        }
+
         Registry::getConfig()->init();
 
         return oxNew(ShopControl::class)->buildResponse(
             $this->resolveControllerKey(),
             Registry::getRequest()->getRequestEscapedParameter('fnc')
         );
+    }
+
+    private function isAdminAjaxRequest(Request $request): bool
+    {
+        return $request->headers->get('X-Requested-With') === 'XMLHttpRequest'
+            && (bool)Registry::getRequest()->getRequestParameter('container');
     }
 
     private function resolveControllerKey(): string

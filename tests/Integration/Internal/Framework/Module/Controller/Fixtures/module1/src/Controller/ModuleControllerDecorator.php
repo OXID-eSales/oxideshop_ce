@@ -19,9 +19,11 @@ class ModuleControllerDecorator extends AbstractControllerDecorator
 
     }
 
-    public function init()
+    public function getViewData()
     {
-        echo "Init Decorator";
-        $this->controller->init();
+        return array_merge(
+            $this->controller->getViewData(),
+            ['_decoratorTag' => 'Init Decorator']
+        );
     }
 }

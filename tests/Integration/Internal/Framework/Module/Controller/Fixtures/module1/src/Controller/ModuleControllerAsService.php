@@ -17,6 +17,6 @@ class ModuleControllerAsService extends BaseController
 
     public function testFunction(): void
     {
-        echo 'Function output';
+        $this->addTplParam('_functionOutput', 'Function output');
     }
 }

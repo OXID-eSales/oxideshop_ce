@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 /**
- * @deprecated Set headers via BeforeResponseSendEvent listener
+ * @deprecated Set headers via a kernel.response listener (KernelEvents::RESPONSE)
  */
 class Header
 {

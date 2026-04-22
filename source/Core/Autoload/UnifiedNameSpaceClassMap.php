@@ -2817,12 +2817,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Output'                                               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Output::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Oxid'                                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Oxid::class,
         'isAbstract'       => false,

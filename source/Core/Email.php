@@ -798,7 +798,6 @@ class Email extends PHPMailer
                     $registerUrl .= "re=" . md5($email);
                     $this->setViewData("sHomeUrl", $registerUrl);
 
-                    // Process view data array through oxoutput processor
                     $this->processViewArray();
 
                     $this->setBody($renderer->renderTemplate($this->_sInviteTemplate, $this->getViewData()));
@@ -1469,10 +1468,6 @@ class Email extends PHPMailer
 
     protected function makeOutputProcessing()
     {
-        $output = oxNew(\OxidEsales\Eshop\Core\Output::class);
-        $this->setBody($output->process($this->getBody(), "oxemail"));
-        $this->setAltBody($output->process($this->getAltBody(), "oxemail"));
-        $output->processEmail($this);
     }
 
     protected function sendMail()
@@ -1495,12 +1490,6 @@ class Email extends PHPMailer
 
     protected function processViewArray()
     {
-        $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);
-
-        // processing assigned template variables
-        $newArray = $outputProcessor->processViewArray($this->_aViewData, "oxemail");
-
-        $this->_aViewData = array_merge($this->_aViewData, $newArray);
     }
 
     public function getCharset()

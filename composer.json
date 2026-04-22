@@ -46,7 +46,9 @@
         "symfony/http-kernel": "^7.3",
         "symfony/routing": "^7.3",
         "symfony/error-handler": "^7.3",
-        "symfony/rate-limiter": "^7.3"
+        "symfony/rate-limiter": "^7.3",
+        "symfony/framework-bundle": "^8.0",
+        "symfony/twig-bundle": "^8.0"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

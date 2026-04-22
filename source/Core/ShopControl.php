@@ -7,14 +7,15 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Controller\BaseController;
+use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeResponseSendEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
@@ -45,9 +46,59 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             $response = new Response($output, 200, ['Content-Type' => "text/html; charset={$charset}"]);
         }
 
-        ContainerFacade::dispatch(new BeforeResponseSendEvent($response, $view));
-
         return $response;
+    }
+
+    public function buildAjaxResponse(string $container, ?string $function = null): Response
+    {
+        $config = Registry::getConfig();
+        $config->init();
+
+        $utilModule = $config->getConfigParam('sUtilModule');
+        if ($utilModule && file_exists(getShopBasePath() . 'modules/' . $utilModule)) {
+            include_once getShopBasePath() . 'modules/' . $utilModule;
+        }
+
+        $config->setConfigParam('blAdmin', true);
+
+        if (!$this->isAdminAjaxAuthorized()) {
+            return new RedirectResponse('index.php');
+        }
+
+        $container = strtolower(trim(basename($container)));
+        $ajaxComponent = $this->resolveAjaxComponent($container);
+
+        ob_start();
+        try {
+            $ajaxComponent->setName($container);
+            $ajaxComponent->processRequest($function);
+        } finally {
+            $body = ob_get_clean() ?: '';
+        }
+
+        $config->pageClose();
+
+        return new Response($body);
+    }
+
+    private function isAdminAjaxAuthorized(): bool
+    {
+        return Registry::getSession()->checkSessionChallenge()
+            && count(Registry::getUtilsServer()->getOxCookie())
+            && Registry::getUtils()->checkAccessRights();
+    }
+
+    private function resolveAjaxComponent(string $container): object
+    {
+        $ajaxContainerClassName = $container . '_ajax';
+        try {
+            $containerClass = Registry::getControllerClassNameResolver()->getClassNameById($ajaxContainerClassName);
+            return oxNew($containerClass);
+        } catch (SystemComponentException) {
+            $exception = new FileException();
+            $exception->setMessage('EXCEPTION_FILENOTFOUND ' . $ajaxContainerClassName);
+            throw $exception;
+        }
     }
 
     protected function resolveControllerClass(string $controllerKey): string
@@ -56,7 +107,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             ?? throw new RoutingException("Controller \"{$controllerKey}\" cannot be resolved");
     }
 
-    protected function initializeViewObject(string $controllerKey, string $class, ?string $function, ?array $parameters = null): BaseController
+    protected function initializeViewObject(string $controllerKey, string $class, ?string $function, ?array $parameters = null): ViewControllerInterface
     {
         $controller = $this->isServiceController($controllerKey, $class)
             ? ContainerFacade::get($class)
@@ -71,7 +122,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         return $controller;
     }
 
-    protected function executeAction(BaseController $view, ?string $function): void
+    protected function executeAction(ViewControllerInterface $view, ?string $function): void
     {
         if ($function && method_exists($view, $function) && !(new \ReflectionMethod($view, $function))->isPublic()) {
             throw new RoutingException("Non public method cannot be accessed: " . get_class($view) . "::{$function}");
@@ -80,12 +131,12 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $view->executeFunction($function);
     }
 
-    protected function formOutput(BaseController $view): string
+    protected function formOutput(ViewControllerInterface $view): string
     {
         return $this->render($view);
     }
 
-    protected function render(BaseController $view): string
+    protected function render(ViewControllerInterface $view): string
     {
         $templateName = $view->render();
         $renderer = $this->getRenderer();

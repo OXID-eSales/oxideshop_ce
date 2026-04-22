@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Twig\BundleAwareTemplateChainResolver:
+    decorates: 'OxidEsales\Twig\Resolver\TemplateChain\TemplateChainResolverInterface'
+    decoration_on_invalid: ignore

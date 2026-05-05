@@ -14,6 +14,6 @@ class ShopVersion
      */
     public static function getVersion()
     {
-        return '7.4.1';
+        return '7.4.2';
     }
 }

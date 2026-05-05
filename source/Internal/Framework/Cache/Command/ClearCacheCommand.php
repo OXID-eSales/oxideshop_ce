@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Cache\Command;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Event\ClearShopCacheEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheServiceInterface;
@@ -12,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ClearCacheCommand extends Command
 {
@@ -20,7 +22,8 @@ class ClearCacheCommand extends Command
         private TemplateCacheServiceInterface $templateCacheService,
         private ContainerCacheInterface $containerCache,
         private ModuleCacheServiceInterface $moduleCacheService,
-        private ContextInterface $context
+        private ContextInterface $context,
+        private EventDispatcherInterface $eventDispatcher
     ) {
         parent::__construct();
     }
@@ -37,6 +40,7 @@ class ClearCacheCommand extends Command
 
         foreach ($this->context->getAllShopIds() as $shopId) {
             $this->containerCache->invalidate($shopId);
+            $this->eventDispatcher->dispatch(new ClearShopCacheEvent($shopId));
         }
 
         $this->moduleCacheService->invalidateAll();

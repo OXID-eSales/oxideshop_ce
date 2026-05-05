@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.5.1 - unreleased
+
+### Fixed
+- Clear template chain cache when clearing shop cache
+
 ## v7.5.0 - 2026-04-08
 
 ### Added

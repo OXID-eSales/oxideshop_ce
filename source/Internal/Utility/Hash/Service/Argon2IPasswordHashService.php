@@ -14,6 +14,8 @@ use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPol
 
 /**
  * Hashes with the ARGON2I algorithm
+ *
+ * @deprecated 7.6.0
  */
 class Argon2IPasswordHashService implements PasswordHashServiceInterface
 {

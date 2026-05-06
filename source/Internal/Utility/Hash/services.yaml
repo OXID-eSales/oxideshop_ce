@@ -1,5 +1,6 @@
 parameters:
-  oxid_esales.utility.hash.service.password_hash.bcrypt.cost: 10
+  oxid_esales.utility.hash.service.password_hash.bcrypt.cost: 12
+  # @deprecated 7.6.0 Argon2IPasswordHashService is deprecated and will be removed in a future major version.
   oxid_esales.utility.hash.service.password_hash.argon2.memory_cost: 1024
   oxid_esales.utility.hash.service.password_hash.argon2.time_cost: 2
   oxid_esales.utility.hash.service.password_hash.argon2.threads: 2

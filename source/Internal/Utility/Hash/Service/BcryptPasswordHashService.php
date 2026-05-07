@@ -11,58 +11,30 @@ namespace OxidEsales\EshopCommunity\Internal\Utility\Hash\Service;
 
 use OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception\PasswordHashException;
 use OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface;
+use ValueError;
 
 class BcryptPasswordHashService implements PasswordHashServiceInterface
 {
-    /**
-     * @var int $cost
-     * The value of the option cost has to be between 4 and 31.
-     */
-    private $cost;
-
-    /**
-     * @throws PasswordHashException
-     */
     public function __construct(
-        private PasswordPolicyInterface $passwordPolicy,
-        int $cost
+        private readonly PasswordPolicyInterface $passwordPolicy,
+        private readonly int $cost
     ) {
-        $this->validateCostOption($cost);
-        $this->cost = $cost;
     }
 
-    /**
-     * Creates a password hash
-     *
-     * @param string $password
-     *
-     * @return string
-     * @throws PasswordHashException
-     */
     public function hash(string $password): string
     {
         $this->passwordPolicy->enforcePasswordPolicy($password);
 
-        $hash = password_hash(
-            $password,
-            PASSWORD_BCRYPT,
-            $this->getOptions()
-        );
-
-        if ($hash === false) {
+        try {
+            return password_hash($password, PASSWORD_BCRYPT, $this->getOptions());
+        } catch (ValueError $exception) {
             throw new PasswordHashException(
-                'The password could not have been hashed.'
+                message: 'The password could not have been hashed.',
+                previous: $exception
             );
         }
-
-        return $hash;
     }
 
-    /**
-     * @param string $passwordHash
-     *
-     * @return bool
-     */
     public function passwordNeedsRehash(string $passwordHash): bool
     {
         return password_needs_rehash(
@@ -72,27 +44,8 @@ class BcryptPasswordHashService implements PasswordHashServiceInterface
         );
     }
 
-    /**
-     * @return array
-     */
     private function getOptions(): array
     {
         return ['cost' => $this->cost];
-    }
-
-
-    /**
-     * @param int $cost
-     *
-     * @throws PasswordHashException
-     */
-    private function validateCostOption(int $cost)
-    {
-        if ($cost < 4) {
-            throw new PasswordHashException('The cost option for bcrypt must not be smaller than 4.');
-        }
-        if ($cost > 31) {
-            throw new PasswordHashException('The cost option for bcrypt must not be bigger than 31.');
-        }
     }
 }

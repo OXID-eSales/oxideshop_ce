@@ -92,7 +92,7 @@ final class BcryptPasswordHashServiceTest extends TestCase
     {
         $this->expectException(PasswordHashException::class);
 
-        $this->getPasswordHashServiceMock($invalidCostOption);
+        $this->getPasswordHashServiceMock($invalidCostOption)->hash("secret");
     }
 
     public static function invalidCostOptionDataProvider(): array

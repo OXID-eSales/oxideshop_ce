@@ -4,6 +4,7 @@
 *Compilation release*
 
 ### Removed
+- The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support
 

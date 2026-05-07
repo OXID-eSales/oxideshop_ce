@@ -9,10 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Utility\Hash\Service;
 
+use OxidEsales\EshopCommunity\Internal\Utility\Hash\Exception\PasswordHashException;
+
 interface PasswordHashServiceInterface
 {
     /**
      * @param string $password
+     *
+     * @throws PasswordHashException
      *
      * @return string
      */

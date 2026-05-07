@@ -2,6 +2,9 @@
 
 ## v7.5.1 - unreleased
 
+### Added
+- `ClearShopCacheEvent`
+
 ### Fixed
 - Clear template chain cache when clearing shop cache
 

@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge;
 
+use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Exception\UnavailableSourceOfRandomnessException;
 
 interface RandomTokenGeneratorBridgeInterface
@@ -14,6 +15,7 @@ interface RandomTokenGeneratorBridgeInterface
     /**
      * @param int $length
      * @return string
+     * @throws InvalidArgumentException
      * @throws UnavailableSourceOfRandomnessException
      */
     public function getAlphanumericToken(int $length): string;
@@ -21,6 +23,7 @@ interface RandomTokenGeneratorBridgeInterface
     /**
      * @param int $length
      * @return string
+     * @throws InvalidArgumentException
      * @throws UnavailableSourceOfRandomnessException
      */
     public function getHexToken(int $length): string;

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Domain\Authentication\Generator;
 
+use InvalidArgumentException;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Generator\RandomTokenGenerator;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -24,13 +25,11 @@ final class RandomTokenGeneratorTest extends TestCase
         $this->assertTrue(ctype_alnum($token));
     }
 
-    public function testGetAlphanumericTokenWithShortTokenWillReturnsExpectedLength(): void
+    public function testGetAlphanumericTokenWithTooShortLengthWillThrowException(): void
     {
-        $tokenLength = 1;
+        $this->expectException(InvalidArgumentException::class);
 
-        $token = (new RandomTokenGenerator())->getAlphanumericToken($tokenLength);
-
-        $this->assertEquals($tokenLength, strlen($token));
+        (new RandomTokenGenerator())->getAlphanumericToken(7);
     }
 
     public function testGetAlphanumericTokenWithLongTokenWillReturnsExpectedLength(): void
@@ -45,7 +44,7 @@ final class RandomTokenGeneratorTest extends TestCase
     public function testGetAlphanumericTokenWillPadResultToExpectedLength(): void
     {
         $tokens = [];
-        $tokenLength = 3;
+        $tokenLength = 8;
         $tokenGenerator = new RandomTokenGenerator();
 
         /**
@@ -85,12 +84,11 @@ final class RandomTokenGeneratorTest extends TestCase
         $this->assertTrue(ctype_xdigit($token));
     }
 
-    public function testGetHexTokenWithShortTokenWillReturnExpectedLength(): void
+    public function testGetHexTokenWithTooShortLengthWillThrowException(): void
     {
-        $length = 1;
-        $token = (new RandomTokenGenerator())->getHexToken($length);
+        $this->expectException(InvalidArgumentException::class);
 
-        $this->assertEquals($length, strlen($token));
+        (new RandomTokenGenerator())->getHexToken(7);
     }
 
     public function testGetHexTokenWithLongTokensWillReturnExpectedLength(): void

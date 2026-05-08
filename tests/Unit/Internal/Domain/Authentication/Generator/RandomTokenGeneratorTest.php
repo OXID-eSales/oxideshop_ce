@@ -49,7 +49,8 @@ final class RandomTokenGeneratorTest extends TestCase
         $tokenGenerator = new RandomTokenGenerator();
 
         /**
-         * Strings with multiple non-alphanumeric characters (e.g. "/+E4", "+s+w", "//w5", etc.) will be too short after cleaning.
+         * Strings with multiple non-alphanumeric characters (e.g. "/+E4", "+s+w", "//w5", etc.)
+         * will be too short after cleaning.
          * Get some array of results, big enough to contain at least one such combination of characters.
          */
         for ($i = 0; $i < 1024; $i++) {
@@ -64,7 +65,7 @@ final class RandomTokenGeneratorTest extends TestCase
     public function testGetAlphanumericTokenWillReturnUniqueValues(): void
     {
         $tokens = [];
-        $tokenLength = 3;
+        $tokenLength = 8;
         $tokenGenerator = new RandomTokenGenerator();
         $iterations = 3;
 
@@ -103,7 +104,7 @@ final class RandomTokenGeneratorTest extends TestCase
     public function testGetHexTokenWillReturnUniqueValues(): void
     {
         $tokens = [];
-        $tokenLength = 3;
+        $tokenLength = 8;
         $tokenGenerator = new RandomTokenGenerator();
         $iterations = 3;
 

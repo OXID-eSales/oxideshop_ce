@@ -11,5 +11,6 @@
 - `Argon2IPasswordHashService`
 
 ### Fixed
+- Random collision in `RandomTokenGenerator` tests
 
 ### Removed

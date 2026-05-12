@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\TemplateCacheS
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -60,9 +61,11 @@ class ClearCacheCommandTest extends TestCase
             $eventDispatcherMock
         );
 
-        $command->run(
+        $exitCode = $command->run(
             $this->createStub(InputInterface::class),
             $this->createStub(OutputInterface::class),
         );
+
+        $this->assertSame(Command::SUCCESS, $exitCode);
     }
 }

@@ -16,10 +16,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
-/**
- * Command activates module by module id.
- */
 class ModuleActivateCommand extends Command
 {
     public const MESSAGE_MODULE_ACTIVATED = 'Module - "%s" was activated.';
@@ -30,7 +28,7 @@ class ModuleActivateCommand extends Command
         private ContextInterface $context,
         private ModuleActivationServiceInterface $moduleActivationService
     ) {
-        parent::__construct(null);
+        parent::__construct();
     }
 
     /**
@@ -46,34 +44,36 @@ class ModuleActivateCommand extends Command
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $style = new SymfonyStyle($input, $output);
         $moduleId = $input->getArgument('module-id');
 
-        if ($this->isInstalled($moduleId)) {
-            $this->activateModule($output, $moduleId);
-        } else {
-            $output->writeLn('<error>' . sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
+        if (!$this->isInstalled($moduleId)) {
+            $style->error(sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId));
+            return Command::FAILURE;
         }
 
-        return 0;
+        $this->activateModule($style, $moduleId);
+
+        return Command::SUCCESS;
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $moduleId
+     * @param SymfonyStyle $style
+     * @param string       $moduleId
+     *
+     * @return void
      */
-    protected function activateModule(OutputInterface $output, string $moduleId)
+    protected function activateModule(SymfonyStyle $style, string $moduleId)
     {
         $this->moduleActivationService->activate($moduleId, $this->context->getCurrentShopId());
-        $output->writeLn('<info>' . sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId) . '</info>');
+        $style->success(sprintf(static::MESSAGE_MODULE_ACTIVATED, $moduleId));
     }
 
-    /**
-     * @param string $moduleId
-     * @return bool
-     */
     private function isInstalled(string $moduleId): bool
     {
         return $this->moduleConfigurationDao->exists($moduleId, $this->context->getCurrentShopId());

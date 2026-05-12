@@ -16,6 +16,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ModuleDeactivateCommand extends Command
 {
@@ -28,7 +29,7 @@ class ModuleDeactivateCommand extends Command
         private ContextInterface $context,
         private ModuleActivationServiceInterface $moduleActivationService
     ) {
-        parent::__construct(null);
+        parent::__construct();
     }
 
     /**
@@ -37,43 +38,43 @@ class ModuleDeactivateCommand extends Command
     protected function configure()
     {
         $this->setDescription('Deactivates a module.')
-            ->addArgument(static::ARGUMENT_MODULE_ID, InputArgument::REQUIRED, 'Module ID')
+            ->addArgument(self::ARGUMENT_MODULE_ID, InputArgument::REQUIRED, 'Module ID')
             ->setHelp('Command deactivates module by defined module ID.');
     }
 
     /**
      * @param InputInterface  $input
      * @param OutputInterface $output
+     *
+     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $style = new SymfonyStyle($input, $output);
         $moduleId = $input->getArgument('module-id');
 
-        if ($this->isInstalled($moduleId)) {
-            $this->deactivateModule($output, $moduleId);
-        } else {
-            $output->writeLn('<error>' . sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId) . '</error>');
+        if (!$this->isInstalled($moduleId)) {
+            $style->error(sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId));
+            return Command::FAILURE;
         }
 
-        return 0;
+        $this->deactivateModule($style, $moduleId);
+
+        return Command::SUCCESS;
     }
 
     /**
-     * @param OutputInterface $output
-     * @param string          $moduleId
+     * @param SymfonyStyle $style
+     * @param string       $moduleId
+     *
+     * @return void
      */
-    protected function deactivateModule(OutputInterface $output, string $moduleId)
+    protected function deactivateModule(SymfonyStyle $style, string $moduleId)
     {
         $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
-        $output->writeLn(
-            '<info>' . sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId) . '</info>'
-        );
+        $style->success(sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId));
     }
 
-    /**
-     * @param string $moduleId
-     * @return bool
-     */
     private function isInstalled(string $moduleId): bool
     {
         return $this->moduleConfigurationDao->exists($moduleId, $this->context->getCurrentShopId());

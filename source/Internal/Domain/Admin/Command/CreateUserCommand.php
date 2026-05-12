@@ -20,6 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CreateUserCommand extends Command
 {
@@ -62,6 +63,7 @@ class CreateUserCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $style = new SymfonyStyle($input, $output);
         $this->checkRequiredCommandOptions($this->getDefinition()->getOptions(), $input);
 
         $email = $input->getOption(self::ADMIN_EMAIL);
@@ -70,10 +72,10 @@ class CreateUserCommand extends Command
 
         $this->validateAdminEmail($email);
 
-        $output->writeln('<info>Creating administrator account...</info>');
+        $style->text('Creating administrator account...');
         $this->createAdmin($email, $password, $shopId);
 
-        $output->writeln('<info>Administrator account has been created.</info>');
+        $style->success('Administrator account has been created.');
 
         return Command::SUCCESS;
     }

@@ -69,13 +69,13 @@ class ModuleCommandsTestCase extends TestCase
             ->install(new OxidEshopPackage(Path::join($this->modulesPath, $this->moduleId)));
     }
 
-    protected function executeCommand(string $command, array $input = []): string
+    protected function executeCommand(string $command, array $input = []): CommandTester
     {
         $commandTester = new CommandTester(
             $this->get('console.command_loader')->get($command)
         );
 
         $commandTester->execute($input);
-        return $commandTester->getDisplay();
+        return $commandTester;
     }
 }

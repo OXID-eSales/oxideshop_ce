@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 
 final class ThemeActivateCommandTest extends IntegrationTestCase
@@ -46,6 +47,7 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
         $commandTester->execute($arguments);
         $this->assertSame($this->themeId, $this->getActiveTheme());
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
     public function testThemeAlreadyActivated(): void
@@ -61,6 +63,7 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
             sprintf('Theme - "%s" is already active.', $this->themeId),
             $commandTester->getDisplay()
         );
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
     public function testNonExistingThemeActivation(): void
@@ -76,8 +79,8 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
             sprintf('Theme - "%s" not found.', $nonExistingThemeId),
             $commandTester->getDisplay()
         );
-
         $this->assertSame('absolute-dummy-value', $this->getActiveTheme());
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
     }
 
     private function getCommandObject(): ThemeActivateCommand

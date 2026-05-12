@@ -196,7 +196,7 @@ final class ShopSetupCommandTest extends TestCase
         ]);
 
         $this->assertServiceCallsWithCompleteArgs();
-        $this->assertSame(0, $exitCode);
+        $this->assertSame(Command::SUCCESS, $exitCode);
     }
 
     public function testExecuteWithMissingOptionalArgs(): void
@@ -223,7 +223,7 @@ final class ShopSetupCommandTest extends TestCase
         ]);
 
         $this->assertServiceCallsWithOptionalArgs();
-        $this->assertSame(0, $exitCode);
+        $this->assertSame(Command::SUCCESS, $exitCode);
     }
 
     public function testInstallationTimeSaved(): void

@@ -22,12 +22,38 @@ final class OxidKernelTest extends TestCase
 
     protected function setUp(): void
     {
+        $this->ensureFrameworkConfigExists();
         $cacheDir = (new TestKernel('test', true))->getCacheDir();
         if (is_dir($cacheDir)) {
             $this->removeDir($cacheDir);
         }
         $this->kernel = new TestKernel('test', true);
         $this->kernel->boot();
+    }
+
+    private function ensureFrameworkConfigExists(): void
+    {
+        $configDir = (new TestKernel('test', true))->getProjectDir() . '/var/configuration';
+        $configFile = $configDir . '/framework.yaml';
+        if (is_file($configFile)) {
+            return;
+        }
+        if (!is_dir($configDir)) {
+            mkdir($configDir, 0o755, true);
+        }
+        file_put_contents($configFile, <<<YAML
+            framework:
+                secret: "%env(default:oxid_secret_default:OXID_SECRET)%"
+                http_method_override: false
+                handle_all_throwables: true
+                php_errors:
+                    log: true
+                    throw: false
+                router:
+                    utf8: true
+                serializer:
+                    enabled: true
+            YAML);
     }
 
     private function removeDir(string $dir): void

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules;
 
-use OxidEsales\Eshop\Application\Controller\ContentController as EshopContentController;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
@@ -21,9 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_chain_extension_3_1\vendor_1_module_3_1_myclass;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\ContentController as ModuleContentController;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingArticle;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingContentController;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleChainExtension36\MyClass36;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\ModuleInheritance28a\MyClass;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\Vendor1\namespaced_from_ns\MyClass as namespaced_from_ns;
@@ -190,55 +186,7 @@ final class ModuleInheritanceTest extends IntegrationTestCase
         $this->assertClassInheritance($moduleClassName, $shopClassNames);
     }
 
-    /**
-     * This test covers loading chain of a classes which are extended by another class with native php "extends".
-     */
-    #[DataProvider('dataProviderTestNativeExtensionOfChainExtendingClass')]
-    public function testNativeExtensionOfChainExtendingClass(
-        array $moduleToActivate,
-        string $extensionClass,
-        string $classToExtend
-    ): void {
-        $this->installModules($moduleToActivate);
-        $this->activateModules($moduleToActivate);
-
-        $this->assertClassInheritance($extensionClass, [$classToExtend]);
-    }
-
-    public static function dataProviderTestNativeExtensionOfChainExtendingClass(): array
-    {
-        $modules = ['module_chain_extension_3_1', 'module_native_extension'];
-
-        return [
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => ModuleContentController::class,
-                'classToExtend' => EshopContentController::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingContentController::class,
-                'classToExtend' => ModuleContentController::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => TestDataInheritance\modules\module_native_extension\Article::class,
-                'classToExtend' => Article::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingArticle::class,
-                'classToExtend' => TestDataInheritance\modules\module_native_extension\Article::class,
-            ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingArticle::class,
-                'classToExtend' => vendor_1_module_3_1_myclass::class,
-            ],
-        ];
-    }
-
-    public static function dataProviderTestModuleInheritanceTestPhpInheritance(): array
+public static function dataProviderTestModuleInheritanceTestPhpInheritance(): array
     {
         return [
             'case_1_6' => [

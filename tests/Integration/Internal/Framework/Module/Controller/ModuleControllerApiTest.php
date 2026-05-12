@@ -73,6 +73,29 @@ final class ModuleControllerApiTest extends TestCase
     {
         $this->installModuleFixture($moduleId);
         $this->activateModuleFixture($moduleId);
+        $this->invalidateApacheKernelCache();
+    }
+
+    /**
+     * Apache (separate process) compiles its own kernel cache. Test setUp activates a module
+     * via the test process, but Apache's prod/dev cache file may already exist from a prior
+     * request and could be considered fresh by Symfony's filemtime-based freshness check.
+     * Delete the dev/prod cache files so Apache's next request is forced to recompile and
+     * pick up the just-activated module.
+     */
+    private function invalidateApacheKernelCache(): void
+    {
+        $cacheDir = $this->get(BasicContextInterface::class)->getCacheDirectory()
+            . '/shop_' . $this->get(BasicContextInterface::class)->getDefaultShopId();
+        if (!is_dir($cacheDir)) {
+            return;
+        }
+        foreach (new \DirectoryIterator($cacheDir) as $entry) {
+            $name = $entry->getFilename();
+            if (str_contains($name, 'OxidKernelDev') || str_contains($name, 'OxidKernelProd') || $name === 'url_matching_routes.php' || str_starts_with($name, 'url_matching_routes')) {
+                @unlink($entry->getPathname());
+            }
+        }
     }
 
     private function installModuleFixture(string $moduleId): void

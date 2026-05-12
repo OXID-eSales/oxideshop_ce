@@ -5,13 +5,21 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Kernel\Fixtures;
 
 use OxidEsales\EshopCommunity\Internal\Framework\OxidKernel;
+use OxidEsales\EshopCommunity\Tests\CompilerPass\SilenceLoggerPass;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Kernel\Fixtures\TestBundle\TestBundle;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\BundleInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 
 class TestKernel extends OxidKernel
 {
+    public function __construct(string $environment, bool $debug)
+    {
+        parent::__construct($environment, $debug);
+        $this->addCompilerPass(new SilenceLoggerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -100);
+    }
+
     /** @return iterable<BundleInterface> */
     public function registerBundles(): iterable
     {

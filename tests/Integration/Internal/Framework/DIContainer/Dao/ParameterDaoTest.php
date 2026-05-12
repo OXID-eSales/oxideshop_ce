@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 final class ParameterDaoTest extends IntegrationTestCase
@@ -39,6 +40,7 @@ final class ParameterDaoTest extends IntegrationTestCase
 
         $dao->add('param_1', $value1, 1);
         $dao->add('param_1', $value2, 1);
+        TestContainerFactory::resetContainer();
 
         $this->assertEquals($value2, ContainerFacade::getParameter('param_1'));
     }
@@ -68,6 +70,7 @@ final class ParameterDaoTest extends IntegrationTestCase
         $parameterName = 'test' . time();
         $dao = ContainerFacade::get(ParameterDaoInterface::class);
         $dao->add($parameterName, 'value', 1);
+        TestContainerFactory::resetContainer();
 
         $this->assertEquals(
             'value',
@@ -75,6 +78,7 @@ final class ParameterDaoTest extends IntegrationTestCase
         );
 
         $dao->remove($parameterName, 1);
+        TestContainerFactory::resetContainer();
 
         $this->expectException(ParameterNotFoundException::class);
 
@@ -85,6 +89,7 @@ final class ParameterDaoTest extends IntegrationTestCase
     {
         $dao = ContainerFacade::get(ParameterDaoInterface::class);
         $dao->add('testEnvVar', '%env(OXID_TEST_ENV_VAR)%', 1);
+        TestContainerFactory::resetContainer();
 
         putenv('OXID_TEST_ENV_VAR=testValue');
 

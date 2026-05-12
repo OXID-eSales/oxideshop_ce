@@ -22,7 +22,6 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\EmailAdapterInte
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Throwable;
 
@@ -1636,10 +1635,7 @@ class Email extends PHPMailer
 
     private function dispatchAdminModeChangedEvent(): void
     {
-        ContainerFacade::get(EventDispatcherInterface::class)
-            ->dispatch(
-                new AdminModeChangedEvent()
-            );
+        ContainerFacade::dispatch(new AdminModeChangedEvent());
     }
 
     private function areOrderEmailsDisabled(): bool

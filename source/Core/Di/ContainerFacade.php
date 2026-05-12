@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Core\Di;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
@@ -61,7 +60,7 @@ final class ContainerFacade
     {
         return ContainerFactory::getInstance()
             ->getContainer()
-            ->get(EventDispatcherInterface::class)
+            ->get('event_dispatcher')
             ->dispatch($event);
     }
 }

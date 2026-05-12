@@ -7,21 +7,20 @@
 
 declare(strict_types=1);
 
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Api\ExceptionHandler;
-use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
-use OxidEsales\EshopCommunity\Internal\Framework\OxidKernel;
+use Symfony\Component\ErrorHandler\Debug;
+use Symfony\Component\HttpFoundation\Request;
 
-define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
-define('OX_BASE_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR);
-define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR);
-
-require_once VENDOR_PATH . 'autoload.php';
-
-require_once INSTALLATION_ROOT_PATH . '/source/oxfunctions.php';
-require_once INSTALLATION_ROOT_PATH . '/source/overridablefunctions.php';
-
-new DotenvLoader(INSTALLATION_ROOT_PATH)->loadEnvironmentVariables();
+require_once __DIR__ . '/bootstrap.php';
 
 set_exception_handler([new ExceptionHandler(), 'handle']);
 
-OxidKernel::runFromGlobals();
+$kernel = ContainerFactory::getInstance()->getKernel();
+if ($kernel->isDebug()) {
+    Debug::enable();
+}
+$request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);

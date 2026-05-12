@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleDependencyDao;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Group;
@@ -34,7 +34,7 @@ final class ModuleDependencyDaoTest extends IntegrationTestCase
         $moduleDependencyDao = new ModuleDependencyDao(
             $this->get(FileStorageFactoryInterface::class),
             $pathResolverStub,
-            $this->get(BasicContextInterface::class)
+            $this->get(ContextInterface::class)
         );
         $moduleDependencies = $moduleDependencyDao->get('module-id');
 
@@ -50,7 +50,7 @@ final class ModuleDependencyDaoTest extends IntegrationTestCase
         $moduleDependencyDao = new ModuleDependencyDao(
             $this->get(FileStorageFactoryInterface::class),
             $pathResolverStub,
-            $this->get(BasicContextInterface::class)
+            $this->get(ContextInterface::class)
         );
         $moduleDependencies = $moduleDependencyDao->get('module-id');
 
@@ -66,7 +66,7 @@ final class ModuleDependencyDaoTest extends IntegrationTestCase
         $moduleDependencyDao = new ModuleDependencyDao(
             $this->get(FileStorageFactoryInterface::class),
             $pathResolverStub,
-            $this->get(BasicContextInterface::class)
+            $this->get(ContextInterface::class)
         );
         $moduleDependencies = $moduleDependencyDao->get('module-id');
 

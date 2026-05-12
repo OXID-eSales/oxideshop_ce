@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
-use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
@@ -58,7 +57,6 @@ register_shutdown_function(
 );
 
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
-spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
 /** Set exception handler before including modules/functions.php, so it can be overwritten by shop operators. */
 set_exception_handler(

@@ -8,7 +8,7 @@
 declare(strict_types=1);
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use Psr\Log\LoggerInterface;
 
 if (!function_exists('getShopBasePath')) {
@@ -137,6 +137,6 @@ if (!function_exists('getLogger')) {
      */
     function getLogger()
     {
-        return ContainerFactory::getInstance()->getContainer()->get(LoggerInterface::class);
+        return ContainerFacade::get(LoggerInterface::class);
     }
 }

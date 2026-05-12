@@ -9,5 +9,12 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/bootstrap.php';
 
-OxidEsales\EshopCommunity\Internal\Framework\OxidKernel::runFromGlobals();
+$kernel = OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getKernel();
+if ($kernel->isDebug()) {
+    Symfony\Component\ErrorHandler\Debug::enable();
+}
+$request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
 OxidEsales\Eshop\Core\Registry::getSession()->freeze();

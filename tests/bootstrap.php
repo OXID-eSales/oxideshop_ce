@@ -8,7 +8,6 @@
 declare(strict_types=1);
 
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
-use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use Symfony\Component\Filesystem\Path;
@@ -19,7 +18,6 @@ define('OX_BASE_PATH', Path::join(INSTALLATION_ROOT_PATH, 'source') . DIRECTORY_
 
 require VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
-spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
 require_once Path::join(OX_BASE_PATH, 'oxfunctions.php');
 require_once Path::join(OX_BASE_PATH, 'overridablefunctions.php');

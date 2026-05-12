@@ -14,6 +14,7 @@ use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 class FilesystemContainerCache implements ContainerCacheInterface
 {
@@ -47,5 +48,12 @@ class FilesystemContainerCache implements ContainerCacheInterface
         if ($this->filesystem->exists($this->context->getContainerCacheFilePath($shopId))) {
             $this->filesystem->remove($this->context->getContainerCacheFilePath($shopId));
         }
+        $kernelCacheDir = Path::join($this->context->getCacheDirectory(), 'shop_' . $shopId);
+        $filesystem = $this->filesystem;
+        register_shutdown_function(static function () use ($filesystem, $kernelCacheDir): void {
+            if ($filesystem->exists($kernelCacheDir)) {
+                $filesystem->remove($kernelCacheDir);
+            }
+        });
     }
 }

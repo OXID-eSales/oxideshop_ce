@@ -23,10 +23,13 @@ use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Path;
 
 /**
  * @internal
+ * @deprecated Use OxidKernel instead. This class will be removed in a future version.
  */
 class ContainerBuilder
 {
@@ -52,6 +55,9 @@ class ContainerBuilder
         $this->containerBuilder->addCompilerPass(new AddConsoleCommandPass());
         $this->containerBuilder->addCompilerPass(new ViewControllerPass());
         $this->containerBuilder->addCompilerPass(new RoutePass());
+
+        $this->containerBuilder->register(EventDispatcherInterface::class, EventDispatcher::class)->setPublic(true);
+        $this->containerBuilder->setAlias('event_dispatcher', EventDispatcherInterface::class)->setPublic(true);
 
         $this->loadEditionServices();
         $this->loadComponentServices();

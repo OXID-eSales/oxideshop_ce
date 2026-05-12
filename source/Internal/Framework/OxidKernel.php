@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass\RoutePass;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass\ViewControllerPass;
+use OxidEsales\EshopCommunity\Internal\Framework\Twig\OxidTwigLoaderPass;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyController;
@@ -23,11 +24,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\TwigBundle\TwigBundle;
-use Symfony\Component\ErrorHandler\Debug;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Config\Exception\FileLocatorFileNotFoundException;
 use Symfony\Component\Config\Exception\LoaderLoadException;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Resource\FileExistenceResource;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
@@ -45,6 +46,8 @@ class OxidKernel extends Kernel
     private BasicContextInterface $basicContext;
     private int $shopId;
     private ?ContainerBuilder $containerBuilder = null;
+    /** @var array<int, array{0: CompilerPassInterface, 1: string, 2: int}> */
+    private array $extraCompilerPasses = [];
 
     public function __construct(string $environment, bool $debug)
     {
@@ -53,20 +56,13 @@ class OxidKernel extends Kernel
         parent::__construct($environment, $debug);
     }
 
-    public static function runFromGlobals(): void
-    {
-        $debug = filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN);
-        $env = getenv('OXID_ENV') ?: 'prod';
-
-        if ($debug) {
-            Debug::enable();
-        }
-
-        $kernel = new self($env, $debug);
-        $request = Request::createFromGlobals();
-        $response = $kernel->handle($request);
-        $response->send();
-        $kernel->terminate($request, $response);
+    public function addCompilerPass(
+        CompilerPassInterface $pass,
+        string $type = \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION,
+        int $priority = 0
+    ): self {
+        $this->extraCompilerPasses[] = [$pass, $type, $priority];
+        return $this;
     }
 
     /** @return iterable<BundleInterface> */
@@ -138,6 +134,7 @@ class OxidKernel extends Kernel
 
         $container->addCompilerPass(new ViewControllerPass());
         $container->addCompilerPass(new RoutePass());
+        $container->addCompilerPass(new OxidTwigLoaderPass(), \Symfony\Component\DependencyInjection\Compiler\PassConfig::TYPE_BEFORE_OPTIMIZATION, 100);
 
         $this->loadEditionServices($container);
         $this->loadComponentServices($container);
@@ -146,6 +143,10 @@ class OxidKernel extends Kernel
         $this->loadProjectSubshopServices($container);
         $this->loadEnvironmentServices($container);
         $this->loadSubshopEnvironmentServices($container);
+
+        foreach ($this->extraCompilerPasses as [$pass, $type, $priority]) {
+            $container->addCompilerPass($pass, $type, $priority);
+        }
     }
 
     private function importServiceControllerRoutes(RoutingConfigurator $routes): void
@@ -216,14 +217,14 @@ class OxidKernel extends Kernel
 
     private function loadComponentServices(ContainerBuilder $container): void
     {
-        $this->loadYamlIfExists($this->yamlLoader($container), $this->basicContext->getGeneratedServicesFilePath());
+        $this->loadYamlIfExists($this->yamlLoader($container), $this->basicContext->getGeneratedServicesFilePath(), $container);
     }
 
     private function loadModuleServices(ContainerBuilder $container): void
     {
         $path = $this->basicContext->getActiveModuleServicesFilePath($this->shopId);
         try {
-            $this->loadYamlIfExists($this->yamlLoader($container), $path);
+            $this->loadYamlIfExists($this->yamlLoader($container), $path, $container);
         } catch (LoaderLoadException $exception) {
             (new LoggerServiceFactory(new Context($this->shopId)))
                 ->getLogger()
@@ -266,7 +267,7 @@ class OxidKernel extends Kernel
     private function loadProjectExtensionFiles(ContainerBuilder $container, string $configurationUrl): void
     {
         foreach (['services.yaml', 'parameters.yaml'] as $file) {
-            $this->loadYamlIfExists($this->yamlLoader($container), Path::join($configurationUrl, $file));
+            $this->loadYamlIfExists($this->yamlLoader($container), Path::join($configurationUrl, $file), $container);
         }
     }
 
@@ -275,11 +276,12 @@ class OxidKernel extends Kernel
         return new YamlFileLoader($container, new FileLocator($paths));
     }
 
-    private function loadYamlIfExists(YamlFileLoader $loader, string $yamlFile): void
+    private function loadYamlIfExists(YamlFileLoader $loader, string $yamlFile, ContainerBuilder $container): void
     {
         try {
             $loader->load($yamlFile);
         } catch (FileLocatorFileNotFoundException) {
+            $container->addResource(new FileExistenceResource($yamlFile));
         }
     }
 }

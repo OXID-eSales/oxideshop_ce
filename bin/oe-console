@@ -7,10 +7,9 @@
  */
 
 use OxidEsales\EshopCommunity\Internal\Container\BootstrapContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -54,21 +53,11 @@ $_POST['shp'] = $shopId;
 $bootstrapFilePath = Path::join((new ProjectRootLocator())->getProjectRoot(), 'source', 'bootstrap.php');
 require_once $bootstrapFilePath;
 
-$container = (new ContainerBuilder(new BasicContext(), $shopId))->getContainer();
-$container->compile(true);
-
-$commandLoader = $container->get('console.command_loader');
-
-$idCommands = [];
-foreach ($container->getParameter('console.command.ids') as $id) {
-    $idCommands[] = $container->get($id);
-}
+$kernel = ContainerFactory::getInstance()->getKernel();
+$kernel->boot();
+$container = $kernel->getContainer();
 
 $application = new Application();
-$application->setCommandLoader($commandLoader);
-$application->setDispatcher($container->get(EventDispatcherInterface::class));
-$application->addCommands(
-    $idCommands
-);
-
+$application->setCommandLoader($container->get('console.command_loader'));
+$application->setDispatcher($container->get('event_dispatcher'));
 $application->run();

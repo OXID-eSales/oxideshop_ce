@@ -17,4 +17,11 @@ if (!defined('OX_ADMIN_DIR')) {
 
 require_once dirname(__FILE__) . '/../bootstrap.php';
 
-OxidEsales\EshopCommunity\Internal\Framework\OxidKernel::runFromGlobals();
+$kernel = OxidEsales\EshopCommunity\Internal\Container\ContainerFactory::getInstance()->getKernel();
+if ($kernel->isDebug()) {
+    Symfony\Component\ErrorHandler\Debug::enable();
+}
+$request = Symfony\Component\HttpFoundation\Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);

@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleDeactivateCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use Symfony\Component\Console\Command\Command;
 
 final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
 {
@@ -22,12 +23,13 @@ final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
         $this->installTestModule();
         $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
 
-        $consoleOutput = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
+        $commandTester = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
 
-        $this->assertSame(
-            sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED, $this->moduleId) . PHP_EOL,
-            $consoleOutput
+        $this->assertStringContainsString(
+            sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED, $this->moduleId),
+            $commandTester->getDisplay()
         );
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
 
         $module = oxNew(Module::class);
         $module->load($this->moduleId);
@@ -36,14 +38,15 @@ final class ModuleDeactivateCommandTest extends ModuleCommandsTestCase
         $this->cleanupTestData();
     }
 
-    public function testNonExistingModuleActivation(): void
+    public function testNonExistingModuleDeactivation(): void
     {
         $moduleId = 'test';
-        $consoleOutput = $this->executeCommand($this->commandName, ['module-id' => $moduleId]);
+        $commandTester = $this->executeCommand($this->commandName, ['module-id' => $moduleId]);
 
-        $this->assertSame(
-            sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId) . PHP_EOL,
-            $consoleOutput
+        $this->assertStringContainsString(
+            sprintf(ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId),
+            $commandTester->getDisplay()
         );
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
     }
 }

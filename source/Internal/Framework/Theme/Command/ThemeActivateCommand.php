@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ThemeActivateCommand extends Command
 {
@@ -38,25 +39,22 @@ class ThemeActivateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $style = new SymfonyStyle($input, $output);
         $themeId = $input->getArgument('theme-id');
 
         if (!$this->shopAdapter->themeExists($themeId)) {
-            $output->writeLn(
-                '<error>' . sprintf(self::MESSAGE_THEME_NOT_FOUND, $themeId) . '</error>'
-            );
-            return Command::INVALID;
+            $style->error(sprintf(self::MESSAGE_THEME_NOT_FOUND, $themeId));
+            return Command::FAILURE;
         }
 
         if ($this->shopAdapter->getActiveThemeId() === $themeId) {
-            $output->writeln(
-                '<comment>' . sprintf(self::MESSAGE_THEME_IS_ACTIVE, $themeId) . '</comment>'
-            );
+            $style->info(sprintf(self::MESSAGE_THEME_IS_ACTIVE, $themeId));
             return Command::SUCCESS;
         }
 
         $this->shopAdapter->activateTheme($themeId);
         $this->shopCacheCleaner->clearAll();
-        $output->writeLn('<info>' . sprintf(self::MESSAGE_THEME_ACTIVATED, $themeId) . '</info>');
+        $style->success(sprintf(self::MESSAGE_THEME_ACTIVATED, $themeId));
 
         return Command::SUCCESS;
     }

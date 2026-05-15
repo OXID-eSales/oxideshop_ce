@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ClearCacheCommand extends Command
 {
@@ -37,8 +38,8 @@ class ClearCacheCommand extends Command
         foreach ($this->context->getAllShopIds() as $shopId) {
             $this->containerCache->invalidate($shopId);
         }
-        $output->writeln('<info>Cleared cache files</info>');
+        (new SymfonyStyle($input, $output))->success('Cleared cache files');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

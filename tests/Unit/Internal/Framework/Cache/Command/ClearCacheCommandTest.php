@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ContainerCa
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -29,10 +30,12 @@ final class ClearCacheCommandTest extends TestCase
             $this->getShopCacheCleanerMock()
         );
 
-        $command->run(
+        $exitCode = $command->run(
             $this->createStub(InputInterface::class),
             $this->createStub(OutputInterface::class),
         );
+
+        $this->assertSame(Command::SUCCESS, $exitCode);
     }
 
     private function getContainerCacheMock(): ContainerCacheInterface

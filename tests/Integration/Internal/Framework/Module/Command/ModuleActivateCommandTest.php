@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\
 
 use OxidEsales\Eshop\Core\Module\Module;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleActivateCommand;
+use Symfony\Component\Console\Command\Command;
 
 final class ModuleActivateCommandTest extends ModuleCommandsTestCase
 {
@@ -20,12 +21,13 @@ final class ModuleActivateCommandTest extends ModuleCommandsTestCase
     {
         $this->installTestModule();
 
-        $consoleOutput = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
+        $commandTester = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
 
-        $this->assertSame(
-            sprintf(ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED, $this->moduleId) . PHP_EOL,
-            $consoleOutput
+        $this->assertStringContainsString(
+            sprintf(ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED, $this->moduleId),
+            $commandTester->getDisplay()
         );
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
 
         $module = oxNew(Module::class);
         $module->load($this->moduleId);
@@ -37,11 +39,12 @@ final class ModuleActivateCommandTest extends ModuleCommandsTestCase
     public function testNonExistingModuleActivation(): void
     {
         $moduleId = 'test';
-        $consoleOutput = $this->executeCommand($this->commandName, ['module-id' => $moduleId]);
+        $commandTester = $this->executeCommand($this->commandName, ['module-id' => $moduleId]);
 
-        $this->assertSame(
-            sprintf(ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId) . PHP_EOL,
-            $consoleOutput
+        $this->assertStringContainsString(
+            sprintf(ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId),
+            $commandTester->getDisplay()
         );
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
     }
 }

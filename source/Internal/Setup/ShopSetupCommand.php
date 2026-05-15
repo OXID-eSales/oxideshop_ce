@@ -20,6 +20,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ShopSetupCommand extends Command
 {
@@ -48,25 +49,26 @@ class ShopSetupCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln('<info>Running pre-setup checks...</info>');
+        $style = new SymfonyStyle($input, $output);
+        $style->text('Running pre-setup checks...');
         $setupParameters = $this->setupParametersFactory
             ->create(new DefaultLanguage($input->getOption('language')));
         $this->setupInfrastructureValidator
             ->validate($setupParameters);
 
-        $output->writeln('<info>Updating htaccess file...</info>');
+        $style->text('Updating htaccess file...');
         $this->htaccessUpdateService
             ->updateRewriteBaseDirective(
                 $setupParameters->getShopBaseUrl()
             );
 
-        $output->writeln('<info>Installing database...</info>');
+        $style->text('Installing database...');
         $this->shopDbManager
             ->create(
                 $setupParameters->getDbConfig()
             );
 
-        $output->writeln('<info>Installing language...</info>');
+        $style->text('Installing language...');
         $this->languageInstaller
             ->install(
                 $setupParameters->getLanguage()
@@ -75,8 +77,8 @@ class ShopSetupCommand extends Command
         $this->shopConfigurationUpdater
             ->saveShopSetupTime();
 
-        $output->writeln('<info>Setup has been finished.</info>');
+        $style->success('Setup has been finished.');
 
-        return 0;
+        return Command::SUCCESS;
     }
 }

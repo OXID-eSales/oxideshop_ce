@@ -34,10 +34,8 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
     public function testThemeActivationOnSuccess(): void
     {
-        $this->createCommandTester()
-            ->execute(
-                ['theme-id' => $this->newThemeId]
-            );
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $this->newThemeId]);
 
         $this->assertSame($this->newThemeId, $this->getActiveTheme());
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());

@@ -9,13 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Path;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
+
 interface ModulePathResolverInterface
 {
     /**
-     * @param string $moduleId
-     * @param int    $shopId
-     *
-     * @return string
+     * @throws ModuleConfigurationNotFoundException
      */
     public function getFullModulePathFromConfiguration(string $moduleId, int $shopId): string;
 }

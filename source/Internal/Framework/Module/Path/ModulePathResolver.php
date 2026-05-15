@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Path;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Path;
 
 class ModulePathResolver implements ModulePathResolverInterface
@@ -25,10 +26,7 @@ class ModulePathResolver implements ModulePathResolverInterface
      * This method does not validate if the path returned exists. It returns more or less the value from the project
      * configuration.
      *
-     * @param string $moduleId
-     * @param int    $shopId
-     *
-     * @return string
+     * @throws ModuleConfigurationNotFoundException
      */
     public function getFullModulePathFromConfiguration(string $moduleId, int $shopId): string
     {

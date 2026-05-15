@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Command;
 
 use OxidEsales\Eshop\Core\Module\Module;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Command\ModuleActivateCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use Symfony\Component\Console\Command\Command;
 
 final class ModuleActivateCommandTest extends ModuleCommandsTestCase
@@ -21,30 +21,31 @@ final class ModuleActivateCommandTest extends ModuleCommandsTestCase
     {
         $this->installTestModule();
 
-        $commandTester = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
+        $exitCode = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
 
-        $this->assertStringContainsString(
-            sprintf(ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED, $this->moduleId),
-            $commandTester->getDisplay()
-        );
-        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+        $this->assertSame(Command::SUCCESS, $exitCode);
 
         $module = oxNew(Module::class);
         $module->load($this->moduleId);
         $this->assertTrue($module->isActive());
+    }
 
-        $this->cleanupTestData();
+    public function testAlreadyActiveModuleActivation(): void
+    {
+        $this->installTestModule();
+        $this->get(ModuleActivationBridgeInterface::class)->activate($this->moduleId, 1);
+
+        $exitCode = $this->executeCommand($this->commandName, ['module-id' => $this->moduleId]);
+
+        $this->assertSame(Command::SUCCESS, $exitCode);
     }
 
     public function testNonExistingModuleActivation(): void
     {
         $moduleId = 'test';
-        $commandTester = $this->executeCommand($this->commandName, ['module-id' => $moduleId]);
 
-        $this->assertStringContainsString(
-            sprintf(ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND, $moduleId),
-            $commandTester->getDisplay()
-        );
-        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        $exitCode = $this->executeCommand($this->commandName, ['module-id' => $moduleId]);
+
+        $this->assertSame(Command::FAILURE, $exitCode);
     }
 }

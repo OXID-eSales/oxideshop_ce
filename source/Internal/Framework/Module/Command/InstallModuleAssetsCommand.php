@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Path;
 
-class InstallModuleAssetsCommand extends Command
+final class InstallModuleAssetsCommand extends Command
 {
     public function __construct(
         private ShopConfigurationDaoInterface $shopConfigurationDao,

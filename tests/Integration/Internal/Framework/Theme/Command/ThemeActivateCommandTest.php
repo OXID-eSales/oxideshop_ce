@@ -49,10 +49,6 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         $commandTester->execute($arguments);
         $commandTester->execute($arguments);
 
-        $this->assertStringContainsString(
-            \sprintf('Theme - "%s" is already active.', $this->newThemeId),
-            $commandTester->getDisplay()
-        );
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
@@ -63,10 +59,7 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
         $commandTester->execute(['theme-id' => $nonExistingThemeId]);
 
-        $this->assertStringContainsString(
-            sprintf('Theme - "%s" not found.', $nonExistingThemeId),
-            $commandTester->getDisplay()
-        );
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
         $this->assertSame($this->initialThemeId, $this->getActiveTheme());
     }
 

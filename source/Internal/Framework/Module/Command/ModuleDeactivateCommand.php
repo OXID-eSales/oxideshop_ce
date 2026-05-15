@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Command;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ModuleConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
@@ -18,65 +18,35 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ModuleDeactivateCommand extends Command
+final class ModuleDeactivateCommand extends Command
 {
-    public const MESSAGE_MODULE_DEACTIVATED = 'Module - "%s" has been deactivated.';
-    public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
-    private const ARGUMENT_MODULE_ID = 'module-id';
-
     public function __construct(
-        private ModuleConfigurationDaoInterface $moduleConfigurationDao,
-        private ContextInterface $context,
-        private ModuleActivationServiceInterface $moduleActivationService
+        private readonly ModuleActivationServiceInterface $moduleActivationService,
+        private readonly ContextInterface $context,
     ) {
         parent::__construct();
     }
 
-    /**
-     * @inheritdoc
-     */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setDescription('Deactivates a module.')
-            ->addArgument(self::ARGUMENT_MODULE_ID, InputArgument::REQUIRED, 'Module ID')
+            ->addArgument('module-id', InputArgument::REQUIRED, 'Module ID')
             ->setHelp('Command deactivates module by defined module ID.');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
         $moduleId = $input->getArgument('module-id');
 
-        if (!$this->isInstalled($moduleId)) {
-            $style->error(sprintf(static::MESSAGE_MODULE_NOT_FOUND, $moduleId));
+        try {
+            $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
+        } catch (ModuleConfigurationNotFoundException) {
+            $style->error(sprintf('Module - "%s" not found.', $moduleId));
             return Command::FAILURE;
         }
 
-        $this->deactivateModule($style, $moduleId);
-
+        $style->success(sprintf('Module - "%s" has been deactivated.', $moduleId));
         return Command::SUCCESS;
-    }
-
-    /**
-     * @param SymfonyStyle $style
-     * @param string       $moduleId
-     *
-     * @return void
-     */
-    protected function deactivateModule(SymfonyStyle $style, string $moduleId)
-    {
-        $this->moduleActivationService->deactivate($moduleId, $this->context->getCurrentShopId());
-        $style->success(sprintf(static::MESSAGE_MODULE_DEACTIVATED, $moduleId));
-    }
-
-    private function isInstalled(string $moduleId): bool
-    {
-        return $this->moduleConfigurationDao->exists($moduleId, $this->context->getCurrentShopId());
     }
 }

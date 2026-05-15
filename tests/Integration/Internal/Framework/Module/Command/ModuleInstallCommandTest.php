@@ -57,9 +57,9 @@ final class ModuleInstallCommandTest extends TestCase
 
     public function testInstallWithWrongModulePath(): void
     {
-        $consoleOutput = $this->executeModuleInstallCommand('wrong-path');
+        $this->expectException(\InvalidArgumentException::class);
 
-        $this->assertSame(Command::FAILURE, $consoleOutput);
+        $this->executeModuleInstallCommand('wrong-path');
     }
 
     private function executeModuleInstallCommand(string $moduleSourcePath): int

@@ -49,6 +49,7 @@ class CreateUserCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
+
         $this->validateAdminEmail($input->getArgument(self::ADMIN_EMAIL));
 
         $style->text('Creating administrator account...');

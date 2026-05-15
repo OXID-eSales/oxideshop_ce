@@ -50,6 +50,7 @@ class ShopSetupCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $style = new SymfonyStyle($input, $output);
+
         $style->text('Running pre-setup checks...');
         $setupParameters = $this->setupParametersFactory
             ->create(new DefaultLanguage($input->getOption('language')));

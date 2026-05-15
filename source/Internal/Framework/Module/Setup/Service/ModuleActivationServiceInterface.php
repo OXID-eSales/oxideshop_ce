@@ -9,17 +9,17 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
+
 interface ModuleActivationServiceInterface
 {
     /**
-     * @param string $moduleId
-     * @param int    $shopId
+     * @throws ModuleConfigurationNotFoundException
      */
-    public function activate(string $moduleId, int $shopId);
+    public function activate(string $moduleId, int $shopId): void;
 
     /**
-     * @param string $moduleId
-     * @param int    $shopId
+     * @throws ModuleConfigurationNotFoundException
      */
-    public function deactivate(string $moduleId, int $shopId);
+    public function deactivate(string $moduleId, int $shopId): void;
 }

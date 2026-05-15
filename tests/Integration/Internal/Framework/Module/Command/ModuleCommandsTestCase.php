@@ -60,13 +60,9 @@ class ModuleCommandsTestCase extends IntegrationTestCase
             ->install(new OxidEshopPackage(Path::join($this->modulesPath, $this->moduleId)));
     }
 
-    protected function executeCommand(string $command, array $input = []): CommandTester
+    protected function executeCommand(string $command, array $input = []): int
     {
-        $commandTester = new CommandTester(
-            $this->get('console.command_loader')->get($command)
-        );
-
-        $commandTester->execute($input);
-        return $commandTester;
+        return (new CommandTester($this->get('console.command_loader')->get($command)))
+            ->execute($input);
     }
 }

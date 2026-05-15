@@ -17,12 +17,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-class ThemeActivateCommand extends Command
+final class ThemeActivateCommand extends Command
 {
-    private const MESSAGE_THEME_IS_ACTIVE = 'Theme - "%s" is already active.';
-    private const MESSAGE_THEME_ACTIVATED = 'Theme - "%s" was activated.';
-    private const MESSAGE_THEME_NOT_FOUND = 'Theme - "%s" not found.';
-
     public function __construct(
         private readonly ShopAdapterInterface $shopAdapter,
         private readonly ShopCacheCleanerInterface $shopCacheCleaner,
@@ -43,18 +39,18 @@ class ThemeActivateCommand extends Command
         $themeId = $input->getArgument('theme-id');
 
         if (!$this->shopAdapter->themeExists($themeId)) {
-            $style->error(sprintf(self::MESSAGE_THEME_NOT_FOUND, $themeId));
+            $style->error(sprintf('Theme - "%s" not found.', $themeId));
             return Command::FAILURE;
         }
 
         if ($this->shopAdapter->getActiveThemeId() === $themeId) {
-            $style->info(sprintf(self::MESSAGE_THEME_IS_ACTIVE, $themeId));
+            $style->info(sprintf('Theme - "%s" is already active.', $themeId));
             return Command::SUCCESS;
         }
 
         $this->shopAdapter->activateTheme($themeId);
         $this->shopCacheCleaner->clearAll();
-        $style->success(sprintf(self::MESSAGE_THEME_ACTIVATED, $themeId));
+        $style->success(sprintf('Theme - "%s" was activated.', $themeId));
 
         return Command::SUCCESS;
     }

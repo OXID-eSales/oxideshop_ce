@@ -25,6 +25,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModulePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ModuleConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Service\ModuleActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Validator\ModuleConfigurationValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\State\ModuleStateServiceInterface;
@@ -73,6 +74,22 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
         $moduleActivationService->deactivate($this->testModuleId, $this->shopId);
 
         $this->assertFalse($moduleStateService->isActive($this->testModuleId, $this->shopId));
+    }
+
+    public function testActivateThrowsOnNonExistentModule(): void
+    {
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+
+        $this->expectException(ModuleConfigurationNotFoundException::class);
+        $moduleActivationService->activate('nonExistentModule', $this->shopId);
+    }
+
+    public function testDeactivateThrowsOnNonExistentModule(): void
+    {
+        $moduleActivationService = $this->container->get(ModuleActivationServiceInterface::class);
+
+        $this->expectException(ModuleConfigurationNotFoundException::class);
+        $moduleActivationService->deactivate('nonExistentModule', $this->shopId);
     }
 
     public function testSetActivatedInModuleConfiguration(): void

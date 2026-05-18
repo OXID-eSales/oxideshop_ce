@@ -1,9 +1,9 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.5.1 - unreleased
+## v7.5.1 - 2026-05-11
 
 ### Added
-- `ClearShopCacheEvent`
+- `ClearShopCacheEvent`, dispatched when the shop cache is cleared, allowing subscribers to invalidate additional caches
 
 ### Fixed
 - Clear template chain cache when clearing shop cache

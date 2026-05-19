@@ -10,6 +10,10 @@
 
 ### Deprecated
 - `Argon2IPasswordHashService`
+- `ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED`
+- `ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND`
+- `ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED`
+- `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
 
 ### Fixed
 - Random collision in `RandomTokenGenerator` tests

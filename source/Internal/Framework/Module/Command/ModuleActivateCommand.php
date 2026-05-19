@@ -20,7 +20,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ModuleActivateCommand extends Command
 {
+    /** @deprecated */
     public const MESSAGE_MODULE_ACTIVATED = 'Module - "%s" was activated.';
+    /** @deprecated */
     public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
 
     public function __construct(

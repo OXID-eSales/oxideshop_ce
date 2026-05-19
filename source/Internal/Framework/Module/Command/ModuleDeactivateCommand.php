@@ -20,7 +20,9 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ModuleDeactivateCommand extends Command
 {
+    /** @deprecated */
     public const MESSAGE_MODULE_DEACTIVATED = 'Module - "%s" has been deactivated.';
+    /** @deprecated */
     public const MESSAGE_MODULE_NOT_FOUND = 'Module - "%s" not found.';
     private const ARGUMENT_MODULE_ID = 'module-id';
 

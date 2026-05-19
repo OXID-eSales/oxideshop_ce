@@ -710,8 +710,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns visitor ip address
-     *
+     * @deprecated
      * @return string
      */
     public function getRemoteAddress()

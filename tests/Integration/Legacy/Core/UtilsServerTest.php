@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 
 final class UtilsServerTest extends TestCase
@@ -46,5 +47,22 @@ final class UtilsServerTest extends TestCase
 
         $utils->deleteUserCookie();
         $this->assertNull($utils->getUserCookie());
+    }
+
+    #[RunInSeparateProcess]
+    public function testGetRemoteAddressRespectsXForwardedForWithTrustedProxy(): void
+    {
+        $proxyIp = '1.2.3.4';
+        $clientIp = '9.9.9.9';
+
+        $_SERVER['REMOTE_ADDR'] = $proxyIp;
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = $clientIp;
+
+        $this->createContainer();
+        $this->setParameter('oxid_esales.request.trusted_proxies', [$proxyIp]);
+        $this->compileContainer();
+        $this->attachContainerToContainerFactory();
+
+        $this->assertSame($clientIp, oxNew('oxutilsserver')->getRemoteAddress());
     }
 }

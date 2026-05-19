@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 use OxidEsales\Eshop\Application\Model\Voucher as EshopVoucherModel;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Order manager.
@@ -634,7 +635,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // store IP Address - default must be FALSE as it is illegal to store
         if ($myConfig->getConfigParam('blStoreIPs') && $this->oxorder__oxip->value === null) {
-            $this->oxorder__oxip = new \OxidEsales\Eshop\Core\Field(\OxidEsales\Eshop\Core\Registry::getUtilsServer()->getRemoteAddress(), \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxorder__oxip = new \OxidEsales\Eshop\Core\Field($this->getService(Request::class)->getClientIp(), \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         //setting view mode

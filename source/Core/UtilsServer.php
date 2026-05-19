@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Server data manipulation class
@@ -238,22 +239,12 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns remote IP address
-     *
-     * @return string
+     * @deprecated
+     * @return string|null
      */
     public function getRemoteAddress()
     {
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-            $sIP = $_SERVER["HTTP_X_FORWARDED_FOR"];
-            $sIP = preg_replace('/,.*$/', '', $sIP);
-        } elseif (isset($_SERVER["HTTP_CLIENT_IP"])) {
-            $sIP = $_SERVER["HTTP_CLIENT_IP"];
-        } else {
-            $sIP = $_SERVER["REMOTE_ADDR"];
-        }
-
-        return $sIP;
+        return $this->getService(Request::class)->getClientIp();
     }
 
     /**
@@ -362,7 +353,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $blTrusted = false;
         $aTrustedIPs = (array) \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam("aTrustedIPs");
         if (count($aTrustedIPs)) {
-            $blTrusted = in_array($this->getRemoteAddress(), $aTrustedIPs);
+            $blTrusted = in_array($this->getService(Request::class)->getClientIp(), $aTrustedIPs);
         }
 
         return $blTrusted;

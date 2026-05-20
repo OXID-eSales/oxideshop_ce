@@ -707,20 +707,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @deprecated
-     * @return string
-     */
-    public function getRemoteAddress()
-    {
-        if (($sValue = $this->getViewConfigParam('ip')) === null) {
-            $sValue = Registry::getUtilsServer()->getRemoteAddress();
-            $this->setViewConfigParam('ip', $sValue);
-        }
-
-        return $sValue;
-    }
-
-    /**
      * Returns basket popup identifier
      *
      * @return string

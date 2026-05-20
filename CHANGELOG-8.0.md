@@ -14,6 +14,8 @@
 - `ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED`
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
+- `UtilsServer::getRemoteAddress()`
+- `ViewConfig::getRemoteAddress()`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

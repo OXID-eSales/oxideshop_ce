@@ -230,15 +230,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @deprecated
-     * @return string|null
-     */
-    public function getRemoteAddress()
-    {
-        return $this->getService(Request::class)->getClientIp();
-    }
-
-    /**
      * returns a server constant
      *
      * @param string $sServVar optional - which server var should be returned, if null returns whole $_SERVER
@@ -342,7 +333,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isTrustedClientIp()
     {
         return in_array(
-            $this->getService(Request::class)->getClientIp(),
+            ContainerFacade::get(Request::class)->getClientIp(),
             ContainerFacade::getParameter('oxid_esales.trusted_ips'),
             true
         );

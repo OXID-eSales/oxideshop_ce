@@ -86,7 +86,7 @@ final class CategoryProductListCest
         $productList->selectSorting('oxtitle', 'asc')
             ->seeProductData($productData)
             ->seeProductData($productData2, 2)
-            ->seeProductImageAltText('', 1)
+            ->seeProductImageAltText($productData['title'], 1)
             ->seeProductImageAltText($mediaFixture['primaryAltText'], 2)
             ->selectSorting('oxprice', 'desc')
             ->selectProductsPerPage('1')

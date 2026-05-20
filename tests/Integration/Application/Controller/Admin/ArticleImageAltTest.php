@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Adm
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ArticleImageAlt;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\LocaleChain;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaAttributeDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
@@ -169,8 +170,8 @@ final class ArticleImageAltTest extends IntegrationTestCase
         $controller->save();
 
         $dao = $this->get(MediaAttributeDaoInterface::class);
-        $this->assertSame('selected', $dao->getAttributes($selectedMediaId, 'de_DE', 1)->getAlt());
-        $this->assertFalse($dao->getAttributes($otherMediaId, 'de_DE', 1)->has('alt'));
+        $this->assertSame('selected', $dao->getAttributes($selectedMediaId, new LocaleChain(['de_DE']), 1)->getAlt());
+        $this->assertFalse($dao->getAttributes($otherMediaId, new LocaleChain(['de_DE']), 1)->has('alt'));
     }
 
     public function testSaveRemovesAltWhenTextIsEmpty(): void
@@ -205,7 +206,7 @@ final class ArticleImageAltTest extends IntegrationTestCase
 
         $this->assertFalse(
             $this->get(MediaAttributeDaoInterface::class)
-                ->getAttributes($mediaId, 'de_DE', 1)
+                ->getAttributes($mediaId, new LocaleChain(['de_DE']), 1)
                 ->has('alt')
         );
     }

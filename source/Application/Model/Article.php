@@ -658,6 +658,13 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
         return $this->oxarticles__oxunitquantity->value;
     }
 
+    public function getTitle(): string
+    {
+        $title = (string) $this->getFieldData('oxtitle');
+        $variant = (string) $this->getFieldData('oxvarselect');
+        return trim($title . ' ' . $variant);
+    }
+
     /**
      * Return Size of product: length*width*height
      *

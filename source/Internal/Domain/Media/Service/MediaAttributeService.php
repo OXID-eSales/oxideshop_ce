@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Service;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\LocaleChain;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaAttributeDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
@@ -28,7 +29,7 @@ readonly class MediaAttributeService implements MediaAttributeServiceInterface
     {
         return $this->attributeDao->getAttributes(
             $media->getId(),
-            $localeCode,
+            new LocaleChain([$localeCode]),
             $this->context->getCurrentShopId()
         );
     }

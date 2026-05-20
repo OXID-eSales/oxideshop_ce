@@ -7,13 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Dao;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\LocaleChain;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 interface MediaAttributeDaoInterface
 {
-    public function getAttributes(Id $mediaId, string $localeCode, int $shopId): MediaAttributes;
+    public function getAttributes(Id $mediaId, LocaleChain $chain, int $shopId): MediaAttributes;
 
     public function save(MediaAttribute $attribute): void;
 

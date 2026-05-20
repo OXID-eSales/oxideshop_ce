@@ -52,4 +52,12 @@ readonly class ProductMediaView
     {
         return $this->attributes;
     }
+
+    public function getAlt(string $fallback = ''): string
+    {
+        if ($this->attributes->has('alt') && $this->attributes->getAlt() !== '') {
+            return $this->attributes->getAlt();
+        }
+        return trim(strip_tags($fallback));
+    }
 }

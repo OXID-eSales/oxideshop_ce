@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
@@ -37,7 +37,7 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         private ThemeSettingDaoInterface $themeSettingDao,
         private ShopAdapterInterface $shopAdapter,
         private ContextInterface $context,
-        private MediaAttributeServiceInterface $attributeService,
+        private MediaAttributeViewServiceInterface $attributeService,
         private ActiveLocaleProviderInterface $activeLocaleProvider,
     ) {
     }

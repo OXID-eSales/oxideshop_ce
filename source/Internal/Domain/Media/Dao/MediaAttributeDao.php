@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Media\Dao;
 
+use Doctrine\DBAL\ArrayParameterType;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\LocaleChain;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
@@ -22,26 +24,35 @@ readonly class MediaAttributeDao implements MediaAttributeDaoInterface
     ) {
     }
 
-    public function getAttributes(Id $mediaId, string $localeCode, int $shopId): MediaAttributes
+    public function getAttributes(Id $mediaId, LocaleChain $chain, int $shopId): MediaAttributes
     {
+        if ($chain->isEmpty()) {
+            return new MediaAttributes();
+        }
+
         $rows = $this->queryBuilderFactory
             ->create()
-            ->select('name', 'value')
+            ->select('name', 'value', 'locale_code')
             ->from($this->table)
             ->where('media_id = :media_id')
-            ->andWhere('locale_code = :locale_code')
             ->andWhere('shop_id = :shop_id')
+            ->andWhere('locale_code IN (:locale_codes)')
             ->setParameter('media_id', $mediaId)
-            ->setParameter('locale_code', $localeCode)
             ->setParameter('shop_id', $shopId)
+            ->setParameter('locale_codes', $chain->getCodes(), ArrayParameterType::STRING)
             ->executeQuery()
             ->fetchAllAssociative();
 
-        $mapped = [];
-        foreach ($rows as $row) {
-            $mapped[$row['name']] = $row['value'];
+        $resolved = [];
+        foreach ($chain->getCodes() as $localeCode) {
+            foreach ($rows as $row) {
+                if ($row['locale_code'] === $localeCode) {
+                    $resolved[$row['name']] ??= $row['value'];
+                }
+            }
         }
-        return new MediaAttributes($mapped);
+
+        return new MediaAttributes($resolved);
     }
 
     public function save(MediaAttribute $attribute): void

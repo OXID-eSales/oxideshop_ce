@@ -483,4 +483,22 @@ final class ArticleTest extends IntegrationTestCase
     {
         $this->addProductMediaAndReturn($productId, $fileName, $position, $role);
     }
+
+    public function testGetTitleReturnsTitleWithVariant(): void
+    {
+        $article = oxNew(Article::class);
+        $article->oxarticles__oxtitle = new Field('Stan Smith', Field::T_RAW);
+        $article->oxarticles__oxvarselect = new Field('White 42', Field::T_RAW);
+
+        $this->assertSame('Stan Smith White 42', $article->getTitle());
+    }
+
+    public function testGetTitleTrimsTrailingSpaceWhenVariantEmpty(): void
+    {
+        $article = oxNew(Article::class);
+        $article->oxarticles__oxtitle = new Field('Stan Smith', Field::T_RAW);
+        $article->oxarticles__oxvarselect = new Field('', Field::T_RAW);
+
+        $this->assertSame('Stan Smith', $article->getTitle());
+    }
 }

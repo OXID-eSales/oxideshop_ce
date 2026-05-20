@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Media\Service;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao\LocaleDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\LocaleChain;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaAttributeDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
@@ -18,18 +20,12 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
-final class MediaAttributeServiceTest extends TestCase
+final class MediaAttributeServiceTest extends IntegrationTestCase
 {
-    use ContainerTrait;
-    use DatabaseTrait;
-
     private MediaAttributeServiceInterface $service;
     private MediaAttributeDaoInterface $dao;
     private Media $media;
@@ -39,18 +35,11 @@ final class MediaAttributeServiceTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->beginTransaction($this->get(ConnectionFactoryInterface::class)->create());
         $this->service = $this->get(MediaAttributeServiceInterface::class);
         $this->dao = $this->get(MediaAttributeDaoInterface::class);
         $this->locale = $this->get(ActiveLocaleProviderInterface::class)->getActiveLocale();
         $this->shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->media = $this->createMedia();
-    }
-
-    public function tearDown(): void
-    {
-        $this->rollBackTransaction($this->get(ConnectionFactoryInterface::class)->create());
-        parent::tearDown();
     }
 
     public function testGetReturnsAllAttributes(): void
@@ -77,7 +66,7 @@ final class MediaAttributeServiceTest extends TestCase
 
         $this->assertSame(
             'some alt text',
-            $this->dao->getAttributes($this->media->getId(), $this->locale->getCode(), $this->shopId)->getAlt()
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->getAlt()
         );
     }
 
@@ -85,7 +74,7 @@ final class MediaAttributeServiceTest extends TestCase
     {
         $this->service->save('title', 'some title', $this->media, $this->locale->getCode());
 
-        $media = $this->dao->getAttributes($this->media->getId(), $this->locale->getCode(), $this->shopId);
+        $media = $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId);
 
         $this->assertSame('some title', $media->get('title'));
     }
@@ -97,7 +86,7 @@ final class MediaAttributeServiceTest extends TestCase
 
         $this->assertSame(
             'updated',
-            $this->dao->getAttributes($this->media->getId(), $this->locale->getCode(), $this->shopId)->getAlt()
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->getAlt()
         );
     }
 
@@ -108,7 +97,7 @@ final class MediaAttributeServiceTest extends TestCase
         $this->service->delete(MediaAttribute::ALT, $this->media, $this->locale->getCode());
 
         $this->assertFalse(
-            $this->dao->getAttributes($this->media->getId(), $this->locale->getCode(), $this->shopId)->has(MediaAttribute::ALT)
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->has(MediaAttribute::ALT)
         );
     }
 
@@ -118,7 +107,7 @@ final class MediaAttributeServiceTest extends TestCase
 
         $this->assertSame(
             '  stored  ',
-            $this->dao->getAttributes($this->media->getId(), $this->locale->getCode(), $this->shopId)->getAlt()
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->getAlt()
         );
     }
 
@@ -131,8 +120,22 @@ final class MediaAttributeServiceTest extends TestCase
 
         $this->assertSame(
             'some title',
-            $this->dao->getAttributes($this->media->getId(), $this->locale->getCode(), $this->shopId)->get('title')
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->get('title')
         );
+    }
+
+    public function testGetAttributesReturnsOnlyRequestedLocale(): void
+    {
+        $fallbackLocale = new Locale('fr_FR', 'French', $this->locale->getCode());
+        $localeDao = $this->get(LocaleDaoInterface::class);
+        $localeDao->add($fallbackLocale);
+        $localeDao->addToShop($fallbackLocale->getCode(), $this->shopId);
+
+        $this->dao->save($this->createAttribute($this->media, $this->locale, MediaAttribute::ALT, 'value from active locale'));
+
+        $result = $this->service->getAttributes($this->media, $fallbackLocale->getCode());
+
+        $this->assertFalse($result->has(MediaAttribute::ALT));
     }
 
     private function createMedia(): Media

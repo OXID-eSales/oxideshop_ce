@@ -766,10 +766,10 @@ final class CheckoutProcessCest
 
         $orderInformation = [
             'orderNumber' => '1',
-            'status' => Translator::translate('SHIPPED'),
+            'status' => Translator::translate('NOT_SHIPPED_YET'),
             'name' => 'UserNamešÄßüл UserSurnamešÄßüл',
             'itemNumber' => '1',
-            'amount' => '1',
+            'amount' => '2',
             'product' => 'Test product 1 [EN] šÄßüл'
             ];
 

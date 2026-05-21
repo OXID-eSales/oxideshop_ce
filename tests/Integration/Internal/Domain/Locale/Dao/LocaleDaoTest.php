@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Locale\Dao
 
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao\LocaleDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Exception\LocaleAlreadyExistsException;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Exception\LocaleNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -46,6 +47,15 @@ final class LocaleDaoTest extends TestCase
 
         $this->assertSame('te_ST', $fetched->getCode());
         $this->assertSame('Test Locale', $fetched->getName());
+    }
+
+    public function testAddThrowsForDuplicateCode(): void
+    {
+        $this->localeDao->add(new Locale(code: 'du_PL', name: 'Duplicate', fallbackCode: 'du_PL'));
+
+        $this->expectException(LocaleAlreadyExistsException::class);
+
+        $this->localeDao->add(new Locale(code: 'du_PL', name: 'Duplicate Again', fallbackCode: 'du_PL'));
     }
 
     public function testGetByCodeThrowsForNonExistent(): void

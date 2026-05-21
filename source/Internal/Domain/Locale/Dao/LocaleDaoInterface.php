@@ -5,11 +5,10 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Exception\LocaleAlreadyExistsException;
 
 interface LocaleDaoInterface
 {
@@ -21,6 +20,7 @@ interface LocaleDaoInterface
     /** @return Locale[] */
     public function getByShopId(int $shopId): array;
 
+    /** @throws LocaleAlreadyExistsException */
     public function add(Locale $locale): void;
 
     public function update(Locale $locale): void;

@@ -10,10 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -48,7 +50,7 @@ class ArticleImageAlt extends AdminDetailsController
 
         $this->_aViewData['allImages'] = $images;
         $this->_aViewData['availableLocales'] = array_map(
-            fn($locale) => ['id' => $locale->getCode(), 'name' => $locale->getName()],
+            fn(Locale $locale): array => ['id' => $locale->getCode(), 'name' => $locale->getName()],
             $locales
         );
 
@@ -79,6 +81,7 @@ class ArticleImageAlt extends AdminDetailsController
         return array_map(static fn($altText) => trim((string) $altText), $altTexts);
     }
 
+    /** @param Locale[] $locales */
     private function buildImageData(ProductMedia $productMedia, array $locales): array
     {
         $media = $productMedia->getMedia();
@@ -93,7 +96,7 @@ class ArticleImageAlt extends AdminDetailsController
             'productMediaId' => (string) $productMedia->getId(),
             'filename' => basename((string) $media->getMediaPath()),
             'roles' => array_map(
-                fn($role) => $role->value(),
+                fn(ProductMediaRole $role): string => $role->value(),
                 $productMedia->getRoleSet()->getRoles()->toArray()
             ),
             'position' => $productMedia->hasPosition() ? $productMedia->getPosition() : 1,

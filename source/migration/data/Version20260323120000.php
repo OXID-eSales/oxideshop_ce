@@ -14,10 +14,15 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20260323120000 extends AbstractMigration
 {
+    public function getDescription(): string
+    {
+        return 'Add oxlocales and oxshop_locales tables for locale management';
+    }
+
     public function up(Schema $schema): void
     {
         $this->addSql("
-            CREATE TABLE IF NOT EXISTS `oxlocales` (
+            CREATE TABLE `oxlocales` (
                 `code` varchar(10) NOT NULL,
                 `name` varchar(100) NOT NULL,
                 `fallback` varchar(10) NOT NULL,
@@ -29,7 +34,7 @@ final class Version20260323120000 extends AbstractMigration
         ");
 
         $this->addSql("
-            CREATE TABLE IF NOT EXISTS `oxshop_locales` (
+            CREATE TABLE `oxshop_locales` (
                 `shop_id` int NOT NULL,
                 `code` varchar(10) NOT NULL,
                 `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

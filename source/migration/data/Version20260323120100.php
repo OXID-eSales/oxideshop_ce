@@ -14,27 +14,40 @@ use Doctrine\Migrations\AbstractMigration;
 
 final class Version20260323120100 extends AbstractMigration
 {
+    public function getDescription(): string
+    {
+        return 'Add default locales and assign them to all shops';
+    }
+
     public function up(Schema $schema): void
     {
-        $shopIds = $this->connection->fetchFirstColumn("SELECT OXID FROM oxshops");
-
         $locales = [
-            ['code' => 'de_DE', 'name' => 'Deutsch (Deutschland)', 'fallback' => 'de_DE'],
+            ['code' => 'de_DE', 'name' => 'Deutsch (Deutschland)', 'fallback' => ''],
             ['code' => 'en_GB', 'name' => 'English (United Kingdom)', 'fallback' => 'de_DE'],
         ];
 
         foreach ($locales as $locale) {
             $this->addSql(
-                "INSERT IGNORE INTO `oxlocales` (`code`, `name`, `fallback`) VALUES (?, ?, ?)",
-                [$locale['code'], $locale['name'], $locale['fallback']]
+                "INSERT INTO `oxlocales` (`code`, `name`, `fallback`)
+                 SELECT ?, ?, ?
+                 WHERE NOT EXISTS (
+                     SELECT 1 FROM `oxlocales` WHERE `code` = ?
+                 )",
+                [$locale['code'], $locale['name'], $locale['fallback'], $locale['code']]
             );
 
-            foreach ($shopIds as $shopId) {
-                $this->addSql(
-                    "INSERT IGNORE INTO `oxshop_locales` (`shop_id`, `code`) VALUES (?, ?)",
-                    [(int) $shopId, $locale['code']]
-                );
-            }
+            $this->addSql(
+                "INSERT INTO `oxshop_locales` (`shop_id`, `code`)
+                 SELECT `OXID`, ?
+                 FROM `oxshops`
+                 WHERE NOT EXISTS (
+                     SELECT 1
+                     FROM `oxshop_locales`
+                     WHERE `oxshop_locales`.`shop_id` = `oxshops`.`OXID`
+                     AND `oxshop_locales`.`code` = ?
+                 )",
+                [$locale['code'], $locale['code']]
+            );
         }
     }
 

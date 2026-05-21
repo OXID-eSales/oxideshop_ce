@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataMapper\LocaleDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Exception\LocaleAlreadyExistsException;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Exception\LocaleNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
@@ -73,13 +74,15 @@ readonly class LocaleDao implements LocaleDaoInterface
 
     public function add(Locale $locale): void
     {
+        $this->checkCodeNotTaken($locale->getCode());
+
         $this->queryBuilderFactory
             ->create()
             ->insert('oxlocales')
             ->values([
                 'code' => ':code',
                 'name' => ':name',
-                'fallback'   => ':fallback',
+                'fallback' => ':fallback',
             ])
             ->setParameters($this->dataMapper->toData($locale))
             ->executeStatement();
@@ -129,11 +132,11 @@ readonly class LocaleDao implements LocaleDaoInterface
             ->create()
             ->insert('oxshop_locales')
             ->values([
-                'shop_id'     => ':shopId',
+                'shop_id' => ':shopId',
                 'code' => ':code',
             ])
             ->setParameters([
-                'shopId'     => $shopId,
+                'shopId' => $shopId,
                 'code' => $localeCode,
             ])
             ->executeStatement();
@@ -148,9 +151,29 @@ readonly class LocaleDao implements LocaleDaoInterface
             ->andWhere('shop_id = :shopId')
             ->setParameters([
                 'code' => $localeCode,
-                'shopId'     => $shopId,
+                'shopId' => $shopId,
             ])
             ->executeStatement();
+    }
+
+    /**
+     * @throws LocaleAlreadyExistsException
+     */
+    private function checkCodeNotTaken(string $code): void
+    {
+        $exists = $this->queryBuilderFactory
+            ->create()
+            ->select('1')
+            ->from('oxlocales')
+            ->where('code = :code')
+            ->setParameter('code', $code)
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchOne();
+
+        if ($exists) {
+            throw new LocaleAlreadyExistsException(sprintf('A locale with code "%s" already exists.', $code));
+        }
     }
 
     /** @return Locale[] */

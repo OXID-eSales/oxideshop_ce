@@ -25,3 +25,10 @@ services:
     public: true
     arguments:
       $defaultFallbackLocale: '%oxid_esales.locale.default_fallback%'
+
+  OxidEsales\EshopCommunity\Application\Controller\Admin\Locales:
+    arguments:
+      $request: '@Symfony\Component\HttpFoundation\Request'
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'locales' }
+    public: true

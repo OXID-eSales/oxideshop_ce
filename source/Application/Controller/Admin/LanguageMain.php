@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Exception;
@@ -527,7 +528,10 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
         $locales = ContainerFacade::get(LocaleServiceInterface::class)->getForShop($shopId);
 
-        return array_map(fn($locale) => ['code' => $locale->getCode(), 'name' => $locale->getName()], $locales);
+        return array_map(
+            fn(Locale $locale): array => ['code' => $locale->getCode(), 'name' => $locale->getName()],
+            $locales
+        );
     }
 
     /**

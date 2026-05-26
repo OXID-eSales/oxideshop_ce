@@ -49,7 +49,7 @@ final class UtilsServerTest extends TestCase
     public function testIsTrustedServerWithConfiguredIp(): void
     {
         $someIp = '255.255.255.255';
-        $_SERVER['HTTP_CLIENT_IP'] = $someIp;
+        $_SERVER['REMOTE_ADDR'] = $someIp;
 
         $this->setParameter('oxid_esales.trusted_ips', [$someIp]);
 
@@ -61,7 +61,7 @@ final class UtilsServerTest extends TestCase
     public function testIsTrustedServerWithNonTrustedIp(): void
     {
         $someIp = '255.255.255.255';
-        $_SERVER['HTTP_CLIENT_IP'] = $someIp;
+        $_SERVER['REMOTE_ADDR'] = $someIp;
         $this->setParameter('oxid_esales.trusted_ips', ['1.2.3.4', '5.6.7.8']);
 
         $isTrusted = oxNew(UtilsServer::class)->isTrustedClientIp();

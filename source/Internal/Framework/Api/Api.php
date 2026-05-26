@@ -25,7 +25,7 @@ class Api
     public function run(): void
     {
         $container = ContainerFactory::getInstance()->getContainer();
-        $request = Request::createFromGlobals();
+        $request = $container->get(Request::class);
 
         $context = new RequestContext();
         $context->fromRequest($request);

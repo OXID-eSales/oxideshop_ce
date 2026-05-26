@@ -1,10 +1,17 @@
+parameters:
+  oxid_esales.request.trusted_proxies: []
+
 services:
   _defaults:
     autowire: true
     public: false
 
+  OxidEsales\EshopCommunity\Internal\Framework\Request\RequestFactory:
+    arguments:
+      $trustedProxies: '%oxid_esales.request.trusted_proxies%'
+
   Symfony\Component\HttpFoundation\Request:
-    factory: ['Symfony\Component\HttpFoundation\Request', 'createFromGlobals']
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Request\RequestFactory', 'create']
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface:

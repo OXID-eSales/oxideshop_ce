@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use Symfony\Component\HttpFoundation\Request;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 use function array_key_exists;
@@ -229,22 +230,12 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns remote IP address
-     *
-     * @return string
+     * @deprecated
+     * @return string|null
      */
     public function getRemoteAddress()
     {
-        if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $sIP = $_SERVER['HTTP_X_FORWARDED_FOR'];
-            $sIP = preg_replace('/,.*$/', '', $sIP);
-        } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            $sIP = $_SERVER['HTTP_CLIENT_IP'];
-        } else {
-            $sIP = $_SERVER['REMOTE_ADDR'] ?? null;
-        }
-
-        return $sIP;
+        return $this->getService(Request::class)->getClientIp();
     }
 
     /**
@@ -351,7 +342,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isTrustedClientIp()
     {
         return in_array(
-            $this->getRemoteAddress(),
+            $this->getService(Request::class)->getClientIp(),
             ContainerFacade::getParameter('oxid_esales.trusted_ips'),
             true
         );

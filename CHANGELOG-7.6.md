@@ -16,7 +16,5 @@
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
 
 ### Fixed
-- Random collision in `RandomTokenGenerator` tests
-- Order history acceptance test had wrong expected status and amount for unshipped orders
 
 ### Removed

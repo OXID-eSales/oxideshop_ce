@@ -173,9 +173,10 @@ spl_autoload_register([OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatib
 
 /**
  * Register the module autoloader.
+ * DISABLED: Module autoloader removed to test module chain building without it
  */
-require_once CORE_AUTOLOADER_PATH . 'ModuleAutoload.php';
-spl_autoload_register([\OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class, 'autoload']);
+// require_once CORE_AUTOLOADER_PATH . 'ModuleAutoload.php';
+// spl_autoload_register([\OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload::class, 'autoload']);
 
 /**
  * Store the shop configuration in the Registry prior including the custom bootstrap functionality.

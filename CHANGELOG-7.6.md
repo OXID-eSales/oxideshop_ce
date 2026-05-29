@@ -19,5 +19,6 @@
 - `ViewConfig::getRemoteAddress()`
 
 ### Fixed
+- Cascade delete now removes all related records when deleting a user by ID
 
 ### Removed

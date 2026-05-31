@@ -196,7 +196,7 @@ class OrderArticle extends BaseModel implements ArticleInterface
         }
 
         if ($this->getFieldData('oxpersparam')) {
-            $this->_aPersParam = unserialize($this->getFieldData('oxpersparam'));
+            $this->_aPersParam = unserialize($this->getFieldData('oxpersparam'), ['allowed_classes' => false]);
         }
 
         return $this->_aPersParam;

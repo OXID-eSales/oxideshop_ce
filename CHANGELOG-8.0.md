@@ -3,6 +3,16 @@
 ## v8.0.0-alpha.3 - Unreleased
 *Compilation release*
 
+### Added
+- Locale management
+  - Admin page to create, edit, delete and assign locales per shop
+  - Configurable global fallback locale (DI parameter `oxid_esales.locale.default_fallback`)
+  - `ContextInterface::getCurrentLanguageAbbreviation()`
+- Alt text for product images
+  - Admin page to edit alt text per image per locale
+  - Storefront resolves the alt text through the locale's fallback chain
+- `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
+
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 

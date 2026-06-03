@@ -621,18 +621,18 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             if (parent::delete($oxid)) {
                 $quotedUserId = $database->quote($oxid);
 
-                $this->deleteAddresses($database);
-                $this->deleteUserFromGroups($database);
-                $this->deleteBaskets($database);
-                $this->deleteNewsletterSubscriptions($database);
-                $this->deleteDeliveries($database);
-                $this->deleteDiscounts($database);
-                $this->deleteRecommendationLists($database);
-                $this->deleteReviews($database);
-                $this->deleteRatings($database);
-                $this->deletePriceAlarms($database);
-                $this->deleteAcceptedTerms($database);
-                $this->deleteNotOrderRelatedRemarks($database);
+                $this->deleteAddresses($database, $oxid);
+                $this->deleteUserFromGroups($database, $oxid);
+                $this->deleteBaskets($database, $oxid);
+                $this->deleteNewsletterSubscriptions($database, $oxid);
+                $this->deleteDeliveries($database, $oxid);
+                $this->deleteDiscounts($database, $oxid);
+                $this->deleteRecommendationLists($database, $oxid);
+                $this->deleteReviews($database, $oxid);
+                $this->deleteRatings($database, $oxid);
+                $this->deletePriceAlarms($database, $oxid);
+                $this->deleteAcceptedTerms($database, $oxid);
+                $this->deleteNotOrderRelatedRemarks($database, $oxid);
 
                 $this->deleteAdditionally($quotedUserId);
             }
@@ -2437,157 +2437,96 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
     }
 
-    /**
-     * Deletes User from groups.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteUserFromGroups(DatabaseInterface $database)
+    private function deleteUserFromGroups(DatabaseInterface $database, string $oxid): void
     {
         $database->execute('delete from oxobject2group where oxobject2group.oxobjectid = :oxobjectid', [
-            'oxobjectid' => $this->getId()
+            'oxobjectid' => $oxid
         ]);
     }
 
-    /**
-     * Deletes deliveries.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteDeliveries(DatabaseInterface $database)
+    private function deleteDeliveries(DatabaseInterface $database, string $oxid): void
     {
         $database->execute('delete from oxobject2delivery where oxobjectid = :oxobjectid', [
-            'oxobjectid' => $this->getId()
+            'oxobjectid' => $oxid
         ]);
     }
 
-    /**
-     * Deletes discounts.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteDiscounts(DatabaseInterface $database)
+    private function deleteDiscounts(DatabaseInterface $database, string $oxid): void
     {
         $database->execute('delete from oxobject2discount where oxobjectid = :oxobjectid', [
-            'oxobjectid' => $this->getId()
+            'oxobjectid' => $oxid
         ]);
     }
 
-    /**
-     * Deletes user accepted terms.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteAcceptedTerms(DatabaseInterface $database)
+    private function deleteAcceptedTerms(DatabaseInterface $database, string $oxid): void
     {
         $database->execute('delete from oxacceptedterms where oxuserid = :oxuserid', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
     }
 
-    /**
-     * Deletes User addresses.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteAddresses(DatabaseInterface $database)
+    private function deleteAddresses(DatabaseInterface $database, string $oxid): void
     {
         $ids = $database->getCol('SELECT oxid FROM oxaddress WHERE oxuserid = :oxuserid', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Address::class);
     }
 
-    /**
-     * Deletes noticelists, wishlists or saved baskets
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteBaskets(DatabaseInterface $database)
+    private function deleteBaskets(DatabaseInterface $database, string $oxid): void
     {
         $ids = $database->getCol('SELECT oxid FROM oxuserbaskets WHERE oxuserid = :oxuserid', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\UserBasket::class);
     }
 
-    /**
-     * Deletes not Order related remarks.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteNotOrderRelatedRemarks(DatabaseInterface $database)
+    private function deleteNotOrderRelatedRemarks(DatabaseInterface $database, string $oxid): void
     {
         $sql = 'SELECT oxid FROM oxremark WHERE oxparentid = :oxparentid and oxtype != :notoxtype';
         $ids = $database->getCol($sql, [
-            'oxparentid' => $this->getId(),
+            'oxparentid' => $oxid,
             'notoxtype' => 'o'
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Remark::class);
     }
 
-    /**
-     * Deletes recommendation lists.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteRecommendationLists(DatabaseInterface $database)
+    private function deleteRecommendationLists(DatabaseInterface $database, string $oxid): void
     {
         $ids = $database->getCol('SELECT oxid FROM oxrecommlists WHERE oxuserid = :oxuserid ', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\RecommendationList::class);
     }
 
-    /**
-     * Deletes newsletter subscriptions.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteNewsletterSubscriptions(DatabaseInterface $database)
+    private function deleteNewsletterSubscriptions(DatabaseInterface $database, string $oxid): void
     {
         $ids = $database->getCol('SELECT oxid FROM oxnewssubscribed WHERE oxuserid = :oxuserid ', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\NewsSubscribed::class);
     }
 
-
-    /**
-     * Deletes User reviews.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteReviews(DatabaseInterface $database)
+    private function deleteReviews(DatabaseInterface $database, string $oxid): void
     {
         $ids = $database->getCol('select oxid from oxreviews where oxuserid = :oxuserid', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Review::class);
     }
 
-    /**
-     * Deletes User ratings.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deleteRatings(DatabaseInterface $database)
+    private function deleteRatings(DatabaseInterface $database, string $oxid): void
     {
         $ids = $database->getCol('SELECT oxid FROM oxratings WHERE oxuserid = :oxuserid', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\Rating::class);
     }
 
-    /**
-     * Deletes price alarms.
-     *
-     * @param DatabaseInterface $database
-     */
-    private function deletePriceAlarms(DatabaseInterface $database)
+    private function deletePriceAlarms(DatabaseInterface $database, string $oxid): void
     {
         $ids = $database->getCol('SELECT oxid FROM oxpricealarm WHERE oxuserid = :oxuserid', [
-            'oxuserid' => $this->getId()
+            'oxuserid' => $oxid
         ]);
         array_walk($ids, [$this, 'deleteItemById'], \OxidEsales\Eshop\Application\Model\PriceAlarm::class);
     }

@@ -122,7 +122,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxuserid' => $userId,
                 'oxaddressuserid' => $userId,
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createGroupMembership(string $userId): void
@@ -141,7 +141,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxobjectid' => $userId,
                 'oxgroupsid' => 'oxidadmin',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createUserBasket(string $userId): void
@@ -158,7 +158,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxuserid' => $userId,
                 'oxtitle' => 'test basket',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createNewsletterSubscription(string $userId): void
@@ -175,7 +175,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxuserid' => $userId,
                 'oxemail' => 'test@example.com',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createDeliveryAssignment(string $userId): void
@@ -194,7 +194,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxobjectid' => $userId,
                 'oxtype' => 'oxuser',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createDiscountAssignment(string $userId): void
@@ -213,7 +213,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxobjectid' => $userId,
                 'oxtype' => 'oxuser',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createRecommendationList(string $userId): void
@@ -236,7 +236,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxtitle' => 'Test List',
                 'oxdesc' => '',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createArticle(string $articleId): void
@@ -245,7 +245,7 @@ final class UserDeleteTest extends IntegrationTestCase
         $qb->insert('oxarticles')
             ->values(['oxid' => ':oxid'])
             ->setParameter('oxid', $articleId);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createReview(string $userId, string $articleId): void
@@ -266,7 +266,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxtext' => '',
                 'oxuserid' => $userId,
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createRating(string $userId, string $articleId): void
@@ -289,7 +289,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxobjectid' => $articleId,
                 'oxrating' => 5,
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createPriceAlarm(string $userId): void
@@ -310,7 +310,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxemail' => 'test@example.com',
                 'oxartid' => 'test_article_id',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createAcceptedTerms(string $userId): void
@@ -327,7 +327,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxshopid' => 1,
                 'oxtermversion' => '1',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function createRemark(string $userId, string $type, string $remarkId): void
@@ -346,7 +346,7 @@ final class UserDeleteTest extends IntegrationTestCase
                 'oxtype' => $type,
                 'oxtext' => '',
             ]);
-        $qb->execute();
+        $qb->executeStatement();
     }
 
     private function fetchByUserIdColumn(string $table, string $column, string $userId): mixed
@@ -357,7 +357,7 @@ final class UserDeleteTest extends IntegrationTestCase
             ->where("$column = :userid")
             ->setParameter('userid', $userId);
 
-        return $qb->execute()->fetchOne();
+        return $qb->executeQuery()->fetchOne();
     }
 
     private function fetchRemarkByParentAndType(string $userId, string $type): mixed
@@ -369,7 +369,7 @@ final class UserDeleteTest extends IntegrationTestCase
             ->setParameter('oxparentid', $userId)
             ->setParameter('oxtype', $type);
 
-        return $qb->execute()->fetchOne();
+        return $qb->executeQuery()->fetchOne();
     }
 
     private function fetchRemarkById(string $remarkId): mixed
@@ -380,6 +380,6 @@ final class UserDeleteTest extends IntegrationTestCase
             ->where('oxid = :oxid')
             ->setParameter('oxid', $remarkId);
 
-        return $qb->execute()->fetchOne();
+        return $qb->executeQuery()->fetchOne();
     }
 }

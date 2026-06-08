@@ -16,7 +16,14 @@ use function is_dir;
 
 class ProjectRootLocator
 {
+    private static ?string $projectRoot = null;
+
     public function getProjectRoot(): string
+    {
+        return self::$projectRoot ??= $this->locateProjectRoot();
+    }
+
+    private function locateProjectRoot(): string
     {
         $path = __DIR__;
         while (!is_dir(Path::join($path, 'vendor'))) {

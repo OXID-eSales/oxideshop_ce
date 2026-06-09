@@ -216,6 +216,6 @@ class LoginController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected function getBrowserLanguage()
     {
-        return strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+        return @strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
     }
 }

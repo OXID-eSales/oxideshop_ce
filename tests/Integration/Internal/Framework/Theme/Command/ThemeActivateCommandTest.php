@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\C
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -74,6 +75,10 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         Registry::getConfig()->setConfigParam('sTheme', $this->initialThemeId);
 
         $this->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
+
+        $this->get(ThemeConfigurationInstallerInterface::class)->install(
+            "$this->fixtureDirectory/shop/source/Application/views/$this->newThemeId"
+        );
     }
 
     private function createCommandTester(): CommandTester

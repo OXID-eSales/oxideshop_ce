@@ -11,11 +11,14 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Locale\Service;
 
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao\LocaleDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
+use OxidEsales\EshopCommunity\Internal\Domain\Locale\Event\LocaleChangedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class LocaleService implements LocaleServiceInterface
+readonly class LocaleService implements LocaleServiceInterface
 {
     public function __construct(
-        private readonly LocaleDaoInterface $localeDao,
+        private LocaleDaoInterface $localeDao,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -37,25 +40,42 @@ class LocaleService implements LocaleServiceInterface
     public function add(Locale $locale): void
     {
         $this->localeDao->add($locale);
+
+        $this->dispatchChange($locale->getCode());
     }
 
     public function update(Locale $locale): void
     {
         $this->localeDao->update($locale);
+
+        $this->dispatchChange($locale->getCode());
     }
 
     public function delete(string $code): void
     {
         $this->localeDao->delete($code);
+
+        $this->dispatchChange($code);
     }
 
     public function addToShop(string $localeCode, int $shopId): void
     {
         $this->localeDao->addToShop($localeCode, $shopId);
+
+        $this->dispatchChange($localeCode);
     }
 
     public function removeFromShop(string $localeCode, int $shopId): void
     {
         $this->localeDao->removeFromShop($localeCode, $shopId);
+
+        $this->dispatchChange($localeCode);
+    }
+
+    private function dispatchChange(string $localeCode): void
+    {
+        $this->eventDispatcher->dispatch(
+            new LocaleChangedEvent($localeCode)
+        );
     }
 }

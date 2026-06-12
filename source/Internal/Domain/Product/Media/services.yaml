@@ -17,6 +17,9 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewService
     public: true
 
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\CachedProductMediaViewService:
+    decorates: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface
+
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaImageSizesProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaImageSizesProvider
 
@@ -25,6 +28,16 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\FallbackMediaFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\FallbackMediaFactory
+
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Cache\ProductMediaViewCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Cache\ProductMediaViewCache
+    arguments:
+      $lifetimeSeconds: '%oxid_esales.product.media.view_cache.lifetime_seconds%'
+
+  oxid_esales.product.media.invalidate_product_media_view_cache_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Cache\InvalidateProductMediaViewCacheEventSubscriber
+    tags:
+      - { name: kernel.event_subscriber }
 
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaService

@@ -134,6 +134,7 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         ];
 
         $this->setupContainerWithRequest([
+            'productId' => (string) $productId,
             'sorting' => json_encode($newOrder),
         ]);
 

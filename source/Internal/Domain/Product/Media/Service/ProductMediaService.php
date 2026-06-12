@@ -40,28 +40,16 @@ readonly class ProductMediaService implements ProductMediaServiceInterface
         return $this->productMediaDao->getAll($productId)->toArray();
     }
 
-    public function remove(Id $mediaId): void
-    {
-        $this->productMediaDao->delete($mediaId);
-    }
-
     public function update(ProductMedia $productMedia): void
     {
         $this->productMediaDao->update($productMedia);
-    }
-
-    public function sort(array $idsSorted): void
-    {
-        $this->productMediaDao->sort(
-            new ProductMediaSorting($idsSorted)
-        );
     }
 
     public function activate(ProductMedia $productMedia): void
     {
         if (!$productMedia->isActive()) {
             $productMedia->activate();
-            $this->productMediaDao->update($productMedia);
+            $this->update($productMedia);
         }
     }
 
@@ -69,7 +57,24 @@ readonly class ProductMediaService implements ProductMediaServiceInterface
     {
         if ($productMedia->isActive()) {
             $productMedia->deactivate();
-            $this->productMediaDao->update($productMedia);
+            $this->update($productMedia);
         }
+    }
+
+    /** @param string[] $orderedIds */
+    public function sort(Id $productId, array $orderedIds): void
+    {
+        if ($orderedIds === []) {
+            return;
+        }
+
+        $this->productMediaDao->sort(
+            new ProductMediaSorting($productId, $orderedIds)
+        );
+    }
+
+    public function remove(ProductMedia $productMedia): void
+    {
+        $this->productMediaDao->delete($productMedia->getId());
     }
 }

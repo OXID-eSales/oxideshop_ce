@@ -18,20 +18,14 @@ final class ProductMediaViewTest extends TestCase
 {
     public function testGetAttributesReturnsEmptyCollection(): void
     {
-        $view = new ProductMediaView('detail', 'icon', 'zoom', 'thumbnail', new MediaAttributes());
+        $view = $this->createView(new MediaAttributes());
 
         $this->assertFalse($view->getAttributes()->has(MediaAttribute::ALT));
     }
 
     public function testGetAttributesReturnsProvidedCollection(): void
     {
-        $view = new ProductMediaView(
-            'detail',
-            'icon',
-            'zoom',
-            'thumbnail',
-            new MediaAttributes([MediaAttribute::ALT => 'my alt text'])
-        );
+        $view = $this->createView(new MediaAttributes([MediaAttribute::ALT => 'my alt text']));
 
         $this->assertSame('my alt text', $view->getAttributes()->getAlt());
     }

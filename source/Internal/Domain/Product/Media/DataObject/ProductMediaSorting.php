@@ -17,30 +17,24 @@ readonly class ProductMediaSorting
     private ArrayIterator $sorting;
 
     public function __construct(
-        array $sortedIds
+        private Id $productId,
+        array $orderedIds,
     ) {
         $this->sorting = new ArrayIterator([]);
-        foreach ($sortedIds as $id) {
+        foreach ($orderedIds as $id) {
             $this->sorting->append(
                 Id::fromString($id)
             );
         }
     }
 
+    public function getProductId(): Id
+    {
+        return $this->productId;
+    }
+
     public function getSorting(): ArrayIterator
     {
         return $this->sorting;
-    }
-
-    public function __toString(): string
-    {
-        $ids = '';
-        foreach ($this->sorting as $id) {
-            $ids .= "'$id',";
-        }
-        return rtrim(
-            $ids,
-            ','
-        );
     }
 }

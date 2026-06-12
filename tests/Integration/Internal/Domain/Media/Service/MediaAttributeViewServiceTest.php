@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Media\Service;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao\LocaleDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
@@ -25,10 +26,11 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class MediaAttributeViewServiceTest extends IntegrationTestCase
 {
+    private const DEFAULT_LOCALE_CODE = 'de_DE';
+
     private MediaAttributeViewServiceInterface $service;
     private MediaAttributeDaoInterface $dao;
     private Media $media;
-    private Locale $activeLocale;
     private int $shopId;
 
     public function setUp(): void
@@ -36,42 +38,53 @@ final class MediaAttributeViewServiceTest extends IntegrationTestCase
         parent::setUp();
         $this->service = $this->get(MediaAttributeViewServiceInterface::class);
         $this->dao = $this->get(MediaAttributeDaoInterface::class);
-        $this->activeLocale = $this->get(ActiveLocaleProviderInterface::class)->getActiveLocale();
         $this->shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->media = $this->createMedia();
     }
 
+    public function testGetAttributesUsesActiveLocale(): void
+    {
+        $primaryLocale = $this->addLocaleWithFallback('fr_FR', self::DEFAULT_LOCALE_CODE);
+        $this->switchActiveLocale($primaryLocale->getCode());
+        $this->dao->save($this->createAttribute($this->media, $primaryLocale->getCode(), MediaAttribute::ALT, 'french alt'));
+
+        $result = $this->service->getAttributes($this->media);
+
+        $this->assertSame('french alt', $result->getAlt());
+    }
+
     public function testGetAttributesFollowsFallbackChain(): void
     {
-        $primaryLocale = $this->addLocaleWithFallback('fr_FR', $this->activeLocale->getCode());
+        $fallbackLocale = $this->addLocaleWithFallback('it_IT', 'it_IT');
+        $primaryLocale = $this->addLocaleWithFallback('fr_FR', $fallbackLocale->getCode());
+        $this->switchActiveLocale($primaryLocale->getCode());
+        $this->dao->save($this->createAttribute($this->media, $fallbackLocale->getCode(), MediaAttribute::ALT, 'fallback alt'));
 
-        $this->dao->save($this->createAttribute($this->media, $this->activeLocale, MediaAttribute::ALT, 'fallback alt'));
-
-        $result = $this->service->getAttributes($this->media, $primaryLocale->getCode());
+        $result = $this->service->getAttributes($this->media);
 
         $this->assertSame('fallback alt', $result->getAlt());
     }
 
     public function testGetAttributesPreferPrimaryOverFallback(): void
     {
-        $primaryLocale = $this->addLocaleWithFallback('fr_FR', $this->activeLocale->getCode());
+        $primaryLocale = $this->addLocaleWithFallback('fr_FR', self::DEFAULT_LOCALE_CODE);
+        $this->switchActiveLocale($primaryLocale->getCode());
+        $this->dao->save($this->createAttribute($this->media, $primaryLocale->getCode(), MediaAttribute::ALT, 'primary alt'));
+        $this->dao->save($this->createAttribute($this->media, self::DEFAULT_LOCALE_CODE, MediaAttribute::ALT, 'fallback alt'));
 
-        $this->dao->save($this->createAttribute($this->media, $primaryLocale, MediaAttribute::ALT, 'primary alt'));
-        $this->dao->save($this->createAttribute($this->media, $this->activeLocale, MediaAttribute::ALT, 'fallback alt'));
-
-        $result = $this->service->getAttributes($this->media, $primaryLocale->getCode());
+        $result = $this->service->getAttributes($this->media);
 
         $this->assertSame('primary alt', $result->getAlt());
     }
 
     public function testGetAttributesMergesIndependentAttributesAcrossChain(): void
     {
-        $primaryLocale = $this->addLocaleWithFallback('fr_FR', $this->activeLocale->getCode());
+        $primaryLocale = $this->addLocaleWithFallback('fr_FR', self::DEFAULT_LOCALE_CODE);
+        $this->switchActiveLocale($primaryLocale->getCode());
+        $this->dao->save($this->createAttribute($this->media, $primaryLocale->getCode(), 'title', 'french title'));
+        $this->dao->save($this->createAttribute($this->media, self::DEFAULT_LOCALE_CODE, MediaAttribute::ALT, 'fallback alt'));
 
-        $this->dao->save($this->createAttribute($this->media, $primaryLocale, 'title', 'french title'));
-        $this->dao->save($this->createAttribute($this->media, $this->activeLocale, MediaAttribute::ALT, 'fallback alt'));
-
-        $result = $this->service->getAttributes($this->media, $primaryLocale->getCode());
+        $result = $this->service->getAttributes($this->media);
 
         $this->assertSame('french title', $result->get('title'));
         $this->assertSame('fallback alt', $result->getAlt());
@@ -79,37 +92,46 @@ final class MediaAttributeViewServiceTest extends IntegrationTestCase
 
     public function testGetAttributesIgnoresLocalesOutsideChain(): void
     {
-        $primaryLocale = $this->addLocaleWithFallback('fr_FR', $this->activeLocale->getCode());
+        $primaryLocale = $this->addLocaleWithFallback('fr_FR', self::DEFAULT_LOCALE_CODE);
         $unrelatedLocale = $this->addLocaleWithFallback('it_IT', 'it_IT');
+        $this->switchActiveLocale($primaryLocale->getCode());
+        $this->dao->save($this->createAttribute($this->media, $unrelatedLocale->getCode(), MediaAttribute::ALT, 'italian alt'));
 
-        $this->dao->save($this->createAttribute($this->media, $unrelatedLocale, MediaAttribute::ALT, 'italian alt'));
-
-        $result = $this->service->getAttributes($this->media, $primaryLocale->getCode());
+        $result = $this->service->getAttributes($this->media);
 
         $this->assertFalse($result->has(MediaAttribute::ALT));
     }
 
     public function testGetAttributesReturnsEmptyForMediaWithoutRows(): void
     {
-        $result = $this->service->getAttributes($this->media, $this->activeLocale->getCode());
+        $result = $this->service->getAttributes($this->media);
 
         $this->assertFalse($result->has(MediaAttribute::ALT));
     }
 
     public function testGetAttributesIgnoresOtherShops(): void
     {
+        $activeLocale = $this->get(ActiveLocaleProviderInterface::class)->getActiveLocale();
         $this->dao->save(new MediaAttribute(
             Id::generate(),
             $this->media->getId(),
-            $this->activeLocale->getCode(),
+            $activeLocale->getCode(),
             2,
             MediaAttribute::ALT,
             'other shop alt',
         ));
 
-        $result = $this->service->getAttributes($this->media, $this->activeLocale->getCode());
+        $result = $this->service->getAttributes($this->media);
 
         $this->assertFalse($result->has(MediaAttribute::ALT));
+    }
+
+    private function switchActiveLocale(string $code): void
+    {
+        $config = Registry::getConfig();
+        $params = $config->getConfigParam('aLanguageParams');
+        $params[Registry::getLang()->getLanguageAbbr()]['locale'] = $code;
+        $config->saveShopConfVar('aarr', 'aLanguageParams', $params);
     }
 
     private function addLocaleWithFallback(string $code, string $fallbackCode): Locale
@@ -128,12 +150,12 @@ final class MediaAttributeViewServiceTest extends IntegrationTestCase
         return $media;
     }
 
-    private function createAttribute(Media $media, Locale $locale, string $name, string $value): MediaAttribute
+    private function createAttribute(Media $media, string $localeCode, string $name, string $value): MediaAttribute
     {
         return new MediaAttribute(
             Id::generate(),
             $media->getId(),
-            $locale->getCode(),
+            $localeCode,
             $this->shopId,
             $name,
             $value

@@ -344,6 +344,7 @@ final class ProductMediaDaoTest extends TestCase
 
         $this->productMediaDao->sort(
             new ProductMediaSorting(
+                $this->productId,
                 array_map(
                     'strval',
                     [

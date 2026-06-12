@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject;
 
+use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
 
 readonly class ProductMediaView
@@ -43,19 +44,19 @@ readonly class ProductMediaView
         return $this->thumbnailUrl;
     }
 
-    public function isFallback(): bool
-    {
-        return $this->isFallback;
-    }
-
     public function getAttributes(): MediaAttributes
     {
         return $this->attributes;
     }
 
+    public function isFallback(): bool
+    {
+        return $this->isFallback;
+    }
+
     public function getAlt(string $fallback = ''): string
     {
-        if ($this->attributes->has('alt') && $this->attributes->getAlt() !== '') {
+        if ($this->attributes->has(MediaAttribute::ALT) && $this->attributes->getAlt() !== '') {
             return $this->attributes->getAlt();
         }
         return trim(strip_tags($fallback));

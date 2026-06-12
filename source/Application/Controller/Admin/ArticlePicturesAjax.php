@@ -84,6 +84,7 @@ class ArticlePicturesAjax extends ListComponentAjax
     public function sortMedia(): void
     {
         $this->productMediaService->sort(
+            Id::fromString($this->requestData->getString('productId')),
             json_decode(
                 $this->requestData->getString('sorting'),
                 true,
@@ -99,7 +100,7 @@ class ArticlePicturesAjax extends ListComponentAjax
         $productMedia->getRoleSet()->removeRole(ProductMediaRole::from($this->requestData->getString('role')));
 
         if ($productMedia->getRoleSet()->getRoles()->isEmpty()) {
-            $this->productMediaService->remove($productMedia->getId());
+            $this->productMediaService->remove($productMedia);
         } else {
             $this->productMediaService->update($productMedia);
         }

@@ -12,12 +12,15 @@ namespace OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Event\ProductMediaChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class ProductVariantMediaService implements ProductVariantMediaServiceInterface
 {
     public function __construct(
         private ProductMediaDaoInterface $productMediaDao,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
@@ -28,6 +31,10 @@ readonly class ProductVariantMediaService implements ProductVariantMediaServiceI
         foreach ($parentMediaCollection as $parentMedia) {
             $variantMedia = $this->createVariantMedia($parentMedia, $variantProductId);
             $this->productMediaDao->add($variantMedia);
+
+            $this->eventDispatcher->dispatch(
+                new ProductMediaChangedEvent($variantProductId, $variantMedia->getMedia()->getId())
+            );
         }
     }
 

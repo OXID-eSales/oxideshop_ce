@@ -17,6 +17,15 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewService
     public: true
 
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaImageSizesProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaImageSizesProvider
+
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\ProductMediaViewFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\ProductMediaViewFactory
+
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\FallbackMediaFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Factory\FallbackMediaFactory
+
   OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaService
     public: true

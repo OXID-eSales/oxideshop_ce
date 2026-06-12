@@ -19,13 +19,14 @@ interface ProductMediaServiceInterface
     /** @return ProductMedia[] */
     public function getByProduct(Id $productId): array;
 
-    public function remove(Id $mediaId): void;
-
     public function update(ProductMedia $productMedia): void;
-
-    public function sort(array $idsSorted): void;
 
     public function activate(ProductMedia $productMedia): void;
 
     public function deactivate(ProductMedia $productMedia): void;
+
+    /** @param string[] $orderedIds */
+    public function sort(Id $productId, array $orderedIds): void;
+
+    public function remove(ProductMedia $productMedia): void;
 }

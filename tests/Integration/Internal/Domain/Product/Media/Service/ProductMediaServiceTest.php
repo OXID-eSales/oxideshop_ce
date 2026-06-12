@@ -74,7 +74,7 @@ final class ProductMediaServiceTest extends TestCase
 
     public function testRemove(): void
     {
-        $this->service->remove($this->productMedia->getId());
+        $this->service->remove($this->productMedia);
 
         $this->expectException(EntryDoesNotExistDaoException::class);
         $this->service->get($this->productMedia->getId());
@@ -109,7 +109,7 @@ final class ProductMediaServiceTest extends TestCase
         $this->createTestProductMedia();
         $media3 = $this->productMedia;
 
-        $this->service->sort([
+        $this->service->sort($this->productId, [
             (string)$media2->getId(),
             (string)$media1->getId(),
             (string)$media3->getId(),
@@ -144,7 +144,7 @@ final class ProductMediaServiceTest extends TestCase
         $this->createTestProductMedia();
         $media3 = $this->productMedia;
 
-        $this->service->sort([
+        $this->service->sort($this->productId, [
             $media2->getId() . "' OR '1'='1",
             $media1->getId() . "') OR SLEEP(5) --",
             $media3->getId() . "'; DROP TABLE oxproduct_media; --",
@@ -154,6 +154,33 @@ final class ProductMediaServiceTest extends TestCase
         ]);
 
         $this->assertNotNull($this->service->get($media1->getId()));
+    }
+
+    public function testSortIgnoresMediaOfOtherProducts(): void
+    {
+        $media1 = $this->productMedia;
+        $this->createTestProductMedia();
+        $media2 = $this->productMedia;
+
+        $this->service->sort(Id::generate(), [
+            (string) $media2->getId(),
+            (string) $media1->getId(),
+        ]);
+
+        $this->assertSame(0, $this->service->get($media1->getId())->getPosition());
+        $this->assertSame(1, $this->service->get($media2->getId())->getPosition());
+    }
+
+    public function testSortWithNoIdsChangesNothing(): void
+    {
+        $originalPosition = $this->productMedia->getPosition();
+
+        $this->service->sort($this->productId, []);
+
+        $this->assertSame(
+            $originalPosition,
+            $this->service->get($this->productMedia->getId())->getPosition()
+        );
     }
 
     private function createTestProductMedia(): void

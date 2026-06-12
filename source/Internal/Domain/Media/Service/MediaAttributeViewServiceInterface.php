@@ -12,5 +12,5 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
 
 interface MediaAttributeViewServiceInterface
 {
-    public function getAttributes(Media $media, string $localeCode): MediaAttributes;
+    public function getAttributes(Media $media): MediaAttributes;
 }

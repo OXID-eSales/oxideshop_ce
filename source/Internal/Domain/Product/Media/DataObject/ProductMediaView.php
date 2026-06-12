@@ -43,14 +43,14 @@ readonly class ProductMediaView
         return $this->thumbnailUrl;
     }
 
-    public function isFallback(): bool
-    {
-        return $this->isFallback;
-    }
-
     public function getAttributes(): MediaAttributes
     {
         return $this->attributes;
+    }
+
+    public function isFallback(): bool
+    {
+        return $this->isFallback;
     }
 
     public function getAlt(string $fallback = ''): string

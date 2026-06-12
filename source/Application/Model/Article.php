@@ -18,9 +18,9 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Dao\ProductMediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterModelUpdateEvent;
@@ -4645,13 +4645,11 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
      */
     protected function deletePics()
     {
-        $productMediaDao = ContainerFacade::get(ProductMediaDaoInterface::class);
+        $productMediaService = ContainerFacade::get(ProductMediaServiceInterface::class);
         $productId = Id::fromString($this->getId());
 
-        $mediaCollection = $productMediaDao->getAll($productId);
-
-        foreach ($mediaCollection as $productMedia) {
-            $productMediaDao->delete($productMedia->getId());
+        foreach ($productMediaService->getByProduct($productId) as $productMedia) {
+            $productMediaService->remove($productMedia);
         }
     }
 

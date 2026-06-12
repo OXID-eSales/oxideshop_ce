@@ -131,8 +131,10 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
             $inClausePlaceholders[] = ':' . $idParamName;
         }
 
+        $parameters['productId'] = (string) $sorting->getProductId();
+
         $query = sprintf(
-            'UPDATE `%s` SET `position` = CASE `id` %s END WHERE `id` IN (%s)',
+            'UPDATE `%s` SET `position` = CASE `id` %s END WHERE `product_id` = :productId AND `id` IN (%s)',
             self::PRODUCT_MEDIA_TABLE,
             $caseClauses,
             implode(', ', $inClausePlaceholders)

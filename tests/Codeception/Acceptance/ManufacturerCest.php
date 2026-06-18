@@ -19,7 +19,7 @@ final class ManufacturerCest
     public function checkManufacturerList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer list');
-        $I->updateConfigInDatabase('bl_showManufacturer', true);
+        $I->updateThemeSetting('bl_showManufacturer', true);
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', true);
 
         $homePage = $I->openShop();
@@ -42,10 +42,11 @@ final class ManufacturerCest
     public function checkAndNavigateThroughManufacturerProductList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer functionality and product list navigation');
-        $I->updateConfigInDatabase('bl_showManufacturer', true);
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+        $I->updateThemeSetting('bl_showManufacturer', true);
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', true);
-        $I->updateConfigInDatabase('aNrofCatArticles', serialize([10, 50, 100, 2, 1]), 'arr');
-        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize([10, 50, 100, 2, 1]), 'arr');
+        $I->updateThemeSetting('aNrofCatArticles', ['10', '50', '100', '2', '1']);
+        $I->updateThemeSetting('aNrofCatArticlesInGrid', ['10', '50', '100', '2', '1']);
 
         $productData = [
             'id' => '1000',
@@ -81,7 +82,7 @@ final class ManufacturerCest
 
         //Dont show manufacturers at all
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', false);
-        $I->updateConfigInDatabase('bl_showManufacturer', false);
+        $I->updateThemeSetting('bl_showManufacturer', false);
         $I->clearShopCache();
         $I->openShop();
         $I->dontSee(Translator::translate('OUR_BRANDS'));

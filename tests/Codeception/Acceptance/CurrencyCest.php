@@ -15,6 +15,11 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 #[Group('currency_test')]
 final class CurrencyCest
 {
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+    }
+
     public function testCurrencySwitch(AcceptanceTester $I): void
     {
         $I->wantToTest('currency switching');

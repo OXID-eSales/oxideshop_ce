@@ -11,11 +11,14 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataMapper\ThemeConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use DirectoryIterator;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
@@ -26,32 +29,42 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         private ThemeConfigurationDataMapperInterface $dataMapper,
         private FileStorageFactoryInterface $fileStorageFactory,
         private Filesystem $filesystem,
+        private ThemeConfigurationCacheInterface $cache,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
     public function get(string $themeId, int $shopId): ThemeConfiguration
     {
-        $path = $this->getThemeConfigurationFilePath($shopId, $themeId);
+        if (!$this->cache->exists($themeId, $shopId)) {
+            $path = $this->getThemeConfigurationFilePath($shopId, $themeId);
 
-        if (!file_exists($path)) {
-            throw new ThemeConfigurationNotFoundException(
-                "No theme configuration found for id '$themeId' in shop $shopId"
+            if (!file_exists($path)) {
+                throw new ThemeConfigurationNotFoundException(
+                    "No theme configuration found for id '$themeId' in shop $shopId"
+                );
+            }
+
+            $configuration = $this->dataMapper->fromData(
+                $this->getStorage($shopId, $themeId)->get()
             );
+            $configuration->setId($themeId);
+
+            $this->cache->put($shopId, $configuration);
         }
 
-        $configuration = $this->dataMapper->fromData(
-            $this->getStorage($shopId, $themeId)->get()
-        );
-        $configuration->setId($themeId);
-
-        return $configuration;
+        return clone $this->cache->get($themeId, $shopId);
     }
 
     public function save(ThemeConfiguration $configuration, int $shopId): void
     {
+        $this->cache->evict($configuration->getId(), $shopId);
+
         $this->getStorage($shopId, $configuration->getId())->save(
             $this->dataMapper->toData($configuration)
         );
+
+        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration, $shopId));
     }
 
     public function getAll(int $shopId): array
@@ -67,14 +80,25 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
 
     public function delete(string $themeId, int $shopId): void
     {
-        $this->filesystem->remove(
-            $this->getThemeConfigurationFilePath($shopId, $themeId)
-        );
+        try {
+            $configuration = $this->get($themeId, $shopId);
+        } catch (ThemeConfigurationNotFoundException) {
+            return;
+        }
+
+        $this->cache->evict($themeId, $shopId);
+        $this->filesystem->remove($this->getThemeConfigurationFilePath($shopId, $themeId));
+
+        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration, $shopId));
     }
 
     public function exists(string $themeId, int $shopId): bool
     {
-        return in_array($themeId, $this->getThemeIds($shopId), true);
+        if ($this->cache->exists($themeId, $shopId)) {
+            return true;
+        }
+
+        return file_exists($this->getThemeConfigurationFilePath($shopId, $themeId));
     }
 
     private function getStorage(int $shopId, string $themeId): ArrayStorageInterface

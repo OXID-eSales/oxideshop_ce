@@ -13,7 +13,11 @@ use OxidEsales\Eshop\Core\ShopControl;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -25,6 +29,19 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 	public function setUp(): void
     {
         parent::setUp();
+
+        $configuration = (new ThemeConfiguration())->setId('testTheme')->setActivated(true);
+        $configuration->addThemeSetting(
+            (new Setting())->setName('sDefaultListDisplayType')->setType('str')->setValue('infogrid')
+        );
+        $configuration->addThemeSetting(
+            (new Setting())->setName('aNrofCatArticles')->setType('arr')->setValue(['10', '20', '50', '100'])
+        );
+        $configuration->addThemeSetting(
+            (new Setting())->setName('bl_showVouchers')->setType('bool')->setValue(true)
+        );
+        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 
 	    $_GET['searchparam'] = '';
 	    $_GET['page'] = '';

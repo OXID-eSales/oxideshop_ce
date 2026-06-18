@@ -16,6 +16,7 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Application\Component\ViewDataKeyProviderInterface;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
 use stdClass;
 
@@ -722,7 +723,8 @@ class FrontendController extends BaseController
             $this->_sListDisplayType = $this->getCustomListDisplayType();
 
             if (!$this->_sListDisplayType) {
-                $this->_sListDisplayType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
+                $this->_sListDisplayType = ContainerFacade::get(ThemeSettingServiceInterface::class)
+                    ->getString('sDefaultListDisplayType');
             }
 
             $this->_sListDisplayType = in_array((string) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
@@ -1175,12 +1177,14 @@ class FrontendController extends BaseController
         // checking if all needed data is set
         switch ($this->getListDisplayType()) {
             case 'grid':
-                $numbersOfCategoryArticles = $config->getConfigParam('aNrofCatArticlesInGrid');
+                $numbersOfCategoryArticles = ContainerFacade::get(ThemeSettingServiceInterface::class)
+                    ->getCollection('aNrofCatArticlesInGrid');
                 break;
             case 'line':
             case 'infogrid':
             default:
-                $numbersOfCategoryArticles = $config->getConfigParam('aNrofCatArticles');
+                $numbersOfCategoryArticles = ContainerFacade::get(ThemeSettingServiceInterface::class)
+                    ->getCollection('aNrofCatArticles');
         }
 
         if (!is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {
@@ -2815,7 +2819,7 @@ class FrontendController extends BaseController
      */
     public function getNewBasketItemMsgType()
     {
-        return (int) Registry::getConfig()->getConfigParam("iNewBasketItemMessage");
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('iNewBasketItemMessage');
     }
 
     /**

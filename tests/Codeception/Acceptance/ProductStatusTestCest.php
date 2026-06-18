@@ -24,6 +24,7 @@ final class ProductStatusTestCest
 
     public function _before(AcceptanceTester $I): void
     {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
         $I->updateConfigInDatabase('blUseTimeCheck', true, 'bool');
         $product = $this->getProductData($this->productID);
         $this->productData = [

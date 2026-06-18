@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Tests\DatabaseTrait;
 use OxidEsales\EshopCommunity\Tests\FilesystemTrait;
 use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
-
 class IntegrationTestCase extends TestCase
 {
     use ContainerTrait;

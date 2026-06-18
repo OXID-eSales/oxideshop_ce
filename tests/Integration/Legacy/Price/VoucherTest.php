@@ -24,6 +24,10 @@ use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Core\Exception\VoucherException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class VoucherTest extends IntegrationTestCase
@@ -45,6 +49,8 @@ final class VoucherTest extends IntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $this->installThemeDefaults();
 
         $this->createCategory(self::FIRST_TEST_CATEGORY_ID, 'Test Title 1');
         $this->createCategory(self::SECOND_TEST_CATEGORY_ID, 'Test Title 2');
@@ -185,6 +191,18 @@ final class VoucherTest extends IntegrationTestCase
         $basket->calculateBasket(true);
         $this->assertEquals(12.61, $basket->getNettoSum());
         $this->assertEquals(5.0, $basket->getVoucherDiscount()->getPrice());
+    }
+
+    private function installThemeDefaults(): void
+    {
+        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
+
+        $configuration = (new ThemeConfiguration())
+            ->setId('testTheme')
+            ->setActivated(true)
+            ->addThemeSetting((new Setting())->setName('bl_showVouchers')->setType('bool')->setValue(true));
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
     }
 
     private function createVoucherSeries(string $seriesId, int $discount, bool $calculateOnce): void

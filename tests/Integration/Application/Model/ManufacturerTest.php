@@ -13,6 +13,10 @@ use Generator;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\Manufacturer;
 use OxidEsales\EshopCommunity\Core\Field;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -244,7 +248,16 @@ final class ManufacturerTest extends IntegrationTestCase
 
     private function overwriteConfig(string $configParam, string $iconSizeValue): void
     {
-        Registry::getConfig()->setConfigParam($configParam, false);
-        Registry::getConfig()->setConfigParam('sIconsize', $iconSizeValue);
+
+        $configuration = (new ThemeConfiguration())->setId('testTheme')->setActivated(true);
+        $configuration->addThemeSetting(
+            (new Setting())->setName($configParam)->setType('bool')->setValue(false)
+        );
+        $configuration->addThemeSetting(
+            (new Setting())->setName('sIconsize')->setType('str')->setValue($iconSizeValue)
+        );
+
+        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
     }
 }

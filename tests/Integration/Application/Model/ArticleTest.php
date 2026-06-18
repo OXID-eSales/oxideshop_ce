@@ -25,7 +25,14 @@ use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProvide
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Path;
@@ -43,10 +50,41 @@ final class ArticleTest extends IntegrationTestCase
         parent::setUp();
 
         Registry::getConfig()->init();
+        $this->configureImageSettings();
         Registry::getConfig()->setConfigParam('blUseStock', false);
 
         $this->productMediaService = ContainerFacade::get(ProductMediaServiceInterface::class);
         $this->productMediaViewService = ContainerFacade::get(ProductMediaViewServiceInterface::class);
+    }
+
+    private function configureImageSettings(): void
+    {
+        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
+        $dao = $this->get(ShopConfigurationSettingDaoInterface::class);
+
+        $configuration = (new ThemeConfiguration())
+            ->setId('testTheme')
+            ->setActivated(true)
+            ->addThemeSetting((new Setting())->setName('sIconsize')->setType('str')->setValue('87*87'))
+            ->addThemeSetting((new Setting())->setName('sThumbnailsize')->setType('str')->setValue('200*200'))
+            ->addThemeSetting((new Setting())->setName('sDetailImageSize')->setType('str')->setValue('600*600'))
+            ->addThemeSetting((new Setting())->setName('sZoomImageSize')->setType('str')->setValue('1200*1200'));
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
+
+        $qualitySetting = new ShopConfigurationSetting();
+        $qualitySetting->setName('sDefaultImageQuality');
+        $qualitySetting->setValue('75');
+        $qualitySetting->setType(ShopSettingType::STRING);
+        $qualitySetting->setShopId($shopId);
+        $dao->save($qualitySetting);
+
+        $webpSetting = new ShopConfigurationSetting();
+        $webpSetting->setName('blConvertImagesToWebP');
+        $webpSetting->setValue(false);
+        $webpSetting->setType(ShopSettingType::BOOLEAN);
+        $webpSetting->setShopId($shopId);
+        $dao->save($webpSetting);
     }
 
     public function testIsVisibleWithInactive(): void

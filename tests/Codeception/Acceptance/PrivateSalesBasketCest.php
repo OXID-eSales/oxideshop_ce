@@ -15,6 +15,12 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class PrivateSalesBasketCest
 {
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+    }
+
     public function testIfBasketExcludeEnabledBlocksRootCatChange(AcceptanceTester $I): void
     {
         $I->wantToTest('if blBasketExcludeEnabled blocks rootCatChange and continue shopping clears basket.');

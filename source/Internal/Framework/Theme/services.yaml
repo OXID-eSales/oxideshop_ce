@@ -1,6 +1,7 @@
 imports:
   - { resource: Setup/services.yaml }
   - { resource: State/services.yaml }
+  - { resource: Cache/services.yaml }
 
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'
@@ -18,6 +19,10 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridge
     arguments:
       - '%oxid_esales.theme.admin.name%'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:

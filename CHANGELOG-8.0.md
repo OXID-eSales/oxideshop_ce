@@ -13,16 +13,22 @@
   - Storefront resolves the alt text through the locale's fallback chain
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
 - Theme configuration is now installed per-shop via the composer plugin, reading `metadata.yaml` and `config.yaml` from the theme package
+- `ThemeSettingServiceInterface` for reading theme settings
+- `ViewConfig::getThemeSettings()` to read theme settings in templates
 
 ### Changed
 - Theme activation state is now stored in YAML configuration instead of the database
 - `sTheme` is no longer written to the database during theme activation
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
+- Theme settings read from YAML configuration instead of the database
+- `Config::getConfigParam()` no longer returns theme settings — use `ThemeSettingServiceInterface` instead
 
 ### Removed
 - The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support
+- `Config::$_aThemeConfigParams`
+- `Config::isThemeOption()`
 - `ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED`
 - `ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED`
@@ -38,6 +44,8 @@
 - `ShopAdapterInterface::getActiveThemeId()`
 - `ShopAdapterInterface::themeExists()`
 - `ShopAdapterInterface::activateTheme()`
+- `ViewConfig::getViewThemeParam()`
+- `ThemeSettingChangedEvent`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use oxRegistry;
 use oxField;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 
 /**
  * Vendor manager
@@ -309,21 +311,16 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     }
 
 
-    /**
-     * Returns article picture
-     *
-     * @return string
-     */
     public function getIconUrl()
     {
-        if (($sIcon = $this->oxvendor__oxicon->value)) {
-            $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-            $sSize = $oConfig->getConfigParam('sManufacturerIconsize');
-            if (!isset($sSize)) {
-                $sSize = $oConfig->getConfigParam('sIconsize');
+        if (($icon = $this->oxvendor__oxicon->value)) {
+            $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
+            $size = $themeSettingService->getString('sManufacturerIconsize');
+            if (empty($size)) {
+                $size = $themeSettingService->getString('sIconsize');
             }
 
-            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("vendor/icon/", $sIcon, $sSize);
+            return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("vendor/icon/", $icon, $size);
         }
     }
 

@@ -61,10 +61,15 @@ namespace {
 }
 namespace OxidEsales\EshopCommunity\Core {
 
+    use OxidEsales\Eshop\Core\DatabaseProvider;
     use OxidEsales\Eshop\Core\Exception\StandardException;
     use OxidEsales\Eshop\Core\Exception\SystemComponentException;
     use OxidEsales\Eshop\Core\Registry;
     use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+    use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+    use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+    use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+    use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
     use Symfony\Component\Filesystem\Path;
 
     /**
@@ -429,66 +434,42 @@ namespace OxidEsales\EshopCommunity\Core {
             return $done;
         }
 
-        /**
-         * Checks if main folder matches requested
-         *
-         * @param string $path image path name to check
-         *
-         * @return bool
-         */
         protected function isValidPath($path)
         {
             list($width, $height, $quality) = $this->getImageInfo();
             if ($width && $height && $quality) {
                 $checkSize = "$width*$height";
 
-                $config = Registry::getConfig();
-                $db = DatabaseProvider::getDb();
+                $shopIds = DatabaseProvider::getDb()->getCol(
+                    "select oxshopid from oxconfig where oxvarname = 'sDefaultImageQuality' and oxvarvalue = :quality",
+                    ['quality' => $quality]
+                );
 
-                $names = [];
-                foreach ($this->resolutionConfigParameters as $paramName) {
-                    $names[] = $db->quote($paramName);
-                }
-                $names = implode(', ', $names);
-
-                // any name matching path?
-                if ($names) {
-                    // selecting shop which image quality matches user given
-                    $q = "select oxshopid
-                            from oxconfig
-                            where oxvarname = 'sDefaultImageQuality' and
-                            oxvarvalue = :quality";
-
-                    $shopIdsArray = $db->getAll($q, [
-                        'quality' => $quality
-                    ]);
-
-                    // building query:
-                    // shop id
-                    $shopIds = implode(', ', array_map(function ($shopId) use ($db) {
-                        // probably here we can resolve and check shop id to shorten check?
-                        return $db->quote($shopId['oxshopid']);
-                    }, $shopIdsArray));
-
-                    // any shop matching quality
-                    if ($shopIds) {
-                        // selecting config variables to check
-                        $q = "select oxvartype, oxvarvalue from oxconfig
-                           where oxvarname in ( {$names} ) and oxshopid in ( {$shopIds} ) order by oxshopid";
-
-                        $values = $db->getAll($q);
-                        foreach ($values as $value) {
-                            $confValues = (array) $config->decodeValue($value["oxvartype"], $value["oxvarvalue"]);
-                            foreach ($confValues as $confValue) {
-                                if (strcmp($checkSize, $confValue) == 0) {
-                                    return true;
-                                }
-                            }
-                        }
+                foreach ($shopIds as $shopId) {
+                    if ($this->isSizeConfiguredForShop((int) $shopId, $checkSize)) {
+                        return true;
                     }
                 }
 
                 return $this->isSizeAllowed($checkSize);
+            }
+
+            return false;
+        }
+
+        private function isSizeConfiguredForShop(int $shopId, string $checkSize): bool
+        {
+            try {
+                $themeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+                $configuration = ContainerFacade::get(ThemeConfigurationDaoInterface::class)->get($themeId, $shopId);
+            } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
+                return false;
+            }
+
+            foreach ($this->resolutionConfigParameters as $paramName) {
+                if ($checkSize === (string) $configuration->getSettingByName($paramName)?->getValue()) {
+                    return true;
+                }
             }
 
             return false;

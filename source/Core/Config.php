@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -68,12 +67,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected $_aConfigParams = [];
 
-    /**
-     * Theme config parameters storage array
-     *
-     * @var array
-     */
-    protected $_aThemeConfigParams = [];
 
     /**
      * Current language Id
@@ -408,10 +401,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
             $this->setConfVarFromDb($varName, $varType, $varVal);
 
-            //setting theme options array
-            if ($module) {
-                $this->_aThemeConfigParams[$varName] = $module;
-            }
         }
 
         return (bool) count($result);
@@ -1741,18 +1730,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns true if option is theme option
-     *
-     * @param string $name option name
-     *
-     * @return bool
-     */
-    public function isThemeOption($name)
-    {
-        return (bool) isset($this->_aThemeConfigParams[$name]);
-    }
-
-    /**
      * Returns  SSL or non SSL shop main URL without index.php
      *
      * @return string
@@ -1904,19 +1881,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
     }
 
-    /**
-     * Inform respective services if shop/module/theme related configuration data was changed in database.
-     *
-     * @param string  $varName   Variable name
-     * @param integer $shopId    Shop id
-     * @param string  $extension Module or theme name in case of extension config change
-     */
     protected function informServicesAfterConfigurationChanged($varName, $shopId, $extension = '')
     {
         if (empty($extension)) {
             ContainerFacade::dispatch(new ShopConfigurationChangedEvent($varName, (int) $shopId));
-        } elseif (str_contains($extension, self::OXMODULE_THEME_PREFIX)) {
-            ContainerFacade::dispatch(new ThemeSettingChangedEvent($varName, (int) $shopId, $extension));
         }
     }
 }

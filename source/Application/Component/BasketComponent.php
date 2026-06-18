@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Exception\NoArticleException;
 use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BasketChangedEvent;
 use Psr\Log\LoggerInterface;
 use stdClass;
@@ -172,7 +173,9 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
             $database->commitTransaction();
 
             // new basket item marker
-            if ($oBasketItem && $myConfig->getConfigParam('iNewBasketItemMessage') != 0) {
+            $newBasketItemMessage = ContainerFacade::get(ThemeSettingServiceInterface::class)
+                ->getInteger('iNewBasketItemMessage');
+            if ($oBasketItem && $newBasketItemMessage != 0) {
                 $oNewItem = new stdClass();
                 $oNewItem->sTitle = $oBasketItem->getTitle();
                 $oNewItem->sId = $oBasketItem->getProductId();
@@ -291,7 +294,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
-        if (Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('iNewBasketItemMessage') == 3) {
             // saving return to shop link to session
             Registry::getSession()->setVariable('_backtoshop', $controllerId . $sPosition);
 
@@ -590,7 +593,9 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         } catch (OutOfStockException $exception) {
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup
-            if (!$errorDestination && Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 2) {
+            $newBasketItemMessage = ContainerFacade::get(ThemeSettingServiceInterface::class)
+                ->getInteger('iNewBasketItemMessage');
+            if (!$errorDestination && $newBasketItemMessage == 2) {
                 $errorDestination = 'popup';
             }
             Registry::getUtilsView()->addErrorToDisplay($exception, false, (bool) $errorDestination, $errorDestination);

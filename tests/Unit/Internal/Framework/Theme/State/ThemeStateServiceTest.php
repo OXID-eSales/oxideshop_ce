@@ -69,6 +69,19 @@ final class ThemeStateServiceTest extends TestCase
         $this->createService($dao)->getActiveThemeId(self::SHOP_ID);
     }
 
+    public function testGetActiveThemeIdResolvesThemeOnlyOnce(): void
+    {
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->once())->method('getAll')->willReturn([
+            'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
+        ]);
+        $service = $this->createService($dao);
+
+        $service->getActiveThemeId(self::SHOP_ID);
+
+        $this->assertSame('active', $service->getActiveThemeId(self::SHOP_ID));
+    }
+
     private function createService(ThemeConfigurationDaoInterface $dao): ThemeStateService
     {
         return new ThemeStateService($dao);

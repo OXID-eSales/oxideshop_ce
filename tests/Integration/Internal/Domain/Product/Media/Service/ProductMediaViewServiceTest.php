@@ -21,15 +21,14 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServic
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
@@ -473,10 +472,22 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     private function configureImageSettings(): void
     {
-        $this->setThemeStringConfigValue(self::CONFIG_KEY_ICON_SIZE, '87*87');
-        $this->setThemeStringConfigValue(self::CONFIG_KEY_THUMBNAIL_SIZE, '200*200');
-        $this->setThemeStringConfigValue(self::CONFIG_KEY_DETAIL_IMAGE_SIZE, '600*600');
-        $this->setThemeStringConfigValue(self::CONFIG_KEY_ZOOM_IMAGE_SIZE, '1200*1200');
+        $configuration = new ThemeConfiguration();
+        $configuration->setId($this->themeId)->setActivated(true);
+
+        foreach ([
+            self::CONFIG_KEY_ICON_SIZE => '87*87',
+            self::CONFIG_KEY_THUMBNAIL_SIZE => '200*200',
+            self::CONFIG_KEY_DETAIL_IMAGE_SIZE => '600*600',
+            self::CONFIG_KEY_ZOOM_IMAGE_SIZE => '1200*1200',
+        ] as $name => $value) {
+            $setting = new Setting();
+            $setting->setName($name)->setValue($value);
+            $configuration->addThemeSetting($setting);
+        }
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $this->shopId);
+
         $this->setStringConfigValue(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, '75');
         $this->setBooleanConfigValue(self::CONFIG_KEY_CONVERT_IMAGES_TO_WEBP, false);
     }
@@ -499,8 +510,8 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     private function getSizeFromConfig(string $key): array
     {
-        $value = (string) $this->get(ThemeSettingDaoInterface::class)
-            ->get($key, $this->shopId, $this->themeId)->getValue();
+        $value = $this->get(ThemeSettingServiceInterface::class)
+            ->getString($key);
         [$width, $height] = explode('*', $value);
         return ['width' => (int) $width, 'height' => (int) $height];
     }
@@ -509,17 +520,6 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     {
         return (string) $this->get(ShopConfigurationSettingDaoInterface::class)
             ->get(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, $this->shopId)->getValue();
-    }
-
-    private function setThemeStringConfigValue(string $name, string $value): void
-    {
-        $setting = new ThemeSetting();
-        $setting->setName($name);
-        $setting->setValue($value);
-        $setting->setType(ShopSettingType::STRING);
-        $setting->setShopId($this->shopId);
-        $setting->setThemeId($this->themeId);
-        $this->get(ThemeSettingDaoInterface::class)->save($setting);
     }
 
     private function setStringConfigValue(string $name, string $value): void

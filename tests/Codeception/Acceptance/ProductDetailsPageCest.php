@@ -21,6 +21,11 @@ final class ProductDetailsPageCest
     private string $productId = '1000';
     private string $productVariantId = '1001432';
 
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+    }
+
     #[Group('main', 'product', 'productVariants')]
     public function selectMultidimensionalVariantsInDetailsPage(AcceptanceTester $I): void
     {
@@ -131,7 +136,7 @@ final class ProductDetailsPageCest
         ];
 
         $I->updateConfigInDatabase('aSortCols', 'a:2:{i:0;s:7:"oxtitle";i:1;s:13:"oxvarminprice";}', 'arr');
-        $I->updateConfigInDatabase('sProductListNavigation', true);
+        $I->updateThemeSetting('sProductListNavigation', true);
 
         $searchListPage = $I->openShop()
             ->searchFor('100')
@@ -203,7 +208,7 @@ final class ProductDetailsPageCest
             ->seeGalleryThumbnailAltText($mediaFixture['secondaryAltText'], 2);
 
         $I->amGoingTo('check alt text with modal_zoom');
-        $I->updateConfigInDatabase('productZoomType', 'modal_zoom', 'str');
+        $I->updateThemeSetting('productZoomType', 'modal_zoom');
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $detailsPage->seeActiveGalleryPictureAltText($mediaFixture['primaryAltText'])
             ->openModalZoom()
@@ -213,17 +218,17 @@ final class ProductDetailsPageCest
             ->closeModalZoom();
 
         $I->amGoingTo('check alt text with hover_zoom');
-        $I->updateConfigInDatabase('productZoomType', 'hover_zoom', 'str');
+        $I->updateThemeSetting('productZoomType', 'hover_zoom');
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $detailsPage->seeHoverZoomPictureAltText($mediaFixture['primaryAltText']);
 
         $I->amGoingTo('check alt text with magnifier_lens');
-        $I->updateConfigInDatabase('productZoomType', 'magnifier_lens', 'str');
+        $I->updateThemeSetting('productZoomType', 'magnifier_lens');
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $detailsPage->seeMagnifierZoomPictureAltText($mediaFixture['primaryAltText']);
 
         $I->amGoingTo('check alt text with no_zoom');
-        $I->updateConfigInDatabase('productZoomType', 'no_zoom', 'str');
+        $I->updateThemeSetting('productZoomType', 'no_zoom');
         $detailsPage = $productNavigation->openProductDetailsPage($productData['id']);
         $detailsPage->seeNoZoomPictureAltText($mediaFixture['primaryAltText']);
     }
@@ -747,7 +752,7 @@ final class ProductDetailsPageCest
 
         $productId = '1000';
 
-        $I->updateConfigInDatabase('iNewBasketItemMessage', '2', 'str');
+        $I->updateThemeSetting('iNewBasketItemMessage', '2');
 
         // making product out of stock now
         $I->updateInDatabase('oxarticles', ['oxstock' => '1', 'oxstockflag' => '2'], ['oxid' => $productId]);

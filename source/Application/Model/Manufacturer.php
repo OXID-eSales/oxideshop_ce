@@ -13,6 +13,8 @@ use OxidEsales\Eshop\Core\Model\MultiLanguageModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsFile;
 use OxidEsales\Eshop\Core\UtilsPic;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use Symfony\Component\Filesystem\Path;
 
 /**
@@ -449,9 +451,9 @@ class Manufacturer extends MultiLanguageModel implements IUrl
 
     private function getImageUrl(mixed $imageName, string $paramName, string $directoryName): string
     {
-        $config = Registry::getConfig();
-        if (empty($size = $config->getConfigParam($paramName))) {
-            $size = $config->getConfigParam('sIconsize');
+        $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
+        if (empty($size = $themeSettingService->getString($paramName))) {
+            $size = $themeSettingService->getString('sIconsize');
         }
         $path = 'manufacturer' . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
 

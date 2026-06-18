@@ -16,6 +16,11 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 #[Group('product')]
 final class ProductMediaAltAttributesCest
 {
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+    }
+
     #[Group('main', 'product')]
     public function productMediaAltAttributesAreDisplayedInStorefront(AcceptanceTester $I): void
     {

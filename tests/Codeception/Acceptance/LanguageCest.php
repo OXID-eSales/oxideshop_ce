@@ -13,6 +13,11 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 
 final class LanguageCest
 {
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+    }
+
     public function checkLanguageSwitch(AcceptanceTester $I): void
     {
         $I->wantToTest('Check if Language switch works');

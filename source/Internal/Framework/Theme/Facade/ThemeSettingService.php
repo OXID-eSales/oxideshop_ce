@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade;
+
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+
+readonly class ThemeSettingService implements ThemeSettingServiceInterface
+{
+    public function __construct(
+        private ContextInterface $context,
+        private ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ThemeSettingCacheInterface $themeSettingCache,
+        private ThemeStateServiceInterface $themeStateService,
+    ) {
+    }
+
+    public function getInteger(string $name): int
+    {
+        return (int) $this->getValue($name);
+    }
+
+    public function getFloat(string $name): float
+    {
+        return (float) $this->getValue($name);
+    }
+
+    public function getString(string $name): string
+    {
+        return (string) $this->getValue($name);
+    }
+
+    public function getBoolean(string $name): bool
+    {
+        return (bool) $this->getValue($name);
+    }
+
+    public function getCollection(string $name): array
+    {
+        return (array) $this->getValue($name);
+    }
+
+    public function exists(string $name): bool
+    {
+        return $this->getSettingData($name)['exists'];
+    }
+
+    private function getValue(string $name): mixed
+    {
+        $settingData = $this->getSettingData($name);
+
+        if (!$settingData['exists']) {
+            throw new ThemeSettingNotFoundException(
+                sprintf(
+                    "Setting '%s' not found in shop %d",
+                    $name,
+                    $this->context->getCurrentShopId()
+                )
+            );
+        }
+
+        return $settingData['value'];
+    }
+
+    private function getSettingData(string $name): array
+    {
+        try {
+            $themeId = $this->getThemeId();
+        } catch (ActiveThemeNotFoundException) {
+            return ['exists' => false, 'value' => null];
+        }
+
+        $cacheKey = $this->getCacheKey($themeId, $name);
+
+        try {
+            return $this->themeSettingCache->get($cacheKey);
+        } catch (CacheItemNotFoundException) {
+            $setting = $this->findSetting($themeId, $name);
+            $settingData = [
+                'exists' => $setting !== null,
+                'value' => $setting?->getValue(),
+            ];
+            $this->themeSettingCache->put($cacheKey, $settingData);
+
+            return $settingData;
+        }
+    }
+
+    private function findSetting(string $themeId, string $name): ?Setting
+    {
+        $shopId = $this->context->getCurrentShopId();
+
+        if (!$this->themeConfigurationDao->exists($themeId, $shopId)) {
+            return null;
+        }
+
+        return $this->themeConfigurationDao->get($themeId, $shopId)->getSettingByName($name);
+    }
+
+    private function getCacheKey(string $themeId, string $name): string
+    {
+        return 'theme-' . $themeId . '-setting-' . $name;
+    }
+
+    private function getThemeId(): string
+    {
+        return $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId());
+    }
+}

@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -771,7 +772,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function showBirthdayFields()
     {
-        return Registry::getConfig()->getConfigParam('blShowBirthdayFields');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('blShowBirthdayFields');
     }
 
     /**
@@ -781,19 +782,20 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getNrOfCatArticles()
     {
-        $sListType = Registry::getSession()->getVariable('ldtype');
+        $listType = Registry::getSession()->getVariable('ldtype');
+        $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
 
-        if (is_null($sListType)) {
-            $sListType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
+        if (is_null($listType)) {
+            $listType = $themeSettingService->getString('sDefaultListDisplayType');
         }
 
-        if ('grid' === $sListType) {
-            $aNrOfCatArticles = Registry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+        if ('grid' === $listType) {
+            $nrOfCatArticles = $themeSettingService->getCollection('aNrofCatArticlesInGrid');
         } else {
-            $aNrOfCatArticles = Registry::getConfig()->getConfigParam('aNrofCatArticles');
+            $nrOfCatArticles = $themeSettingService->getCollection('aNrofCatArticles');
         }
 
-        return $aNrOfCatArticles;
+        return $nrOfCatArticles;
     }
 
     /**
@@ -803,7 +805,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getShowWishlist()
     {
-        return Registry::getConfig()->getConfigParam('bl_showWishlist');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showWishlist');
     }
 
     /**
@@ -813,17 +815,17 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getShowCompareList()
     {
-        $myConfig = Registry::getConfig();
-        $blShowCompareList = true;
+        $config = Registry::getConfig();
+        $showCompareList = true;
 
         if (
-            !$myConfig->getConfigParam('bl_showCompareList') ||
-            ($myConfig->getConfigParam('blDisableNavBars') && $myConfig->getActiveView()->getIsOrderStep())
+            !ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showCompareList') ||
+            ($config->getConfigParam('blDisableNavBars') && $config->getActiveView()->getIsOrderStep())
         ) {
-            $blShowCompareList = false;
+            $showCompareList = false;
         }
 
-        return $blShowCompareList;
+        return $showCompareList;
     }
 
     /**
@@ -845,7 +847,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getShowVouchers()
     {
-        return Registry::getConfig()->getConfigParam('bl_showVouchers');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showVouchers');
     }
 
     /**
@@ -855,7 +857,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      */
     public function getShowGiftWrapping()
     {
-        return Registry::getConfig()->getConfigParam('bl_showGiftWrapping');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showGiftWrapping');
     }
 
     /**
@@ -1155,21 +1157,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         return $moduleUrl;
     }
 
-    /**
-     * return param value
-     *
-     * @param string $sName param name
-     *
-     * @return mixed
-     */
-    public function getViewThemeParam($sName)
+    public function getThemeSettings(): ThemeSettingServiceInterface
     {
-        $sValue = false;
-        if (Registry::getConfig()->isThemeOption($sName)) {
-            $sValue = Registry::getConfig()->getConfigParam($sName);
-        }
-
-        return $sValue;
+        return ContainerFacade::get(ThemeSettingServiceInterface::class);
     }
 
 

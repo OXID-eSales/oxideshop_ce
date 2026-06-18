@@ -26,6 +26,7 @@ final class CheckoutProcessCest
 {
     public function _before(AcceptanceTester $I): void
     {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
         $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForWrapping', false, 'bool');
@@ -170,6 +171,8 @@ final class CheckoutProcessCest
         $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same
         product was sold out by other user during the checkout');
 
+        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+
         $userData = Fixtures::get('existingUser');
 
         $homePage = $I
@@ -259,13 +262,15 @@ final class CheckoutProcessCest
     {
         $I->wantToTest('minimal order price in checkout process (min order sum is 49 €)');
 
+        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+
         // prepare data for test
         $I->updateInDatabase('oxdelivery', ['OXTITLE_1' => 'OXTITLE'], ['OXTITLE_1' => '']);
         $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 1], ['OXID' => 'testcatdiscount']);
 
         $I->updateConfigInDatabase('iMinOrderPrice', '49', 'str');
-        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'hide', 'select');
-        $I->updateConfigInDatabase('miniBasketLowOrderDisplayOrderButton', 'hide', 'select');
+        $I->updateThemeSetting('basketLowOrderDisplayOrderButton', 'hide');
+        $I->updateThemeSetting('miniBasketLowOrderDisplayOrderButton', 'hide');
 
         $productData = [
             'id' => '1000',
@@ -298,8 +303,8 @@ final class CheckoutProcessCest
         $I->dontSeeElement(sprintf('//a[contains(text(),"%s")]', Translator::translate('CHECKOUT'))); //Minibasket checkout button
 
         //Update to display buttons
-        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'show', 'select');
-        $I->updateConfigInDatabase('miniBasketLowOrderDisplayOrderButton', 'show', 'select');
+        $I->updateThemeSetting('basketLowOrderDisplayOrderButton', 'show');
+        $I->updateThemeSetting('miniBasketLowOrderDisplayOrderButton', 'show');
 
         $I->openShop()->openBasket();
         $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
@@ -311,7 +316,7 @@ final class CheckoutProcessCest
         $basket->closeMiniBasket();
 
         //Reset to default settings
-        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'hide', 'select');
+        $I->updateThemeSetting('basketLowOrderDisplayOrderButton', 'hide');
 
         $productData['amount'] = 2;
         $productData['totalPrice'] = '90,00 €';
@@ -335,6 +340,8 @@ final class CheckoutProcessCest
     {
         $basket = new Basket($I);
         $I->wantToTest('bundled product');
+
+        $I->updateThemeSetting('iNewBasketItemMessage', '0');
 
         $productData = [
             'id' => '1000',
@@ -364,7 +371,7 @@ final class CheckoutProcessCest
     public function checkGuestUserNameSwitching(AcceptanceTester $I): void
     {
         $I->wantToTest('guest checkout with username switching');
-        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->updateThemeSetting('blShowBirthdayFields', true);
 
         $basket = new Basket($I);
         $userRegistration = new UserRegistrationInCheckout($I);
@@ -412,6 +419,8 @@ final class CheckoutProcessCest
     public function checkCreateShippingAddress(AcceptanceTester $I): void
     {
         $I->wantToTest('creating shipping address during authenticated user`s checkout');
+
+        $I->updateThemeSetting('iNewBasketItemMessage', '0');
         $basket = new Basket($I);
         $userData = Fixtures::get('existingUser');
         $existingProductId = '1001';
@@ -449,7 +458,7 @@ final class CheckoutProcessCest
     public function checkForceIdDisabledDuringCheckout(AcceptanceTester $I): void
     {
         $I->wantToTest('Change session during payment');
-        $I->updateConfigInDatabase('blShowBirthdayFields', true, 'bool');
+        $I->updateThemeSetting('blShowBirthdayFields', true);
 
         $basket = new Basket($I);
         $userRegistration = new UserRegistrationInCheckout($I);

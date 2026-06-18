@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Application\Model\Search;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\Event\AfterProductSearchEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\Event\BeforeProductSearchEvent;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchCriteria;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchServiceInterface;
@@ -546,7 +547,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function canSelectDisplayType()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowListDisplayType');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('blShowListDisplayType');
     }
 
     /**

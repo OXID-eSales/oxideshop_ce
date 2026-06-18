@@ -26,10 +26,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSet
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
@@ -250,23 +249,24 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
 
     private function configureImageSettings(): void
     {
-        $this->setThemeStringConfigValue('sIconsize', '87*87');
-        $this->setThemeStringConfigValue('sThumbnailsize', '200*200');
-        $this->setThemeStringConfigValue('sDetailImageSize', '600*600');
-        $this->setThemeStringConfigValue('sZoomImageSize', '1200*1200');
+        $configuration = new ThemeConfiguration();
+        $configuration->setId($this->themeId)->setActivated(true);
+
+        foreach ([
+            'sIconsize' => '87*87',
+            'sThumbnailsize' => '200*200',
+            'sDetailImageSize' => '600*600',
+            'sZoomImageSize' => '1200*1200',
+        ] as $name => $value) {
+            $setting = new Setting();
+            $setting->setName($name)->setValue($value);
+            $configuration->addThemeSetting($setting);
+        }
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $this->shopId);
+
         $this->setStringConfigValue('sDefaultImageQuality', '75');
         $this->setBooleanConfigValue('blConvertImagesToWebP', false);
-    }
-
-    private function setThemeStringConfigValue(string $name, string $value): void
-    {
-        $setting = new ThemeSetting();
-        $setting->setName($name);
-        $setting->setValue($value);
-        $setting->setType(ShopSettingType::STRING);
-        $setting->setShopId($this->shopId);
-        $setting->setThemeId($this->themeId);
-        $this->get(ThemeSettingDaoInterface::class)->save($setting);
     }
 
     private function setStringConfigValue(string $name, string $value): void

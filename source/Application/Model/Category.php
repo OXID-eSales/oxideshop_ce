@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 
 /**
  * Category manager.
@@ -1047,49 +1049,34 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
         return parent::setFieldData($fieldName, $value, $dataType);
     }
 
-    /**
-     * Returns category icon picture url if exist, false - if not
-     *
-     * @return mixed
-     */
     public function getIconUrl()
     {
-        if (($sIcon = $this->oxcategories__oxicon->value)) {
-            $oConfig = Registry::getConfig();
-            $sSize = $oConfig->getConfigParam('sCatIconsize');
-            if (!isset($sSize)) {
-                $sSize = $oConfig->getConfigParam('sIconsize');
+        if (($icon = $this->oxcategories__oxicon->value)) {
+            $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
+            $size = $themeSettingService->getString('sCatIconsize');
+            if (empty($size)) {
+                $size = $themeSettingService->getString('sIconsize');
             }
 
-            return Registry::getPictureHandler()->getPicUrl('category/icon/', $sIcon, $sSize);
+            return Registry::getPictureHandler()->getPicUrl('category/icon/', $icon, $size);
         }
     }
 
-    /**
-     * Returns category thumbnail picture url if exist, false - if not
-     *
-     * @return mixed
-     */
     public function getThumbUrl()
     {
-        if (($sIcon = $this->oxcategories__oxthumb->value)) {
-            $sSize = Registry::getConfig()->getConfigParam('sCatThumbnailsize');
+        if (($icon = $this->oxcategories__oxthumb->value)) {
+            $size = ContainerFacade::get(ThemeSettingServiceInterface::class)->getString('sCatThumbnailsize');
 
-            return Registry::getPictureHandler()->getPicUrl('category/thumb/', $sIcon, $sSize);
+            return Registry::getPictureHandler()->getPicUrl('category/thumb/', $icon, $size);
         }
     }
 
-    /**
-     * Returns category promotion icon picture url if exist, false - if not
-     *
-     * @return mixed
-     */
     public function getPromotionIconUrl()
     {
-        if (($sIcon = $this->oxcategories__oxpromoicon->value)) {
-            $sSize = Registry::getConfig()->getConfigParam('sCatPromotionsize');
+        if (($icon = $this->oxcategories__oxpromoicon->value)) {
+            $size = ContainerFacade::get(ThemeSettingServiceInterface::class)->getString('sCatPromotionsize');
 
-            return Registry::getPictureHandler()->getPicUrl('category/promo_icon/', $sIcon, $sSize);
+            return Registry::getPictureHandler()->getPicUrl('category/promo_icon/', $icon, $size);
         }
     }
 

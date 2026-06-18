@@ -22,6 +22,11 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 use function is_array;
 
@@ -119,6 +124,7 @@ class BasketConstruct
 
     public function setOptions(array $options): void
     {
+        $this->installThemeDefaults();
         Registry::getConfig()->init();
         if (!empty($options['config'])) {
             foreach ($options['config'] as $key => $value) {
@@ -131,6 +137,18 @@ class BasketConstruct
             $currencies[0] = 'EUR@ ' . $options['activeCurrencyRate'] . '@ ,@ .@ €@ 2';
             Registry::getConfig()->setConfigParam('aCurrencies', $currencies);
         }
+    }
+
+    private function installThemeDefaults(): void
+    {
+        $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
+
+        $configuration = (new ThemeConfiguration())
+            ->setId('testTheme')
+            ->setActivated(true)
+            ->addThemeSetting((new Setting())->setName('bl_showVouchers')->setType('bool')->setValue(true));
+
+        ContainerFacade::get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
     }
 
     public function createObj2Obj(array $data, string $object2ObjectTable): void

@@ -121,7 +121,8 @@ final class WishListCest
 
         $start = $I->loginShopWithExistingUser();
         $productNavigation = new ProductNavigation($I);
-        $I->updateConfigInDatabase('bl_showWishlist', true);
+        $I->updateThemeSetting('bl_showWishlist', true);
+        $I->updateThemeSetting('iNewBasketItemMessage', '0');
 
         $productData = [
             'id' => '1000',
@@ -148,7 +149,8 @@ final class WishListCest
     public function testWishlistInTheCartForANonLoggedInUser(AcceptanceTester $I): void
     {
         $I->wantToTest('if a non-logged-in user redirected to the login page after click on the star');
-        $I->updateConfigInDatabase('bl_showWishlist', true);
+        $I->updateThemeSetting('bl_showWishlist', true);
+        $I->updateThemeSetting('iNewBasketItemMessage', '0');
 
         $productData = [
             'id' => '1000',

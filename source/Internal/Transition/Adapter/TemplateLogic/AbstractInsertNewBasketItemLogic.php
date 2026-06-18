@@ -21,10 +21,12 @@ abstract class AbstractInsertNewBasketItemLogic
             throw new \Exception('Please check if correct template engine is used.');
         }
         $renderedTemplate = '';
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $themeSettingService = \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
+            \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface::class
+        );
 
         $types = ['0' => 'none', '1' => 'message', '2' => 'popup', '3' => 'basket'];
-        $newBasketItemMessage = $config->getConfigParam('iNewBasketItemMessage');
+        $newBasketItemMessage = $themeSettingService->getInteger('iNewBasketItemMessage');
 
         // If correct type of message is expected
         if (

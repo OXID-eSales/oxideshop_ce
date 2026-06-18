@@ -17,6 +17,11 @@ final class DynamicImageGenerationCest
 {
     private string $pathToGeneratedImages = '/out/pictures/generated/product/1/500_500_75';
 
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->updateThemeSetting('sThumbnailsize', '500*500');
+    }
+
     public function fetchGeneratedImages(AcceptanceTester $I): void
     {
         $I->wantToTest('availability of dynamically generated images');

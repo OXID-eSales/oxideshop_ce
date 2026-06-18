@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 
@@ -428,7 +429,8 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $listDisplayType = Registry::getSession()->getVariable('ldtype');
 
         if (is_null($listDisplayType)) {
-            $listDisplayType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $listDisplayType = ContainerFacade::get(ThemeSettingServiceInterface::class)
+                ->getString('sDefaultListDisplayType');
         }
 
         return $listDisplayType;
@@ -1086,7 +1088,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function canSelectDisplayType()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowListDisplayType');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('blShowListDisplayType');
     }
 
     /**

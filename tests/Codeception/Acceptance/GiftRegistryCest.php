@@ -25,7 +25,7 @@ final class GiftRegistryCest
     {
         $I->wantToTest('if product gift registry functionality is enabled');
 
-        $I->updateConfigInDatabase('bl_showWishlist', true);
+        $I->updateThemeSetting('bl_showWishlist', true);
         $productData = [
             'id' => '1000',
             'title' => 'Test product 0 [EN] šÄßüл',
@@ -79,7 +79,7 @@ final class GiftRegistryCest
         $I->wantToTest('user gift registry functionality setting it as searchable and public');
 
         //(Use gift registry) is enabled again
-        $I->updateConfigInDatabase('bl_showWishlist', true);
+        $I->updateThemeSetting('bl_showWishlist', true);
 
         $productData = [
             'id' => '1000',
@@ -159,7 +159,7 @@ final class GiftRegistryCest
         $I->wantToTest('disabled user gift registry via performance options');
 
         //(Use gift registry) is disabled
-        $I->updateConfigInDatabase('bl_showWishlist', false, "bool");
+        $I->updateThemeSetting('bl_showWishlist', false);
 
         $productData = [
             'id' => '1000',
@@ -185,7 +185,7 @@ final class GiftRegistryCest
         $accountPage->dontSeeGiftRegistryLink();
 
         //(Use gift registry) is enabled again
-        $I->updateConfigInDatabase('bl_showWishlist', true, "bool");
+        $I->updateThemeSetting('bl_showWishlist', true);
     }
 
     private function getExistingUserData()

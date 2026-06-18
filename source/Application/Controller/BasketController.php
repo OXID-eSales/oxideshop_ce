@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Application\Model\Wrapping;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -204,10 +205,11 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function showBackToShop()
     {
-        $iNewBasketItemMessage = Registry::getConfig()->getConfigParam('iNewBasketItemMessage');
-        $sBackToShop = Registry::getSession()->getVariable('_backtoshop');
+        $newBasketItemMessage = ContainerFacade::get(ThemeSettingServiceInterface::class)
+            ->getInteger('iNewBasketItemMessage');
+        $backToShop = Registry::getSession()->getVariable('_backtoshop');
 
-        return ($iNewBasketItemMessage == 3 && $sBackToShop);
+        return ($newBasketItemMessage == 3 && $backToShop);
     }
 
     /**
@@ -270,7 +272,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function backToShop()
     {
-        if (Registry::getConfig()->getConfigParam('iNewBasketItemMessage') == 3) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('iNewBasketItemMessage') == 3) {
             $oSession = Registry::getSession();
             if ($sBackLink = $oSession->getVariable('_backtoshop')) {
                 $oSession->deleteVariable('_backtoshop');

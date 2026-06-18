@@ -19,7 +19,7 @@ final class ProductPromotionCest
     public function testFrontendPromotionNew(AcceptanceTester $I): void
     {
         $I->wantToTest('the newest products');
-        $I->updateConfigInDatabase('sShowNewestArticles', true, 'bool');
+        $I->updateThemeSetting('sShowNewestArticles', true);
         $I->clearShopCache();
         $I->haveInDatabase(
             'oxactions2article',
@@ -86,7 +86,7 @@ final class ProductPromotionCest
     public function testFrontendPromotionTop(AcceptanceTester $I): void
     {
         $I->wantToTest('the Top5 products');
-        $I->updateConfigInDatabase('sShowTopArticles', true, 'bool');
+        $I->updateThemeSetting('sShowTopArticles', true);
         $I->clearShopCache();
         $I->haveInDatabase(
             'oxactions2article',
@@ -118,7 +118,7 @@ final class ProductPromotionCest
     public function testFrontendPromotionBargainItems(AcceptanceTester $I): void
     {
         $I->wantToTest('the bargain items');
-        $I->updateConfigInDatabase('sShowBargainArticles', true, 'bool');
+        $I->updateThemeSetting('sShowBargainArticles', true);
         $I->clearShopCache();
         $I->haveInDatabase(
             'oxactions2article',

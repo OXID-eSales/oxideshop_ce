@@ -14,6 +14,10 @@ use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class BasketWithStockTest extends IntegrationTestCase
@@ -27,6 +31,11 @@ final class BasketWithStockTest extends IntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $configuration = (new ThemeConfiguration())->setId('testTheme')->setActivated(true);
+        $configuration->addThemeSetting((new Setting())->setName('bl_showVouchers')->setType('bool')->setValue(true));
+        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 
         $this->createProduct();
         Registry::getConfig()->setConfigParam('blAllowNegativeStock', false);

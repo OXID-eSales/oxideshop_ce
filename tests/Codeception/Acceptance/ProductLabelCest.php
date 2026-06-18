@@ -15,6 +15,11 @@ use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
 #[Group('productLabel')]
 final class ProductLabelCest
 {
+    public function _before(AcceptanceTester $I): void
+    {
+        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+    }
+
     public function addingProductLabel(AcceptanceTester $I): void
     {
         $I->wantToTest('product customization (product labels AKA `persparam`) functionality');

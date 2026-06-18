@@ -14,13 +14,18 @@
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
 - YAML-based theme configuration
   - Theme packages provide `metadata.yaml` and `config.yaml`
+  - `ThemeSettingServiceInterface` to read theme settings
+  - `ViewConfig::getThemeSettings()` to read theme settings in templates
+  - `ThemeConfigurationChangedEvent`
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
 - Module migrations are no longer discovered automatically; register them via a `MigrationPathProviderInterface` service tagged `oxid_esales.migration_path_provider`
 - Theme settings and the active theme are stored in YAML files instead of the database
+  - Theme settings are read from YAML instead of the `oxconfig` table
   - The `sTheme` config parameter is no longer used
+  - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
@@ -45,8 +50,12 @@
 - `SeoEncoderArticle::createArticleCategoryUri()`
 - deprecated `ProjectYamlImportServiceInterface::addImport()` and `ProjectYamlImportServiceInterface::removeImport()`
 - `MigrationExecutorInterface`
+- `ThemeSettingChangedEvent`, use `ThemeConfigurationChangedEvent` instead
 - Theme configuration classes and methods
+  - `ThemeSettingDaoInterface` and `ThemeSetting`
   - `ThemeMain::themeInConfigFile()`
+  - `Config::isThemeOption()` and `Config::$_aThemeConfigParams`
+  - `ViewConfig::getViewThemeParam()`, use `ViewConfig::getThemeSettings()` instead
   - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
 
 ## v8.0.0-alpha.2 - 2026-02-12

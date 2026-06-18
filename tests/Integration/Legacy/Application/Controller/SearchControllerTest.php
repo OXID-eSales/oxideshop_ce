@@ -24,11 +24,15 @@ use OxidEsales\EshopCommunity\Internal\Framework\Search\EqualsFilter;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\Pagination;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\SearchTerm;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\SortDirection;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use Psr\Log\LoggerInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 #[RunTestsInSeparateProcesses]
 final class SearchControllerTest extends IntegrationTestCase
@@ -46,6 +50,19 @@ final class SearchControllerTest extends IntegrationTestCase
     public function setUp(): void
     {
         parent::setUp();
+
+        $configuration = (new ThemeConfiguration())->setId('testTheme')->setActivated(true);
+        $configuration->addThemeSetting(
+            (new Setting())->setName('sDefaultListDisplayType')->setType('str')->setValue('infogrid')
+        );
+        $configuration->addThemeSetting(
+            (new Setting())->setName('aNrofCatArticles')->setType('arr')->setValue(['10', '20', '50', '100'])
+        );
+        $configuration->addThemeSetting(
+            (new Setting())->setName('blShowListDisplayType')->setType('bool')->setValue(true)
+        );
+        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
+        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 
         $product1 = oxNew(Article::class);
         $product1->setId($this->productid1);

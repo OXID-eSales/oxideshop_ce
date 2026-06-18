@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCache
+
+  oxid_esales.theme.cache.invalidate_theme_cache_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\InvalidateThemeCacheEventSubscriber
+    tags:
+      - { name: kernel.event_subscriber }

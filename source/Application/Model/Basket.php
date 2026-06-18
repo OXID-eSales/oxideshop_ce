@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Price;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use Psr\Log\LoggerInterface;
 use stdClass;
 
@@ -1066,7 +1067,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function calcVoucherDiscount()
     {
-        if (Registry::getConfig()->getConfigParam('bl_showVouchers') && ($this->_oVoucherDiscount === null || ($this->_blUpdateNeeded && !$this->isAdmin()))) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showVouchers') && ($this->_oVoucherDiscount === null || ($this->_blUpdateNeeded && !$this->isAdmin()))) {
             $this->_oVoucherDiscount = $this->getPriceObject();
 
             // calculating price to apply discount
@@ -2153,7 +2154,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getVoucherDiscount()
     {
-        if (Registry::getConfig()->getConfigParam('bl_showVouchers')) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showVouchers')) {
             return $this->_oVoucherDiscount;
         }
 

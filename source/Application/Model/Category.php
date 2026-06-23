@@ -1073,7 +1073,10 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getThumbUrl()
     {
         if (($sIcon = $this->oxcategories__oxthumb->value)) {
-            $sSize = Registry::getConfig()->getConfigParam('sCatThumbnailsize');
+            $sSize = \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
+                \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface::class
+            )->getSettingValue('sCatThumbnailsize')
+                ?? Registry::getConfig()->getConfigParam('sCatThumbnailsize');
 
             return Registry::getPictureHandler()->getPicUrl('category/thumb/', $sIcon, $sSize);
         }

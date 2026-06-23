@@ -11,10 +11,14 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use stdClass;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
@@ -653,7 +657,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         $sAppDir = $oConfig->getAppDir();
         $sLang = Registry::getLang()->getLanguageAbbr($iLang);
-        $sTheme = $oConfig->getConfigParam("sTheme");
+        $themeService = ContainerFacade::get(ActiveThemeServiceInterface::class);
+        $themeSourcePaths = $themeService->getActiveThemeSourcePaths();
+        $sTheme = $themeService->getActiveThemeChain()[0] ?? '';
 
         //get generic lang files
         $sGenericPath = $sAppDir . 'translations/' . $sLang;
@@ -662,8 +668,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
 
         //get theme lang files
-        if ($sTheme) {
-            $sThemePath = $sAppDir . 'views/' . $sTheme . '/';
+        if ($sTheme && isset($themeSourcePaths[$sTheme])) {
+            $sThemePath = $themeSourcePaths[$sTheme] . '/';
             $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($sThemePath, $sLang));
         }
 
@@ -720,14 +726,15 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     protected function getCustomThemeLanguageFiles($language)
     {
-        $oConfig = Registry::getConfig();
-        $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
-        $sAppDir = $oConfig->getAppDir();
+        $themeService = ContainerFacade::get(ActiveThemeServiceInterface::class);
+        $themeChain = $themeService->getActiveThemeChain();
+        $sCustomTheme = count($themeChain) > 1 ? (string) end($themeChain) : '';
         $sLang = Registry::getLang()->getLanguageAbbr($language);
         $aLangFiles = [];
 
-        if ($sCustomTheme) {
-            $customThemePath = $sAppDir . 'views/' . $sCustomTheme . '/';
+        $themeSourcePaths = $themeService->getActiveThemeSourcePaths();
+        if ($sCustomTheme && isset($themeSourcePaths[$sCustomTheme])) {
+            $customThemePath = $themeSourcePaths[$sCustomTheme] . '/';
             $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
         }
 
@@ -765,11 +772,18 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $langFiles = $this->appendLangFile($langFiles, $adminPath);
 
         // themes options lang files
-        $themePath = $appDirectory . 'views/*/' . $language;
-        $langFiles = $this->appendLangFile($langFiles, $themePath, "options");
-
-        $themePath = $appDirectory . 'views/*/translations/' . $language;
-        $langFiles = $this->appendLangFile($langFiles, $themePath, "options");
+        foreach ($this->getInstalledThemeSourcePaths() as $themeSourcePath) {
+            $langFiles = $this->appendLangFile(
+                $langFiles,
+                $themeSourcePath . DIRECTORY_SEPARATOR . $language,
+                "options"
+            );
+            $langFiles = $this->appendLangFile(
+                $langFiles,
+                $themeSourcePath . DIRECTORY_SEPARATOR . 'translations' . DIRECTORY_SEPARATOR . $language,
+                "options"
+            );
+        }
 
         // module language files
         $langFiles = $this->appendModuleLangFilesForAdminArea($langFiles, $language);
@@ -779,6 +793,22 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $langFiles = $this->appendCustomLangFiles($langFiles, $language, true);
 
         return count($langFiles) ? $langFiles : false;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getInstalledThemeSourcePaths(): array
+    {
+        $shopId = (int) Registry::getConfig()->getShopId();
+        $shopRootPath = ContainerFacade::get(BasicContextInterface::class)->getShopRootPath();
+
+        $paths = [];
+        foreach (ContainerFacade::get(ThemeConfigurationDaoInterface::class)->getAll($shopId) as $themeConfiguration) {
+            $paths[] = Path::join($shopRootPath, $themeConfiguration->getThemeSource());
+        }
+
+        return $paths;
     }
 
     /**
@@ -820,12 +850,14 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 ->getActiveTheme();
             $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
         } else {
-            $config = Registry::getConfig();
-            if ($config->getConfigParam("sTheme")) {
-                $languageFiles[] = $this->getCustomFilePath($language, $config->getConfigParam("sTheme"));
+            $themeChain = ContainerFacade::get(ActiveThemeServiceInterface::class)->getActiveThemeChain();
+            $baseTheme = $themeChain[0] ?? '';
+            $customTheme = count($themeChain) > 1 ? end($themeChain) : '';
+            if ($baseTheme) {
+                $languageFiles[] = $this->getCustomFilePath($language, $baseTheme);
             }
-            if ($config->getConfigParam("sCustomTheme")) {
-                $languageFiles[] = $this->getCustomFilePath($language, $config->getConfigParam("sCustomTheme"));
+            if ($customTheme) {
+                $languageFiles[] = $this->getCustomFilePath($language, $customTheme);
             }
         }
 
@@ -893,7 +925,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $sLangFilesIdent = '_' . md5(implode('+', $aLangFiles));
         }
 
-        return "langcache_" . ((int) $blAdmin) . "_{$iLang}_" . $myConfig->getShopId() . "_" . $myConfig->getConfigParam('sTheme') . $sLangFilesIdent;
+        $activeThemeId = ContainerFacade::get(ActiveThemeServiceInterface::class)->getActiveThemeId();
+
+        return "langcache_" . ((int) $blAdmin) . "_{$iLang}_" . $myConfig->getShopId() . "_" . $activeThemeId . $sLangFilesIdent;
     }
 
     protected function getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null)
@@ -958,8 +992,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $config = Registry::getConfig();
 
             $mapFile = '';
-            $theme = $this->getRealThemeName($config->getConfigParam("sTheme"), $isAdmin);
-            $customTheme = $this->getRealThemeName($config->getConfigParam("sCustomTheme"), $isAdmin);
+            $themeChain = ContainerFacade::get(ActiveThemeServiceInterface::class)->getActiveThemeChain();
+            $theme = $this->getRealThemeName($themeChain[0] ?? '', $isAdmin);
+            $customTheme = $this->getRealThemeName(count($themeChain) > 1 ? end($themeChain) : '', $isAdmin);
 
             $languageAbbr = Registry::getLang()->getLanguageAbbr($language);
             $possibleMapFileLocations = array_merge(
@@ -993,10 +1028,14 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function getThemeLanguageFileMapLocations($theme, $languageAbbreviation)
     {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-        $themeDirectory = $config->getAppDir() . DIRECTORY_SEPARATOR
-            . 'views' . DIRECTORY_SEPARATOR
-            . $theme . DIRECTORY_SEPARATOR;
+        $themeSourcePaths = ContainerFacade::get(ActiveThemeServiceInterface::class)->getActiveThemeSourcePaths();
+        if (isset($themeSourcePaths[$theme])) {
+            $themeDirectory = $themeSourcePaths[$theme] . DIRECTORY_SEPARATOR;
+        } else {
+            $themeDirectory = Registry::getConfig()->getAppDir() . DIRECTORY_SEPARATOR
+                . 'views' . DIRECTORY_SEPARATOR
+                . $theme . DIRECTORY_SEPARATOR;
+        }
 
         return [
             $themeDirectory . $languageAbbreviation, // for backwards compatibility

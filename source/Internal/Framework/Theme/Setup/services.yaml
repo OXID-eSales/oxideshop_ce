@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Bridge\ThemeActivationBridgeInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Bridge\ThemeActivationBridge
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Validator\ThemeConfigurationValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Validator\ThemeConfigurationValidatorAggregate
+    arguments:
+      - '@oxid_esales.theme.setup.validator.parent_theme_validator'
+
+  oxid_esales.theme.setup.validator.parent_theme_validator:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Validator\ParentThemeValidator

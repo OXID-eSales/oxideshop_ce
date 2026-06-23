@@ -20,6 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Search\Pagination;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\SearchTerm;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\SortDirection;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\Sorting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -307,7 +308,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         $sAddDynParams = $this->getAddUrlParams();
         if ($sAddDynParams && ($aArtList = $this->getArticleList())) {
-            $blSeo = \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive();
+            $blSeo = Registry::getUtils()->seoIsActive();
             foreach ($aArtList as $oArticle) {
                 // appending std and dynamic urls
                 if (!$blSeo) {
@@ -328,7 +329,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         $sAddParams = parent::getAddUrlParams();
         $sAddParams .= ($sAddParams ? '&amp;' : '') . "listtype={$this->_sListType}";
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $oConfig = Registry::getConfig();
 
         if ($sParam = Registry::getRequest()->getRequestParameter('searchparam')) {
             $sAddParams .= "&amp;searchparam=" . rawurlencode($sParam);
@@ -358,7 +359,7 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         if ($this->_blSearchClass === null) {
             $this->_blSearchClass = false;
-            if ('search' == strtolower(\OxidEsales\Eshop\Core\Registry::getConfig()->getRequestControllerId())) {
+            if ('search' == strtolower(Registry::getConfig()->getRequestControllerId())) {
                 $this->_blSearchClass = true;
             }
         }
@@ -531,8 +532,8 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
         $aPaths = [];
         $aPath = [];
 
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $aPath['title'] = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('SEARCH', $iBaseLanguage, false);
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
+        $aPath['title'] = Registry::getLang()->translateString('SEARCH', $iBaseLanguage, false);
         $aPath['link'] = $this->getLink();
         $aPaths[] = $aPath;
 
@@ -546,7 +547,10 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
      */
     public function canSelectDisplayType()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowListDisplayType');
+        return ContainerFacade::get(
+            ActiveThemeServiceInterface::class
+        )->getSettingValue('blShowListDisplayType')
+            ?? Registry::getConfig()->getConfigParam('blShowListDisplayType');
     }
 
     /**
@@ -578,8 +582,8 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         $sTitle = '';
         $sTitle .= $this->getArticleCount();
-        $iBaseLanguage = \OxidEsales\Eshop\Core\Registry::getLang()->getBaseLanguage();
-        $sTitle .= ' ' . \OxidEsales\Eshop\Core\Registry::getLang()->translateString('HITS_FOR', $iBaseLanguage, false);
+        $iBaseLanguage = Registry::getLang()->getBaseLanguage();
+        $sTitle .= ' ' . Registry::getLang()->translateString('HITS_FOR', $iBaseLanguage, false);
         $sTitle .= ' "' . $this->getSearchParamForHtml() . '"';
 
         return $sTitle;

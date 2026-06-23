@@ -264,8 +264,8 @@ final class CheckoutProcessCest
         $I->updateInDatabase('oxdiscount', ['OXACTIVE' => 1], ['OXID' => 'testcatdiscount']);
 
         $I->updateConfigInDatabase('iMinOrderPrice', '49', 'str');
-        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'hide', 'select');
-        $I->updateConfigInDatabase('miniBasketLowOrderDisplayOrderButton', 'hide', 'select');
+        $I->updateThemeSetting('basketLowOrderDisplayOrderButton', 'hide');
+        $I->updateThemeSetting('miniBasketLowOrderDisplayOrderButton', 'hide');
 
         $productData = [
             'id' => '1000',
@@ -298,8 +298,8 @@ final class CheckoutProcessCest
         $I->dontSeeElement(sprintf('//a[contains(text(),"%s")]', Translator::translate('CHECKOUT'))); //Minibasket checkout button
 
         //Update to display buttons
-        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'show', 'select');
-        $I->updateConfigInDatabase('miniBasketLowOrderDisplayOrderButton', 'show', 'select');
+        $I->updateThemeSetting('basketLowOrderDisplayOrderButton', 'show');
+        $I->updateThemeSetting('miniBasketLowOrderDisplayOrderButton', 'show');
 
         $I->openShop()->openBasket();
         $I->see(Translator::translate('MIN_ORDER_PRICE') . ' 49,00 €');
@@ -311,7 +311,7 @@ final class CheckoutProcessCest
         $basket->closeMiniBasket();
 
         //Reset to default settings
-        $I->updateConfigInDatabase('basketLowOrderDisplayOrderButton', 'hide', 'select');
+        $I->updateThemeSetting('basketLowOrderDisplayOrderButton', 'hide');
 
         $productData['amount'] = 2;
         $productData['totalPrice'] = '90,00 €';

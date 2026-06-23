@@ -7,11 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\ThemeViewItemFactoryInterface;
+
 /**
- * Admin actionss manager.
- * Sets list template, list object class ('oxactions') and default sorting
- * field ('oxactions.oxtitle').
- * Admin Menu: Manage Products -> Actions.
+ * Admin theme list.
+ * Lists installed themes.
+ * Admin Menu: Extensions -> Themes.
  */
 class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
 {
@@ -22,12 +25,10 @@ class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      */
     public function render()
     {
-        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-
         parent::render();
 
-        // assign our list
-        $this->_aViewData['mylist'] = $oTheme->getList();
+        $this->_aViewData['mylist'] = ContainerFacade::get(ThemeViewItemFactoryInterface::class)
+            ->getAll((int) Registry::getConfig()->getShopId());
 
         return 'theme_list';
     }

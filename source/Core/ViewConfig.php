@@ -55,13 +55,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     protected $_oCountryList = null;
 
     /**
-     * Active theme name
-     *
-     * @var null
-     */
-    protected $_sActiveTheme = null;
-
-    /**
      * Shop logo
      *
      * @var string
@@ -780,14 +773,21 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         $sListType = Registry::getSession()->getVariable('ldtype');
 
+        $activeThemeService = \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
+            \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface::class
+        );
+
         if (is_null($sListType)) {
-            $sListType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $sListType = $activeThemeService->getSettingValue('sDefaultListDisplayType')
+                ?? Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
         if ('grid' === $sListType) {
-            $aNrOfCatArticles = Registry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
+            $aNrOfCatArticles = $activeThemeService->getSettingValue('aNrofCatArticlesInGrid')
+                ?? Registry::getConfig()->getConfigParam('aNrofCatArticlesInGrid');
         } else {
-            $aNrOfCatArticles = Registry::getConfig()->getConfigParam('aNrofCatArticles');
+            $aNrOfCatArticles = $activeThemeService->getSettingValue('aNrofCatArticles')
+                ?? Registry::getConfig()->getConfigParam('aNrofCatArticles');
         }
 
         return $aNrOfCatArticles;
@@ -1153,24 +1153,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * return param value
-     *
-     * @param string $sName param name
-     *
-     * @return mixed
-     */
-    public function getViewThemeParam($sName)
-    {
-        $sValue = false;
-        if (Registry::getConfig()->isThemeOption($sName)) {
-            $sValue = Registry::getConfig()->getConfigParam($sName);
-        }
-
-        return $sValue;
-    }
-
-
-    /**
      * Returns true if selection lists must be displayed in details page
      *
      * @return bool
@@ -1210,21 +1192,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function isFunctionalityEnabled($sParamName)
     {
         return (bool) Registry::getConfig()->getConfigParam($sParamName);
-    }
-
-    /**
-     * Returns active theme name
-     *
-     * @return string
-     */
-    public function getActiveTheme()
-    {
-        if ($this->_sActiveTheme === null) {
-            $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-            $this->_sActiveTheme = $oTheme->getActiveThemeId();
-        }
-
-        return $this->_sActiveTheme;
     }
 
     /**

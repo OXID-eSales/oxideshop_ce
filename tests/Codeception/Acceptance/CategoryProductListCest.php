@@ -131,7 +131,7 @@ final class CategoryProductListCest
 
     private function setNumberOfProductsInCategoryList(AcceptanceTester $I): void
     {
-        $I->updateConfigInDatabase('aNrofCatArticles', serialize([20, 1, 2, 10, 100]), 'arr');
-        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize([20, 1, 2, 10, 100]), "arr");
+        $I->updateThemeSetting('aNrofCatArticles', ['20', '1', '2', '10', '100']);
+        $I->updateThemeSetting('aNrofCatArticlesInGrid', ['20', '1', '2', '10', '100']);
     }
 }

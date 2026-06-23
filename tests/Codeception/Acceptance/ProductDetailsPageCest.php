@@ -131,7 +131,7 @@ final class ProductDetailsPageCest
         ];
 
         $I->updateConfigInDatabase('aSortCols', 'a:2:{i:0;s:7:"oxtitle";i:1;s:13:"oxvarminprice";}', 'arr');
-        $I->updateConfigInDatabase('sProductListNavigation', true);
+        $I->updateThemeSetting('sProductListNavigation', 1);
 
         $searchListPage = $I->openShop()
             ->searchFor('100')

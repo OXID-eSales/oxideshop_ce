@@ -721,7 +721,10 @@ class FrontendController extends BaseController
             $this->_sListDisplayType = $this->getCustomListDisplayType();
 
             if (!$this->_sListDisplayType) {
-                $this->_sListDisplayType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
+                $this->_sListDisplayType = \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
+                    \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface::class
+                )->getSettingValue('sDefaultListDisplayType')
+                    ?? Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
             }
 
             $this->_sListDisplayType = in_array((string) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
@@ -1172,14 +1175,19 @@ class FrontendController extends BaseController
         $numberOfCategoryArticles = ($numberOfCategoryArticles) ? $numberOfCategoryArticles : 10;
 
         // checking if all needed data is set
+        $activeThemeService = \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
+            \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface::class
+        );
         switch ($this->getListDisplayType()) {
             case 'grid':
-                $numbersOfCategoryArticles = $config->getConfigParam('aNrofCatArticlesInGrid');
+                $numbersOfCategoryArticles = $activeThemeService->getSettingValue('aNrofCatArticlesInGrid')
+                    ?? $config->getConfigParam('aNrofCatArticlesInGrid');
                 break;
             case 'line':
             case 'infogrid':
             default:
-                $numbersOfCategoryArticles = $config->getConfigParam('aNrofCatArticles');
+                $numbersOfCategoryArticles = $activeThemeService->getSettingValue('aNrofCatArticles')
+                    ?? $config->getConfigParam('aNrofCatArticles');
         }
 
         if (!is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {

@@ -1,0 +1,24 @@
+id: oe_media_test_theme
+title: 'OE Media Test Theme'
+version: '1.0.0'
+settings:
+  -
+    group: images
+    name: sIconsize
+    type: str
+    value: '100*100'
+  -
+    group: images
+    name: sThumbnailsize
+    type: str
+    value: '100*100'
+  -
+    group: images
+    name: sDetailImageSize
+    type: str
+    value: '100*100'
+  -
+    group: images
+    name: sZoomImageSize
+    type: str
+    value: '100*100'

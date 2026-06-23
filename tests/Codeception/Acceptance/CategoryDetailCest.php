@@ -9,10 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Codeception\Acceptance;
 
+use Codeception\Attribute\Group;
 use Codeception\Util\Fixtures;
 use OxidEsales\Codeception\Step\CategoryNavigation;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\AcceptanceTester;
-use PHPUnit\Framework\Attributes\Group;
 
 
 #[Group('category_description')]

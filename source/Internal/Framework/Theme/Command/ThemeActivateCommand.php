@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Bridge\ThemeActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,8 +22,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class ThemeActivateCommand extends Command
 {
     public function __construct(
-        private readonly ShopAdapterInterface $shopAdapter,
-        private readonly ShopCacheCleanerInterface $shopCacheCleaner,
+        private readonly ThemeActivationBridgeInterface $themeActivationBridge,
+        private readonly ThemeStateServiceInterface $themeStateService,
+        private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private readonly ContextInterface $context,
     ) {
         parent::__construct();
     }
@@ -37,19 +41,19 @@ final class ThemeActivateCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
         $themeId = $input->getArgument('theme-id');
+        $shopId = $this->context->getCurrentShopId();
 
-        if (!$this->shopAdapter->themeExists($themeId)) {
+        if (!$this->themeConfigurationDao->exists($themeId, $shopId)) {
             $style->error(sprintf('Theme - "%s" not found.', $themeId));
             return Command::FAILURE;
         }
 
-        if ($this->shopAdapter->getActiveThemeId() === $themeId) {
+        if ($this->themeStateService->getActiveThemeId($shopId) === $themeId) {
             $style->info(sprintf('Theme - "%s" is already active.', $themeId));
             return Command::SUCCESS;
         }
 
-        $this->shopAdapter->activateTheme($themeId);
-        $this->shopCacheCleaner->clearAll();
+        $this->themeActivationBridge->activate($themeId, $shopId);
         $style->success(sprintf('Theme - "%s" was activated.', $themeId));
 
         return Command::SUCCESS;

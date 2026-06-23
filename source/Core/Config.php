@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
@@ -65,13 +66,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @var array
      */
     protected $_aConfigParams = [];
-
-    /**
-     * Theme config parameters storage array
-     *
-     * @var array
-     */
-    protected $_aThemeConfigParams = [];
 
     /**
      * Current language Id
@@ -130,25 +124,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected $_sResourceDir = 'src';
 
     /**
-     * Modules dir name
-     *
-     * @var string
-     */
-    protected $_sModulesDir = 'modules';
-
-    /**
      * Whether shop is in SSL mode
      *
      * @var bool
      */
     protected $_blIsSsl = null;
-
-    /**
-     * Absolute image dirs for each shops
-     *
-     * @var array
-     */
-    protected $_aAbsDynImageDir = [];
 
     /**
      * Active currency object
@@ -250,14 +230,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
                 new \Exception()
             );
             throw $exception;
-        }
-
-        // loading theme config options
-        $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
-
-        // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
-        if ($this->getConfigParam('sCustomTheme')) {
-            $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
         }
 
         $this->loadAdditionalConfiguration();
@@ -387,11 +359,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $varVal = $value['oxvarvalue'];
 
             $this->setConfVarFromDb($varName, $varType, $varVal);
-
-            //setting theme options array
-            if ($module) {
-                $this->_aThemeConfigParams[$varName] = $module;
-            }
         }
 
         return (bool) count($result);
@@ -947,7 +914,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreCust = false)
     {
         if (is_null($theme)) {
-            $theme = $this->getConfigParam('sTheme');
+            $theme = ContainerFacade::get(ActiveThemeServiceInterface::class)->getActiveThemeChain()[0] ?? '';
         }
 
         if ($admin) {
@@ -990,7 +957,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
 
         // Check for custom template
-        $customTheme = $this->getConfigParam('sCustomTheme');
+        $activeThemeChain = ContainerFacade::get(ActiveThemeServiceInterface::class)->getActiveThemeChain();
+        $customTheme = count($activeThemeChain) > 1 ? (string) end($activeThemeChain) : '';
         if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
             $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute, $ignoreCust);
         }
@@ -1209,17 +1177,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return $this->getDir(null, $this->_sPictureDir, $admin);
     }
 
-    /**
-     * Calculates and returns full path to template.
-     *
-     * @param string $templateName Template name
-     * @param bool   $isAdmin      Whether to force admin
-     *
-     * @return string
-     */
-    public function getTemplatePath($templateName, $isAdmin)
+    private function getActiveThemeTemplateDir(): string|false
     {
-        return $this->getDir($templateName, $this->_sTemplateDir, $isAdmin);
+        $themeService = ContainerFacade::get(ActiveThemeServiceInterface::class);
+        $activeSource = $themeService->getActiveThemeSourcePaths()[$themeService->getActiveThemeId()] ?? null;
+
+        return $activeSource
+            ? Path::join($activeSource, $this->_sTemplateDir) . DIRECTORY_SEPARATOR
+            : false;
     }
 
     /**
@@ -1231,6 +1196,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getTemplateDir($admin = false)
     {
+        if (!$admin) {
+            return $this->getActiveThemeTemplateDir();
+        }
+
         return $this->getDir(null, $this->_sTemplateDir, $admin);
     }
 
@@ -1247,19 +1216,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getTemplateUrl($file = null, $admin = false, $ssl = null, $lang = null)
     {
         return $this->getShopMainUrl() . $this->getDir($file, $this->_sTemplateDir, $admin, $lang, null, null, false);
-    }
-
-    /**
-     * Finds and returns base template folder url
-     *
-     * @param bool $admin Whether to force admin
-     *
-     * @return string
-     */
-    public function getTemplateBase($admin = false)
-    {
-        // Base template dir is the parent dir of template dir
-        return str_replace($this->_sTemplateDir . '/', '', $this->getDir(null, $this->_sTemplateDir, $admin, null, null, null, false));
     }
 
     /**
@@ -1290,18 +1246,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $nativeImg = $this->getConfigParam('blNativeImages');
 
         return $this->getUrl($file, $this->_sResourceDir, $admin, $ssl, $nativeImg, $lang);
-    }
-
-    /**
-     * Finds and returns resource (css, js, etc..) folders path
-     *
-     * @param bool $admin Whether to force admin
-     *
-     * @return string
-     */
-    public function getResourceDir($admin)
-    {
-        return $this->getDir(null, $this->_sResourceDir, $admin);
     }
 
     /**
@@ -1720,17 +1664,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return Path::join(ContainerFacade::getParameter('oxid_esales.shop_source_directory'), 'log');
     }
 
-    /**
-     * Returns true if option is theme option
-     *
-     * @param string $name option name
-     *
-     * @return bool
-     */
-    public function isThemeOption($name)
-    {
-        return (bool) isset($this->_aThemeConfigParams[$name]);
-    }
 
     /**
      * Returns  SSL or non SSL shop main URL without index.php

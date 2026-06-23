@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Dao\ThemeMetaDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Dao\ThemeMetaDataProvider
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\DataMapper\ThemeMetaDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\DataMapper\ThemeMetaDataMapper
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Dao\ThemeMetaDataConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Dao\ThemeMetaDataConfigurationDao
+    public: true

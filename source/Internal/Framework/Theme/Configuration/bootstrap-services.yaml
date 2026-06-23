@@ -1,0 +1,37 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDao
+    arguments:
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.node'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ClassPropertyThemeConfigurationCache
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDao
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.node'
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationExtenderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationExtender
+
+  oxid_esales.theme.configuration.node:
+    class: Symfony\Component\Config\Definition\NodeInterface
+    factory: [ '@OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\TreeBuilderFactoryInterface', 'create' ]
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\TreeBuilderFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\TreeBuilderFactory
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataMapper\ThemeConfigurationDataMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataMapper\ThemeConfigurationDataMapper
+    arguments:
+      - '@oxid_esales.theme.configuration.theme_settings_data_mapper'
+
+  oxid_esales.theme.configuration.theme_settings_data_mapper:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataMapper\ThemeConfiguration\ThemeSettingsDataMapper

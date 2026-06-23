@@ -18,12 +18,15 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Bridge\ThemeActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
@@ -37,10 +40,13 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     private const CONFIG_KEY_DEFAULT_IMAGE_QUALITY = 'sDefaultImageQuality';
     private const CONFIG_KEY_CONVERT_IMAGES_TO_WEBP = 'blConvertImagesToWebP';
 
+    private const THEME_SOURCE = 'tests/Integration/Internal/Domain/Product/Media/Service/Fixtures/oe_media_test_theme';
+
     private Id $productId;
     private string $baseUrl;
     private int $shopId;
     private string $themeId;
+    private string $originalThemeId;
 
     public function setUp(): void
     {
@@ -49,11 +55,23 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $context = $this->get(ContextInterface::class);
         $this->baseUrl = $context->getShopBaseUrl();
         $this->shopId = $context->getCurrentShopId();
-        $this->themeId = $this->get(ShopAdapterInterface::class)->getActiveThemeId();
+        $this->themeId = 'oe_media_test_theme';
+        $this->originalThemeId = $this->get(ThemeStateServiceInterface::class)->getActiveThemeId($this->shopId);
+        $this->installAndActivateTheme();
 
         $this->productId = Id::generate();
         $this->configureImageSettings();
         $this->setupTestData();
+    }
+
+    public function tearDown(): void
+    {
+        if ($this->originalThemeId !== '') {
+            $this->get(ThemeActivationBridgeInterface::class)->activate($this->originalThemeId, $this->shopId);
+        }
+        $this->get(ThemeConfigurationDaoInterface::class)->delete($this->themeId, $this->shopId);
+
+        parent::tearDown();
     }
 
     public function testGetIconReturnsMediaViewWithAllUrls(): void
@@ -370,7 +388,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     private function getSizeFromConfig(string $key): array
     {
-        $value = (string) $this->get(ThemeSettingDaoInterface::class)->get($key, $this->shopId, $this->themeId)->getValue();
+        $value = (string) $this->get(ActiveThemeServiceInterface::class)->getSettingValue($key);
         [$width, $height] = explode('*', $value);
         return ['width' => (int) $width, 'height' => (int) $height];
     }
@@ -380,15 +398,29 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         return (string) $this->get(ShopConfigurationSettingDaoInterface::class)->get(self::CONFIG_KEY_DEFAULT_IMAGE_QUALITY, $this->shopId)->getValue();
     }
 
+    private function installAndActivateTheme(): void
+    {
+        $this->get(ThemeConfigurationDaoInterface::class)->save(
+            (new ThemeConfiguration())->setId($this->themeId)->setThemeSource(self::THEME_SOURCE),
+            $this->shopId
+        );
+        $this->get(ThemeActivationBridgeInterface::class)->activate($this->themeId, $this->shopId);
+    }
+
     private function setThemeStringConfigValue(string $name, string $value): void
     {
-        $setting = new ThemeSetting();
-        $setting->setName($name);
-        $setting->setValue($value);
-        $setting->setType(ShopSettingType::STRING);
-        $setting->setShopId($this->shopId);
-        $setting->setThemeId($this->themeId);
-        $this->get(ThemeSettingDaoInterface::class)->save($setting);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $configuration = $dao->get($this->themeId, $this->shopId);
+
+        if ($configuration->hasSetting($name)) {
+            $configuration->getSetting($name)->setType(ShopSettingType::STRING)->setValue($value);
+        } else {
+            $configuration->addSetting(
+                (new Setting())->setName($name)->setType(ShopSettingType::STRING)->setValue($value)
+            );
+        }
+
+        $dao->save($configuration, $this->shopId);
     }
 
     private function setStringConfigValue(string $name, string $value): void

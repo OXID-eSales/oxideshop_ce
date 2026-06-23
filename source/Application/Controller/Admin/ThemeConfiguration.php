@@ -8,6 +8,11 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\ThemeViewItemFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface;
 use oxAdminDetails;
 
 class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
@@ -17,77 +22,91 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
     /** @inheritdoc */
     public function render()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $shopId = (int) Registry::getConfig()->getShopId();
+        $themeId = $this->_sTheme = $this->getEditObjectId()
+            ?: ContainerFacade::get(ActiveThemeServiceInterface::class)->getActiveThemeId();
 
-        $sTheme = $this->_sTheme = $this->getEditObjectId();
-        $sShopId = $myConfig->getShopId();
+        $theme = ContainerFacade::get(ThemeViewItemFactoryInterface::class)->get($themeId, $shopId);
 
-        if (!isset($sTheme)) {
-            $sTheme = $this->_sTheme = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sTheme');
-        }
+        if ($theme !== null) {
+            $this->_aViewData['oTheme'] = $theme;
 
-        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-        if ($oTheme->load($sTheme)) {
-            $this->_aViewData["oTheme"] = $oTheme;
-
-            try {
-                $aDbVariables = $this->loadConfVars($sShopId, $this->getModuleForConfigVars());
-                $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
-                $this->_aViewData["var_grouping"] = $aDbVariables['grouping'];
-                foreach ($this->_aConfParams as $sType => $sParam) {
-                    $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType] ?? null;
-                }
-            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-                Registry::getUtilsView()->addErrorToDisplay($exception);
-                Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            $themeVariables = $this->loadThemeConfVars($themeId, $shopId);
+            $this->_aViewData['var_constraints'] = $themeVariables['constraints'];
+            $this->_aViewData['var_grouping'] = $themeVariables['grouping'];
+            foreach ($this->_aConfParams as $type => $param) {
+                $this->_aViewData[$param] = $themeVariables['vars'][$type] ?? null;
             }
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
+            Registry::getUtilsView()->addErrorToDisplay(
+                oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED')
+            );
         }
 
         return 'theme_config';
     }
 
     /**
-     * return theme filter for config variables
-     *
-     * @return string
-     */
-    protected function getModuleForConfigVars()
-    {
-        if ($this->_sTheme === null) {
-            $this->_sTheme = $this->getEditObjectId();
-        }
-
-        return \OxidEsales\Eshop\Core\Config::OXMODULE_THEME_PREFIX . $this->_sTheme;
-    }
-
-    /**
-     * Saves shop configuration variables
+     * Saves theme configuration variables.
      */
     public function saveConfVars()
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
         oxAdminDetails::save();
 
-        $sShopId = $myConfig->getShopId();
+        $shopId = (int) Registry::getConfig()->getShopId();
+        $themeId = $this->getEditObjectId() ?: $this->_sTheme;
 
-        $sModule = $this->getModuleForConfigVars();
+        $dao = ContainerFacade::get(ThemeConfigurationDaoInterface::class);
+        $encoder = ContainerFacade::get(ShopSettingEncoderInterface::class);
+        $themeConfiguration = $dao->get($themeId, $shopId);
 
-        foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = Registry::getRequest()->getRequestEscapedParameter($sParam);
-            if (is_array($aConfVars)) {
-                foreach ($aConfVars as $sName => $sValue) {
-                    $myConfig->saveShopConfVar(
-                        $sType,
-                        $sName,
-                        $this->serializeConfVar($sType, $sName, $sValue),
-                        $sShopId,
-                        $sModule
+        foreach ($this->_aConfParams as $type => $param) {
+            $postedValues = Registry::getRequest()->getRequestParameter($param);
+            if (!is_array($postedValues)) {
+                continue;
+            }
+
+            foreach ($postedValues as $name => $value) {
+                if ($themeConfiguration->hasSetting($name)) {
+                    $serializedValue = $this->serializeConfVar($type, $name, $value);
+                    $themeConfiguration->getSetting($name)->setValue(
+                        in_array($type, ['arr', 'aarr'], true)
+                            ? $serializedValue
+                            : $encoder->decode($type, $serializedValue)
                     );
                 }
             }
         }
+
+        $dao->save($themeConfiguration, $shopId);
+    }
+
+    private function loadThemeConfVars(string $themeId, int $shopId): array
+    {
+        $variables = ['bool' => [], 'str' => [], 'arr' => [], 'aarr' => [], 'select' => [], 'num' => []];
+        $constraints = [];
+        $grouping = [];
+
+        $encoder = ContainerFacade::get(ShopSettingEncoderInterface::class);
+        $themeConfiguration = ContainerFacade::get(ThemeConfigurationDaoInterface::class)->get($themeId, $shopId);
+
+        foreach ($themeConfiguration->getSettings() as $setting) {
+            $type = $setting->getType();
+            $name = $setting->getName();
+
+            $variables[$type][$name] = $this->unserializeConfVar(
+                $type,
+                $name,
+                $encoder->encode($type, $setting->getValue())
+            );
+            $constraints[$name] = $this->parseConstraint($type, implode('|', $setting->getConstraints()));
+
+            $group = $setting->getGroupName();
+            if ($group) {
+                $grouping[$group][$name] = $type;
+            }
+        }
+
+        return ['vars' => $variables, 'constraints' => $constraints, 'grouping' => $grouping];
     }
 }

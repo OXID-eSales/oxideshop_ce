@@ -18,11 +18,9 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use Symfony\Component\Filesystem\Path;
 
 readonly class ProductMediaViewService implements ProductMediaViewServiceInterface
@@ -31,8 +29,7 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
         private ProductMediaDaoInterface $productMediaDao,
         private MediaUrlGeneratorInterface $mediaUrlGenerator,
         private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
-        private ThemeSettingDaoInterface $themeSettingDao,
-        private ShopAdapterInterface $shopAdapter,
+        private ActiveThemeServiceInterface $activeThemeService,
         private ContextInterface $context
     ) {
     }
@@ -127,19 +124,15 @@ readonly class ProductMediaViewService implements ProductMediaViewServiceInterfa
 
     private function getConfiguredSize(string $sizeConfigKey): string
     {
-        try {
-            $setting = $this->themeSettingDao->get(
-                $sizeConfigKey,
-                $this->context->getCurrentShopId(),
-                $this->shopAdapter->getActiveThemeId()
-            );
-        } catch (EntryDoesNotExistDaoException $e) {
-            $setting = $this->shopConfigurationSettingDao->get(
+        $value = $this->activeThemeService->getSettingValue($sizeConfigKey);
+
+        if ($value === null) {
+            $value = $this->shopConfigurationSettingDao->get(
                 $sizeConfigKey,
                 $this->context->getCurrentShopId()
-            );
+            )->getValue();
         }
 
-        return (string) $setting->getValue();
+        return (string) $value;
     }
 }

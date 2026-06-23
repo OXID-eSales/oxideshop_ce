@@ -1,3 +1,9 @@
+imports:
+  - { resource: Setup/services.yaml }
+  - { resource: State/services.yaml }
+  - { resource: Facade/services.yaml }
+  - { resource: Twig/services.yaml }
+
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'
   oxid_esales.theme.admin.media.image_grid_size: '400*400'
@@ -16,6 +22,18 @@ services:
       - '%oxid_esales.theme.admin.name%'
     public: true
 
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\ThemeViewItemFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\ThemeViewItemFactory
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:
     tags:
       - { name: 'console.command', command: 'oe:theme:activate' }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeInstallCommand:
+    tags:
+      - { name: 'console.command', command: 'oe:theme:install' }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeDeactivateCommand:
+    tags:
+      - { name: 'console.command', command: 'oe:theme:deactivate' }

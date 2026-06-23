@@ -51,7 +51,7 @@ modules:
         - OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%PROJECT_ROOT%/source'
             paths:
-                - 'Application/views/%THEME_ID%'
+                - '../vendor/oxid-esales/%THEME_ID%-theme'
             paths_admin:
                 - 'Application/views/admin_twig'
         - OxidEsales\Codeception\Module\OxideshopModules:

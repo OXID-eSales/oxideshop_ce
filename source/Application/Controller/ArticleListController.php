@@ -428,7 +428,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
         $listDisplayType = Registry::getSession()->getVariable('ldtype');
 
         if (is_null($listDisplayType)) {
-            $listDisplayType = Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
+            $listDisplayType = \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
+                \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface::class
+            )->getSettingValue('sDefaultListDisplayType')
+                ?? Registry::getConfig()->getConfigParam('sDefaultListDisplayType');
         }
 
         return $listDisplayType;
@@ -1086,7 +1089,10 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      */
     public function canSelectDisplayType()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowListDisplayType');
+        return \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
+            \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface::class
+        )->getSettingValue('blShowListDisplayType')
+            ?? \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('blShowListDisplayType');
     }
 
     /**

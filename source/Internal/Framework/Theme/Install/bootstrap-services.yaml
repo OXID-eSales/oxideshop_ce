@@ -1,0 +1,23 @@
+services:
+  _defaults:
+    autowire: true
+
+  oxid_esales.theme.install.service.bootstrap_theme_installer:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\BootstrapThemeInstaller
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\BootstrapThemeInstaller
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeFilesInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeFilesInstaller
+    arguments:
+      $fileSystemService: '@oxid_esales.symfony.file_system'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstaller
+    arguments:
+      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
+    public: true

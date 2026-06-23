@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Twig\ThemeViewProxy: ~
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Twig\ThemeTwigExtension:
+    tags: ['twig.extension']

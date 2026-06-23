@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\InvalidateThemeCacheEventSubscriber:
+    tags:
+      - { name: kernel.event_subscriber }

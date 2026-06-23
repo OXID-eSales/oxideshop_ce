@@ -2991,12 +2991,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Theme'                                                => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Theme::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\UniversallyUniqueIdGenerator'                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\UniversallyUniqueIdGenerator::class,
         'isAbstract'       => false,

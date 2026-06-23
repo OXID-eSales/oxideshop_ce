@@ -20,8 +20,8 @@ final class SearchCest
     {
         $I->wantToTest('if sorting, paging and navigation is working correctly in search list');
 
-        $I->updateConfigInDatabase('aNrofCatArticles', serialize(["1", "2", "10", "20", "50", "100"]), "arr");
-        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize(["1", "2", "10", "20", "50", "100"]), "arr");
+        $I->updateThemeSetting('aNrofCatArticles', ["1", "2", "10", "20", "50", "100"]);
+        $I->updateThemeSetting('aNrofCatArticlesInGrid', ["1", "2", "10", "20", "50", "100"]);
 
         $productData = [
             'id' => '1000',

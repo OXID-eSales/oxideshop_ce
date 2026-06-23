@@ -21,14 +21,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngine
 
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\TemplateFileLocator:
-    arguments:
-      - '@OxidEsales\Eshop\Core\Config'
-
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator:
-    arguments:
-      - '@OxidEsales\Eshop\Core\Config'
-
   oxid_esales.templating.admin.navigation.file.locator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminNavigationFileLocator
     arguments:

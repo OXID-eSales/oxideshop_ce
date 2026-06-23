@@ -44,8 +44,8 @@ final class ManufacturerCest
         $I->wantToTest('manufacturer functionality and product list navigation');
         $I->updateConfigInDatabase('bl_showManufacturer', true);
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', true);
-        $I->updateConfigInDatabase('aNrofCatArticles', serialize([10, 50, 100, 2, 1]), 'arr');
-        $I->updateConfigInDatabase('aNrofCatArticlesInGrid', serialize([10, 50, 100, 2, 1]), 'arr');
+        $I->updateThemeSetting('aNrofCatArticles', ['10', '50', '100', '2', '1']);
+        $I->updateThemeSetting('aNrofCatArticlesInGrid', ['10', '50', '100', '2', '1']);
 
         $productData = [
             'id' => '1000',

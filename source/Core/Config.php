@@ -206,6 +206,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Theme config parameters storage array
      *
      * @var array
+     *
+     * @deprecated since v7.6.0. This property will be removed in version 8.0.
+     *             Theme settings are no longer stored in Config.
      */
     protected $_aThemeConfigParams = [];
 
@@ -1971,6 +1974,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $name option name
      *
      * @return bool
+     *
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
+     *             Theme settings are no longer stored in Config.
      */
     public function isThemeOption($name)
     {

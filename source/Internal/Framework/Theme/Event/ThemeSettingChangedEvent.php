@@ -14,6 +14,8 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * @stable
  * @see OxidEsales/EshopCommunity/Internal/README.md
+ *
+ * @deprecated since v7.6.0. This class will be removed in version 8.0.
  */
 class ThemeSettingChangedEvent extends Event
 {

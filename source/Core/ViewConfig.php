@@ -1213,6 +1213,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * @param string $sName param name
      *
      * @return mixed
+     *
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
+     *             Theme settings are read via ThemeSettingServiceInterface.
      */
     public function getViewThemeParam($sName)
     {

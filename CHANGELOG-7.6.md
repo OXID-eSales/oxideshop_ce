@@ -11,13 +11,17 @@
 
 ### Deprecated
 - `Argon2IPasswordHashService`
+- `Config::$_aThemeConfigParams`
+- `Config::isThemeOption()`
+- `ThemeSettingChangedEvent`
 - `ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED`
 - `ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED`
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
+- `Theme`
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
-- `Theme`
+- `ViewConfig::getViewThemeParam()`
 - `ThemeMain::themeInConfigFile()`
 - `ShopAdapterInterface::getActiveThemesList()`
 - `ShopAdapterInterface::getCustomTheme()`

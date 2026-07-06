@@ -22,12 +22,15 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReady;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\FileBag;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 final class ArticlePicturesAjaxTest extends IntegrationTestCase
 {
@@ -249,13 +252,88 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $this->createArticleWithId((string) $productId);
         $this->addProductMediaWithId($existingMediaId, $productId, ProductMediaRole::ICON);
 
-        ob_start();
         $controller = oxNew(ArticlePicturesAjax::class);
-        $controller->replaceMedia();
-        ob_end_clean();
+        $errorResponse = $this->expectErrorResponseSignal(
+            static function () use ($controller): void {
+                $controller->replaceMedia();
+            }
+        );
 
+        $this->assertNotEmpty($this->decodeErrors($errorResponse));
         $allMedia = $this->get(ProductMediaDaoInterface::class)->getAll($productId);
         $this->assertEquals((string) $existingMediaId, (string) $allMedia->first()->getId());
+    }
+
+    public function testAddMediaFailureSignalsJsonErrorResponse(): void
+    {
+        $fixture = Path::join(__DIR__, self::FIXTURES_PATH, self::VALID_IMAGE);
+        $uploadedFile = new UploadedFile($fixture, self::VALID_IMAGE, 'image/jpeg', null, true);
+        $productId = Id::generate();
+
+        $this->rewriteProjectConfiguration([
+            'parameters' => [
+                'oxid_esales.product.media.file.min_size_kb' => '1048576',
+            ]
+        ]);
+
+        $this->setupContainerWithRequest(
+            [
+                'productId' => (string) $productId,
+                'role' => ProductMediaRole::DETAIL,
+            ],
+            [$uploadedFile]
+        );
+
+        $this->createArticleWithId((string) $productId);
+
+        $controller = oxNew(ArticlePicturesAjax::class);
+        $errorResponse = $this->expectErrorResponseSignal(
+            static function () use ($controller): void {
+                $controller->addMedia();
+            }
+        );
+
+        $this->assertNotEmpty($this->decodeErrors($errorResponse));
+        $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll($productId));
+    }
+
+    public function testProcessRequestReturnsCollectedOutputWithoutEcho(): void
+    {
+        $this->expectOutputString('');
+        $this->setupContainerWithRequest([]);
+
+        $component = new class extends ArticlePicturesAjax {
+            public function emitGridData(): void
+            {
+                $this->outputResponse(['records' => [['id' => 'abc']]]);
+            }
+        };
+
+        $content = $component->processRequest('emitGridData');
+
+        $this->assertSame(json_encode(['records' => [['id' => 'abc']]]), $content);
+    }
+
+    private function expectErrorResponseSignal(callable $action): JsonResponse
+    {
+        try {
+            $action();
+        } catch (ResponseReady $responseReady) {
+            $response = $responseReady->getResponse();
+            $this->assertInstanceOf(JsonResponse::class, $response);
+
+            return $response;
+        }
+
+        $this->fail('Expected a ResponseReady signal carrying the error response');
+    }
+
+    /**
+     * @return string[]
+     */
+    private function decodeErrors(Response $response): array
+    {
+        return json_decode((string) $response->getContent(), true)['errors'];
     }
 
     public function testReplaceMediaRemovesOnlyRoleWhenMultipleRolesExist(): void

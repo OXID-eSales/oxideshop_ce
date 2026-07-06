@@ -192,7 +192,6 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     public function downloadResultFile()
     {
         $this->_oOutput->downloadResultFile();
-        exit(0);
     }
 
     /**

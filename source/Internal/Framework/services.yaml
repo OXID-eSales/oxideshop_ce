@@ -9,6 +9,7 @@ imports:
   - { resource: FileSystem/services.yaml }
   - { resource: Form/services.yaml }
   - { resource: Html/services.yaml }
+  - { resource: Http/services.yaml }
   - { resource: Logger/services.yaml }
   - { resource: Migration/services.yaml }
   - { resource: Module/services.yaml }

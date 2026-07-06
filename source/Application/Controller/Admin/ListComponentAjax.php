@@ -19,6 +19,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxReque
  */
 class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
 {
+    private string $renderedOutput = '';
+
     /**
      * Possible sort keys
      *
@@ -138,12 +140,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         return 'select count( * ) ' . $sQ;
     }
 
-    /**
-     * AJAX call processor function
-     *
-     * @param string $function name of action to execute (optional)
-     */
-    public function processRequest($function = null)
+    public function processRequest(?string $function = null): string
     {
         if ($function) {
             $this->$function();
@@ -157,6 +154,8 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
 
             $this->outputResponse($this->getData($sCountQ, $sQ));
         }
+
+        return $this->renderedOutput;
     }
 
     /**
@@ -487,14 +486,9 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         $this->output(json_encode($aData));
     }
 
-    /**
-     * Echoes given string
-     *
-     * @param string $sOut string to echo
-     */
-    protected function output($sOut)
+    protected function output(string $output): void
     {
-        echo $sOut;
+        $this->renderedOutput .= $output;
     }
 
     /**

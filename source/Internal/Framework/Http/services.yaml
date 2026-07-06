@@ -1,0 +1,35 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\KernelFactory:
+    arguments:
+      $container: '@service_container'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRequestRunner:
+    arguments:
+      $request: '@Symfony\Component\HttpFoundation\Request'
+      $routes: '%oxid.routes%'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseSignalListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\SecurityHeadersListener:
+    arguments:
+      $headers: '%oxid_esales.http.security_headers%'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\CacheControlListener:
+    arguments:
+      $defaultCacheControl: '%oxid_esales.http.default_cache_control%'
+    tags:
+      - { name: kernel.event_subscriber }

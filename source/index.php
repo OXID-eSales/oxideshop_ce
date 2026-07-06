@@ -7,6 +7,13 @@
 
 declare(strict_types=1);
 
+use OxidEsales\Eshop\Core\ShopControl;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRequestRunner;
+use Symfony\Component\HttpFoundation\Response;
+
 require_once __DIR__ . '/bootstrap.php';
 
-OxidEsales\EshopCommunity\Core\Oxid::run();
+ContainerFacade::get(ShopRequestRunner::class)->run(
+    static fn(): Response => oxNew(ShopControl::class)->buildResponse()
+);

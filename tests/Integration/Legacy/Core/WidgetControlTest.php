@@ -37,6 +37,6 @@ final class WidgetControlTest extends IntegrationTestCase
         $this->expectException(ObjectException::class);
 
         oxNew(WidgetControl::class)
-            ->start($nonWidgetClass);
+            ->buildWidgetResponse($nonWidgetClass);
     }
 }

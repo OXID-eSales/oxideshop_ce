@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -35,27 +36,17 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      */
     protected $parentsAdded = [];
 
-    /**
-     * Main shop widget manager. Sets needed parameters and calls parent::start method.
-     *
-     * Session variables:
-     * <b>actshop</b>
-     *
-     * @param string $class      Class name
-     * @param string $function   Function name
-     * @param array  $parameters Parameters array
-     * @param array  $viewsChain Array of views names that should be initialized also
-     */
-    public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
+    public function buildWidgetResponse($class = null, $function = null, $parameters = null, $viewsChain = null): Response
     {
         if (!isset($viewsChain) && Registry::getRequest()->getRequestEscapedParameter('oxwparent')) {
             $viewsChain = explode("|", Registry::getRequest()->getRequestEscapedParameter('oxwparent'));
         }
 
-        parent::start($class, $function, $parameters, $viewsChain);
-
-        //perform tasks that should be done at the end of widget processing
-        $this->runLast();
+        try {
+            return parent::buildResponse($class, $function, $parameters, $viewsChain);
+        } finally {
+            $this->runLast();
+        }
     }
 
     /**
@@ -132,12 +123,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         return $widgetViewObject;
     }
 
-    /**
-     * @internal
-     *
-     * @return TemplateRendererInterface
-     */
-    private function getRenderer()
+    private function getRenderer(): TemplateRendererInterface
     {
         return ContainerFacade::get(TemplateRendererBridgeInterface::class)
             ->getTemplateRenderer();

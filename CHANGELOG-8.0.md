@@ -12,11 +12,33 @@
   - Admin page to edit alt text per image per locale
   - Storefront resolves the alt text through the locale's fallback chain
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
+- Support for subscribing to Symfony kernel events (`KernelEvents`)
+- Security headers on shop responses (DI parameter `oxid_esales.http.security_headers`)
+- Default `Cache-Control` policy for responses without an explicit one (DI parameter `oxid_esales.http.default_cache_control`)
+
+### Fixed
+- Undefined array key warning in `ExceptionErrorController::displayExceptionError()` when no errors are queued for display
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
+- HTTP header and request handling on the shop kernel
+  - `index.php` resolves Symfony `#[Route]` attribute controllers (compiled from public services); requests without a matching route fall back to the legacy shop controller resolution
+  - The response status, headers and cookies are owned by the Symfony `Response`; cookies set during the request (`UtilsServer::setOxCookie()`) are applied to the outgoing response through a `kernel.response` listener
+  - A `ResponseReady` signal thrown from a kernel event listener is delivered as the response instead of surfacing as an uncaught error
+  - `Symfony\Component\HttpFoundation\RequestStack` is available as a public container service; the kernel pushes the current request onto it
+  - Admin authorization failure inside a redirect loop responds with 403 instead of exiting with a message body
+  - Product picture upload errors (`ArticlePicturesAjax`) return a single well-formed JSON response instead of emitting two responses
+  - Uncaught shop exceptions (`SystemComponentException`, `RoutingException`, `StandardException`) are converted to responses by the `ShopExceptionResponseListener` on the `kernel.exception` event instead of inside `ShopControl`
+  - Request-terminating legacy helpers (`Utils::redirect()`, `Utils::showMessageAndExit()`, the 404 handler, file downloads) dispatch a `ResponseReadyEvent`; a framework subscriber ends the request and the kernel proceeds with the carried response - subscribe to the event to observe or replace the outgoing response
+  - An uncaught `StandardException` outside debug mode re-renders the requested controller with the error queued for display (`UtilsView::addErrorToDisplay()`) instead of responding with an empty 500; `ThemeMain` and `ThemeConfiguration` rely on this instead of catching
+  - Shop exceptions and response signals thrown by template-embedded widgets propagate to the HTTP kernel: a redirect or 404 raised inside a widget applies to the whole page again (as in OXID eShop 7) and a failing widget results in the central shop error handling instead of an inline debug block
+  - The `Cache-Control` header is owned by the `Response`; PHP's session cache limiter is disabled
 
 ### Removed
+- `Output` - process output with a `kernel.response` listener
+- `Header` - set headers on the `Response` or use a `kernel.response` listener
+- `DebugInfo` and the debug-mode monitor block appended to storefront pages – use a profiler
+- `BeforeHeadersSendEvent` - subscribe to the `kernel.response` event instead
 - The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support
@@ -26,6 +48,10 @@
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
+- `Utils::setHeader()` - set headers on the `Response` or subscribe to the `kernel.response` event
+- `Oxid` entry-point class (`Oxid::run()`, `Oxid::runWidget()`), `ShopControl::start()` and `WidgetControl::start()` - the entry scripts run through the HTTP kernel; use `ShopControl::buildResponse()` / `WidgetControl::buildWidgetResponse()`
+- `ShopControl` internals superseded by the kernel migration 
+- `File::getFilenameForUrl()`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

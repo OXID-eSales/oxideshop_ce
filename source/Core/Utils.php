@@ -11,7 +11,9 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Psr\Cache\CacheItemPoolInterface;
 use stdClass;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -640,40 +642,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * redirects browser to given url, nothing else done just header send
-     * may be used for redirection in case of an exception or similar things
-     *
-     * @param string $sUrl        the URL to redirect to
-     * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
-     */
-    protected function simpleRedirect($sUrl, $sHeaderCode)
-    {
-        $oHeader = oxNew(\OxidEsales\Eshop\Core\Header::class);
-        $oHeader->setHeader($sHeaderCode);
-        $oHeader->setHeader("Location: $sUrl");
-        $oHeader->setHeader("Connection: close");
-        $oHeader->sendHeader();
-    }
-
-    /**
-     * Shows offline page.
-     * Directly displays the offline page to the client (browser)
-     * with a 500 status code header.
-     */
-    public function showOfflinePage()
-    {
-        \oxTriggerOfflinePageDisplay();
-        $this->showMessageAndExit('');
-    }
-
-    /**
      * redirect user to the specified URL
      *
      * @param string $sUrl               URL to be redirected
      * @param bool   $blAddRedirectParam add "redirect" param
      * @param int    $iHeaderCode        header code, default 302
-     *
-     * @return null or exit
      */
     public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 302)
     {
@@ -689,71 +662,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         $sUrl = str_ireplace("&amp;", "&", $sUrl);
 
-        switch ($iHeaderCode) {
-            case 301:
-                $sHeaderCode = "HTTP/1.1 301 Moved Permanently";
-                break;
-            case 500:
-                $sHeaderCode = "HTTP/1.1 500 Internal Server Error";
-                break;
-            case 302:
-            default:
-                $sHeaderCode = "HTTP/1.1 302 Found";
-        }
-
-        $this->simpleRedirect($sUrl, $sHeaderCode);
-
-        try { //may occur in case db is lost
-            $session = Registry::getSession();
-            $session->freeze();
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-            Registry::getLogger()->error($exception->getMessage(), [$exception]);
-            //do nothing else to make sure the redirect takes place
-        }
-
-        $this->showMessageAndExit('');
-    }
-
-    /**
-     * shows given message and quits
-     * message might be whole content like 404 page.
-     *
-     * @param string $sMsg message to show
-     */
-    public function showMessageAndExit($sMsg)
-    {
-        $this->prepareToExit();
-        exit($sMsg);
-    }
-
-    /**
-     * helper with commands to run before exit action
-     */
-    protected function prepareToExit()
-    {
-        $session = Registry::getSession();
-        $session->freeze();
-
-        ContainerFacade::dispatch(new ApplicationExitEvent());
-
-        if ($this->isSearchEngine()) {
-            $header = Registry::get(\OxidEsales\Eshop\Core\Header::class);
-            $header->setNonCacheable();
-        }
-
-        //Send headers that have been registered
-        $header = Registry::get(\OxidEsales\Eshop\Core\Header::class);
-        $header->sendHeader();
-    }
-
-    /**
-     * set header sent to browser
-     *
-     * @param string $sHeader header to sent
-     */
-    public function setHeader($sHeader)
-    {
-        header($sHeader);
+        ContainerFacade::dispatch(new ResponseReadyEvent(
+            $iHeaderCode >= 300 && $iHeaderCode < 400
+                ? new RedirectResponse($sUrl, $iHeaderCode)
+                : new Response('', $iHeaderCode, ['Location' => $sUrl])
+        ));
     }
 
     /**
@@ -975,9 +888,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      */
     public function handlePageNotFoundError($sUrl = '')
     {
-        $this->setHeader("HTTP/1.0 404 Not Found");
-        $this->setHeader("Content-Type: text/html; charset=UTF-8");
-
         $sReturn = "Page not found.";
         $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
         $oView->init();
@@ -987,7 +897,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         if ($sRet = Registry::getUtilsView()->getTemplateOutput('message/err_404', $oView)) {
             $sReturn = $sRet;
         }
-        $this->showMessageAndExit($sReturn);
+
+        ContainerFacade::dispatch(new ResponseReadyEvent(new Response($sReturn, 404)));
     }
 
     /**

@@ -1,6 +1,7 @@
 services:
   _defaults:
     autowire: true
+    public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ImageHandlerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\MasterImageHandler
@@ -26,4 +27,10 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridgeInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridge
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactory: ~
+
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface:
+    alias: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactory
     public: true

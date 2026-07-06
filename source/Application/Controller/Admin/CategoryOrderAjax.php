@@ -131,12 +131,11 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
                 $sSelect .= "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aSkipArt)) . " ) ";
             }
 
-            // Simply echoing "1" if some items found, and 0 if nothing was found
             // We force reading from master to prevent issues with slow replications or open transactions
             // (see ESDEV-3804).
-            echo (int) DatabaseProvider::getMaster()->getOne($sSelect, [
+            $this->output((string) (int) DatabaseProvider::getMaster()->getOne($sSelect, [
                 'oxcatnid' => $soxId
-            ]);
+            ]));
         }
     }
 
@@ -170,12 +169,11 @@ class CategoryOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\L
             . "where $sO2CView.oxcatnid = :oxcatnid and $sArticleTable.oxparentid = '' and $sArticleTable.oxid "
             . "not in ( " . implode(", ", DatabaseProvider::getDb()->quoteArray($aOrdArt)) . " ) ";
 
-            // Simply echoing "1" if some items found, and 0 if nothing was found
             // We force reading from master to prevent issues with slow replications or open transactions
             // (see ESDEV-3804).
-            echo (int) DatabaseProvider::getMaster()->getOne($sSelect, [
+            $this->output((string) (int) DatabaseProvider::getMaster()->getOne($sSelect, [
                 'oxcatnid' => $soxId
-            ]);
+            ]));
         }
     }
 

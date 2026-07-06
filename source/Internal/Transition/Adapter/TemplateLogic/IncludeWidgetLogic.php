@@ -35,6 +35,6 @@ class IncludeWidgetLogic
          */
         $widgetControl = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\WidgetControl::class);
 
-        return $widgetControl->start($class, null, $params, $parentViews);
+        return $widgetControl->buildWidgetResponse($class, null, $params, $parentViews)->getContent();
     }
 }

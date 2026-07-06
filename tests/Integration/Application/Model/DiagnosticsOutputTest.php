@@ -10,78 +10,45 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Application\Model\DiagnosticsOutput;
-use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\HttpFoundation\Response;
 use PHPUnit\Framework\TestCase;
 
 final class DiagnosticsOutputTest extends TestCase
 {
-    private string $key = "diagnostic_tool_result";
-    private static string $sOutputFileName = "diagnostic_tool_result.html";
+    private string $key = 'diagnostic_tool_result';
 
-    public function testDownloadResultFileWillSetCorrectContentLengthHeader(): void
+    public function testDownloadResultFileBuildsResponseWithExpectedHeaders(): void
     {
         $content = 'some-content-123';
-        $contentLength = strlen($content);
+        Registry::getUtils()->toFileCache($this->key, $content);
 
-        $utils = $this->getUtils();
-        $utils->toFileCache($this->key, $content);
-        $diagnostics = new DiagnosticsOutput();
-        ob_start();
-        $diagnostics->downloadResultFile($this->key);
-        ob_end_clean();
+        $response = $this->runDownload($this->key);
 
-        $this->assertArrayHasKey(
-            "Content-Length: $contentLength",
-            $utils->getHeaders()
-        );
+        $this->assertSame((string)strlen($content), $response->headers->get('Content-Length'));
+        $this->assertStringContainsString('text/html', (string)$response->headers->get('Content-Type'));
+        $this->assertStringContainsString('attachment', (string)$response->headers->get('Content-Disposition'));
     }
 
-    #[DataProvider('headerValuesProvider')]
-    public function testItShouldSetCorrectHeaderValue(string $headerValue): void
+    public function testDownloadResultFileCarriesCachedContent(): void
     {
-        $utils = $this->getUtils();
-
-        $diagnostics = new DiagnosticsOutput();
-        ob_start();
-        $diagnostics->downloadResultFile($this->key);
-        ob_end_clean();
-
-        $this->assertArrayHasKey(
-            $headerValue,
-            $utils->getHeaders()
-        );
-    }
-
-    public static function headerValuesProvider(): array
-    {
-        return [
-            ['Pragma: public'],
-            ['Expires: 0'],
-            ['Cache-Control: must-revalidate, post-check=0, pre-check=0, private'],
-            ['Content-Type:text/html;charset=utf-8'],
-            ['Content-Disposition: attachment;filename=' . self::$sOutputFileName],
-        ];
-    }
-
-    public function testDownloadResultFilePrintsOutput(): void
-    {
-        $utils = $this->getUtils();
         $content = 'some-content-123';
-        $utils->toFileCache($this->key, $content);
+        Registry::getUtils()->toFileCache($this->key, $content);
 
-        $this->expectOutputString($content);
+        $response = $this->runDownload($this->key);
 
-        $diagnostics = new DiagnosticsOutput();
-        $diagnostics->downloadResultFile($this->key);
+        $this->assertSame($content, $response->getContent());
     }
 
-    private function getUtils(): UtilsSpy
+    public function testDownloadResultFileWithEmptyCacheReturnsNotFound(): void
     {
-        $utils = new UtilsSpy();
-        Registry::set(Utils::class, $utils);
+        $response = $this->runDownload('missing_diagnostics_key_xyz');
 
-        return $utils;
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    private function runDownload(string $key): Response
+    {
+        return (new DiagnosticsOutput())->getResultFileResponse($key);
     }
 }

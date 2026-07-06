@@ -12,7 +12,11 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 use function array_key_exists;
@@ -55,8 +59,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param bool $blToSession is true, records cookie information to session
      * @param bool $blSecure if true, transfer cookie only via SSL
      * @param bool $blHttpOnly if true, only accessible via HTTP
-     *
-     * @return bool
      */
     public function setOxCookie(
         $sName,
@@ -79,14 +81,29 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
 
         //if shop runs in https only mode we can set secure flag to all cookies
         $blSecure = $blSecure || Registry::getConfig()->isSsl();
-        return setcookie(
-            $sName,
-            $sValue,
-            $iExpire,
-            $this->getCookiePath($sPath),
-            $this->getCookieDomain($sDomain),
-            $blSecure,
-            $blHttpOnly
+
+        $this->queueResponseCookie(
+            Cookie::create(
+                $sName,
+                (string) $sValue,
+                $iExpire,
+                $this->getCookiePath($sPath),
+                $this->getCookieDomain($sDomain),
+                $blSecure,
+                $blHttpOnly,
+                false,
+                null
+            )
+        );
+    }
+
+    private function queueResponseCookie(Cookie $cookie): void
+    {
+        ContainerFacade::get(EventDispatcherInterface::class)->addListener(
+            KernelEvents::RESPONSE,
+            static function (ResponseEvent $event) use ($cookie): void {
+                $event->getResponse()->headers->setCookie($cookie);
+            }
         );
     }
 

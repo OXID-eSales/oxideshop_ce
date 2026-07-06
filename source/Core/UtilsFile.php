@@ -13,7 +13,9 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Bridge\MasterImageHandlerBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\HttpFoundation\Response;
 
 class UtilsFile extends \OxidEsales\Eshop\Core\Base
 {
@@ -202,7 +204,7 @@ class UtilsFile extends \OxidEsales\Eshop\Core\Base
             if (isset($sFileType)) {
                 // unallowed files ?
                 if (in_array($sFileType, $this->_aBadFiles) || ($blDemo && !in_array($sFileType, $this->_aAllowedFiles))) {
-                    Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
+                    ContainerFacade::dispatch(new ResponseReadyEvent(new Response("File didn't pass our allowed files filter.")));
                 }
 
                 // removing file type

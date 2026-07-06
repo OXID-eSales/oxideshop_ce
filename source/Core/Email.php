@@ -325,8 +325,6 @@ class Email extends PHPMailer
             );
         }
 
-        $this->makeOutputProcessing();
-
         if ($this->isSymfonyMailerEnabled()) {
             try {
                 $symfonyEmail = ContainerFacade::get(EmailAdapterInterface::class)->convertToSymfonyEmail($this);
@@ -474,7 +472,6 @@ class Email extends PHPMailer
 
         $this->setViewData("blShowReviewLink", $this->shouldProductReviewLinksBeIncluded());
 
-        $this->processViewArray();
 
         $this->setBody($renderer->renderTemplate($this->_sOrderUserTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sOrderUserPlainTemplate, $this->getViewData()));
@@ -540,7 +537,6 @@ class Email extends PHPMailer
         $renderer = $this->getRenderer();
         $this->setViewData("order", $order);
 
-        $this->processViewArray();
 
         $this->setBody($renderer->renderTemplate($this->_sOrderOwnerTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sOrderOwnerPlainTemplate, $this->getViewData()));
@@ -622,7 +618,6 @@ class Email extends PHPMailer
         $renderer = $this->getRenderer();
         $this->setUser($user);
 
-        $this->processViewArray();
 
         $this->setBody($renderer->renderTemplate($this->_sRegisterTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sRegisterTemplatePlain, $this->getViewData()));
@@ -655,7 +650,6 @@ class Email extends PHPMailer
         if ($oxid && $user->load($oxid)) {
             $renderer = $this->getRenderer();
             $this->setUser($user);
-            $this->processViewArray();
 
             $this->setMailParams($shop);
             $this->setBody($renderer->renderTemplate($this->_sForgotPwdTemplate, $this->getViewData()));
@@ -727,7 +721,6 @@ class Email extends PHPMailer
         $this->setViewData("subscribeLink", $this->getNewsSubsLink($user->oxuser__oxid->value, $confirmCode));
         $this->setUser($user);
 
-        $this->processViewArray();
 
         $this->setBody($renderer->renderTemplate($this->_sNewsletterOptInTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sNewsletterOptInTemplatePlain, $this->getViewData()));
@@ -798,8 +791,6 @@ class Email extends PHPMailer
                     $registerUrl .= "re=" . md5($email);
                     $this->setViewData("sHomeUrl", $registerUrl);
 
-                    // Process view data array through oxoutput processor
-                    $this->processViewArray();
 
                     $this->setBody($renderer->renderTemplate($this->_sInviteTemplate, $this->getViewData()));
 
@@ -851,7 +842,6 @@ class Email extends PHPMailer
             $this->setViewData("blShowReviewLink", false);
         }
 
-        $this->processViewArray();
 
         $oldTplLang = $lang->getTplLanguage();
         $oldBaseLang = $lang->getBaseLanguage();
@@ -902,7 +892,6 @@ class Email extends PHPMailer
         $user = oxNew(\OxidEsales\Eshop\Application\Model\User::class);
         $this->setViewData("reviewuserhash", $user->getReviewUserHash($order->oxorder__oxuserid->value));
 
-        $this->processViewArray();
 
         $oldTplLang = $lang->getTplLanguage();
         $oldBaseLang = $lang->getTplLanguage();
@@ -983,7 +972,6 @@ class Email extends PHPMailer
             $renderer = $this->getRenderer();
             $this->setViewData("articles", $articleList);
 
-            $this->processViewArray();
 
             $this->setRecipient($shop->oxshops__oxowneremail->value, $shop->oxshops__oxname->getRawValue());
             $this->setFrom($shop->oxshops__oxowneremail->value, $shop->oxshops__oxname->getRawValue());
@@ -1015,7 +1003,6 @@ class Email extends PHPMailer
         $renderer = $this->getRenderer();
         $this->setUser($params);
 
-        $this->processViewArray();
 
         $this->setBody($renderer->renderTemplate($this->_sWishListTemplate, $this->getViewData()));
         $this->setAltBody($renderer->renderTemplate($this->_sWishListTemplatePlain, $this->getViewData()));
@@ -1055,7 +1042,6 @@ class Email extends PHPMailer
         $this->setViewData("email", $params['email']);
         $this->setViewData("bidprice", $lang->formatCurrency($alarm->oxpricealarm__oxprice->value));
 
-        $this->processViewArray();
 
         $this->setRecipient($shop->oxshops__oxorderemail->value, $shop->oxshops__oxname->getRawValue());
         $this->setSubject(
@@ -1093,7 +1079,6 @@ class Email extends PHPMailer
         $this->setViewData("bidprice", $alarm->getFProposedPrice());
         $this->setViewData("currency", $alarm->getPriceAlarmCurrency());
 
-        $this->processViewArray();
 
         $this->setRecipient($recipient, $recipient);
         $this->setSubject($shop->oxshops__oxname->value);
@@ -1467,14 +1452,6 @@ class Email extends PHPMailer
         $this->set("SMTPDebug", $debug);
     }
 
-    protected function makeOutputProcessing()
-    {
-        $output = oxNew(\OxidEsales\Eshop\Core\Output::class);
-        $this->setBody($output->process($this->getBody(), "oxemail"));
-        $this->setAltBody($output->process($this->getAltBody(), "oxemail"));
-        $output->processEmail($this);
-    }
-
     protected function sendMail()
     {
         $result = false;
@@ -1491,16 +1468,6 @@ class Email extends PHPMailer
         }
 
         return $result;
-    }
-
-    protected function processViewArray()
-    {
-        $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);
-
-        // processing assigned template variables
-        $newArray = $outputProcessor->processViewArray($this->_aViewData, "oxemail");
-
-        $this->_aViewData = array_merge($this->_aViewData, $newArray);
     }
 
     public function getCharset()

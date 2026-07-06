@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\Filesystem\Path;
 
 /**
@@ -111,19 +113,16 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     /**
      * Performs Voucherserie export to export file.
      */
-    public function download()
+    public function download(): void
     {
-        $oUtils = Registry::getUtils();
-        $oUtils->setHeader("Pragma: public");
-        $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-        $oUtils->setHeader("Expires: 0");
-        $oUtils->setHeader("Content-Disposition: attachment; filename=vouchers.csv");
-        $oUtils->setHeader("Content-Type: application/csv");
+        $factory = ContainerFacade::get(FileResponseFactoryInterface::class);
         $sFile = $this->getExportFilePath();
-        if (file_exists($sFile) && is_readable($sFile)) {
-            readfile($sFile);
-        }
-        $oUtils->showMessageAndExit("");
+
+        $response = !file_exists($sFile) || !is_readable($sFile)
+            ? $factory->notFound()
+            : $factory->fromFile($sFile, 'text/csv; charset=utf-8', 'vouchers.csv');
+
+        ContainerFacade::dispatch(new ResponseReadyEvent($response));
     }
 
     /**

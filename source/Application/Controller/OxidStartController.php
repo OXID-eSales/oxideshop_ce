@@ -69,11 +69,6 @@ class OxidStartController extends \OxidEsales\Eshop\Application\Controller\Front
     {
         $systemEventHandler = $this->getSystemEventHandler();
         $systemEventHandler->onShopEnd();
-
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        if (isset($session)) {
-            $session->freeze();
-        }
     }
 
     /**

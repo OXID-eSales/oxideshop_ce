@@ -319,12 +319,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
      */
     protected function sessionStart()
     {
-        if ($this->needToSetHeaders()) {
-            //enforcing no caching when session is started
-            session_cache_limiter('nocache');
-        } else {
-            session_cache_limiter('');
-        }
+        session_cache_limiter('');
 
         session_start();
 
@@ -1120,16 +1115,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
     protected function getShopUrlId()
     {
         return '';
-    }
-
-    /**
-     * Decide if need to set session headers to browser.
-     *
-     * @return bool
-     */
-    protected function needToSetHeaders()
-    {
-        return true;
     }
 
     /**

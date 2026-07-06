@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Administrator GUI navigation manager class.
@@ -136,7 +138,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $myUtils->redirect($sUrl, true, 302);
         }
 
-        $myUtils->showMessageAndExit("");
+        ContainerFacade::dispatch(new ResponseReadyEvent(new Response('')));
     }
 
     /**

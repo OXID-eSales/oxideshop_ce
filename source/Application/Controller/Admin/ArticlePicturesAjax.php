@@ -23,6 +23,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaUploadProcessorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -59,7 +60,6 @@ class ArticlePicturesAjax extends ListComponentAjax
 
         if ($errors !== []) {
             $this->sendErrorsResponse($errors);
-            return;
         }
 
         $this->removeRoleFromMedia();
@@ -174,8 +174,8 @@ class ArticlePicturesAjax extends ListComponentAjax
 
     private function sendErrorsResponse(array $errors): void
     {
-        (new JsonResponse([
+        ContainerFacade::dispatch(new ResponseReadyEvent(new JsonResponse([
             'errors' => $errors,
-        ]))->send();
+        ])));
     }
 }

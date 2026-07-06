@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * CVS export manager.
@@ -22,7 +24,7 @@ class ToolsMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     public function render()
     {
         if (Registry::getConfig()->isDemoShop()) {
-            Registry::getUtils()->showMessageAndExit("Access denied !");
+            ContainerFacade::dispatch(new ResponseReadyEvent(new Response("Access denied !")));
         }
 
         parent::render();

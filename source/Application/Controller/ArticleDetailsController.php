@@ -11,7 +11,9 @@ use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Article details information page.
@@ -497,7 +499,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         if (!$shouldContinue) {
             $utils->redirect($config->getShopHomeUrl());
-            $utils->showMessageAndExit('');
+            ContainerFacade::dispatch(new ResponseReadyEvent(new Response('')));
         }
 
         $this->processProduct($this->_oProduct);

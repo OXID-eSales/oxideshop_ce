@@ -12,11 +12,43 @@
   - Admin page to edit alt text per image per locale
   - Storefront resolves the alt text through the locale's fallback chain
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
+- Support for subscribing to Symfony kernel events (`KernelEvents`)
+- Security headers on shop responses (DI parameter `oxid_esales.http.security_headers`)
+- Default `Cache-Control` policy for responses without an explicit one (DI parameter `oxid_esales.http.default_cache_control`)
+- `FileResponseFactoryInterface` for building file download responses
+
+### Fixed
+- Undefined array key warning in `ExceptionErrorController::displayExceptionError()` when no errors are queued for display
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
+- HTTP header and request handling on the shop kernel
+  - `index.php` resolves Symfony `#[Route]` controllers, falling back to the legacy shop controller resolution
+  - The response status, headers and cookies are owned by the Symfony `Response`
+  - Request-terminating helpers such as `Utils::redirect()` dispatch a `ResponseReadyEvent` - subscribe to it to observe or replace the outgoing response
+  - Uncaught errors and fatal errors are handled by `symfony/error-handler`
+  - Uncaught shop exceptions are converted to responses on the `kernel.exception` event
+  - The `Cache-Control` header is owned by the `Response`; PHP's session cache limiter is disabled
+  - The default `Content-Type` and charset are configured via `oxid_esales.http.charset`
 
 ### Removed
+- `Oxid`, `ShopControl::start()` and `WidgetControl::start()`
+- `ShopControl` internals superseded by the kernel migration
+- Inclusion of `modules/functions.php`
+- `Output` - process output with a `kernel.response` listener
+- `Header` - set headers on the `Response` or use a `kernel.response` listener
+- `Utils::setHeader()` - set headers on the `Response` or subscribe to the `kernel.response` event
+- `Utils::showMessageAndExit()` - dispatch a `ResponseReadyEvent`
+- `Utils::showOfflinePage()` - use `OfflinePageResponse`
+- `Utils::simpleRedirect()` and `Utils::prepareToExit()`
+- `oxTriggerOfflinePageDisplay()` - use `OfflinePageResponse`
+- `Session::needToSetHeaders()`
+- `Email::makeOutputProcessing()` and `Email::processViewArray()`
+- `HeaderGeneratorBridgeInterface`, `CsvHeaderGeneratorBridge`, `HeaderGeneratorInterface` and `CsvHeaderGenerator` - use `FileResponseFactoryInterface`
+- `BeforeHeadersSendEvent` - use the `kernel.response` event
+- `ApplicationExitEvent` - use the `kernel.response` event
+- `DebugInfo` and the storefront debug monitor block - use a profiler
+- `File::getFilenameForUrl()`
 - The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support

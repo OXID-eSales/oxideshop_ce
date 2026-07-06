@@ -2343,12 +2343,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\DebugInfo'                                            => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\DebugInfo::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Decryptor'                                            => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Decryptor::class,
         'isAbstract'       => false,
@@ -2673,12 +2667,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => true
     ],
-    'OxidEsales\Eshop\Core\Header'                                               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Header::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\InputValidator'                                       => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\InputValidator::class,
         'isAbstract'       => false,
@@ -2813,18 +2801,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker'                          => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\OpenSSLFunctionalityChecker::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Output'                                               => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Output::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Oxid'                                                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Oxid::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

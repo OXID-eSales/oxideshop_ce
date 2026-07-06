@@ -7,6 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use Symfony\Component\HttpFoundation\Response;
+
 /**
  * Diagnostic tool result outputer
  * Performs OutputKey check of shop files and generates report file.
@@ -118,21 +123,19 @@ class DiagnosticsOutput
      */
     public function downloadResultFile($sOutputKey = null)
     {
-        $sCurrentKey = (empty($sOutputKey)) ? $this->_sOutputKey : $sOutputKey;
+        ContainerFacade::dispatch(new ResponseReadyEvent($this->getResultFileResponse($sOutputKey)));
+    }
 
-        $this->_oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
-        $content = $this->_oUtils->fromFileCache($sCurrentKey);
-        $contentLength = strlen($content);
+    public function getResultFileResponse($sOutputKey = null): Response
+    {
+        $content = $this->readResultFile($sOutputKey);
 
-        $this->_oUtils->setHeader("Pragma: public");
-        $this->_oUtils->setHeader("Expires: 0");
-        $this->_oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
-        $this->_oUtils->setHeader('Content-Disposition: attachment;filename=' . $this->_sOutputFileName);
-        $this->_oUtils->setHeader("Content-Type:text/html;charset=utf-8");
-        if ($contentLength) {
-            $this->_oUtils->setHeader("Content-Length: " . $contentLength);
+        $factory = ContainerFacade::get(FileResponseFactoryInterface::class);
+
+        if (!is_string($content) || $content === '') {
+            return $factory->notFound();
         }
 
-        echo $content;
+        return $factory->fromContent($content, 'text/html; charset=utf-8', $this->_sOutputFileName);
     }
 }

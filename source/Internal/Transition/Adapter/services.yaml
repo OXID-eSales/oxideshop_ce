@@ -5,6 +5,7 @@ imports:
 services:
   _defaults:
     autowire: true
+    public: false
 
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter
@@ -22,3 +23,13 @@ services:
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\EmailAdapterInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\SymfonyMailerAdapter
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http\ShopExceptionResponseListener:
+    arguments:
+      $debugMode: '%oxid_esales.debug_mode%'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http\SessionCommitListener:
+    tags:
+      - { name: kernel.event_subscriber }

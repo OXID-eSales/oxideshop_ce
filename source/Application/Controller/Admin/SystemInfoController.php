@@ -8,8 +8,10 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Admin systeminfo manager.
@@ -65,9 +67,9 @@ class SystemInfoController extends \OxidEsales\Eshop\Application\Controller\Admi
             phpinfo();
             $sMessage = ob_get_clean();
 
-            \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit($sMessage);
+            ContainerFacade::dispatch(new ResponseReadyEvent(new Response($sMessage)));
         } else {
-            return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
+            ContainerFacade::dispatch(new ResponseReadyEvent(new Response("Access denied !")));
         }
     }
 

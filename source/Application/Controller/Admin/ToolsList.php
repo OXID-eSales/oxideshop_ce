@@ -10,6 +10,9 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use Exception;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Admin systeminfo manager.
@@ -138,7 +141,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 $aBadFiles = ["php", 'php4', 'php5', "jsp", "cgi", "cmf", "exe"];
 
                 if (in_array($aFilename[1], $aBadFiles)) {
-                    \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("File didn't pass our allowed files filter.");
+                    ContainerFacade::dispatch(new ResponseReadyEvent(new Response("File didn't pass our allowed files filter.")));
                 }
 
                 //reading SQL dump file

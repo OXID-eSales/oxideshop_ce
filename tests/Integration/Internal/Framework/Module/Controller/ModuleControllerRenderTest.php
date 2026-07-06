@@ -44,27 +44,21 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 
     public function testRenderTraditionalController(): void
     {
-        ob_start();
-	    $this->shopControl->start('module1_controller', '');
-	    $output = ob_get_clean();
+        $output = $this->shopControl->buildResponse('module1_controller', '')->getContent();
 
-	    $this->assertStringContainsString('module1/module_controller', $output);
+        $this->assertStringContainsString('module1/module_controller', $output);
     }
 
     public function testRenderServiceController(): void
     {
-        ob_start();
-        $this->shopControl->start('test_module_controller_as_service', '');
-        $output = ob_get_clean();
+        $output = $this->shopControl->buildResponse('test_module_controller_as_service', '')->getContent();
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
     }
 
     public function testRenderServiceControllerWithFunction(): void
     {
-        ob_start();
-        $this->shopControl->start('test_module_controller_as_service', 'testFunction');
-        $output = ob_get_clean();
+        $output = $this->buildResponseCapturingEchoedOutput('test_module_controller_as_service', 'testFunction');
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
         $this->assertStringContainsString('Function output', $output);
@@ -72,12 +66,18 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 
     public function testControllerDecorator(): void
     {
-        ob_start();
-        $this->shopControl->start('test_module_controller_as_service', 'testFunction');
-        $output = ob_get_clean();
+        $output = $this->buildResponseCapturingEchoedOutput('test_module_controller_as_service', 'testFunction');
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
         $this->assertStringContainsString('Init Decorator', $output);
+    }
+
+    private function buildResponseCapturingEchoedOutput(string $controllerKey, string $function): string
+    {
+        ob_start();
+        $response = $this->shopControl->buildResponse($controllerKey, $function);
+
+        return ob_get_clean() . $response->getContent();
     }
 
     private function setupModuleFixture(string $moduleId): void

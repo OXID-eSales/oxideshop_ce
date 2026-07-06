@@ -1,0 +1,62 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  Symfony\Component\HttpKernel\Controller\ControllerResolverInterface:
+    class: Symfony\Component\HttpKernel\Controller\ContainerControllerResolver
+    arguments:
+      $container: '@service_container'
+
+  Symfony\Component\HttpKernel\Controller\ArgumentResolverInterface:
+    class: Symfony\Component\HttpKernel\Controller\ArgumentResolver
+    arguments:
+      $namedResolvers: '@service_container'
+
+  Symfony\Component\HttpKernel\HttpKernelInterface:
+    class: Symfony\Component\HttpKernel\HttpKernel
+    arguments:
+      $handleAllThrowables: true
+    public: true
+
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner
+    arguments:
+      $kernel: '@Symfony\Component\HttpKernel\HttpKernelInterface'
+      $request: '@Symfony\Component\HttpFoundation\Request'
+      $routes: '%oxid.routes%'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyAjaxRunnerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyAjaxRunner
+    arguments:
+      $kernel: '@Symfony\Component\HttpKernel\HttpKernelInterface'
+      $request: '@Symfony\Component\HttpFoundation\Request'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseSignalListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\SecurityHeadersListener:
+    arguments:
+      $headers: '%oxid_esales.http.security_headers%'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\CacheControlListener:
+    arguments:
+      $defaultCacheControl: '%oxid_esales.http.default_cache_control%'
+    tags:
+      - { name: kernel.event_subscriber }
+
+  Symfony\Component\HttpKernel\EventListener\ResponseListener:
+    arguments:
+      $charset: '%oxid_esales.http.charset%'
+    tags:
+      - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -1000 }

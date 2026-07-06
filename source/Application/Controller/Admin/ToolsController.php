@@ -7,7 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Admin systeminfo manager.
@@ -24,8 +27,8 @@ class ToolsController extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     public function render()
     {
-        if (\OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop()) {
-            return \OxidEsales\Eshop\Core\Registry::getUtils()->showMessageAndExit("Access denied !");
+        if (Registry::getConfig()->isDemoShop()) {
+            ContainerFacade::dispatch(new ResponseReadyEvent(new Response("Access denied !")));
         }
 
         parent::render();

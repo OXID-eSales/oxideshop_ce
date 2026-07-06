@@ -7,13 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Bridge\NewsletterRecipientsDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\FileGeneratorBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Internal\Utility\Header\Bridge\HeaderGeneratorBridgeInterface;
 
 /**
  * Admin newsletter manager.
@@ -31,12 +31,15 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
 
     public function export(): void
     {
-        $newsletterRecipientsList = $this->getNewsLetterRecipientsList();
-        $this->setCSVHeader();
-        $this->generateCSV($newsletterRecipientsList);
+        $response = ContainerFacade::get(FileResponseFactoryInterface::class)->fromCallback(
+            function (): void {
+                $this->generateCSV($this->getNewsLetterRecipientsList());
+            },
+            'text/csv; charset=utf-8',
+            'Export_user_recipient_status_' . date('Y-m-d') . '.csv'
+        );
 
-        $oUtils = Registry::getUtils();
-        $oUtils->showMessageAndExit("");
+        ContainerFacade::dispatch(new ResponseReadyEvent($response));
     }
 
     private function getNewsLetterRecipientsList(): array
@@ -45,14 +48,6 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
             ->getNewsletterRecipients(
                 ContainerFacade::get(ContextInterface::class)
                     ->getCurrentShopId()
-            );
-    }
-
-    private function setCSVHeader(): void
-    {
-        ContainerFacade::get(HeaderGeneratorBridgeInterface::class)
-            ->generate(
-                'Export_user_recipient_status_' . date('Y-m-d') . '.csv'
             );
     }
 

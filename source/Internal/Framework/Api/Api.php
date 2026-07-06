@@ -31,7 +31,7 @@ class Api
         $context->fromRequest($request);
         $matcher = new CompiledUrlMatcher($container->getParameter('oxid.routes'), $context);
 
-        $requestStack = new RequestStack();
+        $requestStack = $container->get(RequestStack::class);
         $dispatcher = $container->get(EventDispatcherInterface::class);
         $dispatcher->addSubscriber(new RouterListener($matcher, $requestStack));
 

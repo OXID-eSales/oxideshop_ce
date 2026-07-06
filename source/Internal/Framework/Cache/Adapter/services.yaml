@@ -3,7 +3,7 @@ services:
     autowire: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\FilesystemTagAwareAdapterFactory
+    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\PhpFilesTagAwareAdapterFactory
 
   Symfony\Component\Cache\Adapter\TagAwareAdapterInterface:
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface', 'create']

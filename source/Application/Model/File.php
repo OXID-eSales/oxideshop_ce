@@ -7,10 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-use oxRegistry;
-use oxDb;
 use oxException;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 
 /**
  * Article files manager.
@@ -327,40 +327,19 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
     }
 
-    /**
-     * returns oxfile__oxfilename for URL usage
-     * converts spec symbols to %xx combination
-     *
-     * @return string
-     */
-    protected function getFilenameForUrl()
-    {
-        return rawurlencode($this->oxfiles__oxfilename->value);
-    }
-
-    /**
-     * Supplies the downloadable file for client and exits
-     */
     public function download()
     {
-        $oUtils = \OxidEsales\Eshop\Core\Registry::getUtils();
-        $sFileName = $this->getFilenameForUrl();
-        $sFileLocations = $this->getStoreLocation();
-
         if (!$this->exist() || !$this->isUnderDownloadFolder()) {
             throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_NOFILE');
         }
 
-        $oUtils->setHeader("Pragma: public");
-        $oUtils->setHeader("Expires: 0");
-        $oUtils->setHeader("Cache-Control: must-revalidate, post-check=0, pre-check=0, private");
-        $oUtils->setHeader('Content-Disposition: attachment;filename=' . $sFileName);
-        $oUtils->setHeader("Content-Type: application/octet-stream");
-        if ($iFileSize = $this->getSize()) {
-            $oUtils->setHeader("Content-Length: " . $iFileSize);
-        }
-        readfile($sFileLocations);
-        $oUtils->showMessageAndExit(null);
+        $response = ContainerFacade::get(FileResponseFactoryInterface::class)->fromFile(
+            $this->getStoreLocation(),
+            'application/octet-stream',
+            $this->oxfiles__oxfilename->value
+        );
+
+        ContainerFacade::dispatch(new ResponseReadyEvent($response));
     }
 
     /**

@@ -1298,9 +1298,7 @@ class FrontendController extends BaseController
     protected function removeDuplicatedWords($input, $skipTags = [])
     {
         $stringModifier = Str::getStr();
-        if (is_array($input)) {
-            $input = implode(" ", $input);
-        }
+        $input = is_array($input) ? implode(" ", $input) : (string) $input;
 
         // removing some usually met characters..
         $input = $stringModifier->preg_replace("/[" . preg_quote($this->_sRemoveMetaChars, "/") . "]/", " ", $input);

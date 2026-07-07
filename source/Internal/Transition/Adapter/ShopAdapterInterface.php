@@ -32,15 +32,5 @@ interface ShopAdapterInterface
 
     public function validateShopId(int $shopId): bool;
 
-    public function getActiveThemesList(): array;
-
-    public function getCustomTheme(): string;
-
-    public function getActiveThemeId(): string;
-
-    public function themeExists(string $themeId): bool;
-
-    public function activateTheme(string $themeId): void;
-
     public function generateDatabaseViewName(string $tableName, int $languageId, int $shopId): string;
 }

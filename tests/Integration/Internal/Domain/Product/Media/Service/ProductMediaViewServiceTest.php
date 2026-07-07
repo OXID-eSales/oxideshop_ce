@@ -26,7 +26,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -53,7 +53,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $context = $this->get(ContextInterface::class);
         $this->baseUrl = $context->getShopBaseUrl();
         $this->shopId = $context->getCurrentShopId();
-        $this->themeId = $this->get(ShopAdapterInterface::class)->getActiveThemeId();
+        $this->themeId = $this->get(ThemeStateServiceInterface::class)->getActiveThemeId($this->shopId);
 
         $this->productId = Id::generate();
         $this->configureImageSettings();

@@ -27,8 +27,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
@@ -46,7 +46,7 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
         parent::setUp();
 
         $this->shopId = $this->get(ContextInterface::class)->getCurrentShopId();
-        $this->themeId = $this->get(ShopAdapterInterface::class)->getActiveThemeId();
+        $this->themeId = $this->get(ThemeStateServiceInterface::class)->getActiveThemeId($this->shopId);
         $this->viewService = $this->get(ProductMediaViewServiceInterface::class);
         $this->productMediaService = $this->get(ProductMediaServiceInterface::class);
         $this->mediaAttributeService = $this->get(MediaAttributeServiceInterface::class);

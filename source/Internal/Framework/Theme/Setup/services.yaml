@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService
+    public: true

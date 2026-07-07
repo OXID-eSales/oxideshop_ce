@@ -7,10 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
-
 /**
  * Themes handler class.
  *
@@ -53,32 +49,6 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         }
 
         return false;
-    }
-
-    /**
-     * Set theme as active
-     */
-    public function activate()
-    {
-        $sError = $this->checkForActivationErrors();
-        if ($sError) {
-            /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
-            $oException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $sError);
-            throw $oException;
-        }
-
-        $config = Registry::getConfig();
-        $sParent = $this->getInfo('parentTheme');
-        if ($sParent) {
-            $config->saveShopConfVar("str", 'sTheme', $sParent);
-            $config->saveShopConfVar("str", 'sCustomTheme', $this->getId());
-        } else {
-            $config->saveShopConfVar("str", 'sTheme', $this->getId());
-            $config->saveShopConfVar("str", 'sCustomTheme', '');
-        }
-        $settingsHandler = oxNew(\OxidEsales\Eshop\Core\SettingsHandler::class);
-        $settingsHandler->setModuleType('theme')->run($this);
-        ContainerFacade::dispatch(new ThemeActivatedEvent($config->getShopId(), $this->getId()));
     }
 
     /**

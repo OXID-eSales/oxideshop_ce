@@ -5,75 +5,76 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxTheme;
-use oxException;
+use OxidEsales\Eshop\Core\Theme;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
+class ThemeMain extends AdminDetailsController
 {
+    private ThemeActivationServiceInterface $themeActivationService;
+    private ThemeStateServiceInterface $themeStateService;
+    private ContextInterface $context;
+
+    public function __construct()
+    {
+        $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
+        $this->themeStateService = ContainerFacade::get(ThemeStateServiceInterface::class);
+        $this->context = ContainerFacade::get(ContextInterface::class);
+
+        parent::__construct();
+    }
+
     /** @inheritdoc */
     public function render()
     {
-        $soxId = $this->getEditObjectId();
+        $themeId = $this->getEditObjectId()
+            ?: $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId());
 
-        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-
-        if (!$soxId) {
-            $soxId = $oTheme->getActiveThemeId();
-        }
-
-        if ($oTheme->load($soxId)) {
-            $this->_aViewData["oTheme"] = $oTheme;
+        $theme = oxNew(Theme::class);
+        if ($theme->load($themeId)) {
+            $this->_aViewData['oTheme'] = $theme;
         } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         }
 
         parent::render();
-
-        if ($this->themeInConfigFile()) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_SHOULD_BE_ONLY_IN_DATABASE');
-        }
 
         return 'theme_main';
     }
 
     /**
-     * Check if theme config is in config file.
-     *
-     * @return bool
-     */
-    public function themeInConfigFile()
-    {
-        $blThemeSet = isset(\OxidEsales\Eshop\Core\Registry::getConfig()->sTheme);
-        $blCustomThemeSet = isset(\OxidEsales\Eshop\Core\Registry::getConfig()->sCustomTheme);
-
-        return ($blThemeSet || $blCustomThemeSet);
-    }
-
-
-    /**
-     * Set theme
-     *
-     * @return null
+     * Activate the selected theme
      */
     public function setTheme()
     {
-        $sTheme = $this->getEditObjectId();
-        /** @var \OxidEsales\Eshop\Core\Theme $oTheme */
-        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-        if (!$oTheme->load($sTheme)) {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
+        $theme = oxNew(Theme::class);
+        if (!$theme->load($this->getEditObjectId())) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
 
             return;
         }
+
+        $activationError = $theme->checkForActivationErrors();
+        if ($activationError) {
+            Registry::getUtilsView()->addErrorToDisplay($activationError);
+
+            return;
+        }
+
         try {
-            $oTheme->activate();
+            $this->themeActivationService->activate($theme->getId(), $this->context->getCurrentShopId());
             $this->resetContentCache();
-        } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-            Registry::getUtilsView()->addErrorToDisplay($exception);
+        } catch (ThemeConfigurationNotFoundException $exception) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
     }

@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Command;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -21,11 +21,10 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    private string $fixtureDirectory = __DIR__ . '/Fixtures';
+    private const SHOP_ID = 1;
 
-    private string $initialThemeId = 'some-theme-id';
-    private string $newThemeId = 'testTheme';
-    private array $originalConfig;
+    private string $fixtureDirectory = __DIR__ . '/Fixtures';
+    private string $themeId = 'testTheme';
 
     public function setUp(): void
     {
@@ -36,15 +35,15 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     public function testThemeActivationOnSuccess(): void
     {
         $commandTester = $this->createCommandTester();
-        $commandTester->execute(['theme-id' => $this->newThemeId]);
+        $commandTester->execute(['theme-id' => $this->themeId]);
 
-        $this->assertSame($this->newThemeId, $this->getActiveTheme());
+        $this->assertTrue($this->isThemeActive($this->themeId));
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
     public function testThemeAlreadyActivated(): void
     {
-        $arguments = ['theme-id' => $this->newThemeId];
+        $arguments = ['theme-id' => $this->themeId];
         $commandTester = $this->createCommandTester();
 
         $commandTester->execute($arguments);
@@ -55,29 +54,24 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
     public function testNonExistingThemeActivation(): void
     {
-        $nonExistingThemeId = 'some-theme-id';
         $commandTester = $this->createCommandTester();
-
-        $commandTester->execute(['theme-id' => $nonExistingThemeId]);
+        $commandTester->execute(['theme-id' => 'non-existing-theme-id']);
 
         $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        $this->assertSame($this->initialThemeId, $this->getActiveTheme());
+        $this->assertFalse($this->isThemeActive($this->themeId));
     }
 
-    private function getActiveTheme(): string
+    private function isThemeActive(string $themeId): bool
     {
-        return Registry::getConfig()->getConfigParam('sTheme');
+        return $this->get(ThemeStateServiceInterface::class)->isActive($themeId, self::SHOP_ID);
     }
 
     private function setShopFixtures(): void
     {
-        Registry::getConfig()->reinitialize();
-        Registry::getConfig()->setConfigParam('sTheme', $this->initialThemeId);
-
         $this->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
 
         $this->get(ThemeConfigurationInstallerInterface::class)->install(
-            "$this->fixtureDirectory/shop/source/Application/views/$this->newThemeId"
+            "$this->fixtureDirectory/shop/source/Application/views/$this->themeId"
         );
     }
 

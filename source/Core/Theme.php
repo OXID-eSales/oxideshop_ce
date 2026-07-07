@@ -47,7 +47,9 @@ class Theme extends \OxidEsales\Eshop\Core\Base
             include $sFilePath;
             $this->_aTheme = $aTheme;
             $this->_aTheme['id'] = $sOXID;
-            $this->_aTheme['active'] = ($this->getActiveThemeId() == $sOXID);
+            $this->_aTheme['active'] = (ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
+                ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
+            ) == $sOXID);
 
             return true;
         }
@@ -88,18 +90,6 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         }
 
         return $this->_aTheme[$sName];
-    }
-
-    /**
-     * Return current active theme id
-     *
-     * @return string
-     */
-    public function getActiveThemeId()
-    {
-        return ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
-            ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
-        );
     }
 
     /**

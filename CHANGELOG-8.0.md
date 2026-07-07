@@ -15,6 +15,8 @@
 - Theme configuration is now installed per-shop via the composer plugin, reading `metadata.yaml` and `config.yaml` from the theme package
 
 ### Changed
+- Theme activation state is now stored in YAML configuration instead of the database
+- `sTheme` is no longer written to the database during theme activation
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 
 ### Removed
@@ -27,6 +29,15 @@
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
+- `Theme::activate()`
+- `Theme::getActiveThemeId()`
+- `Theme::getActiveThemesList()`
+- `ThemeMain::themeInConfigFile()`
+- `ShopAdapterInterface::getActiveThemesList()`
+- `ShopAdapterInterface::getCustomTheme()`
+- `ShopAdapterInterface::getActiveThemeId()`
+- `ShopAdapterInterface::themeExists()`
+- `ShopAdapterInterface::activateTheme()`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

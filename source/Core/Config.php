@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationC
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
 use Symfony\Component\Filesystem\Path;
@@ -252,8 +253,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             throw $exception;
         }
 
-        // loading theme config options
-        $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'));
+        $this->loadActiveThemeVars((int)$shopId);
 
         // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
         if ($this->getConfigParam('sCustomTheme')) {
@@ -268,6 +268,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if (defined('OX_ADMIN_DIR')) {
             $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
         }
+    }
+
+    private function loadActiveThemeVars(int $shopId): void
+    {
+        $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+        if ($activeThemeId === '') {
+            return;
+        }
+
+        $this->setConfigParam('sTheme', $activeThemeId);
+        $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $activeThemeId);
     }
 
     /**

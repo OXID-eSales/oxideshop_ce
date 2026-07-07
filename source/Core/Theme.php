@@ -7,6 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+
 /**
  * Themes handler class.
  *
@@ -87,42 +91,15 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return current active theme, or custom theme if specified
+     * Return current active theme id
      *
      * @return string
      */
     public function getActiveThemeId()
     {
-        $sCustTheme = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCustomTheme');
-        if ($sCustTheme) {
-            return $sCustTheme;
-        }
-
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sTheme');
-    }
-
-    /**
-     * Get active themes list.
-     * Examples:
-     *      if flow theme is active we will get ['flow']
-     *      if azure is extended by some other we will get ['azure', 'extending_theme']
-     *
-     * @return array
-     */
-    public function getActiveThemesList()
-    {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        $activeThemeList = [];
-        if (!$this->isAdmin()) {
-            $activeThemeList[] = $config->getConfigParam('sTheme');
-
-            if ($customThemeId = $config->getConfigParam('sCustomTheme')) {
-                $activeThemeList[] = $customThemeId;
-            }
-        }
-
-        return $activeThemeList;
+        return ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
+            ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
+        );
     }
 
     /**

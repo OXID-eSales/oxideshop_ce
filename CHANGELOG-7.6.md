@@ -17,6 +17,13 @@
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
+- `Theme`
+- `ThemeMain::themeInConfigFile()`
+- `ShopAdapterInterface::getActiveThemesList()`
+- `ShopAdapterInterface::getCustomTheme()`
+- `ShopAdapterInterface::getActiveThemeId()`
+- `ShopAdapterInterface::themeExists()`
+- `ShopAdapterInterface::activateTheme()`
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

@@ -59,14 +59,29 @@ interface ShopAdapterInterface
      */
     public function validateShopId(int $shopId): bool;
 
+    /**
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
+     */
     public function getActiveThemesList(): array;
 
+    /**
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
+     */
     public function getCustomTheme(): string;
 
+    /**
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
+     */
     public function getActiveThemeId(): string;
 
+    /**
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
+     */
     public function themeExists(string $themeId): bool;
 
+    /**
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
+     */
     public function activateTheme(string $themeId): void;
 
     public function generateDatabaseViewName(string $tableName, int $languageId, int $shopId): string;

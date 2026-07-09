@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateService;
 use PHPUnit\Framework\TestCase;
 
@@ -55,7 +56,7 @@ final class ThemeStateServiceTest extends TestCase
         $this->assertSame('active', $this->createService($dao)->getActiveThemeId(self::SHOP_ID));
     }
 
-    public function testGetActiveThemeIdReturnsEmptyStringWhenNoThemeIsActivated(): void
+    public function testGetActiveThemeIdThrowsExceptionWhenNoThemeIsActivated(): void
     {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('getAll')->willReturn([
@@ -63,7 +64,9 @@ final class ThemeStateServiceTest extends TestCase
             'theme2' => (new ThemeConfiguration())->setId('theme2'),
         ]);
 
-        $this->assertSame('', $this->createService($dao)->getActiveThemeId(self::SHOP_ID));
+        $this->expectException(ActiveThemeNotFoundException::class);
+
+        $this->createService($dao)->getActiveThemeId(self::SHOP_ID);
     }
 
     private function createService(ThemeConfigurationDaoInterface $dao): ThemeStateService

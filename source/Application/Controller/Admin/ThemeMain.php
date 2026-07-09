@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
@@ -36,19 +37,36 @@ class ThemeMain extends AdminDetailsController
     /** @inheritdoc */
     public function render()
     {
-        $themeId = $this->getEditObjectId()
-            ?: $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId());
+        $themeId = $this->resolveThemeId();
 
-        $theme = oxNew(Theme::class);
-        if ($theme->load($themeId)) {
-            $this->_aViewData['oTheme'] = $theme;
-        } else {
-            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+        if ($themeId !== null) {
+            $theme = oxNew(Theme::class);
+            if ($theme->load($themeId)) {
+                $this->_aViewData['oTheme'] = $theme;
+            } else {
+                Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+            }
         }
 
         parent::render();
 
         return 'theme_main';
+    }
+
+    private function resolveThemeId(): ?string
+    {
+        $themeId = $this->getEditObjectId();
+        if ($themeId) {
+            return $themeId;
+        }
+
+        try {
+            return $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId());
+        } catch (ActiveThemeNotFoundException) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+
+            return null;
+        }
     }
 
     /**

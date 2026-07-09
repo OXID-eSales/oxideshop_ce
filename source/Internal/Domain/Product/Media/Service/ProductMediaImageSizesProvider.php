@@ -13,7 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 readonly class ProductMediaImageSizesProvider implements ProductMediaImageSizesProviderInterface
@@ -21,7 +22,7 @@ readonly class ProductMediaImageSizesProvider implements ProductMediaImageSizesP
     public function __construct(
         private ThemeSettingDaoInterface $themeSettingDao,
         private ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao,
-        private ShopAdapterInterface $shopAdapter,
+        private ThemeStateServiceInterface $themeStateService,
         private ContextInterface $context,
     ) {
     }
@@ -42,9 +43,9 @@ readonly class ProductMediaImageSizesProvider implements ProductMediaImageSizesP
             $setting = $this->themeSettingDao->get(
                 $settingName,
                 $this->context->getCurrentShopId(),
-                $this->shopAdapter->getActiveThemeId()
+                $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId())
             );
-        } catch (EntryDoesNotExistDaoException) {
+        } catch (EntryDoesNotExistDaoException|ActiveThemeNotFoundException) {
             $setting = $this->shopConfigurationSettingDao->get(
                 $settingName,
                 $this->context->getCurrentShopId()

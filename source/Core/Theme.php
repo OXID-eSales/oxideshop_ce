@@ -7,9 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * Themes handler class.
@@ -48,38 +49,19 @@ class Theme extends \OxidEsales\Eshop\Core\Base
             include $sFilePath;
             $this->_aTheme = $aTheme;
             $this->_aTheme['id'] = $sOXID;
-            $this->_aTheme['active'] = ($this->getActiveThemeId() == $sOXID);
+            try {
+                $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
+                    ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
+                );
+                $this->_aTheme['active'] = ($activeThemeId === $sOXID);
+            } catch (ActiveThemeNotFoundException) {
+                $this->_aTheme['active'] = false;
+            }
 
             return true;
         }
 
         return false;
-    }
-
-    /**
-     * Set theme as active
-     */
-    public function activate()
-    {
-        $sError = $this->checkForActivationErrors();
-        if ($sError) {
-            /** @var \OxidEsales\Eshop\Core\Exception\StandardException $oException */
-            $oException = oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $sError);
-            throw $oException;
-        }
-
-        $config = Registry::getConfig();
-        $sParent = $this->getInfo('parentTheme');
-        if ($sParent) {
-            $config->saveShopConfVar("str", 'sTheme', $sParent);
-            $config->saveShopConfVar("str", 'sCustomTheme', $this->getId());
-        } else {
-            $config->saveShopConfVar("str", 'sTheme', $this->getId());
-            $config->saveShopConfVar("str", 'sCustomTheme', '');
-        }
-        $settingsHandler = oxNew(\OxidEsales\Eshop\Core\SettingsHandler::class);
-        $settingsHandler->setModuleType('theme')->run($this);
-        ContainerFacade::dispatch(new ThemeActivatedEvent($config->getShopId(), $this->getId()));
     }
 
     /**
@@ -115,45 +97,6 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         }
 
         return $this->_aTheme[$sName];
-    }
-
-    /**
-     * Return current active theme, or custom theme if specified
-     *
-     * @return string
-     */
-    public function getActiveThemeId()
-    {
-        $sCustTheme = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sCustomTheme');
-        if ($sCustTheme) {
-            return $sCustTheme;
-        }
-
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sTheme');
-    }
-
-    /**
-     * Get active themes list.
-     * Examples:
-     *      if flow theme is active we will get ['flow']
-     *      if azure is extended by some other we will get ['azure', 'extending_theme']
-     *
-     * @return array
-     */
-    public function getActiveThemesList()
-    {
-        $config = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        $activeThemeList = [];
-        if (!$this->isAdmin()) {
-            $activeThemeList[] = $config->getConfigParam('sTheme');
-
-            if ($customThemeId = $config->getConfigParam('sCustomTheme')) {
-                $activeThemeList[] = $customThemeId;
-            }
-        }
-
-        return $activeThemeList;
     }
 
     /**

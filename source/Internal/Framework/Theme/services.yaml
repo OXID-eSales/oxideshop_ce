@@ -1,3 +1,7 @@
+imports:
+  - { resource: Setup/services.yaml }
+  - { resource: State/services.yaml }
+
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'
   oxid_esales.theme.admin.media.image_grid_size: '400*400'

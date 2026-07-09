@@ -12,6 +12,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -49,12 +51,18 @@ final class LanguageTest extends IntegrationTestCase
         $translationKey = uniqid('some-key-', true);
         $cachedTranslation = 'some-translation';
         $language = new Language();
+        $shopId = (int) Registry::getConfig()->getShopId();
+        try {
+            $activeThemeId = $this->get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+        } catch (ActiveThemeNotFoundException) {
+            $activeThemeId = null;
+        }
         $cacheKey = sprintf(
             'langcache_%d_%s_%d_%s_default',
             Registry::getConfig()->isAdmin(),
             $language->getBaseLanguage(),
-            Registry::getConfig()->getShopId(),
-            Registry::getConfig()->getConfigParam('sTheme')
+            $shopId,
+            $activeThemeId
         );
 
         $this->get(ShopCacheCleanerInterface::class)->clearAll();

@@ -10,7 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,8 +23,10 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 final class ThemeActivateCommand extends Command
 {
     public function __construct(
-        private readonly ShopAdapterInterface $shopAdapter,
+        private readonly ThemeActivationServiceInterface $themeActivationService,
+        private readonly ThemeStateServiceInterface $themeStateService,
         private readonly ShopCacheCleanerInterface $shopCacheCleaner,
+        private readonly ContextInterface $context,
     ) {
         parent::__construct();
     }
@@ -37,18 +42,20 @@ final class ThemeActivateCommand extends Command
     {
         $style = new SymfonyStyle($input, $output);
         $themeId = $input->getArgument('theme-id');
+        $shopId = $this->context->getCurrentShopId();
 
-        if (!$this->shopAdapter->themeExists($themeId)) {
-            $style->error(sprintf('Theme - "%s" not found.', $themeId));
-            return Command::FAILURE;
-        }
-
-        if ($this->shopAdapter->getActiveThemeId() === $themeId) {
+        if ($this->themeStateService->isActive($themeId, $shopId)) {
             $style->info(sprintf('Theme - "%s" is already active.', $themeId));
             return Command::SUCCESS;
         }
 
-        $this->shopAdapter->activateTheme($themeId);
+        try {
+            $this->themeActivationService->activate($themeId, $shopId);
+        } catch (ThemeConfigurationNotFoundException) {
+            $style->error(sprintf('Theme - "%s" not found.', $themeId));
+            return Command::FAILURE;
+        }
+
         $this->shopCacheCleaner->clearAll();
         $style->success(sprintf('Theme - "%s" was activated.', $themeId));
 

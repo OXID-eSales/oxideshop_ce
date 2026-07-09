@@ -19,6 +19,8 @@
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
 - Module migrations are no longer discovered automatically; register them via a `MigrationPathProviderInterface` service tagged `oxid_esales.migration_path_provider`
+- Theme settings and the active theme are stored in YAML files instead of the database
+  - The `sTheme` config parameter is no longer used
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
@@ -43,6 +45,9 @@
 - `SeoEncoderArticle::createArticleCategoryUri()`
 - deprecated `ProjectYamlImportServiceInterface::addImport()` and `ProjectYamlImportServiceInterface::removeImport()`
 - `MigrationExecutorInterface`
+- Theme configuration classes and methods
+  - `ThemeMain::themeInConfigFile()`
+  - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

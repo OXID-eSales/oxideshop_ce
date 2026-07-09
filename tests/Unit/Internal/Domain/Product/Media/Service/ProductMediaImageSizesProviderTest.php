@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\Dao\ThemeSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
-use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use PHPUnit\Framework\TestCase;
 
@@ -78,14 +78,14 @@ final class ProductMediaImageSizesProviderTest extends TestCase
         ThemeSettingDaoInterface $themeSettingDao,
         ?ShopConfigurationSettingDaoInterface $shopConfigurationSettingDao = null,
     ): ProductMediaImageSizesProviderInterface {
-        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
-        $shopAdapter->method('getActiveThemeId')->willReturn('apex');
+        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
+        $themeStateService->method('getActiveThemeId')->willReturn('apex');
 
         return new ProductMediaImageSizesProvider(
             themeSettingDao: $themeSettingDao,
             shopConfigurationSettingDao: $shopConfigurationSettingDao
                 ?? $this->createStub(ShopConfigurationSettingDaoInterface::class),
-            shopAdapter: $shopAdapter,
+            themeStateService: $themeStateService,
             context: new ContextStub()
         );
     }

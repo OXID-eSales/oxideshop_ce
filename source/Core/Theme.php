@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
@@ -47,9 +48,14 @@ class Theme extends \OxidEsales\Eshop\Core\Base
             include $sFilePath;
             $this->_aTheme = $aTheme;
             $this->_aTheme['id'] = $sOXID;
-            $this->_aTheme['active'] = (ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
-                ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
-            ) == $sOXID);
+            try {
+                $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
+                    ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
+                );
+                $this->_aTheme['active'] = ($activeThemeId === $sOXID);
+            } catch (ActiveThemeNotFoundException) {
+                $this->_aTheme['active'] = false;
+            }
 
             return true;
         }

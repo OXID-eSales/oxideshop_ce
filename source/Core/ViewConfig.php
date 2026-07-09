@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
@@ -1222,9 +1223,13 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getActiveTheme()
     {
         if ($this->_sActiveTheme === null) {
-            $this->_sActiveTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
-                ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
-            );
+            try {
+                $this->_sActiveTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
+                    ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
+                );
+            } catch (ActiveThemeNotFoundException) {
+                $this->_sActiveTheme = '';
+            }
         }
 
         return $this->_sActiveTheme;

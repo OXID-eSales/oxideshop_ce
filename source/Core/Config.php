@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationC
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
@@ -272,13 +273,21 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     private function loadActiveThemeVars(int $shopId): void
     {
-        $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
-        if ($activeThemeId === '') {
+        $activeThemeId = $this->getActiveThemeId($shopId);
+        if ($activeThemeId === null) {
             return;
         }
 
-        $this->setConfigParam('sTheme', $activeThemeId);
         $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $activeThemeId);
+    }
+
+    private function getActiveThemeId(int $shopId): ?string
+    {
+        try {
+            return ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+        } catch (ActiveThemeNotFoundException) {
+            return null;
+        }
     }
 
     /**
@@ -957,8 +966,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreCust = false)
     {
+        if (is_null($shop)) {
+            $shop = $this->getShopId();
+        }
+
         if (is_null($theme)) {
-            $theme = $this->getConfigParam('sTheme');
+            $theme = $this->getActiveThemeId((int) $shop);
         }
 
         if ($admin) {
@@ -984,10 +997,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             }
 
             $langAbbr = $language->getLanguageAbbr($lang);
-        }
-
-        if (is_null($shop)) {
-            $shop = $this->getShopId();
         }
 
         //Load from
@@ -1536,7 +1545,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $shopId = $this->getShopId();
         }
 
-        if ($shopId == $this->getShopId() && (!$module || $module == Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sTheme'))) {
+        if ($shopId == $this->getShopId() && (!$module || $module == Config::OXMODULE_THEME_PREFIX . $this->getActiveThemeId((int) $shopId))) {
             $varValue = $this->getConfigParam($varName);
             if ($varValue !== null) {
                 return $varValue;

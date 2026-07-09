@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
 readonly class ThemeStateService implements ThemeStateServiceInterface
 {
@@ -32,6 +33,6 @@ readonly class ThemeStateService implements ThemeStateServiceInterface
             }
         }
 
-        return '';
+        throw new ActiveThemeNotFoundException();
     }
 }

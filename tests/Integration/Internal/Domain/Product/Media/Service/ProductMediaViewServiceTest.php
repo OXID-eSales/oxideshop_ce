@@ -26,7 +26,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigura
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Config\DataObject\ThemeSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -53,7 +54,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $context = $this->get(ContextInterface::class);
         $this->baseUrl = $context->getShopBaseUrl();
         $this->shopId = $context->getCurrentShopId();
-        $this->themeId = $this->get(ThemeStateServiceInterface::class)->getActiveThemeId($this->shopId);
+        $this->themeId = $this->activateTestTheme($this->shopId);
 
         $this->productId = Id::generate();
         $this->configureImageSettings();
@@ -402,6 +403,17 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
             ->getAllByRole($productId, ProductMediaRole::from(ProductMediaRole::DETAIL));
 
         $this->assertFalse(reset($results)->getAttributes()->has(MediaAttribute::ALT));
+    }
+
+    private function activateTestTheme(int $shopId): string
+    {
+        $themeId = 'testTheme';
+        $this->get(ThemeConfigurationDaoInterface::class)->save(
+            (new ThemeConfiguration())->setId($themeId)->setActivated(true),
+            $shopId
+        );
+
+        return $themeId;
     }
 
     private function setupTestData(): void

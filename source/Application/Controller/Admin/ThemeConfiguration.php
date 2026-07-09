@@ -8,6 +8,9 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use oxAdminDetails;
 
 class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
@@ -23,7 +26,12 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
         $sShopId = $myConfig->getShopId();
 
         if (!isset($sTheme)) {
-            $sTheme = $this->_sTheme = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('sTheme');
+            try {
+                $sTheme = $this->_sTheme = ContainerFacade::get(ThemeStateServiceInterface::class)
+                    ->getActiveThemeId((int) $sShopId);
+            } catch (ActiveThemeNotFoundException) {
+                $sTheme = $this->_sTheme = null;
+            }
         }
 
         $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);

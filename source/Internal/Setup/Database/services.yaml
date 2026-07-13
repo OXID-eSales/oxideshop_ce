@@ -8,6 +8,9 @@ services:
 
     OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiatorInterface:
         class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiator
+        arguments:
+            $migrationExecutor: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutor'
+            $taggedMigrationExecutor: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
 
     OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface:
         class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstaller

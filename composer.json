@@ -20,6 +20,7 @@
         "ext-tokenizer": "*",
         "doctrine/collections": "^1.4.0",
         "doctrine/dbal": "^2.13",
+        "doctrine/migrations": "^3.0",
         "monolog/monolog": "^v1.23.0",
         "oxid-esales/oxideshop-composer-plugin": "dev-b-7.6.x",
         "oxid-esales/oxideshop-db-views-generator": "dev-b-7.6.x",

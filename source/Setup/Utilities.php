@@ -422,6 +422,7 @@ class Utilities extends Core
     /**
      * Calls external database migration command.
      *
+     * @deprecated since v7.6.0, will be removed in v8.0, use ConfigurableMigrationExecutorInterface::executeWithOptions() instead
      * @param ConsoleOutput|null $output Add a possibility to provide a custom output handler.
      * @param Facts|null $facts  A possible facts mock
      */

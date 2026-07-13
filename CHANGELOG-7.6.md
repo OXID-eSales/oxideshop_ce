@@ -3,6 +3,8 @@
 ## v7.6.0 - Unreleased
 
 ### Added
+- `oe:database:migrate` console command
+- Doctrine migrations can be registered via the `oxid_esales.migration_path_provider` DI tag (`MigrationPathProviderInterface`)
 
 ### Changed
 - Console commands return consistent exit codes on success (0) and failure (1)
@@ -17,6 +19,10 @@
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
+- `MigrationExecutorInterface`
+- `MigrationExecutor`
+- `Utilities::executeExternalDatabaseMigrationCommand()`
+- `oxid-esales/oxideshop-doctrine-migration-wrapper` package and `oe-eshop-db_migrate` script, use `oe:database:migrate` instead
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

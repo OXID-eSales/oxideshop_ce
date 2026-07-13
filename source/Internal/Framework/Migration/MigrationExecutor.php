@@ -12,8 +12,14 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 use OxidEsales\DoctrineMigrationWrapper\Migrations;
 use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\Console\Output\Output;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class MigrationExecutor implements MigrationExecutorInterface
+/**
+ * @deprecated since v7.6.0, will be removed in v8.0, use
+ *             ConfigurableMigrationExecutorInterface::executeWithOptions() instead
+ */
+class MigrationExecutor implements MigrationExecutorInterface, ConfigurableMigrationExecutorInterface
 {
     public function __construct(protected ContextInterface $context)
     {
@@ -21,17 +27,25 @@ class MigrationExecutor implements MigrationExecutorInterface
 
     public function execute(): void
     {
-        $migrations = $this->createMigrations();
-        $migrations->execute(Migrations::MIGRATE_COMMAND);
+        $this->executeWithOptions();
     }
 
     /**
-     * @return Migrations
+     * @param array<string, mixed> $options
      */
+    public function executeWithOptions(array $options = [], ?OutputInterface $output = null): int
+    {
+        $migrations = $this->createMigrations();
+
+        if ($output instanceof Output) {
+            $migrations->setOutput($output);
+        }
+
+        return $migrations->execute(Migrations::MIGRATE_COMMAND, null, $options);
+    }
+
     private function createMigrations(): Migrations
     {
-        $migrationsBuilder = new MigrationsBuilder();
-
-        return $migrationsBuilder->build($this->context->getFacts());
+        return (new MigrationsBuilder())->build($this->context->getFacts());
     }
 }

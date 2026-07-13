@@ -1,0 +1,4 @@
+services:
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\NoConfig\TestMissingConfigMigrationPathProvider:
+    tags:
+      - { name: 'oxid_esales.migration_path_provider' }

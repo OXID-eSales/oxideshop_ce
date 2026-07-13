@@ -132,7 +132,8 @@ class OrderArticle extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
                 ]
             );
             if ($products != false && $products->count() > 0) {
-                $articleId = $products->fields['OXPARENTID'] ?: $products->fields['OXID'];
+                $products->fields = array_change_key_case($products->fields, CASE_LOWER);
+                $articleId = $products->fields['oxparentid'] ?: $products->fields['oxid'];
 
                 $product = oxNew(Article::class);
                 if ($product->load($articleId)) {

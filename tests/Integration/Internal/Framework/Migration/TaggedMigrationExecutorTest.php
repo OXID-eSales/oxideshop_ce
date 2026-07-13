@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration;
+
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\NullOutput;
+
+class TaggedMigrationExecutorTest extends TestCase
+{
+    use ContainerTrait;
+
+    public function testMigrationIsExecuted(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
+        $this->compileContainer();
+
+        $status = $this->get(TaggedMigrationExecutor::class)->executeWithOptions();
+
+        $this->assertSame(0, $status);
+        $this->assertMigrationWasTracked();
+    }
+
+    #[DoesNotPerformAssertions]
+    public function testNoErrorWhenConfigFileDoesNotExist(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/NoConfig');
+        $this->compileContainer();
+
+        $this->get(TaggedMigrationExecutor::class)->executeWithOptions();
+    }
+
+    public function testReturnsZeroWhenProviderHasNoMigrations(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/NoMigrations');
+        $this->compileContainer();
+
+        $this->assertSame(0, $this->get(TaggedMigrationExecutor::class)->executeWithOptions());
+    }
+
+    public function testReturnsNonZeroExitCodeWhenMigrationFails(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
+        $this->compileContainer();
+
+        $status = $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--write-sql' => '/nonexistent-dir/x.sql'], new NullOutput());
+
+        $this->assertGreaterThan(0, $status);
+    }
+
+    public function testProviderMigrationFailurePropagates(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/Failing');
+        $this->compileContainer();
+
+        $this->expectException(\RuntimeException::class);
+
+        $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput());
+    }
+
+    public function testFlagsAreForwardedToTheMigration(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
+        $this->compileContainer();
+
+        $executor = $this->get(TaggedMigrationExecutor::class);
+        $connection = $this->get(ConnectionFactoryInterface::class)->create();
+
+        $executor->executeWithOptions([]);
+        $this->assertTrue($connection->createSchemaManager()->tablesExist(['test_migration_table']));
+
+        $connection->executeStatement('DROP TABLE test_migration_table');
+        $connection->executeStatement('DROP TABLE test_migrations_tracking');
+
+        $executor->executeWithOptions(['--dry-run' => true]);
+
+        $this->assertFalse($connection->createSchemaManager()->tablesExist(['test_migration_table']));
+    }
+
+    protected function tearDown(): void
+    {
+        $connection = $this->get(ConnectionFactoryInterface::class)->create();
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_migration_table`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_nomigrations_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_failing_migrations_tracking`');
+        parent::tearDown();
+    }
+
+    private function assertMigrationWasTracked(): void
+    {
+        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
+        $queryBuilder->select('COUNT(*)')->from('test_migrations_tracking');
+
+        $this->assertEquals(1, $queryBuilder->executeQuery()->fetchOne());
+    }
+}

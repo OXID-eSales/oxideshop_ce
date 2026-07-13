@@ -1,6 +1,7 @@
 services:
     _defaults:
         autowire: true
+        public: false
 
     OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionFactoryInterface:
         class: OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionFactory

@@ -11,7 +11,9 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\CustomThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
@@ -723,7 +725,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function getCustomThemeLanguageFiles($language)
     {
         $oConfig = Registry::getConfig();
-        $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
+        $sCustomTheme = $this->getCustomThemeId();
         $sAppDir = $oConfig->getAppDir();
         $sLang = Registry::getLang()->getLanguageAbbr($language);
         $aLangFiles = [];
@@ -822,12 +824,11 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 ->getActiveTheme();
             $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
         } else {
-            $config = Registry::getConfig();
             if ($theme = $this->getActiveThemeId()) {
                 $languageFiles[] = $this->getCustomFilePath($language, $theme);
             }
-            if ($config->getConfigParam("sCustomTheme")) {
-                $languageFiles[] = $this->getCustomFilePath($language, $config->getConfigParam("sCustomTheme"));
+            if ($customTheme = $this->getCustomThemeId()) {
+                $languageFiles[] = $this->getCustomFilePath($language, $customTheme);
             }
         }
 
@@ -957,11 +958,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $key = $language . ((int)$isAdmin);
         if (!isset($this->_aLangMap[$key])) {
             $this->_aLangMap[$key] = [];
-            $config = Registry::getConfig();
 
             $mapFile = '';
             $theme = $this->getRealThemeName($this->getActiveThemeId(), $isAdmin);
-            $customTheme = $this->getRealThemeName($config->getConfigParam("sCustomTheme"), $isAdmin);
+            $customTheme = $this->getRealThemeName($this->getCustomThemeId(), $isAdmin);
 
             $languageAbbr = Registry::getLang()->getLanguageAbbr($language);
             $possibleMapFileLocations = array_merge(
@@ -1027,6 +1027,16 @@ class Language extends \OxidEsales\Eshop\Core\Base
             return ContainerFacade::get(ThemeStateServiceInterface::class)
                 ->getActiveThemeId((int) Registry::getConfig()->getShopId());
         } catch (ActiveThemeNotFoundException) {
+            return null;
+        }
+    }
+
+    private function getCustomThemeId(): ?string
+    {
+        try {
+            return ContainerFacade::get(CustomThemeProviderInterface::class)
+                ->getCustomThemeId((int) Registry::getConfig()->getShopId());
+        } catch (CustomThemeNotFoundException) {
             return null;
         }
     }

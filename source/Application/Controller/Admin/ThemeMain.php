@@ -16,6 +16,13 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ParentThemeNotInstalledException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ParentVersionsNotDeclaredException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ParentVersionUnspecifiedException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeMetaDataByIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeParentCompatibilityCheckerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeParentProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
@@ -23,12 +30,18 @@ class ThemeMain extends AdminDetailsController
 {
     private ThemeActivationServiceInterface $themeActivationService;
     private ThemeStateServiceInterface $themeStateService;
+    private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker;
+    private ThemeParentProviderInterface $themeParentProvider;
+    private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider;
     private ContextInterface $context;
 
     public function __construct()
     {
         $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
         $this->themeStateService = ContainerFacade::get(ThemeStateServiceInterface::class);
+        $this->themeParentCompatibilityChecker = ContainerFacade::get(ThemeParentCompatibilityCheckerInterface::class);
+        $this->themeParentProvider = ContainerFacade::get(ThemeParentProviderInterface::class);
+        $this->themeMetaDataByIdProvider = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class);
         $this->context = ContainerFacade::get(ContextInterface::class);
 
         parent::__construct();
@@ -43,6 +56,7 @@ class ThemeMain extends AdminDetailsController
             $theme = oxNew(Theme::class);
             if ($theme->load($themeId)) {
                 $this->_aViewData['oTheme'] = $theme;
+                $this->addParentThemeViewData($themeId);
             } else {
                 Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
             }
@@ -51,6 +65,39 @@ class ThemeMain extends AdminDetailsController
         parent::render();
 
         return 'theme_main';
+    }
+
+    private function addParentThemeViewData(string $themeId): void
+    {
+        $shopId = $this->context->getCurrentShopId();
+
+        if ($this->themeParentProvider->hasParentTheme($themeId, $shopId)) {
+            $parentThemeId = $this->themeParentProvider->getParentThemeId($themeId, $shopId);
+            $this->_aViewData['parentThemeId'] = $parentThemeId;
+            $this->_aViewData['parentThemeVersions'] = $this->themeMetaDataByIdProvider
+                ->get($themeId, $shopId)
+                ->getParentVersions();
+
+            try {
+                $this->_aViewData['parentThemeTitle'] = $this->themeMetaDataByIdProvider
+                    ->get($parentThemeId, $shopId)
+                    ->getTitle();
+            } catch (ThemeConfigurationNotFoundException | \InvalidArgumentException) {
+            }
+        }
+
+        if (!$this->themeStateService->isActive($themeId, $shopId)) {
+            try {
+                $this->themeParentCompatibilityChecker->assertCompatible($themeId, $shopId);
+            } catch (
+                ParentThemeNotInstalledException
+                | ParentVersionUnspecifiedException
+                | ParentVersionsNotDeclaredException
+                | ParentVersionMismatchException $exception
+            ) {
+                $this->_aViewData['themeActivationError'] = $this->getParentCompatibilityErrorTranslationKey($exception);
+            }
+        }
     }
 
     private function resolveThemeId(): ?string
@@ -81,19 +128,38 @@ class ThemeMain extends AdminDetailsController
             return;
         }
 
-        $activationError = $theme->checkForActivationErrors();
-        if ($activationError) {
-            Registry::getUtilsView()->addErrorToDisplay($activationError);
+        $shopId = $this->context->getCurrentShopId();
+
+        try {
+            $this->themeParentCompatibilityChecker->assertCompatible($theme->getId(), $shopId);
+        } catch (
+            ParentThemeNotInstalledException
+            | ParentVersionUnspecifiedException
+            | ParentVersionsNotDeclaredException
+            | ParentVersionMismatchException $exception
+        ) {
+            Registry::getUtilsView()->addErrorToDisplay($this->getParentCompatibilityErrorTranslationKey($exception));
 
             return;
         }
 
         try {
-            $this->themeActivationService->activate($theme->getId(), $this->context->getCurrentShopId());
+            $this->themeActivationService->activate($theme->getId(), $shopId);
             $this->resetContentCache();
         } catch (ThemeConfigurationNotFoundException $exception) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
+    }
+
+    private function getParentCompatibilityErrorTranslationKey(
+        ParentThemeNotInstalledException|ParentVersionUnspecifiedException|ParentVersionsNotDeclaredException|ParentVersionMismatchException $exception
+    ): string {
+        return match (true) {
+            $exception instanceof ParentThemeNotInstalledException => 'EXCEPTION_PARENT_THEME_NOT_FOUND',
+            $exception instanceof ParentVersionUnspecifiedException => 'EXCEPTION_PARENT_VERSION_UNSPECIFIED',
+            $exception instanceof ParentVersionsNotDeclaredException => 'EXCEPTION_UNSPECIFIED_PARENT_VERSIONS',
+            $exception instanceof ParentVersionMismatchException => 'EXCEPTION_PARENT_VERSION_MISMATCH',
+        };
     }
 }

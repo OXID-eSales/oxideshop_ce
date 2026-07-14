@@ -15,7 +15,9 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\CustomThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
@@ -255,6 +257,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
         try {
             return ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
         } catch (ActiveThemeNotFoundException) {
+            return null;
+        }
+    }
+
+    private function getCustomThemeId(int $shopId): ?string
+    {
+        try {
+            return ContainerFacade::get(CustomThemeProviderInterface::class)->getCustomThemeId($shopId);
+        } catch (CustomThemeNotFoundException) {
             return null;
         }
     }
@@ -974,8 +985,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
 
-        // Check for custom template
-        $customTheme = $this->getConfigParam('sCustomTheme');
+        $customTheme = $this->getCustomThemeId((int) $shop);
         if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
             $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute, $ignoreCust);
         }

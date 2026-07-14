@@ -99,56 +99,6 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return loaded parent
-     *
-     * @return \OxidEsales\Eshop\Core\Theme
-     */
-    public function getParent()
-    {
-        $sParent = $this->getInfo('parentTheme');
-        if (!$sParent) {
-            return null;
-        }
-        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-        if ($oTheme->load($sParent)) {
-            return $oTheme;
-        }
-
-        return null;
-    }
-
-    /**
-     * run pre-activation checks and return EXCEPTION_* translation string if error
-     * found or false on success
-     *
-     * @return string
-     */
-    public function checkForActivationErrors()
-    {
-        if (!$this->getId()) {
-            return 'EXCEPTION_THEME_NOT_LOADED';
-        }
-        $oParent = $this->getParent();
-        if ($oParent) {
-            $sParentVersion = $oParent->getInfo('version');
-            if (!$sParentVersion) {
-                return 'EXCEPTION_PARENT_VERSION_UNSPECIFIED';
-            }
-            $aMyParentVersions = $this->getInfo('parentVersions');
-            if (!$aMyParentVersions || !is_array($aMyParentVersions)) {
-                return 'EXCEPTION_UNSPECIFIED_PARENT_VERSIONS';
-            }
-            if (!in_array($sParentVersion, $aMyParentVersions)) {
-                return 'EXCEPTION_PARENT_VERSION_MISMATCH';
-            }
-        } elseif ($this->getInfo('parentTheme')) {
-            return 'EXCEPTION_PARENT_THEME_NOT_FOUND';
-        }
-
-        return false;
-    }
-
-    /**
      * Get theme ID
      *
      * @return string

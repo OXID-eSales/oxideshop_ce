@@ -10,14 +10,16 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
-class ThemeStateService implements ThemeStateServiceInterface
+readonly class ThemeStateService implements ThemeStateServiceInterface
 {
-    private array $activeThemeIds = [];
-
     public function __construct(
-        private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ThemeInheritanceResolverInterface $themeInheritanceResolver,
+        private ActiveThemeCacheInterface $activeThemeCache,
     ) {
     }
 
@@ -29,7 +31,28 @@ class ThemeStateService implements ThemeStateServiceInterface
 
     public function getActiveThemeId(int $shopId): string
     {
-        return $this->activeThemeIds[$shopId] ??= $this->findActiveThemeId($shopId);
+        if ($this->activeThemeCache->hasThemeId($shopId)) {
+            return $this->activeThemeCache->getThemeId($shopId);
+        }
+
+        $themeId = $this->findActiveThemeId($shopId);
+        $this->activeThemeCache->putThemeId($shopId, $themeId);
+
+        return $themeId;
+    }
+
+    public function getActiveTheme(int $shopId): ActiveTheme
+    {
+        if ($this->activeThemeCache->hasTheme($shopId)) {
+            return $this->activeThemeCache->getTheme($shopId);
+        }
+
+        $activeTheme = new ActiveTheme(
+            $this->themeInheritanceResolver->resolve($this->getActiveThemeId($shopId), $shopId)
+        );
+        $this->activeThemeCache->putTheme($shopId, $activeTheme);
+
+        return $activeTheme;
     }
 
     private function findActiveThemeId(int $shopId): string

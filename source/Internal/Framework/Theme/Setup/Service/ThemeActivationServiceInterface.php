@@ -8,9 +8,19 @@
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
 
 interface ThemeActivationServiceInterface
 {
-    /** @throws ThemeConfigurationNotFoundException */
+    /**
+     * @throws ThemeConfigurationNotFoundException
+     * @throws ThemeInheritanceException
+     */
     public function activate(string $themeId, int $shopId): void;
+
+    /**
+     * @throws ThemeConfigurationNotFoundException
+     * @throws ThemeInheritanceException
+     */
+    public function validateActivatable(string $themeId, int $shopId): void;
 }

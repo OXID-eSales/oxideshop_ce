@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProvider
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProvider
+    public: true

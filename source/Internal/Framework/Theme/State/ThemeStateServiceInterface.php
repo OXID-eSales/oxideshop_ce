@@ -15,4 +15,7 @@ interface ThemeStateServiceInterface
 
     /** @throws ActiveThemeNotFoundException */
     public function getActiveThemeId(int $shopId): string;
+
+    /** @throws ActiveThemeNotFoundException */
+    public function getActiveTheme(int $shopId): ActiveTheme;
 }

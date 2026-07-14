@@ -1,0 +1,110 @@
+<?php
+
+/**
+ * Copyright © OXID eSales AG. All rights reserved.
+ * See LICENSE file for license details.
+ */
+
+declare(strict_types=1);
+
+namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
+
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsView;
+use OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeMain;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
+
+final class ThemeMainTest extends IntegrationTestCase
+{
+    private const THEME_ID = 'testTheme';
+    private const SELF_REFERENCING_THEME_ID = 'selfReferencingTheme';
+    private const SHOP_ID = 1;
+
+    public function testSetThemeActivatesTheme(): void
+    {
+        $this->installTheme(self::THEME_ID);
+
+        $controller = $this->get(ThemeMain::class);
+        $controller->setEditObjectId(self::THEME_ID);
+        $controller->setTheme();
+
+        $this->assertTrue($this->isThemeActive(self::THEME_ID));
+    }
+
+    public function testSetThemeDisplaysErrorForUnknownTheme(): void
+    {
+        $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');
+
+        $controller = $this->get(ThemeMain::class);
+        $controller->setEditObjectId('unknownTheme');
+        $controller->setTheme();
+    }
+
+    public function testSetThemeDisplaysCompatibilityErrorAndDoesNotActivateThemeDeclaringItselfAsItsOwnParent(): void
+    {
+        $this->installTheme(self::SELF_REFERENCING_THEME_ID);
+        $this->expectDisplayError('EXCEPTION_THEME_INHERITANCE_INVALID');
+
+        $controller = $this->get(ThemeMain::class);
+        $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);
+        $controller->setTheme();
+
+        $this->assertFalse($this->isThemeActive(self::SELF_REFERENCING_THEME_ID));
+    }
+
+    public function testRenderShowsActivationErrorForThemeDeclaringItselfAsItsOwnParent(): void
+    {
+        $this->installTheme(self::SELF_REFERENCING_THEME_ID);
+
+        $controller = $this->get(ThemeMain::class);
+        $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);
+        $controller->render();
+
+        $this->assertSame('EXCEPTION_THEME_INHERITANCE_INVALID', $controller->getViewDataElement('themeActivationError'));
+        $this->assertNull($controller->getViewDataElement('parentThemeId'));
+    }
+
+    public function testSetThemeDisplaysNotLoadedErrorWhenConfigurationFileIsBroken(): void
+    {
+        $this->installTheme(self::THEME_ID);
+        $this->corruptThemeConfiguration(self::THEME_ID);
+        $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');
+
+        $controller = $this->get(ThemeMain::class);
+        $controller->setEditObjectId(self::THEME_ID);
+        $controller->setTheme();
+    }
+
+    private function installTheme(string $themeId): void
+    {
+        $this->get(ThemeConfigurationInstallerInterface::class)->install(__DIR__ . "/Fixtures/$themeId");
+    }
+
+    private function corruptThemeConfiguration(string $themeId): void
+    {
+        $path = Path::join(
+            $this->get(BasicContextInterface::class)->getShopConfigurationDirectory(self::SHOP_ID),
+            'themes',
+            $themeId . '.yaml'
+        );
+
+        file_put_contents($path, "themeSettings: [unclosed\n");
+    }
+
+    private function isThemeActive(string $themeId): bool
+    {
+        return $this->get(ThemeStateServiceInterface::class)->isActive($themeId, self::SHOP_ID);
+    }
+
+    private function expectDisplayError(string $translationKey): void
+    {
+        $utilsView = $this->createMock(UtilsView::class);
+        $utilsView->expects($this->once())->method('addErrorToDisplay')->with($translationKey);
+
+        Registry::set(UtilsView::class, $utilsView);
+    }
+}

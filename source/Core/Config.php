@@ -921,11 +921,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param int    $shop       Shop id
      * @param string $theme      Theme name
      * @param bool   $absolute   mode - absolute/relative path
-     * @param bool   $ignoreCust Ignore custom theme
+     * @param bool   $ignoreParentTheme Skip falling back to the parent theme
      *
      * @return string
      */
-    public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreCust = false)
+    public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreParentTheme = false)
     {
         if (is_null($shop)) {
             $shop = $this->getShopId();
@@ -962,19 +962,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //Load from
         $path = "{$theme}/{$shop}/{$langAbbr}/{$dir}/{$file}";
-        $cacheKey = $path . "_{$ignoreCust}{$absolute}";
+        $cacheKey = $path . '_' . (int) $ignoreParentTheme . '_' . (int) $absolute;
 
         if (($return = Registry::getUtils()->fromStaticCache($cacheKey)) !== null) {
             return $return;
         }
 
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
-
-        // Check for custom template
-        $customTheme = $this->getConfigParam('sCustomTheme');
-        if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
-            $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute, $ignoreCust);
-        }
 
         //test lang level ..
         if (!$return && !$admin && is_readable($absBase . $path)) {
@@ -983,7 +977,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //test shop level ..
         if (!$return && !$admin) {
-            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust);
+            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
         }
 
         //test theme language level ..
@@ -1010,11 +1004,36 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $return = $base . $path;
         }
 
+        if (!$return) {
+            $return = $this->getDirFromParentTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
+        }
+
         // TODO: implement logic to log missing paths
 
         Registry::getUtils()->toStaticCache($cacheKey, $return);
 
         return $return;
+    }
+
+    private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, ?string $theme, $absolute, $ignoreParentTheme)
+    {
+        if ($admin || $ignoreParentTheme || !$theme) {
+            return false;
+        }
+
+        try {
+            $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme((int) $shop);
+        } catch (ActiveThemeNotFoundException) {
+            return false;
+        }
+
+        $inheritance = $activeTheme->getInheritance();
+
+        if ($theme !== $activeTheme->getId() || !$inheritance->hasParentTheme()) {
+            return false;
+        }
+
+        return $this->getDir($file, $dir, $admin, $lang, $shop, $inheritance->getParentThemeId(), $absolute, true);
     }
 
     /**
@@ -1027,11 +1046,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param int    $shop
      * @param string $theme
      * @param bool   $absolute
-     * @param bool   $ignoreCust
+     * @param bool   $ignoreParentTheme
      *
      * @return bool|string
      */
-    protected function getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust)
+    protected function getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme)
     {
         $return = false;
 

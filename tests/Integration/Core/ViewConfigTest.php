@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
-use OxidEsales\EshopCommunity\Core\PictureHandler;
 use OxidEsales\EshopCommunity\Core\ViewConfig;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
@@ -21,6 +20,9 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 final class ViewConfigTest extends IntegrationTestCase
 {
     use ContainerTrait;
+
+    private const THEME_ID = 'apex';
+    private const THEME_SOURCE = 'source/Application/views/apex';
 
     private ViewConfig $viewConfig;
 
@@ -53,8 +55,8 @@ final class ViewConfigTest extends IntegrationTestCase
     {
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
-            ->setId('apex')
-            ->setSource('testSourcePath')
+            ->setId(self::THEME_ID)
+            ->setSource(self::THEME_SOURCE)
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('logoFile')->setType('str')->setValue('logo.png'));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
@@ -66,8 +68,8 @@ final class ViewConfigTest extends IntegrationTestCase
     {
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
-            ->setId('apex')
-            ->setSource('testSourcePath')
+            ->setId(self::THEME_ID)
+            ->setSource(self::THEME_SOURCE)
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('showWishlist')->setType('bool')->setValue(true));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
@@ -79,8 +81,8 @@ final class ViewConfigTest extends IntegrationTestCase
     {
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
-            ->setId('apex')
-            ->setSource('testSourcePath')
+            ->setId(self::THEME_ID)
+            ->setSource(self::THEME_SOURCE)
             ->setActivated(true);
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 

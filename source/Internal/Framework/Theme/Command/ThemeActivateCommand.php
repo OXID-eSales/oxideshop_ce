@@ -10,7 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -44,16 +46,28 @@ final class ThemeActivateCommand extends Command
         $themeId = $input->getArgument('theme-id');
         $shopId = $this->context->getCurrentShopId();
 
-        if ($this->themeStateService->isActive($themeId, $shopId)) {
-            $style->info(sprintf('Theme - "%s" is already active.', $themeId));
-            return Command::SUCCESS;
-        }
-
         try {
-            $this->themeActivationService->activate($themeId, $shopId);
+            $alreadyActive = $this->themeStateService->isActive($themeId, $shopId);
+
+            if ($alreadyActive) {
+                $this->themeActivationService->validateActivatable($themeId, $shopId);
+            } else {
+                $this->themeActivationService->activate($themeId, $shopId);
+            }
         } catch (ThemeConfigurationNotFoundException) {
             $style->error(sprintf('Theme - "%s" not found.', $themeId));
             return Command::FAILURE;
+        } catch (InvalidThemeConfigurationException $exception) {
+            $style->error(sprintf('Theme - "%s" has an invalid configuration: %s', $themeId, $exception->getMessage()));
+            return Command::FAILURE;
+        } catch (ThemeInheritanceException $exception) {
+            $style->error(sprintf('Theme - "%s" is not compatible with its parent theme: %s', $themeId, $exception->getMessage()));
+            return Command::FAILURE;
+        }
+
+        if ($alreadyActive) {
+            $style->info(sprintf('Theme - "%s" is already active.', $themeId));
+            return Command::SUCCESS;
         }
 
         $this->shopCacheCleaner->clearAll();

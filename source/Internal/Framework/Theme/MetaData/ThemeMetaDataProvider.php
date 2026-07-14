@@ -32,22 +32,31 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
             );
         }
 
-        $data = $this->fileStorageFactory->create($metadataFilePath)->get();
+        try {
+            $data = $this->fileStorageFactory->create($metadataFilePath)->get();
 
-        if (empty($data['id'])) {
+            if (empty($data['id'])) {
+                throw new InvalidThemeMetaDataException(
+                    "metadata.yaml is missing required 'id' field at $metadataFilePath"
+                );
+            }
+
+            return (new ThemeMetaData())
+                ->setId($data['id'])
+                ->setVersion($data['version'] ?? '')
+                ->setTitle($data['title'] ?? '')
+                ->setDescription($data['description'] ?? '')
+                ->setThumbnail($data['thumbnail'] ?? '')
+                ->setAuthor($data['author'] ?? '')
+                ->setParentTheme($data['parentTheme'] ?? '')
+                ->setParentVersions($data['parentVersions'] ?? []);
+        } catch (InvalidThemeMetaDataException $exception) {
+            throw $exception;
+        } catch (\Throwable $exception) {
             throw new InvalidThemeMetaDataException(
-                "metadata.yaml is missing required 'id' field at $metadataFilePath"
+                "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",
+                previous: $exception
             );
         }
-
-        return (new ThemeMetaData())
-            ->setId($data['id'])
-            ->setVersion($data['version'] ?? '')
-            ->setTitle($data['title'] ?? '')
-            ->setDescription($data['description'] ?? '')
-            ->setThumbnail($data['thumbnail'] ?? '')
-            ->setAuthor($data['author'] ?? '')
-            ->setParentTheme($data['parentTheme'] ?? '')
-            ->setParentVersions($data['parentVersions'] ?? []);
     }
 }

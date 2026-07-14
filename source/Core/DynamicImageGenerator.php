@@ -460,10 +460,27 @@ namespace OxidEsales\EshopCommunity\Core {
         private function isSizeConfiguredForShop(int $shopId, string $checkSize): bool
         {
             try {
-                $themeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+                $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($shopId);
+            } catch (ActiveThemeNotFoundException) {
+                return false;
+            }
+
+            if ($this->isSizeConfiguredForTheme($activeTheme->getId(), $shopId, $checkSize)) {
+                return true;
+            }
+
+            $inheritance = $activeTheme->getInheritance();
+
+            return $inheritance->hasParentTheme()
+                && $this->isSizeConfiguredForTheme($inheritance->getParentThemeId(), $shopId, $checkSize);
+        }
+
+        private function isSizeConfiguredForTheme(string $themeId, int $shopId, string $checkSize): bool
+        {
+            try {
                 $configuration = ContainerFacade::get(ThemeConfigurationResolverInterface::class)
                     ->resolve($themeId, $shopId);
-            } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
+            } catch (ThemeConfigurationNotFoundException) {
                 return false;
             }
 

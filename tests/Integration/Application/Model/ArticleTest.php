@@ -62,9 +62,13 @@ final class ArticleTest extends IntegrationTestCase
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $dao = $this->get(ShopConfigurationSettingDaoInterface::class);
 
+        $themeSource = Path::makeRelative(
+            __DIR__ . '/Fixtures/testTheme',
+            $this->get(ContextInterface::class)->getShopRootPath()
+        );
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource($themeSource)
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('iconSize')->setType('str')->setValue('87*87'))
             ->addThemeSetting((new Setting())->setName('thumbnailSize')->setType('str')->setValue('200*200'))

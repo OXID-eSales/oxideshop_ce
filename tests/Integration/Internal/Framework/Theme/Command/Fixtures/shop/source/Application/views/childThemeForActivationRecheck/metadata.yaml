@@ -1,0 +1,5 @@
+id: childThemeForActivationRecheck
+title: 'Child Theme For Activation Recheck'
+parentTheme: parentThemeForActivationRecheck
+parentVersions:
+  - '1.0.0'

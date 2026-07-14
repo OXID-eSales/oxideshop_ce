@@ -211,11 +211,19 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     {
         $themeId = 'testTheme';
         $this->get(ThemeConfigurationDaoInterface::class)->save(
-            (new ThemeConfiguration())->setId($themeId)->setSource('testSourcePath')->setActivated(true),
+            (new ThemeConfiguration())->setId($themeId)->setSource($this->getTestThemeSource())->setActivated(true),
             $shopId
         );
 
         return $themeId;
+    }
+
+    private function getTestThemeSource(): string
+    {
+        return Path::makeRelative(
+            __DIR__ . '/Fixtures/testTheme',
+            $this->get(ContextInterface::class)->getShopRootPath()
+        );
     }
 
     private function detailRole(): ProductMediaRole
@@ -250,7 +258,7 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     private function configureImageSettings(): void
     {
         $configuration = new ThemeConfiguration();
-        $configuration->setId($this->themeId)->setSource('testSourcePath')->setActivated(true);
+        $configuration->setId($this->themeId)->setSource($this->getTestThemeSource())->setActivated(true);
 
         foreach ([
             'iconSize' => '87*87',

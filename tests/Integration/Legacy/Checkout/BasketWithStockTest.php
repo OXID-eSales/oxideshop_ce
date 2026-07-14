@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class BasketWithStockTest extends IntegrationTestCase
 {
@@ -32,9 +33,13 @@ final class BasketWithStockTest extends IntegrationTestCase
     {
         parent::setUp();
 
+        $themeSource = Path::makeRelative(
+            __DIR__ . '/Fixtures/testTheme',
+            $this->get(ContextInterface::class)->getShopRootPath()
+        );
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource($themeSource)
             ->setActivated(true);
         $configuration->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();

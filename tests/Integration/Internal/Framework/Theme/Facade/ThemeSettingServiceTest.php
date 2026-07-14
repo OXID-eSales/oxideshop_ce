@@ -137,10 +137,13 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
 
     private function saveThemeWithSetting(string $name, string $type, mixed $value): void
     {
+        $context = $this->get(BasicContextInterface::class);
+        $themePath = __DIR__ . '/Fixtures/' . self::THEME_ID;
+
         $setting = (new Setting())->setName($name)->setType($type)->setValue($value);
         $configuration = (new ThemeConfiguration())
             ->setId(self::THEME_ID)
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative($themePath, $context->getShopRootPath()))
             ->setActivated(true)
             ->addThemeSetting($setting);
 

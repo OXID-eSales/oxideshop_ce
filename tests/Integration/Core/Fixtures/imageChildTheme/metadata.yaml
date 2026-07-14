@@ -1,0 +1,5 @@
+id: imageChildTheme
+title: 'Image Child Theme'
+parentTheme: imageParentTheme
+parentVersions:
+  - '1.0.0'

@@ -1,0 +1,3 @@
+id: selfReferencingTheme
+title: 'Self Referencing Theme'
+parentTheme: selfReferencingTheme

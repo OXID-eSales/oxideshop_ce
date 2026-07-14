@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo\ThemeParentInfoProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo\ThemeParentInfoProvider

@@ -10,7 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCache;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateService;
 use PHPUnit\Framework\TestCase;
@@ -82,8 +85,70 @@ final class ThemeStateServiceTest extends TestCase
         $this->assertSame('active', $service->getActiveThemeId(self::SHOP_ID));
     }
 
-    private function createService(ThemeConfigurationDaoInterface $dao): ThemeStateService
+    public function testGetActiveThemeIsChildThemeWhenActiveThemeDeclaresAParent(): void
     {
-        return new ThemeStateService($dao);
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('getAll')->willReturn([
+            'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
+        ]);
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willReturn(new ThemeInheritance('active', 'parent'));
+
+        $activeTheme = $this->createService($dao, $themeInheritanceResolver)->getActiveTheme(self::SHOP_ID);
+
+        $this->assertSame('active', $activeTheme->getId());
+        $this->assertTrue($activeTheme->getInheritance()->hasParentTheme());
+    }
+
+    public function testGetActiveThemeIsNotChildThemeWhenActiveThemeHasNoParent(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('getAll')->willReturn([
+            'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
+        ]);
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willReturn(new ThemeInheritance('active', null));
+
+        $this->assertFalse(
+            $this->createService($dao, $themeInheritanceResolver)->getActiveTheme(self::SHOP_ID)->getInheritance()->hasParentTheme()
+        );
+    }
+
+    public function testGetActiveThemeThrowsExceptionWhenNoThemeIsActivated(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('getAll')->willReturn([
+            'theme1' => (new ThemeConfiguration())->setId('theme1'),
+        ]);
+
+        $this->expectException(ActiveThemeNotFoundException::class);
+
+        $this->createService($dao)->getActiveTheme(self::SHOP_ID);
+    }
+
+    public function testGetActiveThemeResolvesThemeOnlyOnce(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('getAll')->willReturn([
+            'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
+        ]);
+        $themeInheritanceResolver = $this->createMock(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->expects($this->once())->method('resolve')->willReturn(new ThemeInheritance('active', 'parent'));
+        $service = $this->createService($dao, $themeInheritanceResolver);
+
+        $service->getActiveTheme(self::SHOP_ID);
+
+        $this->assertTrue($service->getActiveTheme(self::SHOP_ID)->getInheritance()->hasParentTheme());
+    }
+
+    private function createService(
+        ThemeConfigurationDaoInterface $dao,
+        ?ThemeInheritanceResolverInterface $themeInheritanceResolver = null,
+    ): ThemeStateService {
+        return new ThemeStateService(
+            $dao,
+            $themeInheritanceResolver ?? $this->createStub(ThemeInheritanceResolverInterface::class),
+            new ActiveThemeCache()
+        );
     }
 }

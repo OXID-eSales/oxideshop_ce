@@ -9,15 +9,3 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProvider
     public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeParentProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeParentProvider
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeMetaDataByIdProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeMetaDataByIdProvider
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeParentCompatibilityCheckerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeParentCompatibilityChecker
-    public: true

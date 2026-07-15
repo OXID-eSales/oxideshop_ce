@@ -1,0 +1,3 @@
+id: childTheme
+title: 'Child Theme'
+parentTheme: parentTheme

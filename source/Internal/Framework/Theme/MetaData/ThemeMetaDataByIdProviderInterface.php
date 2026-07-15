@@ -5,9 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
-
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
 interface ThemeMetaDataByIdProviderInterface
 {

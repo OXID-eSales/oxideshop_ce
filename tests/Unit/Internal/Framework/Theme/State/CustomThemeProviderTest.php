@@ -9,99 +9,91 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\State;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\CustomThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeParentProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CustomThemeProviderTest extends TestCase
 {
     private const SHOP_ID = 1;
 
-    public function testHasCustomThemeReturnsTrueWhenAThemeDeclaresAParent(): void
+    public function testHasCustomThemeReturnsTrueWhenActiveThemeDeclaresAParent(): void
     {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('getAll')->willReturn([
-            'theme' => (new ThemeConfiguration())->setId('theme'),
-            'child' => (new ThemeConfiguration())->setId('child'),
-        ]);
-
-        $service = $this->createService($dao, ['child' => true]);
+        $service = $this->createService(activeThemeId: 'child', activeThemeHasParent: true);
 
         $this->assertTrue($service->hasCustomTheme(self::SHOP_ID));
     }
 
-    public function testHasCustomThemeReturnsFalseWhenNoThemeDeclaresAParent(): void
+    public function testHasCustomThemeReturnsFalseWhenActiveThemeDeclaresNoParent(): void
     {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('getAll')->willReturn([
-            'theme' => (new ThemeConfiguration())->setId('theme'),
-        ]);
-
-        $service = $this->createService($dao, []);
+        $service = $this->createService(activeThemeId: 'theme', activeThemeHasParent: false);
 
         $this->assertFalse($service->hasCustomTheme(self::SHOP_ID));
     }
 
-    public function testGetCustomThemeIdReturnsIdOfThemeDeclaringAParent(): void
+    public function testHasCustomThemeReturnsFalseWhenNoThemeIsActive(): void
     {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('getAll')->willReturn([
-            'theme' => (new ThemeConfiguration())->setId('theme'),
-            'child' => (new ThemeConfiguration())->setId('child'),
-        ]);
+        $service = $this->createService(activeThemeId: null, activeThemeHasParent: false);
 
-        $service = $this->createService($dao, ['child' => true]);
+        $this->assertFalse($service->hasCustomTheme(self::SHOP_ID));
+    }
+
+    public function testHasCustomThemeReturnsFalseWhenAnInactiveThemeDeclaresAParent(): void
+    {
+        $service = $this->createService(activeThemeId: 'theme', activeThemeHasParent: false, inactiveThemeWithParent: 'child');
+
+        $this->assertFalse($service->hasCustomTheme(self::SHOP_ID));
+    }
+
+    public function testGetCustomThemeIdReturnsActiveThemeIdWhenItDeclaresAParent(): void
+    {
+        $service = $this->createService(activeThemeId: 'child', activeThemeHasParent: true);
 
         $this->assertSame('child', $service->getCustomThemeId(self::SHOP_ID));
     }
 
-    public function testGetCustomThemeIdThrowsExceptionWhenNoThemeDeclaresAParent(): void
+    public function testGetCustomThemeIdThrowsExceptionWhenActiveThemeDeclaresNoParent(): void
     {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('getAll')->willReturn([
-            'theme' => (new ThemeConfiguration())->setId('theme'),
-        ]);
-
-        $service = $this->createService($dao, []);
+        $service = $this->createService(activeThemeId: 'theme', activeThemeHasParent: false);
 
         $this->expectException(CustomThemeNotFoundException::class);
 
         $service->getCustomThemeId(self::SHOP_ID);
     }
 
-    public function testThemeWithUnreadableMetadataIsTreatedAsHavingNoParent(): void
+    public function testGetCustomThemeIdThrowsExceptionWhenNoThemeIsActive(): void
     {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('getAll')->willReturn([
-            'broken' => (new ThemeConfiguration())->setId('broken'),
-            'child' => (new ThemeConfiguration())->setId('child'),
-        ]);
+        $service = $this->createService(activeThemeId: null, activeThemeHasParent: false);
 
-        $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
-        $themeParentProvider->method('hasParentTheme')->willReturnCallback(function (string $themeId): bool {
-            if ($themeId === 'broken') {
-                throw new \InvalidArgumentException('Theme metadata file not readable');
-            }
+        $this->expectException(CustomThemeNotFoundException::class);
 
-            return $themeId === 'child';
-        });
-
-        $service = new CustomThemeProvider($dao, $themeParentProvider);
-
-        $this->assertSame('child', $service->getCustomThemeId(self::SHOP_ID));
+        $service->getCustomThemeId(self::SHOP_ID);
     }
 
-    /** @param array<string, bool> $parentByThemeId */
-    private function createService(ThemeConfigurationDaoInterface $dao, array $parentByThemeId): CustomThemeProvider
-    {
+    private function createService(
+        ?string $activeThemeId,
+        bool $activeThemeHasParent,
+        ?string $inactiveThemeWithParent = null,
+    ): CustomThemeProvider {
+        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
+        if ($activeThemeId === null) {
+            $themeStateService->method('getActiveThemeId')->willThrowException(new ActiveThemeNotFoundException());
+        } else {
+            $themeStateService->method('getActiveThemeId')->willReturn($activeThemeId);
+        }
+
         $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
         $themeParentProvider->method('hasParentTheme')->willReturnCallback(
-            fn(string $themeId): bool => $parentByThemeId[$themeId] ?? false
+            fn(string $themeId): bool => match ($themeId) {
+                $activeThemeId => $activeThemeHasParent,
+                $inactiveThemeWithParent => true,
+                default => false,
+            }
         );
 
-        return new CustomThemeProvider($dao, $themeParentProvider);
+        return new CustomThemeProvider($themeStateService, $themeParentProvider);
     }
 }

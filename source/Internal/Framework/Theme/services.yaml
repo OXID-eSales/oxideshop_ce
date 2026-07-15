@@ -1,4 +1,5 @@
 imports:
+  - { resource: MetaData/services.yaml }
   - { resource: Setup/services.yaml }
   - { resource: State/services.yaml }
   - { resource: Cache/services.yaml }

@@ -5,3 +5,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityChecker
+    public: true

@@ -5,7 +5,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception;
 
 class ParentThemeNotInstalledException extends \Exception
 {

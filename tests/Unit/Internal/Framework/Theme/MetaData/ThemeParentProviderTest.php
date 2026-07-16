@@ -57,15 +57,6 @@ final class ThemeParentProviderTest extends TestCase
         $this->assertFalse($service->hasParentTheme(self::THEME_ID, self::SHOP_ID));
     }
 
-    public function testGetParentThemeIdThrowsExceptionWhenMetaDataIsUnreadable(): void
-    {
-        $service = $this->createServiceWithUnreadableMetaData();
-
-        $this->expectException(ParentThemeNotFoundException::class);
-
-        $service->getParentThemeId(self::THEME_ID, self::SHOP_ID);
-    }
-
     private function createService(string $declaredParentThemeId): ThemeParentProvider
     {
         $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);

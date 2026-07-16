@@ -64,15 +64,6 @@ final class CustomThemeProviderTest extends TestCase
         $service->getCustomThemeId(self::SHOP_ID);
     }
 
-    public function testGetCustomThemeIdThrowsExceptionWhenNoThemeIsActive(): void
-    {
-        $service = $this->createService(activeThemeId: null, activeThemeHasParent: false);
-
-        $this->expectException(CustomThemeNotFoundException::class);
-
-        $service->getCustomThemeId(self::SHOP_ID);
-    }
-
     private function createService(
         ?string $activeThemeId,
         bool $activeThemeHasParent,

@@ -11,6 +11,8 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\CustomThemeNotFoundException;
@@ -665,13 +667,13 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $aLangFiles = array_merge($aLangFiles, $this->getAbbreviationDirectoryLanguageFiles($sGenericPath));
         }
 
+        $aLangFiles = array_merge($aLangFiles, $this->getParentThemeLanguageFiles($sLang));
+
         //get theme lang files
         if ($sTheme) {
             $sThemePath = $sAppDir . 'views/' . $sTheme . '/';
             $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($sThemePath, $sLang));
         }
-
-        $aLangFiles = array_merge($aLangFiles, $this->getCustomThemeLanguageFiles($iLang));
 
         // modules language files
         $aLangFiles = $this->appendModuleLangFilesForFrontend($aLangFiles, $sLang);
@@ -715,27 +717,16 @@ class Language extends \OxidEsales\Eshop\Core\Base
         return $files;
     }
 
-    /**
-     * Returns custom theme language files.
-     *
-     * @param int $language active language
-     *
-     * @return array
-     */
-    protected function getCustomThemeLanguageFiles($language)
+    protected function getParentThemeLanguageFiles(string $languageAbbreviation): array
     {
-        $oConfig = Registry::getConfig();
-        $sCustomTheme = $this->getCustomThemeId();
-        $sAppDir = $oConfig->getAppDir();
-        $sLang = Registry::getLang()->getLanguageAbbr($language);
-        $aLangFiles = [];
-
-        if ($sCustomTheme) {
-            $customThemePath = $sAppDir . 'views/' . $sCustomTheme . '/';
-            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
+        $parentThemeId = $this->getParentThemeId();
+        if (!$parentThemeId) {
+            return [];
         }
 
-        return $aLangFiles;
+        $parentThemePath = Registry::getConfig()->getAppDir() . 'views/' . $parentThemeId . '/';
+
+        return $this->getThemeLanguageFiles($parentThemePath, $languageAbbreviation);
     }
 
     /**
@@ -1037,6 +1028,21 @@ class Language extends \OxidEsales\Eshop\Core\Base
             return ContainerFacade::get(CustomThemeProviderInterface::class)
                 ->getCustomThemeId((int) Registry::getConfig()->getShopId());
         } catch (CustomThemeNotFoundException) {
+            return null;
+        }
+    }
+
+    private function getParentThemeId(): ?string
+    {
+        $activeThemeId = $this->getActiveThemeId();
+        if (!$activeThemeId) {
+            return null;
+        }
+
+        try {
+            return ContainerFacade::get(ThemeParentProviderInterface::class)
+                ->getParentThemeId($activeThemeId, (int) Registry::getConfig()->getShopId());
+        } catch (ParentThemeNotFoundException) {
             return null;
         }
     }

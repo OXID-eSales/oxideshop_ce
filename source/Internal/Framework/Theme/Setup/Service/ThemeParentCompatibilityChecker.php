@@ -34,20 +34,43 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
 
         $parentThemeId = $this->themeParentProvider->getParentThemeId($themeId, $shopId);
 
+        $this->assertParentThemeIsInstalled($parentThemeId, $shopId);
+
+        $parentVersion = $this->assertParentVersionIsDeclared($parentThemeId, $shopId);
+        $declaredParentVersions = $this->assertChildDeclaresCompatibleVersions($themeId, $shopId);
+
+        $this->assertVersionIsCompatible($parentVersion, $declaredParentVersions);
+    }
+
+    private function assertParentThemeIsInstalled(string $parentThemeId, int $shopId): void
+    {
         if (!$this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
             throw new ParentThemeNotInstalledException();
         }
+    }
 
+    private function assertParentVersionIsDeclared(string $parentThemeId, int $shopId): string
+    {
         $parentVersion = $this->themeMetaDataByIdProvider->get($parentThemeId, $shopId)->getVersion();
         if ($parentVersion === '') {
             throw new ParentVersionUnspecifiedException();
         }
 
+        return $parentVersion;
+    }
+
+    private function assertChildDeclaresCompatibleVersions(string $themeId, int $shopId): array
+    {
         $declaredParentVersions = $this->themeMetaDataByIdProvider->get($themeId, $shopId)->getParentVersions();
         if (empty($declaredParentVersions)) {
             throw new ParentVersionsNotDeclaredException();
         }
 
+        return $declaredParentVersions;
+    }
+
+    private function assertVersionIsCompatible(string $parentVersion, array $declaredParentVersions): void
+    {
         if (!in_array($parentVersion, $declaredParentVersions, true)) {
             throw new ParentVersionMismatchException();
         }

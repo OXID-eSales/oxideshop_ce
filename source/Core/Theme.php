@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -42,25 +44,31 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      */
     public function load($sOXID)
     {
-        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir() . $sOXID . "/theme.php";
-        if (file_exists($sFilePath) && is_readable($sFilePath)) {
-            $aTheme = [];
-            include $sFilePath;
-            $this->_aTheme = $aTheme;
-            $this->_aTheme['id'] = $sOXID;
-            try {
-                $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
-                    ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
-                );
-                $this->_aTheme['active'] = ($activeThemeId === $sOXID);
-            } catch (ActiveThemeNotFoundException) {
-                $this->_aTheme['active'] = false;
-            }
+        $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
 
-            return true;
+        try {
+            $themeMetaData = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class)->get($sOXID, $shopId);
+        } catch (ThemeConfigurationNotFoundException | \InvalidArgumentException) {
+            return false;
         }
 
-        return false;
+        $this->_aTheme = [
+            'id' => $themeMetaData->getId(),
+            'title' => $themeMetaData->getTitle(),
+            'description' => $themeMetaData->getDescription(),
+            'thumbnail' => $themeMetaData->getThumbnail(),
+            'version' => $themeMetaData->getVersion(),
+            'author' => $themeMetaData->getAuthor(),
+        ];
+
+        try {
+            $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+            $this->_aTheme['active'] = ($activeThemeId === $sOXID);
+        } catch (ActiveThemeNotFoundException) {
+            $this->_aTheme['active'] = false;
+        }
+
+        return true;
     }
 
     /**

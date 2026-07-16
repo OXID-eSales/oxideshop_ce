@@ -14,11 +14,12 @@ use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use Throwable;
+
 use function oxTriggerOfflinePageDisplay;
 
 class ExceptionHandler
 {
-    public function __construct(private readonly bool $isDebugMode = false)
+    public function __construct(private readonly bool $debugMode = false)
     {
     }
 
@@ -27,6 +28,18 @@ class ExceptionHandler
      */
     public function handleUncaughtException(Throwable $exception): void
     {
+        $this->logException($exception);
+
+        if ($this->debugMode || PHP_SAPI === 'cli') {
+            throw $exception;
+        }
+
+        oxTriggerOfflinePageDisplay();
+        exit(1);
+    }
+
+    private function logException(Throwable $exception): void
+    {
         try {
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
         } catch (Throwable) {
@@ -34,10 +47,5 @@ class ExceptionHandler
                 ->getLogger()
                 ->error($exception);
         }
-        if ($this->isDebugMode || PHP_SAPI === 'cli') {
-            throw $exception;
-        }
-        oxTriggerOfflinePageDisplay();
-        exit(1);
     }
 }

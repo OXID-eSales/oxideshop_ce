@@ -21,6 +21,7 @@
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
+- Uncaught errors and fatal errors are handled by `symfony/error-handler`
 - HTTP header and request handling on the shop kernel
   - `index.php` resolves Symfony `#[Route]` attribute controllers (compiled from public services); requests without a matching route fall back to the legacy shop controller resolution
   - The response status, headers and cookies are owned by the Symfony `Response`; cookies set during the request (`UtilsServer::setOxCookie()`) are applied to the outgoing response through a `kernel.response` listener
@@ -39,6 +40,7 @@
 - `Header` - set headers on the `Response` or use a `kernel.response` listener
 - `DebugInfo` and the debug-mode monitor block appended to storefront pages – use a profiler
 - `BeforeHeadersSendEvent` - subscribe to the `kernel.response` event instead
+- Inclusion of `modules/functions.php`
 - The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support

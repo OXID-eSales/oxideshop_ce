@@ -42,7 +42,7 @@ readonly class ShopRequestRunner
 
         try {
             return new CompiledUrlMatcher($this->routes, $context)
-                ->match(rawurldecode($this->request->getPathInfo()));
+                ->match($this->request->getPathInfo());
         } catch (ResourceNotFoundException | MethodNotAllowedException) {
             return ['_controller' => $fallbackController];
         }

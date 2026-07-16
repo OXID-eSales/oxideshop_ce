@@ -11,6 +11,7 @@ use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
 use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
+use Symfony\Component\ErrorHandler\ErrorHandler;
 
 define('INSTALLATION_ROOT_PATH', dirname(__DIR__));
 const OX_BASE_PATH = INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'source' . DIRECTORY_SEPARATOR;
@@ -34,44 +35,15 @@ if (!function_exists('oxTriggerOfflinePageDisplay')) {
     }
 }
 
-/** For errors not caught by the application. */
-register_shutdown_function(
-    static function () {
-        $lastError = error_get_last();
-        $fatalErrors = [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR, E_RECOVERABLE_ERROR];
-        if ($lastError && in_array($lastError['type'], $fatalErrors, true)) {
-            file_put_contents(
-                OX_BASE_PATH . 'log' . DIRECTORY_SEPARATOR . 'oxideshop.log',
-                "Application has shut down with an UNCAUGHT ERROR: '" . print_r($lastError, true) . "'\n",
-                FILE_APPEND
-            );
-
-            if (!filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)) {
-                oxTriggerOfflinePageDisplay();
-            }
-            if ($lastError['type'] === E_ERROR) {
-                setcookie(name: 'sid', path: '/');
-                setcookie(name: 'admin_sid', path: '/');
-            }
-        }
-    }
-);
-
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
 spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
-/** Set exception handler before including modules/functions.php, so it can be overwritten by shop operators. */
-set_exception_handler(
-    [
-        new ExceptionHandler(filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN)),
-        'handleUncaughtException'
-    ]
-);
+$debugMode = filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN);
+$errorHandler = ErrorHandler::register(new ErrorHandler(debug: $debugMode));
+$errorHandler->throwAt(0, true);
+$errorHandler->setExceptionHandler([new ExceptionHandler($debugMode), 'handleUncaughtException']);
 
 require_once OX_BASE_PATH . 'oxfunctions.php';
-if (is_readable(OX_BASE_PATH . 'modules/functions.php')) {
-    include OX_BASE_PATH . 'modules/functions.php';
-}
 require_once OX_BASE_PATH . 'overridablefunctions.php';
 
 ini_set('session.name', 'sid');

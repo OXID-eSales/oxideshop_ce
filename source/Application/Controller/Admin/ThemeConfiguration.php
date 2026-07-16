@@ -5,97 +5,135 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
+use OxidEsales\Eshop\Core\DisplayError;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration as Configuration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\SettingValueMapperInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidatorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
-use oxAdminDetails;
+use Symfony\Component\HttpFoundation\Request;
 
-class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
+class ThemeConfiguration extends AdminDetailsController
 {
-    protected $_sTheme = null;
+    public function __construct(
+        private readonly ThemeConfigurationServiceInterface $themeConfigurationService,
+        private readonly SettingValueMapperInterface $settingValueMapper,
+        private readonly SettingValueValidatorInterface $settingValueValidator,
+        private readonly Request $request,
+    ) {
+        parent::__construct();
+    }
 
-    /** @inheritdoc */
-    public function render()
+    public function render(): string
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        parent::render();
 
-        $sTheme = $this->_sTheme = $this->getEditObjectId();
-        $sShopId = $myConfig->getShopId();
+        try {
+            $configuration = $this->getThemeConfiguration();
 
-        if (!isset($sTheme)) {
-            try {
-                $sTheme = $this->_sTheme = ContainerFacade::get(ThemeStateServiceInterface::class)
-                    ->getActiveThemeId((int) $sShopId);
-            } catch (ActiveThemeNotFoundException) {
-                $sTheme = $this->_sTheme = null;
-            }
-        }
-
-        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-        if ($oTheme->load($sTheme)) {
-            $this->_aViewData["oTheme"] = $oTheme;
-
-            try {
-                $aDbVariables = $this->loadConfVars($sShopId, $this->getModuleForConfigVars());
-                $this->_aViewData["var_constraints"] = $aDbVariables['constraints'];
-                $this->_aViewData["var_grouping"] = $aDbVariables['grouping'];
-                foreach ($this->_aConfParams as $sType => $sParam) {
-                    $this->_aViewData[$sParam] = $aDbVariables['vars'][$sType] ?? null;
-                }
-            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $exception) {
-                Registry::getUtilsView()->addErrorToDisplay($exception);
-                Registry::getLogger()->error($exception->getMessage(), [$exception]);
-            }
-        } else {
-            \OxidEsales\Eshop\Core\Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, 'EXCEPTION_THEME_NOT_LOADED'));
+            $this->_aViewData['themeId'] = $configuration->getId();
+            $this->_aViewData['themeTitle'] = $configuration->getId();
+            $this->_aViewData['settingGroups'] = $this->buildSettingGroups($configuration);
+        } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         }
 
         return 'theme_config';
     }
 
-    /**
-     * return theme filter for config variables
-     *
-     * @return string
-     */
-    protected function getModuleForConfigVars()
+    public function save(): void
     {
-        if ($this->_sTheme === null) {
-            $this->_sTheme = $this->getEditObjectId();
-        }
+        $this->resetContentCache();
 
-        return \OxidEsales\Eshop\Core\Config::OXMODULE_THEME_PREFIX . $this->_sTheme;
+        try {
+            $configuration = $this->getThemeConfiguration();
+
+            $this->themeConfigurationService->updateSettings(
+                $configuration,
+                $this->settingValueMapper->fromFormValues($configuration, $this->getValidSettingValues())
+            );
+        } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+        }
     }
 
-    /**
-     * Saves shop configuration variables
-     */
-    public function saveConfVars()
+    private function getThemeConfiguration(): Configuration
     {
-        $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+        $themeId = $this->getEditObjectId();
 
-        oxAdminDetails::save();
+        return $themeId
+            ? $this->themeConfigurationService->getConfiguration($themeId)
+            : $this->themeConfigurationService->getActiveConfiguration();
+    }
 
-        $sShopId = $myConfig->getShopId();
+    private function buildSettingGroups(Configuration $configuration): array
+    {
+        $groups = [];
 
-        $sModule = $this->getModuleForConfigVars();
-
-        foreach ($this->_aConfParams as $sType => $sParam) {
-            $aConfVars = Registry::getRequest()->getRequestEscapedParameter($sParam);
-            if (is_array($aConfVars)) {
-                foreach ($aConfVars as $sName => $sValue) {
-                    $myConfig->saveShopConfVar(
-                        $sType,
-                        $sName,
-                        $this->serializeConfVar($sType, $sName, $sValue),
-                        $sShopId,
-                        $sModule
-                    );
-                }
+        foreach ($configuration->getThemeSettings() as $setting) {
+            if ($setting->getGroupName() !== '') {
+                $groups[$setting->getGroupName()][] = $setting;
             }
         }
+
+        return array_map(fn(array $settings): array => $this->buildGroupData($settings), $groups);
+    }
+
+    /** @param Setting[] $settings */
+    private function buildGroupData(array $settings): array
+    {
+        usort(
+            $settings,
+            fn(Setting $first, Setting $second): int => $first->getPositionInGroup() <=> $second->getPositionInGroup()
+        );
+
+        return array_map(fn(Setting $setting): array => $this->buildSettingData($setting), $settings);
+    }
+
+    private function buildSettingData(Setting $setting): array
+    {
+        return [
+            'name' => $setting->getName(),
+            'type' => $setting->getType(),
+            'value' => $this->settingValueMapper->toFormValue($setting),
+            'options' => $setting->getConstraints(),
+        ];
+    }
+
+    /** @return array<string, string> */
+    private function getValidSettingValues(): array
+    {
+        return array_filter(
+            $this->request->request->all('settings'),
+            fn(mixed $value): bool => is_string($value) && $this->isValidSettingValue($value)
+        );
+    }
+
+    private function isValidSettingValue(string $value): bool
+    {
+        if (!$this->settingValueValidator->isValid($value)) {
+            $this->displayInvalidValueError($value);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function displayInvalidValueError(string $value): void
+    {
+        $error = oxNew(DisplayError::class);
+        $error->setFormatParameters([htmlspecialchars($value)]);
+        $error->setMessage('SHOP_CONFIG_ERROR_INVALID_VALUE');
+
+        Registry::getUtilsView()->addErrorToDisplay($error);
     }
 }

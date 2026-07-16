@@ -1,0 +1,19 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationService
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\SettingValueMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\SettingValueMapper
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidator
+
+  OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeConfiguration:
+    arguments:
+      $request: '@Symfony\Component\HttpFoundation\Request'
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'theme_config' }
+    public: true

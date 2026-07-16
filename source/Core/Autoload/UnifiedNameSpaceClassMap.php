@@ -2913,12 +2913,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\SettingsHandler'                                      => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\SettingsHandler::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Sha512Hasher'                                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Sha512Hasher::class,
         'isAbstract'       => false,

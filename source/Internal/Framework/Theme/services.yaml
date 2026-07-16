@@ -2,6 +2,7 @@ imports:
   - { resource: Setup/services.yaml }
   - { resource: State/services.yaml }
   - { resource: Cache/services.yaml }
+  - { resource: Configuration/services.yaml }
 
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'

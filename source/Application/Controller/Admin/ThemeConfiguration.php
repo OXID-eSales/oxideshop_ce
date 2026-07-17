@@ -40,7 +40,7 @@ class ThemeConfiguration extends AdminDetailsController
             $configuration = $this->getThemeConfiguration();
 
             $this->_aViewData['themeId'] = $configuration->getId();
-            $this->_aViewData['themeTitle'] = $configuration->getId();
+            $this->_aViewData['themeTitle'] = $configuration->getTitle() ?: $configuration->getId();
             $this->_aViewData['settingGroups'] = $this->buildSettingGroups($configuration);
         } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');

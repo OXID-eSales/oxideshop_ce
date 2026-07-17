@@ -36,7 +36,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
 
         $viewData = $controller->getViewData();
         $this->assertSame(self::THEME_ID, $viewData['themeId']);
-        $this->assertSame(self::THEME_ID, $viewData['themeTitle']);
+        $this->assertSame('Test Theme', $viewData['themeTitle']);
 
         $settings = $this->getSettingsByName($viewData['settingGroups']['display']);
         $this->assertSame('str', $settings['testStringSetting']['type']);

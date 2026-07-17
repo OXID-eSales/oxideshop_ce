@@ -28,6 +28,7 @@
 - `ShopAdapterInterface::getActiveThemeId()`
 - `ShopAdapterInterface::themeExists()`
 - `ShopAdapterInterface::activateTheme()`
+- `Language::getCustomThemeLanguageFiles()`
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

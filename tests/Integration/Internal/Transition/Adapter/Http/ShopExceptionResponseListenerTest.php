@@ -16,7 +16,6 @@ use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\KernelFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReady;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -207,7 +206,7 @@ final class ShopExceptionResponseListenerTest extends IntegrationTestCase
             throw new SystemComponentException();
         });
 
-        $response = $this->get(KernelFactory::class)->createShopKernel()->handle($request);
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
 
         $this->assertSame(Response::HTTP_FOUND, $response->getStatusCode());
         $this->assertStringContainsString('cl=start', (string) $response->headers->get('Location'));

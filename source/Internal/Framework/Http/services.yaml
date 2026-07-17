@@ -3,9 +3,20 @@ services:
     autowire: true
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\KernelFactory:
+  Symfony\Component\HttpKernel\Controller\ControllerResolverInterface:
+    class: Symfony\Component\HttpKernel\Controller\ContainerControllerResolver
     arguments:
       $container: '@service_container'
+
+  Symfony\Component\HttpKernel\Controller\ArgumentResolverInterface:
+    class: Symfony\Component\HttpKernel\Controller\ArgumentResolver
+    arguments:
+      $namedResolvers: '@service_container'
+
+  Symfony\Component\HttpKernel\HttpKernelInterface:
+    class: Symfony\Component\HttpKernel\HttpKernel
+    arguments:
+      $handleAllThrowables: true
     public: true
 
 

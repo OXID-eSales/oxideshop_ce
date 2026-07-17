@@ -9,8 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Http\KernelFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
+use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,7 +57,13 @@ final class ShopRunnerTest extends TestCase
     private function runAndCaptureOutput(Request $request, callable $fallbackController): string
     {
         $runner = new ShopRunner(
-            new KernelFactory(new EventDispatcher(), new RequestStack(), new Container()),
+            new HttpKernel(
+                new EventDispatcher(),
+                new ContainerControllerResolver(new Container()),
+                new RequestStack(),
+                new ArgumentResolver(),
+                handleAllThrowables: true
+            ),
             $request,
             $this->compiledRoutes()
         );

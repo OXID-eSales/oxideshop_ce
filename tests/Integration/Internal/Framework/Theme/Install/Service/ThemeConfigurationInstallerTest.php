@@ -101,6 +101,16 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
         $this->fail('Setting testStringSetting not found after reinstall');
     }
 
+    public function testInstallSavesThemeTitle(): void
+    {
+        $this->get(ThemeConfigurationInstallerInterface::class)->install($this->themePath);
+
+        $configuration = $this->get(ThemeConfigurationDaoInterface::class)
+            ->get($this->themeId, $this->get(BasicContextInterface::class)->getDefaultShopId());
+
+        $this->assertSame('Test Theme', $configuration->getTitle());
+    }
+
     public function testInstallSavesSourcePath(): void
     {
         $context = $this->get(BasicContextInterface::class);

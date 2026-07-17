@@ -19,10 +19,11 @@ readonly class ThemeConfigurationDataMapper implements ThemeConfigurationDataMap
         $data = [
             'source'    => $configuration->getSource(),
             'activated' => $configuration->isActivated(),
+            'title'     => $configuration->getTitle(),
         ];
 
-        if ($configuration->hasThemeSettings()) {
-            $data['themeSettings'] = $this->mapSettingsToData($configuration->getThemeSettings());
+        foreach ($configuration->getThemeSettings() as $setting) {
+            $data['themeSettings'][$setting->getName()] = $this->mapSettingToData($setting);
         }
 
         return $data;
@@ -30,50 +31,46 @@ readonly class ThemeConfigurationDataMapper implements ThemeConfigurationDataMap
 
     public function fromData(array $data): ThemeConfiguration
     {
-        $configuration = new ThemeConfiguration();
-        $configuration
+        $configuration = (new ThemeConfiguration())
+            ->setTitle($data['title'] ?? '')
             ->setSource($data['source'] ?? '')
             ->setActivated($data['activated'] ?? false);
 
         foreach ($data['themeSettings'] ?? [] as $name => $settingData) {
-            $setting = new Setting();
-            $setting->setName((string) $name);
-            $setting->setType($settingData['type'] ?? '');
-            $setting->setValue($settingData['value'] ?? null);
-            $setting->setGroupName($settingData['group'] ?? '');
-            $setting->setPositionInGroup((int) ($settingData['position'] ?? 0));
-            $setting->setConstraints($settingData['constraints'] ?? []);
-
-            $configuration->addThemeSetting($setting);
+            $configuration->addThemeSetting($this->mapSettingFromData((string) $name, $settingData));
         }
 
         return $configuration;
     }
 
-    /** @param Setting[] $settings */
-    private function mapSettingsToData(array $settings): array
+    private function mapSettingToData(Setting $setting): array
     {
-        $data = [];
+        $data = [
+            'type'  => $setting->getType(),
+            'value' => $setting->getValue(),
+        ];
 
-        foreach ($settings as $setting) {
-            $entry = [
-                'type'  => $setting->getType(),
-                'value' => $setting->getValue(),
-            ];
-
-            if ($setting->getGroupName()) {
-                $entry['group'] = $setting->getGroupName();
-            }
-            if ($setting->getPositionInGroup() > 0) {
-                $entry['position'] = $setting->getPositionInGroup();
-            }
-            if (!empty($setting->getConstraints())) {
-                $entry['constraints'] = $setting->getConstraints();
-            }
-
-            $data[$setting->getName()] = $entry;
+        if ($setting->getGroupName() !== '') {
+            $data['group'] = $setting->getGroupName();
+        }
+        if ($setting->getPositionInGroup() > 0) {
+            $data['position'] = $setting->getPositionInGroup();
+        }
+        if ($setting->getConstraints() !== []) {
+            $data['constraints'] = $setting->getConstraints();
         }
 
         return $data;
+    }
+
+    private function mapSettingFromData(string $name, array $settingData): Setting
+    {
+        return (new Setting())
+            ->setName($name)
+            ->setType($settingData['type'] ?? '')
+            ->setValue($settingData['value'] ?? null)
+            ->setGroupName($settingData['group'] ?? '')
+            ->setPositionInGroup((int) ($settingData['position'] ?? 0))
+            ->setConstraints($settingData['constraints'] ?? []);
     }
 }

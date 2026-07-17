@@ -27,6 +27,7 @@ final class ThemeConfigurationDataMapperTest extends TestCase
     {
         $config = $this->mapper->fromData([]);
 
+        $this->assertSame('', $config->getTitle());
         $this->assertSame('', $config->getSource());
         $this->assertFalse($config->isActivated());
         $this->assertFalse($config->hasThemeSettings());
@@ -37,6 +38,7 @@ final class ThemeConfigurationDataMapperTest extends TestCase
         $data = $this->mapper->toData(new ThemeConfiguration());
 
         $this->assertArrayNotHasKey('themeSettings', $data);
+        $this->assertSame('', $data['title']);
     }
 
     public function testToDataOmitsEmptySettingFields(): void
@@ -56,8 +58,9 @@ final class ThemeConfigurationDataMapperTest extends TestCase
     public function testRoundTrip(): void
     {
         $original = [
-            'source'        => '/path/to/wave',
+            'source'        => 'Application/views/apex',
             'activated'     => true,
+            'title'         => 'APEX Theme',
             'themeSettings' => [
                 'setting1' => [
                     'type'        => 'select',

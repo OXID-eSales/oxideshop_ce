@@ -98,7 +98,6 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
         'sysreq_list' => Controller\Admin\SystemRequirementsList::class,
         'sysreq_main' => Controller\Admin\SystemRequirementsMain::class,
         'systeminfo' => Controller\Admin\SystemInfoController::class,
-        'theme_config' => Controller\Admin\ThemeConfiguration::class,
         'theme_list' => Controller\Admin\ThemeList::class,
         'theme_main' => Controller\Admin\ThemeMain::class,
         'tools' => Controller\Admin\ToolsController::class,

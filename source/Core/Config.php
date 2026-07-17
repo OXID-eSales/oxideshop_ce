@@ -163,13 +163,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     private bool $initVars = false;
 
     /**
-     * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
-     *
-     * @var string
-     */
-    const OXMODULE_THEME_PREFIX = 'theme:';
-
-    /**
      * Returns config parameter value if such parameter exists
      *
      * @param string $name    config parameter name
@@ -247,13 +240,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             throw $exception;
         }
 
-        $this->loadActiveThemeVars((int)$shopId);
-
-        // checking if custom theme (which has defined parent theme) config options should be loaded over parent theme (#3362)
-        if ($this->getConfigParam('sCustomTheme')) {
-            $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $this->getConfigParam('sCustomTheme'));
-        }
-
         $this->loadAdditionalConfiguration();
 
         // Admin handling
@@ -262,16 +248,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         if (defined('OX_ADMIN_DIR')) {
             $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
         }
-    }
-
-    private function loadActiveThemeVars(int $shopId): void
-    {
-        $activeThemeId = $this->getActiveThemeId($shopId);
-        if ($activeThemeId === null) {
-            return;
-        }
-
-        $this->loadVarsFromDb($shopId, null, Config::OXMODULE_THEME_PREFIX . $activeThemeId);
     }
 
     private function getActiveThemeId(int $shopId): ?string
@@ -1534,7 +1510,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $shopId = $this->getShopId();
         }
 
-        if ($shopId == $this->getShopId() && (!$module || $module == Config::OXMODULE_THEME_PREFIX . $this->getActiveThemeId((int) $shopId))) {
+        if ($shopId == $this->getShopId() && !$module) {
             $varValue = $this->getConfigParam($varName);
             if ($varValue !== null) {
                 return $varValue;

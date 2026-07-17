@@ -199,6 +199,7 @@ final class VoucherTest extends IntegrationTestCase
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
+            ->setSource('testSourcePath')
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('bl_showVouchers')->setType('bool')->setValue(true));
 

@@ -249,7 +249,10 @@ final class ManufacturerTest extends IntegrationTestCase
     private function overwriteConfig(string $configParam, string $iconSizeValue): void
     {
 
-        $configuration = (new ThemeConfiguration())->setId('testTheme')->setActivated(true);
+        $configuration = (new ThemeConfiguration())
+            ->setId('testTheme')
+            ->setSource('testSourcePath')
+            ->setActivated(true);
         $configuration->addThemeSetting(
             (new Setting())->setName($configParam)->setType('bool')->setValue(false)
         );

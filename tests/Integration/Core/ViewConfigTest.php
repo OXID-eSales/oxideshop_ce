@@ -54,6 +54,7 @@ final class ViewConfigTest extends IntegrationTestCase
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
             ->setId('apex')
+            ->setSource('testSourcePath')
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('sLogoFile')->setType('str')->setValue('logo.png'));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
@@ -66,6 +67,7 @@ final class ViewConfigTest extends IntegrationTestCase
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
             ->setId('apex')
+            ->setSource('testSourcePath')
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('bl_showWishlist')->setType('bool')->setValue(true));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
@@ -76,7 +78,10 @@ final class ViewConfigTest extends IntegrationTestCase
     public function testThemeSettingsExistsReturnsFalseForMissingSetting(): void
     {
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
-        $configuration = (new ThemeConfiguration())->setId('apex')->setActivated(true);
+        $configuration = (new ThemeConfiguration())
+            ->setId('apex')
+            ->setSource('testSourcePath')
+            ->setActivated(true);
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 
         $this->assertFalse($this->viewConfig->getThemeSettings()->exists('nonExistentSetting'));

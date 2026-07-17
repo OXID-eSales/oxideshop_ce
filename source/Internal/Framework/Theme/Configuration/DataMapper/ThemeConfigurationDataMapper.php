@@ -32,9 +32,9 @@ readonly class ThemeConfigurationDataMapper implements ThemeConfigurationDataMap
     public function fromData(array $data): ThemeConfiguration
     {
         $configuration = (new ThemeConfiguration())
-            ->setTitle($data['title'] ?? '')
             ->setSource($data['source'] ?? '')
-            ->setActivated($data['activated'] ?? false);
+            ->setActivated($data['activated'] ?? false)
+            ->setTitle($data['title'] ?? '');
 
         foreach ($data['themeSettings'] ?? [] as $name => $settingData) {
             $configuration->addThemeSetting($this->mapSettingFromData((string) $name, $settingData));

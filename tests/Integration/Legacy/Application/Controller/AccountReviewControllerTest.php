@@ -31,7 +31,10 @@ final class AccountReviewControllerTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $configuration = (new ThemeConfiguration())->setId('testTheme')->setActivated(true);
+        $configuration = (new ThemeConfiguration())
+            ->setId('testTheme')
+            ->setSource('testSourcePath')
+            ->setActivated(true);
         $configuration->addThemeSetting(
             (new Setting())->setName('sDefaultListDisplayType')->setType('str')->setValue('infogrid')
         );

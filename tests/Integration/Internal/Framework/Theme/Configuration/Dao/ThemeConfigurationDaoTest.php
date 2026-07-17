@@ -181,7 +181,8 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
     private function buildConfiguration(string $id): ThemeConfiguration
     {
         return (new ThemeConfiguration())
-            ->setId($id);
+            ->setId($id)
+            ->setSource('testSourcePath');
     }
 
     private function collectThemeConfigurationChangedEvents(): ArrayObject

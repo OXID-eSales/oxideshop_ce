@@ -8,9 +8,10 @@ services:
       $container: '@service_container'
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRequestRunner:
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner
     arguments:
-      $request: '@Symfony\Component\HttpFoundation\Request'
       $routes: '%oxid.routes%'
     public: true
 

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRequestRunner;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 if (!defined('OX_IS_ADMIN')) {
@@ -27,7 +27,7 @@ if (!$blAjaxCall) {
     return;
 }
 
-ContainerFacade::get(ShopRequestRunner::class)->run(static function (): Response {
+ContainerFacade::get(ShopRunnerInterface::class)->run(static function (): Response {
     $myConfig = Registry::getConfig();
     $myConfig->init();
 

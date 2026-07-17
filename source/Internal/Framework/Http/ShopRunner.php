@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\Routing\Matcher\CompiledUrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
-readonly class ShopRequestRunner
+readonly class ShopRunner implements ShopRunnerInterface
 {
     public function __construct(
         private KernelFactory $kernelFactory,

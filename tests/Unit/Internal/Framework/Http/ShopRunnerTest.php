@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Http\KernelFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRequestRunner;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,7 +21,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use PHPUnit\Framework\TestCase;
 
-final class ShopRequestRunnerTest extends TestCase
+final class ShopRunnerTest extends TestCase
 {
     public function testRunsTheFallbackControllerWhenNoRouteMatches(): void
     {
@@ -54,7 +54,7 @@ final class ShopRequestRunnerTest extends TestCase
 
     private function runAndCaptureOutput(Request $request, callable $fallbackController): string
     {
-        $runner = new ShopRequestRunner(
+        $runner = new ShopRunner(
             new KernelFactory(new EventDispatcher(), new RequestStack(), new Container()),
             $request,
             $this->compiledRoutes()

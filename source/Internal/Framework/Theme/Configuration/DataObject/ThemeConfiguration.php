@@ -13,10 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 
 class ThemeConfiguration
 {
-    private string $id = '';
-    private string $title = '';
-    private string $source = '';
+    private string $id;
+    private string $source;
     private bool $activated = false;
+    private string $title = '';
     private array $themeSettings = [];
 
     public function getId(): string
@@ -27,17 +27,6 @@ class ThemeConfiguration
     public function setId(string $id): self
     {
         $this->id = $id;
-        return $this;
-    }
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
         return $this;
     }
 
@@ -60,6 +49,17 @@ class ThemeConfiguration
     public function setActivated(bool $activated): self
     {
         $this->activated = $activated;
+        return $this;
+    }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
         return $this;
     }
 

@@ -74,6 +74,7 @@ final class ThemeConfigurationServiceTest extends IntegrationTestCase
     {
         $configuration = (new ThemeConfiguration())
             ->setId(self::THEME_ID)
+            ->setSource('testSourcePath')
             ->setActivated($activated)
             ->addThemeSetting((new Setting())->setName('sIconSize')->setType('str')->setValue('100*100'));
 

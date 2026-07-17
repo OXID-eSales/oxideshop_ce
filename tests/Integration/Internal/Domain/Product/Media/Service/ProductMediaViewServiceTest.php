@@ -408,7 +408,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     {
         $themeId = 'testTheme';
         $this->get(ThemeConfigurationDaoInterface::class)->save(
-            (new ThemeConfiguration())->setId($themeId)->setActivated(true),
+            (new ThemeConfiguration())->setId($themeId)->setSource('testSourcePath')->setActivated(true),
             $shopId
         );
 
@@ -473,7 +473,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     private function configureImageSettings(): void
     {
         $configuration = new ThemeConfiguration();
-        $configuration->setId($this->themeId)->setActivated(true);
+        $configuration->setId($this->themeId)->setSource('testSourcePath')->setActivated(true);
 
         foreach ([
             self::CONFIG_KEY_ICON_SIZE => '87*87',

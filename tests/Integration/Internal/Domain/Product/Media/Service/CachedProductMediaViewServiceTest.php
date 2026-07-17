@@ -211,7 +211,7 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     {
         $themeId = 'testTheme';
         $this->get(ThemeConfigurationDaoInterface::class)->save(
-            (new ThemeConfiguration())->setId($themeId)->setActivated(true),
+            (new ThemeConfiguration())->setId($themeId)->setSource('testSourcePath')->setActivated(true),
             $shopId
         );
 
@@ -250,7 +250,7 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     private function configureImageSettings(): void
     {
         $configuration = new ThemeConfiguration();
-        $configuration->setId($this->themeId)->setActivated(true);
+        $configuration->setId($this->themeId)->setSource('testSourcePath')->setActivated(true);
 
         foreach ([
             'sIconsize' => '87*87',

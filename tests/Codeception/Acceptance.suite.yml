@@ -54,6 +54,7 @@ modules:
                 - 'Application/views/%THEME_ID%'
             paths_admin:
                 - 'Application/views/admin_twig'
+                - 'Application/views/%THEME_ID%'
         - OxidEsales\Codeception\Module\OxideshopModules:
         - Mailpit:
             url: '%MAIL_HOST%'

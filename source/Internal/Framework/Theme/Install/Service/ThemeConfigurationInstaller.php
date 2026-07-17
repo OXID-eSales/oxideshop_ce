@@ -33,6 +33,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         $metadata = $this->metaDataProvider->get($themePath);
         $defaultConfiguration = $this->configurationProvider->get($themePath);
         $defaultConfiguration->setId($metadata->getId());
+        $defaultConfiguration->setTitle($metadata->getTitle());
         $defaultConfiguration->setSource(Path::makeRelative($themePath, $this->context->getShopRootPath()));
 
         foreach ($this->context->getAllShopIds() as $shopId) {

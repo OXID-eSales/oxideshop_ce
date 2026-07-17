@@ -17,6 +17,8 @@
 - Theme settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
 - `ThemeSettingServiceInterface` for reading theme settings
 - `ViewConfig::getThemeSettings()` to read theme settings in templates
+- `ActiveTheme` value object
+- `ThemeStateServiceInterface::getActiveTheme()`
 
 ### Changed
 - Theme activation state is now stored in YAML configuration instead of the database
@@ -25,6 +27,7 @@
 - Theme settings read from YAML configuration instead of the database
 - Theme settings in the admin area are saved to the theme YAML configuration instead of the `oxconfig` table
 - `Config::getConfigParam()` no longer returns theme settings — use `ThemeSettingServiceInterface` instead
+- `Config::getDir()` (assets) and `Language` (translations) now fall back to the parent theme for child themes, matching existing template behavior
 - Theme setting names no longer use Hungarian notation or outdated terms
 
 ### Removed
@@ -33,6 +36,7 @@
 - PHP v8.3 support
 - `Config::$_aThemeConfigParams`
 - `Config::isThemeOption()`
+- `sCustomTheme` config parameter
 - `ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED`
 - `ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED`

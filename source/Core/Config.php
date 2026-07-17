@@ -16,7 +16,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationC
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -977,7 +976,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
 
         if (!$return) {
-            $return = $this->getDirFromCustomTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust);
+            $return = $this->getDirFromChildTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust);
         }
 
         //test lang level ..
@@ -1025,21 +1024,24 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return $return;
     }
 
-    private function getDirFromCustomTheme($file, $dir, $admin, $lang, $shop, ?string $theme, $absolute, $ignoreCust)
+    private function getDirFromChildTheme($file, $dir, $admin, $lang, $shop, ?string $theme, $absolute, $ignoreCust)
     {
         if ($admin || $ignoreCust) {
             return false;
         }
 
-        $customThemeProvider = ContainerFacade::get(CustomThemeProviderInterface::class);
-        if (!$customThemeProvider->hasCustomTheme((int) $shop)) {
+        try {
+            $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme((int) $shop);
+        } catch (ActiveThemeNotFoundException) {
             return false;
         }
 
-        $customTheme = $customThemeProvider->getCustomThemeId((int) $shop);
+        if (!$activeTheme->isChildTheme()) {
+            return false;
+        }
 
-        return $customTheme !== $theme
-            ? $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute, $ignoreCust)
+        return $activeTheme->getId() !== $theme
+            ? $this->getDir($file, $dir, $admin, $lang, $shop, $activeTheme->getId(), $absolute, $ignoreCust)
             : false;
     }
 

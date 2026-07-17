@@ -5,7 +5,3 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateService
     public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\CustomThemeProvider
-    public: true

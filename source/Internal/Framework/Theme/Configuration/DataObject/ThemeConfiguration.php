@@ -16,6 +16,7 @@ class ThemeConfiguration
     private string $id = '';
     private string $source = '';
     private bool $activated = false;
+    private string $title = '';
     private array $themeSettings = [];
 
     public function getId(): string
@@ -51,15 +52,21 @@ class ThemeConfiguration
         return $this;
     }
 
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
+        return $this;
+    }
+
     /** @return Setting[] */
     public function getThemeSettings(): array
     {
         return $this->themeSettings;
-    }
-
-    public function hasThemeSettings(): bool
-    {
-        return !empty($this->themeSettings);
     }
 
     public function addThemeSetting(Setting $setting): self

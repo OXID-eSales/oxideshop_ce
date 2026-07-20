@@ -23,7 +23,7 @@
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
 - Module migrations are no longer discovered automatically; register them via a `MigrationPathProviderInterface` service tagged `oxid_esales.migration_path_provider`
 - Theme settings and the active theme are stored in YAML files instead of the database
-  - Theme settings are read from YAML instead of the `oxconfig` table
+  - Theme settings are read from and written to YAML instead of the `oxconfig` table
   - The `sTheme` config parameter is no longer used
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 
@@ -52,9 +52,10 @@
 - `MigrationExecutorInterface`
 - `ThemeSettingChangedEvent`, use `ThemeConfigurationChangedEvent` instead
 - Theme configuration classes and methods
+  - `SettingsHandler`
   - `ThemeSettingDaoInterface` and `ThemeSetting`
-  - `ThemeMain::themeInConfigFile()`
-  - `Config::isThemeOption()` and `Config::$_aThemeConfigParams`
+  - `ThemeConfiguration::saveConfVars()`, `ThemeConfiguration::$_sTheme` and `ThemeMain::themeInConfigFile()`
+  - `Config::isThemeOption()`, `Config::$_aThemeConfigParams` and `Config::OXMODULE_THEME_PREFIX`
   - `ViewConfig::getViewThemeParam()`, use `ViewConfig::getThemeSettings()` instead
   - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
 

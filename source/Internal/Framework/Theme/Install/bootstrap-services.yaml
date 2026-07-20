@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationMergerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationMerger
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstaller
+    public: true

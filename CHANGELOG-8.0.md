@@ -12,6 +12,8 @@
   - Admin page to edit alt text per image per locale
   - Storefront resolves the alt text through the locale's fallback chain
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
+- YAML-based theme configuration
+  - Theme packages provide `metadata.yaml` and `config.yaml`
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters

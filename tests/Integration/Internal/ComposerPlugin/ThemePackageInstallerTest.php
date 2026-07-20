@@ -13,6 +13,8 @@ use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ThemePackageInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -49,6 +51,34 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
                 $this->get(ContextInterface::class)->getCurrentShopId()
             )
         );
+    }
+
+    public function testThemeConfigurationIsUninstalledAfterUninstallProcess(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+        $installer->install($this->themePackagePath);
+
+        $installer->uninstall($this->themePackagePath);
+
+        $this->assertFalse(
+            $this->get(ThemeConfigurationDaoInterface::class)->exists(
+                $this->themeId,
+                $this->get(BasicContextInterface::class)->getDefaultShopId()
+            )
+        );
+    }
+
+    public function testThemeCacheIsClearedAfterUninstallProcess(): void
+    {
+        $themeSettingCache = $this->get(ThemeSettingCacheInterface::class);
+        $themeSettingCache->put('theme-uninstall-cache-probe', ['something']);
+
+        $installer = $this->getPackageInstaller($this->packageName);
+        $installer->install($this->themePackagePath);
+        $installer->uninstall($this->themePackagePath);
+
+        $this->expectException(CacheItemNotFoundException::class);
+        $themeSettingCache->get('theme-uninstall-cache-probe');
     }
 
     private function getPackageInstaller(string $packageName, array $extra = []): ThemePackageInstaller

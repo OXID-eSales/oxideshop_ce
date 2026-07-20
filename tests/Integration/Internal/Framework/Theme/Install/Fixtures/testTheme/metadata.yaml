@@ -1,0 +1,6 @@
+id: testTheme
+version: '1.0.0'
+title: 'Test Theme'
+description: 'Theme used in integration tests'
+thumbnail: preview.png
+author: 'OXID eSales AG'

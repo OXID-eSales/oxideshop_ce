@@ -13,6 +13,7 @@
   - Storefront resolves the alt text through the locale's fallback chain
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
 - Theme configuration is now installed per-shop via the composer plugin, reading `metadata.yaml` and `config.yaml` from the theme package
+- Theme configuration YAML files are validated against a schema when loaded
 - `ThemeSettingServiceInterface` for reading theme settings
 - `ViewConfig::getThemeSettings()` to read theme settings in templates
 
@@ -21,6 +22,7 @@
 - `sTheme` is no longer written to the database during theme activation
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Theme settings read from YAML configuration instead of the database
+- Theme settings in the admin area are saved to the theme YAML configuration instead of the `oxconfig` table
 - `Config::getConfigParam()` no longer returns theme settings — use `ThemeSettingServiceInterface` instead
 
 ### Removed
@@ -46,6 +48,11 @@
 - `ShopAdapterInterface::activateTheme()`
 - `ViewConfig::getViewThemeParam()`
 - `ThemeSettingChangedEvent`
+- `SettingsHandler`
+- `Config::OXMODULE_THEME_PREFIX`
+- `ThemeConfiguration::saveConfVars()`
+- `ThemeConfiguration::getModuleForConfigVars()`
+- `ThemeConfiguration::$_sTheme`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Module\Setting;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting;
 
 class Setting
 {

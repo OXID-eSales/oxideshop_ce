@@ -1,0 +1,17 @@
+themeSettings:
+  testStringSetting:
+    type: str
+    value: defaultValue
+    group: display
+  testBoolSetting:
+    type: bool
+    value: true
+    group: display
+  testSelectSetting:
+    type: select
+    value: option1
+    group: display
+    constraints:
+      - option1
+      - option2
+      - option3

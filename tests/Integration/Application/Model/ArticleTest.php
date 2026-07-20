@@ -64,6 +64,7 @@ final class ArticleTest extends IntegrationTestCase
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
+            ->setSource('testSourcePath')
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('sIconsize')->setType('str')->setValue('87*87'))
             ->addThemeSetting((new Setting())->setName('sThumbnailsize')->setType('str')->setValue('200*200'))

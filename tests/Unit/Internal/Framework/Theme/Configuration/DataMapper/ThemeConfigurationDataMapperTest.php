@@ -35,7 +35,7 @@ final class ThemeConfigurationDataMapperTest extends TestCase
 
     public function testToDataOmitsThemeSettingsWhenNoneAdded(): void
     {
-        $data = $this->mapper->toData(new ThemeConfiguration());
+        $data = $this->mapper->toData((new ThemeConfiguration())->setSource('testSourcePath'));
 
         $this->assertArrayNotHasKey('themeSettings', $data);
         $this->assertSame('', $data['title']);
@@ -48,7 +48,9 @@ final class ThemeConfigurationDataMapperTest extends TestCase
             ->setType('bool')
             ->setValue(true);
 
-        $data = $this->mapper->toData((new ThemeConfiguration())->addThemeSetting($setting));
+        $data = $this->mapper->toData(
+            (new ThemeConfiguration())->setSource('testSourcePath')->addThemeSetting($setting)
+        );
 
         $this->assertArrayNotHasKey('group', $data['themeSettings']['mySetting']);
         $this->assertArrayNotHasKey('position', $data['themeSettings']['mySetting']);

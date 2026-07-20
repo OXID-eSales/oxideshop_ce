@@ -14,9 +14,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Path;
 
 final class ThemeConfigurationDaoTest extends IntegrationTestCase
 {
@@ -176,6 +180,35 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
 
         $this->expectException(ThemeConfigurationNotFoundException::class);
         $dao->get('deleteCache', self::SHOP_ID);
+    }
+
+    public function testGetThrowsForConfigurationFileViolatingTheSchema(): void
+    {
+        $this->saveConfigurationData('brokenTheme', ['unknownKey' => 'value']);
+
+        $this->expectException(InvalidConfigurationException::class);
+
+        $this->get(ThemeConfigurationDaoInterface::class)->get('brokenTheme', self::SHOP_ID);
+    }
+
+    public function testGetThrowsForConfigurationWithoutRequiredSource(): void
+    {
+        $this->saveConfigurationData('brokenTheme', ['title' => 'Broken Theme']);
+
+        $this->expectException(InvalidConfigurationException::class);
+
+        $this->get(ThemeConfigurationDaoInterface::class)->get('brokenTheme', self::SHOP_ID);
+    }
+
+    private function saveConfigurationData(string $themeId, array $data): void
+    {
+        $path = Path::join(
+            $this->get(BasicContextInterface::class)->getShopConfigurationDirectory(self::SHOP_ID),
+            'themes',
+            $themeId . '.yaml'
+        );
+
+        $this->get(FileStorageFactoryInterface::class)->create($path)->save($data);
     }
 
     private function buildConfiguration(string $id): ThemeConfiguration

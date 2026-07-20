@@ -18,6 +18,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\T
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use DirectoryIterator;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Definition\NodeInterface;
+use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
@@ -31,6 +34,8 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         private Filesystem $filesystem,
         private ThemeConfigurationCacheInterface $cache,
         private EventDispatcherInterface $eventDispatcher,
+        private NodeInterface $node,
+        private Processor $processor,
     ) {
     }
 
@@ -46,7 +51,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
             }
 
             $configuration = $this->dataMapper->fromData(
-                $this->getStorage($shopId, $themeId)->get()
+                $this->getProcessedData($shopId, $themeId)
             );
             $configuration->setId($themeId);
 
@@ -99,6 +104,26 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         }
 
         return file_exists($this->getThemeConfigurationFilePath($shopId, $themeId));
+    }
+
+    private function getProcessedData(int $shopId, string $themeId): array
+    {
+        try {
+            return $this->processor->process(
+                $this->node,
+                [$this->getStorage($shopId, $themeId)->get()]
+            );
+        } catch (InvalidConfigurationException $exception) {
+            throw new InvalidConfigurationException(
+                sprintf(
+                    'File %s is broken: %s',
+                    $this->getThemeConfigurationFilePath($shopId, $themeId),
+                    $exception->getMessage()
+                ),
+                $exception->getCode(),
+                $exception
+            );
+        }
     }
 
     private function getStorage(int $shopId, string $themeId): ArrayStorageInterface

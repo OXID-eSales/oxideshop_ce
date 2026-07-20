@@ -114,6 +114,7 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
         $setting = (new Setting())->setName($name)->setType($type)->setValue($value);
         $configuration = (new ThemeConfiguration())
             ->setId(self::THEME_ID)
+            ->setSource('testSourcePath')
             ->setActivated(true)
             ->addThemeSetting($setting);
 

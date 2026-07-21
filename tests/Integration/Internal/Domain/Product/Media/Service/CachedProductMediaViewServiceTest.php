@@ -297,12 +297,14 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
         $configuration = new ThemeConfiguration();
         $configuration->setId($this->themeId)->setSource('testSourcePath')->setActivated(true);
 
-        foreach ([
-            'sIconsize' => '87*87',
-            'sThumbnailsize' => '200*200',
-            'sDetailImageSize' => '600*600',
-            'sZoomImageSize' => '1200*1200',
-        ] as $name => $value) {
+        $imageSizes = [
+            'iconSize' => '87*87',
+            'thumbnailSize' => '200*200',
+            'detailImageSize' => '600*600',
+            'zoomImageSize' => '1200*1200',
+        ];
+
+        foreach ($imageSizes as $name => $value) {
             $setting = new Setting();
             $setting->setName($name)->setValue($value);
             $configuration->addThemeSetting($setting);

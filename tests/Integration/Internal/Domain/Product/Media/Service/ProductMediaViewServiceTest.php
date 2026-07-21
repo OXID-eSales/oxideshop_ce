@@ -34,10 +34,10 @@ use Symfony\Component\Filesystem\Path;
 
 final class ProductMediaViewServiceTest extends IntegrationTestCase
 {
-    private const CONFIG_KEY_ICON_SIZE = 'sIconsize';
-    private const CONFIG_KEY_THUMBNAIL_SIZE = 'sThumbnailsize';
-    private const CONFIG_KEY_DETAIL_IMAGE_SIZE = 'sDetailImageSize';
-    private const CONFIG_KEY_ZOOM_IMAGE_SIZE = 'sZoomImageSize';
+    private const CONFIG_KEY_ICON_SIZE = 'iconSize';
+    private const CONFIG_KEY_THUMBNAIL_SIZE = 'thumbnailSize';
+    private const CONFIG_KEY_DETAIL_IMAGE_SIZE = 'detailImageSize';
+    private const CONFIG_KEY_ZOOM_IMAGE_SIZE = 'zoomImageSize';
     private const CONFIG_KEY_DEFAULT_IMAGE_QUALITY = 'sDefaultImageQuality';
     private const CONFIG_KEY_CONVERT_IMAGES_TO_WEBP = 'blConvertImagesToWebP';
 

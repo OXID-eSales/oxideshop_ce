@@ -50,7 +50,7 @@ final class FlowThemeCest
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality');
 
-        $I->updateThemeSetting('sProductListNavigation', true);
+        $I->updateThemeSetting('showProductListNavigation', true);
         $I->updateConfigInDatabase('bl_showPriceAlarm', true, 'bool');
 
         $I->updateConfigInDatabase('blAllowSuggestArticle', true, 'bool');
@@ -79,7 +79,7 @@ final class FlowThemeCest
         $productNavigation = new ProductNavigation($I);
         $I->wantToTest('product price alert functionality is disabled');
 
-        $I->updateThemeSetting('sProductListNavigation', true);
+        $I->updateThemeSetting('showProductListNavigation', true);
 
         $productData = [
             'id' => '1000',

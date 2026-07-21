@@ -36,7 +36,7 @@ final class BasketWithStockTest extends IntegrationTestCase
             ->setId('testTheme')
             ->setSource('testSourcePath')
             ->setActivated(true);
-        $configuration->addThemeSetting((new Setting())->setName('bl_showVouchers')->setType('bool')->setValue(true));
+        $configuration->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 

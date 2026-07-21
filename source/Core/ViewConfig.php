@@ -766,17 +766,17 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns config param "blShowBirthdayFields" value
+     * Returns config param "showBirthdayFields" value
      *
      * @return string
      */
     public function showBirthdayFields()
     {
-        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('blShowBirthdayFields');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showBirthdayFields');
     }
 
     /**
-     * Returns config param "aNrofCatArticles" value
+     * Returns config param "numberOfCategoryProducts" value
      *
      * @return array
      */
@@ -786,30 +786,30 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
 
         if (is_null($listType)) {
-            $listType = $themeSettingService->getString('sDefaultListDisplayType');
+            $listType = $themeSettingService->getString('defaultListDisplayType');
         }
 
         if ('grid' === $listType) {
-            $nrOfCatArticles = $themeSettingService->getCollection('aNrofCatArticlesInGrid');
+            $nrOfCatArticles = $themeSettingService->getCollection('numberOfCategoryProductsInGrid');
         } else {
-            $nrOfCatArticles = $themeSettingService->getCollection('aNrofCatArticles');
+            $nrOfCatArticles = $themeSettingService->getCollection('numberOfCategoryProducts');
         }
 
         return $nrOfCatArticles;
     }
 
     /**
-     * Returns config param "bl_showWishlist" value
+     * Returns config param "showWishlist" value
      *
      * @return bool
      */
     public function getShowWishlist()
     {
-        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showWishlist');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showWishlist');
     }
 
     /**
-     * Returns config param "bl_showCompareList" value
+     * Returns config param "showCompareList" value
      *
      * @return bool
      */
@@ -819,7 +819,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         $showCompareList = true;
 
         if (
-            !ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showCompareList') ||
+            !ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showCompareList') ||
             ($config->getConfigParam('blDisableNavBars') && $config->getActiveView()->getIsOrderStep())
         ) {
             $showCompareList = false;
@@ -841,23 +841,23 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns config param "bl_showVouchers" value
+     * Returns config param "showVouchers" value
      *
      * @return bool
      */
     public function getShowVouchers()
     {
-        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showVouchers');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showVouchers');
     }
 
     /**
-     * Returns config param "bl_showGiftWrapping" value
+     * Returns config param "showGiftWrapping" value
      *
      * @return bool
      */
     public function getShowGiftWrapping()
     {
-        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showGiftWrapping');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showGiftWrapping');
     }
 
     /**

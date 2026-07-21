@@ -541,13 +541,13 @@ class SearchController extends \OxidEsales\Eshop\Application\Controller\Frontend
     }
 
     /**
-     * Returns config parameters blShowListDisplayType value
+     * Returns config parameters showListDisplayType value
      *
      * @return boolean
      */
     public function canSelectDisplayType()
     {
-        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('blShowListDisplayType');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showListDisplayType');
     }
 
     /**

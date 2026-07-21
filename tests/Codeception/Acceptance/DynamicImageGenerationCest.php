@@ -19,7 +19,7 @@ final class DynamicImageGenerationCest
 
     public function _before(AcceptanceTester $I): void
     {
-        $I->updateThemeSetting('sThumbnailsize', '500*500');
+        $I->updateThemeSetting('thumbnailSize', '500*500');
     }
 
     public function fetchGeneratedImages(AcceptanceTester $I): void

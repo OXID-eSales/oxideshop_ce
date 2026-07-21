@@ -30,7 +30,7 @@ abstract class AbstractInsertNewBasketItemLogic
         $renderedTemplate = '';
 
         $types = ['0' => 'none', '1' => 'message', '2' => 'popup', '3' => 'basket'];
-        $newBasketItemMessage = $this->themeSettingService->getInteger('iNewBasketItemMessage');
+        $newBasketItemMessage = $this->themeSettingService->getInteger('newBasketItemMessage');
 
         // If correct type of message is expected
         if (

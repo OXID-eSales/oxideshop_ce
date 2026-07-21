@@ -27,11 +27,11 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
 
     public function testGetStringReturnsSavedValue(): void
     {
-        $this->saveThemeWithSetting('sLogoFile', 'str', 'logo.png');
+        $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
 
         $service = $this->get(ThemeSettingServiceInterface::class);
 
-        $this->assertSame('logo.png', $service->getString('sLogoFile'));
+        $this->assertSame('logo.png', $service->getString('logoFile'));
     }
 
     public function testGetStringReturnsEnvironmentValueWithoutChangingCanonicalConfiguration(): void
@@ -85,25 +85,25 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
 
     public function testGetCollectionReturnsSavedValue(): void
     {
-        $this->saveThemeWithSetting('aNrofCatArticles', 'arr', ['10', '20', '50']);
+        $this->saveThemeWithSetting('numberOfCategoryProducts', 'arr', ['10', '20', '50']);
 
         $service = $this->get(ThemeSettingServiceInterface::class);
 
-        $this->assertSame(['10', '20', '50'], $service->getCollection('aNrofCatArticles'));
+        $this->assertSame(['10', '20', '50'], $service->getCollection('numberOfCategoryProducts'));
     }
 
     public function testExistsReturnsTrueForExistingSetting(): void
     {
-        $this->saveThemeWithSetting('sLogoFile', 'str', 'logo.png');
+        $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
 
         $service = $this->get(ThemeSettingServiceInterface::class);
 
-        $this->assertTrue($service->exists('sLogoFile'));
+        $this->assertTrue($service->exists('logoFile'));
     }
 
     public function testExistsReturnsFalseForMissingSetting(): void
     {
-        $this->saveThemeWithSetting('sLogoFile', 'str', 'logo.png');
+        $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
 
         $service = $this->get(ThemeSettingServiceInterface::class);
 
@@ -114,12 +114,12 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
     {
         $service = $this->get(ThemeSettingServiceInterface::class);
 
-        $this->assertFalse($service->exists('sLogoFile'));
+        $this->assertFalse($service->exists('logoFile'));
     }
 
     public function testGetThrowsForMissingSetting(): void
     {
-        $this->saveThemeWithSetting('sLogoFile', 'str', 'logo.png');
+        $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
 
         $service = $this->get(ThemeSettingServiceInterface::class);
 
@@ -132,7 +132,7 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
         $service = $this->get(ThemeSettingServiceInterface::class);
 
         $this->expectException(ThemeSettingNotFoundException::class);
-        $service->getBoolean('bl_showWishlist');
+        $service->getBoolean('showWishlist');
     }
 
     private function saveThemeWithSetting(string $name, string $type, mixed $value): void

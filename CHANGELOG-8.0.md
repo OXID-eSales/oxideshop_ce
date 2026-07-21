@@ -26,6 +26,7 @@
 - Module migrations are no longer discovered automatically; register them via a `MigrationPathProviderInterface` service tagged `oxid_esales.migration_path_provider`
 - Theme settings and the active theme are stored in YAML files instead of the database
   - Theme settings are read from and written to YAML instead of the `oxconfig` table
+  - Standard theme settings were renamed to remove Hungarian notation, e.g. `bl_showWishlist` is now `showWishlist`
   - The `sTheme` config parameter is no longer used
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 

@@ -179,7 +179,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController i
 
             // new basket item marker
             $newBasketItemMessage = ContainerFacade::get(ThemeSettingServiceInterface::class)
-                ->getInteger('iNewBasketItemMessage');
+                ->getInteger('newBasketItemMessage');
             if ($oBasketItem && $newBasketItemMessage != 0) {
                 $oNewItem = new stdClass();
                 $oNewItem->sTitle = $oBasketItem->getTitle();
@@ -299,7 +299,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController i
         $sPosition .= ($iPageNr > 0) ? 'pgNr=' . $iPageNr . '&' : '';
 
         // reload and backbutton blocker
-        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('iNewBasketItemMessage') == 3) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('newBasketItemMessage') == 3) {
             // saving return to shop link to session
             Registry::getSession()->setVariable('_backtoshop', $controllerId . $sPosition);
 
@@ -599,7 +599,7 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController i
             $exception->setDestination($errorDestination);
             // #950 Change error destination to basket popup
             $newBasketItemMessage = ContainerFacade::get(ThemeSettingServiceInterface::class)
-                ->getInteger('iNewBasketItemMessage');
+                ->getInteger('newBasketItemMessage');
             if (!$errorDestination && $newBasketItemMessage == 2) {
                 $errorDestination = 'popup';
             }

@@ -14,6 +14,7 @@
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
 - YAML-based theme configuration
   - Theme packages provide `metadata.yaml` and `config.yaml`
+  - Settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
   - `ThemeSettingServiceInterface` to read theme settings
   - `ViewConfig::getThemeSettings()` to read theme settings in templates
   - `ThemeConfigurationChangedEvent`

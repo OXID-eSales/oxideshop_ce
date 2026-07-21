@@ -56,6 +56,23 @@ final class ThemeSettingsCest
             ->seeSettingValue($this->selectSetting, 'line');
     }
 
+    public function environmentOverriddenSettingIsDisplayedAndDisabled(AcceptanceTester $I): void
+    {
+        $I->wantTo('see an environment-overridden theme setting as disabled in the admin');
+        $I->updateThemeEnvironmentSetting($this->selectSetting, 'line');
+
+        $settingsTab = $this->openThemeSettingsTab($I);
+
+        $I->expect('the effective value, disabled input, and environment hint to be visible');
+        $settingsTab
+            ->openSettingGroup($this->getSettingGroupTitle())
+            ->seeSettingValue($this->selectSetting, 'line')
+            ->seeSettingIsDisabled($this->selectSetting)
+            ->seeEnvironmentOverrideHint(
+                Translator::translate('THEME_SETTING_ENVIRONMENT_OVERRIDDEN_HINT')
+            );
+    }
+
     private function openThemeSettingsTab(AcceptanceTester $I): ThemeSettingsTab
     {
         return $I->loginAdmin()

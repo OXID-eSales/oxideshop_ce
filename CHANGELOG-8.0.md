@@ -14,6 +14,7 @@
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
 - Theme configuration is now installed per-shop via the composer plugin, reading `metadata.yaml` and `config.yaml` from the theme package
 - Theme configuration YAML files are validated against a schema when loaded
+- Theme settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
 - `ThemeSettingServiceInterface` for reading theme settings
 - `ViewConfig::getThemeSettings()` to read theme settings in templates
 

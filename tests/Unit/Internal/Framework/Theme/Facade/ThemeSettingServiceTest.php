@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundEx
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
@@ -118,13 +119,18 @@ final class ThemeSettingServiceTest extends TestCase
         $service->getString('missing');
     }
 
-    public function testGetThrowsForMissingThemeConfigurationWithoutDaoGet(): void
+    public function testGetThrowsForMissingThemeConfigurationWithoutResolverCall(): void
     {
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(false);
-        $dao->expects($this->never())->method('get');
+        $dao
+            ->expects($this->once())
+            ->method('exists')
+            ->with(self::THEME_ID, self::SHOP_ID)
+            ->willReturn(false);
+        $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
+        $resolver->expects($this->never())->method('resolve');
 
-        $service = $this->createService($dao);
+        $service = $this->createService($dao, resolver: $resolver);
 
         $this->expectException(ThemeSettingNotFoundException::class);
         $service->getString('sLogoFile');
@@ -134,11 +140,12 @@ final class ThemeSettingServiceTest extends TestCase
     {
         $configuration = (new ThemeConfiguration())->setId(self::THEME_ID);
 
-        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('exists')->willReturn(true);
-        $dao->expects($this->once())->method('get')->willReturn($configuration);
+        $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
+        $resolver->expects($this->once())->method('resolve')->willReturn($configuration);
 
-        $service = $this->createService($dao);
+        $service = $this->createService($dao, resolver: $resolver);
 
         $this->assertFalse($service->exists('missing'));
         $this->assertFalse($service->exists('missing'));
@@ -150,9 +157,11 @@ final class ThemeSettingServiceTest extends TestCase
         $cache->method('get')->willReturn(['exists' => true, 'value' => 'cached.png']);
 
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao->expects($this->never())->method('get');
+        $dao->expects($this->never())->method('exists');
+        $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
+        $resolver->expects($this->never())->method('resolve');
 
-        $service = $this->createService($dao, $cache);
+        $service = $this->createService($dao, $cache, $resolver);
 
         $this->assertSame('cached.png', $service->getString('sLogoFile'));
     }
@@ -167,7 +176,7 @@ final class ThemeSettingServiceTest extends TestCase
                 ['exists' => true, 'value' => 'logo.png']
             );
 
-        $service = $this->createService($this->createDaoWithSetting('sLogoFile', 'str', 'logo.png'), $cache);
+        $service = $this->createServiceWithSetting('sLogoFile', 'str', 'logo.png', $cache);
 
         $service->getString('sLogoFile');
     }
@@ -186,9 +195,10 @@ final class ThemeSettingServiceTest extends TestCase
 
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
         $dao->expects($this->never())->method('exists');
-        $dao->expects($this->never())->method('get');
+        $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
+        $resolver->expects($this->never())->method('resolve');
 
-        $service = $this->createService($dao, $cache);
+        $service = $this->createService($dao, $cache, $resolver);
 
         $this->assertTrue($service->exists('sLogoFile'));
     }
@@ -210,9 +220,22 @@ final class ThemeSettingServiceTest extends TestCase
         $this->assertFalse($service->exists('sLogoFile'));
     }
 
-    private function createServiceWithSetting(string $name, string $type, mixed $value): ThemeSettingService
-    {
-        return $this->createService($this->createDaoWithSetting($name, $type, $value));
+    private function createServiceWithSetting(
+        string $name,
+        string $type,
+        mixed $value,
+        ?ThemeSettingCacheInterface $cache = null,
+    ): ThemeSettingService {
+        $setting = (new Setting())->setName($name)->setType($type)->setValue($value);
+        $configuration = (new ThemeConfiguration())->setId(self::THEME_ID)->addThemeSetting($setting);
+
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+
+        $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
+        $resolver->method('resolve')->willReturn($configuration);
+
+        return $this->createService($dao, $cache, $resolver);
     }
 
     private function createServiceWithoutSetting(): ThemeSettingService
@@ -221,33 +244,25 @@ final class ThemeSettingServiceTest extends TestCase
 
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('exists')->willReturn(true);
-        $dao->method('get')->willReturn($configuration);
 
-        return $this->createService($dao);
+        $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
+        $resolver->method('resolve')->willReturn($configuration);
+
+        return $this->createService($dao, resolver: $resolver);
     }
 
     private function createService(
         ThemeConfigurationDaoInterface $dao,
         ?ThemeSettingCacheInterface $cache = null,
+        ?ThemeConfigurationResolverInterface $resolver = null,
     ): ThemeSettingService {
         return new ThemeSettingService(
             $this->createContext(),
             $dao,
+            $resolver ?? $this->createStub(ThemeConfigurationResolverInterface::class),
             $cache ?? $this->createCacheMiss(),
             $this->createThemeStateService(),
         );
-    }
-
-    private function createDaoWithSetting(string $name, string $type, mixed $value): ThemeConfigurationDaoInterface
-    {
-        $setting = (new Setting())->setName($name)->setType($type)->setValue($value);
-        $configuration = (new ThemeConfiguration())->setId(self::THEME_ID)->addThemeSetting($setting);
-
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(true);
-        $dao->method('get')->willReturn($configuration);
-
-        return $dao;
     }
 
     private function createThemeStateService(): ThemeStateServiceInterface

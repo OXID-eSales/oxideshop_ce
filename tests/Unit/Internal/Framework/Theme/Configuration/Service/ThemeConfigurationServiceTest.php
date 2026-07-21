@@ -10,7 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Configuration\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeEnvironmentConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
@@ -80,14 +83,69 @@ final class ThemeConfigurationServiceTest extends TestCase
         $this->assertNull($configuration->getSettingByName('unknownSetting'));
     }
 
-    private function createService(ThemeConfigurationDaoInterface $dao): ThemeConfigurationService
+    public function testGetEnvironmentSettingValuesReturnsValuesFromCurrentShop(): void
     {
+        $environmentConfigurationDao = $this->createMock(ThemeEnvironmentConfigurationDaoInterface::class);
+        $environmentConfigurationDao
+            ->expects($this->once())
+            ->method('get')
+            ->with(self::THEME_ID, self::SHOP_ID)
+            ->willReturn(new ThemeEnvironmentConfiguration(['sIconSize' => '200*200']));
+
+        $this->assertSame(
+            ['sIconSize' => '200*200'],
+            $this->createService(
+                $this->createStub(ThemeConfigurationDaoInterface::class),
+                $environmentConfigurationDao
+            )->getEnvironmentSettingValues(self::THEME_ID)
+        );
+    }
+
+    public function testUpdateSettingsRejectsEnvironmentOverriddenSettingsWithoutSaving(): void
+    {
+        $configuration = (new ThemeConfiguration())
+            ->setId(self::THEME_ID)
+            ->addThemeSetting((new Setting())->setName('sIconSize')->setType('str')->setValue('100*100'));
+
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->never())->method('save');
+
+        $environmentConfigurationDao = $this->createStub(ThemeEnvironmentConfigurationDaoInterface::class);
+        $environmentConfigurationDao
+            ->method('get')
+            ->willReturn(new ThemeEnvironmentConfiguration(['sIconSize' => '300*300']));
+
+        $this->expectException(EnvironmentOverriddenSettingException::class);
+        $this->expectExceptionMessage(
+            "The settings 'sIconSize' of theme 'testTheme' are overridden by the environment configuration"
+        );
+
+        $this->createService($dao, $environmentConfigurationDao)
+            ->updateSettings($configuration, ['sIconSize' => '200*200']);
+    }
+
+    private function createService(
+        ThemeConfigurationDaoInterface $dao,
+        ?ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao = null,
+    ): ThemeConfigurationService {
         $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
         $themeStateService->method('getActiveThemeId')->willReturn(self::THEME_ID);
 
         $context = $this->createStub(ContextInterface::class);
         $context->method('getCurrentShopId')->willReturn(self::SHOP_ID);
 
-        return new ThemeConfigurationService($dao, $themeStateService, $context);
+        if ($environmentConfigurationDao === null) {
+            $environmentConfigurationDao = $this->createStub(ThemeEnvironmentConfigurationDaoInterface::class);
+            $environmentConfigurationDao
+                ->method('get')
+                ->willReturn(new ThemeEnvironmentConfiguration());
+        }
+
+        return new ThemeConfigurationService(
+            $dao,
+            $environmentConfigurationDao,
+            $themeStateService,
+            $context
+        );
     }
 }

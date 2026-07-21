@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
@@ -23,6 +24,7 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
     public function __construct(
         private ContextInterface $context,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ThemeConfigurationResolverInterface $themeConfigurationResolver,
         private ThemeSettingCacheInterface $themeSettingCache,
         private ThemeStateServiceInterface $themeStateService,
     ) {
@@ -107,7 +109,7 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
             return null;
         }
 
-        return $this->themeConfigurationDao->get($themeId, $shopId)->getSettingByName($name);
+        return $this->themeConfigurationResolver->resolve($themeId, $shopId)->getSettingByName($name);
     }
 
     private function getCacheKey(string $themeId, string $name): string

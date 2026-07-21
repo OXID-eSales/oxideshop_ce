@@ -7,5 +7,7 @@ services:
 
   oxid_esales.theme.cache.invalidate_theme_cache_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\InvalidateThemeCacheEventSubscriber
+    arguments:
+      OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface: '@oxid_esales.theme.configuration.resolver_cache'
     tags:
       - { name: kernel.event_subscriber }

@@ -26,16 +26,26 @@ final class Acceptance extends Module
         parent::_beforeSuite($settings);
         $this->installThemeConfiguration();
         $this->backupThemeConfiguration();
+        $this->backupThemeEnvironmentConfiguration();
+    }
+
+    public function _before(TestInterface $test): void
+    {
+        parent::_before($test);
+        $this->clearThemeEnvironmentConfiguration();
     }
 
     public function _after(TestInterface $test): void
     {
+        $this->restoreThemeEnvironmentConfiguration();
         $this->restoreThemeConfiguration();
         parent::_after($test);
     }
 
     public function _afterSuite(): void
     {
+        $this->restoreThemeEnvironmentConfiguration();
+        $this->cleanupThemeEnvironmentConfigurationBackup();
         $this->cleanupThemeConfigurationBackup();
         parent::_afterSuite();
     }

@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
@@ -22,6 +23,12 @@ interface ThemeConfigurationServiceInterface
      */
     public function getActiveConfiguration(): ThemeConfiguration;
 
-    /** @param array<string, mixed> $settingValues */
+    /** @return array<string, mixed> */
+    public function getEnvironmentSettingValues(string $themeId): array;
+
+    /**
+     * @param array<string, mixed> $settingValues
+     * @throws EnvironmentOverriddenSettingException
+     */
     public function updateSettings(ThemeConfiguration $configuration, array $settingValues): void;
 }

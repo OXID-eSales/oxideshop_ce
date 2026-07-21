@@ -2,6 +2,28 @@ services:
   _defaults:
     autowire: true
 
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\EnvironmentTreeBuilderFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\EnvironmentTreeBuilderFactory
+
+  oxid_esales.theme.configuration.environment_node:
+    class: Symfony\Component\Config\Definition\NodeInterface
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\EnvironmentTreeBuilderFactoryInterface', 'create']
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDao
+    arguments:
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.environment_node'
+      Symfony\Component\Config\Definition\Processor: '@oxid_esales.theme.configuration.processor'
+
+  oxid_esales.theme.configuration.resolver_cache:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCache
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolver
+    arguments:
+      OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface: '@oxid_esales.theme.configuration.resolver_cache'
+    public: true
+
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationService
 

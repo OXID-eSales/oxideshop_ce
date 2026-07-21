@@ -36,10 +36,10 @@ final class AccountReviewControllerTest extends IntegrationTestCase
             ->setSource('testSourcePath')
             ->setActivated(true);
         $configuration->addThemeSetting(
-            (new Setting())->setName('sDefaultListDisplayType')->setType('str')->setValue('infogrid')
+            (new Setting())->setName('defaultListDisplayType')->setType('str')->setValue('infogrid')
         );
         $configuration->addThemeSetting(
-            (new Setting())->setName('aNrofCatArticles')->setType('arr')->setValue(['10', '20', '50', '100'])
+            (new Setting())->setName('numberOfCategoryProducts')->setType('arr')->setValue(['10', '20', '50', '100'])
         );
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);

@@ -119,7 +119,7 @@ final class ManufacturerTest extends IntegrationTestCase
     public function testIconUrlShouldBeEndedWithTheGeneratedImgPath(): void
     {
         $this->setupManufacturer('oxicon', 'test-icon.png');
-        $this->overwriteConfig('sManufacturerIconsize', '80*90');
+        $this->overwriteConfig('manufacturerIconSize', '80*90');
         $sizeDirectory = '80_90_75';
         [$masterImage, $generatedImage] = $this->createImages('MICO', 'test-icon.png', $sizeDirectory);
 
@@ -135,7 +135,7 @@ final class ManufacturerTest extends IntegrationTestCase
     public function testAltIconUrlShouldBeEndedWithTheGeneratedImgPath(): void
     {
         $this->setupManufacturer('oxicon_alt', 'test-icon-alt.png');
-        $this->overwriteConfig('sManufacturerIconsize', '80*90');
+        $this->overwriteConfig('manufacturerIconSize', '80*90');
         $sizeDirectory = '80_90_75';
         [$masterImage, $generatedImage] = $this->createImages('MICO', 'test-icon-alt.png', $sizeDirectory);
 
@@ -151,7 +151,7 @@ final class ManufacturerTest extends IntegrationTestCase
     public function testPictureUrlShouldBeEndedWithTheGeneratedImgPath(): void
     {
         $this->setupManufacturer('oxpicture', 'test-picture.png');
-        $this->overwriteConfig('sManufacturerPicturesize', '80*90');
+        $this->overwriteConfig('manufacturerPictureSize', '80*90');
         $sizeDirectory = '80_90_75';
         [$masterImage, $generatedImage] = $this->createImages('MPIC', 'test-picture.png', $sizeDirectory);
 
@@ -167,7 +167,7 @@ final class ManufacturerTest extends IntegrationTestCase
     public function testThumbnailUrlShouldBeEndedWithTheGeneratedImgPath(): void
     {
         $this->setupManufacturer('oxthumbnail', 'test-thumbnail.png');
-        $this->overwriteConfig('sManufacturerThumbnailsize', '80*90');
+        $this->overwriteConfig('manufacturerThumbnailSize', '80*90');
         $sizeDirectory = '80_90_75';
         [$masterImage, $generatedImage] = $this->createImages('MTHU', 'test-thumbnail.png', $sizeDirectory);
 
@@ -183,7 +183,7 @@ final class ManufacturerTest extends IntegrationTestCase
     public function testPromotionIconUrlShouldBeEndedWithTheGeneratedImgPath(): void
     {
         $this->setupManufacturer('oxpromotion_icon', 'test-promotion-icon.png');
-        $this->overwriteConfig('sManufacturerPromotionsize', '80*90');
+        $this->overwriteConfig('manufacturerPromotionSize', '80*90');
         $sizeDirectory = '80_90_75';
         [$masterImage, $generatedImage] = $this->createImages('MPICO', 'test-promotion-icon.png', $sizeDirectory);
 
@@ -257,7 +257,7 @@ final class ManufacturerTest extends IntegrationTestCase
             (new Setting())->setName($configParam)->setType('bool')->setValue(false)
         );
         $configuration->addThemeSetting(
-            (new Setting())->setName('sIconsize')->setType('str')->setValue($iconSizeValue)
+            (new Setting())->setName('iconSize')->setType('str')->setValue($iconSizeValue)
         );
 
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();

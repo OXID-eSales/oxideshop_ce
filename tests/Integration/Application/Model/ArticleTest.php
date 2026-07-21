@@ -66,10 +66,10 @@ final class ArticleTest extends IntegrationTestCase
             ->setId('testTheme')
             ->setSource('testSourcePath')
             ->setActivated(true)
-            ->addThemeSetting((new Setting())->setName('sIconsize')->setType('str')->setValue('87*87'))
-            ->addThemeSetting((new Setting())->setName('sThumbnailsize')->setType('str')->setValue('200*200'))
-            ->addThemeSetting((new Setting())->setName('sDetailImageSize')->setType('str')->setValue('600*600'))
-            ->addThemeSetting((new Setting())->setName('sZoomImageSize')->setType('str')->setValue('1200*1200'));
+            ->addThemeSetting((new Setting())->setName('iconSize')->setType('str')->setValue('87*87'))
+            ->addThemeSetting((new Setting())->setName('thumbnailSize')->setType('str')->setValue('200*200'))
+            ->addThemeSetting((new Setting())->setName('detailImageSize')->setType('str')->setValue('600*600'))
+            ->addThemeSetting((new Setting())->setName('zoomImageSize')->setType('str')->setValue('1200*1200'));
 
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 

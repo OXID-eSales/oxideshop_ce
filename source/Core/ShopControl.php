@@ -284,11 +284,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             ]);
         }
 
-        return new Response(
-            $output,
-            Response::HTTP_OK,
-            ['Content-Type' => 'text/html; charset=' . $view->getCharSet()]
-        );
+        return new Response($output);
     }
 
     private function getRenderer(): TemplateRendererInterface

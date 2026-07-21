@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
-
-use function oxTriggerOfflinePageDisplay;
 
 class ExceptionHandler
 {
@@ -34,7 +34,9 @@ class ExceptionHandler
             throw $exception;
         }
 
-        oxTriggerOfflinePageDisplay();
+        $response = new OfflinePageResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
+        $response->headers->set('Connection', 'close');
+        $response->send();
         exit(1);
     }
 

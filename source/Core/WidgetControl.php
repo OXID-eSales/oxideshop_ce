@@ -22,12 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 {
-    /**
-     * Skip main tasks as it already handled in oxShopControl.
-     *
-     * @var bool
-     */
-    protected $_blMainTasksExecuted = true;
+    protected bool $skipMaintenanceTasks = true;
 
     /**
      * Array of Views added to the view chain

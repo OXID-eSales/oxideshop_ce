@@ -21,20 +21,6 @@ require_once VENDOR_PATH . 'autoload.php';
 
 (new DotenvLoader(INSTALLATION_ROOT_PATH))->loadEnvironmentVariables();
 
-if (!function_exists('oxTriggerOfflinePageDisplay')) {
-    function oxTriggerOfflinePageDisplay(): void
-    {
-        if (strtolower(PHP_SAPI) !== 'cli') {
-            header('HTTP/1.1 500 Internal Server Error');
-            header('Connection: close');
-            $offlineFile = OX_BASE_PATH . 'offline.html';
-            if (is_readable($offlineFile)) {
-                echo file_get_contents($offlineFile);
-            }
-        }
-    }
-}
-
 spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
 spl_autoload_register([ModuleAutoload::class, 'autoload']);
 

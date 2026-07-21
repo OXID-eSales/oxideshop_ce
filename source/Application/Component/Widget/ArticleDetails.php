@@ -829,8 +829,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
                 if (!$this->_oProduct->load($sOxid)) {
                     $myUtils->redirect($myConfig->getShopHomeUrl());
-
-                    return $this->_oProduct;
+                    $myUtils->showMessageAndExit('');
                 }
 
                 $sVarSelId = Registry::getRequest()->getRequestEscapedParameter("varselid");
@@ -938,6 +937,7 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         if (!$blContinue) {
             $myUtils->redirect($myConfig->getShopHomeUrl());
+            $myUtils->showMessageAndExit('');
         }
 
         $this->processProduct($this->_oProduct);

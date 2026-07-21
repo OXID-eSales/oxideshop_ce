@@ -29,9 +29,18 @@ readonly class ShopRunner implements ShopRunnerInterface
     public function run(callable $fallbackController): void
     {
         $this->request->attributes->add($this->resolveControllerAttributes($fallbackController));
+        $this->handle();
+    }
 
+    public function runController(callable $controller): void
+    {
+        $this->request->attributes->set('_controller', $controller);
+        $this->handle();
+    }
+
+    private function handle(): void
+    {
         $response = $this->kernel->handle($this->request);
-        $response->prepare($this->request);
         $response->send();
 
         if ($this->kernel instanceof TerminableInterface) {

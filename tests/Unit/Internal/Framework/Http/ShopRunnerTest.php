@@ -49,6 +49,18 @@ final class ShopRunnerTest extends TestCase
         $this->assertSame('routed-body id=some-id', $sentContent);
     }
 
+    public function testRunControllerRunsTheGivenControllerEvenWhenARouteMatches(): void
+    {
+        $request = Request::create('/routed/some-id');
+        $runner = $this->createRunner($request);
+
+        ob_start();
+        $runner->runController(static fn(): Response => new Response('explicit-controller'));
+        $sentContent = (string) ob_get_clean();
+
+        $this->assertSame('explicit-controller', $sentContent);
+    }
+
     public static function routedController(string $id): Response
     {
         return new Response('routed-body id=' . $id);
@@ -56,7 +68,15 @@ final class ShopRunnerTest extends TestCase
 
     private function runAndCaptureOutput(Request $request, callable $fallbackController): string
     {
-        $runner = new ShopRunner(
+        ob_start();
+        $this->createRunner($request)->run($fallbackController);
+
+        return (string) ob_get_clean();
+    }
+
+    private function createRunner(Request $request): ShopRunner
+    {
+        return new ShopRunner(
             new HttpKernel(
                 new EventDispatcher(),
                 new ContainerControllerResolver(new Container()),
@@ -67,11 +87,6 @@ final class ShopRunnerTest extends TestCase
             $request,
             $this->compiledRoutes()
         );
-
-        ob_start();
-        $runner->run($fallbackController);
-
-        return (string) ob_get_clean();
     }
 
     private function compiledRoutes(): array

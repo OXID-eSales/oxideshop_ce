@@ -27,7 +27,7 @@ if (!$blAjaxCall) {
     return;
 }
 
-ContainerFacade::get(ShopRunnerInterface::class)->run(static function (): Response {
+ContainerFacade::get(ShopRunnerInterface::class)->runController(static function (): Response {
     $myConfig = Registry::getConfig();
     $myConfig->init();
 
@@ -51,21 +51,24 @@ ContainerFacade::get(ShopRunnerInterface::class)->run(static function (): Respon
     }
 
     $content = '';
+    $status = Response::HTTP_OK;
     if ($sContainer = Registry::getRequest()->getRequestParameter('container')) {
         $sContainer = strtolower(trim(basename($sContainer)));
 
-        // Controller name for ajax class is automatically done from the request.
-        // Request comes from the same named class without _ajax.
+        // Ajax class is derived from the container name plus the "_ajax" suffix.
         $ajaxContainerClassName = $sContainer . '_ajax';
-        // Ensures that the right name is returned when a module introduce an ajax class.
         $containerClass = Registry::getControllerClassNameResolver()->getClassNameById($ajaxContainerClassName);
 
-        $oAjaxComponent = oxNew($containerClass);
-        $oAjaxComponent->setName($sContainer);
-        $content = (string) $oAjaxComponent->processRequest(Registry::getRequest()->getRequestParameter('fnc'));
+        if ($containerClass !== null) {
+            $oAjaxComponent = oxNew($containerClass);
+            $oAjaxComponent->setName($sContainer);
+            $content = (string) $oAjaxComponent->processRequest(Registry::getRequest()->getRequestParameter('fnc'));
+        } else {
+            $status = Response::HTTP_NOT_FOUND;
+        }
     }
 
     $myConfig->pageClose();
 
-    return new Response($content);
+    return new Response($content, $status);
 });

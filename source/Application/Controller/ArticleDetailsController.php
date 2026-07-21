@@ -497,6 +497,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         if (!$shouldContinue) {
             $utils->redirect($config->getShopHomeUrl());
+            $utils->showMessageAndExit('');
         }
 
         $this->processProduct($this->_oProduct);

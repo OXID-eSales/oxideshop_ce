@@ -8,6 +8,9 @@
 namespace OxidEsales\EshopCommunity\Application\Component;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use oxRegistry;
 
 /**
@@ -42,8 +45,7 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sClassName = $myConfig->getActiveView()->getClassKey();
 
         if (!$oShop->$sActiveField->value && 'oxstart' != $sClassName && !$this->isAdmin()) {
-            // redirect to offline if there is no active shop
-            Registry::getUtils()->showOfflinePage();
+            ContainerFacade::dispatch(new ResponseReadyEvent(new OfflinePageResponse()));
         }
 
         return $oShop;

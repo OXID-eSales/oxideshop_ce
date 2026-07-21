@@ -10,4 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Http;
 interface ShopRunnerInterface
 {
     public function run(callable $fallbackController): void;
+
+    public function runController(callable $controller): void;
 }

@@ -4,6 +4,7 @@ parameters:
     X-Content-Type-Options: 'nosniff'
     Referrer-Policy: 'strict-origin-when-cross-origin'
   oxid_esales.http.default_cache_control: 'no-store, no-cache, must-revalidate'
+  oxid_esales.http.charset: 'UTF-8'
   oxid_esales.build_directory: '%env(OXID_BUILD_DIRECTORY)%'
   oxid_esales.shop_url: '%env(OXID_SHOP_BASE_URL)%'
   oxid_esales.log_level: '%env(OXID_LOG_LEVEL)%'

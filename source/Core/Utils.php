@@ -643,17 +643,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Shows offline page.
-     * Directly displays the offline page to the client (browser)
-     * with a 500 status code header.
-     */
-    public function showOfflinePage()
-    {
-        \oxTriggerOfflinePageDisplay();
-        exit();
-    }
-
-    /**
      * redirect user to the specified URL
      *
      * @param string $sUrl               URL to be redirected
@@ -934,7 +923,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $sReturn = $sRet;
         }
 
-        $this->stopRequestWith(new Response($sReturn, 404, ['Content-Type' => 'text/html; charset=UTF-8']));
+        $this->stopRequestWith(new Response($sReturn, 404));
     }
 
     /**

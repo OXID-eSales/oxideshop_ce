@@ -23,6 +23,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner
     arguments:
+      $request: '@Symfony\Component\HttpFoundation\Request'
       $routes: '%oxid.routes%'
     public: true
 
@@ -45,3 +46,9 @@ services:
       $defaultCacheControl: '%oxid_esales.http.default_cache_control%'
     tags:
       - { name: kernel.event_subscriber }
+
+  Symfony\Component\HttpKernel\EventListener\ResponseListener:
+    arguments:
+      $charset: '%oxid_esales.http.charset%'
+    tags:
+      - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse, priority: -1000 }

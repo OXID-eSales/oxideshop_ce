@@ -39,4 +39,16 @@ final class WidgetControlTest extends IntegrationTestCase
         oxNew(WidgetControl::class)
             ->buildWidgetResponse($nonWidgetClass);
     }
+
+    public function testWidgetSkipsMaintenanceTasks(): void
+    {
+        $widgetControl = new class extends WidgetControl {
+            public function skipsMaintenanceTasks(): bool
+            {
+                return $this->skipMaintenanceTasks;
+            }
+        };
+
+        $this->assertTrue($widgetControl->skipsMaintenanceTasks());
+    }
 }

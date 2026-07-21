@@ -34,6 +34,8 @@
   - An uncaught `StandardException` outside debug mode re-renders the requested controller with the error queued for display (`UtilsView::addErrorToDisplay()`) instead of responding with an empty 500; `ThemeMain` and `ThemeConfiguration` rely on this instead of catching
   - Shop exceptions and response signals thrown by template-embedded widgets propagate to the HTTP kernel: a redirect or 404 raised inside a widget applies to the whole page again (as in OXID eShop 7) and a failing widget results in the central shop error handling instead of an inline debug block
   - The `Cache-Control` header is owned by the `Response`; PHP's session cache limiter is disabled
+  - The default `Content-Type` (`text/html`) and charset (DI parameter `oxid_esales.http.charset`) are set by a `kernel.response` listener instead of `ShopControl`
+  - A deactivated shop stops the request with an `OfflinePageResponse` (404 with the offline page content)
 
 ### Removed
 - `Output` - process output with a `kernel.response` listener
@@ -51,6 +53,8 @@
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
 - `Utils::setHeader()` - set headers on the `Response` or subscribe to the `kernel.response` event
+- `Utils::showOfflinePage()` - stop the request with an `OfflinePageResponse`
+- `oxTriggerOfflinePageDisplay()` - the uncaught-exception handler responds with an `OfflinePageResponse`
 - `Oxid` entry-point class (`Oxid::run()`, `Oxid::runWidget()`), `ShopControl::start()` and `WidgetControl::start()` - the entry scripts run through the HTTP kernel; use `ShopControl::buildResponse()` / `WidgetControl::buildWidgetResponse()`
 - `ShopControl` internals superseded by the kernel migration 
 - `File::getFilenameForUrl()`

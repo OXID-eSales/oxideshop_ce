@@ -309,6 +309,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
      *
+     * @deprecated since v7.6.0. This constant will be removed in version 8.0.
+     *
      * @var string
      */
     const OXMODULE_THEME_PREFIX = 'theme:';

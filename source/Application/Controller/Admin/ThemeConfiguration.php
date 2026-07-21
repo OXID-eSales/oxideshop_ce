@@ -64,6 +64,8 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
     /**
      * Saves shop configuration variables
+     *
+     * @deprecated since v7.6.0. This method will be removed in version 8.0.
      */
     public function saveConfVars()
     {

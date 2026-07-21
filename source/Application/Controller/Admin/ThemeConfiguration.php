@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\DisplayError;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration as Configuration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\SettingValueMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface;
@@ -38,10 +39,11 @@ class ThemeConfiguration extends AdminDetailsController
 
         try {
             $configuration = $this->getThemeConfiguration();
+            $environmentValues = $this->themeConfigurationService->getEnvironmentSettingValues($configuration->getId());
 
             $this->_aViewData['themeId'] = $configuration->getId();
             $this->_aViewData['themeTitle'] = $configuration->getTitle() ?: $configuration->getId();
-            $this->_aViewData['settingGroups'] = $this->buildSettingGroups($configuration);
+            $this->_aViewData['settingGroups'] = $this->buildSettingGroups($configuration, $environmentValues);
         } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         }
@@ -62,6 +64,8 @@ class ThemeConfiguration extends AdminDetailsController
             );
         } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+        } catch (EnvironmentOverriddenSettingException) {
+            Registry::getUtilsView()->addErrorToDisplay('THEME_SETTING_ENVIRONMENT_OVERRIDDEN_ERROR');
         }
     }
 
@@ -74,7 +78,7 @@ class ThemeConfiguration extends AdminDetailsController
             : $this->themeConfigurationService->getActiveConfiguration();
     }
 
-    private function buildSettingGroups(Configuration $configuration): array
+    private function buildSettingGroups(Configuration $configuration, array $environmentValues): array
     {
         $groups = [];
 
@@ -84,27 +88,40 @@ class ThemeConfiguration extends AdminDetailsController
             }
         }
 
-        return array_map(fn(array $settings): array => $this->buildGroupData($settings), $groups);
+        return array_map(
+            fn(array $settings): array => $this->buildGroupData($settings, $environmentValues),
+            $groups
+        );
     }
 
     /** @param Setting[] $settings */
-    private function buildGroupData(array $settings): array
+    private function buildGroupData(array $settings, array $environmentValues): array
     {
         usort(
             $settings,
             fn(Setting $first, Setting $second): int => $first->getPositionInGroup() <=> $second->getPositionInGroup()
         );
 
-        return array_map(fn(Setting $setting): array => $this->buildSettingData($setting), $settings);
+        return array_map(
+            fn(Setting $setting): array => $this->buildSettingData($setting, $environmentValues),
+            $settings
+        );
     }
 
-    private function buildSettingData(Setting $setting): array
+    private function buildSettingData(Setting $setting, array $environmentValues): array
     {
+        $isEnvironmentOverridden = array_key_exists($setting->getName(), $environmentValues);
+
         return [
             'name' => $setting->getName(),
             'type' => $setting->getType(),
-            'value' => $this->settingValueMapper->toFormValue($setting),
+            'value' => $this->settingValueMapper->toFormValue(
+                $isEnvironmentOverridden
+                    ? (clone $setting)->setValue($environmentValues[$setting->getName()])
+                    : $setting
+            ),
             'options' => $setting->getConstraints(),
+            'isEnvironmentOverridden' => $isEnvironmentOverridden,
         ];
     }
 

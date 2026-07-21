@@ -12,7 +12,6 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
-use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ApplicationExitEvent;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Psr\Cache\CacheItemPoolInterface;
@@ -663,35 +662,11 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
         $sUrl = str_ireplace("&amp;", "&", $sUrl);
 
-        $this->stopRequestWith(
+        ContainerFacade::dispatch(new ResponseReadyEvent(
             $iHeaderCode >= 300 && $iHeaderCode < 400
                 ? new RedirectResponse($sUrl, $iHeaderCode)
                 : new Response('', $iHeaderCode, ['Location' => $sUrl])
-        );
-    }
-
-    private function stopRequestWith(Response $response): void
-    {
-        $this->prepareToExit();
-
-        ContainerFacade::dispatch(new ResponseReadyEvent($response));
-    }
-
-    /**
-     * Shows the given message and stops further request processing.
-     * Message might be whole content like a 404 page.
-     *
-     * @param string $sMsg message to show
-     */
-    public function showMessageAndExit($sMsg)
-    {
-        $this->stopRequestWith(new Response($sMsg));
-    }
-
-    protected function prepareToExit()
-    {
-        Registry::getSession()->freeze();
-        ContainerFacade::dispatch(new ApplicationExitEvent());
+        ));
     }
 
     /**
@@ -923,7 +898,7 @@ class Utils extends \OxidEsales\Eshop\Core\Base
             $sReturn = $sRet;
         }
 
-        $this->stopRequestWith(new Response($sReturn, 404));
+        ContainerFacade::dispatch(new ResponseReadyEvent(new Response($sReturn, 404)));
     }
 
     /**

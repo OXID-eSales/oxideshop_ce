@@ -23,7 +23,7 @@ final class ProductDetailsPageCest
 
     public function _before(AcceptanceTester $I): void
     {
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
     }
 
     #[Group('main', 'product', 'productVariants')]
@@ -136,7 +136,7 @@ final class ProductDetailsPageCest
         ];
 
         $I->updateConfigInDatabase('aSortCols', 'a:2:{i:0;s:7:"oxtitle";i:1;s:13:"oxvarminprice";}', 'arr');
-        $I->updateThemeSetting('sProductListNavigation', true);
+        $I->updateThemeSetting('showProductListNavigation', true);
 
         $searchListPage = $I->openShop()
             ->searchFor('100')
@@ -752,7 +752,7 @@ final class ProductDetailsPageCest
 
         $productId = '1000';
 
-        $I->updateThemeSetting('iNewBasketItemMessage', '2');
+        $I->updateThemeSetting('newBasketItemMessage', '2');
 
         // making product out of stock now
         $I->updateInDatabase('oxarticles', ['oxstock' => '1', 'oxstockflag' => '2'], ['oxid' => $productId]);

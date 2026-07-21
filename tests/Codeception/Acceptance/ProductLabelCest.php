@@ -17,7 +17,7 @@ final class ProductLabelCest
 {
     public function _before(AcceptanceTester $I): void
     {
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
     }
 
     public function addingProductLabel(AcceptanceTester $I): void

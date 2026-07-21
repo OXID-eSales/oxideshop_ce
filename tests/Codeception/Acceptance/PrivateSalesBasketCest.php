@@ -17,8 +17,8 @@ final class PrivateSalesBasketCest
 {
     public function _before(AcceptanceTester $I): void
     {
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
-        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
+        $I->updateThemeSetting('newBasketItemMessage', '0');
     }
 
     public function testIfBasketExcludeEnabledBlocksRootCatChange(AcceptanceTester $I): void

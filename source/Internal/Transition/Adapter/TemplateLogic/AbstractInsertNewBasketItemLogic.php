@@ -26,7 +26,7 @@ abstract class AbstractInsertNewBasketItemLogic
         );
 
         $types = ['0' => 'none', '1' => 'message', '2' => 'popup', '3' => 'basket'];
-        $newBasketItemMessage = $themeSettingService->getInteger('iNewBasketItemMessage');
+        $newBasketItemMessage = $themeSettingService->getInteger('newBasketItemMessage');
 
         // If correct type of message is expected
         if (

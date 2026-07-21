@@ -56,10 +56,10 @@ final class ViewConfigTest extends IntegrationTestCase
             ->setId('apex')
             ->setSource('testSourcePath')
             ->setActivated(true)
-            ->addThemeSetting((new Setting())->setName('sLogoFile')->setType('str')->setValue('logo.png'));
+            ->addThemeSetting((new Setting())->setName('logoFile')->setType('str')->setValue('logo.png'));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 
-        $this->assertSame('logo.png', $this->viewConfig->getThemeSettings()->getString('sLogoFile'));
+        $this->assertSame('logo.png', $this->viewConfig->getThemeSettings()->getString('logoFile'));
     }
 
     public function testThemeSettingsReturnsValueForExistingBooleanSetting(): void
@@ -69,10 +69,10 @@ final class ViewConfigTest extends IntegrationTestCase
             ->setId('apex')
             ->setSource('testSourcePath')
             ->setActivated(true)
-            ->addThemeSetting((new Setting())->setName('bl_showWishlist')->setType('bool')->setValue(true));
+            ->addThemeSetting((new Setting())->setName('showWishlist')->setType('bool')->setValue(true));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 
-        $this->assertTrue($this->viewConfig->getThemeSettings()->getBoolean('bl_showWishlist'));
+        $this->assertTrue($this->viewConfig->getThemeSettings()->getBoolean('showWishlist'));
     }
 
     public function testThemeSettingsExistsReturnsFalseForMissingSetting(): void

@@ -1067,7 +1067,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     protected function calcVoucherDiscount()
     {
-        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showVouchers') && ($this->_oVoucherDiscount === null || ($this->_blUpdateNeeded && !$this->isAdmin()))) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showVouchers') && ($this->_oVoucherDiscount === null || ($this->_blUpdateNeeded && !$this->isAdmin()))) {
             $this->_oVoucherDiscount = $this->getPriceObject();
 
             // calculating price to apply discount
@@ -2154,7 +2154,7 @@ class Basket extends \OxidEsales\Eshop\Core\Base
      */
     public function getVoucherDiscount()
     {
-        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('bl_showVouchers')) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showVouchers')) {
             return $this->_oVoucherDiscount;
         }
 

@@ -19,8 +19,8 @@ final class ThemeSettingsCest
 {
     private string $themeTitle = 'APEX Theme';
     private string $settingGroup = 'display';
-    private string $boolSetting = 'blShowBirthdayFields';
-    private string $selectSetting = 'sDefaultListDisplayType';
+    private string $boolSetting = 'showBirthdayFields';
+    private string $selectSetting = 'defaultListDisplayType';
 
     public function themeSettingsTabShowsSettingsOfTheActiveTheme(AcceptanceTester $I): void
     {

@@ -19,7 +19,7 @@ final class ManufacturerCest
     public function checkManufacturerList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer list');
-        $I->updateThemeSetting('bl_showManufacturer', true);
+        $I->updateThemeSetting('showManufacturer', true);
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', true);
 
         $homePage = $I->openShop();
@@ -42,11 +42,11 @@ final class ManufacturerCest
     public function checkAndNavigateThroughManufacturerProductList(AcceptanceTester $I): void
     {
         $I->wantToTest('manufacturer functionality and product list navigation');
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
-        $I->updateThemeSetting('bl_showManufacturer', true);
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
+        $I->updateThemeSetting('showManufacturer', true);
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', true);
-        $I->updateThemeSetting('aNrofCatArticles', ['10', '50', '100', '2', '1']);
-        $I->updateThemeSetting('aNrofCatArticlesInGrid', ['10', '50', '100', '2', '1']);
+        $I->updateThemeSetting('numberOfCategoryProducts', ['10', '50', '100', '2', '1']);
+        $I->updateThemeSetting('numberOfCategoryProductsInGrid', ['10', '50', '100', '2', '1']);
 
         $productData = [
             'id' => '1000',
@@ -82,7 +82,7 @@ final class ManufacturerCest
 
         //Dont show manufacturers at all
         $I->updateConfigInDatabase('bl_perfLoadManufacturerTree', false);
-        $I->updateThemeSetting('bl_showManufacturer', false);
+        $I->updateThemeSetting('showManufacturer', false);
         $I->clearShopCache();
         $I->openShop();
         $I->dontSee(Translator::translate('OUR_BRANDS'));

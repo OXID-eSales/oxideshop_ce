@@ -206,7 +206,7 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     public function showBackToShop()
     {
         $newBasketItemMessage = ContainerFacade::get(ThemeSettingServiceInterface::class)
-            ->getInteger('iNewBasketItemMessage');
+            ->getInteger('newBasketItemMessage');
         $backToShop = Registry::getSession()->getVariable('_backtoshop');
 
         return ($newBasketItemMessage == 3 && $backToShop);
@@ -266,13 +266,13 @@ class BasketController extends \OxidEsales\Eshop\Application\Controller\Frontend
     /**
      * Redirects user back to previous part of shop (list, details, ...) from basket.
      * Used with option "Display Message when Product is added to Cart" set to "Open Basket"
-     * ($myConfig->iNewBasketItemMessage == 3)
+     * ($myConfig->newBasketItemMessage == 3)
      *
      * @return string   $sBackLink  back link
      */
     public function backToShop()
     {
-        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('iNewBasketItemMessage') == 3) {
+        if (ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('newBasketItemMessage') == 3) {
             $oSession = Registry::getSession();
             if ($sBackLink = $oSession->getVariable('_backtoshop')) {
                 $oSession->deleteVariable('_backtoshop');

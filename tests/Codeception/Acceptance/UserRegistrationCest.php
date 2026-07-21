@@ -26,7 +26,7 @@ final class UserRegistrationCest
         $userRegistration = new UserRegistration($I);
         $I->wantToTest('simple user account opening');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         // prepare user data
         $userId = '1';
         $userLoginData = $this->getUserLoginData($userId);
@@ -80,7 +80,7 @@ final class UserRegistrationCest
                        . ' without registration with the same email in checkout');
         $I->openShop();
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
         // prepare user data
         $userId = '2';
@@ -121,7 +121,7 @@ final class UserRegistrationCest
         $basket = new Basket($I);
         $I->wantTo('register user account in the checkout process');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         // prepare user data
         $userId = '3';
         $userPassword = 'user33';
@@ -160,7 +160,7 @@ final class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create user account without registration twice in the checkout process');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         // prepare user data
         $userId = '4';
         $userLoginData = $this->getUserLoginData($userId);
@@ -213,7 +213,7 @@ final class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create user account without registration and later with registration in checkout process');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         // prepare user data
         $userId = '5';
         $userLoginData = $this->getUserLoginData($userId);
@@ -268,7 +268,7 @@ final class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create registered user account twice by using wrong password second time');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         // prepare user data
         $userId = '6';
         $userPassword = 'user66';
@@ -314,8 +314,8 @@ final class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantTo('create not registered user account in the checkout and subscribe newsletter with the same email');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
-        $I->updateThemeSetting('blFooterShowNewsletterForm', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
+        $I->updateThemeSetting('footerShowNewsletterForm', true);
         $I->updateConfigInDatabase('blOrderOptInEmail', true, 'bool');
         // prepare user data
         $userId = '8';
@@ -354,7 +354,7 @@ final class UserRegistrationCest
         $checkout = new UserRegistrationInCheckout($I);
         $I->wantToTest('user performs order with option3 twice, both time using good email and pass');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         // prepare user data
         $userId = '9';
         $userPassword = 'user66';

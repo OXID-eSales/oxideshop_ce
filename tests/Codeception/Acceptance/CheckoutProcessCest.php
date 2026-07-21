@@ -26,7 +26,7 @@ final class CheckoutProcessCest
 {
     public function _before(AcceptanceTester $I): void
     {
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
         $I->updateConfigInDatabase('blShowVATForDelivery', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForPayCharge', false, 'bool');
         $I->updateConfigInDatabase('blShowVATForWrapping', false, 'bool');
@@ -171,7 +171,7 @@ final class CheckoutProcessCest
         $I->wantToTest('if no fatal errors or exceptions are thrown, but an error message is shown, if the same
         product was sold out by other user during the checkout');
 
-        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+        $I->updateThemeSetting('newBasketItemMessage', '0');
 
         $userData = Fixtures::get('existingUser');
 
@@ -262,7 +262,7 @@ final class CheckoutProcessCest
     {
         $I->wantToTest('minimal order price in checkout process (min order sum is 49 €)');
 
-        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+        $I->updateThemeSetting('newBasketItemMessage', '0');
 
         // prepare data for test
         $I->updateInDatabase('oxdelivery', ['OXTITLE_1' => 'OXTITLE'], ['OXTITLE_1' => '']);
@@ -341,7 +341,7 @@ final class CheckoutProcessCest
         $basket = new Basket($I);
         $I->wantToTest('bundled product');
 
-        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+        $I->updateThemeSetting('newBasketItemMessage', '0');
 
         $productData = [
             'id' => '1000',
@@ -371,7 +371,7 @@ final class CheckoutProcessCest
     public function checkGuestUserNameSwitching(AcceptanceTester $I): void
     {
         $I->wantToTest('guest checkout with username switching');
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
 
         $basket = new Basket($I);
         $userRegistration = new UserRegistrationInCheckout($I);
@@ -420,7 +420,7 @@ final class CheckoutProcessCest
     {
         $I->wantToTest('creating shipping address during authenticated user`s checkout');
 
-        $I->updateThemeSetting('iNewBasketItemMessage', '0');
+        $I->updateThemeSetting('newBasketItemMessage', '0');
         $basket = new Basket($I);
         $userData = Fixtures::get('existingUser');
         $existingProductId = '1001';
@@ -458,7 +458,7 @@ final class CheckoutProcessCest
     public function checkForceIdDisabledDuringCheckout(AcceptanceTester $I): void
     {
         $I->wantToTest('Change session during payment');
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
 
         $basket = new Basket($I);
         $userRegistration = new UserRegistrationInCheckout($I);

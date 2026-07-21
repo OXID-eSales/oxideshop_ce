@@ -17,7 +17,7 @@ final class CurrencyCest
 {
     public function _before(AcceptanceTester $I): void
     {
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
     }
 
     public function testCurrencySwitch(AcceptanceTester $I): void

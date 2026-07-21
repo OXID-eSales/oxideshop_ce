@@ -66,8 +66,8 @@ namespace OxidEsales\EshopCommunity\Core {
     use OxidEsales\Eshop\Core\Exception\SystemComponentException;
     use OxidEsales\Eshop\Core\Registry;
     use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-    use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+    use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
     use Symfony\Component\Filesystem\Path;
@@ -461,7 +461,8 @@ namespace OxidEsales\EshopCommunity\Core {
         {
             try {
                 $themeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
-                $configuration = ContainerFacade::get(ThemeConfigurationDaoInterface::class)->get($themeId, $shopId);
+                $configuration = ContainerFacade::get(ThemeConfigurationResolverInterface::class)
+                    ->resolve($themeId, $shopId);
             } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
                 return false;
             }

@@ -13,11 +13,15 @@ use OxidEsales\Eshop\Core\DisplayError;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
+use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration as Configuration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\Request;
 
 final class ThemeConfigurationTest extends IntegrationTestCase
@@ -55,6 +59,30 @@ final class ThemeConfigurationTest extends IntegrationTestCase
         $controller->render();
 
         $this->assertSame(self::THEME_ID, $controller->getViewData()['themeId']);
+    }
+
+    public function testRenderDisplaysEnvironmentValueAndMarksSettingAsOverridden(): void
+    {
+        $this->installTestTheme();
+        $this->saveEnvironmentConfiguration([
+            'themeSettings' => [
+                'testStringSetting' => ['value' => 'environmentValue'],
+            ],
+        ]);
+
+        $controller = $this->get(ThemeConfiguration::class);
+        $controller->setEditObjectId(self::THEME_ID);
+        $controller->render();
+
+        $settings = $this->getSettingsByName($controller->getViewData()['settingGroups']['display']);
+
+        $this->assertSame('environmentValue', $settings['testStringSetting']['value']);
+        $this->assertTrue($settings['testStringSetting']['isEnvironmentOverridden']);
+        $this->assertFalse($settings['testBoolSetting']['isEnvironmentOverridden']);
+        $this->assertSame(
+            'defaultValue',
+            $this->getSavedConfiguration()->getSettingByName('testStringSetting')->getValue()
+        );
     }
 
     public function testRenderOrdersSettingsByPosition(): void
@@ -145,6 +173,29 @@ final class ThemeConfigurationTest extends IntegrationTestCase
         $controller->save();
     }
 
+    public function testSaveRejectsEnvironmentOverriddenSetting(): void
+    {
+        $this->installTestTheme();
+        $this->saveEnvironmentConfiguration([
+            'themeSettings' => [
+                'testStringSetting' => ['value' => 'environmentValue'],
+            ],
+        ]);
+        $this->get(Request::class)->request->set('settings', [
+            'testStringSetting' => 'tamperedValue',
+        ]);
+        $this->expectDisplayError('THEME_SETTING_ENVIRONMENT_OVERRIDDEN_ERROR');
+
+        $controller = $this->get(ThemeConfiguration::class);
+        $controller->setEditObjectId(self::THEME_ID);
+        $controller->save();
+
+        $this->assertSame(
+            'defaultValue',
+            $this->getSavedConfiguration()->getSettingByName('testStringSetting')->getValue()
+        );
+    }
+
     private function installTestTheme(): void
     {
         $this->get(ThemeConfigurationInstallerInterface::class)->install(__DIR__ . '/Fixtures/testTheme');
@@ -163,6 +214,21 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     private function getSettingsByName(array $settingGroup): array
     {
         return array_column($settingGroup, null, 'name');
+    }
+
+    private function saveEnvironmentConfiguration(array $configuration): void
+    {
+        $path = Path::join(
+            EnvUrlFormatter::toEnvUrl(
+                $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory()
+            ),
+            'shops',
+            (string) self::SHOP_ID,
+            'themes',
+            self::THEME_ID . '.yaml'
+        );
+
+        $this->get(FileStorageFactoryInterface::class)->create($path)->save($configuration);
     }
 
     private function expectDisplayError(string $translationKey): void

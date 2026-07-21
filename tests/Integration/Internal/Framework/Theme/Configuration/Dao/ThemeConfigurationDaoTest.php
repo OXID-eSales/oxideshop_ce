@@ -113,16 +113,16 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $dao = $this->get(ThemeConfigurationDaoInterface::class);
 
         $configuration = $this->buildConfiguration('mutateTheme')
-            ->addThemeSetting((new Setting())->setName('sLogoFile')->setType('str')->setValue('logo.png'));
+            ->addThemeSetting((new Setting())->setName('logoFile')->setType('str')->setValue('logo.png'));
         $dao->save($configuration, self::SHOP_ID);
 
         $dao->get('mutateTheme', self::SHOP_ID)
-            ->getSettingByName('sLogoFile')
+            ->getSettingByName('logoFile')
             ->setValue('mutated.png');
 
         $this->assertSame(
             'logo.png',
-            $dao->get('mutateTheme', self::SHOP_ID)->getSettingByName('sLogoFile')->getValue()
+            $dao->get('mutateTheme', self::SHOP_ID)->getSettingByName('logoFile')->getValue()
         );
     }
 

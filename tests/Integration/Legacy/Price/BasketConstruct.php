@@ -147,7 +147,7 @@ class BasketConstruct
             ->setId('testTheme')
             ->setSource('testSourcePath')
             ->setActivated(true)
-            ->addThemeSetting((new Setting())->setName('bl_showVouchers')->setType('bool')->setValue(true));
+            ->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
 
         ContainerFacade::get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
     }

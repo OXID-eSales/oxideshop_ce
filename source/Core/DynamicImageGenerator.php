@@ -126,17 +126,17 @@ namespace OxidEsales\EshopCommunity\Core {
          * @var array
          */
         protected array $resolutionConfigParameters = [
-            "sIconsize",
-            "sThumbnailsize",
-            "sZoomImageSize",
-            "sDetailImageSize",
-            "sManufacturerIconsize",
-            "sManufacturerPicturesize",
-            "sManufacturerThumbnailsize",
-            "sManufacturerPromotionsize",
-            "sCatThumbnailsize",
-            "sCatIconsize",
-            "sCatPromotionsize"
+            "iconSize",
+            "thumbnailSize",
+            "zoomImageSize",
+            "detailImageSize",
+            "manufacturerIconSize",
+            "manufacturerPictureSize",
+            "manufacturerThumbnailSize",
+            "manufacturerPromotionSize",
+            "categoryThumbnailSize",
+            "categoryIconSize",
+            "categoryPromotionSize"
         ];
 
         /**

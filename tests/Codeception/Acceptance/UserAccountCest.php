@@ -203,7 +203,7 @@ final class UserAccountCest
         $start = new Start($I);
         $I->wantToTest('user billing address in my account');
 
-        $I->updateThemeSetting('blShowBirthdayFields', true);
+        $I->updateThemeSetting('showBirthdayFields', true);
         $I->updateConfigInDatabase('blVatIdCheckDisabled', true, 'bool');
         /** Change Germany and Belgium to non EU country to skip online VAT validation. */
         $I->updateInDatabase('oxcountry', ['oxvatstatus' => 0], ['OXID' => 'a7c40f632e04633c9.47194042']);

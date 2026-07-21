@@ -28,10 +28,10 @@ final class ProductMediaImageSizesProviderTest extends TestCase
         $shopConfigurationSettingDao
             ->method('get')
             ->willReturnMap([
-                ['sDetailImageSize', 1, $this->createShopConfigurationSetting('540*540')],
-                ['sIconsize', 1, $this->createShopConfigurationSetting('56*56')],
-                ['sZoomImageSize', 1, $this->createShopConfigurationSetting('900*900')],
-                ['sThumbnailsize', 1, $this->createShopConfigurationSetting('100*100')],
+                ['detailImageSize', 1, $this->createShopConfigurationSetting('540*540')],
+                ['iconSize', 1, $this->createShopConfigurationSetting('56*56')],
+                ['zoomImageSize', 1, $this->createShopConfigurationSetting('900*900')],
+                ['thumbnailSize', 1, $this->createShopConfigurationSetting('100*100')],
             ]);
         $provider = $this->createProvider($themeSettingService, $shopConfigurationSettingDao);
 
@@ -49,22 +49,22 @@ final class ProductMediaImageSizesProviderTest extends TestCase
         $themeSettingService
             ->method('exists')
             ->willReturnCallback(fn(string $name): bool => match ($name) {
-                'sDetailImageSize', 'sZoomImageSize' => true,
+                'detailImageSize', 'zoomImageSize' => true,
                 default => false,
             });
         $themeSettingService
             ->method('getString')
             ->willReturnCallback(fn(string $name): string => match ($name) {
-                'sDetailImageSize' => '600*600',
-                'sZoomImageSize' => '1200*1200',
+                'detailImageSize' => '600*600',
+                'zoomImageSize' => '1200*1200',
             });
 
         $shopConfigurationSettingDao = $this->createStub(ShopConfigurationSettingDaoInterface::class);
         $shopConfigurationSettingDao
             ->method('get')
             ->willReturnMap([
-                ['sIconsize', 1, $this->createShopConfigurationSetting('56*56')],
-                ['sThumbnailsize', 1, $this->createShopConfigurationSetting('100*100')],
+                ['iconSize', 1, $this->createShopConfigurationSetting('56*56')],
+                ['thumbnailSize', 1, $this->createShopConfigurationSetting('100*100')],
             ]);
         $provider = $this->createProvider($themeSettingService, $shopConfigurationSettingDao);
 

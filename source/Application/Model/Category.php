@@ -1053,9 +1053,9 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         if (($icon = $this->oxcategories__oxicon->value)) {
             $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
-            $size = $themeSettingService->getString('sCatIconsize');
+            $size = $themeSettingService->getString('categoryIconSize');
             if (empty($size)) {
-                $size = $themeSettingService->getString('sIconsize');
+                $size = $themeSettingService->getString('iconSize');
             }
 
             return Registry::getPictureHandler()->getPicUrl('category/icon/', $icon, $size);
@@ -1065,7 +1065,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getThumbUrl()
     {
         if (($icon = $this->oxcategories__oxthumb->value)) {
-            $size = ContainerFacade::get(ThemeSettingServiceInterface::class)->getString('sCatThumbnailsize');
+            $size = ContainerFacade::get(ThemeSettingServiceInterface::class)->getString('categoryThumbnailSize');
 
             return Registry::getPictureHandler()->getPicUrl('category/thumb/', $icon, $size);
         }
@@ -1074,7 +1074,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     public function getPromotionIconUrl()
     {
         if (($icon = $this->oxcategories__oxpromoicon->value)) {
-            $size = ContainerFacade::get(ThemeSettingServiceInterface::class)->getString('sCatPromotionsize');
+            $size = ContainerFacade::get(ThemeSettingServiceInterface::class)->getString('categoryPromotionSize');
 
             return Registry::getPictureHandler()->getPicUrl('category/promo_icon/', $icon, $size);
         }

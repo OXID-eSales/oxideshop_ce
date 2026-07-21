@@ -723,7 +723,7 @@ class FrontendController extends BaseController
 
             if (!$this->_sListDisplayType) {
                 $this->_sListDisplayType = ContainerFacade::get(ThemeSettingServiceInterface::class)
-                    ->getString('sDefaultListDisplayType');
+                    ->getString('defaultListDisplayType');
             }
 
             $this->_sListDisplayType = in_array((string) $this->_sListDisplayType, $this->_aListDisplayTypes) ?
@@ -1177,18 +1177,18 @@ class FrontendController extends BaseController
         switch ($this->getListDisplayType()) {
             case 'grid':
                 $numbersOfCategoryArticles = ContainerFacade::get(ThemeSettingServiceInterface::class)
-                    ->getCollection('aNrofCatArticlesInGrid');
+                    ->getCollection('numberOfCategoryProductsInGrid');
                 break;
             case 'line':
             case 'infogrid':
             default:
                 $numbersOfCategoryArticles = ContainerFacade::get(ThemeSettingServiceInterface::class)
-                    ->getCollection('aNrofCatArticles');
+                    ->getCollection('numberOfCategoryProducts');
         }
 
         if (!is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {
             $numbersOfCategoryArticles = [$numberOfCategoryArticles];
-            $config->setConfigParam('aNrofCatArticles', $numbersOfCategoryArticles);
+            $config->setConfigParam('numberOfCategoryProducts', $numbersOfCategoryArticles);
         } else {
             $numberOfCategoryArticles = $numbersOfCategoryArticles[0];
         }
@@ -2815,7 +2815,7 @@ class FrontendController extends BaseController
      */
     public function getNewBasketItemMsgType()
     {
-        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('iNewBasketItemMessage');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getInteger('newBasketItemMessage');
     }
 
     /**

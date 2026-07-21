@@ -26,10 +26,10 @@ readonly class ProductMediaImageSizesProvider implements ProductMediaImageSizesP
     public function getSizes(): ProductMediaImageSizes
     {
         return new ProductMediaImageSizes(
-            detailSize: $this->getConfiguredSize('sDetailImageSize'),
-            iconSize: $this->getConfiguredSize('sIconsize'),
-            zoomSize: $this->getConfiguredSize('sZoomImageSize'),
-            thumbnailSize: $this->getConfiguredSize('sThumbnailsize'),
+            detailSize: $this->getConfiguredSize('detailImageSize'),
+            iconSize: $this->getConfiguredSize('iconSize'),
+            zoomSize: $this->getConfiguredSize('zoomImageSize'),
+            thumbnailSize: $this->getConfiguredSize('thumbnailSize'),
         );
     }
 

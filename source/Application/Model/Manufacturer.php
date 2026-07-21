@@ -372,35 +372,35 @@ class Manufacturer extends MultiLanguageModel implements IUrl
     {
         $imageName = $this->oxmanufacturers__oxicon->value;
 
-        return $this->getImageUrl($imageName, 'sManufacturerIconsize', 'icon') ?? '';
+        return $this->getImageUrl($imageName, 'manufacturerIconSize', 'icon') ?? '';
     }
 
     public function getIconAltUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxicon_alt->value;
 
-        return $this->getImageUrl($imageName, 'sManufacturerIconsize', 'icon') ?? '';
+        return $this->getImageUrl($imageName, 'manufacturerIconSize', 'icon') ?? '';
     }
 
     public function getPictureUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxpicture->value;
 
-        return $this->getImageUrl($imageName, 'sManufacturerPicturesize', 'picture') ?? '';
+        return $this->getImageUrl($imageName, 'manufacturerPictureSize', 'picture') ?? '';
     }
 
     public function getThumbnailUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxthumbnail->value;
 
-        return $this->getImageUrl($imageName, 'sManufacturerThumbnailsize', 'thumb') ?? '';
+        return $this->getImageUrl($imageName, 'manufacturerThumbnailSize', 'thumb') ?? '';
     }
 
     public function getPromotionIconUrl(): string
     {
         $imageName = $this->oxmanufacturers__oxpromotion_icon->value;
 
-        return $this->getImageUrl($imageName, 'sManufacturerPromotionsize', 'promo_icon') ?? '';
+        return $this->getImageUrl($imageName, 'manufacturerPromotionSize', 'promo_icon') ?? '';
     }
 
     /**
@@ -453,7 +453,7 @@ class Manufacturer extends MultiLanguageModel implements IUrl
     {
         $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
         if (empty($size = $themeSettingService->getString($paramName))) {
-            $size = $themeSettingService->getString('sIconsize');
+            $size = $themeSettingService->getString('iconSize');
         }
         $path = 'manufacturer' . DIRECTORY_SEPARATOR . $directoryName . DIRECTORY_SEPARATOR;
 

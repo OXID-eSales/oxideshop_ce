@@ -28,9 +28,9 @@ final class ThemeSettingServiceTest extends TestCase
 
     public function testGetStringReturnsSetting(): void
     {
-        $service = $this->createServiceWithSetting('sLogoFile', 'str', 'logo.png');
+        $service = $this->createServiceWithSetting('logoFile', 'str', 'logo.png');
 
-        $this->assertSame('logo.png', $service->getString('sLogoFile'));
+        $this->assertSame('logo.png', $service->getString('logoFile'));
     }
 
     public function testGetBooleanReturnsSetting(): void
@@ -133,7 +133,7 @@ final class ThemeSettingServiceTest extends TestCase
         $service = $this->createService($dao, resolver: $resolver);
 
         $this->expectException(ThemeSettingNotFoundException::class);
-        $service->getString('sLogoFile');
+        $service->getString('logoFile');
     }
 
     public function testMissingSettingIsCached(): void
@@ -163,7 +163,7 @@ final class ThemeSettingServiceTest extends TestCase
 
         $service = $this->createService($dao, $cache, $resolver);
 
-        $this->assertSame('cached.png', $service->getString('sLogoFile'));
+        $this->assertSame('cached.png', $service->getString('logoFile'));
     }
 
     public function testGetPopulatesCacheOnMiss(): void
@@ -172,20 +172,20 @@ final class ThemeSettingServiceTest extends TestCase
         $cache->method('get')->willThrowException(new CacheItemNotFoundException('miss'));
         $cache->expects($this->once())->method('put')
             ->with(
-                'theme-' . self::THEME_ID . '-setting-sLogoFile',
+                'theme-' . self::THEME_ID . '-setting-logoFile',
                 ['exists' => true, 'value' => 'logo.png']
             );
 
-        $service = $this->createServiceWithSetting('sLogoFile', 'str', 'logo.png', $cache);
+        $service = $this->createServiceWithSetting('logoFile', 'str', 'logo.png', $cache);
 
-        $service->getString('sLogoFile');
+        $service->getString('logoFile');
     }
 
     public function testExistsReturnsTrueForExistingSetting(): void
     {
-        $service = $this->createServiceWithSetting('sLogoFile', 'str', 'logo.png');
+        $service = $this->createServiceWithSetting('logoFile', 'str', 'logo.png');
 
-        $this->assertTrue($service->exists('sLogoFile'));
+        $this->assertTrue($service->exists('logoFile'));
     }
 
     public function testExistsReturnsTrueFromCacheWithoutHittingDao(): void
@@ -200,7 +200,7 @@ final class ThemeSettingServiceTest extends TestCase
 
         $service = $this->createService($dao, $cache, $resolver);
 
-        $this->assertTrue($service->exists('sLogoFile'));
+        $this->assertTrue($service->exists('logoFile'));
     }
 
     public function testExistsReturnsFalseForMissingSettingWithoutThrowing(): void
@@ -217,7 +217,7 @@ final class ThemeSettingServiceTest extends TestCase
 
         $service = $this->createService($dao);
 
-        $this->assertFalse($service->exists('sLogoFile'));
+        $this->assertFalse($service->exists('logoFile'));
     }
 
     private function createServiceWithSetting(

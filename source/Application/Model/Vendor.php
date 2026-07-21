@@ -315,9 +315,9 @@ class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements 
     {
         if (($icon = $this->oxvendor__oxicon->value)) {
             $themeSettingService = ContainerFacade::get(ThemeSettingServiceInterface::class);
-            $size = $themeSettingService->getString('sManufacturerIconsize');
+            $size = $themeSettingService->getString('manufacturerIconSize');
             if (empty($size)) {
-                $size = $themeSettingService->getString('sIconsize');
+                $size = $themeSettingService->getString('iconSize');
             }
 
             return \OxidEsales\Eshop\Core\Registry::getPictureHandler()->getPicUrl("vendor/icon/", $icon, $size);

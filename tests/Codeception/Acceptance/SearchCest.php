@@ -21,9 +21,9 @@ final class SearchCest
     {
         $I->wantToTest('if sorting, paging and navigation is working correctly in search list');
 
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
-        $I->updateThemeSetting('aNrofCatArticles', ["1", "2", "10", "20", "50", "100"]);
-        $I->updateThemeSetting('aNrofCatArticlesInGrid', ["1", "2", "10", "20", "50", "100"]);
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
+        $I->updateThemeSetting('numberOfCategoryProducts', ["1", "2", "10", "20", "50", "100"]);
+        $I->updateThemeSetting('numberOfCategoryProductsInGrid', ["1", "2", "10", "20", "50", "100"]);
 
         $productData = [
             'id' => '1000',

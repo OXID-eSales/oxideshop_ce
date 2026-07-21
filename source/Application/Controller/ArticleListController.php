@@ -430,7 +430,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
 
         if (is_null($listDisplayType)) {
             $listDisplayType = ContainerFacade::get(ThemeSettingServiceInterface::class)
-                ->getString('sDefaultListDisplayType');
+                ->getString('defaultListDisplayType');
         }
 
         return $listDisplayType;
@@ -1082,13 +1082,13 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
     }
 
     /**
-     * Returns config parameters blShowListDisplayType value
+     * Returns config parameters showListDisplayType value
      *
      * @return boolean
      */
     public function canSelectDisplayType()
     {
-        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('blShowListDisplayType');
+        return ContainerFacade::get(ThemeSettingServiceInterface::class)->getBoolean('showListDisplayType');
     }
 
     /**

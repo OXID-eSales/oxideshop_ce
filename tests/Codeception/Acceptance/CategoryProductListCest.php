@@ -136,8 +136,8 @@ final class CategoryProductListCest
 
     private function setNumberOfProductsInCategoryList(AcceptanceTester $I): void
     {
-        $I->updateThemeSetting('sDefaultListDisplayType', 'grid');
-        $I->updateThemeSetting('aNrofCatArticles', ['20', '1', '2', '10', '100']);
-        $I->updateThemeSetting('aNrofCatArticlesInGrid', ['20', '1', '2', '10', '100']);
+        $I->updateThemeSetting('defaultListDisplayType', 'grid');
+        $I->updateThemeSetting('numberOfCategoryProducts', ['20', '1', '2', '10', '100']);
+        $I->updateThemeSetting('numberOfCategoryProductsInGrid', ['20', '1', '2', '10', '100']);
     }
 }

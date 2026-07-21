@@ -26,6 +26,7 @@
 - Theme settings read from YAML configuration instead of the database
 - Theme settings in the admin area are saved to the theme YAML configuration instead of the `oxconfig` table
 - `Config::getConfigParam()` no longer returns theme settings — use `ThemeSettingServiceInterface` instead
+- Theme setting names no longer use Hungarian notation or outdated terms
 
 ### Removed
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)

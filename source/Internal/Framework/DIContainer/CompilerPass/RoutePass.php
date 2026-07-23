@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Api\AttributeRouteControllerLoader;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\AttributeRouteControllerLoader;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;

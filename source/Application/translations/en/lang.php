@@ -146,7 +146,6 @@ $aLang = [
 'EXCEPTION_NOTALLOWEDTYPE'                                    => 'File type not allowed. Please edit config.inc.php to allow this kind of files.',
 'ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'                         => 'Not enough items of this product in stock! Available',
 'ERROR_MESSAGE_OXID_ESALES'                                   => 'OXID eSales',
-'ERROR_MESSAGE_OXID_SHOP_ERROR'                               => 'OXID eShop error',
 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'                         => 'Error: passwords don\'t match.',
 // @deprecated will be removed in next major
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Please enter a valid e-mail address!',
@@ -283,7 +282,6 @@ $aLang = [
 'MESSAGE_PAYMENT_UNAVAILABLE_PAYMENT'                         => 'Unfortunately, this payment method is not available due to technical problems. Please choose a different payment method.',
 'MESSAGE_PAYMENT_UNAVAILABLE_PAYMENT_ERROR'                   => 'Unfortunately, this payment method is not available due to technical problems. Please choose a different payment method. (Error',
 'MESSAGE_PLEASE_CONTACT_SUPPORT'                              => 'Please contact OXID eSales support staff.',
-'MESSAGE_PLEASE_DELETE_FOLLOWING_DIRECTORY'                   => 'Please delete the following directory',
 'MESSAGE_PRICE_ALARM_PRICE_CHANGE'                            => 'We will inform you if the price of this product will be changed according to your wished price.',
 'MESSAGE_RATE_THIS_ARTICLE'                                   => 'Rate this product!',
 'MESSAGE_READ_DETAILS'                                        => 'Read our',

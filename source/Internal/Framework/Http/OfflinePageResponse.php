@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class OfflinePageResponse extends Response
 {
-    public function __construct(int $status = self::HTTP_NOT_FOUND)
+    public function __construct(int $status = self::HTTP_INTERNAL_SERVER_ERROR)
     {
         parent::__construct($this->offlinePageContent(), $status);
     }

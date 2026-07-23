@@ -8,7 +8,7 @@
 
     RewriteRule ^graphql/?$    widget.php?cl=graphql&skipSession=1   [QSA,NC,L]
 
-    RewriteRule ^api/(.*)$ api.php/$1 [QSA,NC,L]
+    RewriteRule ^api/ index.php [QSA,NC,L]
 
     RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
     RewriteRule .* - [F]

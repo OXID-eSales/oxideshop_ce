@@ -195,11 +195,13 @@ final class ModuleInheritanceTest extends IntegrationTestCase
     #[DataProvider('dataProviderTestNativeExtensionOfChainExtendingClass')]
     public function testNativeExtensionOfChainExtendingClass(
         array $moduleToActivate,
+        string $shopClass,
         string $extensionClass,
         string $classToExtend
     ): void {
         $this->installModules($moduleToActivate);
         $this->activateModules($moduleToActivate);
+        oxNew($shopClass);
 
         $this->assertClassInheritance($extensionClass, [$classToExtend]);
     }
@@ -211,21 +213,25 @@ final class ModuleInheritanceTest extends IntegrationTestCase
         return [
             [
                 'moduleToActivate' => $modules,
+                'shopClass' => EshopContentController::class,
                 'extensionClass' => ModuleContentController::class,
                 'classToExtend' => EshopContentController::class,
             ],
             [
                 'moduleToActivate' => $modules,
+                'shopClass' => EshopContentController::class,
                 'extensionClass' => NativeExtendingContentController::class,
                 'classToExtend' => ModuleContentController::class,
             ],
             [
                 'moduleToActivate' => $modules,
+                'shopClass' => Article::class,
                 'extensionClass' => TestDataInheritance\modules\module_native_extension\Article::class,
                 'classToExtend' => Article::class,
             ],
             [
                 'moduleToActivate' => $modules,
+                'shopClass' => Article::class,
                 'extensionClass' => NativeExtendingArticle::class,
                 'classToExtend' => TestDataInheritance\modules\module_native_extension\Article::class,
             ],

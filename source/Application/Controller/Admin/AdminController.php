@@ -11,8 +11,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Main Controller class for admin area.
@@ -141,10 +139,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         // authorization check
         if (!$this->authorize()) {
             Registry::getUtils()->redirect('index.php?cl=login', true, 302);
-
-            ContainerFacade::dispatch(new ResponseReadyEvent(
-                new Response('Authorization error occurred!', Response::HTTP_FORBIDDEN)
-            ));
         }
 
         $oLang = Registry::getLang();

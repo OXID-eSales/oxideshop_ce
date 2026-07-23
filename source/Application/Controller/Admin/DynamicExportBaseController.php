@@ -7,14 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use stdClass;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use Symfony\Component\Filesystem\Path;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Error constants
@@ -487,13 +486,12 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // create heap table
         if (!($this->createHeapTable($sHeapTable, $sTableCharset))) {
-            // error
-            ContainerFacade::dispatch(new ResponseReadyEvent(new Response("Could not create HEAP Table {$sHeapTable}\n<br>")));
+            throw new SystemComponentException("Could not create HEAP Table {$sHeapTable}\n<br>");
         }
 
         $sCatAdd = $this->getCatAdd(Registry::getRequest()->getRequestEscapedParameter("acat"));
         if (!$this->insertArticles($sHeapTable, $sCatAdd)) {
-            ContainerFacade::dispatch(new ResponseReadyEvent(new Response("Could not insert Articles in Table {$sHeapTable}\n<br>")));
+            throw new SystemComponentException("Could not insert Articles in Table {$sHeapTable}\n<br>");
         }
 
         $this->removeParentArticles($sHeapTable);

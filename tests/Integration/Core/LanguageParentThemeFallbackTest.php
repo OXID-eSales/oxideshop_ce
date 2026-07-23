@@ -108,6 +108,7 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
 
     public function testTranslationsAreResolvedWithoutThemeConfigurationFilesWhenCacheIsWarm(): void
     {
+        $this->switchActiveTheme(self::CHILD_THEME_ID);
         (new Language())->translateString('TEST_PARENT_THEME_MAP_ALIAS_KEY', 0);
 
         $this->removeThemeConfiguration(self::PARENT_THEME_ID);

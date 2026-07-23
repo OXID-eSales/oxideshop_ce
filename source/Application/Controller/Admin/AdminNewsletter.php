@@ -12,8 +12,8 @@ use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\Bridge\NewsletterRecipi
 use OxidEsales\EshopCommunity\Internal\Domain\Newsletter\DataMapper\NewsletterRecipientsDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileGenerator\Bridge\FileGeneratorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Admin newsletter manager.
@@ -29,17 +29,17 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      */
     protected $_sThisTemplate = 'newsletter';
 
-    public function export(): void
+    public function export(): Response
     {
-        $response = ContainerFacade::get(FileResponseFactoryInterface::class)->fromCallback(
-            function (): void {
-                $this->generateCSV($this->getNewsLetterRecipientsList());
+        $recipients = $this->getNewsLetterRecipientsList();
+
+        return ContainerFacade::get(FileResponseFactoryInterface::class)->fromCallback(
+            function () use ($recipients): void {
+                $this->generateCSV($recipients);
             },
             'text/csv; charset=utf-8',
             'Export_user_recipient_status_' . date('Y-m-d') . '.csv'
         );
-
-        ContainerFacade::dispatch(new ResponseReadyEvent($response));
     }
 
     private function getNewsLetterRecipientsList(): array

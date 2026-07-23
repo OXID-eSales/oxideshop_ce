@@ -8,27 +8,26 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Model\ArticleList;
-use OxidEsales\Eshop\Core\Contract\IDisplayError;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReady;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RequestTerminationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
     protected bool $skipMaintenanceTasks = false;
+
+    protected $_oCache = null;
 
     protected ?array $errors = null;
 
@@ -40,14 +39,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         Registry::getConfig()->init();
 
-        if (
-                ContainerFacade::hasParameter('oxid_esales.rate_limiter.storefront.enabled')
-                && ContainerFacade::getParameter('oxid_esales.rate_limiter.storefront.enabled')
-            ) {
-                ContainerFacade::get(StorefrontRateLimiterInterface::class)->enforce();
-            }
-
-            $function ??= Registry::getRequest()->getRequestEscapedParameter('fnc');
+        $function ??= Registry::getRequest()->getRequestEscapedParameter('fnc');
         $controllerKey ??= $this->getStartControllerKey();
         $controllerClass = $this->resolveControllerClass($controllerKey);
 
@@ -59,6 +51,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $controllerKey = Registry::getConfig()->getRequestControllerId();
 
         if (!$controllerKey) {
+            $this->rejectUnknownPath();
+
             $session = Registry::getSession();
             if ($this->isAdmin()) {
                 $controllerKey = $session->getVariable('auth') ? 'admin_start' : 'login';
@@ -104,11 +98,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         $this->executeAction($view, $view->getFncName());
 
-        $output = $this->formOutput($view);
-
-        ContainerFacade::dispatch(new ViewRenderedEvent($this));
-
-        $response = $this->createResponse($view, $output);
+        $response = $this->resolveResponse($view);
 
         Registry::getConfig()->pageClose();
 
@@ -140,18 +130,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         $view->executeFunction($functionName);
-    }
-
-    /**
-     * Forms output from view object.
-     *
-     * @param FrontendController $view
-     *
-     * @return string
-     */
-    protected function formOutput($view)
-    {
-        return $this->render($view);
     }
 
     /**
@@ -241,11 +219,18 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      *
      * @param FrontendController $view view object to render
      *
-     * @return string
+     * @return string|Response
      */
     protected function render($view)
     {
         $templateName = $view->render();
+        if ($templateName instanceof Response) {
+            return $templateName;
+        }
+        if ($templateName === null) {
+            throw new RoutingException(sprintf('Controller "%s" has no template', $view->getClassKey()));
+        }
+
         $viewData = $view->getViewData();
 
         $renderer = $this->getRenderer();
@@ -283,6 +268,18 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function isDebugMode(): bool
     {
         return ContainerFacade::getParameter('oxid_esales.debug_mode');
+    }
+
+    private function resolveResponse(ViewControllerInterface $view): Response
+    {
+        $output = $view->getResponse() ?? $this->render($view);
+        if ($output instanceof Response) {
+            return $output;
+        }
+
+        ContainerFacade::dispatch(new ViewRenderedEvent($this));
+
+        return $this->createResponse($view, $output);
     }
 
     private function createResponse($view, string $output): Response
@@ -328,11 +325,20 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
     }
 
+    private function rejectUnknownPath(): void
+    {
+        $pathInfo = ContainerFacade::get(Request::class)->getPathInfo();
+
+        if ($pathInfo !== '/') {
+            throw new RoutingException($pathInfo);
+        }
+    }
+
     private function rethrowShopThrowable(\Throwable $exception): void
     {
         $candidate = $exception;
         while ($candidate !== null) {
-            if ($candidate instanceof ResponseReady || $candidate instanceof StandardException) {
+            if ($candidate instanceof RequestTerminationInterface || $candidate instanceof StandardException) {
                 throw $candidate;
             }
             $candidate = $candidate->getPrevious();

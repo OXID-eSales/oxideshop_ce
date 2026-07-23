@@ -9,7 +9,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -114,16 +113,6 @@ class DiagnosticsOutput
         $sCurrentKey = (empty($sOutputKey)) ? $this->_sOutputKey : $sOutputKey;
 
         return $this->_oUtils->fromFileCache($sCurrentKey);
-    }
-
-    /**
-     * Sends generated file for download
-     *
-     * @param string $sOutputKey Output key.
-     */
-    public function downloadResultFile($sOutputKey = null)
-    {
-        ContainerFacade::dispatch(new ResponseReadyEvent($this->getResultFileResponse($sOutputKey)));
     }
 
     public function getResultFileResponse($sOutputKey = null): Response

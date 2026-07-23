@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
+use OxidEsales\EshopCommunity\Core\Exception\ExceptionHandler;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use Symfony\Component\ErrorHandler\ErrorHandler;
 
@@ -24,6 +24,8 @@ $debugMode = filter_var(getenv('OXID_DEBUG_MODE'), FILTER_VALIDATE_BOOLEAN);
 $errorHandler = ErrorHandler::register(new ErrorHandler(debug: $debugMode));
 $errorHandler->throwAt(0, true);
 $errorHandler->setExceptionHandler([new ExceptionHandler($debugMode), 'handleUncaughtException']);
+
+spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
 require_once OX_BASE_PATH . 'oxfunctions.php';
 require_once OX_BASE_PATH . 'overridablefunctions.php';

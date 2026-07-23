@@ -144,13 +144,9 @@ final class UtilsServerTest extends TestCase
         $this->assertFalse($isTrusted);
     }
 
-    public function testQueuedCookieIsAppliedToOutgoingResponseOnKernelResponse(): void
+    public function testSetOxCookieAddsCookieToOutgoingResponseOnKernelResponse(): void
     {
-        $queueResponseCookie = new \ReflectionMethod(
-            \OxidEsales\EshopCommunity\Core\UtilsServer::class,
-            'queueResponseCookie'
-        );
-        $queueResponseCookie->invoke(oxNew(UtilsServer::class), Cookie::create('some-cookie', 'some-value'));
+        oxNew(UtilsServer::class)->setOxCookie('some-cookie', 'some-value', 0, '/', null, false);
 
         $response = new Response();
         $this->get(EventDispatcherInterface::class)->dispatch(
@@ -163,9 +159,9 @@ final class UtilsServerTest extends TestCase
             KernelEvents::RESPONSE
         );
 
-        $cookies = $response->headers->getCookies();
-        $this->assertCount(1, $cookies);
-        $this->assertSame('some-cookie', $cookies[0]->getName());
-        $this->assertSame('some-value', $cookies[0]->getValue());
+        $this->assertEquals(
+            [Cookie::create('some-cookie', 'some-value', 0, '/', null, false, true, false, null)],
+            $response->headers->getCookies()
+        );
     }
 }

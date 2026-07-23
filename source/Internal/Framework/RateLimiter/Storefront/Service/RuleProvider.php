@@ -30,20 +30,22 @@ readonly class RuleProvider implements RuleProviderInterface
     {
         $controllerKey = strtolower($this->param('cl'));
         $function = strtolower($this->param('fnc'));
+        $format = (string) $this->request->getRequestFormat(null);
 
         return array_filter(
             $this->rules,
-            fn (array $rule): bool => $this->matches($rule, $controllerKey, $function),
+            fn (array $rule): bool => $this->matches($rule, $controllerKey, $function, $format),
         );
     }
 
     /**
      * @param array<string, mixed> $rule
      */
-    private function matches(array $rule, string $controllerKey, string $function): bool
+    private function matches(array $rule, string $controllerKey, string $function, string $format): bool
     {
         return (!isset($rule['fnc']) || in_array($function, array_map('strtolower', (array) $rule['fnc']), true))
-            && (!isset($rule['cl']) || strtolower((string) $rule['cl']) === $controllerKey);
+            && (!isset($rule['cl']) || strtolower((string) $rule['cl']) === $controllerKey)
+            && (!isset($rule['format']) || (string) $rule['format'] === $format);
     }
 
     private function param(string $name): string

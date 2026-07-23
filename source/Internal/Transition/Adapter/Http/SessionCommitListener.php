@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Session;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -23,7 +24,11 @@ readonly class SessionCommitListener implements EventSubscriberInterface
 
     public function onKernelResponse(ResponseEvent $event): void
     {
-        if (!$event->isMainRequest() || !Registry::getSession()->isSessionStarted()) {
+        if (
+            !$event->isMainRequest()
+            || !Registry::instanceExists(Session::class)
+            || !Registry::getSession()->isSessionStarted()
+        ) {
             return;
         }
 

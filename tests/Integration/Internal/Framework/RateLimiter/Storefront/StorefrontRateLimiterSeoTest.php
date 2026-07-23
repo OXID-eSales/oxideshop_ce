@@ -12,10 +12,10 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\RateLim
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
 use OxidEsales\Eshop\Core\SeoDecoder;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
 final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
@@ -33,7 +33,7 @@ final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
 
         $this->limiter()->enforce();
 
-        $this->expectException(TooManyRequestsException::class);
+        $this->expectException(TooManyRequestsHttpException::class);
 
         $this->limiter()->enforce();
     }

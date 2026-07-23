@@ -35,6 +35,11 @@ class BasicContext implements BasicContextInterface
         );
     }
 
+    public function getCachePoolGenerationFilePath(int $shopId): string
+    {
+        return Path::join($this->getCacheDirectory(), 'pool', "shop_$shopId.generation");
+    }
+
     public function getGeneratedServicesFilePath(): string
     {
         return Path::join($this->getShopRootPath(), 'var', 'generated', 'generated_services.yaml');

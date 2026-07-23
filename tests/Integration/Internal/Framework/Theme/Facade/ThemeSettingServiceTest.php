@@ -85,6 +85,7 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
     public function testGetStringReadsWarmCacheWithoutThemeConfigurationFileInNewContainer(): void
     {
         $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
+        $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
         $this->get(ThemeSettingServiceInterface::class)->getString('logoFile');
 
         $this->assertFileExists($this->getThemeConfigurationFilePath());

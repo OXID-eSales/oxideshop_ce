@@ -18,6 +18,8 @@ interface BasicContextInterface
 
     public function getCacheDirectory(): string;
 
+    public function getCachePoolGenerationFilePath(int $shopId): string;
+
     public function getComposerVendorName(): string;
 
     public function getConfigTableName(): string;

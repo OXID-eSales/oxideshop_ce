@@ -24,9 +24,6 @@
 - Default `Cache-Control` policy for responses without an explicit one (DI parameter `oxid_esales.http.default_cache_control`)
 - `FileResponseFactoryInterface` for building file download responses
 
-### Fixed
-- Undefined array key warning in `ExceptionErrorController::displayExceptionError()` when no errors are queued for display
-
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
@@ -42,16 +39,21 @@
 - HTTP header and request handling on the shop kernel
   - `index.php` resolves Symfony `#[Route]` controllers, falling back to the legacy shop controller resolution
   - The response status, headers and cookies are owned by the Symfony `Response`
-  - Request-terminating helpers such as `Utils::redirect()` dispatch a `ResponseReadyEvent` - subscribe to it to observe or replace the outgoing response
-  - Uncaught errors and fatal errors are handled by `symfony/error-handler`
-  - Uncaught shop exceptions are converted to responses on the `kernel.exception` event
-  - The `Cache-Control` header is owned by the `Response`; PHP's session cache limiter is disabled
+  - Controllers can return a Symfony `Response` object
+  - `Utils::redirect()` throws a `RedirectException` delivered as a redirect on `kernel.exception`
+  - `Utils::redirect()` no longer appends the `redirected` parameter
+  - The `Cache-Control` header is owned by the `Response`
   - The default `Content-Type` and charset are configured via `oxid_esales.http.charset`
+  - Errors are rendered by Symfony's `ErrorListener`, as RFC 7807 problem details for JSON requests
+- Rate limiting rules accept `format: json`; JSON routes are limited by default
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
+- The `$blAddRedirectParam` parameter of `Utils::redirect()`
 
 ### Removed
+- `api.php` - use `index.php`
+- `ApiRateLimiterFactoryInterface`, `ClientIdentifierProviderInterface` and the `oxid_esales.rate_limiter.*` parameters - use `oxid_esales.rate_limiter.storefront.rules`
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)
   - `BaseModel::getClassName()` and `BaseModel::$_sClassName`
@@ -61,13 +63,18 @@
   - The `$classAlias` parameter of `ModuleChainsGenerator::createClassChain()`
 - `Oxid`, `ShopControl::start()` and `WidgetControl::start()`
 - `ShopControl` internals superseded by the kernel migration
-- Inclusion of `modules/functions.php`
+- `ShopControl::formOutput()` - override `ShopControl::render()`
+- `ExceptionErrorController` and the `exceptionerror` controller key
+- `Config::handleDbConnectionException()`, `Config::handleCookieException()` and `Config::getExceptionHandler()`
+- `UtilsView::getTemplateOutput()` and `Session::isHeaderSent()`
+- Inclusion of `modules/functions.php` and `modules/functions.php.dist`
 - `Output` - process output with a `kernel.response` listener
 - `Header` - set headers on the `Response` or use a `kernel.response` listener
 - `Utils::setHeader()` - set headers on the `Response` or subscribe to the `kernel.response` event
-- `Utils::showMessageAndExit()` - dispatch a `ResponseReadyEvent`
+- `Utils::showMessageAndExit()` - return a `Response`
 - `Utils::showOfflinePage()` - use `OfflinePageResponse`
-- `Utils::simpleRedirect()` and `Utils::prepareToExit()`
+- `Utils::handlePageNotFoundError()` and the `error_404_handler()` function - throw a `RoutingException`
+- `Utils::simpleRedirect()`, `Utils::prepareToExit()` and `Utils::addUrlParameters()`
 - `oxTriggerOfflinePageDisplay()` - use `OfflinePageResponse`
 - `Session::needToSetHeaders()`
 - `Email::makeOutputProcessing()` and `Email::processViewArray()`

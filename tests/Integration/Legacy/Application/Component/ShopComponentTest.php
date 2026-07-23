@@ -12,14 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Compone
 use OxidEsales\Eshop\Application\Component\ShopComponent;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReady;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 final class ShopComponentTest extends IntegrationTestCase
 {
-    public function testRenderStopsInactiveShopWithNotFoundResponse(): void
+    public function testRenderStopsInactiveShopWithException(): void
     {
         $shop = Registry::getConfig()->getActiveShop();
         $originalActiveFlag = $shop->oxshops__oxactive;
@@ -27,12 +25,9 @@ final class ShopComponentTest extends IntegrationTestCase
 
         try {
             oxNew(ShopComponent::class)->render();
-            $this->fail('Expected the request to stop with a response signal');
-        } catch (ResponseReady $signal) {
-            $response = $signal->getResponse();
-            $this->assertInstanceOf(OfflinePageResponse::class, $response);
-            $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-            $this->assertNotSame('', $response->getContent());
+            $this->fail('Expected the inactive shop to stop the request');
+        } catch (ShopOfflineException) {
+            $this->addToAssertionCount(1);
         } finally {
             $shop->oxshops__oxactive = $originalActiveFlag;
         }

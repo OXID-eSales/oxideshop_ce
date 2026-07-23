@@ -39,7 +39,8 @@ class Api
             $dispatcher,
             new ContainerControllerResolver($container),
             $requestStack,
-            new ArgumentResolver(namedResolvers: $container)
+            new ArgumentResolver(namedResolvers: $container),
+            handleAllThrowables: true
         );
 
         $response = $kernel->handle($request);

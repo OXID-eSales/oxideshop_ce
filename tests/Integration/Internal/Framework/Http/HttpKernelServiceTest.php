@@ -9,11 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReady;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Cookie;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
@@ -39,16 +40,17 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame('from-controller', $response->getContent());
     }
 
-    public function testDeliversResponseSignaledFromTheController(): void
+    public function testDeliversRedirectResponseForRedirectExceptionFromTheController(): void
     {
-        $expected = new Response('signaled');
-        $request = $this->requestWithController(static function () use ($expected): Response {
-            throw new ResponseReady($expected);
+        $request = $this->requestWithController(static function (): Response {
+            throw new RedirectException('https://shop.example/target', 302);
         });
 
         $response = $this->get(HttpKernelInterface::class)->handle($request);
 
-        $this->assertSame($expected, $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
+        $this->assertSame('https://shop.example/target', $response->headers->get('Location'));
+        $this->assertSame(302, $response->getStatusCode());
     }
 
     public function testSetsHtmlContentTypeOnResponseWithoutOne(): void

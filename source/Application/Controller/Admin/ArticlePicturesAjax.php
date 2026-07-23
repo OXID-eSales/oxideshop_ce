@@ -23,7 +23,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaUploadProcessorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -45,24 +44,22 @@ class ArticlePicturesAjax extends ListComponentAjax
         $this->requestFiles = ContainerFacade::get(Request::class)->files;
     }
 
-    public function addMedia(): void
+    public function addMedia(): JsonResponse
     {
         $errors = $this->processUploadedFiles();
 
-        if ($errors !== []) {
-            $this->sendErrorsResponse($errors);
-        }
+        return new JsonResponse(['errors' => $errors]);
     }
 
-    public function replaceMedia(): void
+    public function replaceMedia(): JsonResponse
     {
         $errors = $this->processUploadedFiles();
 
-        if ($errors !== []) {
-            $this->sendErrorsResponse($errors);
+        if ($errors === []) {
+            $this->removeRoleFromMedia();
         }
 
-        $this->removeRoleFromMedia();
+        return new JsonResponse(['errors' => $errors]);
     }
 
     public function removeMedia(): void
@@ -170,12 +167,5 @@ class ArticlePicturesAjax extends ListComponentAjax
         $errorMessage = \sprintf(Registry::getLang()->translateString($key), ...$values);
 
         return \sprintf('%s: %s', $filename, $errorMessage);
-    }
-
-    private function sendErrorsResponse(array $errors): void
-    {
-        ContainerFacade::dispatch(new ResponseReadyEvent(new JsonResponse([
-            'errors' => $errors,
-        ])));
     }
 }

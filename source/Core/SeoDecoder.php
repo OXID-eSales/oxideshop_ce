@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -238,7 +239,7 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             } else {
                 \OxidEsales\Eshop\Core\Registry::getSession()->start();
                 // unrecognized url
-                error_404_handler($sParams);
+                throw new RoutingException($sParams);
             }
         }
     }

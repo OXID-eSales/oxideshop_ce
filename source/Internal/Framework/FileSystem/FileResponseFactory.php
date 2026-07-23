@@ -38,7 +38,7 @@ readonly class FileResponseFactory implements FileResponseFactoryInterface
 
     public function notFound(): Response
     {
-        return new Response('', Response::HTTP_NOT_FOUND);
+        return new Response('The requested file is not available.', Response::HTTP_NOT_FOUND);
     }
 
     private function prepare(Response $response, string $contentType, string $downloadFilename): Response

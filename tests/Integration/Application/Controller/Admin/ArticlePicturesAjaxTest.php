@@ -22,7 +22,6 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReady;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
@@ -253,11 +252,7 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $this->addProductMediaWithId($existingMediaId, $productId, ProductMediaRole::ICON);
 
         $controller = oxNew(ArticlePicturesAjax::class);
-        $errorResponse = $this->expectErrorResponseSignal(
-            static function () use ($controller): void {
-                $controller->replaceMedia();
-            }
-        );
+        $errorResponse = $controller->replaceMedia();
 
         $this->assertNotEmpty($this->decodeErrors($errorResponse));
         $allMedia = $this->get(ProductMediaDaoInterface::class)->getAll($productId);
@@ -287,11 +282,7 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $this->createArticleWithId((string) $productId);
 
         $controller = oxNew(ArticlePicturesAjax::class);
-        $errorResponse = $this->expectErrorResponseSignal(
-            static function () use ($controller): void {
-                $controller->addMedia();
-            }
-        );
+        $errorResponse = $controller->addMedia();
 
         $this->assertNotEmpty($this->decodeErrors($errorResponse));
         $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll($productId));
@@ -312,20 +303,6 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $content = $component->processRequest('emitGridData');
 
         $this->assertSame(json_encode(['records' => [['id' => 'abc']]]), $content);
-    }
-
-    private function expectErrorResponseSignal(callable $action): JsonResponse
-    {
-        try {
-            $action();
-        } catch (ResponseReady $responseReady) {
-            $response = $responseReady->getResponse();
-            $this->assertInstanceOf(JsonResponse::class, $response);
-
-            return $response;
-        }
-
-        $this->fail('Expected a ResponseReady signal carrying the error response');
     }
 
     /**

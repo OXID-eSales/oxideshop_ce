@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterAdminAjaxRequestProcessedEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * AJAX call processor class
@@ -140,11 +141,15 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         return 'select count( * ) ' . $sQ;
     }
 
-    public function processRequest(?string $function = null): string
+    public function processRequest($function = null): string|Response
     {
         if ($function) {
-            $this->$function();
+            $response = $this->$function();
             ContainerFacade::dispatch(new AfterAdminAjaxRequestProcessedEvent());
+
+            if ($response instanceof Response) {
+                return $response;
+            }
         } else {
             $sQAdd = $this->getQuery();
 

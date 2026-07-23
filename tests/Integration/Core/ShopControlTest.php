@@ -15,12 +15,11 @@ use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopControl;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReady;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 final class ShopControlTest extends IntegrationTestCase
 {
@@ -55,15 +54,15 @@ final class ShopControlTest extends IntegrationTestCase
         $this->renderView();
     }
 
-    public function testRenderRethrowsResponseSignalWrappedByTemplateEngine(): void
+    public function testRenderRethrowsRedirectExceptionWrappedByTemplateEngine(): void
     {
-        $signal = new ResponseReady(new Response('widget response'));
+        $signal = new RedirectException('https://shop.example/target');
         $this->useTemplateRendererThrowing(new \Exception('', 0, $signal));
 
         try {
             $this->renderView();
-            $this->fail('ResponseReady was not rethrown');
-        } catch (ResponseReady $rethrown) {
+            $this->fail('RedirectException was not rethrown');
+        } catch (RedirectException $rethrown) {
             $this->assertSame($signal, $rethrown);
         }
     }

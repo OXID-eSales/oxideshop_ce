@@ -264,19 +264,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $this->_blInit = true;
         $this->initVars = false;
 
-        try {
-            // config params initialization
-            $this->initVars($this->getShopId());
+        $this->initVars($this->getShopId());
 
-            // application initialization
-            $this->initializeShop();
-            $this->_oStart = oxNew(\OxidEsales\Eshop\Application\Controller\OxidStartController::class);
-            $this->_oStart->appInit();
-        } catch (\OxidEsales\Eshop\Core\Exception\DatabaseException $exception) {
-            $this->handleDbConnectionException($exception);
-        } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {
-            $this->handleCookieException($exception);
-        }
+        // application initialization
+        $this->initializeShop();
+        $this->_oStart = oxNew(\OxidEsales\Eshop\Application\Controller\OxidStartController::class);
+        $this->_oStart->appInit();
     }
 
     /**
@@ -1689,7 +1682,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if (is_array($this->getActiveViewsList())) {
             foreach ($this->getActiveViewsList() as $view) {
-                $ids[] = $view->getClassKey();
+                $ids[] = (string) $view->getClassKey();
             }
         }
 
@@ -1763,36 +1756,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Handle database exception.
-     * At this point everything has crashed already and not much of shop business logic is left to call.
-     * So just go straight and call the ExceptionHandler.
-     *
-     * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
-     */
-    protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
-    {
-        $this->getExceptionHandler()->handleUncaughtException($exception);
-    }
-
-    /**
-     * Redirect to start page and display the error
-     *
-     * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
-     */
-    protected function handleCookieException($ex)
-    {
-        $this->processSeoCall();
-
-        //starting up the session
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
-        $session->start();
-
-        // redirect to start page and display the error
-        Registry::getUtilsView()->addErrorToDisplay($ex);
-        Registry::getUtils()->redirect($this->getShopHomeUrl() . 'cl=start', true, 302);
-    }
-
-    /**
      * Save system configuration parameters, which is the same for sub-shops.
      *
      * @param string $parameterType  Type
@@ -1848,14 +1811,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     protected function getEditionTemplate($templateName)
     {
         return false;
-    }
-
-    /**
-     * @return \OxidEsales\Eshop\Core\Exception\ExceptionHandler
-     */
-    protected function getExceptionHandler()
-    {
-        return new \OxidEsales\Eshop\Core\Exception\ExceptionHandler();
     }
 
     protected function informServicesAfterConfigurationChanged($varName, $shopId, $extension = '')

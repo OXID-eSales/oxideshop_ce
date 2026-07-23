@@ -14,8 +14,7 @@ services:
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Request\RequestFactory', 'create']
     public: true
 
-  Symfony\Component\HttpFoundation\RequestStack:
-    public: true
+  Symfony\Component\HttpFoundation\RequestStack: ~
 
   OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface:
     alias: Symfony\Component\HttpFoundation\Request

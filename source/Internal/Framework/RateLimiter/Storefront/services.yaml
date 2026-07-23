@@ -24,10 +24,6 @@ services:
     arguments:
       - '@oxid_esales.rate_limiter.storefront.lock_store'
 
-  oxid_esales.rate_limiter.storefront.request:
-    class: Symfony\Component\HttpFoundation\Request
-    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Request\RequestFactory', 'create']
-
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionFilterInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionFilter
     arguments:
@@ -38,7 +34,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProvider
     arguments:
       $rules: '%oxid_esales.rate_limiter.storefront.rules%'
-      $request: '@oxid_esales.rate_limiter.storefront.request'
+      $request: '@Symfony\Component\HttpFoundation\Request'
 
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProvider
@@ -49,12 +45,13 @@ services:
       $storage: '@oxid_esales.rate_limiter.storefront.storage'
       $lockFactory: '@oxid_esales.rate_limiter.storefront.lock_factory'
 
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponder
-    public: true
-
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiter
-    public: true
     arguments:
-      $request: '@oxid_esales.rate_limiter.storefront.request'
+      $request: '@Symfony\Component\HttpFoundation\Request'
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimitListener:
+    arguments:
+      $enabled: '%oxid_esales.rate_limiter.storefront.enabled%'
+    tags:
+      - { name: kernel.event_subscriber }

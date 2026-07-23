@@ -14,7 +14,7 @@ readonly class ApiTestController
     {
     }
 
-    #[Route('/api/{name}/{id}/', requirements: ['id' => Requirement::DIGITS], methods: ['GET'])]
+    #[Route('/api/{name}/{id}/', requirements: ['id' => Requirement::DIGITS], methods: ['GET'], format: 'json')]
     public function fly(string $name, int $id): Response
     {
         return new JsonResponse(

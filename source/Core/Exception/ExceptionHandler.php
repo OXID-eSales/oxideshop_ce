@@ -37,7 +37,6 @@ class ExceptionHandler
         $response = new OfflinePageResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
         $response->headers->set('Connection', 'close');
         $response->send();
-        exit(1);
     }
 
     private function logException(Throwable $exception): void

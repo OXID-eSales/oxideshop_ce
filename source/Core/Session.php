@@ -1088,16 +1088,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if headers were already outputed
-     *
-     * @return bool
-     */
-    public function isHeaderSent()
-    {
-        return headers_sent();
-    }
-
-    /**
      * Returns true if session was started
      *
      * @return bool

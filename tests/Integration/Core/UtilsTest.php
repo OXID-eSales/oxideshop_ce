@@ -11,12 +11,24 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 class UtilsTest extends IntegrationTestCase
 {
+    public function testRedirectThrowsRedirectException(): void
+    {
+        try {
+            Registry::getUtils()->redirect('https://shop.example/target', false, 301);
+            $this->fail('Expected a redirect exception');
+        } catch (RedirectException $exception) {
+            $this->assertSame('https://shop.example/target', $exception->getUrl());
+            $this->assertSame(301, $exception->getStatusCode());
+        }
+    }
+
     public function testToFileCache(): void
     {
         $utils = Registry::getUtils();

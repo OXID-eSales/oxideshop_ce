@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Session;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\Session;
 use OxidEsales\EshopCommunity\Internal\Framework\Session\SessionInterface;
 
 class SessionAdapter implements SessionInterface
@@ -20,17 +21,17 @@ class SessionAdapter implements SessionInterface
             return $default;
         }
 
-        return Registry::getSession()->getVariable($name);
+        return $this->session()->getVariable($name);
     }
 
     public function has(string $name): bool
     {
-        return Registry::getSession()->hasVariable($name);
+        return $this->session()->hasVariable($name);
     }
 
     public function set(string $name, mixed $value): void
     {
-        Registry::getSession()->setVariable($name, $value);
+        $this->session()->setVariable($name, $value);
     }
 
     public function remove(string $name): mixed
@@ -40,8 +41,18 @@ class SessionAdapter implements SessionInterface
         }
 
         $value = $this->get($name);
-        Registry::getSession()->deleteVariable($name);
+        $this->session()->deleteVariable($name);
 
         return $value;
+    }
+
+    private function session(): Session
+    {
+        $session = Registry::getSession();
+        if (!$session->isSessionStarted()) {
+            $session->start();
+        }
+
+        return $session;
     }
 }

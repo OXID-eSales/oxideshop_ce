@@ -1,0 +1,20 @@
+parameters:
+  oxid_esales.http.security_headers:
+    X-Frame-Options: 'SAMEORIGIN'
+    X-Content-Type-Options: 'nosniff'
+    Referrer-Policy: 'strict-origin-when-cross-origin'
+  oxid_esales.http.default_cache_control: 'no-store, no-cache, must-revalidate'
+  oxid_esales.http.charset: 'UTF-8'
+  oxid_esales.http.exceptions:
+    OxidEsales\EshopCommunity\Core\Exception\RoutingException:
+      status_code: 404
+      log_level: info
+    Symfony\Component\HttpKernel\Exception\NotFoundHttpException:
+      status_code: null
+      log_level: info
+    Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException:
+      status_code: null
+      log_level: info
+    OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException:
+      status_code: null
+      log_level: info

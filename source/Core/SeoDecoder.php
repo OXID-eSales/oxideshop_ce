@@ -235,10 +235,6 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             } elseif (($sRedirectUrl = $this->decodeSimpleUrl($sParams))) {
                 // old type II seo urls
                 \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sRedirectUrl, false, 301);
-            } else {
-                \OxidEsales\Eshop\Core\Registry::getSession()->start();
-                // unrecognized url
-                error_404_handler($sParams);
             }
         }
     }

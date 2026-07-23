@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront;
 
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Event\RateLimitExceededEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionFilterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleLimiterFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProviderInterface;
@@ -18,30 +17,24 @@ use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\RateLimit;
 
-class StorefrontRateLimiter implements StorefrontRateLimiterInterface
+readonly class StorefrontRateLimiter implements StorefrontRateLimiterInterface
 {
-    private bool $enforced = false;
-
     public function __construct(
-        private readonly Request $request,
-        private readonly RuleProviderInterface $ruleProvider,
-        private readonly RequestExclusionFilterInterface $requestExclusionFilter,
-        private readonly KeyProviderInterface $keyProvider,
-        private readonly RuleLimiterFactoryInterface $limiterFactory,
-        private readonly LoggerInterface $logger,
-        private readonly EventDispatcherInterface $eventDispatcher,
+        private Request $request,
+        private RuleProviderInterface $ruleProvider,
+        private RequestExclusionFilterInterface $requestExclusionFilter,
+        private KeyProviderInterface $keyProvider,
+        private RuleLimiterFactoryInterface $limiterFactory,
+        private LoggerInterface $logger,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 
     public function enforce(): void
     {
-        if ($this->enforced) {
-            return;
-        }
-        $this->enforced = true;
-
         if ($this->requestExclusionFilter->isExcluded($this->request)) {
             return;
         }
@@ -81,11 +74,10 @@ class StorefrontRateLimiter implements StorefrontRateLimiterInterface
 
         $this->eventDispatcher->dispatch(new RateLimitExceededEvent($ruleId, $key, $retryAfter));
 
-        throw new TooManyRequestsException(
-            $retryAfter,
-            $rateLimit->getLimit(),
-            $rateLimit->getRemainingTokens(),
-            $reset,
-        );
+        throw new TooManyRequestsHttpException($retryAfter, 'Too many requests.', headers: [
+            'X-RateLimit-Limit' => (string) $rateLimit->getLimit(),
+            'X-RateLimit-Remaining' => (string) $rateLimit->getRemainingTokens(),
+            'X-RateLimit-Reset' => (string) $reset,
+        ]);
     }
 }

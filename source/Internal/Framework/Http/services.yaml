@@ -1,3 +1,6 @@
+imports:
+  - { resource: parameters.yaml }
+
 services:
   _defaults:
     autowire: true
@@ -17,7 +20,6 @@ services:
     class: Symfony\Component\HttpKernel\HttpKernel
     arguments:
       $handleAllThrowables: true
-    public: true
 
 
   OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface:
@@ -35,21 +37,46 @@ services:
       $request: '@Symfony\Component\HttpFoundation\Request'
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyListener:
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RedirectListener:
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseSignalListener:
+  Symfony\Component\HttpKernel\EventListener\ErrorListener:
+    arguments:
+      $controller: 'Symfony\Component\HttpKernel\Controller\ErrorController'
+      $debug: '%oxid_esales.debug_mode%'
+      $exceptionsMapping: '%oxid_esales.http.exceptions%'
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\SecurityHeadersListener:
+  Symfony\Component\HttpKernel\Controller\ErrorController:
+    arguments:
+      $controller: null
+    public: true
+
+  Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ProblemJsonErrorRenderer
+    arguments:
+      $htmlErrorRenderer: '@OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ShopHtmlErrorRenderer'
+      $debug: '%oxid_esales.debug_mode%'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ShopHtmlErrorRenderer:
+    arguments:
+      $htmlErrorRenderer: '@Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer'
+      $debug: '%oxid_esales.debug_mode%'
+
+  Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer:
+    arguments:
+      $debug: '%oxid_esales.debug_mode%'
+      $charset: '%oxid_esales.http.charset%'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\SecurityHeadersListener:
     arguments:
       $headers: '%oxid_esales.http.security_headers%'
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\CacheControlListener:
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\CacheControlListener:
     arguments:
       $defaultCacheControl: '%oxid_esales.http.default_cache_control%'
     tags:

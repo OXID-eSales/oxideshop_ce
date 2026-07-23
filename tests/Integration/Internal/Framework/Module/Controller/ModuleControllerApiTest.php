@@ -62,6 +62,30 @@ final class ModuleControllerApiTest extends TestCase
         $response = $httpBrowser->getResponse();
 
         $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('application/json', $response->getHeader('Content-Type'));
+        $this->assertSame($this->problem(404, 'Not Found'), json_decode($response->getContent(), true));
+    }
+
+    public function testApiControllerWrongMethod(): void
+    {
+        $shopUrl = Registry::getConfig()->getShopUrl();
+        $httpBrowser = new HttpBrowser();
+        $httpBrowser->request('POST', $shopUrl . 'api/oxid/8/');
+        $response = $httpBrowser->getResponse();
+
+        $this->assertSame(405, $response->getStatusCode());
+        $this->assertSame('GET', $response->getHeader('Allow'));
+        $this->assertSame($this->problem(405, 'Method Not Allowed'), json_decode($response->getContent(), true));
+    }
+
+    private function problem(int $status, string $detail): array
+    {
+        return [
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
+            'title' => 'An error occurred',
+            'status' => $status,
+            'detail' => $detail,
+        ];
     }
 
     private function get(string $serviceId)

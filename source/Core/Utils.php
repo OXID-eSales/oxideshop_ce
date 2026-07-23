@@ -11,9 +11,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Response;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use Psr\Cache\CacheItemPoolInterface;
 use stdClass;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -645,47 +643,16 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * redirect user to the specified URL
      *
      * @param string $sUrl               URL to be redirected
-     * @param bool   $blAddRedirectParam add "redirect" param
-     * @param int    $iHeaderCode        header code, default 302
+     * @param bool   $blAddRedirectParam @deprecated ignored, the "redirected" parameter is no longer added
+     * @param int    $iHeaderCode        header code, default 302; a code that cannot carry a redirect is normalised to 302
+     *
+     * @throws RedirectException
      */
     public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 302)
     {
-        //preventing possible cyclic redirection
-        //#M341 and check only if redirect parameter must be added
-        if ($blAddRedirectParam && Registry::getRequest()->getRequestEscapedParameter('redirected')) {
-            return;
-        }
-
-        if ($blAddRedirectParam) {
-            $sUrl = $this->addUrlParameters($sUrl, ['redirected' => 1]);
-        }
-
         $sUrl = str_ireplace("&amp;", "&", $sUrl);
 
-        ContainerFacade::dispatch(new ResponseReadyEvent(
-            $iHeaderCode >= 300 && $iHeaderCode < 400
-                ? new RedirectResponse($sUrl, $iHeaderCode)
-                : new Response('', $iHeaderCode, ['Location' => $sUrl])
-        ));
-    }
-
-    /**
-     * adds the given parameters at the end of the given url
-     *
-     * @param string $sUrl    a url
-     * @param array  $aParams the params which will be added
-     *
-     * @return string
-     */
-    protected function addUrlParameters($sUrl, $aParams)
-    {
-        $sDelimiter = ((Str::getStr()->strpos($sUrl, '?') !== false)) ? '&' : '?';
-        foreach ($aParams as $sName => $sVal) {
-            $sUrl = $sUrl . $sDelimiter . $sName . '=' . $sVal;
-            $sDelimiter = '&';
-        }
-
-        return $sUrl;
+        throw new RedirectException($sUrl, $iHeaderCode);
     }
 
     /**
@@ -879,26 +846,6 @@ class Utils extends \OxidEsales\Eshop\Core\Base
         }
 
         return $sUrl;
-    }
-
-    /**
-     * handler for 404 (page not found) error
-     *
-     * @param string $sUrl url which was given, can be not specified in some cases
-     */
-    public function handlePageNotFoundError($sUrl = '')
-    {
-        $sReturn = "Page not found.";
-        $oView = oxNew(\OxidEsales\Eshop\Application\Controller\FrontendController::class);
-        $oView->init();
-        $oView->render();
-        $oView->setClassKey('oxUBase');
-        $oView->addTplParam('sUrl', $sUrl);
-        if ($sRet = Registry::getUtilsView()->getTemplateOutput('message/err_404', $oView)) {
-            $sReturn = $sRet;
-        }
-
-        ContainerFacade::dispatch(new ResponseReadyEvent(new Response($sReturn, 404)));
     }
 
     /**

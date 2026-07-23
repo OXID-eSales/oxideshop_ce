@@ -11,8 +11,8 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * General export class.
@@ -113,16 +113,14 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     /**
      * Performs Voucherserie export to export file.
      */
-    public function download(): void
+    public function download(): Response
     {
         $factory = ContainerFacade::get(FileResponseFactoryInterface::class);
         $sFile = $this->getExportFilePath();
 
-        $response = !file_exists($sFile) || !is_readable($sFile)
+        return !file_exists($sFile) || !is_readable($sFile)
             ? $factory->notFound()
             : $factory->fromFile($sFile, 'text/csv; charset=utf-8', 'vouchers.csv');
-
-        ContainerFacade::dispatch(new ResponseReadyEvent($response));
     }
 
     /**

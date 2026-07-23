@@ -25,10 +25,9 @@
 - HTTP header and request handling on the shop kernel
   - `index.php` resolves Symfony `#[Route]` controllers, falling back to the legacy shop controller resolution
   - The response status, headers and cookies are owned by the Symfony `Response`
-  - Request-terminating helpers such as `Utils::redirect()` dispatch a `ResponseReadyEvent` - subscribe to it to observe or replace the outgoing response
-  - Uncaught errors and fatal errors are handled by `symfony/error-handler`
-  - Uncaught shop exceptions are converted to responses on the `kernel.exception` event
-  - The `Cache-Control` header is owned by the `Response`; PHP's session cache limiter is disabled
+  - Controllers can return a Symfony `Response` object
+  - `Utils::redirect()` throws a `RedirectException` delivered as a redirect on `kernel.exception`
+  - The `Cache-Control` header is owned by the `Response`
   - The default `Content-Type` and charset are configured via `oxid_esales.http.charset`
 
 ### Removed
@@ -38,8 +37,9 @@
 - `Output` - process output with a `kernel.response` listener
 - `Header` - set headers on the `Response` or use a `kernel.response` listener
 - `Utils::setHeader()` - set headers on the `Response` or subscribe to the `kernel.response` event
-- `Utils::showMessageAndExit()` - dispatch a `ResponseReadyEvent`
+- `Utils::showMessageAndExit()` - return a `Response`
 - `Utils::showOfflinePage()` - use `OfflinePageResponse`
+- `Utils::handlePageNotFoundError()` and the `error_404_handler()` function - throw a `RoutingException`
 - `Utils::simpleRedirect()` and `Utils::prepareToExit()`
 - `oxTriggerOfflinePageDisplay()` - use `OfflinePageResponse`
 - `Session::needToSetHeaders()`

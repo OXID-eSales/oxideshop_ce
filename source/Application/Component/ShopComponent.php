@@ -8,9 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Component;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
 use oxRegistry;
 
 /**
@@ -45,7 +43,7 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         $sClassName = $myConfig->getActiveView()->getClassKey();
 
         if (!$oShop->$sActiveField->value && 'oxstart' != $sClassName && !$this->isAdmin()) {
-            ContainerFacade::dispatch(new ResponseReadyEvent(new OfflinePageResponse()));
+            throw new ShopOfflineException('Shop is offline');
         }
 
         return $oShop;

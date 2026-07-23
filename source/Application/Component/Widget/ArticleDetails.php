@@ -17,9 +17,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Utils;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use stdClass;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Article detailed information widget.
@@ -831,7 +829,6 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
                 if (!$this->_oProduct->load($sOxid)) {
                     $myUtils->redirect($myConfig->getShopHomeUrl());
-                    ContainerFacade::dispatch(new ResponseReadyEvent(new Response('')));
                 }
 
                 $sVarSelId = Registry::getRequest()->getRequestEscapedParameter("varselid");
@@ -939,7 +936,6 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
 
         if (!$blContinue) {
             $myUtils->redirect($myConfig->getShopHomeUrl());
-            ContainerFacade::dispatch(new ResponseReadyEvent(new Response('')));
         }
 
         $this->processProduct($this->_oProduct);

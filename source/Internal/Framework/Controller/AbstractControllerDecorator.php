@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 abstract class AbstractControllerDecorator implements ViewControllerInterface
 {
     public function __construct(
@@ -24,6 +26,16 @@ abstract class AbstractControllerDecorator implements ViewControllerInterface
     public function render()
     {
         return $this->controller->render();
+    }
+
+    public function getResponse(): ?Response
+    {
+        return $this->controller->getResponse();
+    }
+
+    public function setResponse(Response $response): void
+    {
+        $this->controller->setResponse($response);
     }
 
     public function getFncName()

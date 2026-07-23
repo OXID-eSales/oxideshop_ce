@@ -11,7 +11,6 @@ use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -130,7 +129,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
     /**
      * Caches external url file locally, adds <base> tag with original url to load images and other links correcly
      */
-    public function exturl()
+    public function exturl(): Response
     {
         $myUtils = Registry::getUtils();
         if ($sUrl = Registry::getRequest()->getRequestEscapedParameter("url")) {
@@ -138,7 +137,7 @@ class NavigationController extends \OxidEsales\Eshop\Application\Controller\Admi
             $myUtils->redirect($sUrl, true, 302);
         }
 
-        ContainerFacade::dispatch(new ResponseReadyEvent(new Response('')));
+        return new Response('');
     }
 
     /**

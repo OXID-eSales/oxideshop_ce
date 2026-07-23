@@ -12,6 +12,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Checks Version of System files.
@@ -189,9 +190,9 @@ class DiagnosticsMain extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     /**
      * Downloads result of system file check
      */
-    public function downloadResultFile()
+    public function downloadResultFile(): Response
     {
-        $this->_oOutput->downloadResultFile();
+        return $this->_oOutput->getResultFileResponse();
     }
 
     /**

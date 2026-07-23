@@ -35,21 +35,21 @@ services:
       $request: '@Symfony\Component\HttpFoundation\Request'
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyListener:
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RedirectListener:
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseSignalListener:
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\NotFoundListener:
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\SecurityHeadersListener:
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\SecurityHeadersListener:
     arguments:
       $headers: '%oxid_esales.http.security_headers%'
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\CacheControlListener:
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\CacheControlListener:
     arguments:
       $defaultCacheControl: '%oxid_esales.http.default_cache_control%'
     tags:

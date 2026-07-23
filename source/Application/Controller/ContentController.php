@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Registry;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -136,7 +137,7 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         }
         $templateName = $this->getTplName();
         if (!$templateName && (!$content || !$content->getId())) {
-            error_404_handler();
+            throw new RoutingException(Registry::getRequest()->getRequestUrl());
         }
         if ($this->showPlainTemplate()) {
             $this->_sThisTemplate = $this->_sThisPlainTemplate;
@@ -547,11 +548,6 @@ class ContentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         return $url;
     }
 
-    /**
-     * Terminates execution with exit() on no permissions
-     * @param string $contentId
-     * @return void
-     */
     private function validateContentAccessPermissions(string $contentId): void
     {
         if (!$this->canShowContent($contentId)) {

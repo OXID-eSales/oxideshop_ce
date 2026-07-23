@@ -7,11 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\AfterRequestProcessedEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Base view class. Collects and passes data to template engine, sets some global
@@ -53,6 +55,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
      * @var \OxidEsales\Eshop\Core\Controller\BaseController|null
      */
     protected $_oParent = null;
+
+    protected ?Response $response = null;
 
     /**
      * Flag if this object is a component or not
@@ -494,15 +498,27 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
                 self::$_blExecuted = true;
                 ContainerFacade::dispatch(new AfterRequestProcessedEvent());
 
-                if (isset($sNewAction)) {
+                if ($sNewAction instanceof Response) {
+                    $this->setResponse($sNewAction);
+                } elseif (isset($sNewAction)) {
                     $this->executeNewAction($sNewAction);
                 }
             } elseif (!$this->_blIsComponent) {
-                throw new \OxidEsales\Eshop\Core\Exception\RoutingException(
+                throw new RoutingException(
                     sprintf("Controller method is not accessible: %s::%s", self::class, $sFunction)
                 );
             }
         }
+    }
+
+    public function getResponse(): ?Response
+    {
+        return $this->response;
+    }
+
+    public function setResponse(Response $response): void
+    {
+        $this->response = $response;
     }
 
     /**

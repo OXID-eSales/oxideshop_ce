@@ -7,11 +7,17 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
+
 interface ViewControllerInterface
 {
     public function init();
 
     public function render();
+
+    public function getResponse(): ?Response;
+
+    public function setResponse(Response $response): void;
 
     public function executeFunction($function);
 

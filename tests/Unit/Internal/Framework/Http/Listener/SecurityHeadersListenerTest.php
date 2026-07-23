@@ -7,9 +7,9 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http\Listener;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Http\SecurityHeadersListener;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\SecurityHeadersListener;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

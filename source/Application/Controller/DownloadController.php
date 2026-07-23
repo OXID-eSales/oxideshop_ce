@@ -42,7 +42,7 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
                     $sFileId = $oOrderFile->getFileId();
                     $blLoadedAndExists = $oArticleFile->load($sFileId) && $oArticleFile->exist();
                     if ($sFileId && $blLoadedAndExists && $oOrderFile->processOrderFile()) {
-                        $oArticleFile->download();
+                        return $oArticleFile->download();
                     } else {
                         $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";
                     }

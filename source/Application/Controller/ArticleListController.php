@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
@@ -169,7 +170,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
      * such as previous/next window URL, number of available pages, generates
      * meta tags info (\OxidEsales\Eshop\Application\Controller\FrontendController::_convertForMetaTags()) and returns
      * name of template to render. Also checks if actual pages count does not exceed real
-     * articles page count. If yes - calls error_404_handler().
+     * articles page count. If yes - throws a RoutingException.
      *
      * @return  string  $this->_sThisTemplate   current template file name
      */
@@ -240,9 +241,7 @@ class ArticleListController extends \OxidEsales\Eshop\Application\Controller\Fro
             Registry::getUtils()->redirect($this->getActiveCategory()->getLink(), false);
         }
         if (!$pageCount && $currentPageNumber) {
-            // display error if category has no products, but page number is entered
-            $this->_iActPage = 0;
-            error_404_handler($this->getActiveCategory()->getLink());
+            throw new RoutingException();
         }
     }
 

@@ -8,12 +8,11 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Article details information page.
@@ -461,7 +460,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
             if (!$this->_oProduct->load($articleId)) {
                 unset($_GET, $_POST);
                 $config->dropLastActiveView();
-                error_404_handler($_SERVER['REQUEST_URI']);
+                throw new RoutingException($_SERVER['REQUEST_URI']);
             }
 
             $variantSelectionId = Registry::getRequest()->getRequestEscapedParameter("varselid");
@@ -499,7 +498,6 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
 
         if (!$shouldContinue) {
             $utils->redirect($config->getShopHomeUrl());
-            ContainerFacade::dispatch(new ResponseReadyEvent(new Response('')));
         }
 
         $this->processProduct($this->_oProduct);

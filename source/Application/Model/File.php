@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use oxException;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ResponseReadyEvent;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Article files manager.
@@ -327,19 +327,17 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
     }
 
-    public function download()
+    public function download(): Response
     {
         if (!$this->exist() || !$this->isUnderDownloadFolder()) {
             throw new \OxidEsales\Eshop\Core\Exception\StandardException('EXCEPTION_NOFILE');
         }
 
-        $response = ContainerFacade::get(FileResponseFactoryInterface::class)->fromFile(
+        return ContainerFacade::get(FileResponseFactoryInterface::class)->fromFile(
             $this->getStoreLocation(),
             'application/octet-stream',
             $this->oxfiles__oxfilename->value
         );
-
-        ContainerFacade::dispatch(new ResponseReadyEvent($response));
     }
 
     /**

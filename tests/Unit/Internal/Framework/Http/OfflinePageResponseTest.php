@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class OfflinePageResponseTest extends TestCase
 {
-    public function testCarriesNotFoundStatusAndOfflinePageContent(): void
+    public function testCarriesServerErrorStatusAndOfflinePageContent(): void
     {
         $response = new OfflinePageResponse();
 
@@ -25,13 +25,13 @@ final class OfflinePageResponseTest extends TestCase
             Path::join(new BasicContext()->getSourcePath(), 'offline.html')
         );
         $this->assertSame($offlinePage, $response->getContent());
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
     public function testCarriesTheGivenStatus(): void
     {
-        $response = new OfflinePageResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
+        $response = new OfflinePageResponse(Response::HTTP_SERVICE_UNAVAILABLE);
 
-        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
+        $this->assertSame(Response::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode());
     }
 }

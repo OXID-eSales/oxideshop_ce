@@ -62,7 +62,15 @@ ContainerFacade::get(LegacyAjaxRunnerInterface::class)->runController(static fun
         if ($containerClass !== null) {
             $oAjaxComponent = oxNew($containerClass);
             $oAjaxComponent->setName($sContainer);
-            $content = (string) $oAjaxComponent->processRequest(Registry::getRequest()->getRequestParameter('fnc'));
+            $result = $oAjaxComponent->processRequest(Registry::getRequest()->getRequestParameter('fnc'));
+
+            if ($result instanceof Response) {
+                $myConfig->pageClose();
+
+                return $result;
+            }
+
+            $content = (string) $result;
         } else {
             $status = Response::HTTP_NOT_FOUND;
         }

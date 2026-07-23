@@ -10,13 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Symfony\Component\Filesystem\Path;
 
 final class ConfigParentThemeFallbackTest extends IntegrationTestCase
 {
@@ -53,13 +50,8 @@ final class ConfigParentThemeFallbackTest extends IntegrationTestCase
 
     private function installTheme(string $themeId): void
     {
-        $context = $this->get(BasicContextInterface::class);
         $themePath = realpath("$this->fixtureDirectory/shop/source/Application/views/$themeId");
 
-        $configuration = (new ThemeConfiguration())
-            ->setId($themeId)
-            ->setSource(Path::makeRelative($themePath, $context->getShopRootPath()));
-
-        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, self::SHOP_ID);
+        $this->get(ThemeConfigurationInstallerInterface::class)->install($themePath);
     }
 }

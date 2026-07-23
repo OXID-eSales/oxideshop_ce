@@ -13,7 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -65,7 +67,11 @@ final class ThemeActivationServiceTest extends TestCase
             ->method('dispatch')
             ->with(new ThemeActivatedEvent(self::SHOP_ID, 'target'));
 
-        (new ThemeActivationService($dao, $eventDispatcher))->activate('target', self::SHOP_ID);
+        (new ThemeActivationService(
+            $dao,
+            $eventDispatcher,
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class)
+        ))->activate('target', self::SHOP_ID);
     }
 
     public function testActivateThrowsWhenThemeConfigurationIsMissing(): void
@@ -78,8 +84,33 @@ final class ThemeActivationServiceTest extends TestCase
         $this->createService($dao)->activate('unknown', self::SHOP_ID);
     }
 
+    public function testActivateThrowsAndDoesNotSaveWhenIncompatibleWithParentTheme(): void
+    {
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->never())->method('save');
+
+        $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
+        $themeParentCompatibilityChecker
+            ->method('assertCompatible')
+            ->willThrowException(new ParentVersionMismatchException());
+
+        $service = new ThemeActivationService(
+            $dao,
+            $this->createStub(EventDispatcherInterface::class),
+            $themeParentCompatibilityChecker
+        );
+
+        $this->expectException(ParentVersionMismatchException::class);
+
+        $service->activate('target', self::SHOP_ID);
+    }
+
     private function createService(ThemeConfigurationDaoInterface $dao): ThemeActivationService
     {
-        return new ThemeActivationService($dao, $this->createStub(EventDispatcherInterface::class));
+        return new ThemeActivationService(
+            $dao,
+            $this->createStub(EventDispatcherInterface::class),
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class)
+        );
     }
 }

@@ -19,6 +19,7 @@
 - `ViewConfig::getThemeSettings()` to read theme settings in templates
 - `ActiveTheme` value object
 - `ThemeStateServiceInterface::getActiveTheme()`
+- `ThemePathResolverInterface` to resolve a theme's directory from its configured source
 
 ### Changed
 - Theme activation state is now stored in YAML configuration instead of the database

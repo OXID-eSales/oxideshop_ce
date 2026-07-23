@@ -7,7 +7,15 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+
 interface ThemeMetaDataByIdProviderInterface
 {
+    /**
+     * @throws ThemeConfigurationNotFoundException
+     * @throws \InvalidArgumentException
+     * @throws InvalidThemeMetaDataException
+     */
     public function get(string $themeId, int $shopId): ThemeMetaData;
 }

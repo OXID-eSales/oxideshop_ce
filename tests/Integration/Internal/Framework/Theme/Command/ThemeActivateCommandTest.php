@@ -61,6 +61,34 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         $this->assertFalse($this->isThemeActive($this->themeId));
     }
 
+    public function testActivationFailsForThemeWithIncompatibleParent(): void
+    {
+        $incompatibleThemeId = 'incompatibleChildTheme';
+        $this->get(ThemeConfigurationInstallerInterface::class)->install(
+            "$this->fixtureDirectory/shop/source/Application/views/$incompatibleThemeId"
+        );
+
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $incompatibleThemeId]);
+
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        $this->assertFalse($this->isThemeActive($incompatibleThemeId));
+    }
+
+    public function testActivationFailsForThemeDeclaringItselfAsItsOwnParent(): void
+    {
+        $selfReferencingThemeId = 'selfReferencingTheme';
+        $this->get(ThemeConfigurationInstallerInterface::class)->install(
+            "$this->fixtureDirectory/shop/source/Application/views/$selfReferencingThemeId"
+        );
+
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $selfReferencingThemeId]);
+
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        $this->assertFalse($this->isThemeActive($selfReferencingThemeId));
+    }
+
     private function isThemeActive(string $themeId): bool
     {
         return $this->get(ThemeStateServiceInterface::class)->isActive($themeId, self::SHOP_ID);

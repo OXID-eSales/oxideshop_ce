@@ -9,21 +9,22 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChain;
+
 readonly class ActiveTheme
 {
     public function __construct(
-        private string $id,
-        private bool $isChildTheme,
+        private ThemeChain $chain,
     ) {
     }
 
     public function getId(): string
     {
-        return $this->id;
+        return $this->chain->getThemeIds()[0];
     }
 
-    public function isChildTheme(): bool
+    public function getChain(): ThemeChain
     {
-        return $this->isChildTheme;
+        return $this->chain;
     }
 }

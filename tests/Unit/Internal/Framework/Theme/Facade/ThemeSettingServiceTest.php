@@ -11,12 +11,14 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
@@ -220,6 +222,51 @@ final class ThemeSettingServiceTest extends TestCase
         $this->assertFalse($service->exists('logoFile'));
     }
 
+    public function testInheritsSettingFromParentThemeWhenChildDoesNotOverrideIt(): void
+    {
+        $childConfiguration = (new ThemeConfiguration())->setId('child');
+        $parentSetting = (new Setting())->setName('sLogoFile')->setType('str')->setValue('parent-logo.png');
+        $parentConfiguration = (new ThemeConfiguration())->setId('parent')->addThemeSetting($parentSetting);
+
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+
+        $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
+        $resolver->method('resolve')->willReturnCallback(
+            fn(string $themeId) => $themeId === 'child' ? $childConfiguration : $parentConfiguration
+        );
+
+        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
+        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeChain(['child', 'parent'])));
+
+        $service = new ThemeSettingService($this->createContext(), $dao, $resolver, $this->createCacheMiss(), $themeStateService);
+
+        $this->assertSame('parent-logo.png', $service->getString('sLogoFile'));
+    }
+
+    public function testChildThemeOverridesParentThemeSetting(): void
+    {
+        $childSetting = (new Setting())->setName('sLogoFile')->setType('str')->setValue('child-logo.png');
+        $childConfiguration = (new ThemeConfiguration())->setId('child')->addThemeSetting($childSetting);
+        $parentSetting = (new Setting())->setName('sLogoFile')->setType('str')->setValue('parent-logo.png');
+        $parentConfiguration = (new ThemeConfiguration())->setId('parent')->addThemeSetting($parentSetting);
+
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+
+        $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
+        $resolver->method('resolve')->willReturnCallback(
+            fn(string $themeId) => $themeId === 'child' ? $childConfiguration : $parentConfiguration
+        );
+
+        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
+        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeChain(['child', 'parent'])));
+
+        $service = new ThemeSettingService($this->createContext(), $dao, $resolver, $this->createCacheMiss(), $themeStateService);
+
+        $this->assertSame('child-logo.png', $service->getString('sLogoFile'));
+    }
+
     private function createServiceWithSetting(
         string $name,
         string $type,
@@ -269,6 +316,7 @@ final class ThemeSettingServiceTest extends TestCase
     {
         $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
         $themeStateService->method('getActiveThemeId')->willReturn(self::THEME_ID);
+        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeChain([self::THEME_ID])));
         return $themeStateService;
     }
 

@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -926,11 +925,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param int    $shop       Shop id
      * @param string $theme      Theme name
      * @param bool   $absolute   mode - absolute/relative path
-     * @param bool   $ignoreCust Ignore custom theme
+     * @param bool   $ignoreParentTheme Skip falling back to the parent theme
      *
      * @return string
      */
-    public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreCust = false)
+    public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreParentTheme = false)
     {
         if (is_null($shop)) {
             $shop = $this->getShopId();
@@ -967,17 +966,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //Load from
         $path = "{$theme}/{$shop}/{$langAbbr}/{$dir}/{$file}";
-        $cacheKey = $path . "_{$ignoreCust}{$absolute}";
+        $cacheKey = $path . "_{$ignoreParentTheme}{$absolute}";
 
         if (($return = Registry::getUtils()->fromStaticCache($cacheKey)) !== null) {
             return $return;
         }
 
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
-
-        if (!$return) {
-            $return = $this->getDirFromChildTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust);
-        }
 
         //test lang level ..
         if (!$return && !$admin && is_readable($absBase . $path)) {
@@ -986,7 +981,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //test shop level ..
         if (!$return && !$admin) {
-            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust);
+            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
         }
 
         //test theme language level ..
@@ -1014,7 +1009,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if (!$return) {
-            $return = $this->getDirFromParentTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute);
+            $return = $this->getDirFromParentTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
         }
 
         // TODO: implement logic to log missing paths
@@ -1024,9 +1019,9 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return $return;
     }
 
-    private function getDirFromChildTheme($file, $dir, $admin, $lang, $shop, ?string $theme, $absolute, $ignoreCust)
+    private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, ?string $theme, $absolute, $ignoreParentTheme)
     {
-        if ($admin || $ignoreCust) {
+        if ($admin || $ignoreParentTheme || !$theme) {
             return false;
         }
 
@@ -1036,29 +1031,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
-        if (!$activeTheme->isChildTheme()) {
+        $chain = $activeTheme->getChain();
+
+        if ($theme !== $activeTheme->getId() || !$chain->hasParentTheme()) {
             return false;
         }
 
-        return $activeTheme->getId() !== $theme
-            ? $this->getDir($file, $dir, $admin, $lang, $shop, $activeTheme->getId(), $absolute, $ignoreCust)
-            : false;
-    }
-
-    private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, ?string $theme, $absolute)
-    {
-        if ($admin || !$theme) {
-            return false;
-        }
-
-        $themeParentProvider = ContainerFacade::get(ThemeParentProviderInterface::class);
-        if (!$themeParentProvider->hasParentTheme($theme, (int) $shop)) {
-            return false;
-        }
-
-        $parentThemeId = $themeParentProvider->getParentThemeId($theme, (int) $shop);
-
-        return $this->getDir($file, $dir, $admin, $lang, $shop, $parentThemeId, $absolute, true);
+        return $this->getDir($file, $dir, $admin, $lang, $shop, $chain->getParentThemeId(), $absolute, true);
     }
 
     /**
@@ -1071,11 +1050,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param int    $shop
      * @param string $theme
      * @param bool   $absolute
-     * @param bool   $ignoreCust
+     * @param bool   $ignoreParentTheme
      *
      * @return bool|string
      */
-    protected function getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreCust)
+    protected function getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme)
     {
         $return = false;
 

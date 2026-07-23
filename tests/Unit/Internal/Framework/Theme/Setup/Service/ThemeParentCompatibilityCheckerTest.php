@@ -9,10 +9,12 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChain;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeMetadataInvalidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeNotInstalledException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionsNotDeclaredException;
@@ -95,15 +97,34 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
+    public function testAssertCompatibleThrowsWhenParentThemeMetadataIsUnreadable(): void
+    {
+        $themeChainResolver = $this->createStub(ThemeChainResolverInterface::class);
+        $themeChainResolver->method('getThemeChain')->willReturn(new ThemeChain([self::THEME_ID, self::PARENT_THEME_ID]));
+
+        $themeConfigurationDao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $themeConfigurationDao->method('exists')->willReturn(true);
+
+        $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
+        $themeMetaDataByIdProvider->method('get')->willThrowException(new \InvalidArgumentException());
+
+        $checker = new ThemeParentCompatibilityChecker($themeConfigurationDao, $themeMetaDataByIdProvider, $themeChainResolver);
+
+        $this->expectException(ParentThemeMetadataInvalidException::class);
+
+        $checker->assertCompatible(self::THEME_ID, self::SHOP_ID);
+    }
+
     private function createChecker(
         bool $hasParent,
         bool $parentInstalled = false,
         string $parentVersion = '',
         array $declaredParentVersions = []
     ): ThemeParentCompatibilityChecker {
-        $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
-        $themeParentProvider->method('hasParentTheme')->willReturn($hasParent);
-        $themeParentProvider->method('getParentThemeId')->willReturn(self::PARENT_THEME_ID);
+        $themeChainResolver = $this->createStub(ThemeChainResolverInterface::class);
+        $themeChainResolver->method('getThemeChain')->willReturn(
+            new ThemeChain($hasParent ? [self::THEME_ID, self::PARENT_THEME_ID] : [self::THEME_ID])
+        );
 
         $themeConfigurationDao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $themeConfigurationDao->method('exists')->willReturn($parentInstalled);
@@ -115,6 +136,6 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
                 : (new ThemeMetaData())->setId(self::THEME_ID)->setParentVersions($declaredParentVersions)
         );
 
-        return new ThemeParentCompatibilityChecker($themeParentProvider, $themeConfigurationDao, $themeMetaDataByIdProvider);
+        return new ThemeParentCompatibilityChecker($themeConfigurationDao, $themeMetaDataByIdProvider, $themeChainResolver);
     }
 }

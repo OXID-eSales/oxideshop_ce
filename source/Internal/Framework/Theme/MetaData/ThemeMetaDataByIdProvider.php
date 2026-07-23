@@ -9,23 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use Symfony\Component\Filesystem\Path;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolverInterface;
 
 readonly class ThemeMetaDataByIdProvider implements ThemeMetaDataByIdProviderInterface
 {
     public function __construct(
-        private ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ThemePathResolverInterface $themePathResolver,
         private ThemeMetaDataProviderInterface $themeMetaDataProvider,
-        private BasicContextInterface $context,
     ) {
     }
 
     public function get(string $themeId, int $shopId): ThemeMetaData
     {
-        $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
-        $themePath = Path::join($this->context->getShopRootPath(), $themeConfiguration->getSource());
+        $themePath = $this->themePathResolver->getFullThemePathFromConfiguration($themeId, $shopId);
 
         return $this->themeMetaDataProvider->get($themePath);
     }

@@ -35,10 +35,6 @@ readonly class ThemeParentProvider implements ThemeParentProviderInterface
 
     private function getParentTheme(string $themeId, int $shopId): string
     {
-        try {
-            return $this->themeMetaDataByIdProvider->get($themeId, $shopId)->getParentTheme();
-        } catch (\InvalidArgumentException) {
-            return '';
-        }
+        return $this->themeMetaDataByIdProvider->get($themeId, $shopId)->getParentTheme();
     }
 }

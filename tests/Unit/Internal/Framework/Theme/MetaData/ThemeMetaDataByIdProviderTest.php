@@ -9,12 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolverInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ThemeMetaDataByIdProviderTest extends TestCase
@@ -22,12 +20,10 @@ final class ThemeMetaDataByIdProviderTest extends TestCase
     private const SHOP_ID = 1;
     private const THEME_ID = 'apex';
 
-    public function testGetResolvesMetaDataByJoiningShopRootPathWithThemeSource(): void
+    public function testGetResolvesMetaDataUsingThemePathResolver(): void
     {
-        $themeConfigurationDao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $themeConfigurationDao->method('get')->willReturn(
-            (new ThemeConfiguration())->setId(self::THEME_ID)->setSource('Application/views/apex')
-        );
+        $themePathResolver = $this->createStub(ThemePathResolverInterface::class);
+        $themePathResolver->method('getFullThemePathFromConfiguration')->willReturn('/var/www/Application/views/apex');
 
         $expectedMetaData = (new ThemeMetaData())->setId(self::THEME_ID);
 
@@ -37,10 +33,7 @@ final class ThemeMetaDataByIdProviderTest extends TestCase
             ->with('/var/www/Application/views/apex')
             ->willReturn($expectedMetaData);
 
-        $context = $this->createStub(BasicContextInterface::class);
-        $context->method('getShopRootPath')->willReturn('/var/www');
-
-        $service = new ThemeMetaDataByIdProvider($themeConfigurationDao, $themeMetaDataProvider, $context);
+        $service = new ThemeMetaDataByIdProvider($themePathResolver, $themeMetaDataProvider);
 
         $this->assertSame($expectedMetaData, $service->get(self::THEME_ID, self::SHOP_ID));
     }

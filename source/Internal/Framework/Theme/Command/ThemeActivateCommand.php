@@ -10,7 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\Exception\ThemeInheritanceCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeMetadataInvalidException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeNotInstalledException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionsNotDeclaredException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionUnspecifiedException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -53,6 +59,20 @@ final class ThemeActivateCommand extends Command
             $this->themeActivationService->activate($themeId, $shopId);
         } catch (ThemeConfigurationNotFoundException) {
             $style->error(sprintf('Theme - "%s" not found.', $themeId));
+            return Command::FAILURE;
+        } catch (
+            ThemeInheritanceCycleException
+            | ParentThemeNotInstalledException
+            | ParentThemeMetadataInvalidException
+            | ParentVersionUnspecifiedException
+            | ParentVersionsNotDeclaredException
+            | ParentVersionMismatchException $exception
+        ) {
+            $style->error(sprintf(
+                'Theme - "%s" is not compatible with its parent theme (%s).',
+                $themeId,
+                $exception::class
+            ));
             return Command::FAILURE;
         }
 

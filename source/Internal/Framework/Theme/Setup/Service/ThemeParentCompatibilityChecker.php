@@ -9,9 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeMetadataInvalidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeNotInstalledException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionsNotDeclaredException;
@@ -20,24 +22,26 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\P
 readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibilityCheckerInterface
 {
     public function __construct(
-        private ThemeParentProviderInterface $themeParentProvider,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
+        private ThemeChainResolverInterface $themeChainResolver,
     ) {
     }
 
     public function assertCompatible(string $themeId, int $shopId): void
     {
-        if (!$this->themeParentProvider->hasParentTheme($themeId, $shopId)) {
+        $chain = $this->themeChainResolver->getThemeChain($themeId, $shopId);
+
+        if (!$chain->hasParentTheme()) {
             return;
         }
 
-        $parentThemeId = $this->themeParentProvider->getParentThemeId($themeId, $shopId);
+        $parentThemeId = $chain->getParentThemeId();
 
         $this->assertParentThemeIsInstalled($parentThemeId, $shopId);
 
-        $parentVersion = $this->assertParentVersionIsDeclared($parentThemeId, $shopId);
-        $declaredParentVersions = $this->assertChildDeclaresCompatibleVersions($themeId, $shopId);
+        $parentVersion = $this->resolveParentVersion($parentThemeId, $shopId);
+        $declaredParentVersions = $this->resolveDeclaredParentVersions($themeId, $shopId);
 
         $this->assertVersionIsCompatible($parentVersion, $declaredParentVersions);
     }
@@ -49,9 +53,9 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
         }
     }
 
-    private function assertParentVersionIsDeclared(string $parentThemeId, int $shopId): string
+    private function resolveParentVersion(string $parentThemeId, int $shopId): string
     {
-        $parentVersion = $this->themeMetaDataByIdProvider->get($parentThemeId, $shopId)->getVersion();
+        $parentVersion = $this->getThemeMetaData($parentThemeId, $shopId)->getVersion();
         if ($parentVersion === '') {
             throw new ParentVersionUnspecifiedException();
         }
@@ -59,9 +63,9 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
         return $parentVersion;
     }
 
-    private function assertChildDeclaresCompatibleVersions(string $themeId, int $shopId): array
+    private function resolveDeclaredParentVersions(string $themeId, int $shopId): array
     {
-        $declaredParentVersions = $this->themeMetaDataByIdProvider->get($themeId, $shopId)->getParentVersions();
+        $declaredParentVersions = $this->getThemeMetaData($themeId, $shopId)->getParentVersions();
         if (empty($declaredParentVersions)) {
             throw new ParentVersionsNotDeclaredException();
         }
@@ -73,6 +77,15 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
     {
         if (!in_array($parentVersion, $declaredParentVersions, true)) {
             throw new ParentVersionMismatchException();
+        }
+    }
+
+    private function getThemeMetaData(string $themeId, int $shopId): ThemeMetaData
+    {
+        try {
+            return $this->themeMetaDataByIdProvider->get($themeId, $shopId);
+        } catch (\InvalidArgumentException $exception) {
+            throw new ParentThemeMetadataInvalidException(previous: $exception);
         }
     }
 }

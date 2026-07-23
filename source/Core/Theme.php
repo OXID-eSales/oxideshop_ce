@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
@@ -52,6 +53,10 @@ class Theme extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
+        if ($themeMetaData->getId() !== $sOXID) {
+            return false;
+        }
+
         $this->_aTheme = [
             'id' => $themeMetaData->getId(),
             'title' => $themeMetaData->getTitle(),
@@ -79,11 +84,11 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     public function getList()
     {
         $this->_aThemeList = [];
-        $sOutDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir();
-        foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
+        $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
+        foreach (ContainerFacade::get(ThemeConfigurationDaoInterface::class)->getAll($shopId) as $themeConfiguration) {
             $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-            if ($oTheme->load(basename($sDir))) {
-                $this->_aThemeList[$sDir] = $oTheme;
+            if ($oTheme->load($themeConfiguration->getId())) {
+                $this->_aThemeList[$themeConfiguration->getId()] = $oTheme;
             }
         }
 

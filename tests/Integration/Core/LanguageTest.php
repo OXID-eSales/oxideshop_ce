@@ -53,16 +53,17 @@ final class LanguageTest extends IntegrationTestCase
         $language = new Language();
         $shopId = (int) Registry::getConfig()->getShopId();
         try {
-            $activeThemeId = $this->get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+            $themeIds = $this->get(ThemeStateServiceInterface::class)->getActiveTheme($shopId)->getChain()->getThemeIds();
         } catch (ActiveThemeNotFoundException) {
-            $activeThemeId = null;
+            $themeIds = [];
         }
         $cacheKey = sprintf(
-            'langcache_%d_%s_%d_%s_default',
+            'langcache_%d_%s_%d_%s_%s_default',
             Registry::getConfig()->isAdmin(),
             $language->getBaseLanguage(),
             $shopId,
-            $activeThemeId
+            $themeIds[0] ?? null,
+            $themeIds[1] ?? null
         );
 
         $this->get(ShopCacheCleanerInterface::class)->clearAll();

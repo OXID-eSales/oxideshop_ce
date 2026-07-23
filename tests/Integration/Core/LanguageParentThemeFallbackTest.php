@@ -10,13 +10,10 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Core\Language;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Symfony\Component\Filesystem\Path;
 
 final class LanguageParentThemeFallbackTest extends IntegrationTestCase
 {
@@ -53,15 +50,60 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
         $this->assertSame('child value', $translation);
     }
 
+    public function testChildThemeInheritsCustomLanguageFileFromParentTheme(): void
+    {
+        $translation = (new Language())->translateString('TEST_PARENT_THEME_ONLY_CUSTOM_KEY', 0);
+
+        $this->assertSame('from parent theme custom lang', $translation);
+    }
+
+    public function testChildThemeOverridesSharedCustomTranslationKeyFromParentTheme(): void
+    {
+        $translation = (new Language())->translateString('TEST_SHARED_CUSTOM_KEY', 0);
+
+        $this->assertSame('child custom value', $translation);
+    }
+
+    public function testChildThemeInheritsLanguageMapFileFromParentTheme(): void
+    {
+        $translation = (new Language())->translateString('TEST_PARENT_THEME_MAP_ALIAS_KEY', 0);
+
+        $this->assertSame('from parent theme', $translation);
+    }
+
+    public function testLanguageCacheKeyForChildThemeDiffersFromCacheKeyForStandaloneParentTheme(): void
+    {
+        $childThemeCacheKey = $this->getLangFileCacheName();
+
+        $this->get(ThemeActivationServiceInterface::class)->activate(self::PARENT_THEME_ID, self::SHOP_ID);
+        $standaloneParentThemeCacheKey = $this->getLangFileCacheName();
+
+        $this->assertStringEndsWith('_' . self::CHILD_THEME_ID . '_' . self::PARENT_THEME_ID . '_default', $childThemeCacheKey);
+        $this->assertStringEndsWith('_' . self::PARENT_THEME_ID . '__default', $standaloneParentThemeCacheKey);
+    }
+
+    public function testTranslationValueChangesAfterActivatingDifferentTheme(): void
+    {
+        $childThemeTranslation = (new Language())->translateString('TEST_SHARED_KEY', 0);
+
+        $this->get(ThemeActivationServiceInterface::class)->activate(self::PARENT_THEME_ID, self::SHOP_ID);
+        $standaloneParentThemeTranslation = (new Language())->translateString('TEST_SHARED_KEY', 0);
+
+        $this->assertSame('child value', $childThemeTranslation);
+        $this->assertSame('parent value', $standaloneParentThemeTranslation);
+    }
+
+    private function getLangFileCacheName(): string
+    {
+        $method = new \ReflectionMethod(Language::class, 'getLangFileCacheName');
+
+        return $method->invoke(new Language(), false, 0);
+    }
+
     private function installTheme(string $themeId): void
     {
-        $context = $this->get(BasicContextInterface::class);
         $themePath = realpath("$this->fixtureDirectory/shop/source/Application/views/$themeId");
 
-        $configuration = (new ThemeConfiguration())
-            ->setId($themeId)
-            ->setSource(Path::makeRelative($themePath, $context->getShopRootPath()));
-
-        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, self::SHOP_ID);
+        $this->get(ThemeConfigurationInstallerInterface::class)->install($themePath);
     }
 }

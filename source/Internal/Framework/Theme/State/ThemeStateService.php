@@ -9,18 +9,20 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ThemeStateService implements ThemeStateServiceInterface
+class ThemeStateService implements ThemeStateServiceInterface, EventSubscriberInterface
 {
     private array $activeThemeIds = [];
     private array $activeThemes = [];
 
     public function __construct(
         private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private readonly ThemeParentProviderInterface $themeParentProvider,
+        private readonly ThemeChainResolverInterface $themeChainResolver,
     ) {
     }
 
@@ -38,9 +40,20 @@ class ThemeStateService implements ThemeStateServiceInterface
     public function getActiveTheme(int $shopId): ActiveTheme
     {
         return $this->activeThemes[$shopId] ??= new ActiveTheme(
-            $this->getActiveThemeId($shopId),
-            $this->themeParentProvider->hasParentTheme($this->getActiveThemeId($shopId), $shopId),
+            $this->themeChainResolver->getThemeChain($this->getActiveThemeId($shopId), $shopId)
         );
+    }
+
+    public function invalidateActiveThemeCache(ThemeActivatedEvent $event): void
+    {
+        unset($this->activeThemeIds[$event->getShopId()], $this->activeThemes[$event->getShopId()]);
+    }
+
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            ThemeActivatedEvent::class => 'invalidateActiveThemeCache',
+        ];
     }
 
     private function findActiveThemeId(int $shopId): string

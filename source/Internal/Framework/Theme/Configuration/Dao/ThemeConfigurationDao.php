@@ -97,6 +97,15 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration, $shopId));
     }
 
+    public function deleteAll(int $shopId): void
+    {
+        foreach ($this->getThemeIds($shopId) as $themeId) {
+            $this->cache->evict($themeId, $shopId);
+        }
+
+        $this->filesystem->remove($this->getThemesConfigurationDirectory($shopId));
+    }
+
     public function exists(string $themeId, int $shopId): bool
     {
         if ($this->cache->exists($themeId, $shopId)) {

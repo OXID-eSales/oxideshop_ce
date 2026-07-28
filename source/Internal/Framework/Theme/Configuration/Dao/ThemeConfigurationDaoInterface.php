@@ -20,5 +20,7 @@ interface ThemeConfigurationDaoInterface
 
     public function delete(string $themeId, int $shopId): void;
 
+    public function deleteAll(int $shopId): void;
+
     public function exists(string $themeId, int $shopId): bool;
 }

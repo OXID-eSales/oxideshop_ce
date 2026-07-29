@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\MetaData;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +40,7 @@ final class ThemeMetaDataProviderTest extends TestCase
 
     public function testThrowsWhenMetadataFileNotReadable(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidThemeMetaDataException::class);
 
         $this->get(ThemeMetaDataProviderInterface::class)->get('/non/existent/path');
     }

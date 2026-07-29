@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Exception\ThemeConfigurationInstallException;
@@ -24,6 +25,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         private ThemeConfigurationProviderInterface $configurationProvider,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeConfigurationMergerInterface $merger,
+        private ConfiguredShopIdProviderInterface $configuredShopIdProvider,
         private BasicContextInterface $context,
     ) {
     }
@@ -36,7 +38,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         $defaultConfiguration->setTitle($metadata->getTitle());
         $defaultConfiguration->setSource(Path::makeRelative($themePath, $this->context->getShopRootPath()));
 
-        foreach ($this->context->getAllShopIds() as $shopId) {
+        foreach ($this->getShopIds() as $shopId) {
             try {
                 $configuration = clone $defaultConfiguration;
 
@@ -61,7 +63,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
     {
         $themeId = $this->metaDataProvider->get($themePath)->getId();
 
-        foreach ($this->context->getAllShopIds() as $shopId) {
+        foreach ($this->getShopIds() as $shopId) {
             try {
                 $this->themeConfigurationDao->delete($themeId, $shopId);
             } catch (Throwable $e) {
@@ -75,19 +77,28 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
 
     public function isInstalled(string $themePath): bool
     {
-        $shopIds = $this->context->getAllShopIds();
-        if (empty($shopIds)) {
-            return false;
-        }
-
         $themeId = $this->metaDataProvider->get($themePath)->getId();
 
-        foreach ($shopIds as $shopId) {
+        foreach ($this->getShopIds() as $shopId) {
             if (!$this->themeConfigurationDao->exists($themeId, $shopId)) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * @return int[]
+     */
+    private function getShopIds(): array
+    {
+        $shopIds = array_unique(
+            array_merge([$this->context->getDefaultShopId()], $this->configuredShopIdProvider->getShopIds())
+        );
+
+        sort($shopIds);
+
+        return $shopIds;
     }
 }

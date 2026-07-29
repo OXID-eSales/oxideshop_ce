@@ -27,7 +27,7 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
         $metadataFilePath = Path::join($themePath, self::METADATA_FILE_NAME);
 
         if (!is_readable($metadataFilePath)) {
-            throw new \InvalidArgumentException(
+            throw new InvalidThemeMetaDataException(
                 "Theme metadata file not readable at $metadataFilePath"
             );
         }

@@ -23,6 +23,9 @@ services:
   oxid_esales.symfony.mime_types:
     class: Symfony\Component\Mime\MimeTypes
 
+  OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProvider
+
   OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Storage\YamlFileStorageFactory
     arguments:

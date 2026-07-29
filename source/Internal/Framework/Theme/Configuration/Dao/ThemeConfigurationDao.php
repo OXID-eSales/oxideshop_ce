@@ -44,7 +44,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         if (!$this->cache->exists($themeId, $shopId)) {
             $path = $this->getThemeConfigurationFilePath($shopId, $themeId);
 
-            if (!file_exists($path)) {
+            if (!$this->filesystem->exists($path)) {
                 throw new ThemeConfigurationNotFoundException(
                     "No theme configuration found for id '$themeId' in shop $shopId"
                 );
@@ -97,13 +97,22 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration, $shopId));
     }
 
+    public function deleteAll(int $shopId): void
+    {
+        foreach ($this->getThemeIds($shopId) as $themeId) {
+            $this->cache->evict($themeId, $shopId);
+        }
+
+        $this->filesystem->remove($this->getThemesConfigurationDirectory($shopId));
+    }
+
     public function exists(string $themeId, int $shopId): bool
     {
         if ($this->cache->exists($themeId, $shopId)) {
             return true;
         }
 
-        return file_exists($this->getThemeConfigurationFilePath($shopId, $themeId));
+        return $this->filesystem->exists($this->getThemeConfigurationFilePath($shopId, $themeId));
     }
 
     private function getProcessedData(int $shopId, string $themeId): array
@@ -148,7 +157,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         $ids = [];
         $directory = $this->getThemesConfigurationDirectory($shopId);
 
-        if (file_exists($directory)) {
+        if ($this->filesystem->exists($directory)) {
             $dir = new DirectoryIterator($directory);
 
             foreach ($dir as $fileInfo) {

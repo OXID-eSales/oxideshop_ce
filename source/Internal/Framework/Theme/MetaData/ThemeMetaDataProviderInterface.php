@@ -7,8 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+
 interface ThemeMetaDataProviderInterface
 {
-    /** @throws \InvalidArgumentException */
+    /** @throws InvalidThemeMetaDataException */
     public function get(string $themePath): ThemeMetaData;
 }

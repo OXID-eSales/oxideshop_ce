@@ -182,6 +182,58 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $dao->get('deleteCache', self::SHOP_ID);
     }
 
+    public function testDeleteAllRemovesAllConfigurationsForTheShop(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $dao->save($this->buildConfiguration('aTheme'), self::SHOP_ID);
+        $dao->save($this->buildConfiguration('bTheme'), self::SHOP_ID);
+
+        $dao->deleteAll(self::SHOP_ID);
+
+        $this->assertSame([], $dao->getAll(self::SHOP_ID));
+    }
+
+    public function testDeleteAllDoesNotAffectOtherShops(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $dao->save($this->buildConfiguration('testTheme'), self::SHOP_ID);
+        $dao->save($this->buildConfiguration('testTheme'), 2);
+
+        $dao->deleteAll(self::SHOP_ID);
+
+        $this->assertTrue($dao->exists('testTheme', 2));
+    }
+
+    public function testDeleteAllEvictsCache(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $dao->save($this->buildConfiguration('cachedTheme'), self::SHOP_ID);
+        $dao->get('cachedTheme', self::SHOP_ID);
+
+        $dao->deleteAll(self::SHOP_ID);
+
+        $this->assertFalse($dao->exists('cachedTheme', self::SHOP_ID));
+    }
+
+    public function testDeleteAllRemovesConfigurationsViolatingTheSchema(): void
+    {
+        $this->saveConfigurationData('brokenTheme', ['title' => 'Broken Theme']);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+
+        $dao->deleteAll(self::SHOP_ID);
+
+        $this->assertFalse($dao->exists('brokenTheme', self::SHOP_ID));
+    }
+
+    public function testDeleteAllForShopWithoutConfigurations(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+
+        $dao->deleteAll(self::SHOP_ID);
+
+        $this->assertSame([], $dao->getAll(self::SHOP_ID));
+    }
+
     public function testGetThrowsForConfigurationFileViolatingTheSchema(): void
     {
         $this->saveConfigurationData('brokenTheme', ['unknownKey' => 'value']);

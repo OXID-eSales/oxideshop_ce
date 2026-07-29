@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstaller;
@@ -43,6 +44,18 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
                 $this->get(ThemeConfigurationDaoInterface::class)->exists($this->themeId, $shopId)
             );
         }
+    }
+
+    public function testInstallCreatesYamlForConfiguredSubshops(): void
+    {
+        $subshopDirectory = $this->get(BasicContextInterface::class)->getShopConfigurationDirectory(2);
+        $this->get('oxid_esales.symfony.file_system')->mkdir($subshopDirectory);
+
+        $this->get(ThemeConfigurationInstallerInterface::class)->install($this->themePath);
+
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $this->assertTrue($dao->exists($this->themeId, 1));
+        $this->assertTrue($dao->exists($this->themeId, 2));
     }
 
     public function testInstallSetsActivatedToFalseByDefault(): void
@@ -143,8 +156,10 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
     {
         $dao = $this->get(ThemeConfigurationDaoInterface::class);
 
+        $shopIdProvider = $this->createStub(ConfiguredShopIdProviderInterface::class);
+        $shopIdProvider->method('getShopIds')->willReturn([1, 2]);
+
         $context = $this->createStub(BasicContextInterface::class);
-        $context->method('getAllShopIds')->willReturn([1, 2]);
         $context->method('getDefaultShopId')->willReturn(1);
         $context->method('getShopRootPath')->willReturn(
             $this->get(BasicContextInterface::class)->getShopRootPath()
@@ -155,6 +170,7 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
             $this->get(ThemeConfigurationProviderInterface::class),
             $dao,
             $this->get(ThemeConfigurationMergerInterface::class),
+            $shopIdProvider,
             $context,
         );
 

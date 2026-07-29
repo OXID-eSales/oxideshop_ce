@@ -24,9 +24,6 @@ readonly class ThemeSettingCache implements ThemeSettingCacheInterface
         $this->cache->save($cacheItem);
     }
 
-    /**
-     * @throws CacheItemNotFoundException
-     */
     public function get(string $key): array
     {
         $cacheItem = $this->cache->getItem($key);

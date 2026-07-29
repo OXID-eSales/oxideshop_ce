@@ -24,7 +24,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDao
     arguments:
-      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.node'
       Symfony\Component\Config\Definition\Processor: '@oxid_esales.theme.configuration.processor'
     public: true

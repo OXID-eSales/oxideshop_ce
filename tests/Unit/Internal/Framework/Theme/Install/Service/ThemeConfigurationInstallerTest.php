@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
@@ -79,15 +80,6 @@ final class ThemeConfigurationInstallerTest extends TestCase
         $this->createInstaller($dao, shopIds: [1])->uninstall($this->themePath);
     }
 
-    public function testIsInstalledReturnsFalseWhenNoShopsExist(): void
-    {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-
-        $this->assertFalse(
-            $this->createInstaller($dao, shopIds: [])->isInstalled($this->themePath)
-        );
-    }
-
     public function testIsInstalledReturnsFalseWhenMissingForAnyShop(): void
     {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
@@ -96,6 +88,34 @@ final class ThemeConfigurationInstallerTest extends TestCase
         $this->assertFalse(
             $this->createInstaller($dao, shopIds: [1, 2])->isInstalled($this->themePath)
         );
+    }
+
+    public function testInstallSavesConfigurationForDefaultShopWhenNoShopIsConfigured(): void
+    {
+        $savedShopIds = [];
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(false);
+        $dao->method('save')->willReturnCallback(function (ThemeConfiguration $config, int $shopId) use (&$savedShopIds) {
+            $savedShopIds[] = $shopId;
+        });
+
+        $this->createInstaller($dao, shopIds: [])->install($this->themePath);
+
+        $this->assertSame([1], $savedShopIds);
+    }
+
+    public function testInstallDeduplicatesAndSortsShopIds(): void
+    {
+        $savedShopIds = [];
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(false);
+        $dao->method('save')->willReturnCallback(function (ThemeConfiguration $config, int $shopId) use (&$savedShopIds) {
+            $savedShopIds[] = $shopId;
+        });
+
+        $this->createInstaller($dao, shopIds: [3, 1, 2])->install($this->themePath);
+
+        $this->assertSame([1, 2, 3], $savedShopIds);
     }
 
     private function createInstaller(
@@ -113,8 +133,11 @@ final class ThemeConfigurationInstallerTest extends TestCase
         $configurationProvider = $this->createStub(ThemeConfigurationProviderInterface::class);
         $configurationProvider->method('get')->willReturn($defaultConfiguration);
 
+        $shopIdProvider = $this->createStub(ConfiguredShopIdProviderInterface::class);
+        $shopIdProvider->method('getShopIds')->willReturn($shopIds);
+
         $context = $this->createStub(BasicContextInterface::class);
-        $context->method('getAllShopIds')->willReturn($shopIds);
+        $context->method('getDefaultShopId')->willReturn(1);
         $context->method('getShopRootPath')->willReturn('/shop/root');
 
         return new ThemeConfigurationInstaller(
@@ -122,6 +145,7 @@ final class ThemeConfigurationInstallerTest extends TestCase
             $configurationProvider,
             $dao,
             new ThemeConfigurationMerger(),
+            $shopIdProvider,
             $context,
         );
     }

@@ -164,6 +164,24 @@ final class ThemeConfigurationTest extends IntegrationTestCase
         $this->assertSame('option3', $configuration->getSettingByName('testSelectSetting')->getValue());
     }
 
+    public function testSaveRejectsMarkupBasedXssVectorWithoutScriptTag(): void
+    {
+        $this->installTestTheme();
+        $this->expectInvalidValueError();
+        $this->get(Request::class)->request->set('settings', [
+            'testStringSetting' => '<img src=x onerror=alert(1)>',
+            'testSelectSetting' => 'option3',
+        ]);
+
+        $controller = $this->get(ThemeConfiguration::class);
+        $controller->setEditObjectId(self::THEME_ID);
+        $controller->save();
+
+        $configuration = $this->getSavedConfiguration();
+        $this->assertSame('defaultValue', $configuration->getSettingByName('testStringSetting')->getValue());
+        $this->assertSame('option3', $configuration->getSettingByName('testSelectSetting')->getValue());
+    }
+
     public function testSaveDisplaysErrorForUnknownTheme(): void
     {
         $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');

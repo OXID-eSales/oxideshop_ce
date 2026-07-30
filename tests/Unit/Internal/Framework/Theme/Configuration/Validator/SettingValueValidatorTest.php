@@ -29,6 +29,12 @@ final class SettingValueValidatorTest extends TestCase
             'multiline value' => ["first\nsecond"],
             'value mentioning script' => ['description of a script'],
             'html without script tag' => ['<b>bold</b>'],
+            'image without handler' => ['<img src="logo.png">'],
+            'less-than in plain text' => ['Sale < 50% & up'],
+            'ampersand in text' => ['Müller & Söhne'],
+            'url with query parameters' => ['https://example.com/map?a=1&b=2'],
+            'associative array line' => ['oxpic1 => 800*600'],
+            'word starting with on' => ['online=1'],
         ];
     }
 
@@ -45,6 +51,17 @@ final class SettingValueValidatorTest extends TestCase
             'uppercase script tag' => ['<SCRIPT src="evil.js">'],
             'script tag with spaces' => ['< script >alert(1)'],
             'embedded script tag' => ["value\n<script>alert(1)"],
+            'iframe tag' => ['<iframe src="//evil"></iframe>'],
+            'object tag' => ['<object data="evil"></object>'],
+            'embed tag' => ['<embed src="evil">'],
+            'svg tag' => ['<svg onload="alert(1)">'],
+            'style tag' => ['<style>body{background:url(evil)}</style>'],
+            'base tag' => ['<base href="//evil">'],
+            'meta refresh' => ['<meta http-equiv="refresh" content="0;url=//evil">'],
+            'image with onerror handler' => ['<img src=x onerror=alert(1)>'],
+            'div with event handler' => ['<div onmouseover="alert(1)">hover</div>'],
+            'javascript scheme link' => ['<a href="javascript:alert(1)">click</a>'],
+            'vbscript scheme link' => ['<a href="vbscript:msgbox(1)">click</a>'],
         ];
     }
 }

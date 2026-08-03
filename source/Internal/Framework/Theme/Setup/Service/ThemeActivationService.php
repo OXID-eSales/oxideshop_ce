@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetadataInvalidException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class ThemeActivationService implements ThemeActivationServiceInterface
@@ -19,12 +22,28 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private EventDispatcherInterface $eventDispatcher,
         private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker,
+        private ThemeInheritanceResolverInterface $themeInheritanceResolver,
     ) {
     }
 
     public function activate(string $themeId, int $shopId): void
     {
-        $this->themeParentCompatibilityChecker->assertCompatible($themeId, $shopId);
+        try {
+            $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
+        } catch (InvalidThemeMetaDataException $exception) {
+            throw new ThemeMetadataInvalidException(
+                "Could not read metadata of theme '$themeId': {$exception->getMessage()}",
+                previous: $exception
+            );
+        }
+
+        if ($inheritance->hasParentTheme()) {
+            $this->themeParentCompatibilityChecker->assertCompatible(
+                $themeId,
+                $inheritance->getParentThemeId(),
+                $shopId
+            );
+        }
 
         $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
 

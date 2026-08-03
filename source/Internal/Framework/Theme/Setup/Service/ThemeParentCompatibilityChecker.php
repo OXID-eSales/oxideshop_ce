@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeNotInstalledException;
@@ -24,21 +23,12 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
     public function __construct(
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
-        private ThemeInheritanceResolverInterface $themeInheritanceResolver,
     ) {
     }
 
-    public function assertCompatible(string $themeId, int $shopId): void
+    public function assertCompatible(string $themeId, string $parentThemeId, int $shopId): void
     {
         try {
-            $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
-
-            if (!$inheritance->hasParentTheme()) {
-                return;
-            }
-
-            $parentThemeId = $inheritance->getParentThemeId();
-
             $this->assertParentThemeIsInstalled($themeId, $parentThemeId, $shopId);
 
             $parentVersion = $this->resolveParentVersion($parentThemeId, $shopId);

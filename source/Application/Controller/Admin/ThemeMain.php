@@ -48,16 +48,10 @@ class ThemeMain extends AdminDetailsController
     /** @inheritdoc */
     public function render()
     {
-        $themeId = $this->resolveThemeId();
-
-        if ($themeId !== null) {
-            $theme = oxNew(Theme::class);
-            if ($theme->load($themeId)) {
-                $this->_aViewData['oTheme'] = $theme;
-                $this->addParentThemeViewData($themeId);
-            } else {
-                Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
-            }
+        try {
+            $this->addThemeViewData($this->resolveThemeId());
+        } catch (ActiveThemeNotFoundException) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         }
 
         parent::render();
@@ -65,16 +59,21 @@ class ThemeMain extends AdminDetailsController
         return 'theme_main';
     }
 
+    private function addThemeViewData(string $themeId): void
+    {
+        $theme = oxNew(Theme::class);
+        if ($theme->load($themeId)) {
+            $this->_aViewData['oTheme'] = $theme;
+            $this->addParentThemeViewData($themeId);
+        } else {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+        }
+    }
+
     private function addParentThemeViewData(string $themeId): void
     {
         $shopId = $this->context->getCurrentShopId();
 
-        $this->addParentThemeDetailsViewData($themeId, $shopId);
-        $this->addThemeActivationErrorViewData($themeId, $shopId);
-    }
-
-    private function addParentThemeDetailsViewData(string $themeId, int $shopId): void
-    {
         try {
             $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
         } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException | ThemeInheritanceException $exception) {
@@ -88,6 +87,13 @@ class ThemeMain extends AdminDetailsController
         }
 
         $parentThemeId = $inheritance->getParentThemeId();
+
+        $this->addParentThemeDetailsViewData($themeId, $parentThemeId, $shopId);
+        $this->addThemeActivationErrorViewData($themeId, $parentThemeId, $shopId);
+    }
+
+    private function addParentThemeDetailsViewData(string $themeId, string $parentThemeId, int $shopId): void
+    {
         $this->_aViewData['parentThemeId'] = $parentThemeId;
 
         try {
@@ -102,34 +108,26 @@ class ThemeMain extends AdminDetailsController
         }
     }
 
-    private function addThemeActivationErrorViewData(string $themeId, int $shopId): void
+    private function addThemeActivationErrorViewData(string $themeId, string $parentThemeId, int $shopId): void
     {
         if ($this->themeStateService->isActive($themeId, $shopId)) {
             return;
         }
 
         try {
-            $this->themeParentCompatibilityChecker->assertCompatible($themeId, $shopId);
+            $this->themeParentCompatibilityChecker->assertCompatible($themeId, $parentThemeId, $shopId);
         } catch (ThemeInheritanceException $exception) {
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
             $this->_aViewData['themeActivationError'] = 'EXCEPTION_THEME_INHERITANCE_INVALID';
         }
     }
 
-    private function resolveThemeId(): ?string
+    /** @throws ActiveThemeNotFoundException */
+    private function resolveThemeId(): string
     {
         $themeId = $this->getEditObjectId();
-        if ($themeId) {
-            return $themeId;
-        }
 
-        try {
-            return $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId());
-        } catch (ActiveThemeNotFoundException) {
-            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
-
-            return null;
-        }
+        return $themeId ?: $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId());
     }
 
     /**
@@ -147,20 +145,14 @@ class ThemeMain extends AdminDetailsController
         $shopId = $this->context->getCurrentShopId();
 
         try {
-            $this->themeParentCompatibilityChecker->assertCompatible($theme->getId(), $shopId);
-        } catch (ThemeInheritanceException $exception) {
-            Registry::getLogger()->error($exception->getMessage(), [$exception]);
-            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_INHERITANCE_INVALID');
-
-            return;
-        }
-
-        try {
             $this->themeActivationService->activate($theme->getId(), $shopId);
             $this->resetContentCache();
         } catch (ThemeConfigurationNotFoundException $exception) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
+        } catch (ThemeInheritanceException $exception) {
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_INHERITANCE_INVALID');
         }
     }
 }

@@ -13,7 +13,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetadataInvalidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +26,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class ThemeActivationServiceTest extends TestCase
 {
     private const SHOP_ID = 1;
+    private const PARENT_THEME_ID = 'apex';
 
     public function testActivateSetsTargetThemeAsActivated(): void
     {
@@ -70,7 +75,8 @@ final class ThemeActivationServiceTest extends TestCase
         (new ThemeActivationService(
             $dao,
             $eventDispatcher,
-            $this->createStub(ThemeParentCompatibilityCheckerInterface::class)
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
+            $this->createResolverStub(hasParent: false)
         ))->activate('target', self::SHOP_ID);
     }
 
@@ -82,6 +88,27 @@ final class ThemeActivationServiceTest extends TestCase
         $this->expectException(ThemeConfigurationNotFoundException::class);
 
         $this->createService($dao)->activate('unknown', self::SHOP_ID);
+    }
+
+    public function testActivateDoesNotCheckCompatibilityWhenThemeHasNoParent(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('get')->willReturn((new ThemeConfiguration())->setId('target'));
+        $dao->method('getAll')->willReturn([]);
+
+        $themeParentCompatibilityChecker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
+        $themeParentCompatibilityChecker->expects($this->never())->method('assertCompatible');
+
+        $service = new ThemeActivationService(
+            $dao,
+            $this->createStub(EventDispatcherInterface::class),
+            $themeParentCompatibilityChecker,
+            $this->createResolverStub(hasParent: false)
+        );
+
+        $service->activate('target', self::SHOP_ID);
+
+        $this->addToAssertionCount(1);
     }
 
     public function testActivateThrowsAndDoesNotSaveWhenIncompatibleWithParentTheme(): void
@@ -97,10 +124,31 @@ final class ThemeActivationServiceTest extends TestCase
         $service = new ThemeActivationService(
             $dao,
             $this->createStub(EventDispatcherInterface::class),
-            $themeParentCompatibilityChecker
+            $themeParentCompatibilityChecker,
+            $this->createResolverStub(hasParent: true)
         );
 
         $this->expectException(ParentVersionMismatchException::class);
+
+        $service->activate('target', self::SHOP_ID);
+    }
+
+    public function testActivateThrowsAndDoesNotSaveWhenThemesOwnMetadataIsUnreadable(): void
+    {
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->never())->method('save');
+
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willThrowException(new InvalidThemeMetaDataException());
+
+        $service = new ThemeActivationService(
+            $dao,
+            $this->createStub(EventDispatcherInterface::class),
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
+            $themeInheritanceResolver
+        );
+
+        $this->expectException(ThemeMetadataInvalidException::class);
 
         $service->activate('target', self::SHOP_ID);
     }
@@ -110,7 +158,18 @@ final class ThemeActivationServiceTest extends TestCase
         return new ThemeActivationService(
             $dao,
             $this->createStub(EventDispatcherInterface::class),
-            $this->createStub(ThemeParentCompatibilityCheckerInterface::class)
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
+            $this->createResolverStub(hasParent: false)
         );
+    }
+
+    private function createResolverStub(bool $hasParent): ThemeInheritanceResolverInterface
+    {
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willReturn(
+            new ThemeInheritance('target', $hasParent ? self::PARENT_THEME_ID : null)
+        );
+
+        return $themeInheritanceResolver;
     }
 }

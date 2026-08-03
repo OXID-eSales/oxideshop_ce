@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,7 +22,7 @@ class ThemeStateService implements ThemeStateServiceInterface, EventSubscriberIn
 
     public function __construct(
         private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private readonly ThemeChainResolverInterface $themeChainResolver,
+        private readonly ThemeInheritanceResolverInterface $themeInheritanceResolver,
     ) {
     }
 
@@ -40,7 +40,7 @@ class ThemeStateService implements ThemeStateServiceInterface, EventSubscriberIn
     public function getActiveTheme(int $shopId): ActiveTheme
     {
         return $this->activeThemes[$shopId] ??= new ActiveTheme(
-            $this->themeChainResolver->getThemeChain($this->getActiveThemeId($shopId), $shopId)
+            $this->themeInheritanceResolver->resolve($this->getActiveThemeId($shopId), $shopId)
         );
     }
 

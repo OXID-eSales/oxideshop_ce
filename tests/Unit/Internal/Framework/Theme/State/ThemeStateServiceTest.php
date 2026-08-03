@@ -9,9 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\State;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChain;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
@@ -92,13 +92,13 @@ final class ThemeStateServiceTest extends TestCase
         $dao->method('getAll')->willReturn([
             'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
         ]);
-        $themeChainResolver = $this->createStub(ThemeChainResolverInterface::class);
-        $themeChainResolver->method('getThemeChain')->willReturn(new ThemeChain(['active', 'parent']));
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willReturn(new ThemeInheritance('active', 'parent'));
 
-        $activeTheme = $this->createService($dao, $themeChainResolver)->getActiveTheme(self::SHOP_ID);
+        $activeTheme = $this->createService($dao, $themeInheritanceResolver)->getActiveTheme(self::SHOP_ID);
 
         $this->assertSame('active', $activeTheme->getId());
-        $this->assertTrue($activeTheme->getChain()->hasParentTheme());
+        $this->assertTrue($activeTheme->getInheritance()->hasParentTheme());
     }
 
     public function testGetActiveThemeIsNotChildThemeWhenActiveThemeHasNoParent(): void
@@ -107,11 +107,11 @@ final class ThemeStateServiceTest extends TestCase
         $dao->method('getAll')->willReturn([
             'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
         ]);
-        $themeChainResolver = $this->createStub(ThemeChainResolverInterface::class);
-        $themeChainResolver->method('getThemeChain')->willReturn(new ThemeChain(['active']));
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willReturn(new ThemeInheritance('active', null));
 
         $this->assertFalse(
-            $this->createService($dao, $themeChainResolver)->getActiveTheme(self::SHOP_ID)->getChain()->hasParentTheme()
+            $this->createService($dao, $themeInheritanceResolver)->getActiveTheme(self::SHOP_ID)->getInheritance()->hasParentTheme()
         );
     }
 
@@ -133,13 +133,13 @@ final class ThemeStateServiceTest extends TestCase
         $dao->method('getAll')->willReturn([
             'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
         ]);
-        $themeChainResolver = $this->createMock(ThemeChainResolverInterface::class);
-        $themeChainResolver->expects($this->once())->method('getThemeChain')->willReturn(new ThemeChain(['active', 'parent']));
-        $service = $this->createService($dao, $themeChainResolver);
+        $themeInheritanceResolver = $this->createMock(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->expects($this->once())->method('resolve')->willReturn(new ThemeInheritance('active', 'parent'));
+        $service = $this->createService($dao, $themeInheritanceResolver);
 
         $service->getActiveTheme(self::SHOP_ID);
 
-        $this->assertTrue($service->getActiveTheme(self::SHOP_ID)->getChain()->hasParentTheme());
+        $this->assertTrue($service->getActiveTheme(self::SHOP_ID)->getInheritance()->hasParentTheme());
     }
 
     public function testServiceIsSubscribedToThemeActivatedEvent(): void
@@ -175,9 +175,9 @@ final class ThemeStateServiceTest extends TestCase
         $dao->method('getAll')->willReturn([
             'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
         ]);
-        $themeChainResolver = $this->createMock(ThemeChainResolverInterface::class);
-        $themeChainResolver->expects($this->exactly(2))->method('getThemeChain')->willReturn(new ThemeChain(['active']));
-        $service = $this->createService($dao, $themeChainResolver);
+        $themeInheritanceResolver = $this->createMock(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->expects($this->exactly(2))->method('resolve')->willReturn(new ThemeInheritance('active', null));
+        $service = $this->createService($dao, $themeInheritanceResolver);
 
         $service->getActiveTheme(self::SHOP_ID);
         $service->invalidateActiveThemeCache(new ThemeActivatedEvent(self::SHOP_ID, 'active'));
@@ -201,8 +201,8 @@ final class ThemeStateServiceTest extends TestCase
 
     private function createService(
         ThemeConfigurationDaoInterface $dao,
-        ?ThemeChainResolverInterface $themeChainResolver = null,
+        ?ThemeInheritanceResolverInterface $themeInheritanceResolver = null,
     ): ThemeStateService {
-        return new ThemeStateService($dao, $themeChainResolver ?? $this->createStub(ThemeChainResolverInterface::class));
+        return new ThemeStateService($dao, $themeInheritanceResolver ?? $this->createStub(ThemeInheritanceResolverInterface::class));
     }
 }

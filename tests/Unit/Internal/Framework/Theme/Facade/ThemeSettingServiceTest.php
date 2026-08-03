@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChain;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
@@ -237,7 +237,7 @@ final class ThemeSettingServiceTest extends TestCase
         );
 
         $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
-        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeChain(['child', 'parent'])));
+        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeInheritance('child', 'parent')));
 
         $service = new ThemeSettingService($this->createContext(), $dao, $resolver, $this->createCacheMiss(), $themeStateService);
 
@@ -260,7 +260,7 @@ final class ThemeSettingServiceTest extends TestCase
         );
 
         $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
-        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeChain(['child', 'parent'])));
+        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeInheritance('child', 'parent')));
 
         $service = new ThemeSettingService($this->createContext(), $dao, $resolver, $this->createCacheMiss(), $themeStateService);
 
@@ -316,7 +316,7 @@ final class ThemeSettingServiceTest extends TestCase
     {
         $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
         $themeStateService->method('getActiveThemeId')->willReturn(self::THEME_ID);
-        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeChain([self::THEME_ID])));
+        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeInheritance(self::THEME_ID, null)));
         return $themeStateService;
     }
 

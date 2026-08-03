@@ -15,7 +15,6 @@ interface ThemeParentProviderInterface
 {
     /**
      * @throws ThemeConfigurationNotFoundException
-     * @throws \InvalidArgumentException
      * @throws InvalidThemeMetaDataException
      */
     public function hasParentTheme(string $themeId, int $shopId): bool;
@@ -23,7 +22,6 @@ interface ThemeParentProviderInterface
     /**
      * @throws ParentThemeNotFoundException
      * @throws ThemeConfigurationNotFoundException
-     * @throws \InvalidArgumentException
      * @throws InvalidThemeMetaDataException
      */
     public function getParentThemeId(string $themeId, int $shopId): string;

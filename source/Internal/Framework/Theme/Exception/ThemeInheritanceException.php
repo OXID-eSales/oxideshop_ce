@@ -7,8 +7,8 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception;
 
-class ThemeInheritanceCycleException extends \Exception
+abstract class ThemeInheritanceException extends \Exception
 {
 }

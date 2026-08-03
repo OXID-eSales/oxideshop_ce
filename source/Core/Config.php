@@ -1031,13 +1031,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
             return false;
         }
 
-        $chain = $activeTheme->getChain();
+        $inheritance = $activeTheme->getInheritance();
 
-        if ($theme !== $activeTheme->getId() || !$chain->hasParentTheme()) {
+        if ($theme !== $activeTheme->getId() || !$inheritance->hasParentTheme()) {
             return false;
         }
 
-        return $this->getDir($file, $dir, $admin, $lang, $shop, $chain->getParentThemeId(), $absolute, true);
+        return $this->getDir($file, $dir, $admin, $lang, $shop, $inheritance->getParentThemeId(), $absolute, true);
     }
 
     /**

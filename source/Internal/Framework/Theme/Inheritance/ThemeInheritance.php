@@ -7,32 +7,31 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
 
-readonly class ThemeChain
+readonly class ThemeInheritance
 {
-    /** @param string[] $themeIds */
     public function __construct(
-        private array $themeIds,
+        private string $themeId,
+        private ?string $parentThemeId,
     ) {
     }
 
-    /** @return string[] */
-    public function getThemeIds(): array
+    public function getThemeId(): string
     {
-        return $this->themeIds;
+        return $this->themeId;
     }
 
     public function hasParentTheme(): bool
     {
-        return isset($this->themeIds[1]);
+        return $this->parentThemeId !== null;
     }
 
     /** @throws ParentThemeNotFoundException */
     public function getParentThemeId(): string
     {
-        return $this->themeIds[1] ?? throw new ParentThemeNotFoundException();
+        return $this->parentThemeId ?? throw new ParentThemeNotFoundException();
     }
 }

@@ -9,22 +9,22 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChain;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
 
 readonly class ActiveTheme
 {
     public function __construct(
-        private ThemeChain $chain,
+        private ThemeInheritance $inheritance,
     ) {
     }
 
     public function getId(): string
     {
-        return $this->chain->getThemeIds()[0];
+        return $this->inheritance->getThemeId();
     }
 
-    public function getChain(): ThemeChain
+    public function getInheritance(): ThemeInheritance
     {
-        return $this->chain;
+        return $this->inheritance;
     }
 }

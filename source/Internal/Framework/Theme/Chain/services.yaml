@@ -1,7 +1,0 @@
-services:
-  _defaults:
-    autowire: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolverInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolver
-    public: true

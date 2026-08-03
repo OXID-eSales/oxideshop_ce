@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolver
+    public: true

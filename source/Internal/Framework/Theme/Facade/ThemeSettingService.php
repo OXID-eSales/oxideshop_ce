@@ -105,19 +105,24 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
     private function findSetting(ActiveTheme $activeTheme, string $name): ?Setting
     {
         $shopId = $this->context->getCurrentShopId();
+        $inheritance = $activeTheme->getInheritance();
 
-        foreach ($activeTheme->getChain()->getThemeIds() as $themeId) {
-            if (!$this->themeConfigurationDao->exists($themeId, $shopId)) {
-                continue;
-            }
-
-            $setting = $this->themeConfigurationResolver->resolve($themeId, $shopId)->getSettingByName($name);
-            if ($setting !== null) {
-                return $setting;
-            }
+        if ($setting = $this->findSettingForTheme($inheritance->getThemeId(), $shopId, $name)) {
+            return $setting;
         }
 
-        return null;
+        return $inheritance->hasParentTheme()
+            ? $this->findSettingForTheme($inheritance->getParentThemeId(), $shopId, $name)
+            : null;
+    }
+
+    private function findSettingForTheme(string $themeId, int $shopId, string $name): ?Setting
+    {
+        if (!$this->themeConfigurationDao->exists($themeId, $shopId)) {
+            return null;
+        }
+
+        return $this->themeConfigurationResolver->resolve($themeId, $shopId)->getSettingByName($name);
     }
 
     private function getCacheKey(string $themeId, string $name): string

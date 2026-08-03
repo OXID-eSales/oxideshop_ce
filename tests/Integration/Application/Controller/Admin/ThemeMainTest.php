@@ -45,7 +45,7 @@ final class ThemeMainTest extends IntegrationTestCase
     public function testSetThemeDisplaysCompatibilityErrorAndDoesNotActivateThemeDeclaringItselfAsItsOwnParent(): void
     {
         $this->installTheme(self::SELF_REFERENCING_THEME_ID);
-        $this->expectDisplayError('EXCEPTION_THEME_INHERITANCE_CYCLE');
+        $this->expectDisplayError('EXCEPTION_THEME_INHERITANCE_INVALID');
 
         $controller = oxNew(ThemeMain::class);
         $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);

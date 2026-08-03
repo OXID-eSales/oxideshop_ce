@@ -7,10 +7,10 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
 
-class ParentVersionMismatchException extends ThemeInheritanceException
+class ThemeInheritanceDepthExceededException extends ThemeInheritanceException
 {
 }

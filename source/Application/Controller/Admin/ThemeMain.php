@@ -13,15 +13,11 @@ use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\Exception\ThemeInheritanceCycleException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\ThemeChainResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeMetadataInvalidException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeNotInstalledException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionsNotDeclaredException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionUnspecifiedException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
@@ -33,7 +29,7 @@ class ThemeMain extends AdminDetailsController
     private ThemeActivationServiceInterface $themeActivationService;
     private ThemeStateServiceInterface $themeStateService;
     private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker;
-    private ThemeChainResolverInterface $themeChainResolver;
+    private ThemeInheritanceResolverInterface $themeInheritanceResolver;
     private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider;
     private ContextInterface $context;
 
@@ -42,7 +38,7 @@ class ThemeMain extends AdminDetailsController
         $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
         $this->themeStateService = ContainerFacade::get(ThemeStateServiceInterface::class);
         $this->themeParentCompatibilityChecker = ContainerFacade::get(ThemeParentCompatibilityCheckerInterface::class);
-        $this->themeChainResolver = ContainerFacade::get(ThemeChainResolverInterface::class);
+        $this->themeInheritanceResolver = ContainerFacade::get(ThemeInheritanceResolverInterface::class);
         $this->themeMetaDataByIdProvider = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class);
         $this->context = ContainerFacade::get(ContextInterface::class);
 
@@ -73,38 +69,50 @@ class ThemeMain extends AdminDetailsController
     {
         $shopId = $this->context->getCurrentShopId();
 
-        try {
-            $chain = $this->themeChainResolver->getThemeChain($themeId, $shopId);
-            if ($chain->hasParentTheme()) {
-                $parentThemeId = $chain->getParentThemeId();
-                $this->_aViewData['parentThemeId'] = $parentThemeId;
-                $this->_aViewData['parentThemeVersions'] = $this->themeMetaDataByIdProvider
-                    ->get($themeId, $shopId)
-                    ->getParentVersions();
+        $this->addParentThemeDetailsViewData($themeId, $shopId);
+        $this->addThemeActivationErrorViewData($themeId, $shopId);
+    }
 
-                try {
-                    $this->_aViewData['parentThemeTitle'] = $this->themeMetaDataByIdProvider
-                        ->get($parentThemeId, $shopId)
-                        ->getTitle();
-                } catch (ThemeConfigurationNotFoundException | \InvalidArgumentException) {
-                }
-            }
-        } catch (ThemeConfigurationNotFoundException | \InvalidArgumentException | ThemeInheritanceCycleException) {
+    private function addParentThemeDetailsViewData(string $themeId, int $shopId): void
+    {
+        try {
+            $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
+        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException | ThemeInheritanceException $exception) {
+            Registry::getLogger()->warning($exception->getMessage(), [$exception]);
+
+            return;
         }
 
-        if (!$this->themeStateService->isActive($themeId, $shopId)) {
-            try {
-                $this->themeParentCompatibilityChecker->assertCompatible($themeId, $shopId);
-            } catch (
-                ThemeInheritanceCycleException
-                | ParentThemeNotInstalledException
-                | ParentThemeMetadataInvalidException
-                | ParentVersionUnspecifiedException
-                | ParentVersionsNotDeclaredException
-                | ParentVersionMismatchException $exception
-            ) {
-                $this->_aViewData['themeActivationError'] = $this->getParentCompatibilityErrorTranslationKey($exception);
-            }
+        if (!$inheritance->hasParentTheme()) {
+            return;
+        }
+
+        $parentThemeId = $inheritance->getParentThemeId();
+        $this->_aViewData['parentThemeId'] = $parentThemeId;
+
+        try {
+            $this->_aViewData['parentThemeVersions'] = $this->themeMetaDataByIdProvider
+                ->get($themeId, $shopId)
+                ->getParentVersions();
+            $this->_aViewData['parentThemeTitle'] = $this->themeMetaDataByIdProvider
+                ->get($parentThemeId, $shopId)
+                ->getTitle();
+        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException $exception) {
+            Registry::getLogger()->warning($exception->getMessage(), [$exception]);
+        }
+    }
+
+    private function addThemeActivationErrorViewData(string $themeId, int $shopId): void
+    {
+        if ($this->themeStateService->isActive($themeId, $shopId)) {
+            return;
+        }
+
+        try {
+            $this->themeParentCompatibilityChecker->assertCompatible($themeId, $shopId);
+        } catch (ThemeInheritanceException $exception) {
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            $this->_aViewData['themeActivationError'] = 'EXCEPTION_THEME_INHERITANCE_INVALID';
         }
     }
 
@@ -140,15 +148,9 @@ class ThemeMain extends AdminDetailsController
 
         try {
             $this->themeParentCompatibilityChecker->assertCompatible($theme->getId(), $shopId);
-        } catch (
-            ThemeInheritanceCycleException
-            | ParentThemeNotInstalledException
-            | ParentThemeMetadataInvalidException
-            | ParentVersionUnspecifiedException
-            | ParentVersionsNotDeclaredException
-            | ParentVersionMismatchException $exception
-        ) {
-            Registry::getUtilsView()->addErrorToDisplay($this->getParentCompatibilityErrorTranslationKey($exception));
+        } catch (ThemeInheritanceException $exception) {
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_INHERITANCE_INVALID');
 
             return;
         }
@@ -160,18 +162,5 @@ class ThemeMain extends AdminDetailsController
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
         }
-    }
-
-    private function getParentCompatibilityErrorTranslationKey(
-        ThemeInheritanceCycleException|ParentThemeNotInstalledException|ParentThemeMetadataInvalidException|ParentVersionUnspecifiedException|ParentVersionsNotDeclaredException|ParentVersionMismatchException $exception
-    ): string {
-        return match (true) {
-            $exception instanceof ThemeInheritanceCycleException => 'EXCEPTION_THEME_INHERITANCE_CYCLE',
-            $exception instanceof ParentThemeNotInstalledException => 'EXCEPTION_PARENT_THEME_NOT_INSTALLED',
-            $exception instanceof ParentThemeMetadataInvalidException => 'EXCEPTION_PARENT_THEME_METADATA_INVALID',
-            $exception instanceof ParentVersionUnspecifiedException => 'EXCEPTION_PARENT_VERSION_UNSPECIFIED',
-            $exception instanceof ParentVersionsNotDeclaredException => 'EXCEPTION_UNSPECIFIED_PARENT_VERSIONS',
-            $exception instanceof ParentVersionMismatchException => 'EXCEPTION_PARENT_VERSION_MISMATCH',
-        };
     }
 }

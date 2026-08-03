@@ -14,7 +14,6 @@ interface ThemeMetaDataByIdProviderInterface
 {
     /**
      * @throws ThemeConfigurationNotFoundException
-     * @throws \InvalidArgumentException
      * @throws InvalidThemeMetaDataException
      */
     public function get(string $themeId, int $shopId): ThemeMetaData;

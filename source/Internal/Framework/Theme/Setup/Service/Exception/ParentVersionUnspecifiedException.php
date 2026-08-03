@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception;
 
-class ParentVersionUnspecifiedException extends \Exception
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
+
+class ParentVersionUnspecifiedException extends ThemeInheritanceException
 {
 }

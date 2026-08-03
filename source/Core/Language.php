@@ -960,7 +960,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $languageAbbr = Registry::getLang()->getLanguageAbbr($language);
             $possibleMapFileLocations = $isAdmin
                 ? $this->getAdminThemeLanguageFileMapLocations($languageAbbr)
-                : $this->getThemeChainLanguageFileMapLocations($languageAbbr);
+                : $this->getThemeInheritanceLanguageFileMapLocations($languageAbbr);
 
             foreach ($possibleMapFileLocations as $tmpMapFileLocation) {
                 $possibleMapFile = $tmpMapFileLocation . DIRECTORY_SEPARATOR . 'map.php';
@@ -1001,7 +1001,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @return string[]
      */
-    private function getThemeChainLanguageFileMapLocations($languageAbbreviation): array
+    private function getThemeInheritanceLanguageFileMapLocations($languageAbbreviation): array
     {
         $locations = [];
 
@@ -1048,9 +1048,9 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
     private function getParentThemeId(): ?string
     {
-        $chain = $this->getActiveTheme()?->getChain();
+        $inheritance = $this->getActiveTheme()?->getInheritance();
 
-        return $chain?->hasParentTheme() ? $chain->getParentThemeId() : null;
+        return $inheritance?->hasParentTheme() ? $inheritance->getParentThemeId() : null;
     }
 
     private function getThemePath(string $themeId): ?string

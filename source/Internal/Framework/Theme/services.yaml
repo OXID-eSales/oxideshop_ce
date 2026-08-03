@@ -1,6 +1,6 @@
 imports:
   - { resource: MetaData/services.yaml }
-  - { resource: Chain/services.yaml }
+  - { resource: Inheritance/services.yaml }
   - { resource: Setup/services.yaml }
   - { resource: State/services.yaml }
   - { resource: Cache/services.yaml }

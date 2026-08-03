@@ -10,16 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Chain\Exception\ThemeInheritanceCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeMetadataInvalidException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeNotInstalledException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionsNotDeclaredException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionUnspecifiedException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -33,6 +29,7 @@ final class ThemeActivateCommand extends Command
         private readonly ThemeStateServiceInterface $themeStateService,
         private readonly ShopCacheCleanerInterface $shopCacheCleaner,
         private readonly ContextInterface $context,
+        private readonly LoggerInterface $logger,
     ) {
         parent::__construct();
     }
@@ -60,19 +57,9 @@ final class ThemeActivateCommand extends Command
         } catch (ThemeConfigurationNotFoundException) {
             $style->error(sprintf('Theme - "%s" not found.', $themeId));
             return Command::FAILURE;
-        } catch (
-            ThemeInheritanceCycleException
-            | ParentThemeNotInstalledException
-            | ParentThemeMetadataInvalidException
-            | ParentVersionUnspecifiedException
-            | ParentVersionsNotDeclaredException
-            | ParentVersionMismatchException $exception
-        ) {
-            $style->error(sprintf(
-                'Theme - "%s" is not compatible with its parent theme (%s).',
-                $themeId,
-                $exception::class
-            ));
+        } catch (ThemeInheritanceException $exception) {
+            $this->logger->error($exception->getMessage(), [$exception]);
+            $style->error(sprintf('Theme - "%s" is not compatible with its parent theme.', $themeId));
             return Command::FAILURE;
         }
 

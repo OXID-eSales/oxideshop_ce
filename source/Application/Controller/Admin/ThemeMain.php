@@ -12,36 +12,22 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo\ThemeParentInfoProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ThemeMain extends AdminDetailsController
 {
-    private ThemeActivationServiceInterface $themeActivationService;
-    private ThemeStateServiceInterface $themeStateService;
-    private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker;
-    private ThemeInheritanceResolverInterface $themeInheritanceResolver;
-    private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider;
-    private ContextInterface $context;
-
-    public function __construct()
-    {
-        $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
-        $this->themeStateService = ContainerFacade::get(ThemeStateServiceInterface::class);
-        $this->themeParentCompatibilityChecker = ContainerFacade::get(ThemeParentCompatibilityCheckerInterface::class);
-        $this->themeInheritanceResolver = ContainerFacade::get(ThemeInheritanceResolverInterface::class);
-        $this->themeMetaDataByIdProvider = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class);
-        $this->context = ContainerFacade::get(ContextInterface::class);
-
+    public function __construct(
+        private readonly ThemeActivationServiceInterface $themeActivationService,
+        private readonly ThemeStateServiceInterface $themeStateService,
+        private readonly ThemeParentInfoProviderInterface $themeParentInfoProvider,
+        private readonly ContextInterface $context,
+    ) {
         parent::__construct();
     }
 
@@ -72,52 +58,17 @@ class ThemeMain extends AdminDetailsController
 
     private function addParentThemeViewData(string $themeId): void
     {
-        $shopId = $this->context->getCurrentShopId();
+        $parentInfo = $this->themeParentInfoProvider->getParentInfo($themeId, $this->context->getCurrentShopId());
 
-        try {
-            $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
-        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException | ThemeInheritanceException $exception) {
-            Registry::getLogger()->warning($exception->getMessage(), [$exception]);
-
+        if (!$parentInfo->hasParentTheme()) {
             return;
         }
 
-        if (!$inheritance->hasParentTheme()) {
-            return;
-        }
+        $this->_aViewData['parentThemeId'] = $parentInfo->getParentThemeId();
+        $this->_aViewData['parentThemeTitle'] = $parentInfo->getParentThemeTitle();
+        $this->_aViewData['parentThemeVersions'] = $parentInfo->getParentThemeVersions();
 
-        $parentThemeId = $inheritance->getParentThemeId();
-
-        $this->addParentThemeDetailsViewData($themeId, $parentThemeId, $shopId);
-        $this->addThemeActivationErrorViewData($themeId, $parentThemeId, $shopId);
-    }
-
-    private function addParentThemeDetailsViewData(string $themeId, string $parentThemeId, int $shopId): void
-    {
-        $this->_aViewData['parentThemeId'] = $parentThemeId;
-
-        try {
-            $this->_aViewData['parentThemeVersions'] = $this->themeMetaDataByIdProvider
-                ->get($themeId, $shopId)
-                ->getParentVersions();
-            $this->_aViewData['parentThemeTitle'] = $this->themeMetaDataByIdProvider
-                ->get($parentThemeId, $shopId)
-                ->getTitle();
-        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException $exception) {
-            Registry::getLogger()->warning($exception->getMessage(), [$exception]);
-        }
-    }
-
-    private function addThemeActivationErrorViewData(string $themeId, string $parentThemeId, int $shopId): void
-    {
-        if ($this->themeStateService->isActive($themeId, $shopId)) {
-            return;
-        }
-
-        try {
-            $this->themeParentCompatibilityChecker->assertCompatible($themeId, $parentThemeId, $shopId);
-        } catch (ThemeInheritanceException $exception) {
-            Registry::getLogger()->error($exception->getMessage(), [$exception]);
+        if ($parentInfo->hasActivationError()) {
             $this->_aViewData['themeActivationError'] = 'EXCEPTION_THEME_INHERITANCE_INVALID';
         }
     }

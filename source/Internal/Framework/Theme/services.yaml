@@ -6,6 +6,7 @@ imports:
   - { resource: Cache/services.yaml }
   - { resource: Configuration/services.yaml }
   - { resource: Path/services.yaml }
+  - { resource: ParentInfo/services.yaml }
 
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'
@@ -32,3 +33,8 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:
     tags:
       - { name: 'console.command', command: 'oe:theme:activate' }
+
+  OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeMain:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'theme_main' }
+    public: true

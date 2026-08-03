@@ -11,6 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Excep
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
 
-class ParentVersionUnspecifiedException extends ThemeInheritanceException
+class ThemeParentNotInstalledException extends ThemeInheritanceException
 {
 }

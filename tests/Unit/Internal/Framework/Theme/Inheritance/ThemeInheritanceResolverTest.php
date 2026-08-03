@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Inherita
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceDepthExceededException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolver;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +25,7 @@ final class ThemeInheritanceResolverTest extends TestCase
     public function testResolveReturnsThemeWithoutParentWhenNoParentDeclared(): void
     {
         $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
-        $themeParentProvider->method('hasParentTheme')->willReturn(false);
+        $themeParentProvider->method('getParentThemeId')->willThrowException(new ThemeParentNotFoundException());
 
         $inheritance = (new ThemeInheritanceResolver($themeParentProvider))->resolve(self::THEME_ID, self::SHOP_ID);
 
@@ -35,11 +36,10 @@ final class ThemeInheritanceResolverTest extends TestCase
     public function testResolveReturnsThemeAndItsParent(): void
     {
         $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
-        $themeParentProvider->method('hasParentTheme')->willReturnMap([
-            [self::THEME_ID, self::SHOP_ID, true],
-            [self::PARENT_THEME_ID, self::SHOP_ID, false],
+        $themeParentProvider->method('getParentThemeId')->willReturnMap([
+            [self::THEME_ID, self::SHOP_ID, self::PARENT_THEME_ID],
         ]);
-        $themeParentProvider->method('getParentThemeId')->willReturn(self::PARENT_THEME_ID);
+        $themeParentProvider->method('hasParentTheme')->with(self::PARENT_THEME_ID, self::SHOP_ID)->willReturn(false);
 
         $inheritance = (new ThemeInheritanceResolver($themeParentProvider))->resolve(self::THEME_ID, self::SHOP_ID);
 
@@ -50,7 +50,6 @@ final class ThemeInheritanceResolverTest extends TestCase
     public function testResolveThrowsWhenThemeDeclaresItselfAsItsOwnParent(): void
     {
         $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
-        $themeParentProvider->method('hasParentTheme')->willReturn(true);
         $themeParentProvider->method('getParentThemeId')->willReturn(self::THEME_ID);
 
         $this->expectException(ThemeInheritanceCycleException::class);
@@ -61,11 +60,10 @@ final class ThemeInheritanceResolverTest extends TestCase
     public function testResolveThrowsWhenParentThemeIsItselfAChildTheme(): void
     {
         $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
-        $themeParentProvider->method('hasParentTheme')->willReturnMap([
-            [self::THEME_ID, self::SHOP_ID, true],
-            [self::PARENT_THEME_ID, self::SHOP_ID, true],
+        $themeParentProvider->method('getParentThemeId')->willReturnMap([
+            [self::THEME_ID, self::SHOP_ID, self::PARENT_THEME_ID],
         ]);
-        $themeParentProvider->method('getParentThemeId')->willReturn(self::PARENT_THEME_ID);
+        $themeParentProvider->method('hasParentTheme')->with(self::PARENT_THEME_ID, self::SHOP_ID)->willReturn(true);
 
         $this->expectException(ThemeInheritanceDepthExceededException::class);
 

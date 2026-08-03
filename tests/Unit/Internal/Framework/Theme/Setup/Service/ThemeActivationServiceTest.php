@@ -16,8 +16,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetadataInvalidException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetaDataInvalidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use PHPUnit\Framework\TestCase;
@@ -119,7 +119,7 @@ final class ThemeActivationServiceTest extends TestCase
         $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
         $themeParentCompatibilityChecker
             ->method('assertCompatible')
-            ->willThrowException(new ParentVersionMismatchException());
+            ->willThrowException(new ThemeParentVersionMismatchException());
 
         $service = new ThemeActivationService(
             $dao,
@@ -128,7 +128,7 @@ final class ThemeActivationServiceTest extends TestCase
             $this->createResolverStub(hasParent: true)
         );
 
-        $this->expectException(ParentVersionMismatchException::class);
+        $this->expectException(ThemeParentVersionMismatchException::class);
 
         $service->activate('target', self::SHOP_ID);
     }
@@ -148,7 +148,7 @@ final class ThemeActivationServiceTest extends TestCase
             $themeInheritanceResolver
         );
 
-        $this->expectException(ThemeMetadataInvalidException::class);
+        $this->expectException(ThemeMetaDataInvalidException::class);
 
         $service->activate('target', self::SHOP_ID);
     }

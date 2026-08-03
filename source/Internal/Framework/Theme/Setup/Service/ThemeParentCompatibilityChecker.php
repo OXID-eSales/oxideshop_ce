@@ -12,11 +12,11 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentThemeNotInstalledException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionsNotDeclaredException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionUnspecifiedException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetadataInvalidException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetaDataInvalidException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentNotInstalledException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionsNotDeclaredException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionUnspecifiedException;
 
 readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibilityCheckerInterface
 {
@@ -36,7 +36,7 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
 
             $this->assertVersionIsCompatible($themeId, $parentThemeId, $parentVersion, $declaredParentVersions);
         } catch (InvalidThemeMetaDataException $exception) {
-            throw new ThemeMetadataInvalidException(
+            throw new ThemeMetaDataInvalidException(
                 "Could not read metadata of theme '$themeId' or its parent theme: {$exception->getMessage()}",
                 previous: $exception
             );
@@ -46,7 +46,7 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
     private function assertParentThemeIsInstalled(string $themeId, string $parentThemeId, int $shopId): void
     {
         if (!$this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
-            throw new ParentThemeNotInstalledException(
+            throw new ThemeParentNotInstalledException(
                 "Theme '$themeId' declares parent theme '$parentThemeId', but '$parentThemeId' is not installed"
             );
         }
@@ -54,9 +54,9 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
 
     private function resolveParentVersion(string $parentThemeId, int $shopId): string
     {
-        $parentVersion = $this->themeMetaDataByIdProvider->get($parentThemeId, $shopId)->getVersion();
+        $parentVersion = $this->themeMetaDataByIdProvider->getById($parentThemeId, $shopId)->getVersion();
         if ($parentVersion === '') {
-            throw new ParentVersionUnspecifiedException(
+            throw new ThemeParentVersionUnspecifiedException(
                 "Parent theme '$parentThemeId' does not declare a version in its metadata.yaml"
             );
         }
@@ -66,9 +66,9 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
 
     private function resolveDeclaredParentVersions(string $themeId, int $shopId): array
     {
-        $declaredParentVersions = $this->themeMetaDataByIdProvider->get($themeId, $shopId)->getParentVersions();
+        $declaredParentVersions = $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentVersions();
         if (empty($declaredParentVersions)) {
-            throw new ParentVersionsNotDeclaredException(
+            throw new ThemeParentVersionsNotDeclaredException(
                 "Theme '$themeId' does not declare any compatible parent versions in its metadata.yaml"
             );
         }
@@ -83,7 +83,7 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
         array $declaredParentVersions
     ): void {
         if (!in_array($parentVersion, $declaredParentVersions, true)) {
-            throw new ParentVersionMismatchException(
+            throw new ThemeParentVersionMismatchException(
                 "Theme '$themeId' declares compatible parent versions [" . implode(', ', $declaredParentVersions)
                 . "], but installed parent theme '$parentThemeId' has version '$parentVersion'"
             );

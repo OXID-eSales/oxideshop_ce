@@ -19,7 +19,7 @@ readonly class ThemeMetaDataByIdProvider implements ThemeMetaDataByIdProviderInt
     ) {
     }
 
-    public function get(string $themeId, int $shopId): ThemeMetaData
+    public function getById(string $themeId, int $shopId): ThemeMetaData
     {
         $themePath = $this->themePathResolver->getFullThemePathFromConfiguration($themeId, $shopId);
 

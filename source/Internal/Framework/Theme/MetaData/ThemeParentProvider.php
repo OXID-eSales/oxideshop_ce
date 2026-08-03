@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 
 readonly class ThemeParentProvider implements ThemeParentProviderInterface
 {
@@ -27,7 +27,7 @@ readonly class ThemeParentProvider implements ThemeParentProviderInterface
     {
         $parentThemeId = $this->getParentTheme($themeId, $shopId);
         if ($parentThemeId === '') {
-            throw new ParentThemeNotFoundException();
+            throw new ThemeParentNotFoundException();
         }
 
         return $parentThemeId;
@@ -35,6 +35,6 @@ readonly class ThemeParentProvider implements ThemeParentProviderInterface
 
     private function getParentTheme(string $themeId, int $shopId): string
     {
-        return $this->themeMetaDataByIdProvider->get($themeId, $shopId)->getParentTheme();
+        return $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentTheme();
     }
 }

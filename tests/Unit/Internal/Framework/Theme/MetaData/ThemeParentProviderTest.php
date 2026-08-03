@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\MetaData;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProvider;
@@ -45,7 +45,7 @@ final class ThemeParentProviderTest extends TestCase
     {
         $service = $this->createService('');
 
-        $this->expectException(ParentThemeNotFoundException::class);
+        $this->expectException(ThemeParentNotFoundException::class);
 
         $service->getParentThemeId(self::THEME_ID, self::SHOP_ID);
     }
@@ -62,7 +62,7 @@ final class ThemeParentProviderTest extends TestCase
     private function createService(string $declaredParentThemeId): ThemeParentProvider
     {
         $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
-        $themeMetaDataByIdProvider->method('get')->willReturn(
+        $themeMetaDataByIdProvider->method('getById')->willReturn(
             (new ThemeMetaData())->setId(self::THEME_ID)->setParentTheme($declaredParentThemeId)
         );
 
@@ -72,7 +72,7 @@ final class ThemeParentProviderTest extends TestCase
     private function createServiceWithUnreadableMetaData(): ThemeParentProvider
     {
         $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
-        $themeMetaDataByIdProvider->method('get')->willThrowException(
+        $themeMetaDataByIdProvider->method('getById')->willThrowException(
             new \InvalidArgumentException('Theme metadata file not readable')
         );
 

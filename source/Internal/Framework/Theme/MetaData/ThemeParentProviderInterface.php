@@ -9,7 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 
 interface ThemeParentProviderInterface
 {
@@ -20,7 +20,7 @@ interface ThemeParentProviderInterface
     public function hasParentTheme(string $themeId, int $shopId): bool;
 
     /**
-     * @throws ParentThemeNotFoundException
+     * @throws ThemeParentNotFoundException
      * @throws ThemeConfigurationNotFoundException
      * @throws InvalidThemeMetaDataException
      */

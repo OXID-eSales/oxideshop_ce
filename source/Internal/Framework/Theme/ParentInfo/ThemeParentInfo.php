@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 
 readonly class ThemeParentInfo
 {
@@ -19,7 +19,13 @@ readonly class ThemeParentInfo
         private ?string $parentThemeTitle,
         private array $parentThemeVersions,
         private bool $hasActivationError,
+        private bool $hasResolutionError = false,
     ) {
+    }
+
+    public function hasResolutionError(): bool
+    {
+        return $this->hasResolutionError;
     }
 
     public function hasParentTheme(): bool
@@ -27,7 +33,7 @@ readonly class ThemeParentInfo
         return $this->inheritance->hasParentTheme();
     }
 
-    /** @throws ParentThemeNotFoundException */
+    /** @throws ThemeParentNotFoundException */
     public function getParentThemeId(): string
     {
         return $this->inheritance->getParentThemeId();

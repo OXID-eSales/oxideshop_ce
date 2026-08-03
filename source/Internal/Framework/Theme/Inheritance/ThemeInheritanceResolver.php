@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceDepthExceededException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 
 readonly class ThemeInheritanceResolver implements ThemeInheritanceResolverInterface
@@ -22,11 +23,11 @@ readonly class ThemeInheritanceResolver implements ThemeInheritanceResolverInter
 
     public function resolve(string $themeId, int $shopId): ThemeInheritance
     {
-        if (!$this->themeParentProvider->hasParentTheme($themeId, $shopId)) {
+        try {
+            $parentThemeId = $this->themeParentProvider->getParentThemeId($themeId, $shopId);
+        } catch (ThemeParentNotFoundException) {
             return new ThemeInheritance($themeId, null);
         }
-
-        $parentThemeId = $this->themeParentProvider->getParentThemeId($themeId, $shopId);
 
         if ($parentThemeId === $themeId) {
             throw new ThemeInheritanceCycleException(

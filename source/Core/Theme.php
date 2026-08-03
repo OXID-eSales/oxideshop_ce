@@ -48,7 +48,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
 
         try {
-            $themeMetaData = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class)->get($sOXID, $shopId);
+            $themeMetaData = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class)->getById($sOXID, $shopId);
         } catch (ThemeConfigurationNotFoundException | \InvalidArgumentException) {
             return false;
         }

@@ -37,7 +37,7 @@ readonly class ThemeParentInfoProvider implements ThemeParentInfoProviderInterfa
         } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException | ThemeInheritanceException $exception) {
             $this->logger->warning($exception->getMessage(), [$exception]);
 
-            return new ThemeParentInfo(new ThemeInheritance($themeId, null), null, [], false);
+            return new ThemeParentInfo(new ThemeInheritance($themeId, null), null, [], false, hasResolutionError: true);
         }
 
         if (!$inheritance->hasParentTheme()) {
@@ -60,8 +60,8 @@ readonly class ThemeParentInfoProvider implements ThemeParentInfoProviderInterfa
     {
         try {
             return [
-                $this->themeMetaDataByIdProvider->get($parentThemeId, $shopId)->getTitle(),
-                $this->themeMetaDataByIdProvider->get($themeId, $shopId)->getParentVersions(),
+                $this->themeMetaDataByIdProvider->getById($parentThemeId, $shopId)->getTitle(),
+                $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentVersions(),
             ];
         } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException $exception) {
             $this->logger->warning($exception->getMessage(), [$exception]);

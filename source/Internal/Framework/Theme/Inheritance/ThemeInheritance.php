@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 
 readonly class ThemeInheritance
 {
@@ -29,9 +29,9 @@ readonly class ThemeInheritance
         return $this->parentThemeId !== null;
     }
 
-    /** @throws ParentThemeNotFoundException */
+    /** @throws ThemeParentNotFoundException */
     public function getParentThemeId(): string
     {
-        return $this->parentThemeId ?? throw new ParentThemeNotFoundException();
+        return $this->parentThemeId ?? throw new ThemeParentNotFoundException();
     }
 }

@@ -35,6 +35,6 @@ final class ThemeMetaDataByIdProviderTest extends TestCase
 
         $service = new ThemeMetaDataByIdProvider($themePathResolver, $themeMetaDataProvider);
 
-        $this->assertSame($expectedMetaData, $service->get(self::THEME_ID, self::SHOP_ID));
+        $this->assertSame($expectedMetaData, $service->getById(self::THEME_ID, self::SHOP_ID));
     }
 }

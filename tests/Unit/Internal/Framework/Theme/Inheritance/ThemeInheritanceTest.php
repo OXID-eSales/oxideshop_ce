@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Inheritance;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ParentThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 final class ThemeInheritanceTest extends TestCase
@@ -40,7 +40,7 @@ final class ThemeInheritanceTest extends TestCase
     {
         $inheritance = new ThemeInheritance('child', null);
 
-        $this->expectException(ParentThemeNotFoundException::class);
+        $this->expectException(ThemeParentNotFoundException::class);
 
         $inheritance->getParentThemeId();
     }

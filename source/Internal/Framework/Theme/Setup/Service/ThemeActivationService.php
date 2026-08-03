@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetadataInvalidException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetaDataInvalidException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class ThemeActivationService implements ThemeActivationServiceInterface
@@ -31,7 +31,7 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
         try {
             $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
         } catch (InvalidThemeMetaDataException $exception) {
-            throw new ThemeMetadataInvalidException(
+            throw new ThemeMetaDataInvalidException(
                 "Could not read metadata of theme '$themeId': {$exception->getMessage()}",
                 previous: $exception
             );

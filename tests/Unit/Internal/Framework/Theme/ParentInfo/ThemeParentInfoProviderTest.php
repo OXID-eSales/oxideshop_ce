@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\Invali
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo\ThemeParentInfoProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionMismatchException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +37,7 @@ final class ThemeParentInfoProviderTest extends TestCase
 
         $this->assertFalse($parentInfo->hasParentTheme());
         $this->assertFalse($parentInfo->hasActivationError());
+        $this->assertFalse($parentInfo->hasResolutionError());
     }
 
     public function testGetParentInfoReturnsEmptyInfoAndLogsWarningWhenResolvingInheritanceFails(): void
@@ -52,6 +53,7 @@ final class ThemeParentInfoProviderTest extends TestCase
         $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
 
         $this->assertFalse($parentInfo->hasParentTheme());
+        $this->assertTrue($parentInfo->hasResolutionError());
     }
 
     public function testGetParentInfoReturnsParentDisplayDataWhenThemeHasParent(): void
@@ -73,7 +75,7 @@ final class ThemeParentInfoProviderTest extends TestCase
     public function testGetParentInfoReturnsEmptyDisplayDataAndLogsWarningWhenParentMetadataIsUnreadable(): void
     {
         $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
-        $themeMetaDataByIdProvider->method('get')->willThrowException(new InvalidThemeMetaDataException());
+        $themeMetaDataByIdProvider->method('getById')->willThrowException(new InvalidThemeMetaDataException());
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('warning');
@@ -127,7 +129,7 @@ final class ThemeParentInfoProviderTest extends TestCase
     public function testGetParentInfoHasActivationErrorAndLogsWhenInactiveThemeIsIncompatible(): void
     {
         $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
-        $themeParentCompatibilityChecker->method('assertCompatible')->willThrowException(new ParentVersionMismatchException());
+        $themeParentCompatibilityChecker->method('assertCompatible')->willThrowException(new ThemeParentVersionMismatchException());
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error');
@@ -160,7 +162,7 @@ final class ThemeParentInfoProviderTest extends TestCase
         array $declaredParentVersions = []
     ): ThemeMetaDataByIdProviderInterface {
         $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
-        $themeMetaDataByIdProvider->method('get')->willReturnCallback(
+        $themeMetaDataByIdProvider->method('getById')->willReturnCallback(
             fn(string $themeId): ThemeMetaData => $themeId === self::PARENT_THEME_ID
                 ? (new ThemeMetaData())->setId(self::PARENT_THEME_ID)->setTitle($parentTitle)
                 : (new ThemeMetaData())->setId(self::THEME_ID)->setParentVersions($declaredParentVersions)

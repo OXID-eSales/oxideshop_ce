@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\Facts\Facts;
@@ -775,13 +777,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function checkSsl()
     {
-        $myUtilsServer = Registry::getUtilsServer();
-        $serverVars = $myUtilsServer->getServerVar();
-        $httpsServerVar = $myUtilsServer->getServerVar('HTTPS');
+        $serverVars = Registry::getUtilsServer()->getServerVar();
 
         $this->setIsSsl();
-        if (isset($httpsServerVar) && ($httpsServerVar === 'on' || $httpsServerVar === 'ON' || $httpsServerVar == '1')) {
-            // "1&1" hoster provides "1"
+        if (ContainerFacade::get(HttpsRequestResolverInterface::class)->isHttps()) {
             $this->setIsSsl($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL'));
             if ($this->isAdmin() && !$this->_blIsSsl) {
                 //#4026

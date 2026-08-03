@@ -16,3 +16,7 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface:
     class: OxidEsales\EshopCommunity\Internal\Transition\Adapter\Request\RequestAdapter
+
+  OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolver
+    public: true

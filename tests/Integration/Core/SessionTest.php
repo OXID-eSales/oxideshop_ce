@@ -21,7 +21,7 @@ final class SessionTest extends TestCase
     {
         parent::setUp();
         $this->setApplicationDefaults();
-        unset($_POST);
+        $_POST = [];
     }
 
     #[RunInSeparateProcess]

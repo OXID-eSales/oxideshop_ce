@@ -65,4 +65,22 @@ final class UtilsServerTest extends TestCase
 
         $this->assertSame($clientIp, oxNew('oxutilsserver')->getRemoteAddress());
     }
+
+    #[RunInSeparateProcess]
+    public function testGetRemoteAddressIgnoresRfc7239ForwardedHeader(): void
+    {
+        $proxyIp = '1.2.3.4';
+        $clientIp = '9.9.9.9';
+
+        $_SERVER['REMOTE_ADDR'] = $proxyIp;
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = $clientIp;
+        $_SERVER['HTTP_FORWARDED'] = 'for=203.0.113.9';
+
+        $this->createContainer();
+        $this->setParameter('oxid_esales.request.trusted_proxies', [$proxyIp]);
+        $this->compileContainer();
+        $this->attachContainerToContainerFactory();
+
+        $this->assertSame($clientIp, oxNew('oxutilsserver')->getRemoteAddress());
+    }
 }

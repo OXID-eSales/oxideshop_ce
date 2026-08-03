@@ -10,6 +10,7 @@
 - Console commands return consistent exit codes on success (0) and failure (1)
 - Default bcrypt password hashing cost was increased [#0007727](https://bugs.oxid-esales.com/view.php?id=7727)
 - Remote address resolution now uses Symfony `Request::getClientIp()` — proxy headers are no longer trusted by default, configure trusted IPs via `oxid_esales.request.trusted_proxies` DI parameter
+- Detect HTTPS behind SSL offloaders via forwarded headers from trusted proxies
 
 ### Deprecated
 - `Argon2IPasswordHashService`
@@ -27,5 +28,6 @@
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)
 - Case-sensitive column name handling in admin order article search [#0006025](https://bugs.oxid-esales.com/view.php?id=6025)
+- Endless redirect loop and wrong URL generation [#0007770](https://bugs.oxid-esales.com/view.php?id=7770)
 
 ### Removed

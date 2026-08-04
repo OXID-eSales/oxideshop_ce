@@ -11,28 +11,53 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Valid
 
 readonly class SettingValueValidator implements SettingValueValidatorInterface
 {
-    private const string DANGEROUS_ELEMENT_PATTERN =
-        '/<\s*\/?\s*(?:script|iframe|object|embed|svg|style|link|meta|base|applet|frame|frameset|form)\b/iu';
-    private const string EVENT_HANDLER_PATTERN = '/<[^>]*\son[a-z]+\s*=/iu';
-    private const string DANGEROUS_SCHEME_PATTERN = '/(?:javascript|vbscript)\s*:/iu';
+    private const URL_SCHEME_PATTERN = '/^[a-z][a-z\d+.-]*:/i';
+    private const OBFUSCATED_SCRIPT_SCHEME_PATTERN = '/^(?:java\s*script|vb\s*script)\s*:/i';
+    private const HTTP_URL_PATTERN = '/^https?:\/\//i';
+    private const URI_CHARSET_PATTERN = '/^[A-Za-z0-9\-._~:\/?#\[\]@!$&\'()*+,;=%]*$/';
+    private const MARKUP_PATTERN = '/<[a-z!\/]/i';
 
     public function isValid(string $value): bool
     {
-        foreach ($this->forbiddenPatterns() as $pattern) {
-            if (preg_match($pattern, $value) === 1) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->hasUrlScheme($value)
+            ? $this->isValidHttpUrl($value)
+            : !$this->containsMarkup($value);
     }
 
-    private function forbiddenPatterns(): array
+    private function hasUrlScheme(string $value): bool
     {
-        return [
-            self::DANGEROUS_ELEMENT_PATTERN,
-            self::EVENT_HANDLER_PATTERN,
-            self::DANGEROUS_SCHEME_PATTERN,
-        ];
+        $trimmedValue = trim($value);
+
+        return preg_match(self::URL_SCHEME_PATTERN, $trimmedValue) === 1
+            || preg_match(self::OBFUSCATED_SCRIPT_SCHEME_PATTERN, $trimmedValue) === 1;
+    }
+
+    private function isValidHttpUrl(string $value): bool
+    {
+        return $this->hasHttpScheme($value)
+            && $this->containsOnlyUrlCharacters($value)
+            && $this->hasHost($value);
+    }
+
+    private function hasHttpScheme(string $value): bool
+    {
+        return preg_match(self::HTTP_URL_PATTERN, $value) === 1;
+    }
+
+    private function containsOnlyUrlCharacters(string $value): bool
+    {
+        return preg_match(self::URI_CHARSET_PATTERN, $value) === 1;
+    }
+
+    private function hasHost(string $value): bool
+    {
+        $host = parse_url($value, PHP_URL_HOST);
+
+        return is_string($host) && $host !== '';
+    }
+
+    private function containsMarkup(string $value): bool
+    {
+        return preg_match(self::MARKUP_PATTERN, $value) === 1;
     }
 }

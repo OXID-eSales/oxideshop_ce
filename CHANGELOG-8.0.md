@@ -24,6 +24,7 @@
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Theme settings read from YAML configuration instead of the database
 - Theme settings in the admin area are saved to the theme YAML configuration instead of the `oxconfig` table
+- Theme setting values are validated when saved in the admin area, rejecting cross-site scripting payloads in HTML and URL values
 - `Config::getConfigParam()` no longer returns theme settings — use `ThemeSettingServiceInterface` instead
 
 ### Removed

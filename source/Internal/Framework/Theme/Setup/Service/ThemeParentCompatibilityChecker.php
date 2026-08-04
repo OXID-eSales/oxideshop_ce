@@ -26,15 +26,15 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
     ) {
     }
 
-    public function assertCompatible(string $themeId, string $parentThemeId, int $shopId): void
+    public function validateCompatibility(string $themeId, string $parentThemeId, int $shopId): void
     {
         try {
-            $this->assertParentThemeIsInstalled($themeId, $parentThemeId, $shopId);
+            $this->validateParentThemeIsInstalled($themeId, $parentThemeId, $shopId);
 
             $parentVersion = $this->resolveParentVersion($parentThemeId, $shopId);
             $declaredParentVersions = $this->resolveDeclaredParentVersions($themeId, $shopId);
 
-            $this->assertVersionIsCompatible($themeId, $parentThemeId, $parentVersion, $declaredParentVersions);
+            $this->validateVersionIsCompatible($themeId, $parentThemeId, $parentVersion, $declaredParentVersions);
         } catch (InvalidThemeMetaDataException $exception) {
             throw new ThemeMetaDataInvalidException(
                 "Could not read metadata of theme '$themeId' or its parent theme: {$exception->getMessage()}",
@@ -43,7 +43,7 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
         }
     }
 
-    private function assertParentThemeIsInstalled(string $themeId, string $parentThemeId, int $shopId): void
+    private function validateParentThemeIsInstalled(string $themeId, string $parentThemeId, int $shopId): void
     {
         if (!$this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
             throw new ThemeParentNotInstalledException(
@@ -76,7 +76,7 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
         return $declaredParentVersions;
     }
 
-    private function assertVersionIsCompatible(
+    private function validateVersionIsCompatible(
         string $themeId,
         string $parentThemeId,
         string $parentVersion,

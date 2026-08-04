@@ -28,6 +28,20 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
 
     public function activate(string $themeId, int $shopId): void
     {
+        $this->validateActivatable($themeId, $shopId);
+
+        $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
+
+        $this->deactivateActiveThemes($themeId, $shopId);
+
+        $themeConfiguration->setActivated(true);
+        $this->themeConfigurationDao->save($themeConfiguration, $shopId);
+
+        $this->eventDispatcher->dispatch(new ThemeActivatedEvent($shopId, $themeId));
+    }
+
+    public function validateActivatable(string $themeId, int $shopId): void
+    {
         try {
             $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
         } catch (InvalidThemeMetaDataException $exception) {
@@ -38,21 +52,14 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
         }
 
         if ($inheritance->hasParentTheme()) {
-            $this->themeParentCompatibilityChecker->assertCompatible(
+            $this->themeParentCompatibilityChecker->validateCompatibility(
                 $themeId,
                 $inheritance->getParentThemeId(),
                 $shopId
             );
         }
 
-        $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
-
-        $this->deactivateActiveThemes($themeId, $shopId);
-
-        $themeConfiguration->setActivated(true);
-        $this->themeConfigurationDao->save($themeConfiguration, $shopId);
-
-        $this->eventDispatcher->dispatch(new ThemeActivatedEvent($shopId, $themeId));
+        $this->themeConfigurationDao->get($themeId, $shopId);
     }
 
     private function deactivateActiveThemes(string $exceptThemeId, int $shopId): void

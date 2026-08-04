@@ -77,7 +77,7 @@ readonly class ThemeParentInfoProvider implements ThemeParentInfoProviderInterfa
         }
 
         try {
-            $this->themeParentCompatibilityChecker->assertCompatible($themeId, $parentThemeId, $shopId);
+            $this->themeParentCompatibilityChecker->validateCompatibility($themeId, $parentThemeId, $shopId);
 
             return false;
         } catch (ThemeInheritanceException $exception) {

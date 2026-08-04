@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInherita
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateService;
 use PHPUnit\Framework\TestCase;
@@ -145,7 +146,10 @@ final class ThemeStateServiceTest extends TestCase
     public function testServiceIsSubscribedToThemeActivatedEvent(): void
     {
         $this->assertSame(
-            [ThemeActivatedEvent::class => 'invalidateActiveThemeCache'],
+            [
+                ThemeActivatedEvent::class => 'invalidateActiveThemeCache',
+                ThemeConfigurationChangedEvent::class => 'invalidateActiveThemeCache',
+            ],
             ThemeStateService::getSubscribedEvents()
         );
     }
@@ -183,6 +187,22 @@ final class ThemeStateServiceTest extends TestCase
         $service->invalidateActiveThemeCache(new ThemeActivatedEvent(self::SHOP_ID, 'active'));
 
         $this->assertSame('active', $service->getActiveTheme(self::SHOP_ID)->getId());
+    }
+
+    public function testInvalidateActiveThemeCacheForcesActiveThemeIdToBeResolvedAgainOnConfigurationChange(): void
+    {
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->exactly(2))->method('getAll')->willReturn([
+            'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
+        ]);
+        $service = $this->createService($dao);
+
+        $service->getActiveThemeId(self::SHOP_ID);
+        $service->invalidateActiveThemeCache(
+            new ThemeConfigurationChangedEvent((new ThemeConfiguration())->setId('active'), self::SHOP_ID)
+        );
+
+        $this->assertSame('active', $service->getActiveThemeId(self::SHOP_ID));
     }
 
     public function testInvalidateActiveThemeCacheDoesNotAffectOtherShops(): void

@@ -72,6 +72,19 @@ final class ThemeParentInfoProviderTest extends TestCase
         $this->assertSame(['1.0.0'], $parentInfo->getParentThemeVersions());
     }
 
+    public function testGetParentInfoReturnsFalsyButValidParentThemeTitle(): void
+    {
+        $provider = $this->createProvider(
+            themeInheritanceResolver: $this->createResolverStub(hasParent: true),
+            themeMetaDataByIdProvider: $this->createMetaDataStub(parentTitle: '0'),
+            themeStateService: $this->createStateServiceStub(isActive: true)
+        );
+
+        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('0', $parentInfo->getParentThemeTitle());
+    }
+
     public function testGetParentInfoReturnsEmptyDisplayDataAndLogsWarningWhenParentMetadataIsUnreadable(): void
     {
         $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
@@ -96,7 +109,7 @@ final class ThemeParentInfoProviderTest extends TestCase
     public function testGetParentInfoHasNoActivationErrorWhenThemeIsAlreadyActive(): void
     {
         $themeParentCompatibilityChecker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
-        $themeParentCompatibilityChecker->expects($this->never())->method('assertCompatible');
+        $themeParentCompatibilityChecker->expects($this->never())->method('validateCompatibility');
 
         $provider = $this->createProvider(
             themeInheritanceResolver: $this->createResolverStub(hasParent: true),
@@ -129,7 +142,7 @@ final class ThemeParentInfoProviderTest extends TestCase
     public function testGetParentInfoHasActivationErrorAndLogsWhenInactiveThemeIsIncompatible(): void
     {
         $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
-        $themeParentCompatibilityChecker->method('assertCompatible')->willThrowException(new ThemeParentVersionMismatchException());
+        $themeParentCompatibilityChecker->method('validateCompatibility')->willThrowException(new ThemeParentVersionMismatchException());
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error');

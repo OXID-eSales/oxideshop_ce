@@ -16,5 +16,5 @@ interface ThemeParentCompatibilityCheckerInterface
      * @throws ThemeInheritanceException
      * @throws ThemeConfigurationNotFoundException
      */
-    public function assertCompatible(string $themeId, string $parentThemeId, int $shopId): void;
+    public function validateCompatibility(string $themeId, string $parentThemeId, int $shopId): void;
 }

@@ -5,3 +5,17 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolver
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemeOverrideDirectoryResolver:
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemeOverrideDirectoryResolverInterface:
+    alias: OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemeOverrideDirectoryResolver
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ActiveThemeDirectoryResolver:
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ActiveThemeDirectoryResolverInterface:
+    alias: OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ActiveThemeDirectoryResolver
+    public: true

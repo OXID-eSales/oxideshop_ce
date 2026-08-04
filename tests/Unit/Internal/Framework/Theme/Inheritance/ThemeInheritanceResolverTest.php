@@ -39,7 +39,7 @@ final class ThemeInheritanceResolverTest extends TestCase
         $themeParentProvider->method('getParentThemeId')->willReturnMap([
             [self::THEME_ID, self::SHOP_ID, self::PARENT_THEME_ID],
         ]);
-        $themeParentProvider->method('hasParentTheme')->with(self::PARENT_THEME_ID, self::SHOP_ID)->willReturn(false);
+        $themeParentProvider->method('hasParentTheme')->willReturn(false);
 
         $inheritance = (new ThemeInheritanceResolver($themeParentProvider))->resolve(self::THEME_ID, self::SHOP_ID);
 
@@ -63,7 +63,7 @@ final class ThemeInheritanceResolverTest extends TestCase
         $themeParentProvider->method('getParentThemeId')->willReturnMap([
             [self::THEME_ID, self::SHOP_ID, self::PARENT_THEME_ID],
         ]);
-        $themeParentProvider->method('hasParentTheme')->with(self::PARENT_THEME_ID, self::SHOP_ID)->willReturn(true);
+        $themeParentProvider->method('hasParentTheme')->willReturn(true);
 
         $this->expectException(ThemeInheritanceDepthExceededException::class);
 

@@ -17,4 +17,10 @@ interface ThemeActivationServiceInterface
      * @throws ThemeInheritanceException
      */
     public function activate(string $themeId, int $shopId): void;
+
+    /**
+     * @throws ThemeConfigurationNotFoundException
+     * @throws ThemeInheritanceException
+     */
+    public function validateActivatable(string $themeId, int $shopId): void;
 }

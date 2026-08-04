@@ -75,6 +75,27 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         $this->assertFalse($this->isThemeActive($incompatibleThemeId));
     }
 
+    public function testReactivatingAlreadyActiveThemeFailsWhenItsParentWasRemoved(): void
+    {
+        $parentThemeId = 'parentThemeForActivationRecheck';
+        $childThemeId = 'childThemeForActivationRecheck';
+        $installer = $this->get(ThemeConfigurationInstallerInterface::class);
+        $parentThemePath = "$this->fixtureDirectory/shop/source/Application/views/$parentThemeId";
+        $installer->install($parentThemePath);
+        $installer->install("$this->fixtureDirectory/shop/source/Application/views/$childThemeId");
+
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $childThemeId]);
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+
+        $installer->uninstall($parentThemePath);
+
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $childThemeId]);
+
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+    }
+
     public function testActivationFailsForThemeDeclaringItselfAsItsOwnParent(): void
     {
         $selfReferencingThemeId = 'selfReferencingTheme';

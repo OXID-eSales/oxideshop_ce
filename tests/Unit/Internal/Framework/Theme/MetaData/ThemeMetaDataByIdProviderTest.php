@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\MetaData;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface;
@@ -36,5 +37,20 @@ final class ThemeMetaDataByIdProviderTest extends TestCase
         $service = new ThemeMetaDataByIdProvider($themePathResolver, $themeMetaDataProvider);
 
         $this->assertSame($expectedMetaData, $service->getById(self::THEME_ID, self::SHOP_ID));
+    }
+
+    public function testGetByIdThrowsWhenMetaDataIdDoesNotMatchRequestedThemeId(): void
+    {
+        $themePathResolver = $this->createStub(ThemePathResolverInterface::class);
+        $themePathResolver->method('getFullThemePathFromConfiguration')->willReturn('/var/www/vendor/some-other-theme');
+
+        $themeMetaDataProvider = $this->createStub(ThemeMetaDataProviderInterface::class);
+        $themeMetaDataProvider->method('get')->willReturn((new ThemeMetaData())->setId('unexpectedThemeId'));
+
+        $service = new ThemeMetaDataByIdProvider($themePathResolver, $themeMetaDataProvider);
+
+        $this->expectException(InvalidThemeMetaDataException::class);
+
+        $service->getById(self::THEME_ID, self::SHOP_ID);
     }
 }

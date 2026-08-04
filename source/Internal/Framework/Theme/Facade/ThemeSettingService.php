@@ -105,11 +105,12 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
     private function findSetting(ActiveTheme $activeTheme, string $name): ?Setting
     {
         $shopId = $this->context->getCurrentShopId();
-        $inheritance = $activeTheme->getInheritance();
 
-        if ($setting = $this->findSettingForTheme($inheritance->getThemeId(), $shopId, $name)) {
+        if ($setting = $this->findSettingForTheme($activeTheme->getId(), $shopId, $name)) {
             return $setting;
         }
+
+        $inheritance = $activeTheme->getInheritance();
 
         return $inheritance->hasParentTheme()
             ? $this->findSettingForTheme($inheritance->getParentThemeId(), $shopId, $name)

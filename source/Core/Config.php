@@ -966,7 +966,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         //Load from
         $path = "{$theme}/{$shop}/{$langAbbr}/{$dir}/{$file}";
-        $cacheKey = $path . "_{$ignoreParentTheme}{$absolute}";
+        $cacheKey = $path . '_' . (int) $ignoreParentTheme . '_' . (int) $absolute;
 
         if (($return = Registry::getUtils()->fromStaticCache($cacheKey)) !== null) {
             return $return;

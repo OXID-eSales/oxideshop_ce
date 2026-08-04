@@ -97,7 +97,7 @@ final class ThemeActivationServiceTest extends TestCase
         $dao->method('getAll')->willReturn([]);
 
         $themeParentCompatibilityChecker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
-        $themeParentCompatibilityChecker->expects($this->never())->method('assertCompatible');
+        $themeParentCompatibilityChecker->expects($this->never())->method('validateCompatibility');
 
         $service = new ThemeActivationService(
             $dao,
@@ -118,7 +118,7 @@ final class ThemeActivationServiceTest extends TestCase
 
         $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
         $themeParentCompatibilityChecker
-            ->method('assertCompatible')
+            ->method('validateCompatibility')
             ->willThrowException(new ThemeParentVersionMismatchException());
 
         $service = new ThemeActivationService(
@@ -151,6 +151,75 @@ final class ThemeActivationServiceTest extends TestCase
         $this->expectException(ThemeMetaDataInvalidException::class);
 
         $service->activate('target', self::SHOP_ID);
+    }
+
+    public function testValidateActivatableDoesNotMutateThemeConfiguration(): void
+    {
+        $targetConfiguration = (new ThemeConfiguration())->setId('target');
+
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->method('get')->willReturn($targetConfiguration);
+        $dao->expects($this->never())->method('save');
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher->expects($this->never())->method('dispatch');
+
+        $service = new ThemeActivationService(
+            $dao,
+            $eventDispatcher,
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
+            $this->createResolverStub(hasParent: false)
+        );
+
+        $service->validateActivatable('target', self::SHOP_ID);
+
+        $this->assertFalse($targetConfiguration->isActivated());
+    }
+
+    public function testValidateActivatableThrowsWhenThemeConfigurationIsMissing(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('get')->willThrowException(new ThemeConfigurationNotFoundException());
+
+        $this->expectException(ThemeConfigurationNotFoundException::class);
+
+        $this->createService($dao)->validateActivatable('unknown', self::SHOP_ID);
+    }
+
+    public function testValidateActivatableThrowsWhenIncompatibleWithParentTheme(): void
+    {
+        $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
+        $themeParentCompatibilityChecker
+            ->method('validateCompatibility')
+            ->willThrowException(new ThemeParentVersionMismatchException());
+
+        $service = new ThemeActivationService(
+            $this->createStub(ThemeConfigurationDaoInterface::class),
+            $this->createStub(EventDispatcherInterface::class),
+            $themeParentCompatibilityChecker,
+            $this->createResolverStub(hasParent: true)
+        );
+
+        $this->expectException(ThemeParentVersionMismatchException::class);
+
+        $service->validateActivatable('target', self::SHOP_ID);
+    }
+
+    public function testValidateActivatableThrowsWhenThemesOwnMetadataIsUnreadable(): void
+    {
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willThrowException(new InvalidThemeMetaDataException());
+
+        $service = new ThemeActivationService(
+            $this->createStub(ThemeConfigurationDaoInterface::class),
+            $this->createStub(EventDispatcherInterface::class),
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
+            $themeInheritanceResolver
+        );
+
+        $this->expectException(ThemeMetaDataInvalidException::class);
+
+        $service->validateActivatable('target', self::SHOP_ID);
     }
 
     private function createService(ThemeConfigurationDaoInterface $dao): ThemeActivationService

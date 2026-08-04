@@ -7,13 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * Themes handler class.
@@ -45,11 +46,11 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      */
     public function load($sOXID)
     {
-        $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
+        $shopId = Registry::getConfig()->getShopId();
 
         try {
             $themeMetaData = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class)->getById($sOXID, $shopId);
-        } catch (ThemeConfigurationNotFoundException | \InvalidArgumentException) {
+        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException) {
             return false;
         }
 
@@ -84,7 +85,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     public function getList()
     {
         $this->_aThemeList = [];
-        $shopId = ContainerFacade::get(ContextInterface::class)->getCurrentShopId();
+        $shopId = Registry::getConfig()->getShopId();
         foreach (ContainerFacade::get(ThemeConfigurationDaoInterface::class)->getAll($shopId) as $themeConfiguration) {
             $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
             if ($oTheme->load($themeConfiguration->getId())) {

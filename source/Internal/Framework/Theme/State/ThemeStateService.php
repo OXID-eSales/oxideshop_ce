@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,7 +45,7 @@ class ThemeStateService implements ThemeStateServiceInterface, EventSubscriberIn
         );
     }
 
-    public function invalidateActiveThemeCache(ThemeActivatedEvent $event): void
+    public function invalidateActiveThemeCache(ThemeActivatedEvent|ThemeConfigurationChangedEvent $event): void
     {
         unset($this->activeThemeIds[$event->getShopId()], $this->activeThemes[$event->getShopId()]);
     }
@@ -53,6 +54,7 @@ class ThemeStateService implements ThemeStateServiceInterface, EventSubscriberIn
     {
         return [
             ThemeActivatedEvent::class => 'invalidateActiveThemeCache',
+            ThemeConfigurationChangedEvent::class => 'invalidateActiveThemeCache',
         ];
     }
 

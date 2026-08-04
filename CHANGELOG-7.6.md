@@ -5,6 +5,7 @@
 ### Added
 - `oe:database:migrate` console command
 - Doctrine migrations can be registered via the `oxid_esales.migration_path_provider` DI tag (`MigrationPathProviderInterface`)
+- `SeoEncoderArticle::generateArticleCategoryUri()` method for generating an article's SEO URI for a specific category
 
 ### Changed
 - Console commands return consistent exit codes on success (0) and failure (1)
@@ -24,6 +25,7 @@
 - `MigrationExecutor`
 - `Utilities::executeExternalDatabaseMigrationCommand()`
 - `oxid-esales/oxideshop-doctrine-migration-wrapper` package and `oe-eshop-db_migrate` script, use `oe:database:migrate` instead
+- `SeoEncoderArticle::createArticleCategoryUri()`, use `generateArticleCategoryUri()` instead
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

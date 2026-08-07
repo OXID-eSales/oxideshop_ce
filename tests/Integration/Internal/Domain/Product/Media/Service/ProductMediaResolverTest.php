@@ -31,4 +31,11 @@ final class ProductMediaResolverTest extends TestCase
         );
         $this->assertStringEndsWith($mediaFile, $path);
     }
+
+    public function testResolveRejectsPathTraversal(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->get(ProductMediaPathResolverInterface::class)->resolve('../../../..', 'media.jpg');
+    }
 }

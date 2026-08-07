@@ -33,5 +33,8 @@ readonly class MediaPath
         if (str_starts_with($path, '/') || str_starts_with($path, '\\')) {
             throw new \InvalidArgumentException('Media path must be relative, not absolute.');
         }
+        if (preg_match('~(^|[\\\\/])\.\.([\\\\/]|$)~', $path)) {
+            throw new \InvalidArgumentException('Media path must not contain parent directory segments.');
+        }
     }
 }

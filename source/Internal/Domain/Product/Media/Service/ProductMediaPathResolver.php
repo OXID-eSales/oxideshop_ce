@@ -22,18 +22,18 @@ readonly class ProductMediaPathResolver implements ProductMediaPathResolverInter
 
     public function resolve(string $productId, string $filename): MediaPath
     {
+        $productsPath = Path::join(
+            Path::makeRelative(
+                $this->context->getOutPath(),
+                $this->context->getSourcePath()
+            ),
+            'pictures',
+            'media',
+            'products'
+        );
+
         return new MediaPath(
-            Path::join(
-                Path::makeRelative(
-                    $this->context->getOutPath(),
-                    $this->context->getSourcePath()
-                ),
-                'pictures',
-                'media',
-                'products',
-                $productId,
-                $filename
-            )
+            sprintf('%s/%s/%s', $productsPath, $productId, $filename)
         );
     }
 }

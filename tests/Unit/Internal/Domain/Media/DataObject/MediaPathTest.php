@@ -34,4 +34,20 @@ final class MediaPathTest extends TestCase
 
         new MediaPath('/absolute/path.jpg');
     }
+
+    public function testConstructWithParentDirectorySegmentWillThrowException(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        new MediaPath('path\\..\\file.jpg');
+    }
+
+    public function testConstructWithDotsInFilenameWillSucceed(): void
+    {
+        $path = 'out/pictures/product.v2..jpg';
+
+        $mediaPath = new MediaPath($path);
+
+        $this->assertSame($path, (string) $mediaPath);
+    }
 }

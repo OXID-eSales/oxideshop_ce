@@ -26,6 +26,7 @@
 - `ModuleDeactivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
+- `SeoEncoderArticle::createArticleCategoryUri()`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

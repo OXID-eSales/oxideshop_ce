@@ -15,6 +15,7 @@
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
+- Hardened resolution of generated image paths in `GeneratedImagePathProvider`
 
 ### Removed
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)

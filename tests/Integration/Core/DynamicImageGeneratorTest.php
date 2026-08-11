@@ -8,6 +8,7 @@ use OxidEsales\EshopCommunity\Core\Curl;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Path;
 
 final class DynamicImageGeneratorTest extends IntegrationTestCase
@@ -43,6 +44,31 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
         $this->assertNotEmpty($response);
 
         $this->cleanupTestFiles();
+    }
+
+    #[DataProvider('maliciousRequestProvider')]
+    public function testDirectRequestCannotDiscloseFiles(string $url): void
+    {
+        $curl = new Curl();
+        $curl->setMethod('GET');
+        $curl->setUrl(rtrim($this->get(ContextInterface::class)->getShopBaseUrl(), '/') . $url);
+
+        $response = $curl->execute();
+
+        $this->assertSame(404, $curl->getStatusCode());
+        $this->assertSame('', $response);
+    }
+
+    public static function maliciousRequestProvider(): array
+    {
+        return [
+            'query string path traversal' => [
+                '/getimg.php?out/pictures/generated/../../../../composer.json',
+            ],
+            'URL encoded query string path traversal' => [
+                '/getimg.php?out/pictures/generated/%2e%2e/%2e%2e/%2e%2e/index.php',
+            ],
+        ];
     }
 
     private function createTestMasterImage(): void

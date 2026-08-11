@@ -24,3 +24,9 @@ services:
     public: true
     arguments:
       $alternativeImageUrl: '%oxid_esales.alternative_image_url%'
+
+  OxidEsales\EshopCommunity\Internal\Domain\Media\Service\GeneratedImagePathProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\Service\GeneratedImagePathProvider
+    public: true
+    arguments:
+      $request: '@Symfony\Component\HttpFoundation\Request'

@@ -65,6 +65,7 @@ namespace OxidEsales\EshopCommunity\Core {
     use OxidEsales\Eshop\Core\Exception\SystemComponentException;
     use OxidEsales\Eshop\Core\Registry;
     use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+    use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\GeneratedImagePathProviderInterface;
     use Symfony\Component\Filesystem\Path;
 
     /**
@@ -186,16 +187,8 @@ namespace OxidEsales\EshopCommunity\Core {
         protected function getImageUri()
         {
             if ($this->_sImageUri === null) {
-                $this->_sImageUri = "";
-                $reqPath = 'out/pictures/generated';
-
-                $reqImg = isset($_SERVER["REQUEST_URI"]) ? urldecode($_SERVER["REQUEST_URI"]) : "";
-                $reqImg = str_replace('//', '/', $reqImg);
-                if (($pos = strpos($reqImg, $reqPath)) !== false) {
-                    $this->_sImageUri = substr($reqImg, $pos);
-                }
-
-                $this->_sImageUri = trim($this->_sImageUri, "/");
+                $this->_sImageUri = ContainerFacade::get(GeneratedImagePathProviderInterface::class)
+                    ->getGeneratedImagePath();
             }
 
             return $this->_sImageUri;
@@ -674,6 +667,12 @@ namespace OxidEsales\EshopCommunity\Core {
         {
             if ($absPath) {
                 $this->_sImageUri = str_replace($this->getShopBasePath(), "", $absPath);
+            }
+
+            if ($this->getImageUri() === '') {
+                $this->setHeader('HTTP/1.1 404 Not Found');
+
+                return false;
             }
 
             $imagePath = false;

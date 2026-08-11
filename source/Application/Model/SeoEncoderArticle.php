@@ -133,12 +133,19 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getListType();
     }
 
+    public function generateArticleCategoryUri($article, $category, $languageId)
+    {
+        return $this->createArticleCategoryUri($article, $category, $languageId);
+    }
+
     /**
      * create article uri for given category and save it
      *
      * @param \OxidEsales\Eshop\Application\Model\Article  $oArticle  article object
      * @param \OxidEsales\Eshop\Application\Model\Category $oCategory category object
      * @param int                                          $iLang     language to generate uri for
+     *
+     * @deprecated since v7.6.0, will be removed in v8.0, use generateArticleCategoryUri() instead
      *
      * @return string
      */

@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
 
 interface ThemeParentCompatibilityCheckerInterface
 {
@@ -16,5 +16,5 @@ interface ThemeParentCompatibilityCheckerInterface
      * @throws ThemeInheritanceException
      * @throws ThemeConfigurationNotFoundException
      */
-    public function validateCompatibility(string $themeId, string $parentThemeId, int $shopId): void;
+    public function validate(string $themeId, string $parentThemeId, int $shopId): void;
 }

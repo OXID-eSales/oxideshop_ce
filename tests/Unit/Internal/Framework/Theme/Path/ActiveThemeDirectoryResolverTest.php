@@ -24,17 +24,17 @@ final class ActiveThemeDirectoryResolverTest extends TestCase
     private const PARENT_THEME_ID = 'parent';
     private const THEME_PATH = '/var/www/vendor/oxid-esales/child-theme';
 
-    public function testGetActiveThemeDirectoryReturnsPathWithTrailingSeparator(): void
+    public function testGetDirectoryReturnsPathWithTrailingSeparator(): void
     {
         $resolver = $this->createResolver($this->createPathResolverStub(self::THEME_ID, self::THEME_PATH));
 
         $this->assertSame(
             self::THEME_PATH . DIRECTORY_SEPARATOR,
-            $resolver->getActiveThemeDirectory($this->createActiveTheme(hasParent: false), self::SHOP_ID)
+            $resolver->getDirectory($this->createActiveTheme(hasParent: false), self::SHOP_ID)
         );
     }
 
-    public function testHasParentThemeDirectoryReturnsFalseWhenThemeHasNoParent(): void
+    public function testHasParentDirectoryReturnsFalseWhenThemeHasNoParent(): void
     {
         $themePathResolver = $this->createMock(ThemePathResolverInterface::class);
         $themePathResolver->expects($this->never())->method('getFullThemePathFromConfiguration');
@@ -42,20 +42,20 @@ final class ActiveThemeDirectoryResolverTest extends TestCase
         $resolver = $this->createResolver($themePathResolver);
 
         $this->assertFalse(
-            $resolver->hasParentThemeDirectory($this->createActiveTheme(hasParent: false), self::SHOP_ID)
+            $resolver->hasParentDirectory($this->createActiveTheme(hasParent: false), self::SHOP_ID)
         );
     }
 
-    public function testHasParentThemeDirectoryReturnsTrueWhenParentPathResolves(): void
+    public function testHasParentDirectoryReturnsTrueWhenParentPathResolves(): void
     {
         $resolver = $this->createResolver($this->createPathResolverStub(self::PARENT_THEME_ID, self::THEME_PATH));
 
         $this->assertTrue(
-            $resolver->hasParentThemeDirectory($this->createActiveTheme(hasParent: true), self::SHOP_ID)
+            $resolver->hasParentDirectory($this->createActiveTheme(hasParent: true), self::SHOP_ID)
         );
     }
 
-    public function testHasParentThemeDirectoryReturnsFalseWhenParentConfigurationIsMissing(): void
+    public function testHasParentDirectoryReturnsFalseWhenParentConfigurationIsMissing(): void
     {
         $themePathResolver = $this->createStub(ThemePathResolverInterface::class);
         $themePathResolver->method('getFullThemePathFromConfiguration')
@@ -64,27 +64,27 @@ final class ActiveThemeDirectoryResolverTest extends TestCase
         $resolver = $this->createResolver($themePathResolver);
 
         $this->assertFalse(
-            $resolver->hasParentThemeDirectory($this->createActiveTheme(hasParent: true), self::SHOP_ID)
+            $resolver->hasParentDirectory($this->createActiveTheme(hasParent: true), self::SHOP_ID)
         );
     }
 
-    public function testGetParentThemeDirectoryReturnsParentPath(): void
+    public function testGetParentDirectoryReturnsParentPath(): void
     {
         $resolver = $this->createResolver($this->createPathResolverStub(self::PARENT_THEME_ID, self::THEME_PATH));
 
         $this->assertSame(
             self::THEME_PATH . DIRECTORY_SEPARATOR,
-            $resolver->getParentThemeDirectory($this->createActiveTheme(hasParent: true), self::SHOP_ID)
+            $resolver->getParentDirectory($this->createActiveTheme(hasParent: true), self::SHOP_ID)
         );
     }
 
-    public function testGetParentThemeDirectoryThrowsWhenThemeHasNoParent(): void
+    public function testGetParentDirectoryThrowsWhenThemeHasNoParent(): void
     {
         $resolver = $this->createResolver($this->createStub(ThemePathResolverInterface::class));
 
         $this->expectException(ThemeParentNotFoundException::class);
 
-        $resolver->getParentThemeDirectory($this->createActiveTheme(hasParent: false), self::SHOP_ID);
+        $resolver->getParentDirectory($this->createActiveTheme(hasParent: false), self::SHOP_ID);
     }
 
     private function createActiveTheme(bool $hasParent): ActiveTheme

@@ -9,31 +9,32 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Path;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemeOverrideDirectoryResolver;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 final class ThemeOverrideDirectoryResolverTest extends TestCase
 {
     private const SHOP_ID = 1;
     private const THEME_ID = 'apex';
     private const LANGUAGE_CODE = 'de';
-    private const VIEWS_DIR = '/var/www/Application/views/';
+    private const SOURCE_PATH = '/var/www/source';
 
-    public function testGetOverrideDirectoriesReturnsEmptyArrayWhenNoneExist(): void
+    public function testResolveReturnsEmptyArrayWhenNoneExist(): void
     {
         $resolver = $this->createResolver($this->createFilesystemStub(existingDirectories: []));
 
-        $this->assertSame([], $resolver->getOverrideDirectories(self::THEME_ID, self::SHOP_ID));
+        $this->assertSame([], $resolver->resolve(self::THEME_ID, self::SHOP_ID));
     }
 
-    public function testGetOverrideDirectoriesReturnsOnlyExistingDirectoriesInPriorityOrder(): void
+    public function testResolveReturnsOnlyExistingDirectoriesInPriorityOrder(): void
     {
-        $shopLanguageDirectory = self::VIEWS_DIR . self::THEME_ID . '/1/de/tpl';
-        $languageDirectory = self::VIEWS_DIR . self::THEME_ID . '/de/tpl';
+        $shopLanguageDirectory = $this->themeDirectory('1', self::LANGUAGE_CODE, 'tpl');
+        $languageDirectory = $this->themeDirectory(self::LANGUAGE_CODE, 'tpl');
 
         $resolver = $this->createResolver($this->createFilesystemStub(existingDirectories: [
             $shopLanguageDirectory,
@@ -42,15 +43,15 @@ final class ThemeOverrideDirectoryResolverTest extends TestCase
 
         $this->assertSame(
             [$shopLanguageDirectory, $languageDirectory],
-            $resolver->getOverrideDirectories(self::THEME_ID, self::SHOP_ID)
+            $resolver->resolve(self::THEME_ID, self::SHOP_ID)
         );
     }
 
-    public function testGetOverrideDirectoriesReturnsAllThreeTiersWhenAllExist(): void
+    public function testResolveReturnsAllThreeTiersWhenAllExist(): void
     {
-        $shopLanguageDirectory = self::VIEWS_DIR . self::THEME_ID . '/1/de/tpl';
-        $shopDirectory = self::VIEWS_DIR . self::THEME_ID . '/1/tpl';
-        $languageDirectory = self::VIEWS_DIR . self::THEME_ID . '/de/tpl';
+        $shopLanguageDirectory = $this->themeDirectory('1', self::LANGUAGE_CODE, 'tpl');
+        $shopDirectory = $this->themeDirectory('1', 'tpl');
+        $languageDirectory = $this->themeDirectory(self::LANGUAGE_CODE, 'tpl');
 
         $resolver = $this->createResolver($this->createFilesystemStub(existingDirectories: [
             $shopLanguageDirectory,
@@ -60,8 +61,13 @@ final class ThemeOverrideDirectoryResolverTest extends TestCase
 
         $this->assertSame(
             [$shopLanguageDirectory, $shopDirectory, $languageDirectory],
-            $resolver->getOverrideDirectories(self::THEME_ID, self::SHOP_ID)
+            $resolver->resolve(self::THEME_ID, self::SHOP_ID)
         );
+    }
+
+    private function themeDirectory(string ...$segments): string
+    {
+        return Path::join(self::SOURCE_PATH, 'Application', 'views', self::THEME_ID, ...$segments);
     }
 
     private function createFilesystemStub(array $existingDirectories): Filesystem
@@ -76,14 +82,14 @@ final class ThemeOverrideDirectoryResolverTest extends TestCase
 
     private function createResolver(Filesystem $filesystem): ThemeOverrideDirectoryResolver
     {
-        $config = $this->createStub(Config::class);
-        $config->method('getViewsDir')->willReturn(self::VIEWS_DIR);
+        $context = $this->createStub(BasicContextInterface::class);
+        $context->method('getSourcePath')->willReturn(self::SOURCE_PATH);
 
         $activeLocaleProvider = $this->createStub(ActiveLocaleProviderInterface::class);
         $activeLocaleProvider->method('getActiveLocale')->willReturn(
             new Locale(self::LANGUAGE_CODE, 'Deutsch', 'en')
         );
 
-        return new ThemeOverrideDirectoryResolver($config, $activeLocaleProvider, $filesystem);
+        return new ThemeOverrideDirectoryResolver($context, $activeLocaleProvider, $filesystem);
     }
 }

@@ -16,8 +16,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetaDataInvalidException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionMismatchException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use PHPUnit\Framework\TestCase;
@@ -97,7 +97,7 @@ final class ThemeActivationServiceTest extends TestCase
         $dao->method('getAll')->willReturn([]);
 
         $themeParentCompatibilityChecker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
-        $themeParentCompatibilityChecker->expects($this->never())->method('validateCompatibility');
+        $themeParentCompatibilityChecker->expects($this->never())->method('validate');
 
         $service = new ThemeActivationService(
             $dao,
@@ -118,7 +118,7 @@ final class ThemeActivationServiceTest extends TestCase
 
         $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
         $themeParentCompatibilityChecker
-            ->method('validateCompatibility')
+            ->method('validate')
             ->willThrowException(new ThemeParentVersionMismatchException());
 
         $service = new ThemeActivationService(
@@ -148,7 +148,7 @@ final class ThemeActivationServiceTest extends TestCase
             $themeInheritanceResolver
         );
 
-        $this->expectException(ThemeMetaDataInvalidException::class);
+        $this->expectException(ThemeInheritanceMetaDataException::class);
 
         $service->activate('target', self::SHOP_ID);
     }
@@ -190,7 +190,7 @@ final class ThemeActivationServiceTest extends TestCase
     {
         $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
         $themeParentCompatibilityChecker
-            ->method('validateCompatibility')
+            ->method('validate')
             ->willThrowException(new ThemeParentVersionMismatchException());
 
         $service = new ThemeActivationService(
@@ -217,7 +217,7 @@ final class ThemeActivationServiceTest extends TestCase
             $themeInheritanceResolver
         );
 
-        $this->expectException(ThemeMetaDataInvalidException::class);
+        $this->expectException(ThemeInheritanceMetaDataException::class);
 
         $service->validateActivatable('target', self::SHOP_ID);
     }

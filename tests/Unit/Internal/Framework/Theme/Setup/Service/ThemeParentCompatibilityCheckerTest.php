@@ -10,14 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentNotInstalledException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionsNotDeclaredException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionUnspecifiedException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentNotInstalledException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionsNotDeclaredException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionUnspecifiedException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetaDataInvalidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityChecker;
 use PHPUnit\Framework\TestCase;
 
@@ -27,25 +27,25 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
     private const THEME_ID = 'child';
     private const PARENT_THEME_ID = 'apex';
 
-    public function testValidateCompatibilityThrowsWhenParentThemeIsNotInstalled(): void
+    public function testValidateThrowsWhenParentThemeIsNotInstalled(): void
     {
         $checker = $this->createChecker(parentInstalled: false);
 
         $this->expectException(ThemeParentNotInstalledException::class);
 
-        $checker->validateCompatibility(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
+        $checker->validate(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
     }
 
-    public function testValidateCompatibilityThrowsWhenParentVersionIsUnspecified(): void
+    public function testValidateThrowsWhenParentVersionIsUnspecified(): void
     {
         $checker = $this->createChecker(parentInstalled: true, parentVersion: '');
 
         $this->expectException(ThemeParentVersionUnspecifiedException::class);
 
-        $checker->validateCompatibility(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
+        $checker->validate(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
     }
 
-    public function testValidateCompatibilityThrowsWhenParentVersionsAreNotDeclared(): void
+    public function testValidateThrowsWhenParentVersionsAreNotDeclared(): void
     {
         $checker = $this->createChecker(
             parentInstalled: true,
@@ -55,10 +55,10 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
 
         $this->expectException(ThemeParentVersionsNotDeclaredException::class);
 
-        $checker->validateCompatibility(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
+        $checker->validate(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
     }
 
-    public function testValidateCompatibilityThrowsWhenParentVersionDoesNotMatchDeclaredVersions(): void
+    public function testValidateThrowsWhenParentVersionDoesNotMatchDeclaredVersions(): void
     {
         $checker = $this->createChecker(
             parentInstalled: true,
@@ -68,10 +68,10 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
 
         $this->expectException(ThemeParentVersionMismatchException::class);
 
-        $checker->validateCompatibility(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
+        $checker->validate(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
     }
 
-    public function testValidateCompatibilityDoesNothingWhenParentVersionMatchesDeclaredVersions(): void
+    public function testValidateDoesNothingWhenParentVersionMatchesDeclaredVersions(): void
     {
         $checker = $this->createChecker(
             parentInstalled: true,
@@ -79,12 +79,12 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
             declaredParentVersions: ['1.0.0', '1.1.0']
         );
 
-        $checker->validateCompatibility(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
+        $checker->validate(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
 
         $this->addToAssertionCount(1);
     }
 
-    public function testValidateCompatibilityThrowsWhenParentThemeMetadataIsUnreadable(): void
+    public function testValidateThrowsWhenParentThemeMetadataIsUnreadable(): void
     {
         $themeConfigurationDao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $themeConfigurationDao->method('exists')->willReturn(true);
@@ -94,9 +94,9 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
 
         $checker = new ThemeParentCompatibilityChecker($themeConfigurationDao, $themeMetaDataByIdProvider);
 
-        $this->expectException(ThemeMetaDataInvalidException::class);
+        $this->expectException(ThemeInheritanceMetaDataException::class);
 
-        $checker->validateCompatibility(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
+        $checker->validate(self::THEME_ID, self::PARENT_THEME_ID, self::SHOP_ID);
     }
 
     private function createChecker(

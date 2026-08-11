@@ -12,6 +12,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\Admin
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ActiveThemeDirectoryResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
@@ -665,10 +666,15 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aLangFiles = array_merge($aLangFiles, $this->getParentThemeLanguageFiles($sLang));
 
         //get theme lang files
-        if ($this->hasActiveTheme()) {
+        try {
             $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
+        } catch (ActiveThemeNotFoundException) {
+            $activeTheme = null;
+        }
+
+        if ($activeTheme) {
             $activeThemeDirectory = ContainerFacade::get(ActiveThemeDirectoryResolverInterface::class)
-                ->getActiveThemeDirectory($activeTheme, $this->getShopId());
+                ->getDirectory($activeTheme, $this->getShopId());
             $aLangFiles = array_merge(
                 $aLangFiles,
                 $this->getThemeLanguageFiles($activeThemeDirectory, $sLang)
@@ -719,19 +725,20 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
     protected function getParentThemeLanguageFiles(string $languageAbbreviation): array
     {
-        if (!$this->hasActiveTheme()) {
+        try {
+            $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
+        } catch (ActiveThemeNotFoundException) {
             return [];
         }
 
-        $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
         $themeDirectoryResolver = ContainerFacade::get(ActiveThemeDirectoryResolverInterface::class);
 
-        if (!$themeDirectoryResolver->hasParentThemeDirectory($activeTheme, $this->getShopId())) {
+        if (!$themeDirectoryResolver->hasParentDirectory($activeTheme, $this->getShopId())) {
             return [];
         }
 
         return $this->getThemeLanguageFiles(
-            $themeDirectoryResolver->getParentThemeDirectory($activeTheme, $this->getShopId()),
+            $themeDirectoryResolver->getParentDirectory($activeTheme, $this->getShopId()),
             $languageAbbreviation
         );
     }
@@ -821,18 +828,25 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
                 ->getActiveTheme();
             $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
-        } elseif ($this->hasActiveTheme()) {
+
+            return $languageFiles;
+        }
+
+        try {
             $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
-            $themeDirectoryResolver = ContainerFacade::get(ActiveThemeDirectoryResolverInterface::class);
+        } catch (ActiveThemeNotFoundException) {
+            return $languageFiles;
+        }
 
-            if ($themeDirectoryResolver->hasParentThemeDirectory($activeTheme, $this->getShopId())) {
-                $languageFiles[] = $themeDirectoryResolver->getParentThemeDirectory($activeTheme, $this->getShopId())
-                    . $language . DIRECTORY_SEPARATOR . 'cust_lang.php';
-            }
+        $themeDirectoryResolver = ContainerFacade::get(ActiveThemeDirectoryResolverInterface::class);
 
-            $languageFiles[] = $themeDirectoryResolver->getActiveThemeDirectory($activeTheme, $this->getShopId())
+        if ($themeDirectoryResolver->hasParentDirectory($activeTheme, $this->getShopId())) {
+            $languageFiles[] = $themeDirectoryResolver->getParentDirectory($activeTheme, $this->getShopId())
                 . $language . DIRECTORY_SEPARATOR . 'cust_lang.php';
         }
+
+        $languageFiles[] = $themeDirectoryResolver->getDirectory($activeTheme, $this->getShopId())
+            . $language . DIRECTORY_SEPARATOR . 'cust_lang.php';
 
         return $languageFiles;
     }
@@ -897,9 +911,10 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $sLangFilesIdent = '_' . md5(implode('+', $aLangFiles));
         }
 
-        $activeTheme = null;
-        if ($this->hasActiveTheme()) {
+        try {
             $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
+        } catch (ActiveThemeNotFoundException) {
+            $activeTheme = null;
         }
 
         $activeThemeId = $activeTheme?->getId() ?? '';
@@ -1020,26 +1035,27 @@ class Language extends \OxidEsales\Eshop\Core\Base
     {
         $locations = [];
 
-        if (!$this->hasActiveTheme()) {
+        try {
+            $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
+        } catch (ActiveThemeNotFoundException) {
             return $locations;
         }
 
-        $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
         $themeDirectoryResolver = ContainerFacade::get(ActiveThemeDirectoryResolverInterface::class);
 
         $locations = array_merge(
             $locations,
             $this->getThemeLanguageFileMapLocations(
-                $themeDirectoryResolver->getActiveThemeDirectory($activeTheme, $this->getShopId()),
+                $themeDirectoryResolver->getDirectory($activeTheme, $this->getShopId()),
                 $languageAbbreviation
             )
         );
 
-        if ($themeDirectoryResolver->hasParentThemeDirectory($activeTheme, $this->getShopId())) {
+        if ($themeDirectoryResolver->hasParentDirectory($activeTheme, $this->getShopId())) {
             $locations = array_merge(
                 $locations,
                 $this->getThemeLanguageFileMapLocations(
-                    $themeDirectoryResolver->getParentThemeDirectory($activeTheme, $this->getShopId()),
+                    $themeDirectoryResolver->getParentDirectory($activeTheme, $this->getShopId()),
                     $languageAbbreviation
                 )
             );
@@ -1061,17 +1077,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $themeDirectory . 'translations' . DIRECTORY_SEPARATOR . $languageAbbreviation,
             $themeDirectory . 'translations'
         ];
-    }
-
-    private function hasActiveTheme(): bool
-    {
-        try {
-            ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($this->getShopId());
-
-            return true;
-        } catch (\Throwable) {
-            return false;
-        }
     }
 
     private function getShopId(): int

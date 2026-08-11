@@ -14,8 +14,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataMapper\ThemeConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationInvalidEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use DirectoryIterator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -24,6 +26,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
 {
@@ -77,7 +80,13 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         $configurations = [];
 
         foreach ($this->getThemeIds($shopId) as $id) {
-            $configurations[$id] = $this->get($id, $shopId);
+            try {
+                $configurations[$id] = $this->get($id, $shopId);
+            } catch (InvalidThemeConfigurationException $exception) {
+                $this->eventDispatcher->dispatch(
+                    new ThemeConfigurationInvalidEvent($id, $shopId, $exception->getMessage())
+                );
+            }
         }
 
         return $configurations;
@@ -122,15 +131,14 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
                 $this->node,
                 [$this->getStorage($shopId, $themeId)->get()]
             );
-        } catch (InvalidConfigurationException $exception) {
-            throw new InvalidConfigurationException(
+        } catch (InvalidConfigurationException | ParseException $exception) {
+            throw new InvalidThemeConfigurationException(
                 sprintf(
                     'File %s is broken: %s',
                     $this->getThemeConfigurationFilePath($shopId, $themeId),
                     $exception->getMessage()
                 ),
-                $exception->getCode(),
-                $exception
+                previous: $exception
             );
         }
     }

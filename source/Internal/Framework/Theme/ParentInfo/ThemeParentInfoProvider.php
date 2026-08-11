@@ -9,8 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
@@ -30,11 +31,16 @@ readonly class ThemeParentInfoProvider implements ThemeParentInfoProviderInterfa
     ) {
     }
 
-    public function getParentInfo(string $themeId, int $shopId): ThemeParentInfo
+    public function getByTheme(string $themeId, int $shopId): ThemeParentInfo
     {
         try {
             $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
-        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException | ThemeInheritanceException $exception) {
+        } catch (
+            ThemeConfigurationNotFoundException
+            | InvalidThemeConfigurationException
+            | InvalidThemeMetaDataException
+            | ThemeInheritanceException $exception
+        ) {
             $this->logger->warning($exception->getMessage(), [$exception]);
 
             return new ThemeParentInfo(new ThemeInheritance($themeId, null), null, [], false, hasResolutionError: true);
@@ -63,7 +69,11 @@ readonly class ThemeParentInfoProvider implements ThemeParentInfoProviderInterfa
                 $this->themeMetaDataByIdProvider->getById($parentThemeId, $shopId)->getTitle(),
                 $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentVersions(),
             ];
-        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException $exception) {
+        } catch (
+            ThemeConfigurationNotFoundException
+            | InvalidThemeConfigurationException
+            | InvalidThemeMetaDataException $exception
+        ) {
             $this->logger->warning($exception->getMessage(), [$exception]);
 
             return [null, []];
@@ -72,15 +82,15 @@ readonly class ThemeParentInfoProvider implements ThemeParentInfoProviderInterfa
 
     private function hasActivationError(string $themeId, string $parentThemeId, int $shopId): bool
     {
-        if ($this->themeStateService->isActive($themeId, $shopId)) {
-            return false;
-        }
-
         try {
-            $this->themeParentCompatibilityChecker->validateCompatibility($themeId, $parentThemeId, $shopId);
+            if ($this->themeStateService->isActive($themeId, $shopId)) {
+                return false;
+            }
+
+            $this->themeParentCompatibilityChecker->validate($themeId, $parentThemeId, $shopId);
 
             return false;
-        } catch (ThemeInheritanceException $exception) {
+        } catch (ThemeInheritanceException | InvalidThemeConfigurationException $exception) {
             $this->logger->error($exception->getMessage(), [$exception]);
 
             return true;

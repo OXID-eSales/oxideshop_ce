@@ -28,24 +28,24 @@ readonly class ThemeParentInfo
         return $this->hasResolutionError;
     }
 
-    public function hasParentTheme(): bool
+    public function exists(): bool
     {
         return $this->inheritance->hasParentTheme();
     }
 
     /** @throws ThemeParentNotFoundException */
-    public function getParentThemeId(): string
+    public function getId(): string
     {
         return $this->inheritance->getParentThemeId();
     }
 
-    public function getParentThemeTitle(): ?string
+    public function getTitle(): ?string
     {
         return $this->parentThemeTitle;
     }
 
     /** @return string[] */
-    public function getParentThemeVersions(): array
+    public function getCompatibleVersions(): array
     {
         return $this->parentThemeVersions;
     }

@@ -9,5 +9,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo;
 
 interface ThemeParentInfoProviderInterface
 {
-    public function getParentInfo(string $themeId, int $shopId): ThemeParentInfo;
+    public function getByTheme(string $themeId, int $shopId): ThemeParentInfo;
 }

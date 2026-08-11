@@ -11,9 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetaDataInvalidException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class ThemeActivationService implements ThemeActivationServiceInterface
@@ -45,14 +45,14 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
         try {
             $inheritance = $this->themeInheritanceResolver->resolve($themeId, $shopId);
         } catch (InvalidThemeMetaDataException $exception) {
-            throw new ThemeMetaDataInvalidException(
+            throw new ThemeInheritanceMetaDataException(
                 "Could not read metadata of theme '$themeId': {$exception->getMessage()}",
                 previous: $exception
             );
         }
 
         if ($inheritance->hasParentTheme()) {
-            $this->themeParentCompatibilityChecker->validateCompatibility(
+            $this->themeParentCompatibilityChecker->validate(
                 $themeId,
                 $inheritance->getParentThemeId(),
                 $shopId

@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
-
 class ThemeInheritanceCycleException extends ThemeInheritanceException
 {
 }

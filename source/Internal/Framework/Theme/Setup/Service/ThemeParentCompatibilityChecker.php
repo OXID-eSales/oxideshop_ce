@@ -10,13 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentNotInstalledException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionsNotDeclaredException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionUnspecifiedException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeMetaDataInvalidException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentNotInstalledException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionsNotDeclaredException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionUnspecifiedException;
 
 readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibilityCheckerInterface
 {
@@ -26,7 +26,7 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
     ) {
     }
 
-    public function validateCompatibility(string $themeId, string $parentThemeId, int $shopId): void
+    public function validate(string $themeId, string $parentThemeId, int $shopId): void
     {
         try {
             $this->validateParentThemeIsInstalled($themeId, $parentThemeId, $shopId);
@@ -36,7 +36,7 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
 
             $this->validateVersionIsCompatible($themeId, $parentThemeId, $parentVersion, $declaredParentVersions);
         } catch (InvalidThemeMetaDataException $exception) {
-            throw new ThemeMetaDataInvalidException(
+            throw new ThemeInheritanceMetaDataException(
                 "Could not read metadata of theme '$themeId' or its parent theme: {$exception->getMessage()}",
                 previous: $exception
             );

@@ -12,10 +12,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\C
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Path;
 
 final class ThemeActivateCommandTest extends IntegrationTestCase
 {
@@ -108,6 +110,31 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
         $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
         $this->assertFalse($this->isThemeActive($selfReferencingThemeId));
+    }
+
+    public function testActivationFailsForAlreadyActiveThemeWithInvalidConfiguration(): void
+    {
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $this->themeId]);
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+
+        $this->corruptThemeConfiguration($this->themeId);
+
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $this->themeId]);
+
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+    }
+
+    private function corruptThemeConfiguration(string $themeId): void
+    {
+        $path = Path::join(
+            $this->get(BasicContextInterface::class)->getShopConfigurationDirectory(self::SHOP_ID),
+            'themes',
+            $themeId . '.yaml'
+        );
+
+        file_put_contents($path, "themeSettings: [unclosed\n");
     }
 
     private function isThemeActive(string $themeId): bool

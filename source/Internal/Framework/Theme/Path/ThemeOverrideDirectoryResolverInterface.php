@@ -10,5 +10,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Path;
 interface ThemeOverrideDirectoryResolverInterface
 {
     /** @return string[] */
-    public function getOverrideDirectories(string $themeId, int $shopId): array;
+    public function resolve(string $themeId, int $shopId): array;
 }

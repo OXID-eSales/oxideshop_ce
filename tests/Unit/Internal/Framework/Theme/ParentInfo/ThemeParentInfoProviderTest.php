@@ -9,13 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\ParentInfo;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo\ThemeParentInfoProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentVersionMismatchException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionMismatchException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use PHPUnit\Framework\TestCase;
@@ -27,20 +28,20 @@ final class ThemeParentInfoProviderTest extends TestCase
     private const THEME_ID = 'child';
     private const PARENT_THEME_ID = 'apex';
 
-    public function testGetParentInfoReturnsEmptyInfoWhenThemeHasNoParent(): void
+    public function testGetByThemeReturnsEmptyInfoWhenThemeHasNoParent(): void
     {
         $provider = $this->createProvider(
             themeInheritanceResolver: $this->createResolverStub(hasParent: false)
         );
 
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
 
-        $this->assertFalse($parentInfo->hasParentTheme());
+        $this->assertFalse($parentInfo->exists());
         $this->assertFalse($parentInfo->hasActivationError());
         $this->assertFalse($parentInfo->hasResolutionError());
     }
 
-    public function testGetParentInfoReturnsEmptyInfoAndLogsWarningWhenResolvingInheritanceFails(): void
+    public function testGetByThemeReturnsEmptyInfoAndLogsWarningWhenResolvingInheritanceFails(): void
     {
         $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
         $themeInheritanceResolver->method('resolve')->willThrowException(new InvalidThemeMetaDataException());
@@ -50,13 +51,29 @@ final class ThemeParentInfoProviderTest extends TestCase
 
         $provider = $this->createProvider(themeInheritanceResolver: $themeInheritanceResolver, logger: $logger);
 
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
 
-        $this->assertFalse($parentInfo->hasParentTheme());
+        $this->assertFalse($parentInfo->exists());
         $this->assertTrue($parentInfo->hasResolutionError());
     }
 
-    public function testGetParentInfoReturnsParentDisplayDataWhenThemeHasParent(): void
+    public function testGetByThemeReturnsEmptyInfoAndLogsWarningWhenThemeConfigurationIsInvalid(): void
+    {
+        $themeInheritanceResolver = $this->createStub(ThemeInheritanceResolverInterface::class);
+        $themeInheritanceResolver->method('resolve')->willThrowException(new InvalidThemeConfigurationException());
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning');
+
+        $provider = $this->createProvider(themeInheritanceResolver: $themeInheritanceResolver, logger: $logger);
+
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
+
+        $this->assertFalse($parentInfo->exists());
+        $this->assertTrue($parentInfo->hasResolutionError());
+    }
+
+    public function testGetByThemeReturnsParentDisplayDataWhenThemeHasParent(): void
     {
         $provider = $this->createProvider(
             themeInheritanceResolver: $this->createResolverStub(hasParent: true),
@@ -64,15 +81,15 @@ final class ThemeParentInfoProviderTest extends TestCase
             themeStateService: $this->createStateServiceStub(isActive: true)
         );
 
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
 
-        $this->assertTrue($parentInfo->hasParentTheme());
-        $this->assertSame(self::PARENT_THEME_ID, $parentInfo->getParentThemeId());
-        $this->assertSame('Apex', $parentInfo->getParentThemeTitle());
-        $this->assertSame(['1.0.0'], $parentInfo->getParentThemeVersions());
+        $this->assertTrue($parentInfo->exists());
+        $this->assertSame(self::PARENT_THEME_ID, $parentInfo->getId());
+        $this->assertSame('Apex', $parentInfo->getTitle());
+        $this->assertSame(['1.0.0'], $parentInfo->getCompatibleVersions());
     }
 
-    public function testGetParentInfoReturnsFalsyButValidParentThemeTitle(): void
+    public function testGetByThemeReturnsFalsyButValidParentThemeTitle(): void
     {
         $provider = $this->createProvider(
             themeInheritanceResolver: $this->createResolverStub(hasParent: true),
@@ -80,12 +97,12 @@ final class ThemeParentInfoProviderTest extends TestCase
             themeStateService: $this->createStateServiceStub(isActive: true)
         );
 
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
 
-        $this->assertSame('0', $parentInfo->getParentThemeTitle());
+        $this->assertSame('0', $parentInfo->getTitle());
     }
 
-    public function testGetParentInfoReturnsEmptyDisplayDataAndLogsWarningWhenParentMetadataIsUnreadable(): void
+    public function testGetByThemeReturnsEmptyDisplayDataAndLogsWarningWhenParentMetadataIsUnreadable(): void
     {
         $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
         $themeMetaDataByIdProvider->method('getById')->willThrowException(new InvalidThemeMetaDataException());
@@ -100,49 +117,37 @@ final class ThemeParentInfoProviderTest extends TestCase
             logger: $logger
         );
 
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
 
-        $this->assertNull($parentInfo->getParentThemeTitle());
-        $this->assertSame([], $parentInfo->getParentThemeVersions());
+        $this->assertNull($parentInfo->getTitle());
+        $this->assertSame([], $parentInfo->getCompatibleVersions());
     }
 
-    public function testGetParentInfoHasNoActivationErrorWhenThemeIsAlreadyActive(): void
+    public function testGetByThemeReturnsEmptyDisplayDataAndLogsWarningWhenParentConfigurationIsInvalid(): void
     {
-        $themeParentCompatibilityChecker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
-        $themeParentCompatibilityChecker->expects($this->never())->method('validateCompatibility');
+        $themeMetaDataByIdProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
+        $themeMetaDataByIdProvider->method('getById')->willThrowException(new InvalidThemeConfigurationException());
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning');
 
         $provider = $this->createProvider(
             themeInheritanceResolver: $this->createResolverStub(hasParent: true),
-            themeMetaDataByIdProvider: $this->createMetaDataStub(),
-            themeParentCompatibilityChecker: $themeParentCompatibilityChecker,
-            themeStateService: $this->createStateServiceStub(isActive: true)
+            themeMetaDataByIdProvider: $themeMetaDataByIdProvider,
+            themeStateService: $this->createStateServiceStub(isActive: true),
+            logger: $logger
         );
 
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
 
-        $this->assertFalse($parentInfo->hasActivationError());
+        $this->assertNull($parentInfo->getTitle());
+        $this->assertSame([], $parentInfo->getCompatibleVersions());
     }
 
-    public function testGetParentInfoHasNoActivationErrorWhenInactiveThemeIsCompatible(): void
+    public function testGetByThemeHasActivationErrorAndLogsWhenParentConfigurationIsInvalid(): void
     {
         $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
-
-        $provider = $this->createProvider(
-            themeInheritanceResolver: $this->createResolverStub(hasParent: true),
-            themeMetaDataByIdProvider: $this->createMetaDataStub(),
-            themeParentCompatibilityChecker: $themeParentCompatibilityChecker,
-            themeStateService: $this->createStateServiceStub(isActive: false)
-        );
-
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
-
-        $this->assertFalse($parentInfo->hasActivationError());
-    }
-
-    public function testGetParentInfoHasActivationErrorAndLogsWhenInactiveThemeIsIncompatible(): void
-    {
-        $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
-        $themeParentCompatibilityChecker->method('validateCompatibility')->willThrowException(new ThemeParentVersionMismatchException());
+        $themeParentCompatibilityChecker->method('validate')->willThrowException(new InvalidThemeConfigurationException());
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->once())->method('error');
@@ -155,7 +160,61 @@ final class ThemeParentInfoProviderTest extends TestCase
             logger: $logger
         );
 
-        $parentInfo = $provider->getParentInfo(self::THEME_ID, self::SHOP_ID);
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
+
+        $this->assertTrue($parentInfo->hasActivationError());
+    }
+
+    public function testGetByThemeHasNoActivationErrorWhenThemeIsAlreadyActive(): void
+    {
+        $themeParentCompatibilityChecker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
+        $themeParentCompatibilityChecker->expects($this->never())->method('validate');
+
+        $provider = $this->createProvider(
+            themeInheritanceResolver: $this->createResolverStub(hasParent: true),
+            themeMetaDataByIdProvider: $this->createMetaDataStub(),
+            themeParentCompatibilityChecker: $themeParentCompatibilityChecker,
+            themeStateService: $this->createStateServiceStub(isActive: true)
+        );
+
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
+
+        $this->assertFalse($parentInfo->hasActivationError());
+    }
+
+    public function testGetByThemeHasNoActivationErrorWhenInactiveThemeIsCompatible(): void
+    {
+        $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
+
+        $provider = $this->createProvider(
+            themeInheritanceResolver: $this->createResolverStub(hasParent: true),
+            themeMetaDataByIdProvider: $this->createMetaDataStub(),
+            themeParentCompatibilityChecker: $themeParentCompatibilityChecker,
+            themeStateService: $this->createStateServiceStub(isActive: false)
+        );
+
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
+
+        $this->assertFalse($parentInfo->hasActivationError());
+    }
+
+    public function testGetByThemeHasActivationErrorAndLogsWhenInactiveThemeIsIncompatible(): void
+    {
+        $themeParentCompatibilityChecker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
+        $themeParentCompatibilityChecker->method('validate')->willThrowException(new ThemeParentVersionMismatchException());
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('error');
+
+        $provider = $this->createProvider(
+            themeInheritanceResolver: $this->createResolverStub(hasParent: true),
+            themeMetaDataByIdProvider: $this->createMetaDataStub(),
+            themeParentCompatibilityChecker: $themeParentCompatibilityChecker,
+            themeStateService: $this->createStateServiceStub(isActive: false),
+            logger: $logger
+        );
+
+        $parentInfo = $provider->getByTheme(self::THEME_ID, self::SHOP_ID);
 
         $this->assertTrue($parentInfo->hasActivationError());
     }

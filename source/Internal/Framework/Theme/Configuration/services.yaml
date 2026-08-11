@@ -33,6 +33,11 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidator
 
+  oxid_esales.theme.configuration.log_invalid_configuration_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\EventSubscriber\LogInvalidThemeConfigurationEventSubscriber
+    tags:
+      - { name: kernel.event_subscriber }
+
   OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeConfiguration:
     arguments:
       $request: '@Symfony\Component\HttpFoundation\Request'

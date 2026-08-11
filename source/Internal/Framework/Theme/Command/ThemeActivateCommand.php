@@ -10,8 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -44,9 +45,10 @@ final class ThemeActivateCommand extends Command
         $style = new SymfonyStyle($input, $output);
         $themeId = $input->getArgument('theme-id');
         $shopId = $this->context->getCurrentShopId();
-        $alreadyActive = $this->themeStateService->isActive($themeId, $shopId);
 
         try {
+            $alreadyActive = $this->themeStateService->isActive($themeId, $shopId);
+
             if ($alreadyActive) {
                 $this->themeActivationService->validateActivatable($themeId, $shopId);
             } else {
@@ -54,6 +56,9 @@ final class ThemeActivateCommand extends Command
             }
         } catch (ThemeConfigurationNotFoundException) {
             $style->error(sprintf('Theme - "%s" not found.', $themeId));
+            return Command::FAILURE;
+        } catch (InvalidThemeConfigurationException $exception) {
+            $style->error(sprintf('Theme - "%s" has an invalid configuration: %s', $themeId, $exception->getMessage()));
             return Command::FAILURE;
         } catch (ThemeInheritanceException $exception) {
             $style->error(sprintf('Theme - "%s" is not compatible with its parent theme: %s', $themeId, $exception->getMessage()));

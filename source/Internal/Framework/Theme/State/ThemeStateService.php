@@ -10,20 +10,16 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritanceResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class ThemeStateService implements ThemeStateServiceInterface, EventSubscriberInterface
+readonly class ThemeStateService implements ThemeStateServiceInterface
 {
-    private array $activeThemeIds = [];
-    private array $activeThemes = [];
-
     public function __construct(
-        private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private readonly ThemeInheritanceResolverInterface $themeInheritanceResolver,
+        private ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ThemeInheritanceResolverInterface $themeInheritanceResolver,
+        private ActiveThemeCacheInterface $activeThemeCache,
     ) {
     }
 
@@ -35,27 +31,28 @@ class ThemeStateService implements ThemeStateServiceInterface, EventSubscriberIn
 
     public function getActiveThemeId(int $shopId): string
     {
-        return $this->activeThemeIds[$shopId] ??= $this->findActiveThemeId($shopId);
+        if ($this->activeThemeCache->hasThemeId($shopId)) {
+            return $this->activeThemeCache->getThemeId($shopId);
+        }
+
+        $themeId = $this->findActiveThemeId($shopId);
+        $this->activeThemeCache->putThemeId($shopId, $themeId);
+
+        return $themeId;
     }
 
     public function getActiveTheme(int $shopId): ActiveTheme
     {
-        return $this->activeThemes[$shopId] ??= new ActiveTheme(
+        if ($this->activeThemeCache->hasTheme($shopId)) {
+            return $this->activeThemeCache->getTheme($shopId);
+        }
+
+        $activeTheme = new ActiveTheme(
             $this->themeInheritanceResolver->resolve($this->getActiveThemeId($shopId), $shopId)
         );
-    }
+        $this->activeThemeCache->putTheme($shopId, $activeTheme);
 
-    public function invalidateActiveThemeCache(ThemeActivatedEvent|ThemeConfigurationChangedEvent $event): void
-    {
-        unset($this->activeThemeIds[$event->getShopId()], $this->activeThemes[$event->getShopId()]);
-    }
-
-    public static function getSubscribedEvents(): array
-    {
-        return [
-            ThemeActivatedEvent::class => 'invalidateActiveThemeCache',
-            ThemeConfigurationChangedEvent::class => 'invalidateActiveThemeCache',
-        ];
+        return $activeTheme;
     }
 
     private function findActiveThemeId(int $shopId): string

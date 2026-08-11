@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception;
 
 abstract class ThemeInheritanceException extends \Exception
 {

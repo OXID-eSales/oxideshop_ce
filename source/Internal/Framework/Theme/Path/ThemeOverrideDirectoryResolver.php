@@ -9,8 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Path;
 
-use OxidEsales\Eshop\Core\Config;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
@@ -19,15 +19,15 @@ readonly class ThemeOverrideDirectoryResolver implements ThemeOverrideDirectoryR
     private const TEMPLATES_DIRECTORY_NAME = 'tpl';
 
     public function __construct(
-        private Config $config,
+        private BasicContextInterface $context,
         private ActiveLocaleProviderInterface $activeLocaleProvider,
         private Filesystem $filesystem,
     ) {
     }
 
-    public function getOverrideDirectories(string $themeId, int $shopId): array
+    public function resolve(string $themeId, int $shopId): array
     {
-        $themeDirectory = Path::join($this->config->getViewsDir(), $themeId);
+        $themeDirectory = Path::join($this->context->getSourcePath(), 'Application', 'views', $themeId);
         $languageCode = $this->activeLocaleProvider->getActiveLocale()->getCode();
 
         return array_values(array_filter(

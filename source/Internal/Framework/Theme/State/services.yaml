@@ -2,8 +2,11 @@ services:
   _defaults:
     autowire: true
 
+  oxid_esales.theme.state.active_theme_cache:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCache
+
   OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateService
+    arguments:
+      OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCacheInterface: '@oxid_esales.theme.state.active_theme_cache'
     public: true
-    tags:
-      - { name: kernel.event_subscriber }

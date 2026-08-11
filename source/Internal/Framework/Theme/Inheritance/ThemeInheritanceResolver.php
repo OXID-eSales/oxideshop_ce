@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceDepthExceededException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\ThemeParentNotFoundException;
@@ -35,7 +36,7 @@ readonly class ThemeInheritanceResolver implements ThemeInheritanceResolverInter
             );
         }
 
-        if ($this->themeParentProvider->hasParentTheme($parentThemeId, $shopId)) {
+        if ($this->parentThemeExceedsInheritanceDepth($parentThemeId, $shopId)) {
             throw new ThemeInheritanceDepthExceededException(
                 "Theme '$themeId' declares '$parentThemeId' as its parent, but '$parentThemeId' is itself "
                 . 'a child theme; only one level of theme inheritance is supported'
@@ -43,5 +44,14 @@ readonly class ThemeInheritanceResolver implements ThemeInheritanceResolverInter
         }
 
         return new ThemeInheritance($themeId, $parentThemeId);
+    }
+
+    private function parentThemeExceedsInheritanceDepth(string $parentThemeId, int $shopId): bool
+    {
+        try {
+            return $this->themeParentProvider->hasParentTheme($parentThemeId, $shopId);
+        } catch (ThemeConfigurationNotFoundException) {
+            return false;
+        }
     }
 }

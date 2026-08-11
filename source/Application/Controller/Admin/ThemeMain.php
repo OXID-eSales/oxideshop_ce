@@ -12,8 +12,9 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Theme;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeInheritanceException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\ParentInfo\ThemeParentInfoProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
@@ -58,15 +59,21 @@ class ThemeMain extends AdminDetailsController
 
     private function addParentThemeViewData(string $themeId): void
     {
-        $parentInfo = $this->themeParentInfoProvider->getParentInfo($themeId, $this->context->getCurrentShopId());
+        $parentInfo = $this->themeParentInfoProvider->getByTheme($themeId, $this->context->getCurrentShopId());
 
-        if (!$parentInfo->hasParentTheme()) {
+        if ($parentInfo->hasResolutionError()) {
+            $this->_aViewData['themeActivationError'] = 'EXCEPTION_THEME_INHERITANCE_INVALID';
+
             return;
         }
 
-        $this->_aViewData['parentThemeId'] = $parentInfo->getParentThemeId();
-        $this->_aViewData['parentThemeTitle'] = $parentInfo->getParentThemeTitle();
-        $this->_aViewData['parentThemeVersions'] = $parentInfo->getParentThemeVersions();
+        if (!$parentInfo->exists()) {
+            return;
+        }
+
+        $this->_aViewData['parentThemeId'] = $parentInfo->getId();
+        $this->_aViewData['parentThemeTitle'] = $parentInfo->getTitle();
+        $this->_aViewData['parentThemeVersions'] = $parentInfo->getCompatibleVersions();
 
         if ($parentInfo->hasActivationError()) {
             $this->_aViewData['themeActivationError'] = 'EXCEPTION_THEME_INHERITANCE_INVALID';
@@ -100,6 +107,9 @@ class ThemeMain extends AdminDetailsController
             $this->resetContentCache();
         } catch (ThemeConfigurationNotFoundException $exception) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
+        } catch (InvalidThemeConfigurationException $exception) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_INHERITANCE_INVALID');
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
         } catch (ThemeInheritanceException $exception) {
             Registry::getLogger()->error($exception->getMessage(), [$exception]);

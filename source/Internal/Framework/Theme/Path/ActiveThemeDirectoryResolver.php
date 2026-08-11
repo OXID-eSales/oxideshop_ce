@@ -19,19 +19,19 @@ readonly class ActiveThemeDirectoryResolver implements ActiveThemeDirectoryResol
     ) {
     }
 
-    public function getActiveThemeDirectory(ActiveTheme $activeTheme, int $shopId): string
+    public function getDirectory(ActiveTheme $activeTheme, int $shopId): string
     {
         return $this->getThemeDirectory($activeTheme->getId(), $shopId);
     }
 
-    public function hasParentThemeDirectory(ActiveTheme $activeTheme, int $shopId): bool
+    public function hasParentDirectory(ActiveTheme $activeTheme, int $shopId): bool
     {
         if (!$activeTheme->getInheritance()->hasParentTheme()) {
             return false;
         }
 
         try {
-            $this->getParentThemeDirectory($activeTheme, $shopId);
+            $this->getParentDirectory($activeTheme, $shopId);
 
             return true;
         } catch (ThemeConfigurationNotFoundException) {
@@ -39,7 +39,7 @@ readonly class ActiveThemeDirectoryResolver implements ActiveThemeDirectoryResol
         }
     }
 
-    public function getParentThemeDirectory(ActiveTheme $activeTheme, int $shopId): string
+    public function getParentDirectory(ActiveTheme $activeTheme, int $shopId): string
     {
         return $this->getThemeDirectory($activeTheme->getInheritance()->getParentThemeId(), $shopId);
     }

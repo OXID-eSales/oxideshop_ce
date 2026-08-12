@@ -47,7 +47,10 @@
         "symfony/http-kernel": "^7.3",
         "symfony/routing": "^7.3",
         "symfony/error-handler": "^7.3",
-        "symfony/rate-limiter": "^7.3"
+        "symfony/rate-limiter": "^7.3",
+        "oxid-esales/apex-theme": "dev-b-8.0.x",
+        "oxid-esales/twig-component": "dev-b-8.0.x",
+        "oxid-esales/twig-admin-theme": "dev-b-8.0.x"
     },
     "require-dev": {
         "codeception/codeception": "^5.0",

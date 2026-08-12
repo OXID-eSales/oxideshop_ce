@@ -1,0 +1,6 @@
+.git
+vendor
+var/cache
+var/logs
+var/tmp
+node_modules

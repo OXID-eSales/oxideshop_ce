@@ -1,0 +1,50 @@
+services:
+  php:
+    build:
+      context: ./docker/php
+    volumes:
+      - .:/var/www
+    ports:
+      # Mapped to host port 80 (not e.g. 8080) so http://localhost/ is valid
+      # both from the browser and for the shop's own self-referential HTTP
+      # calls made from inside the container (e.g. ModuleControllerApiTest) -
+      # those only ever see the container's internal port 80.
+      - "80:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - XDEBUG_MODE=off
+      - COMPOSER_HOME=/tmp/composer
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: example
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql/init-test-db.sql:/docker-entrypoint-initdb.d/init-test-db.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8081:8080"
+    depends_on:
+      - mysql
+
+volumes:
+  mysql_data:

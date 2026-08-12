@@ -19,7 +19,10 @@ class RequestFactory
 
     public function create(): Request
     {
-        Request::setTrustedProxies($this->trustedProxies, Request::HEADER_X_FORWARDED_FOR);
+        Request::setTrustedProxies(
+            $this->trustedProxies,
+            Request::HEADER_X_FORWARDED_FOR | Request::HEADER_X_FORWARDED_PROTO
+        );
         return Request::createFromGlobals();
     }
 }

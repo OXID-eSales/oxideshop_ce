@@ -16,3 +16,9 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface:
     alias: Symfony\Component\HttpFoundation\Request
+
+  OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolver
+    arguments:
+      $request: '@Symfony\Component\HttpFoundation\Request'
+    public: true

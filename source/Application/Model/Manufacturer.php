@@ -23,11 +23,6 @@ class Manufacturer extends MultiLanguageModel implements IUrl
     protected static $_aRootManufacturer = [];
 
     /**
-     * @var string Name of current class
-     */
-    protected $_sClassName = 'oxmanufacturer';
-
-    /**
      * Marker to load manufacturer article count info
      *
      * @var bool

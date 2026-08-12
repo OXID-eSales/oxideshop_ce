@@ -8,21 +8,14 @@
 namespace OxidEsales\EshopCommunity\Core\Model;
 
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\ObjectException;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxObjectException;
 
 /**
  * Class handling multilanguage data fields
  */
 class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-    /**
-     * Name of class.
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxI18n';
-
     /**
      * Active object language.
      *
@@ -433,7 +426,7 @@ class MultiLanguageModel extends \OxidEsales\Eshop\Core\Model\BaseModel
      * be loaded through oxlist (with exception of the active language set
      * table, which will be updated).
      *
-     * @throws oxObjectException Throws on failure inserting
+     * @throws ObjectException Throws on failure inserting
      *
      * @return bool
      */

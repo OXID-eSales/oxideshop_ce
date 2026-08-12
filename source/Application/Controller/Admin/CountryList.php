@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Country;
+
 /**
  * Admin selectlist list manager.
  */
@@ -17,7 +19,7 @@ class CountryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sListClass = 'oxcountry';
+    protected $_sListClass = Country::class;
 
     /**
      * Default SQL sorting parameter (default null).

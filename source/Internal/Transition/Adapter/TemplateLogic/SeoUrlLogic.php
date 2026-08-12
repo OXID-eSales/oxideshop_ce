@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Content;
 use OxidEsales\Eshop\Core\Registry;
 
 class SeoUrlLogic
@@ -29,11 +31,11 @@ class SeoUrlLogic
             $oObject = oxNew($sType);
 
             // special case for content type object when ident is provided
-            if ($sType == 'oxcontent' && $sIdent && $oObject->loadByIdent($sIdent)) {
+            if ($sType == Content::class && $sIdent && $oObject->loadByIdent($sIdent)) {
                 $sUrl = $oObject->getLink();
             } elseif ($sOxid) {
                 // minimising aricle object loading
-                if (strtolower($sType) == "oxarticle") {
+                if ($sType == Article::class) {
                     $oObject->disablePriceLoad();
                     $oObject->setNoVariantLoading(true);
                 }

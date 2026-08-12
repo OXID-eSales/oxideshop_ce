@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -15,13 +14,6 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
  */
 class DeliverySet extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Current object class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxdeliveryset';
-
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */

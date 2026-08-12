@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Vendor;
+
 /**
  * Admin vendor list manager.
  */
@@ -24,7 +26,7 @@ class VendorList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLis
      *
      * @var string
      */
-    protected $_sListClass = 'oxvendor';
+    protected $_sListClass = Vendor::class;
 
     /**
      * Default SQL sorting parameter (default null).

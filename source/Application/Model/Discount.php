@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
@@ -18,13 +17,6 @@ use stdClass;
  */
 class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxdiscount';
-
     /**
      * Stores amount of articles which are applied for current discount
      *
@@ -105,7 +97,7 @@ class Discount extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         if (is_null($oxsort)) {
             $shopId = $this->oxdiscount__oxshopid->value;
             $newSort = $this->getNextOxsort($shopId);
-            $this->oxdiscount__oxsort = new \oxField($newSort, \OxidEsales\Eshop\Core\Field::T_RAW);
+            $this->oxdiscount__oxsort = new \OxidEsales\Eshop\Core\Field($newSort, \OxidEsales\Eshop\Core\Field::T_RAW);
         }
 
         // Validate oxsort before saving

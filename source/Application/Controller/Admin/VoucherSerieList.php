@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\VoucherSerie;
+
 /**
  * Admin voucherserie list manager.
  * Collects voucherserie base information (serie no., discount, valid from, etc.),
@@ -20,7 +22,7 @@ class VoucherSerieList extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
      *
      * @var string
      */
-    protected $_sListClass = 'oxvoucherserie';
+    protected $_sListClass = VoucherSerie::class;
 
     /**
      * Current class template name.

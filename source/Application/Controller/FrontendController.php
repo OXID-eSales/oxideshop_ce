@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Price;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Request;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Application\Component\ViewDataKeyProviderInterface;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
@@ -290,13 +291,13 @@ class FrontendController extends BaseController
      * @var array
      */
     protected $_aComponentNames = [
-        'oxcmp_user'       => 1, // 0 means dont init if cached
-        'oxcmp_lang'       => 0,
-        'oxcmp_cur'        => 1,
-        'oxcmp_shop'       => 1,
-        'oxcmp_categories' => 0,
-        'oxcmp_utils'      => 1,
-        'oxcmp_basket'     => 1
+        \OxidEsales\Eshop\Application\Component\UserComponent::class       => 1, // 0 means dont init if cached
+        \OxidEsales\Eshop\Application\Component\LanguageComponent::class   => 0,
+        \OxidEsales\Eshop\Application\Component\CurrencyComponent::class   => 1,
+        \OxidEsales\Eshop\Application\Component\ShopComponent::class       => 1,
+        \OxidEsales\Eshop\Application\Component\CategoriesComponent::class => 0,
+        \OxidEsales\Eshop\Application\Component\UtilsComponent::class      => 1,
+        \OxidEsales\Eshop\Application\Component\BasketComponent::class     => 1,
     ];
 
     /**
@@ -458,7 +459,7 @@ class FrontendController extends BaseController
             }
 
             if (Registry::getRequest()->getRequestEscapedParameter('_force_no_basket_cmp')) {
-                unset(self::$_aCollectedComponentNames['oxcmp_basket']);
+                unset(self::$_aCollectedComponentNames[\OxidEsales\Eshop\Application\Component\BasketComponent::class]);
             }
         }
 
@@ -2006,8 +2007,11 @@ class FrontendController extends BaseController
      */
     public function render()
     {
-        foreach (array_keys($this->_oaComponents) as $componentName) {
-            $this->_aViewData[$componentName] = $this->_oaComponents[$componentName]->render();
+        foreach ($this->_oaComponents as $componentName => $component) {
+            $viewDataKey = $component instanceof ViewDataKeyProviderInterface
+                ? $component->getViewDataKey()
+                : $componentName;
+            $this->_aViewData[$viewDataKey] = $component->render();
         }
 
         parent::render();

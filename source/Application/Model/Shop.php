@@ -15,9 +15,6 @@ use OxidEsales\Eshop\Core\Registry;
  */
 class Shop extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /** @var string Name of current class. */
-    protected $_sClassName = 'oxshop';
-
     /** @var array Multi shop tables, set in config. */
     protected array $_aMultiShopTables = [];
 

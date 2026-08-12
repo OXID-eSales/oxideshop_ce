@@ -532,7 +532,7 @@ class ArticleMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
     {
         $sShopId = Registry::getConfig()->getShopId();
         $oPriceList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oPriceList->init("oxbase", "oxprice2article");
+        $oPriceList->init(BaseModel::class, "oxprice2article");
         $sQ = "select * from oxprice2article where oxartid = :oxartid and oxshopid = :oxshopid " .
               "and (oxamount > 0 or oxamountto > 0) order by oxamount ";
         $oPriceList->selectString($sQ, [

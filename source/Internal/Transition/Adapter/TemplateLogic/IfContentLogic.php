@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\Eshop\Application\Model\Content;
+
 class IfContentLogic
 {
     /**
@@ -25,7 +27,7 @@ class IfContentLogic
         ) {
             $oContent = $sOxid ? $aContentCache[$sOxid] : $aContentCache[$sIdent];
         } else {
-            $oContent = oxNew("oxContent");
+            $oContent = oxNew(Content::class);
             $blLoaded = $sOxid ? $oContent->load($sOxid) : ($oContent->loadbyIdent($sIdent));
             if ($blLoaded && $oContent->isActive()) {
                 $aContentCache[$oContent->getId()] = $aContentCache[$oContent->getLoadId()] = $oContent;

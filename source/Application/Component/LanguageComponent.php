@@ -7,15 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component;
 
-use oxRegistry;
-
 /**
  * Shop language manager.
  * Performs language manager function: changes template settings, modifies URL's.
  *
  * @subpackage oxcmp
  */
-class LanguageComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
+class LanguageComponent extends \OxidEsales\Eshop\Core\Controller\BaseController implements ViewDataKeyProviderInterface
 {
     /**
      * Marking object as component
@@ -23,6 +21,11 @@ class LanguageComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @var bool
      */
     protected $_blIsComponent = true;
+
+    public function getViewDataKey(): string
+    {
+        return 'oxcmp_lang';
+    }
 
     /**
      * Executes parent::render() and returns array with languages.

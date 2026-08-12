@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Manufacturer;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -60,7 +61,7 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
      */
     protected function getType()
     {
-        return 'oxmanufacturer';
+        return Manufacturer::class;
     }
 
     /**

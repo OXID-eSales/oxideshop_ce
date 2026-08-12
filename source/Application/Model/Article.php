@@ -9,6 +9,9 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
 use OxidEsales\Eshop\Application\Model\Contract\ArticleInterface;
+use OxidEsales\Eshop\Application\Model\File;
+use OxidEsales\Eshop\Application\Model\MediaUrl;
+use OxidEsales\Eshop\Application\Model\SelectList;
 use OxidEsales\Eshop\Core\Contract\IUrl;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\MultiLanguageModel;
@@ -41,13 +44,6 @@ define('OXARTICLE_LINKTYPE_RECOMM', 5);
  */
 class Article extends MultiLanguageModel implements ArticleInterface, IUrl
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxarticle';
-
     /**
      * Set $_blUseLazyLoading to true if you want to load only actually used fields not full object, depending on views.
      *
@@ -1499,7 +1495,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
 
             // all selectlists this article has
             $oLists = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $oLists->init('oxselectlist');
+            $oLists->init(SelectList::class);
             $oLists->selectString($sQ, ['oxobjectid' => $this->getId()]);
 
             //#1104S if this is variant ant it has no selectlists, trying with parent
@@ -1634,7 +1630,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
 
             // all selectlists this article has
             $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $oList->init('oxselectlist');
+            $oList->init(SelectList::class);
             $oList->getBaseObject()->setVat($dVat);
             $oList->selectString($sQ, ['oxobjectid' => $this->getId()]);
 
@@ -2835,7 +2831,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
     {
         if ($this->_aMediaUrls === null) {
             $this->_aMediaUrls = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $this->_aMediaUrls->init("oxmediaurl");
+            $this->_aMediaUrls->init(MediaUrl::class);
             $this->_aMediaUrls->getBaseObject()->setLanguage($this->getLanguage());
 
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
@@ -3430,7 +3426,7 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
             }
 
             $articleFiles = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $articleFiles->init("oxfile");
+            $articleFiles->init(File::class);
             $articleFiles->selectString($filesQuery, $filesQueryParameters);
             $this->_aArticleFiles = $articleFiles;
         }

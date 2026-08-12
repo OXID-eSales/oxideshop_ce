@@ -7,9 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-
 /**
  * Article file link manager.
  */
@@ -21,13 +18,6 @@ class OrderFile extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var string
      */
     protected $_sCoreTable = 'oxorderfiles';
-
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxorderfile';
 
 
     /**

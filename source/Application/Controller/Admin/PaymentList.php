@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Payment;
+
 /**
  * Admin payment list manager.
  * Performs collection and managing (such as filtering or deleting) function.
@@ -26,7 +28,7 @@ class PaymentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sListClass = 'oxpayment';
+    protected $_sListClass = Payment::class;
 
     /**
      * Default SQL sorting parameter (default null).

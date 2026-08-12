@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use stdClass;
+use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
@@ -29,7 +30,7 @@ class AdminListController extends \OxidEsales\Eshop\Application\Controller\Admin
      *
      * @var string
      */
-    protected $_sListType = 'oxlist';
+    protected $_sListType = ListModel::class;
 
     /**
      * List of objects (default null).

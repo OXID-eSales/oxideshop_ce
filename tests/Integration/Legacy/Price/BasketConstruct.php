@@ -13,9 +13,12 @@ use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\Delivery;
+use OxidEsales\Eshop\Application\Model\DeliverySet;
 use OxidEsales\Eshop\Application\Model\Discount;
+use OxidEsales\Eshop\Application\Model\Groups;
 use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Application\Model\Voucher;
 use OxidEsales\Eshop\Application\Model\VoucherSerie;
 use OxidEsales\Eshop\Application\Model\Wrapping;
 use OxidEsales\Eshop\Core\DatabaseProvider;
@@ -150,7 +153,7 @@ class BasketConstruct
     public function createGroup(array $data): void
     {
         foreach ($data as $groupData) {
-            $group = $this->createObj($groupData, 'oxgroups', ' oxgroups');
+            $group = $this->createObj($groupData, Groups::class, ' oxgroups');
             if (!empty($groupData['oxobject2group'])) {
                 foreach ($groupData['oxobject2group'] as $iValue) {
                     $connection = [
@@ -196,7 +199,7 @@ class BasketConstruct
             $userData['oxcountryid'] = self::getDefaultCountryId();
         }
 
-        return $this->createObj($userData, 'oxuser', 'oxuser');
+        return $this->createObj($userData, User::class, 'oxuser');
     }
 
     public function createCategories(array $categories): void
@@ -308,7 +311,7 @@ class BasketConstruct
                 'oxtitle' => 'Delivery set',
                 'oxactive' => 1,
             ],
-            'oxdeliveryset',
+            DeliverySet::class,
             'oxdeliveryset'
         );
 
@@ -389,7 +392,7 @@ class BasketConstruct
                     'oxvouchernr' => md5(uniqid((string)random_int(0, mt_getrandmax()), true)),
                     'oxvoucherserieid' => $voucherSerie->getId(),
                 ];
-                $voucher = $this->createObj($data, 'oxvoucher', 'oxvouchers');
+                $voucher = $this->createObj($data, Voucher::class, 'oxvouchers');
                 $voucherIDs[] = $voucher->getId();
             }
         }

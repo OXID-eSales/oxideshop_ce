@@ -7,9 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-use oxDb;
+use OxidEsales\Eshop\Application\Model\UserBasketItem;
 
 /**
  * Virtual basket manager class. Virtual baskets are user article lists which are stored in database (noticelists, wishlists).
@@ -26,13 +24,6 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var array
      */
     protected $_aSkipSaveFields = ['oxcreate', 'oxtimestamp'];
-
-    /**
-     * Current object class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxUserbasket';
 
     /**
      * Array of basket items
@@ -165,7 +156,7 @@ class UserBasket extends \OxidEsales\Eshop\Core\Model\BaseModel
         $sSelect .= " order by oxartnum, oxsellist, oxpersparam ";
 
         $oItems = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oItems->init('oxuserbasketitem');
+        $oItems->init(UserBasketItem::class);
         $oItems->selectstring($sSelect, [
             'oxbasketid' => $this->getId()
         ]);

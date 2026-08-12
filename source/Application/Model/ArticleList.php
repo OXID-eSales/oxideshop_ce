@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
@@ -30,7 +31,7 @@ class ArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var string
      */
-    protected $_sObjectsInListName = 'oxarticle';
+    protected $_sObjectsInListName = Article::class;
 
     /**
      * Set to true if Select Lists should be laoded

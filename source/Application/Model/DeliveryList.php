@@ -7,9 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Delivery;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
 
 /**
  * Delivery list manager.
@@ -65,7 +64,7 @@ class DeliveryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxdelivery');
+        parent::__construct(Delivery::class);
 
         // load or not delivery list
         $this->setHomeCountry(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry'));

@@ -10,8 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use oxRegistry;
-use oxDb;
 
 /**
  * VariantHandler encapsulates methods dealing with multidimensional variant and variant names.

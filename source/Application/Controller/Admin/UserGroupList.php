@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Groups;
+
 /**
  * Admin usergroup list manager.
  * Performs collection and managing (such as filtering or deleting) function.
@@ -19,7 +21,7 @@ class UserGroupList extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @var string
      */
-    protected $_sListClass = 'oxgroups';
+    protected $_sListClass = Groups::class;
 
     /**
      * Default SQL sorting parameter (default null).

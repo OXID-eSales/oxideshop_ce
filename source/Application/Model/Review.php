@@ -20,11 +20,6 @@ class Review extends BaseModel
      */
     protected $_blDisableShopCheck = true;
 
-    /**
-     * @var string
-     */
-    protected $_sClassName = 'oxreview';
-
     public function __construct()
     {
         parent::__construct();
@@ -100,7 +95,7 @@ class Review extends BaseModel
     public function loadList($sType, $aIds, $blLoadEmpty = false, $iLoadInLang = null)
     {
         $reviews = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $reviews->init('oxreview');
+        $reviews->init(\OxidEsales\Eshop\Application\Model\Review::class);
 
         $params = [
             'oxtype' => $sType,

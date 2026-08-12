@@ -9,9 +9,16 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Controller\FrontendController;
 
+use OxidEsales\Eshop\Application\Component\BasketComponent;
+use OxidEsales\Eshop\Application\Component\CategoriesComponent;
+use OxidEsales\Eshop\Application\Component\CurrencyComponent;
+use OxidEsales\Eshop\Application\Component\LanguageComponent;
+use OxidEsales\Eshop\Application\Component\ShopComponent;
+use OxidEsales\Eshop\Application\Component\UserComponent;
+use OxidEsales\Eshop\Application\Component\UtilsComponent;
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use oxubase;
 
 final class FrontendComponentTest extends IntegrationTestCase
 {
@@ -24,23 +31,23 @@ final class FrontendComponentTest extends IntegrationTestCase
         $this->setParameter('oxid_esales.cacheable_user_components', [$componentName => 1]);
 
         $componentNames = [
-            'oxcmp_user' => true,
-            'oxcmp_lang' => false,
-            'oxcmp_cur' => true,
-            'oxcmp_shop' => true,
-            'oxcmp_categories' => false,
-            'oxcmp_utils' => true,
-            'oxcmp_basket' => true,
+            UserComponent::class => true,
+            LanguageComponent::class => false,
+            CurrencyComponent::class => true,
+            ShopComponent::class => true,
+            CategoriesComponent::class => false,
+            UtilsComponent::class => true,
+            BasketComponent::class => true,
             $componentName => true,
         ];
 
-        $view = oxNew('oxUBase');
+        $view = oxNew(FrontendController::class);
         $this->assertEquals($componentNames, $view->getComponentNames());
     }
 
-    private function getComponentClass(): oxubase
+    private function getComponentClass(): FrontendController
     {
-        return new class extends oxUbase {
+        return new class extends FrontendController {
         };
     }
 }

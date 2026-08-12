@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Country;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -20,7 +21,7 @@ class CountryList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxcountry');
+        parent::__construct(Country::class);
     }
 
     /**

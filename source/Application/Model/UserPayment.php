@@ -8,8 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxDb;
 
 /**
  * User payment manager.
@@ -18,13 +16,6 @@ use oxDb;
  */
 class UserPayment extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-    /**
-     * Name of current class
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxuserpayment';
-
     /**
      * Payment info object
      *

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Utility;
 
-use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
 use OxidEsales\EshopCommunity\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionDirectoriesLocator;
@@ -18,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectDirectoriesLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use Symfony\Component\Filesystem\Path;
+
 use function sprintf;
 
 class BasicContext implements BasicContextInterface
@@ -81,11 +81,6 @@ class BasicContext implements BasicContextInterface
         return [
             $this->getDefaultShopId(),
         ];
-    }
-
-    public function getBackwardsCompatibilityClassMap(): array
-    {
-        return (new BackwardsCompatibilityClassMapProvider())->getMap();
     }
 
     public function getProjectConfigurationDirectory(): string

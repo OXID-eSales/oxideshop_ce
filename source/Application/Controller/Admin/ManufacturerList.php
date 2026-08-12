@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Manufacturer;
+
 /**
  * Admin Manufacturer list manager.
  */
@@ -24,7 +26,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Application\Controller\Admin\Ad
      *
      * @var string
      */
-    protected $_sListClass = 'oxmanufacturer';
+    protected $_sListClass = Manufacturer::class;
 
     /**
      * Default SQL sorting parameter (default null).

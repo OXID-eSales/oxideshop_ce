@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use OxidEsales\Eshop\Application\Model\Order;
+
 $sMetadataVersion = '2.0';
 $aModule = [
     'id' => 'extending_1_class_3_extensions',
@@ -16,6 +18,6 @@ $aModule = [
     'version' => '1.0',
     'author' => 'OXID eSales AG',
     'extend' => [
-        'oxorder' => 'oeTest/extending_1_class_3_extensions/myorder1',
+        Order::class => 'oeTest/extending_1_class_3_extensions/myorder1',
     ],
 ];

@@ -11,7 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Control
 
 use DOMDocument;
 use DOMXPath;
-use oxfield;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\NavigationTree;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Core\Registry;
@@ -176,8 +177,8 @@ final class NavigationTreeTest extends IntegrationTestCase
     {
         $navigationTree = (new NavigationTree());
         /** Add user stub */
-        $user = oxNew('oxuser');
-        $user->oxuser__oxrights = new oxfield('testRights');
+        $user = oxNew(User::class);
+        $user->oxuser__oxrights = new Field('testRights');
         $navigationTree->setUser($user);
         return $navigationTree;
     }

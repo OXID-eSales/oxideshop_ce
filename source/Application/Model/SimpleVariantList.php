@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\SimpleVariant;
+
 /**
  * Simple variant list.
  */
@@ -22,7 +24,7 @@ class SimpleVariantList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var string
      */
-    protected $_sObjectsInListName = 'oxsimplevariant';
+    protected $_sObjectsInListName = SimpleVariant::class;
 
     /**
      * Sets parent variant

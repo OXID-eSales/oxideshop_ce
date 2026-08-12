@@ -16,7 +16,7 @@ class Article extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportOb
     protected $tableName = 'oxarticles';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxArticle';
+    protected $shopObjectName = \OxidEsales\Eshop\Application\Model\Article::class;
 
     /**
      * Imports article. Returns import status.

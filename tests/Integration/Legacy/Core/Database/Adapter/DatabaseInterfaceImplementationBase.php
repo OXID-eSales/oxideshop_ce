@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapter;
 
-use oxDb;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
 use PDO;
@@ -148,7 +148,7 @@ abstract class DatabaseInterfaceImplementationBase extends TestCase
      */
     protected function initializeDatabase()
     {
-        $this->database = oxDb::getMaster();
+        $this->database = DatabaseProvider::getMaster();
     }
 
     protected function loadFixtureToTestTable(?DatabaseInterface $database = null): void

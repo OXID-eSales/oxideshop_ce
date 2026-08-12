@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
-use oxAdminDetails;
 
 class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
@@ -69,7 +69,7 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
     {
         $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
 
-        oxAdminDetails::save();
+        AdminDetailsController::save();
 
         $sShopId = $myConfig->getShopId();
 

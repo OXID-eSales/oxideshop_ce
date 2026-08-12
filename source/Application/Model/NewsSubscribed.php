@@ -7,9 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-use oxField;
-
 /**
  * Newsletter Subscriptions manager
  * Performs user managing function
@@ -30,13 +27,6 @@ class NewsSubscribed extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var bool
      */
     protected $_blWasPreSubscribed = false;
-
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxnewssubscribed';
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).

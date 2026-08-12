@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\ListObject;
+use OxidEsales\Eshop\Application\Model\Shop;
+
 /**
  * Shop list manager.
  * Organizes list of shop objects.
@@ -18,7 +21,7 @@ class ShopList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxshop');
+        parent::__construct(Shop::class);
     }
 
     /**
@@ -34,7 +37,7 @@ class ShopList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function getIdTitleList()
     {
-        $this->setBaseObject(oxNew('oxListObject', 'oxshops'));
+        $this->setBaseObject(oxNew(ListObject::class, 'oxshops'));
         $this->selectString('SELECT `OXID`, `OXNAME` FROM `oxshops`');
     }
 }

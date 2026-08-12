@@ -16,7 +16,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataPro
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\ModuleIdNotValidException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -28,8 +27,6 @@ final class MetaDataProviderTest extends TestCase
 
     private MetaDataNormalizer $metaDataNormalizerStub;
 
-    private BasicContextInterface $contextStub;
-
     private MetaDataValidatorInterface $validatorStub;
 
     public function setUp(): void
@@ -37,7 +34,6 @@ final class MetaDataProviderTest extends TestCase
         parent::setUp();
         $this->metaDataNormalizerStub = $this->createStub(MetaDataNormalizer::class);
         $this->metaDataNormalizerStub->method('normalizeData')->willReturnArgument(0);
-        $this->contextStub = $this->createStub(BasicContextInterface::class);
         $this->validatorStub = $this->createStub(MetaDataValidatorInterface::class);
     }
 
@@ -123,61 +119,16 @@ final class MetaDataProviderTest extends TestCase
 
         $metaDataProvider = new MetaDataProvider(
             $this->metaDataNormalizerStub,
-            $this->contextStub,
             $this->get(MetaDataValidatorInterface::class),
             $this->get(MetaDataConverterInterface::class)
         );
         $metaDataProvider->getData($metaDataFilePath);
     }
 
-    public function testGetDataConvertsBackwardsCompatibleClasses(): void
-    {
-        $metaDataFilePath = $this->getPathToTemporaryFile();
-        $metaDataContent = '<?php
-            $sMetadataVersion = "2.0";
-            $aModule = [
-                "id" => "MyModuleId",
-                "extend" => [
-                    "oxarticle"                 => \VendorNamespace\VendorClass1::class,
-                    "OXORDER"                   => "VendorNamespace\\VendorClass2",
-                    "EShopNamespace\\UserClass" => \VendorNamespace\VendorClass3::class,
-                ]
-            ];
-        ';
-        if (false === file_put_contents($metaDataFilePath, $metaDataContent)) {
-            throw new RuntimeException('Could not write to ' . $metaDataFilePath);
-        }
-
-        $basicContext = $this->createStub(BasicContextInterface::class);
-        $basicContext->method('getBackwardsCompatibilityClassMap')->willReturn(
-            [
-                "oxarticle" => "EShopNamespace\\ArticleClass",
-                "oxorder"   => "EShopNamespace\\OrderClass",
-            ]
-        );
-        $metaDataProvider = new MetaDataProvider(
-            $this->metaDataNormalizerStub,
-            $basicContext,
-            $this->validatorStub,
-            $this->get(MetaDataConverterInterface::class)
-        );
-        $metaData = $metaDataProvider->getData($metaDataFilePath);
-
-        $this->assertEquals(
-            [
-                "EShopNamespace\\ArticleClass" => "VendorNamespace\\VendorClass1",
-                "EShopNamespace\\OrderClass"   => "VendorNamespace\\VendorClass2",
-                "EShopNamespace\\UserClass"    => "VendorNamespace\\VendorClass3",
-            ],
-            $metaData['moduleData']['extend']
-        );
-    }
-
     private function createMetaDataProvider(): MetaDataProvider
     {
         return new MetaDataProvider(
             $this->metaDataNormalizerStub,
-            $this->contextStub,
             $this->validatorStub,
             $this->get(MetaDataConverterInterface::class)
         );

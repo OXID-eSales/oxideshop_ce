@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Content;
+use OxidEsales\Eshop\Application\Model\ContentList as ContentListModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -23,14 +25,14 @@ class ContentList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sListClass = 'oxcontent';
+    protected $_sListClass = Content::class;
 
     /**
      * Type of list.
      *
      * @var string
      */
-    protected $_sListType = 'oxcontentlist';
+    protected $_sListType = ContentListModel::class;
 
     /**
      * Current class template name.

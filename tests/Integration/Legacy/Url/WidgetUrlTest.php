@@ -11,7 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Url;
 
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use oxRegistry;
+use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use PHPUnit\Framework\Attributes\DataProvider;
 
 final class WidgetUrlTest extends IntegrationTestCase
@@ -67,9 +68,9 @@ final class WidgetUrlTest extends IntegrationTestCase
     #[DataProvider('providerGetWidgetUrlAddParametersIdNeed')]
     public function testGetWidgetUrlWithParameters(array $urlParameters, string $sUrl): void
     {
-        oxRegistry::getLang()->setBaseLanguage(0);
+        Registry::getLang()->setBaseLanguage(0);
 
-        $config = oxNew('oxConfig');
+        $config = oxNew(Config::class);
         $config->init();
 
         $this->assertEquals($sUrl, $config->getWidgetUrl(null, null, $urlParameters));
@@ -88,9 +89,9 @@ final class WidgetUrlTest extends IntegrationTestCase
     #[DataProvider('providerGetWidgetUrlAddCorrectLanguage')]
     public function testGetWidgetUrlAddCorrectLanguage(int $iLang): void
     {
-        oxRegistry::getLang()->setBaseLanguage($iLang);
+        Registry::getLang()->setBaseLanguage($iLang);
 
-        $config = oxNew('oxConfig');
+        $config = oxNew(Config::class);
         $config->init();
 
         $this->assertEquals($this->shopUrl . 'widget.php?lang=' . $iLang, $config->getWidgetUrl());
@@ -104,9 +105,9 @@ final class WidgetUrlTest extends IntegrationTestCase
     #[DataProvider('providerGetWidgetUrlAddCorrectLanguage')]
     public function testGetWidgetUrlAddCorrectLanguageWithParameter(int $iLang): void
     {
-        oxRegistry::getLang()->setBaseLanguage($iLang);
+        Registry::getLang()->setBaseLanguage($iLang);
 
-        $config = oxNew('oxConfig');
+        $config = oxNew(Config::class);
         $config->init();
 
         $this->assertEquals($this->shopUrl . 'widget.php?lang=' . $iLang, $config->getWidgetUrl($iLang));

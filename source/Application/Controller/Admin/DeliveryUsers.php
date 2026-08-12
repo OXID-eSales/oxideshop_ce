@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Groups;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -29,7 +30,7 @@ class DeliveryUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
         $sViewName = $tableViewNameGenerator->getViewName("oxgroups", $this->_iEditLang);
         // all usergroups
         $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oGroups->init('oxgroups');
+        $oGroups->init(Groups::class);
         $oGroups->selectString("select * from {$sViewName}");
 
         $oRoot = new \OxidEsales\Eshop\Application\Model\Groups();

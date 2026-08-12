@@ -8,8 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxPrice;
 
 /**
  * Lightweight variant handler. Implemnets only absolutely needed oxArticle methods.

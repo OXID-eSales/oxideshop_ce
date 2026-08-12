@@ -16,7 +16,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\Imp
     protected $tableName = 'oxorderarticles';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxorderarticle';
+    protected $shopObjectName = \OxidEsales\Eshop\Application\Model\OrderArticle::class;
 
     /**
      * issued before saving an object. can modify aData for saving

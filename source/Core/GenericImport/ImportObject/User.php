@@ -18,7 +18,7 @@ class User extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObjec
     protected $tableName = 'oxuser';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxuser';
+    protected $shopObjectName = \OxidEsales\Eshop\Application\Model\User::class;
 
     /**
      * Imports user. Returns import status.

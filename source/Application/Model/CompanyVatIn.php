@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxStr;
-
 /**
  * Company VAT identification number (VATIN)
  */

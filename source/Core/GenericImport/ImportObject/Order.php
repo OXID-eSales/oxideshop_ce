@@ -16,5 +16,5 @@ class Order extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObje
     protected $tableName = 'oxorder';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxorder';
+    protected $shopObjectName = \OxidEsales\Eshop\Application\Model\Order::class;
 }

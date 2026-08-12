@@ -193,7 +193,7 @@ class ArticleAccessoriesAjax extends \OxidEsales\Eshop\Application\Controller\Ad
         $sortDirection = Registry::getRequest()->getRequestEscapedParameter('direction');
 
         $accessoriesList = oxNew(ListModel::class);
-        $accessoriesList->init("oxbase", "oxaccessoire2article");
+        $accessoriesList->init(\OxidEsales\Eshop\Core\Model\BaseModel::class, "oxaccessoire2article");
         $sortQuery = "select * from  oxaccessoire2article where OXARTICLENID = :OXARTICLENID order by oxsort,oxid";
         $accessoriesList->selectString($sortQuery, [
             'OXARTICLENID' => $oxidRelationId

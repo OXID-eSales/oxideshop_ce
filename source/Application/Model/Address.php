@@ -13,13 +13,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 class Address extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxaddress';
-
-    /**
      * Active address status
      *
      * @var bool

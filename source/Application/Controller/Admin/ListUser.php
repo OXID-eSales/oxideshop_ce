@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxAdminList;
+use OxidEsales\Eshop\Application\Controller\Admin\AdminListController;
 
 /**
  * user list "view" class.
@@ -30,7 +30,7 @@ class ListUser extends \OxidEsales\Eshop\Application\Controller\Admin\UserList
      */
     public function init()
     {
-        oxAdminList::init();
+        AdminListController::init();
     }
 
     /** @inheritdoc */

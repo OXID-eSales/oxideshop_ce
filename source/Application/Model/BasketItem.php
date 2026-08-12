@@ -7,10 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxArticleInputException;
-use oxOutOfStockException;
-use oxNoArticleException;
+use OxidEsales\Eshop\Core\Exception\ArticleInputException;
+use OxidEsales\Eshop\Core\Exception\NoArticleException;
+use OxidEsales\Eshop\Core\Exception\OutOfStockException;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaView;
 use stdClass;
 
@@ -268,9 +267,9 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param array  $aPersParam persistent params
      * @param bool   $blBundle   bundle
      *
-     * @throws oxNoArticleException
-     * @throws oxOutOfStockException
-     * @throws oxArticleInputException
+     * @throws NoArticleException
+     * @throws OutOfStockException
+     * @throws ArticleInputException
      */
     public function init($sProductID, $dAmount, $aSel = null, $aPersParam = null, $blBundle = null)
     {
@@ -340,8 +339,8 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      * @param bool   $blOverride Whether to override current amount.
      * @param string $sItemKey   item key
      *
-     * @throws oxArticleInputException
-     * @throws oxOutOfStockException
+     * @throws ArticleInputException
+     * @throws OutOfStockException
      */
     public function setAmount($dAmount, $blOverride = true, $sItemKey = null)
     {
@@ -701,7 +700,7 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sProductId product id
      *
-     * @throws oxNoArticleException exception
+     * @throws NoArticleException exception
      */
     protected function setArticle($sProductId)
     {

@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\State;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -15,13 +15,6 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
  */
 class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxcountry';
-
     /**
      * State list
      *
@@ -74,7 +67,7 @@ class Country extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
         $sViewName = $tableViewNameGenerator->getViewName("oxstates", $this->getLanguage());
         $sQ = "select * from {$sViewName} where `oxcountryid` = :oxcountryid order by `oxtitle`  ";
         $this->_aStates = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $this->_aStates->init("oxstate");
+        $this->_aStates->init(State::class);
         $this->_aStates->selectString($sQ, [
             'oxcountryid' => $sCountryId
         ]);

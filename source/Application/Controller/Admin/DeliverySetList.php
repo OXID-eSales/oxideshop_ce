@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\DeliverySet;
+use OxidEsales\Eshop\Application\Model\DeliverySetList as DeliverySetListModel;
+
 /**
  * Admin deliverysetset list manager.
  * Collects deliveryset base information (description), there is ability to
@@ -20,14 +23,14 @@ class DeliverySetList extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
      *
      * @var string
      */
-    protected $_sListClass = 'oxdeliveryset';
+    protected $_sListClass = DeliverySet::class;
 
     /**
      * Type of list.
      *
      * @var string
      */
-    protected $_sListType = 'oxdeliverysetlist';
+    protected $_sListType = DeliverySetListModel::class;
 
     /**
      * Current class template name.

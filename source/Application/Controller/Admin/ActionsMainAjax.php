@@ -219,7 +219,7 @@ class ActionsMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Lis
                     "and oxactions2article.oxshopid = :oxshopid " . $this->getSorting();
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oList->init("oxbase", "oxactions2article");
+        $oList->init(\OxidEsales\Eshop\Core\Model\BaseModel::class, "oxactions2article");
         $oList->selectString($sSelect, [
             'oxactionid' => $sSelId,
             'oxshopid' => $myConfig->getShopID()

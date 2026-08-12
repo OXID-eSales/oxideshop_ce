@@ -7,20 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-
 /**
  * Vendor manager
  */
 class Vendor extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
     protected static $_aRootVendor = [];
-
-    /**
-     * @var string Name of current class
-     */
-    protected $_sClassName = 'oxvendor';
 
     /**
      * Marker to load vendor article count info

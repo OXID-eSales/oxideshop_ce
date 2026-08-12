@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use OxidEsales\Eshop\Application\Model\Article;
+
 $sMetadataVersion = '2.0';
 $aModule = [
     'id' => 'translation_Application',
@@ -17,6 +19,6 @@ $aModule = [
     'author' => 'OXID eSales AG',
     'extend' => [
         // This one is needed, cause if the module is not extending anything, we don't search for the translations!
-        'oxarticle' => 'translation_Application/myarticle',
+        Article::class => 'translation_Application/myarticle',
     ],
 ];

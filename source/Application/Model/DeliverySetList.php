@@ -7,9 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\DeliverySet;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
-use oxDb;
 
 /**
  * DeliverySet list manager.
@@ -50,7 +49,7 @@ class DeliverySetList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function __construct()
     {
         $this->setHomeCountry(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry'));
-        parent::__construct('oxdeliveryset');
+        parent::__construct(DeliverySet::class);
     }
 
     /**

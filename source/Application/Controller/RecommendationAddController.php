@@ -7,11 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxUBase;
-
 /**
  * Handles adding article to recommendation list process.
- * Due to possibility of external modules we recommned to extend the vews from oxUBase view.
+ * Due to possibility of external modules we recommned to extend the vews from FrontendController view.
  * However expreimentally we extend RecommAdd from Details view here.
  *
  * @deprecated since v5.3 (2016-06-17); Listmania will be moved to an own module.

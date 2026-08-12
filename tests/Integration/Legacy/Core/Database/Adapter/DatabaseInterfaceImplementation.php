@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Database\Adapt
 
 use Doctrine\DBAL\TransactionIsolationLevel;
 use InvalidArgumentException;
-use oxDb;
+use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -190,7 +190,7 @@ abstract class DatabaseInterfaceImplementation extends DatabaseInterfaceImplemen
     {
         $this->expectException(DatabaseErrorException::class);
 
-        oxDb::getMaster()->select('SELECT SOME INVALID QUERY');
+        DatabaseProvider::getMaster()->select('SELECT SOME INVALID QUERY');
     }
 
     public function testSetTransactionIsolationLevel(): void

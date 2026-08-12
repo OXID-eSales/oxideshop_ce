@@ -15,7 +15,7 @@ $aModule = array(
     'version'      => '1.0',
     'author'       => 'OXID eSales AG',
     'extend'       => [
-        'shopClass' => 'testModuleClassExtendsShopClass',
+        'Vendor\TestModule\ShopClass' => 'testModuleClassExtendsShopClass',
     ],
     'settings' => [
         [

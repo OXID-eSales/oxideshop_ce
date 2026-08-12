@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Content;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 
 /**
@@ -76,7 +76,7 @@ class ContentList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxcontent');
+        parent::__construct(Content::class);
     }
 
     /**

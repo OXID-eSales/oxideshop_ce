@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\OrderFile;
+
 /**
  * Article file link manager.
  */
@@ -17,7 +19,7 @@ class OrderFileList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var string
      */
-    protected $_sObjectsInListName = 'oxorderfile';
+    protected $_sObjectsInListName = OrderFile::class;
 
     /**
      * Returns orders

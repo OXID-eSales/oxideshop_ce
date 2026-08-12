@@ -10,10 +10,6 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use Exception;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxField;
-use oxDb;
-use oxuserbasket;
 
 /**
  * Basket reservations handler class

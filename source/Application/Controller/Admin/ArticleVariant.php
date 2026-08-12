@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\SelectList;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductVariantMediaServiceInterface;
@@ -39,7 +40,7 @@ class ArticleVariant extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
 
         // all selectlists
         $oAllSel = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oAllSel->init("oxselectlist");
+        $oAllSel->init(SelectList::class);
         $sQ = "select * from $sSLViewName";
         $oAllSel->selectString($sQ);
         $this->_aViewData["allsel"] = $oAllSel;

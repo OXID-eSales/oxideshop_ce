@@ -7,11 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Groups;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
-use oxDb;
 
 /**
  * Payment manager.
@@ -70,13 +69,6 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     protected $_aCountries = null;
 
     /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxpayment';
-
-    /**
      * current dyn values
      *
      * @var array
@@ -133,7 +125,7 @@ class Payment extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         if ($this->_oGroups == null && ($sOxid = $this->getId())) {
             // user groups
-            $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
+            $this->_oGroups = oxNew(ListModel::class, Groups::class);
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sViewName = $tableViewNameGenerator->getViewName("oxgroups", $this->getLanguage());
 

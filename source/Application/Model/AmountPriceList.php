@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
  * Article amount price list
  */
@@ -19,7 +17,7 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var string
      */
-    protected $_sObjectsInListName = 'oxprice2article';
+    protected $_sObjectsInListName = \OxidEsales\Eshop\Core\Model\BaseModel::class;
 
     /**
      * oxArticle object
@@ -33,8 +31,8 @@ class AmountPriceList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxbase');
-        $this->init('oxbase', 'oxprice2article');
+        parent::__construct(\OxidEsales\Eshop\Core\Model\BaseModel::class);
+        $this->init(\OxidEsales\Eshop\Core\Model\BaseModel::class, 'oxprice2article');
     }
 
     /**

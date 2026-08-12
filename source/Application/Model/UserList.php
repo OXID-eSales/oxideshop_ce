@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\User;
 
 /**
  * User list manager.
@@ -19,7 +19,7 @@ class UserList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxuser');
+        parent::__construct(User::class);
     }
 
 

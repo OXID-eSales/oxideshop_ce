@@ -24,13 +24,6 @@ class Rating extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_blDisableShopCheck = true;
 
     /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxrating';
-
-    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()

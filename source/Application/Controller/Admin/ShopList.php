@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
 
 /**
  * Admin shop list manager.
@@ -39,7 +39,7 @@ class ShopList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @var string
      */
-    protected $_sListClass = 'oxshop';
+    protected $_sListClass = Shop::class;
 
     /**
      * Navigation frame reload marker

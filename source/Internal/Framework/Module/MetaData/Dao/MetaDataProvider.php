@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Converter\MetaDataConverterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Exception\InvalidMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Validator\MetaDataValidatorInterface;
@@ -40,7 +39,6 @@ class MetaDataProvider implements MetaDataProviderInterface
 
     public function __construct(
         private MetaDataNormalizerInterface $metaDataNormalizer,
-        private BasicContextInterface $context,
         private MetaDataValidatorInterface $metaDataValidatorService,
         private MetaDataConverterInterface $metaDataConverter
     ) {
@@ -83,10 +81,6 @@ class MetaDataProvider implements MetaDataProviderInterface
         $moduleData = $this->metaDataConverter->convert($moduleData);
         $normalizedMetaData = $this->metaDataNormalizer->normalizeData($moduleData);
 
-        if (isset($normalizedMetaData[static::METADATA_EXTEND])) {
-            $normalizedMetaData[static::METADATA_EXTEND] = $this->sanitizeExtendedClasses($normalizedMetaData);
-        }
-
         return [
             static::METADATA_METADATA_VERSION => $metadataVersion,
             static::METADATA_MODULE_DATA      => $normalizedMetaData,
@@ -125,44 +119,5 @@ class MetaDataProvider implements MetaDataProviderInterface
                 . $this->filePath . ' and it must be an array'
             );
         }
-    }
-
-    /**
-     * @param array $normalizedMetaData
-     *
-     * @return array
-     */
-    private function sanitizeExtendedClasses(array $normalizedMetaData): array
-    {
-        $sanitizedExtendedClasses = [];
-        $extendedClasses = $normalizedMetaData[static::METADATA_EXTEND] ?? [];
-        foreach ($extendedClasses as $shopClass => $moduleClass) {
-            if ($this->isBackwardsCompatibleClass($shopClass)) {
-                $sanitizedShopClass = $this->getBackwardsCompatibilityClassMap()[strtolower($shopClass)];
-            } else {
-                $sanitizedShopClass = $shopClass;
-            }
-            $sanitizedExtendedClasses[$sanitizedShopClass] = $moduleClass;
-        }
-
-        return $sanitizedExtendedClasses;
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return bool
-     */
-    private function isBackwardsCompatibleClass(string $className): bool
-    {
-        return \array_key_exists(strtolower($className), $this->getBackwardsCompatibilityClassMap());
-    }
-
-    /**
-     * @return array
-     */
-    private function getBackwardsCompatibilityClassMap(): array
-    {
-        return $this->context->getBackwardsCompatibilityClassMap();
     }
 }

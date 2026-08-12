@@ -36,7 +36,12 @@ class ArticleDetails extends \OxidEsales\Eshop\Application\Component\Widget\Widg
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_cur' => 1, 'oxcmp_shop' => 1, 'oxcmp_basket' => 1, 'oxcmp_user' => 1];
+    protected $_aComponentNames = [
+        \OxidEsales\Eshop\Application\Component\CurrencyComponent::class => 1,
+        \OxidEsales\Eshop\Application\Component\ShopComponent::class     => 1,
+        \OxidEsales\Eshop\Application\Component\BasketComponent::class  => 1,
+        \OxidEsales\Eshop\Application\Component\UserComponent::class    => 1,
+    ];
 
     /**
      * Current class template name.

@@ -30,7 +30,7 @@ final class FrontendServersInformationStoringTest extends IntegrationTestCase
      */
     public function testUpdateAppServerInformationNewAppServer(): void
     {
-        $currentTime = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->getTime();
+        $currentTime = Registry::getUtilsDate()->getTime();
 
         $service = $this->getApplicationServerServiceObject($currentTime);
         $service->updateAppServerInformationInFrontend();
@@ -47,7 +47,7 @@ final class FrontendServersInformationStoringTest extends IntegrationTestCase
      */
     public function testUpdateAppServerInformationAppServerExists(): void
     {
-        $currentTime = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->getTime();
+        $currentTime = Registry::getUtilsDate()->getTime();
 
         $this->storeAppServer1Information(($currentTime - (11 * 3600)));
 
@@ -66,7 +66,7 @@ final class FrontendServersInformationStoringTest extends IntegrationTestCase
      */
     public function testUpdateAppServerInformationUpdateAppServerData(): void
     {
-        $currentTime = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->getTime();
+        $currentTime = Registry::getUtilsDate()->getTime();
 
         $this->storeAppServer1Information(($currentTime - (25 * 3600)));
 
@@ -89,7 +89,7 @@ final class FrontendServersInformationStoringTest extends IntegrationTestCase
      */
     public function testUpdateAppServerInformationAddAppServer(): void
     {
-        $currentTime = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->getTime();
+        $currentTime = Registry::getUtilsDate()->getTime();
 
         $this->storeAppServer2Information($currentTime);
 
@@ -109,7 +109,7 @@ final class FrontendServersInformationStoringTest extends IntegrationTestCase
      */
     public function testUpdateAppServerInformationIfOneIsNotActiveAppServer(): void
     {
-        $currentTime = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->getTime();
+        $currentTime = Registry::getUtilsDate()->getTime();
 
         $this->storeAppServer2Information(($currentTime - (25 * 3600)));
 
@@ -128,7 +128,7 @@ final class FrontendServersInformationStoringTest extends IntegrationTestCase
      */
     public function testUpdateAppServerInformationIfOneIsOutdatedAppServer(): void
     {
-        $currentTime = \OxidEsales\Eshop\Core\Registry::get('oxUtilsDate')->getTime();
+        $currentTime = Registry::getUtilsDate()->getTime();
 
         $this->storeAppServer2Information(($currentTime - (75 * 3600)));
 

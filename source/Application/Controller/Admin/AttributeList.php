@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Attribute;
+
 /**
  * Admin attributes manager.
  * Collects attributes base information (Description), there is ability to filter
@@ -27,7 +29,7 @@ class AttributeList extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
      *
      * @var string
      */
-    protected $_sListClass = 'oxattribute';
+    protected $_sListClass = Attribute::class;
 
     /**
      * Default SQL sorting parameter (default null).

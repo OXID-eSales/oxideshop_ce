@@ -25,7 +25,7 @@ use function oxNew;
  *
  * @subpackage oxcmp
  */
-class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
+class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController implements ViewDataKeyProviderInterface
 {
     /**
      * Marking object as component
@@ -33,6 +33,11 @@ class BasketComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @var bool
      */
     protected $_blIsComponent = true;
+
+    public function getViewDataKey(): string
+    {
+        return 'oxcmp_basket';
+    }
 
     /**
      * Last call function name

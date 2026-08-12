@@ -20,7 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Exception\InvalidC
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapter;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_chain_extension_3_1\vendor_1_module_3_1_myclass;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\ContentController as ModuleContentController;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingArticle;
 use OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestDataInheritance\modules\module_native_extension\NativeExtendingContentController;
@@ -47,7 +46,7 @@ use function Symfony\Component\String\u;
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
  * |        extends via PHP        | plain module class | namespaced module class | unified namespaced module class |
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
- * | Plain shop class              |                1.1 |                     1.6 | not planned                     |
+ * | Plain shop class              |                1.1 | not applicable (BC removed) | not planned                |
  * | Namespaced shop class         |                1.2 |                     1.7 | not planned                     |
  * | unified namespaced shop class |                1.5 |                    1.10 | not planned                     |
  * +-------------------------------+--------------------+-------------------------+---------------------------------+
@@ -80,7 +79,7 @@ use function Symfony\Component\String\u;
  * +-------------------------------+--------------------+-------------------------+
  * |       extends via chain       | plain module class | namespaced module class |
  * +-------------------------------+--------------------+-------------------------+
- * | Plain shop class              | 3.1                | 3.4                     |
+ * | Plain shop class              | not applicable (BC removed) | 3.4                |
  * | Namespaced shop class         | 3.2                | 3.5                     |
  * | unified namespaced shop class | 3.3                | 3.6                     |
  * +-------------------------------+--------------------+-------------------------+
@@ -207,7 +206,7 @@ final class ModuleInheritanceTest extends IntegrationTestCase
 
     public static function dataProviderTestNativeExtensionOfChainExtendingClass(): array
     {
-        $modules = ['module_chain_extension_3_1', 'module_native_extension'];
+        $modules = ['module_native_extension'];
 
         return [
             [
@@ -230,22 +229,12 @@ final class ModuleInheritanceTest extends IntegrationTestCase
                 'extensionClass' => NativeExtendingArticle::class,
                 'classToExtend' => TestDataInheritance\modules\module_native_extension\Article::class,
             ],
-            [
-                'moduleToActivate' => $modules,
-                'extensionClass' => NativeExtendingArticle::class,
-                'classToExtend' => vendor_1_module_3_1_myclass::class,
-            ],
         ];
     }
 
     public static function dataProviderTestModuleInheritanceTestPhpInheritance(): array
     {
         return [
-            'case_1_6' => [
-                'moduleToActivate' => ['Vendor1/ModuleInheritance16'],
-                'moduleClassName' => TestDataInheritance\modules\Vendor1\ModuleInheritance16\MyClass::class,
-                'shopClassNames' => [\OxidEsales\EshopCommunity\Application\Model\Article::class, 'oxArticle'],
-            ],
             'case_1_7' => [
                 'moduleToActivate' => ['Vendor1/namespaced_from_ns'],
                 'moduleClassName' => namespaced_from_ns::class,
@@ -255,11 +244,6 @@ final class ModuleInheritanceTest extends IntegrationTestCase
                 'moduleToActivate' => ['Vendor1/own_namespace_extending_unified_namespace'],
                 'moduleClassName' => own_namespace_extending_unified_namespace::class,
                 'shopClassNames' => [Article::class],
-            ],
-            'case_3_1' => [
-                'moduleToActivate' => ['module_chain_extension_3_1'],
-                'moduleClassName' => vendor_1_module_3_1_myclass::class,
-                'shopClassNames' => ['oxArticle'],
             ],
             'case_3_6' => [
                 'moduleToActivate' => ['Vendor1/ModuleChainExtension36'],
@@ -347,7 +331,9 @@ final class ModuleInheritanceTest extends IntegrationTestCase
     private function disableShopEditionClassExtensionProtection(ContainerBuilder $containerBuilder): ContainerBuilder
     {
         $shopAdapter = $this
-            ->createStub(ShopAdapter::class);
+            ->getStubBuilder(ShopAdapter::class)
+            ->onlyMethods(['isShopEditionNamespace'])
+            ->getStub();
 
         $shopAdapter->method('isShopEditionNamespace')
             ->willReturn(false);

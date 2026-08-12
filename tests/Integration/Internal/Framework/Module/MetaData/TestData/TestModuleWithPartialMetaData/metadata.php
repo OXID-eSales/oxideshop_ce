@@ -15,6 +15,6 @@ $sMetadataVersion = '2.0';
 $aModule = [
     'extend' => [
         Payment::class => \OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\MetaData\TestData\TestModuleWithPartialMetaData\Payment::class,
-        'oxArticle'                                        => Article::class
+        \OxidEsales\Eshop\Application\Model\Article::class => Article::class
     ],
 ];

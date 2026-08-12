@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxDb;
 use OxidEsales\Eshop\Core\Str;
 
 /**
@@ -22,13 +20,6 @@ class SelectList extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel impleme
      * @var array
      */
     protected $_aFieldList = null;
-
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxselectlist';
 
     /**
      * Selections array

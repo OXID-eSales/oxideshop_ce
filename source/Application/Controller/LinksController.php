@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
+use OxidEsales\Eshop\Application\Model\Links;
 
 /**
  * Interesting, useful links window.
@@ -42,7 +42,7 @@ class LinksController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             $this->_oLinksList = false;
             // Load links
             $oLinksList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $oLinksList->init("oxlinks");
+            $oLinksList->init(Links::class);
             $oLinksList->getList();
             $this->_oLinksList = $oLinksList;
         }

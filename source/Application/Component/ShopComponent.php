@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Component;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
 
 /**
  * Translarent shop manager (executed automatically), sets
@@ -16,7 +15,7 @@ use oxRegistry;
  *
  * @subpackage oxcmp
  */
-class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
+class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController implements ViewDataKeyProviderInterface
 {
     /**
      * Marking object as component
@@ -24,6 +23,11 @@ class ShopComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @var bool
      */
     protected $_blIsComponent = true;
+
+    public function getViewDataKey(): string
+    {
+        return 'oxcmp_shop';
+    }
 
     /**
      * Executes parent::render() and returns active shop object.

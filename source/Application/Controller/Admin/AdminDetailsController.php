@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\TextEditorHandler;
+use OxidEsales\Eshop\Application\Model\Content;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
@@ -217,7 +218,15 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         $sFolder = Registry::getRequest()->getRequestEscapedParameter('setfolder');
         $sFolderClass = Registry::getRequest()->getRequestEscapedParameter('folderclass');
 
-        if ($sFolderClass == 'oxcontent' && $sFolder == 'CMSFOLDER_NONE') {
+        if (!$this->isSupportedFolderClass($sFolderClass)) {
+            Registry::getLogger()->error(
+                'changeFolder: unsupported folderclass "' . $sFolderClass . '", expected a fully qualified class name'
+            );
+
+            return;
+        }
+
+        if ($sFolderClass == Content::class && $sFolder == 'CMSFOLDER_NONE') {
             $sFolder = '';
         }
 
@@ -226,6 +235,11 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
             $oObject->{$oObject->getCoreTableName() . '__oxfolder'} = new Field($sFolder);
             $oObject->save();
         }
+    }
+
+    private function isSupportedFolderClass(?string $folderClass): bool
+    {
+        return $folderClass !== null && str_contains($folderClass, '\\') && class_exists($folderClass);
     }
 
     /**

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Price;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -41,7 +42,7 @@ final class PriceTest extends IntegrationTestCase
     {
         $basket = new BasketConstruct();
         // create user if specified
-        $oUser = $basket->createObj($testCase['user'] ?? [], 'oxuser', 'oxuser');
+        $oUser = $basket->createObj($testCase['user'] ?? [], User::class, 'oxuser');
         // create group and assign
         $basket->createGroup($testCase['group'] ?? []);
         // user login

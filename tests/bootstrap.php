@@ -7,7 +7,6 @@
 
 declare(strict_types=1);
 
-use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload;
 use OxidEsales\EshopCommunity\Core\Autoload\ModuleAutoload;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\DotenvLoader;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
@@ -18,7 +17,6 @@ const VENDOR_PATH = INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . DI
 define('OX_BASE_PATH', Path::join(INSTALLATION_ROOT_PATH, 'source') . DIRECTORY_SEPARATOR);
 
 require VENDOR_PATH . DIRECTORY_SEPARATOR . 'autoload.php';
-spl_autoload_register([BackwardsCompatibilityAutoload::class, 'autoload']);
 spl_autoload_register([ModuleAutoload::class, 'autoload']);
 
 require_once Path::join(OX_BASE_PATH, 'oxfunctions.php');

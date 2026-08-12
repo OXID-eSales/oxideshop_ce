@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Discount;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -43,7 +43,7 @@ class DiscountList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxdiscount');
+        parent::__construct(Discount::class);
     }
 
     /**

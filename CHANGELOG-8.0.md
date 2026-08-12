@@ -17,6 +17,12 @@
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 
 ### Removed
+- The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)
+  - `BaseModel::getClassName()` and `BaseModel::$_sClassName`
+  - `UtilsObject::getClassAliasName()`
+  - `Registry::getStorageKey()`
+  - `BasicContextInterface::getBackwardsCompatibilityClassMap()`
+  - The `$classAlias` parameter of `ModuleChainsGenerator::createClassChain()`
 - The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support

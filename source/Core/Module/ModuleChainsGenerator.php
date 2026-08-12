@@ -22,19 +22,15 @@ class ModuleChainsGenerator
     /**
      * Creates given class chains.
      *
-     * @param string $className  Class name.
-     * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
+     * @param string $className Class name.
      *
      * @return string
      */
-    public function createClassChain($className, $classAlias = null)
+    public function createClassChain($className)
     {
-        if (!$classAlias) {
-            $classAlias = $className;
-        }
-        $activeChain = $this->getActiveChain($className, $classAlias);
+        $activeChain = $this->getActiveChain($className);
         if (!empty($activeChain)) {
-            $className = $this->createClassExtensions($activeChain, $classAlias);
+            $className = $this->createClassExtensions($activeChain, $className);
         }
 
         return $className;
@@ -43,32 +39,27 @@ class ModuleChainsGenerator
     /**
      * Assembles class chains.
      *
-     * @param string $className  Class name.
-     * @param string $classAlias Class alias, used for searching module extensions. Class is used if no alias given.
+     * @param string $className Class name.
      *
      * @return array
      */
-    public function getActiveChain($className, $classAlias = null)
+    public function getActiveChain($className)
     {
-        return $this->getFullChain($className, $classAlias);
+        return $this->getFullChain($className);
     }
 
     /**
      * Build full class chain.
      *
      * @param string $className
-     * @param string $classAlias
      *
      * @return array
      */
-    public function getFullChain($className, $classAlias)
+    public function getFullChain($className)
     {
         $chain = ContainerFacade::get(ActiveModulesDataProviderBridgeInterface::class)->getClassExtensions();
-        $classChain = $chain[$className] ?? [];
 
-        return $classAlias && $classAlias !== $className
-            ? array_merge($classChain, $this->getChainForBackwardsCompatibilityClassAlias($chain, $classAlias))
-            : $classChain;
+        return $chain[$className] ?? [];
     }
 
     /**
@@ -162,7 +153,7 @@ class ModuleChainsGenerator
         $currentClass = $requestedClass;
         $safetyCount = 0;
         do {
-            if (($currentClass == "oxconfig") || ($currentClass == \OxidEsales\Eshop\Core\Config::class)) {
+            if ($currentClass == \OxidEsales\Eshop\Core\Config::class) {
                 $isConfigClass = true;
                 break;
             }
@@ -196,10 +187,5 @@ class ModuleChainsGenerator
         $message = sprintf('Module class %s not found. Module ID %s', $moduleClass, $moduleId);
         $exception = new \OxidEsales\Eshop\Core\Exception\SystemComponentException($message);
         \OxidEsales\Eshop\Core\Registry::getLogger()->error($exception->getMessage(), [$exception]);
-    }
-
-    private function getChainForBackwardsCompatibilityClassAlias(array $chain, string $classAlias): array
-    {
-        return array_change_key_case($chain)[strtolower($classAlias)] ?? [];
     }
 }

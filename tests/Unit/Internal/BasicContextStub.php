@@ -129,11 +129,6 @@ class BasicContextStub implements BasicContextInterface
         return [$this->getDefaultShopId()];
     }
 
-    public function getBackwardsCompatibilityClassMap(): array
-    {
-        return $this->basicContext->getBackwardsCompatibilityClassMap();
-    }
-
     public function getProjectConfigurationDirectory(): string
     {
         return $this->projectConfigurationDirectory ?? $this->basicContext->getProjectConfigurationDirectory();

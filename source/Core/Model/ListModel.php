@@ -264,7 +264,7 @@ class ListModel extends \OxidEsales\Eshop\Core\Base implements \ArrayAccess, \It
      *
      * @var string
      */
-    protected $_sObjectsInListName = 'oxBase';
+    protected $_sObjectsInListName = \OxidEsales\Eshop\Core\Model\BaseModel::class;
 
     /**
      * Core table name

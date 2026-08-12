@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Review;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -98,7 +99,7 @@ class ArticleReview extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         // all reviews
         $reviewList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $reviewList->init("oxreview");
+        $reviewList->init(Review::class);
         $reviewList->selectString($query);
 
         return $reviewList;

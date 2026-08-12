@@ -34,13 +34,6 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     protected $_aContentCats = [];
 
     /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxcategory';
-
-    /**
      * number of articles in the current category
      *
      * @var int

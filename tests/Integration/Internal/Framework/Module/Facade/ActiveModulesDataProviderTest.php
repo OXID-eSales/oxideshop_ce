@@ -151,8 +151,8 @@ final class ActiveModulesDataProviderTest extends IntegrationTestCase
 
         $this->assertEquals(
             [
-                'shopClass'        => ['moduleExtensionClassName1'],
-                'anotherShopClass' => ['moduleExtensionClassName2'],
+                'Vendor\TestModule\ShopClass'        => ['moduleExtensionClassName1'],
+                'Vendor\TestModule\AnotherShopClass' => ['moduleExtensionClassName2'],
             ],
             $activeModulesDataProvider->getClassExtensions()
         );
@@ -188,20 +188,20 @@ final class ActiveModulesDataProviderTest extends IntegrationTestCase
             ->setModuleSource($this->activeModuleSource)
             ->addController(new Controller('activeController1', 'activeControllerNamespace1'))
             ->addController(new Controller('activeController2', 'activeControllerNamespace2'))
-            ->addClassExtension(new ClassExtension('shopClass', 'moduleExtensionClassName1'))
+            ->addClassExtension(new ClassExtension('Vendor\TestModule\ShopClass', 'moduleExtensionClassName1'))
             ->addClassExtension(
                 new ClassExtension(
-                    'anotherShopClass',
+                    'Vendor\TestModule\AnotherShopClass',
                     'moduleExtensionClassName2'
                 )
             );
 
         $chain = new ClassExtensionsChain();
-        $chain->addExtension(new ClassExtension('shopClass', 'moduleExtensionClassName1'));
-        $chain->addExtension(new ClassExtension('anotherShopClass', 'moduleExtensionClassName2'));
+        $chain->addExtension(new ClassExtension('Vendor\TestModule\ShopClass', 'moduleExtensionClassName1'));
+        $chain->addExtension(new ClassExtension('Vendor\TestModule\AnotherShopClass', 'moduleExtensionClassName2'));
         $chain->setChain([
-            'shopClass'        => ['moduleExtensionClassName1'],
-            'anotherShopClass' => ['moduleExtensionClassName2'],
+            'Vendor\TestModule\ShopClass'        => ['moduleExtensionClassName1'],
+            'Vendor\TestModule\AnotherShopClass' => ['moduleExtensionClassName2'],
         ]);
 
         $inactiveModule = new ModuleConfiguration();

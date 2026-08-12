@@ -7,9 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Groups;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
-use oxDb;
 
 /**
  * Voucher serie manager.
@@ -23,11 +22,6 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var object
      */
     protected $_oGroups = null;
-
-    /**
-     * @var string name of current class
-     */
-    protected $_sClassName = 'oxvoucherserie';
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
@@ -67,7 +61,7 @@ class VoucherSerie extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($this->_oGroups === null) {
             $this->_oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $this->_oGroups->init('oxgroups');
+            $this->_oGroups->init(Groups::class);
             $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
             $sViewName = $tableViewNameGenerator->getViewName("oxgroups");
             $sSelect = "select gr.* from {$sViewName} as gr, oxobject2group as o2g where

@@ -43,7 +43,7 @@ class ShopSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfigu
             . " group by oxobjectid order by oxstdurl";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oList->init('oxbase', 'oxseo');
+        $oList->init(\OxidEsales\Eshop\Core\Model\BaseModel::class, 'oxseo');
         $oList->selectString($sQ, [
             'oxshopid' => $oShop->getId()
         ]);

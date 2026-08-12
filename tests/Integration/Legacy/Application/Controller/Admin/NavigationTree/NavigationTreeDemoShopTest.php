@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Application\Control
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
+use OxidEsales\Eshop\Application\Controller\Admin\NavigationTree;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -39,7 +40,7 @@ class NavigationTreeDemoShopTest extends IntegrationTestCase
     {
         $this->setParameter('oxid_esales.demo_shop_mode', $isDemoShop);
 
-        $navTree = oxNew('oxNavigationTree');
+        $navTree = oxNew(NavigationTree::class);
         $domMenuXml = $this->getDomMenuXml();
 
         $xPath = new DomXPath($domMenuXml);
@@ -65,7 +66,7 @@ class NavigationTreeDemoShopTest extends IntegrationTestCase
         $dom->appendChild(new DOMElement('OX'));
         $xPath = new DOMXPath($dom);
 
-        oxNew('oxNavigationTree')->mergeNodes(
+        oxNew(NavigationTree::class)->mergeNodes(
             $dom->documentElement,
             $menuDom->documentElement,
             $xPath,

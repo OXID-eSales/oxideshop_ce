@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityClassMapProvider;
-
 /**
  * Object registry design pattern implementation. Stores the instances of objects
  */
@@ -22,20 +20,9 @@ class Registry
     protected static $instances = [];
 
     /**
-     * Hold BC class to Unified Namespace class map
-     *
-     * @var null|array
-     */
-    protected static $backwardsCompatibilityClassMap = null;
-
-    /**
      * Instance getter. Return an existing or new instance for a given class name.
      * Consider using the getter methods over the generic Registry::get() method.
      * In order to avoid issues with different shop editions, the given class name must be from the Unified Namespace.
-     *
-     * For reasons of backwards compatibility old class names like 'oxconfig' are still supported and equivalent
-     * to the corresponding class name from the Unified Namespace, as they store and retrieve the same instances.
-     * But be aware, that support for old class names will be dropped in the future.
      *
      * @template T
      * @param class-string<T> $className The class name from the Unified Namespace.
@@ -47,9 +34,7 @@ class Registry
      */
     public static function get($className)
     {
-        $key = self::getStorageKey($className);
-
-        return self::getObject($key);
+        return self::getObject($className);
     }
 
     /**
@@ -64,15 +49,13 @@ class Registry
      */
     public static function set($className, $instance)
     {
-        $key = self::getStorageKey($className);
-
         if (is_null($instance)) {
-            unset(self::$instances[$key]);
+            unset(self::$instances[$className]);
 
             return;
         }
 
-        self::$instances[$key] = $instance;
+        self::$instances[$className] = $instance;
 
         return;
     }
@@ -350,45 +333,7 @@ class Registry
      */
     public static function instanceExists($className)
     {
-        $key = self::getStorageKey($className);
-
-        return isset(self::$instances[$key]);
-    }
-
-    /**
-     * Get backwardsCompatibilityClassMap
-     *
-     * @return array
-     */
-    public static function getBackwardsCompatibilityClassMap()
-    {
-        if (is_null(self::$backwardsCompatibilityClassMap)) {
-            $classMap = (new BackwardsCompatibilityClassMapProvider())->getMap();
-            self::$backwardsCompatibilityClassMap = $classMap;
-        }
-
-        return self::$backwardsCompatibilityClassMap;
-    }
-
-    /**
-     * Translate a given old class name like 'oxconfig' into a storage key as known by the Registry.
-     * If a new class name is used, the method just returns it as it is.
-     *
-     * @param string $className Class name to be converted.
-     *
-     * @return string
-     * @deprecated will be removed in v8.0.
-     */
-    public static function getStorageKey($className)
-    {
-        $key = $className;
-
-        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
-            $bcMap = self::getBackwardsCompatibilityClassMap();
-            $key = isset($bcMap[strtolower($key)]) ? $bcMap[strtolower($key)] : strtolower($key);
-        }
-
-        return $key;
+        return isset(self::$instances[$className]);
     }
 
     /**
@@ -396,7 +341,6 @@ class Registry
      * IMPORTANT: UtilsObject is not delivered from Registry::instances this way, so Registry::set
      *            will have no effect on which UtilsObject is delivered.
      *            Also Registry::instanceExists will always return false for UtilsObject.
-     * This does only affect BC class name and unified namespace class names, not the edition own classes atm.
      *
      * @param string $className Class name.
      *
@@ -404,7 +348,7 @@ class Registry
      */
     protected static function createObject($className)
     {
-        if (('oxutilsobject' === strtolower($className)) || \OxidEsales\Eshop\Core\UtilsObject::class === $className) {
+        if (\OxidEsales\Eshop\Core\UtilsObject::class === $className) {
             $object = \OxidEsales\Eshop\Core\UtilsObject::getInstance();
         } else {
             $object = \oxNew($className);

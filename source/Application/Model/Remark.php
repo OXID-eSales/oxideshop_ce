@@ -7,21 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
-
 /**
  * Remark manager.
  */
 class Remark extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxremark';
-
     /**
      * Skip update fields
      *

@@ -7,9 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxObjectException;
+use OxidEsales\Eshop\Core\Exception\ObjectException;
 
 use function array_key_exists;
 
@@ -38,7 +37,7 @@ class VatSelector extends \OxidEsales\Eshop\Core\Base
      * @param \OxidEsales\Eshop\Application\Model\User $oUser        given  user object
      * @param bool                                     $blCacheReset reset cache
      *
-     * @throws oxObjectException if wrong country
+     * @throws ObjectException if wrong country
      * @return double|false
      */
     public function getUserVat(\OxidEsales\Eshop\Application\Model\User $oUser, $blCacheReset = false)

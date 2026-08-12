@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use OxidEsales\Eshop\Application\Controller\ContentController as ShopContentController;
 use OxidEsales\EshopCommunity\Tests\Codeception\Support\Data\modules\testModule\Controller\ContentController;
 
 $sMetadataVersion = '2.1';
@@ -19,7 +20,7 @@ $aModule = [
     'version' => '1.0',
     'author' => 'OXID',
     'extend' => [
-        'content' => ContentController::class
+        ShopContentController::class => ContentController::class
     ],
     'settings' => [
         /** Group of empty values */

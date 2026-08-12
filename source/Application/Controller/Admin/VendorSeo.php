@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Vendor;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -73,7 +74,7 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
      */
     protected function getType()
     {
-        return 'oxvendor';
+        return Vendor::class;
     }
 
     /**

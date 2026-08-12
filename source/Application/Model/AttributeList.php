@@ -7,10 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Attribute;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
 use stdClass;
 
 /**
@@ -23,7 +22,7 @@ class AttributeList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxattribute');
+        parent::__construct(Attribute::class);
     }
 
     /**

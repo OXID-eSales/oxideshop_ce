@@ -204,7 +204,7 @@ class AccountController extends \OxidEsales\Eshop\Application\Controller\Fronten
         // in case source class is provided - redirecting back to it with all default parameters
         if (
             ($sourceClass = Registry::getRequest()->getRequestEscapedParameter("sourcecl")) &&
-            $this->_oaComponents['oxcmp_user']->getLoginStatus() === USER_LOGIN_SUCCESS
+            $this->_oaComponents[\OxidEsales\Eshop\Application\Component\UserComponent::class]->getLoginStatus() === USER_LOGIN_SUCCESS
         ) {
             $redirectUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopUrl() . 'index.php?cl=' . rawurlencode($sourceClass);
 

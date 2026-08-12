@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -20,7 +20,7 @@ class UserAddressList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxaddress');
+        parent::__construct(Address::class);
     }
 
     /**

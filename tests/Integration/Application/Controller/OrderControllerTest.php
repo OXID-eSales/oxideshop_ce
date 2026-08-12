@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller;
 
 use OxidEsales\Eshop\Application\Controller\OrderController;
 use OxidEsales\Eshop\Application\Model\Basket;
+use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
@@ -74,7 +75,7 @@ final class OrderControllerTest extends IntegrationTestCase
     private function prepareUserStub(): void
     {
         Registry::getConfig()->setConfigParam('blEnableIntangibleProdAgreement', false);
-        $user = oxNew('oxUser');
+        $user = oxNew(User::class);
         $user->oxuser__oxusername = new Field('some-user-name', Field::T_RAW);
         $user->oxuser__oxpassword = new Field('some-user-pass', Field::T_RAW);
         $user->save();

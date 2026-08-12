@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxRegistry;
-use oxField;
+use OxidEsales\Eshop\Application\Model\Manufacturer;
 
 /**
  * Manufacturer list manager.
@@ -50,7 +49,7 @@ class ManufacturerList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function __construct()
     {
         $this->setShowManufacturerArticleCnt(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('bl_perfShowActionCatArticleCnt'));
-        parent::__construct('oxmanufacturer');
+        parent::__construct(Manufacturer::class);
     }
 
     /**

@@ -7,12 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
-use oxField;
 use OxidEsales\Eshop\Core\Str;
 
 /**
@@ -21,13 +18,6 @@ use OxidEsales\Eshop\Core\Str;
  */
 class Attribute extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxattribute';
-
     /**
      * Selected attribute value
      *

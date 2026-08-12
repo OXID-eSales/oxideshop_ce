@@ -43,8 +43,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\Dao\MetaDataProvider
-    arguments:
-      $context: '@OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface'
 
   OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataToModuleConfigurationDataMapperInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Module\MetaData\DataMapper\MetaDataMapper

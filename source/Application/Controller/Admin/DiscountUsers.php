@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Groups;
 use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
@@ -28,7 +29,7 @@ class DiscountUsers extends \OxidEsales\Eshop\Application\Controller\Admin\Admin
 
         // all usergroups
         $oGroups = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oGroups->init('oxgroups');
+        $oGroups->init(Groups::class);
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $oGroups->selectString("select * from " . $tableViewNameGenerator->getViewName("oxgroups", $this->_iEditLang));
 

@@ -618,7 +618,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         if ($this->isDebugMode()) {
             Registry::getUtilsView()->addErrorToDisplay($exception);
-            $this->process('exceptionError', 'displayExceptionError');
+            $this->process($this->getControllerClass('exceptionerror'), 'displayExceptionError');
         } else {
             Registry::getUtils()->redirect(Registry::getConfig()->getShopHomeUrl() . 'cl=start');
         }
@@ -656,7 +656,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
         if ($this->isDebugMode()) {
             Registry::getUtilsView()->addErrorToDisplay($exception);
-            $this->process('exceptionError', 'displayExceptionError');
+            $this->process($this->getControllerClass('exceptionerror'), 'displayExceptionError');
         }
     }
 

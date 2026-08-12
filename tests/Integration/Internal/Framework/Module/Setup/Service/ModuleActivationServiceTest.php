@@ -212,13 +212,13 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
             )
             ->addClassExtension(
                 new ClassExtension(
-                    'originalClassNamespace',
+                    'Vendor\TestModule\OriginalClassNamespace',
                     'moduleClassNamespace'
                 )
             )
             ->addClassExtension(
                 new ClassExtension(
-                    'otherOriginalClassNamespace',
+                    'Vendor\TestModule\OtherOriginalClassNamespace',
                     'moduleClassNamespace'
                 )
             );
@@ -246,7 +246,7 @@ final class ModuleActivationServiceTest extends IntegrationTestCase
     {
         $chain = new ClassExtensionsChain();
         $chain->setChain([
-            'originalClassNamespace' => ['moduleClassNamespace'],
+            'Vendor\TestModule\OriginalClassNamespace' => ['moduleClassNamespace'],
         ]);
 
         $shopConfiguration = new ShopConfiguration();

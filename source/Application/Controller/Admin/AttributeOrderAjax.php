@@ -59,7 +59,7 @@ class AttributeOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin\
         $sSelect = "select * from oxcategory2attribute where oxobjectid = :oxobjectid order by oxsort";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oList->init("oxbase", "oxcategory2attribute");
+        $oList->init(\OxidEsales\Eshop\Core\Model\BaseModel::class, "oxcategory2attribute");
         $oList->selectString($sSelect, [
             'oxobjectid' => $sSelId
         ]);

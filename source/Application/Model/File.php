@@ -7,10 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-use oxRegistry;
-use oxDb;
-use oxException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Article files manager.
@@ -28,13 +25,6 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var string
      */
     protected $_sCoreTable = 'oxfiles';
-
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxfile';
 
     /**
      * Stores relative oxFile path from configs 'sDownloadsDir'
@@ -87,7 +77,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param int $sFileIndex File index
      *
-     * @throws oxException Throws exception if file wasn't moved or if rights wasn't changed.
+     * @throws StandardException Throws exception if file wasn't moved or if rights wasn't changed.
      */
     public function processFile($sFileIndex)
     {
@@ -109,7 +99,7 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      *
      * @param array $aFileInfo File info array
      *
-     * @throws oxException Throws exception if file wasn't uploaded successfully.
+     * @throws StandardException Throws exception if file wasn't uploaded successfully.
      */
     protected function checkArticleFile($aFileInfo)
     {

@@ -9,19 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Legacy\Modules\TestData\modules\with_everything\Event;
 
-use oxRegistry;
+use OxidEsales\Eshop\Core\Registry;
 
 class MyEvents
 {
     public static function onActivate(): void
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = Registry::getConfig();
         $oConfig->setConfigParam('sTestActivateEvent', 'Activate');
     }
 
     public static function onDeactivate(): void
     {
-        $oConfig = oxRegistry::getConfig();
+        $oConfig = Registry::getConfig();
         $oConfig->setConfigParam('sTestDeactivateEvent', 'Deactivate');
     }
 }

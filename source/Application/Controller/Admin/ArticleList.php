@@ -8,6 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\ArticleList as ArticleListModel;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\ListModel;
@@ -28,14 +29,14 @@ class ArticleList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminLi
      *
      * @var string
      */
-    protected $_sListClass = 'oxarticle';
+    protected $_sListClass = Article::class;
 
     /**
      * Type of list.
      *
      * @var string
      */
-    protected $_sListType = 'oxarticlelist';
+    protected $_sListType = ArticleListModel::class;
 
     /**
      * Collects articles base data and passes them according to filtering rules,

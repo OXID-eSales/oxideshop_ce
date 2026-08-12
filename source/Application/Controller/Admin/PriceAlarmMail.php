@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxDb;
-
 /**
  * Admin article main pricealarm manager.
  * Performs collection and updatind (on user submit) main item information.

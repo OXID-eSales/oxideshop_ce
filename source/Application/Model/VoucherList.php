@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Voucher;
+
 /**
  * Voucher list manager.
  */
@@ -17,6 +19,6 @@ class VoucherList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxvoucher');
+        parent::__construct(Voucher::class);
     }
 }

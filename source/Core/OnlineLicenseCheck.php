@@ -8,7 +8,6 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use stdClass;
-use oxException;
 
 /**
  * Performs Online License Key check.

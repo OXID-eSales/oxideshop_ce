@@ -18,13 +18,6 @@ use OxidEsales\Eshop\Core\Registry;
 class Content extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
     /**
-     * Current class name.
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxcontent';
-
-    /**
      * Seo article urls for languages.
      *
      * @var array

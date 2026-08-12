@@ -40,7 +40,7 @@ define('USER_LOGOUT', 3);
  *
  * @subpackage oxcmp
  */
-class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
+class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController implements ViewDataKeyProviderInterface
 {
     /**
      * Boolean - if user is new or not.
@@ -48,6 +48,11 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @var bool
      */
     protected $_blIsNewUser = false;
+
+    public function getViewDataKey(): string
+    {
+        return 'oxcmp_user';
+    }
 
     /**
      * Marking object as component

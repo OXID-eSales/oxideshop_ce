@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
+use OxidEsales\Eshop\Application\Model\Content;
 
 /**
  * Content seo config class
@@ -21,7 +21,7 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
      */
     protected function getType()
     {
-        return 'oxcontent';
+        return Content::class;
     }
 
     /**

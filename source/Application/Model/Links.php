@@ -7,21 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-
 /**
  * Links manager.
  * Collects stored in DB links data (URL, description).
  */
 class Links extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxlinks';
-
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */

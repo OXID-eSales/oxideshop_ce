@@ -14,7 +14,7 @@ use OxidEsales\Eshop\Core\Registry;
  *
  * @subpackage oxcmp
  */
-class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
+class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController implements ViewDataKeyProviderInterface
 {
     /**
      * Array of available currencies.
@@ -22,6 +22,11 @@ class CurrencyComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @var array
      */
     public $aCurrencies = null;
+
+    public function getViewDataKey(): string
+    {
+        return 'oxcmp_cur';
+    }
 
     /**
      * Active currency object.

@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Core\GenericImport\ImportObject;
 
-use oxI18n;
-
 /**
  * Import object for Article Extends.
  */
@@ -18,7 +16,7 @@ class ArticleExtends extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\I
     protected $tableName = 'oxartextends';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxI18n';
+    protected $shopObjectName = \OxidEsales\Eshop\Core\Model\MultiLanguageModel::class;
 
     /**
      * Creates shop object.

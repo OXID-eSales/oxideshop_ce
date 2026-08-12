@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Discount;
+use OxidEsales\Eshop\Application\Model\DiscountList as DiscountListModel;
+
 /**
  * Admin discount list manager.
  * Collects delivery base information (description), there is ability to
@@ -27,14 +30,14 @@ class DiscountList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @var string
      */
-    protected $_sListClass = 'oxdiscount';
+    protected $_sListClass = Discount::class;
 
     /**
      * Type of list.
      *
      * @var string
      */
-    protected $_sListType = 'oxdiscountlist';
+    protected $_sListType = DiscountListModel::class;
 
     /**
      * Default SQL sorting parameter (default null).

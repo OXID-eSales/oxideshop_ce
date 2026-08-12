@@ -7,21 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
-
 /**
  * Group manager.
  * Base class for user groups. Does nothing special yet.
  */
 class Groups extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Name of current class
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxgroups';
-
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */

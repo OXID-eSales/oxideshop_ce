@@ -8,11 +8,14 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Application\Model\CompanyVatIn;
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\CompanyVatInValidator;
 use OxidEsales\Eshop\Core\Exception\ArticleInputException;
 use OxidEsales\Eshop\Core\Exception\InputException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\UserException;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -279,7 +282,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     {
         $fields = is_array($fields) ? $fields : [];
         foreach ($fields as $sKey => $sValue) {
-            $object->$sKey = oxNew('oxField', $sValue);
+            $object->$sKey = oxNew(Field::class, $sValue);
         }
 
         return $object;
@@ -342,7 +345,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
                 $vatInValidator = $this->getCompanyVatInValidator($country);
 
                 /** @var \OxidEsales\Eshop\Application\Model\CompanyVatIn $oVatIn */
-                $oVatIn = oxNew('oxCompanyVatIn', $invAddress['oxuser__oxustid']);
+                $oVatIn = oxNew(CompanyVatIn::class, $invAddress['oxuser__oxustid']);
 
                 if (!$vatInValidator->validate($oVatIn)) {
                     /** @var \OxidEsales\Eshop\Core\Exception\InputException $exception */
@@ -585,7 +588,7 @@ class InputValidator extends \OxidEsales\Eshop\Core\Base
     {
         if (is_null($this->_oCompanyVatInValidator)) {
             /** @var \OxidEsales\Eshop\Core\CompanyVatInValidator $vatInValidator */
-            $vatInValidator = oxNew('oxCompanyVatInValidator', $country);
+            $vatInValidator = oxNew(CompanyVatInValidator::class, $country);
 
             /** @var \OxidEsales\Eshop\Core\CompanyVatInCountryChecker $validator */
             $validator = oxNew(\OxidEsales\Eshop\Core\CompanyVatInCountryChecker::class);

@@ -20,13 +20,6 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
 class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implements \OxidEsales\Eshop\Core\Contract\IUrl
 {
     /**
-     * Current object class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxRecommList';
-
-    /**
      * Article list
      *
      * @var string
@@ -260,7 +253,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $sIds = implode(",", DatabaseProvider::getDb()->quoteArray($aArticleIds));
 
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $oRecommList->init('oxrecommlist');
+            $oRecommList->init(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
 
             $iCnt = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('iNrofCrossellArticles');
 
@@ -354,7 +347,7 @@ class RecommendationList extends \OxidEsales\Eshop\Core\Model\BaseModel implemen
             $iNrofCatArticles = $iNrofCatArticles ? $iNrofCatArticles : 10;
 
             $oRecommList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $oRecommList->init('oxrecommlist');
+            $oRecommList->init(\OxidEsales\Eshop\Application\Model\RecommendationList::class);
             $sSelect = $this->getSearchSelect($sSearchStr);
             $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
             $oRecommList->selectString($sSelect);

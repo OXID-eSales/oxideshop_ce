@@ -8,11 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxView;
-use oxRegistry;
-use oxUBase;
-use oxDb;
-use oxCategory;
 
 /**
  * Seo encoder for articles

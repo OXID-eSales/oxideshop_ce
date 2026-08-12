@@ -16,13 +16,6 @@ use OxidEsales\EshopCommunity\Application\Controller\FrontendController;
 class Actions extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
     /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = "oxactions";
-
-    /**
      * Class constructor. Executes oxActions::init(), initiates parent constructor.
      */
     public function __construct()

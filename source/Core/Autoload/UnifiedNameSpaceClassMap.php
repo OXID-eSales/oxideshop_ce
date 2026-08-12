@@ -2193,18 +2193,6 @@ return [
         'isInterface'      => true,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Autoload\BackwardsCompatibilityAutoload'              => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Autoload\BackwardsCompatibilityAutoload::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\BackwardsCompatibleClassNameProvider'                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\BackwardsCompatibleClassNameProvider::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\Base'                                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Base::class,
         'isAbstract'       => false,

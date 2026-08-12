@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Wrapping;
+
 /**
  * Admin wrapping list manager.
  * Performs collection and managing (such as filtering or deleting) function.
@@ -19,7 +21,7 @@ class WrappingList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @var string
      */
-    protected $_sListClass = 'oxwrapping';
+    protected $_sListClass = Wrapping::class;
 
     /**
      * Default SQL sorting parameter (default null).

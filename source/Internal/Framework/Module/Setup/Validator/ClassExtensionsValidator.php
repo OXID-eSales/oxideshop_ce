@@ -29,9 +29,13 @@ class ClassExtensionsValidator implements ModuleConfigurationValidatorInterface
     {
         if ($configuration->hasClassExtensions()) {
             foreach ($configuration->getClassExtensions() as $extension) {
-                if ($this->shopAdapter->isNamespace($extension->getShopClassName())) {
-                    $this->validateClassToBePatchedNamespace($extension->getShopClassName());
+                if (!$this->shopAdapter->isNamespace($extension->getShopClassName())) {
+                    throw new InvalidClassExtensionNamespaceException(
+                        'Module extension key must be a fully qualified class name, got: '
+                        . $extension->getShopClassName()
+                    );
                 }
+                $this->validateClassToBePatchedNamespace($extension->getShopClassName());
             }
         }
     }

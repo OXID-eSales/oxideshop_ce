@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-
 /**
  * Simple list object
  */

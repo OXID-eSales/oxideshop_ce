@@ -62,7 +62,7 @@ class SelectListOrderAjax extends \OxidEsales\Eshop\Application\Controller\Admin
         $sSelect = "select * from oxobject2selectlist where oxobjectid = :oxobjectid order by oxsort";
 
         $oList = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oList->init("oxbase", "oxobject2selectlist");
+        $oList->init(\OxidEsales\Eshop\Core\Model\BaseModel::class, "oxobject2selectlist");
         $oList->selectString($sSelect, [
             'oxobjectid' => $sSelId
         ]);

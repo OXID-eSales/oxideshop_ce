@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-
 /**
  * Admin systeminfo manager.
  * Returns template, that arranges two other templates ("delivery_list"

@@ -16,7 +16,7 @@ use OxidEsales\Eshop\Core\Registry;
  *
  * @subpackage oxcmp
  */
-class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
+class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController implements ViewDataKeyProviderInterface
 {
     /**
      * Marking object as component
@@ -24,6 +24,11 @@ class UtilsComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
      * @var bool
      */
     protected $_blIsComponent = true;
+
+    public function getViewDataKey(): string
+    {
+        return 'oxcmp_utils';
+    }
 
     /**
      * Adds/removes chosen article to/from article comparison list

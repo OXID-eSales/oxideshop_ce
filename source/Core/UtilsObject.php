@@ -45,9 +45,6 @@ class UtilsObject
      */
     protected static $_instance = null;
 
-    /** @var BackwardsCompatibleClassNameProvider */
-    private $classNameProvider = null;
-
     /** @var ModuleChainsGenerator */
     private $moduleChainsGenerator = null;
 
@@ -84,10 +81,7 @@ class UtilsObject
      */
     public static function setClassInstance($className, $instance)
     {
-        //Get storage key as the class might be aliased.
-        $storageKey = Registry::getStorageKey($className);
-
-        static::$_aClassInstances[$storageKey] = $instance;
+        static::$_aClassInstances[$className] = $instance;
     }
 
     /**
@@ -109,14 +103,6 @@ class UtilsObject
     {
         if ($className && isset(static::$_aInstanceCache[$className])) {
             unset(static::$_aInstanceCache[$className]);
-            return;
-        }
-
-        //Get storage key as the class might be aliased.
-        $storageKey = Registry::getStorageKey($className);
-
-        if ($className && isset(static::$_aInstanceCache[$storageKey])) {
-            unset(static::$_aInstanceCache[$storageKey]);
             return;
         }
 
@@ -145,15 +131,9 @@ class UtilsObject
     {
         $argumentsCount = count($arguments);
         $shouldUseCache = $this->shouldCacheObject($className, $arguments);
-        if (!\OxidEsales\Eshop\Core\NamespaceInformationProvider::isNamespacedClass($className)) {
-            $className = strtolower($className);
-        }
-
-        //Get storage key as the class might be aliased.
-        $storageKey = Registry::getStorageKey($className);
 
         if ($shouldUseCache) {
-            $cacheKey = ($argumentsCount) ? $storageKey . md5(serialize($arguments)) : $storageKey;
+            $cacheKey = ($argumentsCount) ? $className . md5(serialize($arguments)) : $className;
             if (isset(static::$_aInstanceCache[$cacheKey])) {
                 return clone static::$_aInstanceCache[$cacheKey];
             }
@@ -163,7 +143,6 @@ class UtilsObject
             $realClassName = $this->_aClassNameCache[$className];
         } else {
             $realClassName = $this->getClassName($className);
-            //expect __autoload() (oxfunctions.php) to do its job when class_exists() is called
             if (!class_exists($realClassName)) {
                 $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
                 /** Use setMessage here instead of passing it in constructor in order to test exception message */
@@ -197,49 +176,13 @@ class UtilsObject
     /**
      * Returns name of class file, according to class name.
      *
-     * @param string $classAlias Class name
+     * @param string $className Class name
      *
      * @return string
      */
-    public function getClassName($classAlias)
+    public function getClassName($className)
     {
-        $classNameProvider = $this->getClassNameProvider();
-
-        $class = $classNameProvider->getClassName($classAlias);
-        /**
-         * Backwards compatibility for ox... classes,
-         * when a class is instance build upon the unified namespace
-         */
-        if ($class == $classAlias) {
-            $classAlias = $classNameProvider->getClassAliasName($class);
-        }
-
-        return $this->getModuleChainsGenerator()->createClassChain($class, $classAlias);
-    }
-
-    /**
-     * Method returns class alias by given class name.
-     *
-     * @param string $className with namespace.
-     *
-     * @return string|null
-     * @deprecated will be removed in v8.0.
-     */
-    public function getClassAliasName($className)
-    {
-        return $this->getClassNameProvider()->getClassAliasName($className);
-    }
-
-    /**
-     * @return BackwardsCompatibleClassNameProvider
-     */
-    protected function getClassNameProvider()
-    {
-        if (is_null($this->classNameProvider)) {
-            $backwardsCompatibleClassMap = include 'Autoload/BackwardsCompatibilityClassMap.php';
-            $this->classNameProvider = new BackwardsCompatibleClassNameProvider($backwardsCompatibleClassMap);
-        }
-        return $this->classNameProvider;
+        return $this->getModuleChainsGenerator()->createClassChain($className);
     }
 
     /**

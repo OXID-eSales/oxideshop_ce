@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Remark;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -29,7 +30,7 @@ class OrderRemark extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
 
             // all remark
             $oRems = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $oRems->init("oxremark");
+            $oRems->init(Remark::class);
             $sUserIdField = 'oxorder__oxuserid';
             $sSelect = "select * from oxremark where oxparentid = :oxparentid order by oxcreate desc";
             $oRems->selectString($sSelect, [

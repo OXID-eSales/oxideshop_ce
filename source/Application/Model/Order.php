@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
+use OxidEsales\Eshop\Application\Model\OrderArticle;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 use OxidEsales\Eshop\Application\Model\Voucher as EshopVoucherModel;
 use Symfony\Component\HttpFoundation\Request;
@@ -179,13 +180,6 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_oPaymentPrice = null;
 
     /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxorder';
-
-    /**
      * Useage of seperate orders numbering for different shops
      *
      * @var bool
@@ -325,7 +319,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         // order articles
         $oArticles = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oArticles->init('oxorderarticle');
+        $oArticles->init(OrderArticle::class);
         $oArticles->selectString($sSelect, [
             'oxorderid' => (string) $this->getId()
         ]);

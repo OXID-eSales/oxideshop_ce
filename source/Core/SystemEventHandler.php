@@ -289,7 +289,7 @@ class SystemEventHandler
                 Registry::getConfig()
             ),
             oxNew(\OxidEsales\Eshop\Core\UtilsServer::class),
-            Registry::get("oxUtilsDate")->getTime()
+            Registry::getUtilsDate()->getTime()
         );
 
         return $appServerService;

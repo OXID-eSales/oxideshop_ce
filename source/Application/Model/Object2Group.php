@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 
@@ -18,9 +17,6 @@ class Object2Group extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
     /** @var boolean Load the relation even if from other shop */
     protected $_blDisableShopCheck = true;
-
-    /** @var string Current class name */
-    protected $_sClassName = 'oxobject2group';
 
     /**
      * Class constructor, initiates parent constructor (parent::oxBase()).

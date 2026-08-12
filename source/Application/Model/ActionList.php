@@ -7,9 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Actions;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
-use oxDb;
 
 /**
  * Promotion List manager.
@@ -21,7 +20,7 @@ class ActionList extends \OxidEsales\Eshop\Core\Model\ListModel
      *
      * @var string
      */
-    protected $_sObjectsInListName = 'oxactions';
+    protected $_sObjectsInListName = Actions::class;
 
     /**
      * Loads x last finished promotions

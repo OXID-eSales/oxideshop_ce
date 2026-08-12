@@ -19,13 +19,6 @@ use OxidEsales\Eshop\Core\Str;
 class OrderArticle extends BaseModel implements ArticleInterface
 {
     /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxorderarticle';
-
-    /**
      * Persisten info
      *
      * @var array

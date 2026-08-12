@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use oxException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 
 /**
  * Class makes call to given URL address and sends request parameter.
@@ -36,7 +36,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @param \OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest Object with request parameters
      *
-     * @throws oxException
+     * @throws StandardException
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
      */
     public function doRequest(\OxidEsales\Eshop\Core\OnlineLicenseCheckRequest $oRequest)
@@ -63,7 +63,7 @@ class OnlineLicenseCheckCaller extends \OxidEsales\Eshop\Core\OnlineCaller
      *
      * @param string $sRawResponse UnResponse from server
      *
-     * @throws oxException
+     * @throws StandardException
      *
      * @return \OxidEsales\Eshop\Core\OnlineLicenseCheckResponse
      */

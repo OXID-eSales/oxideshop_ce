@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\PriceAlarm;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -28,7 +29,7 @@ class PriceAlarmList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sListClass = 'oxpricealarm';
+    protected $_sListClass = PriceAlarm::class;
 
     /**
      * Default SQL sorting parameter (default null).

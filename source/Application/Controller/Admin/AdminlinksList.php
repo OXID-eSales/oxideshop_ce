@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Links;
+
 /**
  * Admin links collection.
  * Collects list of admin links. Links may be viewed by language, sorted by date,
@@ -27,7 +29,7 @@ class AdminlinksList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sListClass = 'oxlinks';
+    protected $_sListClass = Links::class;
 
     /**
      * Default SQL sorting parameter (default null).

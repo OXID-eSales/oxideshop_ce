@@ -28,11 +28,6 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
     protected $_blDisableShopCheck = true;
 
     /**
-     * @var string Name of current class
-     */
-    protected $_sClassName = 'oxvoucher';
-
-    /**
      * Class constructor, initiates parent constructor (parent::oxBase()).
      */
     public function __construct()

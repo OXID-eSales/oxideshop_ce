@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\OrderArticle;
 
 /**
  * Order article list manager.
@@ -19,7 +19,7 @@ class OrderArticleList extends \OxidEsales\Eshop\Core\Model\ListModel
      */
     public function __construct()
     {
-        parent::__construct('oxorderarticle');
+        parent::__construct(OrderArticle::class);
     }
 
     /**

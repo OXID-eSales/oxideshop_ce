@@ -19,7 +19,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_user' => 1];
+    protected $_aComponentNames = [\OxidEsales\Eshop\Application\Component\UserComponent::class => 1];
 
     /**
      * Current class template name.

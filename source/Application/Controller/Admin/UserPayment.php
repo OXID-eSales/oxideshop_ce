@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -180,7 +181,7 @@ class UserPayment extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDe
         if ($this->_oPaymentTypes == null) {
             // all paymenttypes
             $this->_oPaymentTypes = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-            $this->_oPaymentTypes->init("oxpayment");
+            $this->_oPaymentTypes->init(Payment::class);
             $oListObject = $this->_oPaymentTypes->getBaseObject();
             $oListObject->setLanguage(\OxidEsales\Eshop\Core\Registry::getLang()->getObjectTplLanguage());
             $this->_oPaymentTypes->getList();

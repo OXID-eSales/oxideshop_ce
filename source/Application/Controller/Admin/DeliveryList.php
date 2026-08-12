@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Delivery;
+use OxidEsales\Eshop\Application\Model\DeliveryList as DeliveryListModel;
+
 /**
  * Admin delivery list manager.
  * Collects delivery base information (description), there is ability to
@@ -20,14 +23,14 @@ class DeliveryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @var string
      */
-    protected $_sListClass = 'oxdelivery';
+    protected $_sListClass = Delivery::class;
 
     /**
      * Type of list.
      *
      * @var string
      */
-    protected $_sListType = 'oxdeliverylist';
+    protected $_sListType = DeliveryListModel::class;
 
     /**
      * Current class template name.

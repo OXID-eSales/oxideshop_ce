@@ -7,9 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
-use oxRegistry;
-use oxArticle;
-
 /**
  * Article box widget
  */
@@ -22,7 +19,11 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      *
      * @var array
      */
-    protected $_aComponentNames = ['oxcmp_user' => 1, 'oxcmp_basket' => 1, 'oxcmp_cur' => 1];
+    protected $_aComponentNames = [
+        \OxidEsales\Eshop\Application\Component\UserComponent::class   => 1,
+        \OxidEsales\Eshop\Application\Component\BasketComponent::class => 1,
+        \OxidEsales\Eshop\Application\Component\CurrencyComponent::class => 1,
+    ];
 
     /**
      * Current class template name.

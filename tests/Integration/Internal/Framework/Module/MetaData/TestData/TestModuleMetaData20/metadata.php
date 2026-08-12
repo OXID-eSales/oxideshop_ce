@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Payment;
 
 $sMetadataVersion = '2.0';
@@ -26,7 +27,7 @@ $aModule = [
     'email'       => 'info@oxid-esales.com',
     'extend'      => [
         Payment::class => 'TestModuleMetaData20\Payment',
-        'oxArticle'                                        => 'TestModuleMetaData20\Article',
+        Article::class => 'TestModuleMetaData20\Article',
     ],
     'controllers' => [
         'myvendor_mymodule_MyModuleController'      => 'TestModuleMetaData20\Controller',

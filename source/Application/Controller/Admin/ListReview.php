@@ -7,7 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxAdminList;
+use OxidEsales\Eshop\Application\Controller\Admin\AdminListController;
+use OxidEsales\Eshop\Application\Model\Review;
+use OxidEsales\Eshop\Core\Model\ListModel;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -21,14 +23,14 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
      *
      * @var string
      */
-    protected $_sListType = 'oxlist';
+    protected $_sListType = ListModel::class;
 
     /**
      * Name of chosen object class (default null).
      *
      * @var string
      */
-    protected $_sListClass = 'oxreview';
+    protected $_sListClass = Review::class;
 
     /**
      * Viewable list size getter
@@ -43,7 +45,7 @@ class ListReview extends \OxidEsales\Eshop\Application\Controller\Admin\ArticleL
     /** @inheritdoc */
     public function render()
     {
-        oxAdminList::render();
+        AdminListController::render();
 
         $this->_aViewData["menustructure"] = $this->getNavigation()->getDomXml()->documentElement->childNodes;
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);

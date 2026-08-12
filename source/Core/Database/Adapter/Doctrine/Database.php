@@ -13,7 +13,6 @@ use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\TransactionIsolationLevel;
 use InvalidArgumentException;
-use oxException;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\Exception\DatabaseConnectionException;
 use OxidEsales\Eshop\Core\Exception\DatabaseErrorException;
@@ -403,7 +402,7 @@ class Database implements DatabaseInterface
                 break;
         }
 
-        /** @var oxException $convertedException */
+        /** @var StandardException $convertedException */
         $convertedException = new $exceptionClass($message, $code, $exception);
 
         return $convertedException;
@@ -416,7 +415,7 @@ class Database implements DatabaseInterface
 
     protected function logException(\Exception $exception)
     {
-        /** The exception has to be converted into an instance of oxException in order to be logged like this */
+        /** The exception has to be converted into an instance of StandardException in order to be logged like this */
         $exception = $this->convertException($exception);
         Registry::getLogger()->error($exception->getMessage(), [$exception]);
     }

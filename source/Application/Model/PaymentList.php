@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
+use OxidEsales\Eshop\Application\Model\Payment;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -29,7 +29,7 @@ class PaymentList extends \OxidEsales\Eshop\Core\Model\ListModel
     public function __construct()
     {
         $this->setHomeCountry(\OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aHomeCountry'));
-        parent::__construct('oxpayment');
+        parent::__construct(Payment::class);
     }
 
     /**

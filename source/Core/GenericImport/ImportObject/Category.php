@@ -16,7 +16,7 @@ class Category extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportO
     protected $tableName = 'oxcategories';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxcategory';
+    protected $shopObjectName = \OxidEsales\Eshop\Application\Model\Category::class;
 
     /**
      * Issued before saving an object. can modify aData for saving.

@@ -7,6 +7,11 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Groups;
+use OxidEsales\Eshop\Application\Model\Object2Group;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Application\Model\RecommendationList;
+use OxidEsales\Eshop\Application\Model\UserPayment;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Email;
@@ -45,13 +50,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * @var object
      */
     protected $_oNewsSubscription = null;
-
-    /**
-     * Current object class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxuser';
 
     /**
      * User wish / notice list
@@ -362,7 +360,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sViewName = $tableViewNameGenerator->getViewName("oxgroups");
-        $this->_oGroups = oxNew(ListModel::class, 'oxgroups');
+        $this->_oGroups = oxNew(ListModel::class, Groups::class);
         $sSelect = "select {$sViewName}.* from {$sViewName} left join oxobject2group on oxobject2group.oxgroupsid = {$sViewName}.oxid
                      where oxobject2group.oxobjectid = :oxobjectid";
         $this->_oGroups->selectString($sSelect, [
@@ -514,7 +512,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
                 where oxuserid = :oxuserid ';
 
             $this->_oPayments = oxNew(ListModel::class);
-            $this->_oPayments->init('oxUserPayment');
+            $this->_oPayments->init(UserPayment::class);
             $this->_oPayments->selectString($sSelect, [
                 'oxuserid' => $sOXID
             ]);
@@ -732,7 +730,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getOrders($iLimit = false, $iPage = 0)
     {
         $oOrders = oxNew(ListModel::class);
-        $oOrders->init('oxorder');
+        $oOrders->init(Order::class);
 
         if ($iLimit !== false) {
             $oOrders->setSqlLimit($iLimit * $iPage, $iLimit);
@@ -974,7 +972,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
     {
         if ($sGroupID != null && $this->inGroup($sGroupID)) {
             $oGroups = oxNew(ListModel::class);
-            $oGroups->init('oxobject2group');
+            $oGroups->init(Object2Group::class);
             $sSelect = 'select * from oxobject2group
                 where oxobject2group.oxobjectid = :oxobjectid
                 and oxobject2group.oxgroupsid = :oxgroupsid ';
@@ -1828,7 +1826,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
 
         $oRecommList = oxNew(ListModel::class);
-        $oRecommList->init('oxrecommlist');
+        $oRecommList->init(RecommendationList::class);
         $oRecommList->setSqlLimit($iNrofCatArticles * $iActPage, $iNrofCatArticles);
         $iShopId = Registry::getConfig()->getShopId();
         $sSelect = 'select * from oxrecommlists

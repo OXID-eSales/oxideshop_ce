@@ -13,8 +13,6 @@ use Symfony\Component\Filesystem\Path;
 
 class MediaUrl extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    protected $_sClassName = 'oxmediaurls';
-
     public function __construct()
     {
         parent::__construct();

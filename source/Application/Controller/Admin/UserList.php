@@ -7,8 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use oxRegistry;
-use oxUser;
+use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Application\Model\UserList as UserListModel;
 
 /**
  * Admin user list manager.
@@ -22,7 +22,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @var string
      */
-    protected $_sListClass = 'oxuser';
+    protected $_sListClass = User::class;
 
     /**
      * Default SQL sorting parameter (default null).
@@ -36,7 +36,7 @@ class UserList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListC
      *
      * @var string
      */
-    protected $_sListType = 'oxuserlist';
+    protected $_sListType = UserListModel::class;
 
     /**
      * Current class template name.

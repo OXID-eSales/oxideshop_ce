@@ -18,6 +18,7 @@ DEFINE('ACTION_UPDATE_STOCK', 4);
 
 use Exception;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Exception\ObjectException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -56,14 +57,6 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * @var bool
      */
     protected $_blIsSimplyClonable = true;
-
-    /**
-     * Name of current class.
-     *
-     * @var string
-     * @deprecated will be removed in v8.0.
-     */
-    protected $_sClassName = 'oxbase';
 
     /**
      * Core database table name. $sCoreTable could be only original data table name and not view name.
@@ -487,17 +480,6 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns object class name
-     *
-     * @return string
-     * @deprecated will be removed in v8.0.
-     */
-    public function getClassName()
-    {
-        return $this->_sClassName;
-    }
-
-    /**
      * Return object core table name
      *
      * @return string
@@ -670,7 +652,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
     /**
      * Loads object data from DB (object data ID is passed to method). Returns
      * true on success.
-     * could throw oxObjectException F ?
+     * could throw ObjectException F ?
      *
      * @param string $oxid Object ID
      *
@@ -1434,7 +1416,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * the main table, it will not save any dependent tables, which might
      * be loaded through oxList.
      *
-     * @throws oxObjectException Throws on failure inserting
+     * @throws ObjectException Throws on failure inserting
      * @throws DatabaseException On database errors
      *
      * @return bool Will always return true. On failure an exception is thrown.

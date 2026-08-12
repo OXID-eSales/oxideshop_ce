@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Application\Component\Locator;
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
@@ -285,7 +286,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
                 break;
             default:
                 // can not be removed, as it is used for breadcrumb loading
-                $locator = oxNew('oxLocator', $this->getListType());
+                $locator = oxNew(Locator::class, $this->getListType());
                 $locator->setLocatorData($article, $this);
 
                 return $this->_sThisTemplate;
@@ -718,7 +719,7 @@ class ArticleDetailsController extends \OxidEsales\Eshop\Application\Controller\
     }
 
     /**
-     * Returns search title. It will be set in oxLocator
+     * Returns search title. It will be set in Locator
      *
      * @return string
      */

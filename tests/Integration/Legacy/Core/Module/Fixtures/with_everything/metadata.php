@@ -7,6 +7,10 @@
 
 declare(strict_types=1);
 
+use OxidEsales\Eshop\Application\Model\Article;
+use OxidEsales\Eshop\Application\Model\Order;
+use OxidEsales\Eshop\Application\Model\User;
+
 $sMetadataVersion = '2.1';
 
 $aModule = [
@@ -17,9 +21,9 @@ $aModule = [
     'version' => '1.0',
     'author' => 'OXID eSales AG',
     'extend' => [
-        'oxarticle' => 'with_everything/myarticle',
-        'oxuser' => 'with_everything/myuser',
-        'oxorder' => 'with_everything/myorder1',
+        Article::class => 'with_everything/myarticle',
+        User::class => 'with_everything/myuser',
+        Order::class => 'with_everything/myorder1',
     ],
     'blocks' => [
         [

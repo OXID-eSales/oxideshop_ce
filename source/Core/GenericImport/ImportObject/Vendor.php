@@ -16,5 +16,5 @@ class Vendor extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObj
     protected $tableName = 'oxvendor';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxvendor';
+    protected $shopObjectName = \OxidEsales\Eshop\Application\Model\Vendor::class;
 }

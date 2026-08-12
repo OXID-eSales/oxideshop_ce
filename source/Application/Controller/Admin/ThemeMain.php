@@ -8,9 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
-use oxRegistry;
-use oxTheme;
-use oxException;
 
 class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController
 {

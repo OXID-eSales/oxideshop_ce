@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Order;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -21,7 +22,7 @@ class OrderList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
      *
      * @var string
      */
-    protected $_sListClass = 'oxorder';
+    protected $_sListClass = Order::class;
 
     /**
      * Enable/disable sorting by DESC (SQL) (defaultfalse - disable).

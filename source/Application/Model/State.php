@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -15,13 +14,6 @@ use OxidEsales\Eshop\Core\TableViewNameGenerator;
  */
 class State extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxstate';
-
     /**
      * Class constructor, initiates parent constructor (parent::oxI18n()).
      */

@@ -7,7 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxDb;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
 /**
@@ -30,13 +29,6 @@ class Delivery extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     const CONDITION_TYPE_AMOUNT = 'a';
     const CONDITION_TYPE_SIZE = 's';
     const CONDITION_TYPE_WEIGHT = 'w';
-
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxdelivery';
 
     /**
      * Total count of product items which are covered by current delivery

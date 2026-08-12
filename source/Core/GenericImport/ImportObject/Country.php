@@ -16,5 +16,5 @@ class Country extends \OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportOb
     protected $tableName = 'oxcountry';
 
     /** @var string Shop object name. */
-    protected $shopObjectName = 'oxcountry';
+    protected $shopObjectName = \OxidEsales\Eshop\Application\Model\Country::class;
 }

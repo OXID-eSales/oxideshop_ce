@@ -15,7 +15,7 @@ use OxidEsales\Eshop\Core\Str;
  *
  * @subpackage oxcmp
  */
-class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
+class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseController implements ViewDataKeyProviderInterface
 {
     /**
      * More category object.
@@ -23,6 +23,11 @@ class CategoriesComponent extends \OxidEsales\Eshop\Core\Controller\BaseControll
      * @var object
      */
     protected $_oMoreCat = null;
+
+    public function getViewDataKey(): string
+    {
+        return 'oxcmp_categories';
+    }
 
     /**
      * Marking object as component

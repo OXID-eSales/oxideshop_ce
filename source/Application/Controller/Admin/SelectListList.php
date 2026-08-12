@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\SelectList;
+
 /**
  * Admin selectlist list manager.
  */
@@ -17,7 +19,7 @@ class SelectListList extends \OxidEsales\Eshop\Application\Controller\Admin\Admi
      *
      * @var string
      */
-    protected $_sListClass = 'oxselectlist';
+    protected $_sListClass = SelectList::class;
 
     /**
      * Current class template name.

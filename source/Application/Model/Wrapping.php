@@ -8,8 +8,6 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
-use oxRegistry;
-use oxDb;
 
 /**
  * Wrapping manager.
@@ -17,13 +15,6 @@ use oxDb;
  */
 class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
 {
-    /**
-     * Class name
-     *
-     * @var string name of current class
-     */
-    protected $_sClassName = 'oxwrapping';
-
     /**
      * Wrapping oxprice object.
      *
@@ -115,7 +106,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     {
         // load wrapping
         $oEntries = oxNew(\OxidEsales\Eshop\Core\Model\ListModel::class);
-        $oEntries->init('oxwrapping');
+        $oEntries->init(\OxidEsales\Eshop\Application\Model\Wrapping::class);
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $sWrappingViewName = $tableViewNameGenerator->getViewName('oxwrapping');
         $sSelect = "select * from $sWrappingViewName 

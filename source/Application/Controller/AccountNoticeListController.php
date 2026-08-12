@@ -7,8 +7,6 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxRegistry;
-
 /**
  * Current user notice list manager.
  * When user is logged in in this manager window he can modify

@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Category;
+use OxidEsales\Eshop\Application\Model\CategoryList as CategoryListModel;
 use OxidEsales\Eshop\Core\Registry;
 use stdClass;
 
@@ -23,14 +25,14 @@ class CategoryList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
      *
      * @var string
      */
-    protected $_sListClass = 'oxcategory';
+    protected $_sListClass = Category::class;
 
     /**
      * Type of list.
      *
      * @var string
      */
-    protected $_sListType = 'oxcategorylist';
+    protected $_sListType = CategoryListModel::class;
 
     /**
      * Returns sorting fields array

@@ -7,21 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
-use oxField;
-
 /**
  * Shopping basket item manager.
  * Manager class for shopping basket item (class may be overriden).
  */
 class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
 {
-    /**
-     * Current class name
-     *
-     * @var string
-     */
-    protected $_sClassName = 'oxuserbasketitem';
-
     /**
      * Article object assigned to userbasketitem
      *

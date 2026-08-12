@@ -85,4 +85,20 @@ final class ClassExtensionsModuleSettingValidatorTest extends TestCase
         $this->expectException(InvalidClassExtensionNamespaceException::class);
         $validator->validate($moduleConfiguration, 1);
     }
+
+    public function testShopClassNameUsingLegacyAliasIsRejected(): void
+    {
+        $shopAdapter = $this->createStub(ShopAdapterInterface::class);
+        $shopAdapter
+            ->method('isNamespace')
+            ->willReturn(false);
+
+        $validator = new ClassExtensionsValidator($shopAdapter);
+
+        $moduleConfiguration = new ModuleConfiguration();
+        $moduleConfiguration->addClassExtension(new ClassExtension('oxarticle', 'moduleClass'));
+
+        $this->expectException(InvalidClassExtensionNamespaceException::class);
+        $validator->validate($moduleConfiguration, 1);
+    }
 }

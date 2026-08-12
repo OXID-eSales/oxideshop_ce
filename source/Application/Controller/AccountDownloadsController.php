@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
-use oxArticleList;
+use OxidEsales\Eshop\Application\Model\ArticleList;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -62,7 +62,7 @@ class AccountDownloadsController extends \OxidEsales\Eshop\Application\Controlle
     /**
      * Returns article list which was ordered and has downloadable files
      *
-     * @return null|oxArticleList
+     * @return null|ArticleList
      */
     public function getOrderFilesList()
     {

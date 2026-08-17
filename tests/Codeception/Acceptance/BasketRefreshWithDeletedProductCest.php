@@ -32,7 +32,7 @@ final class BasketRefreshWithDeletedProductCest
 
         $basketPage->updateProductAmount(2);
 
-        $I->see(sprintf(
+        $I->waitForText(sprintf(
             Translator::translate('ERROR_MESSAGE_ARTICLE_ARTICLE_DOES_NOT_EXIST'),
             $productData['OXTITLE_1']
         ));

@@ -202,7 +202,7 @@ final class CheckoutProcessCest
 
         $basketPage->updateProductAmount(7);
 
-        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
+        $I->waitForText(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         $basketItem1 = [
             'id' => '1000',
@@ -226,7 +226,7 @@ final class CheckoutProcessCest
         $orderPage->submitOrder();
 
         //in second step, product availability is not checked.
-        $I->see(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
+        $I->waitForText(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         // someone bought all items while client filled steps
         $I->updateInDatabase('oxarticles', ['oxstock' => '0', 'oxstockflag' => '3'], ['oxid' => '1000']);

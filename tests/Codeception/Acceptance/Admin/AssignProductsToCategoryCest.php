@@ -53,6 +53,32 @@ final class AssignProductsToCategoryCest
         $assignProductsPopup
             ->seeProductInAssignedList('1000')
             ->seeProductInUnassignedList('10014');
+
+        $I->expect('the assigned product to no longer be offered as unassigned');
+        $assignProductsPopup->dontSeeProductInUnassignedList('1000');
+    }
+
+    public function testAssignedProductsAreNotOfferedOnPopupReopen(AcceptanceTester $I): void
+    {
+        $I->wantToTest('that an already assigned product is not listed as available when reopening the popup');
+
+        $adminPanel = $I->loginAdmin();
+        $categoriesPage = $adminPanel->openCategories();
+        $mainCategoryPage = $categoriesPage->selectProductCategory('Test category 1 [DE] šÄßüл');
+
+        $I->amGoingTo('assign a product and close the popup');
+        $mainCategoryPage
+            ->openAssignProductsPopup()
+            ->assignProductByArtNr('1000');
+        $I->closeTab();
+
+        $I->amGoingTo('reopen the assignment popup');
+        $assignProductsPopup = $mainCategoryPage->openAssignProductsPopup();
+
+        $I->expect('the product to be listed only as assigned');
+        $assignProductsPopup
+            ->seeProductInAssignedList('1000')
+            ->dontSeeProductInUnassignedList('1000');
     }
 
     public function testAssignProductsWithVariantsToCategory(AcceptanceTester $I): void

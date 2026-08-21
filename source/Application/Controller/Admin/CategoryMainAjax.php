@@ -55,35 +55,30 @@ class CategoryMainAjax extends \OxidEsales\Eshop\Application\Controller\Admin\Li
      */
     protected function getQuery()
     {
-        $sArticleTable = $this->getViewName('oxarticles');
-        $sO2CView = $this->getViewName('oxobject2category');
+        $articleTable = $this->getViewName('oxarticles');
+        $object2CategoryView = $this->getViewName('oxobject2category');
 
-        $sOxid = Registry::getRequest()->getRequestEscapedParameter('oxid');
-        $sSynchOxid = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
-        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $categoryId = Registry::getRequest()->getRequestEscapedParameter('oxid');
+        $syncedCategoryId = Registry::getRequest()->getRequestEscapedParameter('synchoxid');
+        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
-        // category selected or not ?
-        if (!$sOxid && $sSynchOxid) {
-            // dodger performance
-            $sQAdd = ' from ' . $sArticleTable . ' where 1 ';
+        if (!$categoryId && $syncedCategoryId) {
+            $query = ' from ' . $articleTable . ' where 1 ';
         } else {
-            // copied from oxadminview
-            $sJoin = " {$sArticleTable}.oxid={$sO2CView}.oxobjectid ";
+            $joinCondition = " {$articleTable}.oxid={$object2CategoryView}.oxobjectid ";
 
-            $sSubSelect = '';
-            if ($sSynchOxid && $sOxid != $sSynchOxid) {
-                $sSubSelect = ' and ' . $sArticleTable . '.oxid not in ( ';
-                $sSubSelect .= "select $sArticleTable.oxid from $sO2CView left join $sArticleTable ";
-                $sSubSelect .= "on $sJoin where $sO2CView.oxcatnid =  " . $oDb->quote($sSynchOxid) . " ";
-                $sSubSelect .= 'and ' . $sArticleTable . '.oxid is not null ) ';
-            }
-
-            $sQAdd = " from $sO2CView join $sArticleTable ";
-            $sQAdd .= " on $sJoin where $sO2CView.oxcatnid = " . $oDb->quote($sOxid);
-            $sQAdd .= " and $sArticleTable.oxid is not null $sSubSelect ";
+            $query = " from $object2CategoryView join $articleTable ";
+            $query .= " on $joinCondition where $object2CategoryView.oxcatnid = " . $database->quote($categoryId);
+            $query .= " and $articleTable.oxid is not null ";
         }
 
-        return $sQAdd;
+        if ($syncedCategoryId && $categoryId != $syncedCategoryId) {
+            $query .= " and {$articleTable}.oxid not in ( select {$object2CategoryView}.oxobjectid "
+                      . "from {$object2CategoryView} where {$object2CategoryView}.oxcatnid = "
+                      . $database->quote($syncedCategoryId) . " ) ";
+        }
+
+        return $query;
     }
 
     /**

@@ -259,6 +259,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
     }
 
+    private function getBaseThemeId(int $shopId): ?string
+    {
+        try {
+            return ContainerFacade::get(ThemeStateServiceInterface::class)->getBaseThemeId($shopId);
+        } catch (ActiveThemeNotFoundException) {
+            return null;
+        }
+    }
+
     /**
      * Starts session manager
      *
@@ -936,7 +945,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if (is_null($theme)) {
-            $theme = $this->getActiveThemeId((int) $shop);
+            $theme = $this->getBaseThemeId((int) $shop);
         }
 
         if ($admin) {
@@ -974,8 +983,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
 
-        // Check for custom template
-        $customTheme = $this->getConfigParam('sCustomTheme');
+        // Child (active) theme override: the active child wins, the base/parent theme fills gaps.
+        $customTheme = $admin ? null : $this->getActiveThemeId((int) $shop);
         if (!$return && !$admin && !$ignoreCust && $customTheme && $customTheme != $theme) {
             $return = $this->getDir($file, $dir, $admin, $lang, $shop, $customTheme, $absolute, $ignoreCust);
         }

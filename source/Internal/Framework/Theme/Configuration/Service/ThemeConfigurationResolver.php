@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\Theme
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use Psr\Log\LoggerInterface;
 
 readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverInterface
@@ -21,6 +22,7 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao,
         private ThemeConfigurationCacheInterface $resolvedConfigurationCache,
+        private ThemeParentProviderInterface $themeParentProvider,
         private LoggerInterface $logger,
     ) {
     }
@@ -39,7 +41,7 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
 
     private function buildResolvedConfiguration(string $themeId, int $shopId): ThemeConfiguration
     {
-        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $configuration = $this->resolveInheritedConfiguration($themeId, $shopId);
         $environmentSettingValues = $this->environmentConfigurationDao
             ->get($themeId, $shopId)
             ->getSettingValues();
@@ -56,6 +58,27 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
         }
 
         return $configuration;
+    }
+
+    private function resolveInheritedConfiguration(string $themeId, int $shopId): ThemeConfiguration
+    {
+        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+
+        if (!$this->themeParentProvider->hasParentTheme($themeId, $shopId)) {
+            return $configuration;
+        }
+
+        $parentId = $this->themeParentProvider->getParentThemeId($themeId, $shopId);
+        $parentConfiguration = $this->themeConfigurationDao->get($parentId, $shopId);
+
+        $merged = clone $configuration;
+        foreach ($parentConfiguration->getThemeSettings() as $parentSetting) {
+            if ($merged->getSettingByName($parentSetting->getName()) === null) {
+                $merged->addThemeSetting(clone $parentSetting);
+            }
+        }
+
+        return $merged;
     }
 
     private function logUnknownSetting(string $themeId, int $shopId, string $settingName): void

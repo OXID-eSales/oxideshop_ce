@@ -7,10 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * Themes handler class.
@@ -42,25 +46,37 @@ class Theme extends \OxidEsales\Eshop\Core\Base
      */
     public function load($sOXID)
     {
-        $sFilePath = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir() . $sOXID . "/theme.php";
-        if (file_exists($sFilePath) && is_readable($sFilePath)) {
-            $aTheme = [];
-            include $sFilePath;
-            $this->_aTheme = $aTheme;
-            $this->_aTheme['id'] = $sOXID;
-            try {
-                $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
-                    ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
-                );
-                $this->_aTheme['active'] = ($activeThemeId === $sOXID);
-            } catch (ActiveThemeNotFoundException) {
-                $this->_aTheme['active'] = false;
-            }
+        $shopId = Registry::getConfig()->getShopId();
 
-            return true;
+        try {
+            $themeMetaData = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class)->getById($sOXID, $shopId);
+        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException) {
+            return false;
         }
 
-        return false;
+        if ($themeMetaData->getId() !== $sOXID) {
+            return false;
+        }
+
+        $this->_aTheme = [
+            'id' => $themeMetaData->getId(),
+            'title' => $themeMetaData->getTitle(),
+            'description' => $themeMetaData->getDescription(),
+            'thumbnail' => $themeMetaData->getThumbnail(),
+            'version' => $themeMetaData->getVersion(),
+            'author' => $themeMetaData->getAuthor(),
+            'parentTheme' => $themeMetaData->getParentTheme(),
+            'parentVersions' => $themeMetaData->getParentVersions(),
+        ];
+
+        try {
+            $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+            $this->_aTheme['active'] = ($activeThemeId === $sOXID);
+        } catch (ActiveThemeNotFoundException) {
+            $this->_aTheme['active'] = false;
+        }
+
+        return true;
     }
 
     /**
@@ -71,11 +87,11 @@ class Theme extends \OxidEsales\Eshop\Core\Base
     public function getList()
     {
         $this->_aThemeList = [];
-        $sOutDir = \OxidEsales\Eshop\Core\Registry::getConfig()->getViewsDir();
-        foreach (glob($sOutDir . "*", GLOB_ONLYDIR) as $sDir) {
+        $shopId = Registry::getConfig()->getShopId();
+        foreach (ContainerFacade::get(ThemeConfigurationDaoInterface::class)->getAll($shopId) as $themeConfiguration) {
             $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
-            if ($oTheme->load(basename($sDir))) {
-                $this->_aThemeList[$sDir] = $oTheme;
+            if ($oTheme->load($themeConfiguration->getId())) {
+                $this->_aThemeList[$themeConfiguration->getId()] = $oTheme;
             }
         }
 

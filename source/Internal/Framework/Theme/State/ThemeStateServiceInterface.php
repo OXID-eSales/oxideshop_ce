@@ -15,4 +15,11 @@ interface ThemeStateServiceInterface
 
     /** @throws ActiveThemeNotFoundException */
     public function getActiveThemeId(int $shopId): string;
+
+    /**
+     * Parent of the active (child) theme, or the active theme itself when standalone.
+     *
+     * @throws ActiveThemeNotFoundException
+     */
+    public function getBaseThemeId(int $shopId): string;
 }

@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
 class ThemeStateService implements ThemeStateServiceInterface
@@ -18,6 +19,7 @@ class ThemeStateService implements ThemeStateServiceInterface
 
     public function __construct(
         private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private readonly ThemeParentProviderInterface $themeParentProvider,
     ) {
     }
 
@@ -30,6 +32,15 @@ class ThemeStateService implements ThemeStateServiceInterface
     public function getActiveThemeId(int $shopId): string
     {
         return $this->activeThemeIds[$shopId] ??= $this->findActiveThemeId($shopId);
+    }
+
+    public function getBaseThemeId(int $shopId): string
+    {
+        $activeThemeId = $this->getActiveThemeId($shopId);
+
+        return $this->themeParentProvider->hasParentTheme($activeThemeId, $shopId)
+            ? $this->themeParentProvider->getParentThemeId($activeThemeId, $shopId)
+            : $activeThemeId;
     }
 
     private function findActiveThemeId(int $shopId): string

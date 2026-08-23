@@ -655,7 +655,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         $sAppDir = $oConfig->getAppDir();
         $sLang = Registry::getLang()->getLanguageAbbr($iLang);
-        $sTheme = $this->getActiveThemeId();
 
         //get generic lang files
         $sGenericPath = $sAppDir . 'translations/' . $sLang;
@@ -663,13 +662,11 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $aLangFiles = array_merge($aLangFiles, $this->getAbbreviationDirectoryLanguageFiles($sGenericPath));
         }
 
-        //get theme lang files
-        if ($sTheme) {
-            $sThemePath = $sAppDir . 'views/' . $sTheme . '/';
+        //get theme lang files: base (parent) first, active (child) overlays on top
+        foreach ($this->getThemeLanguageThemeIds() as $sThemeId) {
+            $sThemePath = $sAppDir . 'views/' . $sThemeId . '/';
             $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($sThemePath, $sLang));
         }
-
-        $aLangFiles = array_merge($aLangFiles, $this->getCustomThemeLanguageFiles($iLang));
 
         // modules language files
         $aLangFiles = $this->appendModuleLangFilesForFrontend($aLangFiles, $sLang);
@@ -1029,6 +1026,36 @@ class Language extends \OxidEsales\Eshop\Core\Base
         } catch (ActiveThemeNotFoundException) {
             return null;
         }
+    }
+
+    private function getBaseThemeId(): ?string
+    {
+        try {
+            return ContainerFacade::get(ThemeStateServiceInterface::class)
+                ->getBaseThemeId((int) Registry::getConfig()->getShopId());
+        } catch (ActiveThemeNotFoundException) {
+            return null;
+        }
+    }
+
+    /**
+     * @return string[] base (parent) theme first, then the active (child) theme when different
+     */
+    private function getThemeLanguageThemeIds(): array
+    {
+        $themeIds = [];
+
+        $baseThemeId = $this->getBaseThemeId();
+        if ($baseThemeId) {
+            $themeIds[] = $baseThemeId;
+        }
+
+        $activeThemeId = $this->getActiveThemeId();
+        if ($activeThemeId && $activeThemeId !== $baseThemeId) {
+            $themeIds[] = $activeThemeId;
+        }
+
+        return $themeIds;
     }
 
     /**

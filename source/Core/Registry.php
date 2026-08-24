@@ -377,6 +377,7 @@ class Registry
      * @param string $className Class name to be converted.
      *
      * @return string
+     * @deprecated will be removed in v8.0.
      */
     public static function getStorageKey($className)
     {

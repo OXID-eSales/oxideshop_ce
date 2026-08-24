@@ -85,6 +85,7 @@ interface BasicContextInterface
 
     /**
      * @return array
+     * @deprecated will be removed in v8.0.
      */
     public function getBackwardsCompatibilityClassMap(): array;
 

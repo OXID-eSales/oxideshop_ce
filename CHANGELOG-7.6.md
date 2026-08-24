@@ -26,6 +26,11 @@
 - `Utilities::executeExternalDatabaseMigrationCommand()`
 - `oxid-esales/oxideshop-doctrine-migration-wrapper` package and `oe-eshop-db_migrate` script, use `oe:database:migrate` instead
 - `SeoEncoderArticle::createArticleCategoryUri()`, use `generateArticleCategoryUri()` instead
+- The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)
+  - `BaseModel::getClassName()` and `BaseModel::$_sClassName`
+  - `UtilsObject::getClassAliasName()`
+  - `Registry::getStorageKey()`
+  - `BasicContextInterface::getBackwardsCompatibilityClassMap()`
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

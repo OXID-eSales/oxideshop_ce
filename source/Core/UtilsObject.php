@@ -239,6 +239,7 @@ class UtilsObject
      * @param string $className with namespace.
      *
      * @return string|null
+     * @deprecated will be removed in v8.0.
      */
     public function getClassAliasName($className)
     {

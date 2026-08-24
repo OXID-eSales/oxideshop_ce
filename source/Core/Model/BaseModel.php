@@ -60,6 +60,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Name of current class.
      *
      * @var string
+     * @deprecated will be removed in v8.0.
      */
     protected $_sClassName = 'oxbase';
 
@@ -488,6 +489,7 @@ class BaseModel extends \OxidEsales\Eshop\Core\Base
      * Returns object class name
      *
      * @return string
+     * @deprecated will be removed in v8.0.
      */
     public function getClassName()
     {

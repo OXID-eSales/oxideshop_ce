@@ -176,6 +176,28 @@ final class UserCest
             ->seeUserExtendedInformation($userOriginalExtendedInfo);
     }
 
+    public function testUserUrlWithSpecialCharactersIsDisplayedCorrectly(AcceptanceTester $I): void
+    {
+        $I->wantToTest('that a user URL containing special characters is displayed correctly in the extended tab');
+
+        $urlWithSpecialCharacters = '"><span id="url-markup-check">text</span>';
+        $username = 'urltest@oxid-esales.dev';
+
+        $this->createUserWithUrl($I, $username, $urlWithSpecialCharacters);
+
+        $I->amGoingTo('open the seeded customer as admin and switch to the extended tab');
+        $extendedPage = $I->loginAdmin()
+            ->openUsers()
+            ->findByUserName($username)
+            ->openExtendedTab();
+
+        $I->expect('the field to contain the value unchanged');
+        $I->seeInField($extendedPage->extendedInfoUrlField, $urlWithSpecialCharacters);
+
+        $I->expect('the value not to be interpreted as markup');
+        $I->dontSeeElement('#url-markup-check');
+    }
+
     #[Group('session')]
     public function updatePassword(AcceptanceTester $I): void
     {
@@ -269,6 +291,31 @@ final class UserCest
                 'OXMOBFON'    => $userExtendedInfo->getCellularPhone(),
                 'OXBIRTHDATE' => $user->getBirthYear() . '-' . $user->getBirthMonth() . '-' . $user->getBirthday(),
                 'OXURL'       => $userExtendedInfo->getUrl(),
+                'OXUPDATEKEY' => '',
+                'OXUPDATEEXP' => 0,
+            ]
+        );
+    }
+
+    private function createUserWithUrl(AcceptanceTester $I, string $username, string $url): void
+    {
+        $I->haveInDatabase(
+            'oxuser',
+            [
+                'OXID'        => 'urltestuser01',
+                'OXACTIVE'    => 1,
+                'OXRIGHTS'    => 'user',
+                'OXSHOPID'    => 1,
+                'OXUSERNAME'  => $username,
+                'OXPASSWORD'  => '1397d0b4392f452a5bd058891c9b255e',
+                'OXPASSSALT'  => '3032396331663033316535343361356231363666653666316533376235353830',
+                'OXCUSTNR'    => '9043',
+                'OXFNAME'     => 'Url',
+                'OXLNAME'     => 'Tester',
+                'OXCOUNTRYID' => 'testcountry_be',
+                'OXURL'       => $url,
+                'OXCREATE'    => '2010-02-05 10:22:37',
+                'OXREGISTER'  => '2010-02-05 10:22:48',
                 'OXUPDATEKEY' => '',
                 'OXUPDATEEXP' => 0,
             ]

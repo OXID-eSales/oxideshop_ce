@@ -58,7 +58,6 @@ class UserUpdatableFields extends AbstractUpdatableFields
             'OXPRIVFON',
             'OXMOBFON',
             'OXBIRTHDATE',
-            'OXURL',
             'OXUPDATEKEY',
             'OXUPDATEEXP',
             'OXTIMESTAMP'

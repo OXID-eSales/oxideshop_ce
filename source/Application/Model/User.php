@@ -1314,7 +1314,16 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
             $oAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
             $oAddress->setId($sAddressId);
-            $oAddress->load($sAddressId);
+
+            $addressBelongsToCurrentUser = $sAddressId !== null
+                && $oAddress->load($sAddressId)
+                && $oAddress->oxaddress__oxuserid->value === $this->getId();
+
+            if ($sAddressId !== null && !$addressBelongsToCurrentUser) {
+                $oAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
+                $oAddress->setId(null);
+            }
+
             $oAddress->assign($aDelAddress);
             $oAddress->oxaddress__oxuserid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
             $oAddress->oxaddress__oxcountry = $this->getUserCountry($oAddress->oxaddress__oxcountryid->value);

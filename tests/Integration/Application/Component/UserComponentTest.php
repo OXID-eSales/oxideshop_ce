@@ -11,6 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component;
 
 use OxidEsales\Eshop\Application\Component\UserComponent;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
+use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
@@ -182,6 +184,30 @@ final class UserComponentTest extends IntegrationTestCase
         $this->assertNotEquals($wrongUpdateExpiration, $userData['OXUPDATEEXP']);
     }
 
+    public function testChangeUserDoesNotUpdateAddressOwnedByAnotherUser(): void
+    {
+        $this->userName = 'address-owner@example.com';
+        $this->createUser($this->userName);
+        $ownerId = $this->fetchUserData()['OXID'];
+
+        $foreignAddressId = 'foreignaddressid01';
+        $this->createAddressForUser($foreignAddressId, $ownerId);
+
+        $this->userName = 'other-user@example.com';
+        $this->createUser($this->userName);
+        $otherUserId = $this->fetchUserData()['OXID'];
+
+        $requestData = $this->getUserFormData();
+        $requestData['blshowshipaddress'] = 1;
+        $requestData['oxaddressid'] = $foreignAddressId;
+        $_POST = $requestData;
+
+        $this->getUserComponent()->changeUser();
+
+        $this->assertEquals($ownerId, $this->fetchAddressUserId($foreignAddressId));
+        $this->assertNotEquals($otherUserId, $this->fetchAddressUserId($foreignAddressId));
+    }
+
     public function testChangeUserEmailValidation(): void
     {
         $existingUser = $this->createUser($this->userName);
@@ -246,6 +272,36 @@ final class UserComponentTest extends IntegrationTestCase
         $requestData = $this->getUserFormData();
         $requestData['invadr']['oxuser__oxusername'] = $newEmail;
         return $requestData;
+    }
+
+    private function createAddressForUser(string $addressId, string $userId): void
+    {
+        $address = oxNew(Address::class);
+        $address->setId($addressId);
+        $address->assign([
+            'oxaddress__oxfname' => uniqid('owner-first-name-', true),
+            'oxaddress__oxlname' => uniqid('owner-last-name-', true),
+            'oxaddress__oxstreet' => uniqid('owner-street-', true),
+            'oxaddress__oxstreetnr' => 1,
+            'oxaddress__oxzip' => 12345,
+            'oxaddress__oxcity' => 'Freiburg',
+            'oxaddress__oxcountryid' => 'a7c40f631fc920687.20179984',
+        ]);
+        $address->oxaddress__oxuserid = new Field($userId, Field::T_RAW);
+        $address->save();
+    }
+
+    private function fetchAddressUserId(string $addressId): string
+    {
+        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
+
+        return (string) $queryBuilder
+            ->select('oxuserid')
+            ->from('oxaddress')
+            ->where('oxid = :oxid')
+            ->setParameter('oxid', $addressId)
+            ->execute()
+            ->fetchOne();
     }
 
     private function mockSession(): void

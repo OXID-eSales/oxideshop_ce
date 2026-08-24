@@ -16,6 +16,10 @@ interface BasicContextInterface
 
     public function getAllShopIds(): array;
 
+    /**
+     * @return array
+     * @deprecated will be removed in v8.0.
+     */
     public function getBackwardsCompatibilityClassMap(): array;
 
     public function getCacheDirectory(): string;

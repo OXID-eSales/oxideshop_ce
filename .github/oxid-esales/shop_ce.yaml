@@ -4,6 +4,17 @@ install:
     prepared_shop: true
   composer:
     root_url: ''
+    transform: |
+      {
+        "preferred-install": {
+          "oxid-esales/*": "source"
+        },
+        "require": {
+          "oxid-esales/twig-component": "dev-b-7.6.x",
+          "oxid-esales/twig-admin-theme": "dev-b-7.6.x-prevent-admin-xss-through-storefront-OXDEV-10544",
+          "oxid-esales/apex-theme": "dev-b-7.6.x-prevent-admin-xss-through-storefront-OXDEV-10544"
+        }
+      }
 
 runscript:
   matrix:

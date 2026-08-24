@@ -18,6 +18,7 @@
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
 
 ### Removed
+- `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)
   - `BaseModel::getClassName()` and `BaseModel::$_sClassName`
   - `UtilsObject::getClassAliasName()`

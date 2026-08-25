@@ -11,12 +11,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\T
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 
-interface ThemeActivationServiceInterface
+interface ThemeParentCompatibilityCheckerInterface
 {
     /**
+     * @throws ThemeParentCompatibilityException
      * @throws ThemeConfigurationNotFoundException
      * @throws InvalidThemeMetaDataException
-     * @throws ThemeParentCompatibilityException
      */
-    public function activate(string $themeId, int $shopId): void;
+    public function validate(string $themeId, string $parentThemeId, int $shopId): void;
 }

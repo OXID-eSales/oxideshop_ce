@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEn
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeEnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolver;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -40,6 +41,9 @@ final class ThemeConfigurationResolverTest extends TestCase
                 ])
             );
 
+        $themeParentProvider = $this->createStub(ThemeParentProviderInterface::class);
+        $themeParentProvider->method('hasParentTheme')->willReturn(false);
+
         $logger = $this->createMock(LoggerInterface::class);
         $logger
             ->expects($this->once())
@@ -57,6 +61,7 @@ final class ThemeConfigurationResolverTest extends TestCase
         $resolvedConfiguration = $this->createResolver(
             $configurationDao,
             $environmentConfigurationDao,
+            $themeParentProvider,
             $logger
         )->resolve(self::THEME_ID, self::SHOP_ID);
 
@@ -70,12 +75,14 @@ final class ThemeConfigurationResolverTest extends TestCase
     private function createResolver(
         ThemeConfigurationDaoInterface $configurationDao,
         ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao,
+        ThemeParentProviderInterface $themeParentProvider,
         LoggerInterface $logger,
     ): ThemeConfigurationResolver {
         return new ThemeConfigurationResolver(
             $configurationDao,
             $environmentConfigurationDao,
             new ThemeConfigurationCache(),
+            $themeParentProvider,
             $logger
         );
     }

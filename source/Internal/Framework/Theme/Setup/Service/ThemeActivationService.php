@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class ThemeActivationService implements ThemeActivationServiceInterface
@@ -18,11 +19,15 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
     public function __construct(
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private EventDispatcherInterface $eventDispatcher,
+        private ThemeParentProviderInterface $themeParentProvider,
+        private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker,
     ) {
     }
 
     public function activate(string $themeId, int $shopId): void
     {
+        $this->validateParentCompatibility($themeId, $shopId);
+
         $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
 
         $this->deactivateActiveThemes($themeId, $shopId);
@@ -31,6 +36,17 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
         $this->themeConfigurationDao->save($themeConfiguration, $shopId);
 
         $this->eventDispatcher->dispatch(new ThemeActivatedEvent($shopId, $themeId));
+    }
+
+    private function validateParentCompatibility(string $themeId, int $shopId): void
+    {
+        if ($this->themeParentProvider->hasParentTheme($themeId, $shopId)) {
+            $this->themeParentCompatibilityChecker->validate(
+                $themeId,
+                $this->themeParentProvider->getParentThemeId($themeId, $shopId),
+                $shopId
+            );
+        }
     }
 
     private function deactivateActiveThemes(string $exceptThemeId, int $shopId): void

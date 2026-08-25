@@ -10,16 +10,18 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
-class ThemeStateService implements ThemeStateServiceInterface
+readonly class ThemeStateService implements ThemeStateServiceInterface
 {
-    private array $activeThemeIds = [];
-
     public function __construct(
-        private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private readonly ThemeParentProviderInterface $themeParentProvider,
+        private ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ThemeParentProviderInterface $themeParentProvider,
+        private ActiveThemeCacheInterface $activeThemeCache,
     ) {
     }
 
@@ -31,16 +33,24 @@ class ThemeStateService implements ThemeStateServiceInterface
 
     public function getActiveThemeId(int $shopId): string
     {
-        return $this->activeThemeIds[$shopId] ??= $this->findActiveThemeId($shopId);
+        if (!$this->activeThemeCache->hasThemeId($shopId)) {
+            $this->activeThemeCache->putThemeId($shopId, $this->findActiveThemeId($shopId));
+        }
+
+        return $this->activeThemeCache->getThemeId($shopId);
     }
 
     public function getBaseThemeId(int $shopId): string
     {
         $activeThemeId = $this->getActiveThemeId($shopId);
 
-        return $this->themeParentProvider->hasParentTheme($activeThemeId, $shopId)
-            ? $this->themeParentProvider->getParentThemeId($activeThemeId, $shopId)
-            : $activeThemeId;
+        try {
+            return $this->themeParentProvider->hasParentTheme($activeThemeId, $shopId)
+                ? $this->themeParentProvider->getParentThemeId($activeThemeId, $shopId)
+                : $activeThemeId;
+        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException) {
+            return $activeThemeId;
+        }
     }
 
     private function findActiveThemeId(int $shopId): string

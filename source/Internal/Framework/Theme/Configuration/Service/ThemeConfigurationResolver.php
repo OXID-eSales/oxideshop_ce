@@ -13,6 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\Theme
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
 use Psr\Log\LoggerInterface;
 
@@ -64,7 +66,13 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
     {
         $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
 
-        if (!$this->themeParentProvider->hasParentTheme($themeId, $shopId)) {
+        try {
+            $hasParentTheme = $this->themeParentProvider->hasParentTheme($themeId, $shopId);
+        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException) {
+            return $configuration;
+        }
+
+        if (!$hasParentTheme) {
             return $configuration;
         }
 

@@ -11,6 +11,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\State;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeParentProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCache;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateService;
 use PHPUnit\Framework\TestCase;
@@ -84,6 +86,10 @@ final class ThemeStateServiceTest extends TestCase
 
     private function createService(ThemeConfigurationDaoInterface $dao): ThemeStateService
     {
-        return new ThemeStateService($dao);
+        return new ThemeStateService(
+            $dao,
+            $this->createStub(ThemeParentProviderInterface::class),
+            new ActiveThemeCache()
+        );
     }
 }

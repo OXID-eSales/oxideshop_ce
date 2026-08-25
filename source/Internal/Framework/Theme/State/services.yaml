@@ -2,6 +2,18 @@ services:
   _defaults:
     autowire: true
 
+  oxid_esales.theme.state.active_theme_cache:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCache
+
   OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateService
+    arguments:
+      OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCacheInterface: '@oxid_esales.theme.state.active_theme_cache'
     public: true
+
+  oxid_esales.theme.state.invalidate_active_theme_cache_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\InvalidateActiveThemeCacheEventSubscriber
+    arguments:
+      OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Cache\ActiveThemeCacheInterface: '@oxid_esales.theme.state.active_theme_cache'
+    tags:
+      - { name: kernel.event_subscriber }

@@ -1,0 +1,5 @@
+id: incompatibleChild
+title: 'Incompatible Child'
+parentTheme: apexParent
+parentVersions:
+  - '2.0.0'

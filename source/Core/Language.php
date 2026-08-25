@@ -711,23 +711,22 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns custom theme language files.
+     * Returns active theme language files.
      *
      * @param int $language active language
      *
      * @return array
      */
-    protected function getCustomThemeLanguageFiles($language)
+    protected function getActiveThemeLanguageFiles($language)
     {
         $oConfig = Registry::getConfig();
-        $sCustomTheme = $oConfig->getConfigParam("sCustomTheme");
         $sAppDir = $oConfig->getAppDir();
         $sLang = Registry::getLang()->getLanguageAbbr($language);
         $aLangFiles = [];
 
-        if ($sCustomTheme) {
-            $customThemePath = $sAppDir . 'views/' . $sCustomTheme . '/';
-            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($customThemePath, $sLang));
+        if ($activeThemeId = $this->getActiveThemeId()) {
+            $activeThemePath = $sAppDir . 'views/' . $activeThemeId . '/';
+            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($activeThemePath, $sLang));
         }
 
         return $aLangFiles;
@@ -819,12 +818,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
                 ->getActiveTheme();
             $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
         } else {
-            $config = Registry::getConfig();
-            if ($theme = $this->getActiveThemeId()) {
-                $languageFiles[] = $this->getCustomFilePath($language, $theme);
-            }
-            if ($config->getConfigParam("sCustomTheme")) {
-                $languageFiles[] = $this->getCustomFilePath($language, $config->getConfigParam("sCustomTheme"));
+            foreach ($this->getThemeLanguageThemeIds() as $themeId) {
+                $languageFiles[] = $this->getCustomFilePath($language, $themeId);
             }
         }
 
@@ -892,7 +887,11 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $sLangFilesIdent = '_' . md5(implode('+', $aLangFiles));
         }
 
-        return "langcache_" . ((int) $blAdmin) . "_{$iLang}_" . $myConfig->getShopId() . "_" . $this->getActiveThemeId() . $sLangFilesIdent;
+        $activeThemeId = $this->getActiveThemeId();
+        $baseThemeId = $this->getBaseThemeId();
+        $themeIdent = $activeThemeId . '_' . ($baseThemeId !== $activeThemeId ? $baseThemeId : '');
+
+        return "langcache_" . ((int) $blAdmin) . "_{$iLang}_" . $myConfig->getShopId() . "_" . $themeIdent . $sLangFilesIdent;
     }
 
     protected function getLanguageFileData($blAdmin = false, $iLang = 0, $aLangFiles = null)
@@ -954,16 +953,15 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $key = $language . ((int)$isAdmin);
         if (!isset($this->_aLangMap[$key])) {
             $this->_aLangMap[$key] = [];
-            $config = Registry::getConfig();
 
             $mapFile = '';
             $theme = $this->getRealThemeName($this->getActiveThemeId(), $isAdmin);
-            $customTheme = $this->getRealThemeName($config->getConfigParam("sCustomTheme"), $isAdmin);
+            $baseTheme = $this->getRealThemeName($this->getBaseThemeId(), $isAdmin);
 
             $languageAbbr = Registry::getLang()->getLanguageAbbr($language);
             $possibleMapFileLocations = array_merge(
-                $this->getThemeLanguageFileMapLocations($customTheme, $languageAbbr),
-                $this->getThemeLanguageFileMapLocations($theme, $languageAbbr)
+                $this->getThemeLanguageFileMapLocations($theme, $languageAbbr),
+                $theme !== $baseTheme ? $this->getThemeLanguageFileMapLocations($baseTheme, $languageAbbr) : []
             );
 
             foreach ($possibleMapFileLocations as $tmpMapFileLocation) {

@@ -44,13 +44,9 @@ readonly class ThemeStateService implements ThemeStateServiceInterface
     {
         $activeThemeId = $this->getActiveThemeId($shopId);
 
-        try {
-            return $this->themeParentProvider->hasParentTheme($activeThemeId, $shopId)
-                ? $this->themeParentProvider->getParentThemeId($activeThemeId, $shopId)
-                : $activeThemeId;
-        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException) {
-            return $activeThemeId;
-        }
+        return $this->themeParentProvider->hasParentTheme($activeThemeId, $shopId)
+            ? $this->themeParentProvider->getParentThemeId($activeThemeId, $shopId)
+            : $activeThemeId;
     }
 
     private function findActiveThemeId(int $shopId): string

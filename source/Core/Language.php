@@ -711,28 +711,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns active theme language files.
-     *
-     * @param int $language active language
-     *
-     * @return array
-     */
-    protected function getActiveThemeLanguageFiles($language)
-    {
-        $oConfig = Registry::getConfig();
-        $sAppDir = $oConfig->getAppDir();
-        $sLang = Registry::getLang()->getLanguageAbbr($language);
-        $aLangFiles = [];
-
-        if ($activeThemeId = $this->getActiveThemeId()) {
-            $activeThemePath = $sAppDir . 'views/' . $activeThemeId . '/';
-            $aLangFiles = array_merge($aLangFiles, $this->getThemeLanguageFiles($activeThemePath, $sLang));
-        }
-
-        return $aLangFiles;
-    }
-
-    /**
      * Returns array with paths where admin language files are stored
      *
      * @param int $activeLanguage The active language

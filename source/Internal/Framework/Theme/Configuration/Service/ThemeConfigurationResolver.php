@@ -66,13 +66,7 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
     {
         $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
 
-        try {
-            $hasParentTheme = $this->themeParentProvider->hasParentTheme($themeId, $shopId);
-        } catch (ThemeConfigurationNotFoundException | InvalidThemeMetaDataException) {
-            return $configuration;
-        }
-
-        if (!$hasParentTheme) {
+        if (!$this->themeParentProvider->hasParentTheme($themeId, $shopId)) {
             return $configuration;
         }
 

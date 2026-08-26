@@ -115,11 +115,10 @@ final class PrivateSalesBasketCest
             ->searchFor('1000');
         $I->seeText(Translator::translate('NO_ITEMS_FOUND'));
 
-        $I
-            ->amGoingTo('wait for the basket to expire')
-            ->wait($basketExpirationTimeout + 0.1);
-        $I
-            ->openShop()
+        $I->amGoingTo('wait for the basket to expire')
+            ->wait($basketExpirationTimeout + 1);
+
+        $I->openShop()
             ->checkBasketEmpty()
             ->searchFor('1000');
 

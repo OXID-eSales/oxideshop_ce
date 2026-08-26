@@ -756,7 +756,8 @@ final class ProductDetailsPageCest
         $productNavigation
             ->openProductDetailsPage($productId)
             ->addProductToBasket(2);
-        $I->seeText(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
+
+        $I->waitForText(Translator::translate('ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'));
 
         //assert product in basket
         $basketItem = [

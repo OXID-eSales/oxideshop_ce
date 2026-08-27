@@ -64,7 +64,10 @@ final class ArticleTest extends IntegrationTestCase
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('iconSize')->setType('str')->setValue('87*87'))
             ->addThemeSetting((new Setting())->setName('thumbnailSize')->setType('str')->setValue('200*200'))

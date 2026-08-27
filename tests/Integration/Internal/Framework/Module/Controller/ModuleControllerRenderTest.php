@@ -20,6 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use Symfony\Component\Filesystem\Path;
 
 #[RunTestsInSeparateProcesses]
 final class ModuleControllerRenderTest extends IntegrationTestCase
@@ -32,7 +33,10 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true);
         $configuration->addThemeSetting(
             (new Setting())->setName('defaultListDisplayType')->setType('str')->setValue('infogrid')

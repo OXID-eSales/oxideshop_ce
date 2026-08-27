@@ -101,7 +101,10 @@ final class ThemeConfigurationResolverTest extends IntegrationTestCase
     {
         $configuration = (new ThemeConfiguration())
             ->setId(self::THEME_ID)
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                $this->get(BasicContextInterface::class)->getShopRootPath()
+            ))
             ->addThemeSetting(
                 (new Setting())
                     ->setName(self::SETTING_NAME)

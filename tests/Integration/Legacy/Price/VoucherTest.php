@@ -29,6 +29,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class VoucherTest extends IntegrationTestCase
 {
@@ -199,7 +200,10 @@ final class VoucherTest extends IntegrationTestCase
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
 

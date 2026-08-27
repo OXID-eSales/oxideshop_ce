@@ -27,6 +27,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use Symfony\Component\Filesystem\Path;
 
 use function is_array;
 
@@ -145,7 +146,10 @@ class BasketConstruct
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                ContainerFacade::get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
 

@@ -211,7 +211,10 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     {
         $themeId = 'testTheme';
         $this->get(ThemeConfigurationDaoInterface::class)->save(
-            (new ThemeConfiguration())->setId($themeId)->setSource('testSourcePath')->setActivated(true),
+            (new ThemeConfiguration())->setId($themeId)->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))->setActivated(true),
             $shopId
         );
 
@@ -250,14 +253,19 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     private function configureImageSettings(): void
     {
         $configuration = new ThemeConfiguration();
-        $configuration->setId($this->themeId)->setSource('testSourcePath')->setActivated(true);
+        $configuration->setId($this->themeId)->setSource(Path::makeRelative(
+            __DIR__ . '/Fixtures/testTheme',
+            $this->get(ContextInterface::class)->getShopRootPath()
+        ))->setActivated(true);
 
-        foreach ([
+        foreach (
+            [
             'iconSize' => '87*87',
             'thumbnailSize' => '200*200',
             'detailImageSize' => '600*600',
             'zoomImageSize' => '1200*1200',
-        ] as $name => $value) {
+            ] as $name => $value
+        ) {
             $setting = new Setting();
             $setting->setName($name)->setValue($value);
             $configuration->addThemeSetting($setting);

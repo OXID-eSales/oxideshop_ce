@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class ViewConfigTest extends IntegrationTestCase
 {
@@ -54,7 +55,10 @@ final class ViewConfigTest extends IntegrationTestCase
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
             ->setId('apex')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/apex',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('logoFile')->setType('str')->setValue('logo.png'));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
@@ -67,7 +71,10 @@ final class ViewConfigTest extends IntegrationTestCase
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
             ->setId('apex')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/apex',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('showWishlist')->setType('bool')->setValue(true));
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
@@ -80,7 +87,10 @@ final class ViewConfigTest extends IntegrationTestCase
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $configuration = (new ThemeConfiguration())
             ->setId('apex')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/apex',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true);
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 

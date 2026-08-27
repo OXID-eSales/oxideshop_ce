@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class WidgetControlTest extends IntegrationTestCase
 {
@@ -30,7 +31,10 @@ final class WidgetControlTest extends IntegrationTestCase
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true);
         $configuration->addThemeSetting(
             (new Setting())->setName('defaultListDisplayType')->setType('str')->setValue('infogrid')

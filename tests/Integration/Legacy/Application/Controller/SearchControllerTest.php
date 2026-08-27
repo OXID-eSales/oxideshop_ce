@@ -33,6 +33,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Path;
 
 #[RunTestsInSeparateProcesses]
 final class SearchControllerTest extends IntegrationTestCase
@@ -53,7 +54,10 @@ final class SearchControllerTest extends IntegrationTestCase
 
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/testTheme',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
             ->setActivated(true);
         $configuration->addThemeSetting(
             (new Setting())->setName('defaultListDisplayType')->setType('str')->setValue('infogrid')

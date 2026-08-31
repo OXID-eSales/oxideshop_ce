@@ -1,52 +1,46 @@
-name: Auto trigger on push or pull requests
+name: Generate SBOM
 
 on:
-  pull_request: {}
-  push: {}
+  push:
+    branches:
+      - b-7.6.x-sbom-automation-OXDEV-7300
+  workflow_dispatch:
 
 jobs:
-  build_testplan:
-    runs-on: 'ubuntu-latest'
-    outputs:
-      testplan: '${{ steps.build.outputs.testplan }}'
+  sbom:
+    runs-on: ubuntu-latest
     steps:
-      - name: 'Build testplan'
-        id: build
-        run: |
-          # Build testplan
-          if [ '${{  github.event_name }}' == 'pull_request' ]; then
-            REF_TO_CHECK='refs/heads/${{ github.base_ref }}'
-            LIMIT=""
-          else
-            REF_TO_CHECK='${{ github.ref }}'
-            # shellcheck disable=SC2088
-            LIMIT="~/defaults/php8.5_mysql8.4_only.yaml,"
-          fi
-          # shellcheck disable=SC2088
-          case "${REF_TO_CHECK}" in
-            refs/heads/b-7.6.x*) TESTPLAN="~/defaults/7.6.x.yaml,${LIMIT}~/shop_ce.yaml" ;;
-            *)
-              echo "Can't match ${REF_TO_CHECK} to a version, can't determine test plan."
-              echo "Branch names should start with b-<major>.<minor>.x"
-              exit 1
-              ;;
-          esac
-          echo "testplan=${TESTPLAN}" | tee -a "${GITHUB_OUTPUT}"
+      - name: Checkout
+        uses: actions/checkout@v7
 
-  shop_ce:
-    needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v5
-    with:
-      testplan: ${{ needs.build_testplan.outputs.testplan }}
-      runs_on: '"ubuntu-latest"'
-      defaults: 'v5'
-      plan_folder: '.github/oxid-esales'
-    secrets:
-      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
-      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-      CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
-      CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
-      CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
-      enterprise_github_token: ${{ secrets.enterprise_github_token }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'   # oxideshop-ce b-7.6 requires php ^8.3
+
+      - name: Install the SBOM plugin globally
+        run: |
+          composer global config allow-plugins.cyclonedx/cyclonedx-php-composer true
+          composer global require cyclonedx/cyclonedx-php-composer --no-interaction
+
+      - name: Resolve production dependencies
+        # No composer.lock in components → resolve fresh. --no-plugins/--no-scripts
+        # skip OXID's install-time hooks; --no-dev keeps it to shipped libraries;
+        # --ignore-platform-reqs: we want the dependency graph, not to run the code.
+        run: composer update --no-dev --no-scripts --no-plugins --ignore-platform-reqs --no-interaction
+
+      - name: Generate SBOM (CycloneDX 1.4, production deps)
+        run: >
+          composer CycloneDX:make-sbom
+          --output-format=JSON
+          --output-file=sbom.json
+          --spec-version=1.4
+          --omit=dev
+          --no-interaction
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-oxideshop-ce
+          path: sbom.json
+          if-no-files-found: error

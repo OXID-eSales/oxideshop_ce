@@ -34,8 +34,11 @@ services:
     arguments:
       $lifetimeSeconds: '%oxid_esales.product.media.view_cache.lifetime_seconds%'
 
-  oxid_esales.product.media.invalidate_product_media_view_cache_event_subscriber:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Cache\InvalidateProductMediaViewCacheEventSubscriber
+  OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Cache\MediaViewCacheInvalidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Cache\MediaViewCacheInvalidator
+
+  oxid_esales.product.media.invalidate_product_media_cache_event_subscriber:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Cache\InvalidateProductMediaCacheEventSubscriber
     tags:
       - { name: kernel.event_subscriber }
 

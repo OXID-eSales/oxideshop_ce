@@ -98,22 +98,6 @@ final class ProductMediaViewCacheTest extends TestCase
         $this->assertCount(1, $recomputed);
     }
 
-    public function testInvalidateAllForcesRecomputeForAllProducts(): void
-    {
-        $cache = $this->createCache();
-        $productA = Id::generate();
-        $productB = Id::generate();
-        $cache->get($productA, 'role_detail', fn (): ProductMediaView => $this->createView('a-first'));
-        $cache->get($productB, 'role_detail', fn (): ProductMediaView => $this->createView('b-first'));
-
-        $cache->invalidateAll();
-
-        $recomputedA = $cache->get($productA, 'role_detail', fn (): ProductMediaView => $this->createView('a-second'));
-        $recomputedB = $cache->get($productB, 'role_detail', fn (): ProductMediaView => $this->createView('b-second'));
-        $this->assertSame('a-second', $recomputedA->getDetailUrl());
-        $this->assertSame('b-second', $recomputedB->getDetailUrl());
-    }
-
     private function createCache(): ProductMediaViewCache
     {
         return new ProductMediaViewCache(

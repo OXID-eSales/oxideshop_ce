@@ -14,29 +14,30 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Event\ProductMediaCh
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Event\ProductMediaSortedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-readonly class InvalidateProductMediaViewCacheEventSubscriber implements EventSubscriberInterface
+readonly class InvalidateProductMediaCacheEventSubscriber implements EventSubscriberInterface
 {
     public function __construct(
         private ProductMediaViewCacheInterface $cache,
+        private MediaViewCacheInvalidatorInterface $mediaInvalidator,
     ) {
     }
 
-    public function invalidateChangedProduct(ProductMediaChangedEvent|ProductMediaSortedEvent $event): void
+    public function invalidateForProduct(ProductMediaChangedEvent|ProductMediaSortedEvent $event): void
     {
         $this->cache->invalidateForProduct($event->getProductId());
     }
 
-    public function invalidateAllProducts(MediaAttributeChangedEvent $event): void
+    public function invalidateForMedia(MediaAttributeChangedEvent $event): void
     {
-        $this->cache->invalidateAll();
+        $this->mediaInvalidator->invalidateForMedia($event->getMediaId());
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            ProductMediaChangedEvent::class => 'invalidateChangedProduct',
-            ProductMediaSortedEvent::class => 'invalidateChangedProduct',
-            MediaAttributeChangedEvent::class => 'invalidateAllProducts',
+            ProductMediaChangedEvent::class => 'invalidateForProduct',
+            ProductMediaSortedEvent::class => 'invalidateForProduct',
+            MediaAttributeChangedEvent::class => 'invalidateForMedia',
         ];
     }
 }

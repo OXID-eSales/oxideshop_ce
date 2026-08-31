@@ -231,6 +231,24 @@ readonly class ProductMediaDao implements ProductMediaDaoInterface
         return $row ? $this->productMediaDataMapper->fromData($row) : null;
     }
 
+    /** @return Id[] */
+    public function getProductIdsByMedia(Id $mediaId): array
+    {
+        $productIds = $this->queryBuilderFactory
+            ->create()
+            ->select('DISTINCT pm.product_id as product_id')
+            ->from(self::PRODUCT_MEDIA_TABLE, 'pm')
+            ->where('pm.media_id = :mediaId')
+            ->setParameter('mediaId', $mediaId)
+            ->executeQuery()
+            ->fetchFirstColumn();
+
+        return array_map(
+            static fn(string $productId): Id => Id::fromString($productId),
+            $productIds
+        );
+    }
+
     private function prepareSelectWithJoin(): QueryBuilder
     {
         return $this->queryBuilderFactory

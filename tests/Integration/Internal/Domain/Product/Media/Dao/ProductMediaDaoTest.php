@@ -844,6 +844,52 @@ final class ProductMediaDaoTest extends TestCase
         $this->assertNull($result);
     }
 
+    public function testGetProductIdsByMediaReturnsEveryReferencingProduct(): void
+    {
+        $anotherProductId = Id::generate();
+        $this->get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->insert('oxarticles')
+            ->values([
+                'OXID' => ':id',
+                'OXTITLE' => ':title',
+                'OXACTIVE' => ':active',
+            ])
+            ->setParameters([
+                'id' => (string) $anotherProductId,
+                'title' => 'Another Product',
+                'active' => 1,
+            ])
+            ->executeQuery();
+
+        $this->productMediaDao->add($this->createProductMedia(
+            $this->productId,
+            $this->media1,
+            ProductMediaRole::from(ProductMediaRole::DETAIL)
+        ));
+        $this->productMediaDao->add($this->createProductMedia(
+            $anotherProductId,
+            $this->media1,
+            ProductMediaRole::from(ProductMediaRole::DETAIL)
+        ));
+        $this->productMediaDao->add($this->createProductMedia(
+            $this->productId,
+            $this->media2,
+            ProductMediaRole::from(ProductMediaRole::DETAIL)
+        ));
+
+        $productIds = $this->productMediaDao->getProductIdsByMedia($this->media1->getId());
+
+        $this->assertEqualsCanonicalizing([$this->productId, $anotherProductId], $productIds);
+    }
+
+    public function testGetProductIdsByMediaReturnsEmptyArrayWhenNotReferenced(): void
+    {
+        $productIds = $this->productMediaDao->getProductIdsByMedia(Id::generate());
+
+        $this->assertSame([], $productIds);
+    }
+
     private function createProductMedia(Id $productId, Media $media, ProductMediaRole $role): ProductMedia
     {
         $roleSet = new ProductMediaRoleSet($role);

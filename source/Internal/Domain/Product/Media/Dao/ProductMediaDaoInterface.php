@@ -44,4 +44,7 @@ interface ProductMediaDaoInterface
     public function getActiveByPosition(Id $productId, int $position): ?ProductMedia;
 
     public function getFirstActive(Id $productId): ?ProductMedia;
+
+    /** @return Id[] */
+    public function getProductIdsByMedia(Id $mediaId): array;
 }

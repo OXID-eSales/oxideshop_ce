@@ -18,6 +18,4 @@ interface ProductMediaViewCacheInterface
     public function getAll(Id $productId, string $viewIdentifier, callable $callback): array;
 
     public function invalidateForProduct(Id $productId): void;
-
-    public function invalidateAll(): void;
 }

@@ -52,15 +52,10 @@ readonly class ProductMediaViewCache implements ProductMediaViewCacheInterface
         $this->cache->invalidateTags([$this->getProductTag($productId)]);
     }
 
-    public function invalidateAll(): void
-    {
-        $this->cache->invalidateTags([$this->getBaseTag()]);
-    }
-
     private function prepareItem(ItemInterface $item, Id $productId): void
     {
         $item->expiresAfter($this->lifetimeSeconds);
-        $item->tag([$this->getBaseTag(), $this->getProductTag($productId)]);
+        $item->tag([$this->getProductTag($productId)]);
     }
 
     private function getCacheKey(Id $productId, string $viewIdentifier): string
@@ -70,11 +65,6 @@ readonly class ProductMediaViewCache implements ProductMediaViewCacheInterface
 
     private function getProductTag(Id $productId): string
     {
-        return $this->getBaseTag() . '.product.' . md5((string) $productId);
-    }
-
-    private function getBaseTag(): string
-    {
-        return 'oxid_esales.cache.product_media_view';
+        return 'oxid_esales.cache.product_media_view.product.' . md5((string) $productId);
     }
 }

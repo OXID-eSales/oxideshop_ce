@@ -112,6 +112,29 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
         $this->assertSame('fresh alt', $refreshedView->getAttributes()->getAlt());
     }
 
+    public function testSavingAttributeDoesNotInvalidateUnaffectedProductView(): void
+    {
+        $changedProductId = Id::generate();
+        $changedMedia = $this->addProductMediaAndReturn($changedProductId, 'attribute-changed.jpg');
+
+        $unaffectedProductId = Id::generate();
+        $unaffectedProductMedia = $this->addProductMediaAndReturn($unaffectedProductId, 'unaffected.jpg');
+        $unaffectedView = $this->viewService->getByRole($unaffectedProductId, $this->detailRole());
+
+        $this->get(ProductMediaDaoInterface::class)->delete($unaffectedProductMedia->getId());
+
+        $this->mediaAttributeService->save(
+            MediaAttribute::ALT,
+            'changed alt',
+            $changedMedia->getMedia(),
+            $this->getActiveLocaleCode()
+        );
+        $stillCachedView = $this->viewService->getByRole($unaffectedProductId, $this->detailRole());
+
+        $this->assertFalse($stillCachedView->isFallback());
+        $this->assertSame($unaffectedView->getDetailUrl(), $stillCachedView->getDetailUrl());
+    }
+
     public function testDeletingAttributeRefreshesView(): void
     {
         $productId = Id::generate();
@@ -187,6 +210,28 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
         $refreshedView = $this->viewService->getByRole($variantProductId, $this->detailRole());
 
         $this->assertFalse($refreshedView->isFallback());
+    }
+
+    public function testSavingAttributeOnSharedMediaRefreshesVariantView(): void
+    {
+        $parentProductId = Id::generate();
+        $variantProductId = Id::generate();
+        $parentMedia = $this->addProductMediaAndReturn($parentProductId, 'shared.jpg');
+
+        $this->get(ProductVariantMediaServiceInterface::class)
+            ->assignFromParentToVariant($parentProductId, $variantProductId);
+        $variantFirstView = $this->viewService->getByRole($variantProductId, $this->detailRole());
+        $this->assertFalse($variantFirstView->getAttributes()->has(MediaAttribute::ALT));
+
+        $this->mediaAttributeService->save(
+            MediaAttribute::ALT,
+            'alt set via parent',
+            $parentMedia->getMedia(),
+            $this->getActiveLocaleCode()
+        );
+
+        $variantRefreshedView = $this->viewService->getByRole($variantProductId, $this->detailRole());
+        $this->assertSame('alt set via parent', $variantRefreshedView->getAttributes()->getAlt());
     }
 
     public function testRemoveRefreshesViewCollection(): void

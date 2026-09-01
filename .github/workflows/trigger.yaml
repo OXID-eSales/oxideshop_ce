@@ -16,31 +16,17 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'   # oxideshop-ce b-7.6 requires php ^8.3
+          php-version: '8.3'
 
-      - name: Install the SBOM plugin globally
-        run: |
-          composer global config allow-plugins.cyclonedx/cyclonedx-php-composer true
-          composer global require cyclonedx/cyclonedx-php-composer --no-interaction
-
-      - name: Resolve production dependencies
-        # No composer.lock in components → resolve fresh. --no-plugins/--no-scripts
-        # skip OXID's install-time hooks; --no-dev keeps it to shipped libraries;
-        # --ignore-platform-reqs: we want the dependency graph, not to run the code.
-        run: composer update --no-dev --no-scripts --no-plugins --ignore-platform-reqs --no-interaction
-
-      - name: Generate SBOM (CycloneDX 1.4, production deps)
-        run: >
-          composer CycloneDX:make-sbom
-          --output-format=JSON
-          --output-file=sbom.json
-          --spec-version=1.4
-          --omit=dev
-          --no-interaction
+      - name: Generate SBOM
+        id: sbom
+        uses: OXID-eSales/github-actions/generate_sbom@v0
+        with:
+          spec_version: '1.4'
 
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v7
         with:
           name: sbom-oxideshop-ce
-          path: sbom.json
+          path: ${{ steps.sbom.outputs.sbom_path }}
           if-no-files-found: error

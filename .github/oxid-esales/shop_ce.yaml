@@ -4,6 +4,15 @@ install:
     prepared_shop: true
   composer:
     root_url: ''
+    transform: |
+      {
+        "preferred-install": {
+          "oxid-esales/*": "source"
+        },
+        "require": {
+          "oxid-esales/apex-theme": "dev-b-7.6.x-update-vite-OXDEV-10553"
+        }
+      }
 
 runscript:
   matrix:

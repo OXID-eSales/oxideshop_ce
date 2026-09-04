@@ -15,9 +15,36 @@ use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use OxidEsales\Facts\Edition\EditionSelector;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Yaml;
 
 class ContainerBuilderTest extends TestCase
 {
+    private const MODULE_BOOTSTRAP_SERVICES_MARKER = 'oxid_esales.tests.module_bootstrap_services_marker';
+
+    private Filesystem $filesystem;
+    private string $installedModulesConfigurationDirectory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->filesystem = new Filesystem();
+        $this->installedModulesConfigurationDirectory = Path::join(
+            sys_get_temp_dir(),
+            'oxid-container-builder-bootstrap-services-test'
+        );
+        $this->filesystem->remove($this->installedModulesConfigurationDirectory);
+    }
+
+    protected function tearDown(): void
+    {
+        $this->filesystem->remove($this->installedModulesConfigurationDirectory);
+
+        parent::tearDown();
+    }
+
     public function testWhenCeServicesLoaded(): void
     {
         $context = $this->makeContextStub();
@@ -92,12 +119,61 @@ class ContainerBuilderTest extends TestCase
         );
     }
 
+    public function testBootstrapServicesOfInactiveInstalledModuleAreLoaded(): void
+    {
+        $context = $this->makeContextStubWithInstalledModules();
+        $this->givenInstalledModule('ModuleWithBootstrapServices');
+
+        $this->assertTrue($this->makeContainer($context)->has(self::MODULE_BOOTSTRAP_SERVICES_MARKER));
+    }
+
+    public function testNoBootstrapServicesLoadedWithoutInstalledModules(): void
+    {
+        $context = $this->makeContextStubWithInstalledModules();
+
+        $this->assertFalse($this->makeContainer($context)->has(self::MODULE_BOOTSTRAP_SERVICES_MARKER));
+    }
+
+    public function testInstalledModuleWithoutBootstrapServicesDoesNotBreakContainer(): void
+    {
+        $context = $this->makeContextStubWithInstalledModules();
+        $this->givenInstalledModule('TestModule');
+
+        $this->assertFalse($this->makeContainer($context)->has(self::MODULE_BOOTSTRAP_SERVICES_MARKER));
+    }
+
     private function makeContainer(ContextInterface $context): Container
     {
         $containerBuilder = new ContainerBuilder($context);
         $container = $containerBuilder->getContainer();
         $container->compile();
         return $container;
+    }
+
+    private function makeContextStubWithInstalledModules(): ContextStub
+    {
+        $context = $this->makeContextStub();
+        $context->setEdition(EditionSelector::COMMUNITY);
+        $context->setCurrentShopId(1);
+        $context->setProjectConfigurationDirectory($this->installedModulesConfigurationDirectory);
+
+        return $context;
+    }
+
+    private function givenInstalledModule(string $fixtureModuleName): void
+    {
+        $modulesDirectory = Path::join($this->installedModulesConfigurationDirectory, 'shops', '1', 'modules');
+        $this->filesystem->mkdir($modulesDirectory);
+
+        $moduleSource = Path::makeRelative(
+            realpath(__DIR__ . '/../Framework/Module/TestData/' . $fixtureModuleName),
+            $this->makeContextStub()->getShopRootPath()
+        );
+
+        $this->filesystem->dumpFile(
+            Path::join($modulesDirectory, $fixtureModuleName . '.yaml'),
+            Yaml::dump(['moduleSource' => $moduleSource, 'activated' => false])
+        );
     }
 
     private function makeContextStub(): ContextStub
@@ -110,6 +186,7 @@ class ContainerBuilderTest extends TestCase
         $context->setConfigurableServicesFilePath('nonexisting.yaml');
         $context->setShopConfigurableServicesFilePath('nonexisting.yaml');
         $context->setActiveModuleServicesFilePath('nonexisting.yaml');
+        $context->setProjectConfigurationDirectory(__DIR__ . '/Fixtures/nonexisting');
         return $context;
     }
 }

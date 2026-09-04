@@ -25,6 +25,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBu
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\EventDispatcher\DependencyInjection\RegisterListenersPass;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * @internal
@@ -48,6 +50,7 @@ class ContainerBuilder
         $symfonyContainer->addCompilerPass(new RoutePass());
         $this->loadEditionServices($symfonyContainer);
         $this->loadModuleServices($symfonyContainer);
+        $this->loadModuleBootstrapServices($symfonyContainer);
         $this->loadProjectServices($symfonyContainer);
 
         return $symfonyContainer;
@@ -127,21 +130,66 @@ class ContainerBuilder
 
     private function loadModuleServices(SymfonyContainerBuilder $symfonyContainer): void
     {
-        $moduleServicesFilePath = $this->context->getActiveModuleServicesFilePath($this->context->getCurrentShopId());
+        $this->loadServicesFile(
+            $symfonyContainer,
+            $this->context->getActiveModuleServicesFilePath($this->context->getCurrentShopId())
+        );
+    }
+
+    private function loadModuleBootstrapServices(SymfonyContainerBuilder $symfonyContainer): void
+    {
+        foreach ($this->getInstalledModulesBootstrapServicesFiles() as $bootstrapServicesFile) {
+            $this->loadServicesFile($symfonyContainer, $bootstrapServicesFile);
+        }
+    }
+
+    private function loadServicesFile(SymfonyContainerBuilder $symfonyContainer, string $servicesFilePath): void
+    {
         try {
             $loader = new YamlFileLoader($symfonyContainer, new FileLocator());
-            $loader->load($moduleServicesFilePath);
+            $loader->load($servicesFilePath);
         } catch (FileLocatorFileNotFoundException) {
-            //no active modules, do nothing.
+            //file does not exist, do nothing.
         } catch (LoaderLoadException $exception) {
             $loggerServiceFactory = new LoggerServiceFactory(new Context());
             $logger = $loggerServiceFactory->getLogger();
             // phpcs:disable
             $logger->error(
-                "Can't load module services file path $moduleServicesFilePath. Please check if file exists and all imports in the file are correct.",
+                "Can't load module services file path $servicesFilePath. Please check if file exists and all imports in the file are correct.",
                 [$exception]
             );
             // phpcs:enable
         }
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getInstalledModulesBootstrapServicesFiles(): array
+    {
+        $modulesConfigurationDirectory = Path::join(
+            $this->context->getShopConfigurationDirectory($this->context->getCurrentShopId()),
+            'modules'
+        );
+
+        if (!is_dir($modulesConfigurationDirectory)) {
+            return [];
+        }
+
+        $bootstrapServicesFiles = [];
+        foreach (glob(Path::join($modulesConfigurationDirectory, '*.yaml')) ?: [] as $moduleConfigurationFile) {
+            $moduleSource = Yaml::parseFile($moduleConfigurationFile)['moduleSource'] ?? null;
+            if ($moduleSource === null) {
+                continue;
+            }
+
+            $bootstrapServicesFiles[] = Path::join(
+                $this->context->getShopRootPath(),
+                $moduleSource,
+                'bootstrap-services.yaml'
+            );
+        }
+
+        return $bootstrapServicesFiles;
     }
 }

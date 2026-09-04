@@ -57,6 +57,7 @@ class BasicContextStub implements BasicContextInterface
         $this->sourcePath = $basicContext->getSourcePath();
         $this->configFilePath = $basicContext->getConfigFilePath();
         $this->shopRootPath = $basicContext->getShopRootPath();
+        $this->projectConfigurationDirectory = $basicContext->getProjectConfigurationDirectory();
         $this->backwardsCompatibilityClassMap = $basicContext->getBackwardsCompatibilityClassMap();
         $this->facts = $basicContext->getFacts();
         $this->outPath = $basicContext->getOutPath();

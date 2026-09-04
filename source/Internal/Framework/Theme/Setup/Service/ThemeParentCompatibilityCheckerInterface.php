@@ -7,14 +7,18 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 
 interface ThemeParentCompatibilityCheckerInterface
 {
     /**
-     * @throws ThemeInheritanceException
+     * @throws ThemeParentCompatibilityException
      * @throws ThemeConfigurationNotFoundException
+     * @throws InvalidThemeConfigurationException
+     * @throws InvalidThemeMetaDataException
      */
-    public function validate(string $themeId, string $parentThemeId, int $shopId): void;
+    public function validate(string $themeId, int $shopId): void;
 }

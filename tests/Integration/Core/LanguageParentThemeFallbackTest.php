@@ -78,8 +78,8 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
         $this->get(ThemeActivationServiceInterface::class)->activate(self::PARENT_THEME_ID, self::SHOP_ID);
         $standaloneParentThemeCacheKey = $this->getLangFileCacheName();
 
-        $this->assertStringEndsWith('_' . self::CHILD_THEME_ID . '_' . self::PARENT_THEME_ID . '_default', $childThemeCacheKey);
-        $this->assertStringEndsWith('_' . self::PARENT_THEME_ID . '__default', $standaloneParentThemeCacheKey);
+        $this->assertStringEndsWith('_' . self::PARENT_THEME_ID . '_' . self::CHILD_THEME_ID . '_default', $childThemeCacheKey);
+        $this->assertStringEndsWith('_' . self::PARENT_THEME_ID . '_default', $standaloneParentThemeCacheKey);
     }
 
     public function testTranslationValueChangesAfterActivatingDifferentTheme(): void

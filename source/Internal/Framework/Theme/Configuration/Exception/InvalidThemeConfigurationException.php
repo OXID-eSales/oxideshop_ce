@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception;
 
-class InvalidThemeConfigurationException extends \Exception
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
+
+class InvalidThemeConfigurationException extends \Exception implements ThemeNotLoadableException
 {
 }

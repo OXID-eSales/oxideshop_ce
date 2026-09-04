@@ -64,8 +64,11 @@ final class ThemeMainTest extends IntegrationTestCase
         $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);
         $controller->render();
 
-        $this->assertSame('EXCEPTION_THEME_INHERITANCE_INVALID', $controller->getViewDataElement('themeActivationError'));
-        $this->assertNull($controller->getViewDataElement('parentThemeId'));
+        $this->assertSame(
+            'EXCEPTION_THEME_INHERITANCE_INVALID',
+            $controller->getViewDataElement('theme')->getActivationError()
+        );
+        $this->assertNull($controller->getViewDataElement('parentTheme'));
     }
 
     public function testSetThemeDisplaysNotLoadedErrorWhenConfigurationFileIsBroken(): void

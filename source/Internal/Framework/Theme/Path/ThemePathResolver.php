@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Path;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Path;
 
@@ -22,10 +21,7 @@ readonly class ThemePathResolver implements ThemePathResolverInterface
     ) {
     }
 
-    /**
-     * @throws ThemeConfigurationNotFoundException
-     */
-    public function getFullThemePathFromConfiguration(string $themeId, int $shopId): string
+    public function getAbsolutePath(string $themeId, int $shopId): string
     {
         $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
 

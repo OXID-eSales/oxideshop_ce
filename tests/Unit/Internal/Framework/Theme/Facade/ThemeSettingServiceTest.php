@@ -11,15 +11,13 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\ThemeInheritance;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -121,33 +119,14 @@ final class ThemeSettingServiceTest extends TestCase
         $service->getString('missing');
     }
 
-    public function testGetThrowsForMissingThemeConfigurationWithoutResolverCall(): void
-    {
-        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao
-            ->expects($this->once())
-            ->method('exists')
-            ->with(self::THEME_ID, self::SHOP_ID)
-            ->willReturn(false);
-        $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
-        $resolver->expects($this->never())->method('resolve');
-
-        $service = $this->createService($dao, resolver: $resolver);
-
-        $this->expectException(ThemeSettingNotFoundException::class);
-        $service->getString('logoFile');
-    }
-
     public function testMissingSettingIsCached(): void
     {
         $configuration = (new ThemeConfiguration())->setId(self::THEME_ID);
 
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(true);
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->once())->method('resolve')->willReturn($configuration);
 
-        $service = $this->createService($dao, resolver: $resolver);
+        $service = $this->createService(resolver: $resolver);
 
         $this->assertFalse($service->exists('missing'));
         $this->assertFalse($service->exists('missing'));
@@ -158,12 +137,10 @@ final class ThemeSettingServiceTest extends TestCase
         $cache = $this->createStub(ThemeSettingCacheInterface::class);
         $cache->method('get')->willReturn(['exists' => true, 'value' => 'cached.png']);
 
-        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao->expects($this->never())->method('exists');
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->never())->method('resolve');
 
-        $service = $this->createService($dao, $cache, $resolver);
+        $service = $this->createService($cache, $resolver);
 
         $this->assertSame('cached.png', $service->getString('logoFile'));
     }
@@ -190,17 +167,15 @@ final class ThemeSettingServiceTest extends TestCase
         $this->assertTrue($service->exists('logoFile'));
     }
 
-    public function testExistsReturnsTrueFromCacheWithoutHittingDao(): void
+    public function testExistsReturnsTrueFromCacheWithoutResolving(): void
     {
         $cache = $this->createStub(ThemeSettingCacheInterface::class);
         $cache->method('get')->willReturn(['exists' => true, 'value' => 'logo.png']);
 
-        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao->expects($this->never())->method('exists');
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->never())->method('resolve');
 
-        $service = $this->createService($dao, $cache, $resolver);
+        $service = $this->createService($cache, $resolver);
 
         $this->assertTrue($service->exists('logoFile'));
     }
@@ -212,59 +187,19 @@ final class ThemeSettingServiceTest extends TestCase
         $this->assertFalse($service->exists('missing'));
     }
 
-    public function testExistsReturnsFalseForMissingThemeConfiguration(): void
+    public function testExistsReturnsFalseWithoutActiveTheme(): void
     {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(false);
+        $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);
+        $activeThemeProvider->method('getActiveThemeId')->willThrowException(new ActiveThemeNotFoundException());
 
-        $service = $this->createService($dao);
+        $service = new ThemeSettingService(
+            $this->createContext(),
+            $this->createStub(ThemeConfigurationResolverInterface::class),
+            $this->createCacheMiss(),
+            $activeThemeProvider
+        );
 
         $this->assertFalse($service->exists('logoFile'));
-    }
-
-    public function testInheritsSettingFromParentThemeWhenChildDoesNotOverrideIt(): void
-    {
-        $childConfiguration = (new ThemeConfiguration())->setId('child');
-        $parentSetting = (new Setting())->setName('sLogoFile')->setType('str')->setValue('parent-logo.png');
-        $parentConfiguration = (new ThemeConfiguration())->setId('parent')->addThemeSetting($parentSetting);
-
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(true);
-
-        $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
-        $resolver->method('resolve')->willReturnCallback(
-            fn(string $themeId) => $themeId === 'child' ? $childConfiguration : $parentConfiguration
-        );
-
-        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
-        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeInheritance('child', 'parent')));
-
-        $service = new ThemeSettingService($this->createContext(), $dao, $resolver, $this->createCacheMiss(), $themeStateService);
-
-        $this->assertSame('parent-logo.png', $service->getString('sLogoFile'));
-    }
-
-    public function testChildThemeOverridesParentThemeSetting(): void
-    {
-        $childSetting = (new Setting())->setName('sLogoFile')->setType('str')->setValue('child-logo.png');
-        $childConfiguration = (new ThemeConfiguration())->setId('child')->addThemeSetting($childSetting);
-        $parentSetting = (new Setting())->setName('sLogoFile')->setType('str')->setValue('parent-logo.png');
-        $parentConfiguration = (new ThemeConfiguration())->setId('parent')->addThemeSetting($parentSetting);
-
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(true);
-
-        $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
-        $resolver->method('resolve')->willReturnCallback(
-            fn(string $themeId) => $themeId === 'child' ? $childConfiguration : $parentConfiguration
-        );
-
-        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
-        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeInheritance('child', 'parent')));
-
-        $service = new ThemeSettingService($this->createContext(), $dao, $resolver, $this->createCacheMiss(), $themeStateService);
-
-        $this->assertSame('child-logo.png', $service->getString('sLogoFile'));
     }
 
     private function createServiceWithSetting(
@@ -276,54 +211,40 @@ final class ThemeSettingServiceTest extends TestCase
         $setting = (new Setting())->setName($name)->setType($type)->setValue($value);
         $configuration = (new ThemeConfiguration())->setId(self::THEME_ID)->addThemeSetting($setting);
 
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(true);
-
         $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
         $resolver->method('resolve')->willReturn($configuration);
 
-        return $this->createService($dao, $cache, $resolver);
+        return $this->createService($cache, $resolver);
     }
 
     private function createServiceWithoutSetting(): ThemeSettingService
     {
-        $configuration = (new ThemeConfiguration())->setId(self::THEME_ID);
-
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('exists')->willReturn(true);
-
         $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
-        $resolver->method('resolve')->willReturn($configuration);
+        $resolver->method('resolve')->willReturn((new ThemeConfiguration())->setId(self::THEME_ID));
 
-        return $this->createService($dao, resolver: $resolver);
+        return $this->createService(resolver: $resolver);
     }
 
     private function createService(
-        ThemeConfigurationDaoInterface $dao,
         ?ThemeSettingCacheInterface $cache = null,
         ?ThemeConfigurationResolverInterface $resolver = null,
     ): ThemeSettingService {
+        $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);
+        $activeThemeProvider->method('getActiveThemeId')->willReturn(self::THEME_ID);
+
         return new ThemeSettingService(
             $this->createContext(),
-            $dao,
             $resolver ?? $this->createStub(ThemeConfigurationResolverInterface::class),
             $cache ?? $this->createCacheMiss(),
-            $this->createThemeStateService(),
+            $activeThemeProvider
         );
-    }
-
-    private function createThemeStateService(): ThemeStateServiceInterface
-    {
-        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
-        $themeStateService->method('getActiveThemeId')->willReturn(self::THEME_ID);
-        $themeStateService->method('getActiveTheme')->willReturn(new ActiveTheme(new ThemeInheritance(self::THEME_ID, null)));
-        return $themeStateService;
     }
 
     private function createContext(): ContextInterface
     {
         $context = $this->createStub(ContextInterface::class);
         $context->method('getCurrentShopId')->willReturn(self::SHOP_ID);
+
         return $context;
     }
 

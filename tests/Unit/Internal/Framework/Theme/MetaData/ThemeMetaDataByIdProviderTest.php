@@ -21,10 +21,10 @@ final class ThemeMetaDataByIdProviderTest extends TestCase
     private const SHOP_ID = 1;
     private const THEME_ID = 'apex';
 
-    public function testGetResolvesMetaDataUsingThemePathResolver(): void
+    public function testGetByIdResolvesMetaDataUsingThemePathResolver(): void
     {
         $themePathResolver = $this->createStub(ThemePathResolverInterface::class);
-        $themePathResolver->method('getFullThemePathFromConfiguration')->willReturn('/var/www/Application/views/apex');
+        $themePathResolver->method('getAbsolutePath')->willReturn('/var/www/Application/views/apex');
 
         $expectedMetaData = (new ThemeMetaData())->setId(self::THEME_ID);
 
@@ -42,7 +42,7 @@ final class ThemeMetaDataByIdProviderTest extends TestCase
     public function testGetByIdThrowsWhenMetaDataIdDoesNotMatchRequestedThemeId(): void
     {
         $themePathResolver = $this->createStub(ThemePathResolverInterface::class);
-        $themePathResolver->method('getFullThemePathFromConfiguration')->willReturn('/var/www/vendor/some-other-theme');
+        $themePathResolver->method('getAbsolutePath')->willReturn('/var/www/vendor/some-other-theme');
 
         $themeMetaDataProvider = $this->createStub(ThemeMetaDataProviderInterface::class);
         $themeMetaDataProvider->method('get')->willReturn((new ThemeMetaData())->setId('unexpectedThemeId'));

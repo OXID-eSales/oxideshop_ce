@@ -7,20 +7,18 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 
 interface ThemeActivationServiceInterface
 {
     /**
      * @throws ThemeConfigurationNotFoundException
-     * @throws ThemeInheritanceException
+     * @throws InvalidThemeConfigurationException
+     * @throws InvalidThemeMetaDataException
+     * @throws ThemeParentCompatibilityException
      */
     public function activate(string $themeId, int $shopId): void;
-
-    /**
-     * @throws ThemeConfigurationNotFoundException
-     * @throws ThemeInheritanceException
-     */
-    public function validateActivatable(string $themeId, int $shopId): void;
 }

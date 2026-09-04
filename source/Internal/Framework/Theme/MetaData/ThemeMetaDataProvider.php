@@ -32,15 +32,32 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
             );
         }
 
+        $data = $this->readData($metadataFilePath);
+
+        if (empty($data['id'])) {
+            throw new InvalidThemeMetaDataException(
+                "metadata.yaml is missing required 'id' field at $metadataFilePath"
+            );
+        }
+
+        return $this->mapMetaData($data, $metadataFilePath);
+    }
+
+    private function readData(string $metadataFilePath): array
+    {
         try {
-            $data = $this->fileStorageFactory->create($metadataFilePath)->get();
+            return $this->fileStorageFactory->create($metadataFilePath)->get();
+        } catch (\Throwable $exception) {
+            throw new InvalidThemeMetaDataException(
+                "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",
+                previous: $exception
+            );
+        }
+    }
 
-            if (empty($data['id'])) {
-                throw new InvalidThemeMetaDataException(
-                    "metadata.yaml is missing required 'id' field at $metadataFilePath"
-                );
-            }
-
+    private function mapMetaData(array $data, string $metadataFilePath): ThemeMetaData
+    {
+        try {
             return (new ThemeMetaData())
                 ->setId($data['id'])
                 ->setVersion($data['version'] ?? '')
@@ -50,8 +67,6 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
                 ->setAuthor($data['author'] ?? '')
                 ->setParentTheme($data['parentTheme'] ?? '')
                 ->setParentVersions($data['parentVersions'] ?? []);
-        } catch (InvalidThemeMetaDataException $exception) {
-            throw $exception;
         } catch (\Throwable $exception) {
             throw new InvalidThemeMetaDataException(
                 "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",

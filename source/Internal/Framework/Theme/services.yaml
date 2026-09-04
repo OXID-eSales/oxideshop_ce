@@ -1,12 +1,10 @@
 imports:
   - { resource: MetaData/services.yaml }
-  - { resource: Inheritance/services.yaml }
   - { resource: Setup/services.yaml }
   - { resource: State/services.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Configuration/services.yaml }
   - { resource: Path/services.yaml }
-  - { resource: ParentInfo/services.yaml }
 
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'
@@ -28,6 +26,10 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProvider
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:

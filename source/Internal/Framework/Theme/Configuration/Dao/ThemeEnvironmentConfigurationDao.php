@@ -12,11 +12,12 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeEnvironmentConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 readonly class ThemeEnvironmentConfigurationDao implements ThemeEnvironmentConfigurationDaoInterface
 {
@@ -24,7 +25,6 @@ readonly class ThemeEnvironmentConfigurationDao implements ThemeEnvironmentConfi
         private FileStorageFactoryInterface $fileStorageFactory,
         private BasicContextInterface $context,
         private NodeInterface $node,
-        private Processor $processor,
     ) {
     }
 
@@ -47,19 +47,17 @@ readonly class ThemeEnvironmentConfigurationDao implements ThemeEnvironmentConfi
     private function getProcessedData(string $path): array
     {
         try {
-            return $this->processor->process(
-                $this->node,
-                [$this->fileStorageFactory->create($path)->get()]
+            return $this->node->finalize(
+                $this->node->normalize($this->fileStorageFactory->create($path)->get())
             );
-        } catch (InvalidConfigurationException $exception) {
-            throw new InvalidConfigurationException(
+        } catch (InvalidConfigurationException | ParseException $exception) {
+            throw new InvalidThemeConfigurationException(
                 sprintf(
                     'File %s is broken: %s',
                     $path,
                     $exception->getMessage()
                 ),
-                $exception->getCode(),
-                $exception
+                previous: $exception
             );
         }
     }

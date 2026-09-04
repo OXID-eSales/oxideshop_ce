@@ -15,30 +15,35 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEn
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeEnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolver;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
 final class ThemeConfigurationResolverTest extends TestCase
 {
-    private const THEME_ID = 'testTheme';
     private const SHOP_ID = 1;
+    private const CHILD_THEME_ID = 'childTheme';
+    private const PARENT_THEME_ID = 'parentTheme';
+
+    public function testResolveAppliesEnvironmentOverrideToOwnSetting(): void
+    {
+        $configuration = $this->createConfiguration(self::CHILD_THEME_ID, ['logoFile' => 'default.png']);
+
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [$configuration],
+                environmentValues: ['logoFile' => 'environment.png']
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('environment.png', $resolvedConfiguration->getSettingByName('logoFile')->getValue());
+    }
 
     public function testResolveLogsAndIgnoresUnknownEnvironmentSetting(): void
     {
-        $configuration = $this->createConfiguration();
-
-        $configurationDao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $configurationDao->method('get')->willReturn($configuration);
-
-        $environmentConfigurationDao = $this->createStub(ThemeEnvironmentConfigurationDaoInterface::class);
-        $environmentConfigurationDao
-            ->method('get')
-            ->willReturn(
-                new ThemeEnvironmentConfiguration([
-                    'unknownSetting' => 'ignoredValue',
-                ])
-            );
+        $configuration = $this->createConfiguration(self::CHILD_THEME_ID, ['logoFile' => 'default.png']);
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger
@@ -48,51 +53,148 @@ final class ThemeConfigurationResolverTest extends TestCase
                 'Environment configuration references an unknown theme setting.'
                 . ' The environment value will be ignored.',
                 [
-                    'themeId' => self::THEME_ID,
+                    'themeId' => self::CHILD_THEME_ID,
                     'shopId' => self::SHOP_ID,
                     'settingName' => 'unknownSetting',
                 ]
             );
 
-        $resolvedConfiguration = $this->createResolver(
-            $configurationDao,
-            $environmentConfigurationDao,
-            $logger
-        )->resolve(self::THEME_ID, self::SHOP_ID);
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [$configuration],
+                environmentValues: ['unknownSetting' => 'ignoredValue'],
+                logger: $logger
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
 
-        $this->assertSame(
-            'canonicalValue',
-            $resolvedConfiguration->getSettingByName('canonicalSetting')->getValue()
-        );
+        $this->assertSame('default.png', $resolvedConfiguration->getSettingByName('logoFile')->getValue());
         $this->assertNull($resolvedConfiguration->getSettingByName('unknownSetting'));
     }
 
+    public function testResolveMergesParentSettingChildDoesNotDeclare(): void
+    {
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [
+                    $this->createConfiguration(self::CHILD_THEME_ID, []),
+                    $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']),
+                ],
+                parentThemeId: self::PARENT_THEME_ID
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('87*87', $resolvedConfiguration->getSettingByName('iconSize')->getValue());
+    }
+
+    public function testResolveKeepsChildValueForSettingDeclaredByBothThemes(): void
+    {
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [
+                    $this->createConfiguration(self::CHILD_THEME_ID, ['iconSize' => '100*100']),
+                    $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']),
+                ],
+                parentThemeId: self::PARENT_THEME_ID
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('100*100', $resolvedConfiguration->getSettingByName('iconSize')->getValue());
+    }
+
+    public function testResolveAppliesEnvironmentOverrideToInheritedSetting(): void
+    {
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [
+                    $this->createConfiguration(self::CHILD_THEME_ID, []),
+                    $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']),
+                ],
+                environmentValues: ['iconSize' => '200*200'],
+                parentThemeId: self::PARENT_THEME_ID
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('200*200', $resolvedConfiguration->getSettingByName('iconSize')->getValue());
+    }
+
+    public function testResolveInheritedValueDoesNotChangeParentConfiguration(): void
+    {
+        $parentConfiguration = $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']);
+
+        $this
+            ->createResolver(
+                configurations: [
+                    $this->createConfiguration(self::CHILD_THEME_ID, []),
+                    $parentConfiguration,
+                ],
+                environmentValues: ['iconSize' => '200*200'],
+                parentThemeId: self::PARENT_THEME_ID
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('87*87', $parentConfiguration->getSettingByName('iconSize')->getValue());
+    }
+
+    public function testResolveReturnsOwnSettingsWhenParentConfigurationIsMissing(): void
+    {
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [$this->createConfiguration(self::CHILD_THEME_ID, ['logoFile' => 'child.png'])],
+                parentThemeId: self::PARENT_THEME_ID
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('child.png', $resolvedConfiguration->getSettingByName('logoFile')->getValue());
+        $this->assertNull($resolvedConfiguration->getSettingByName('iconSize'));
+    }
+
+    /** @param ThemeConfiguration[] $configurations */
     private function createResolver(
-        ThemeConfigurationDaoInterface $configurationDao,
-        ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao,
-        LoggerInterface $logger,
+        array $configurations,
+        array $environmentValues = [],
+        string $parentThemeId = '',
+        ?LoggerInterface $logger = null
     ): ThemeConfigurationResolver {
+        $configurationsById = [];
+        foreach ($configurations as $configuration) {
+            $configurationsById[$configuration->getId()] = $configuration;
+        }
+
+        $configurationDao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $configurationDao
+            ->method('get')
+            ->willReturnCallback(fn (string $themeId) => clone $configurationsById[$themeId]);
+        $configurationDao
+            ->method('exists')
+            ->willReturnCallback(fn (string $themeId) => isset($configurationsById[$themeId]));
+
+        $environmentConfigurationDao = $this->createStub(ThemeEnvironmentConfigurationDaoInterface::class);
+        $environmentConfigurationDao
+            ->method('get')
+            ->willReturn(new ThemeEnvironmentConfiguration($environmentValues));
+
+        $metaDataProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
+        $metaDataProvider->method('getById')->willReturn(
+            (new ThemeMetaData())->setId(self::CHILD_THEME_ID)->setParentTheme($parentThemeId)
+        );
+
         return new ThemeConfigurationResolver(
             $configurationDao,
             $environmentConfigurationDao,
             new ThemeConfigurationCache(),
-            $logger
+            $metaDataProvider,
+            $logger ?? $this->createStub(LoggerInterface::class)
         );
     }
 
-    private function createConfiguration(): ThemeConfiguration
+    private function createConfiguration(string $themeId, array $settingValues): ThemeConfiguration
     {
-        return (new ThemeConfiguration())
-            ->setId(self::THEME_ID)
-            ->addThemeSetting(
-                (new Setting())
-                    ->setName('overriddenSetting')
-                    ->setValue('canonicalValue')
-            )
-            ->addThemeSetting(
-                (new Setting())
-                    ->setName('canonicalSetting')
-                    ->setValue('canonicalValue')
-            );
+        $configuration = (new ThemeConfiguration())->setId($themeId);
+
+        foreach ($settingValues as $name => $value) {
+            $configuration->addThemeSetting((new Setting())->setName($name)->setValue($value));
+        }
+
+        return $configuration;
     }
 }

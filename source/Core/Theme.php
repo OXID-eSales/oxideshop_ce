@@ -10,12 +10,10 @@ namespace OxidEsales\EshopCommunity\Core;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 
 /**
  * Themes handler class.
@@ -51,11 +49,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
 
         try {
             $themeMetaData = ContainerFacade::get(ThemeMetaDataByIdProviderInterface::class)->getById($sOXID, $shopId);
-        } catch (ThemeConfigurationNotFoundException | InvalidThemeConfigurationException | InvalidThemeMetaDataException) {
-            return false;
-        }
-
-        if ($themeMetaData->getId() !== $sOXID) {
+        } catch (ThemeNotLoadableException) {
             return false;
         }
 
@@ -69,7 +63,7 @@ class Theme extends \OxidEsales\Eshop\Core\Base
         ];
 
         try {
-            $activeThemeId = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+            $activeThemeId = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveThemeId($shopId);
             $this->_aTheme['active'] = ($activeThemeId === $sOXID);
         } catch (ActiveThemeNotFoundException) {
             $this->_aTheme['active'] = false;

@@ -13,7 +13,7 @@ use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -53,21 +53,19 @@ final class LanguageTest extends IntegrationTestCase
         $language = new Language();
         $shopId = (int) Registry::getConfig()->getShopId();
         try {
-            $inheritance = $this->get(ThemeStateServiceInterface::class)->getActiveTheme($shopId)->getInheritance();
-            $themeId = $inheritance->getThemeId();
-            $parentThemeId = $inheritance->hasParentTheme() ? $inheritance->getParentThemeId() : null;
+            $activeTheme = $this->get(ActiveThemeProviderInterface::class)->getActiveTheme($shopId);
         } catch (ActiveThemeNotFoundException) {
-            $themeId = null;
-            $parentThemeId = null;
+            $activeTheme = null;
         }
-        $cacheKey = sprintf(
-            'langcache_%d_%s_%d_%s_%s_default',
-            Registry::getConfig()->isAdmin(),
-            $language->getBaseLanguage(),
-            $shopId,
-            $themeId,
-            $parentThemeId
-        );
+        $cacheKey = implode('_', array_merge(
+            [
+                'langcache',
+                (string) (int) Registry::getConfig()->isAdmin(),
+                (string) $language->getBaseLanguage(),
+                (string) $shopId,
+            ],
+            array_filter([$activeTheme?->getId(), $activeTheme?->getParentThemeId()])
+        )) . '_default';
 
         $this->get(ShopCacheCleanerInterface::class)->clearAll();
         $this->get(TagAwareCacheInterface::class)

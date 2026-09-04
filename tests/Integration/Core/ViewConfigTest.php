@@ -16,13 +16,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class ViewConfigTest extends IntegrationTestCase
 {
     use ContainerTrait;
-
-    private const THEME_ID = 'apex';
-    private const THEME_SOURCE = 'source/Application/views/apex';
 
     private ViewConfig $viewConfig;
 
@@ -53,39 +51,46 @@ final class ViewConfigTest extends IntegrationTestCase
 
     public function testThemeSettingsReturnsValueForExistingSetting(): void
     {
-        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
-        $configuration = (new ThemeConfiguration())
-            ->setId(self::THEME_ID)
-            ->setSource(self::THEME_SOURCE)
-            ->setActivated(true)
-            ->addThemeSetting((new Setting())->setName('logoFile')->setType('str')->setValue('logo.png'));
-        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
+        $this->saveActiveThemeConfiguration(
+            (new Setting())->setName('logoFile')->setType('str')->setValue('logo.png')
+        );
 
         $this->assertSame('logo.png', $this->viewConfig->getThemeSettings()->getString('logoFile'));
     }
 
     public function testThemeSettingsReturnsValueForExistingBooleanSetting(): void
     {
-        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
-        $configuration = (new ThemeConfiguration())
-            ->setId(self::THEME_ID)
-            ->setSource(self::THEME_SOURCE)
-            ->setActivated(true)
-            ->addThemeSetting((new Setting())->setName('showWishlist')->setType('bool')->setValue(true));
-        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
+        $this->saveActiveThemeConfiguration(
+            (new Setting())->setName('showWishlist')->setType('bool')->setValue(true)
+        );
 
         $this->assertTrue($this->viewConfig->getThemeSettings()->getBoolean('showWishlist'));
     }
 
     public function testThemeSettingsExistsReturnsFalseForMissingSetting(): void
     {
-        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
-        $configuration = (new ThemeConfiguration())
-            ->setId(self::THEME_ID)
-            ->setSource(self::THEME_SOURCE)
-            ->setActivated(true);
-        $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
+        $this->saveActiveThemeConfiguration();
 
         $this->assertFalse($this->viewConfig->getThemeSettings()->exists('nonExistentSetting'));
+    }
+
+    private function saveActiveThemeConfiguration(Setting ...$settings): void
+    {
+        $configuration = (new ThemeConfiguration())
+            ->setId('apex')
+            ->setSource(Path::makeRelative(
+                __DIR__ . '/Fixtures/apex',
+                $this->get(ContextInterface::class)->getShopRootPath()
+            ))
+            ->setActivated(true);
+
+        foreach ($settings as $setting) {
+            $configuration->addThemeSetting($setting);
+        }
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save(
+            $configuration,
+            $this->get(ContextInterface::class)->getCurrentShopId()
+        );
     }
 }

@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationInvalidEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -85,6 +84,16 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $this->get(ThemeConfigurationDaoInterface::class)->delete('nonExistent', self::SHOP_ID);
 
         $this->assertCount(0, $dispatchedEvents);
+    }
+
+    public function testDeleteRemovesConfigurationViolatingTheSchema(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $this->saveConfigurationData('brokenTheme', ['unknownKey' => 'value']);
+
+        $dao->delete('brokenTheme', self::SHOP_ID);
+
+        $this->assertFalse($dao->exists('brokenTheme', self::SHOP_ID));
     }
 
     public function testGetThrowsForNonExistentTheme(): void
@@ -271,33 +280,6 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $this->assertSame(['validTheme'], array_keys($dao->getAll(self::SHOP_ID)));
     }
 
-    public function testGetAllDispatchesThemeConfigurationInvalidEventForSkippedTheme(): void
-    {
-        $dao = $this->get(ThemeConfigurationDaoInterface::class);
-        $dao->save($this->buildConfiguration('validTheme'), self::SHOP_ID);
-        $this->saveConfigurationData('brokenTheme', ['unknownKey' => 'value']);
-
-        $dispatchedEvents = $this->collectThemeConfigurationInvalidEvents();
-
-        $dao->getAll(self::SHOP_ID);
-
-        $this->assertCount(1, $dispatchedEvents);
-        $this->assertSame('brokenTheme', $dispatchedEvents[0]->getThemeId());
-        $this->assertSame(self::SHOP_ID, $dispatchedEvents[0]->getShopId());
-    }
-
-    public function testGetAllDispatchesNoEventWhenAllConfigurationsAreValid(): void
-    {
-        $dao = $this->get(ThemeConfigurationDaoInterface::class);
-        $dao->save($this->buildConfiguration('validTheme'), self::SHOP_ID);
-
-        $dispatchedEvents = $this->collectThemeConfigurationInvalidEvents();
-
-        $dao->getAll(self::SHOP_ID);
-
-        $this->assertCount(0, $dispatchedEvents);
-    }
-
     private function saveConfigurationData(string $themeId, array $data): void
     {
         $this->get(FileStorageFactoryInterface::class)->create($this->getConfigurationFilePath($themeId))->save($data);
@@ -332,7 +314,7 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $events = new ArrayObject();
         $this->get(EventDispatcherInterface::class)->addListener(
             ThemeConfigurationChangedEvent::class,
-            function (ThemeConfigurationChangedEvent $event) use ($events): void {
+            static function (ThemeConfigurationChangedEvent $event) use ($events): void {
                 $events->append($event);
             }
         );
@@ -340,16 +322,4 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         return $events;
     }
 
-    private function collectThemeConfigurationInvalidEvents(): ArrayObject
-    {
-        $events = new ArrayObject();
-        $this->get(EventDispatcherInterface::class)->addListener(
-            ThemeConfigurationInvalidEvent::class,
-            function (ThemeConfigurationInvalidEvent $event) use ($events): void {
-                $events->append($event);
-            }
-        );
-
-        return $events;
-    }
 }

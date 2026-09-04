@@ -13,7 +13,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDao
     arguments:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.environment_node'
-      Symfony\Component\Config\Definition\Processor: '@oxid_esales.theme.configuration.processor'
 
   oxid_esales.theme.configuration.resolver_cache:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCache
@@ -32,11 +31,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidatorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidator
-
-  oxid_esales.theme.configuration.log_invalid_configuration_event_subscriber:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\EventSubscriber\LogInvalidThemeConfigurationEventSubscriber
-    tags:
-      - { name: kernel.event_subscriber }
 
   OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeConfiguration:
     arguments:

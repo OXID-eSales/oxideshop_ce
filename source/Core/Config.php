@@ -15,8 +15,8 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
 use Symfony\Component\Filesystem\Path;
@@ -253,7 +253,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     private function getActiveThemeId(int $shopId): ?string
     {
         try {
-            return ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId($shopId);
+            return ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveThemeId($shopId);
         } catch (ActiveThemeNotFoundException) {
             return null;
         }
@@ -1019,25 +1019,23 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return $return;
     }
 
-    private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, ?string $theme, $absolute, $ignoreParentTheme)
+    private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme): bool|string
     {
         if ($admin || $ignoreParentTheme || !$theme) {
             return false;
         }
 
         try {
-            $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme((int) $shop);
+            $activeTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveTheme((int) $shop);
         } catch (ActiveThemeNotFoundException) {
             return false;
         }
 
-        $inheritance = $activeTheme->getInheritance();
-
-        if ($theme !== $activeTheme->getId() || !$inheritance->hasParentTheme()) {
+        if ($theme !== $activeTheme->getId() || !$activeTheme->hasParentTheme()) {
             return false;
         }
 
-        return $this->getDir($file, $dir, $admin, $lang, $shop, $inheritance->getParentThemeId(), $absolute, true);
+        return $this->getDir($file, $dir, $admin, $lang, $shop, $activeTheme->getParentThemeId(), $absolute, true);
     }
 
     /**

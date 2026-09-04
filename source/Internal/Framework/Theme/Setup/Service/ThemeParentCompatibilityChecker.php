@@ -10,13 +10,11 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeInheritanceMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentNotInstalledException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionMismatchException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionsNotDeclaredException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Inheritance\Exception\ThemeParentVersionUnspecifiedException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCycleException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentDepthExceededException;
 
 readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibilityCheckerInterface
 {
@@ -26,66 +24,59 @@ readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibili
     ) {
     }
 
-    public function validate(string $themeId, string $parentThemeId, int $shopId): void
+    public function validate(string $themeId, int $shopId): void
     {
-        try {
-            $this->validateParentThemeIsInstalled($themeId, $parentThemeId, $shopId);
+        $metaData = $this->themeMetaDataByIdProvider->getById($themeId, $shopId);
+        $parentThemeId = $metaData->getParentTheme();
 
-            $parentVersion = $this->resolveParentVersion($parentThemeId, $shopId);
-            $declaredParentVersions = $this->resolveDeclaredParentVersions($themeId, $shopId);
+        if ($parentThemeId === '') {
+            return;
+        }
 
-            $this->validateVersionIsCompatible($themeId, $parentThemeId, $parentVersion, $declaredParentVersions);
-        } catch (InvalidThemeMetaDataException $exception) {
-            throw new ThemeInheritanceMetaDataException(
-                "Could not read metadata of theme '$themeId' or its parent theme: {$exception->getMessage()}",
-                previous: $exception
+        if ($parentThemeId === $themeId) {
+            throw new ThemeParentCycleException(
+                "Theme '$themeId' declares itself as its own parent theme"
             );
         }
-    }
 
-    private function validateParentThemeIsInstalled(string $themeId, string $parentThemeId, int $shopId): void
-    {
         if (!$this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
-            throw new ThemeParentNotInstalledException(
+            throw new ThemeParentCompatibilityException(
                 "Theme '$themeId' declares parent theme '$parentThemeId', but '$parentThemeId' is not installed"
             );
         }
-    }
 
-    private function resolveParentVersion(string $parentThemeId, int $shopId): string
-    {
-        $parentVersion = $this->themeMetaDataByIdProvider->getById($parentThemeId, $shopId)->getVersion();
-        if ($parentVersion === '') {
-            throw new ThemeParentVersionUnspecifiedException(
-                "Parent theme '$parentThemeId' does not declare a version in its metadata.yaml"
+        $parentMetaData = $this->themeMetaDataByIdProvider->getById($parentThemeId, $shopId);
+
+        if ($parentMetaData->getParentTheme() !== '') {
+            throw new ThemeParentDepthExceededException(
+                "Theme '$themeId' declares '$parentThemeId' as its parent, but '$parentThemeId' is itself "
+                . 'a child theme; only one level of theme inheritance is supported'
             );
         }
 
-        return $parentVersion;
+        $this->validateVersionIsCompatible($metaData, $parentMetaData);
     }
 
-    private function resolveDeclaredParentVersions(string $themeId, int $shopId): array
+    private function validateVersionIsCompatible(ThemeMetaData $metaData, ThemeMetaData $parentMetaData): void
     {
-        $declaredParentVersions = $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentVersions();
-        if (empty($declaredParentVersions)) {
-            throw new ThemeParentVersionsNotDeclaredException(
-                "Theme '$themeId' does not declare any compatible parent versions in its metadata.yaml"
+        if ($parentMetaData->getVersion() === '') {
+            throw new ThemeParentCompatibilityException(
+                "Parent theme '{$parentMetaData->getId()}' does not declare a version in its metadata.yaml"
             );
         }
 
-        return $declaredParentVersions;
-    }
+        if ($metaData->getParentVersions() === []) {
+            throw new ThemeParentCompatibilityException(
+                "Theme '{$metaData->getId()}' does not declare any compatible parent versions in its metadata.yaml"
+            );
+        }
 
-    private function validateVersionIsCompatible(
-        string $themeId,
-        string $parentThemeId,
-        string $parentVersion,
-        array $declaredParentVersions
-    ): void {
-        if (!in_array($parentVersion, $declaredParentVersions, true)) {
-            throw new ThemeParentVersionMismatchException(
-                "Theme '$themeId' declares compatible parent versions [" . implode(', ', $declaredParentVersions)
-                . "], but installed parent theme '$parentThemeId' has version '$parentVersion'"
+        if (!in_array($parentMetaData->getVersion(), $metaData->getParentVersions(), true)) {
+            throw new ThemeParentCompatibilityException(
+                "Theme '{$metaData->getId()}' declares compatible parent versions ["
+                . implode(', ', $metaData->getParentVersions())
+                . "], but installed parent theme '{$parentMetaData->getId()}' has version "
+                . "'{$parentMetaData->getVersion()}'"
             );
         }
     }

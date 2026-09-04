@@ -48,6 +48,16 @@ final class ConfigParentThemeFallbackTest extends IntegrationTestCase
         );
     }
 
+    public function testResourcePathUsesChildThemeAssetWhenAssetExistsInBothThemes(): void
+    {
+        $path = Registry::getConfig()->getResourcePath('shared-asset.css');
+
+        $this->assertStringContainsString(
+            '/out/' . self::CHILD_THEME_ID . '/src/shared-asset.css',
+            $path
+        );
+    }
+
     private function installTheme(string $themeId): void
     {
         $themePath = realpath("$this->fixtureDirectory/shop/source/Application/views/$themeId");

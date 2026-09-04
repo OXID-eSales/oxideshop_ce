@@ -69,7 +69,7 @@ namespace OxidEsales\EshopCommunity\Core {
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-    use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+    use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
     use Symfony\Component\Filesystem\Path;
 
     /**
@@ -460,27 +460,10 @@ namespace OxidEsales\EshopCommunity\Core {
         private function isSizeConfiguredForShop(int $shopId, string $checkSize): bool
         {
             try {
-                $activeTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveTheme($shopId);
-            } catch (ActiveThemeNotFoundException) {
-                return false;
-            }
-
-            if ($this->isSizeConfiguredForTheme($activeTheme->getId(), $shopId, $checkSize)) {
-                return true;
-            }
-
-            $inheritance = $activeTheme->getInheritance();
-
-            return $inheritance->hasParentTheme()
-                && $this->isSizeConfiguredForTheme($inheritance->getParentThemeId(), $shopId, $checkSize);
-        }
-
-        private function isSizeConfiguredForTheme(string $themeId, int $shopId, string $checkSize): bool
-        {
-            try {
+                $activeThemeId = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveThemeId($shopId);
                 $configuration = ContainerFacade::get(ThemeConfigurationResolverInterface::class)
-                    ->resolve($themeId, $shopId);
-            } catch (ThemeConfigurationNotFoundException) {
+                    ->resolve($activeThemeId, $shopId);
+            } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
                 return false;
             }
 

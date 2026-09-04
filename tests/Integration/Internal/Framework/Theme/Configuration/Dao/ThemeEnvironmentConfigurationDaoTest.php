@@ -12,9 +12,9 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\C
 use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Filesystem\Path;
 
 final class ThemeEnvironmentConfigurationDaoTest extends IntegrationTestCase
@@ -57,9 +57,8 @@ final class ThemeEnvironmentConfigurationDaoTest extends IntegrationTestCase
         );
     }
 
-    public function testGetReportsInvalidConfigurationWithFilePath(): void
+    public function testGetThrowsInvalidThemeConfigurationExceptionForConfigurationViolatingTheSchema(): void
     {
-        $path = $this->getEnvironmentConfigurationPath();
         $this->saveEnvironmentConfiguration([
             'themeSettings' => [
                 'testSetting' => [
@@ -69,8 +68,7 @@ final class ThemeEnvironmentConfigurationDaoTest extends IntegrationTestCase
             ],
         ]);
 
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('File ' . $path . ' is broken:');
+        $this->expectException(InvalidThemeConfigurationException::class);
 
         $this->get(ThemeEnvironmentConfigurationDaoInterface::class)
             ->get(self::THEME_ID, self::SHOP_ID);

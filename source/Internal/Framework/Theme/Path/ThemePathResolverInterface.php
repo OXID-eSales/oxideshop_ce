@@ -7,12 +7,14 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Path;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 
 interface ThemePathResolverInterface
 {
     /**
      * @throws ThemeConfigurationNotFoundException
+     * @throws InvalidThemeConfigurationException
      */
-    public function getFullThemePathFromConfiguration(string $themeId, int $shopId): string;
+    public function getAbsolutePath(string $themeId, int $shopId): string;
 }

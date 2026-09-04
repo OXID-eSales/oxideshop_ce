@@ -36,7 +36,7 @@ class YamlFileStorage implements ArrayStorageInterface
             $fileContent
         );
 
-        return $yaml ?? [];
+        return is_array($yaml) ? $yaml : [];
     }
 
     /**

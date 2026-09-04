@@ -59,7 +59,7 @@
         "incenteev/composer-parameter-handler": "^2.1.4",
         "mikey179/vfsstream": "~1.6.8",
         "oxid-esales/codeception-modules": "dev-b-8.0.x",
-        "oxid-esales/codeception-page-objects": "dev-b-8.0.x",
+        "oxid-esales/codeception-page-objects": "dev-b-8.0.x-fix-product-list-navigation-OXDEV-10686",
         "oxid-esales/developer-tools": "dev-b-8.0.x",
         "oxid-esales/oxideshop-ide-helper": "dev-b-8.0.x",
         "phpspec/prophecy-phpunit": "^2.0.1",

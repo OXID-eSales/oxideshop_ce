@@ -5,6 +5,15 @@ on:
     branches:
       - b-7.6.x-sbom-automation-OXDEV-7300
   workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP version for setup-php (match the target shop version, e.g. 8.2 / 8.3 / 8.4)'
+        required: false
+        default: '8.3'
+        type: string
+
+permissions:
+  contents: read
 
 jobs:
   sbom:
@@ -14,15 +23,13 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Set up PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2.37.2
         with:
-          php-version: '8.3'
+          php-version: ${{ inputs.php_version }}
 
       - name: Generate SBOM
         id: sbom
         uses: OXID-eSales/github-actions/generate_sbom@v0
-        with:
-          spec_version: '1.4'
 
       - name: Upload SBOM artifact
         uses: actions/upload-artifact@v7

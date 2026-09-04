@@ -1,115 +1,36 @@
-name: Manual run
+name: Generate SBOM
 
 on:
   workflow_dispatch:
     inputs:
-      scenario:
-        type: choice
-        options:
-          - 7.6.x
-          - use custom testplan
-        default: '7.6.x'
-        description: 'Choose test scenario'
-      limit:
-        type: choice
-        description: 'Limit php and mysql versions'
-        options:
-          - 'no'
-          - 'PHP8.3/MySQL5.7'
-          - 'PHP8.3/MySQL8.0'
-          - 'PHP8.3/MySQL8.4'
-          - 'PHP8.4/MySQL5.7'
-          - 'PHP8.4/MySQL8.0'
-          - 'PHP8.4/MySQL8.4'
-          - 'PHP8.5/MySQL8.0'
-          - 'PHP8.5/MySQL8.4'
-        default: 'PHP8.5/MySQL8.4'
-      custom_testplan:
+      php_version:
+        description: 'PHP version for setup-php (match the target shop version, e.g. 8.2 / 8.3 / 8.4)'
+        required: false
+        default: '8.3'
         type: string
-        description: 'Custom testplan'
-        default: '~/defaults/php8.5_mysql8.4_only.yaml,~/shop_ce.yaml'
-      runs_on:
-        type: string
-        description: 'JSON string/array describing the runner'
-        default: '"ubuntu-latest"'
-      use_dev_version:
-        type: choice
-        options: ['no', 'v0']
-        description: 'Use the dev version of github actions'
-        default: 'no'
+
+permissions:
+  contents: read
 
 jobs:
-  build_testplan:
-    runs-on: ${{ fromJson(inputs.runs_on) }}
-    outputs:
-      testplan: '${{ steps.build.outputs.testplan }}'
+  sbom:
+    runs-on: ubuntu-latest
     steps:
-      - name: 'Build testplan'
-        id: build
-        run: |
-          # Build testplan
-          # shellcheck disable=SC2088
-          PLAN="~/shop_ce.yaml"
-          # shellcheck disable=SC2088
-          case "${{ inputs.limit }}" in
-            "no") LIMIT='';;
-            "PHP8.3/MySQL5.7") LIMIT='~/defaults/php8.3_mysql5.7_only.yaml,' ;;
-            "PHP8.3/MySQL8.0") LIMIT='~/defaults/php8.3_mysql8.0_only.yaml,' ;;
-            "PHP8.3/MySQL8.4") LIMIT='~/defaults/php8.3_mysql8.4_only.yaml,' ;;
-            "PHP8.4/MySQL5.7") LIMIT='~/defaults/php8.4_mysql5.7_only.yaml,' ;;
-            "PHP8.4/MySQL8.0") LIMIT='~/defaults/php8.4_mysql8.0_only.yaml,' ;;
-            "PHP8.4/MySQL8.4") LIMIT='~/defaults/php8.4_mysql8.4_only.yaml,' ;;
-            "PHP8.5/MySQL8.0") LIMIT='~/defaults/php8.5_mysql8.0_only.yaml,' ;;
-            "PHP8.5/MySQL8.4") LIMIT='~/defaults/php8.5_mysql8.4_only.yaml,' ;;
-            *) echo "Illegal choice, fix the workflow"
-              exit 1
-              ;;
-          esac
-          # shellcheck disable=SC2088
-          case '${{ inputs.scenario}}' in
-            "7.6.x") TESTPLAN="~/defaults/7.6.x.yaml,${LIMIT}${PLAN}" ;;
-            "use custom testplan") TESTPLAN="${{ inputs.custom_testplan }}" ;;
-            *)
-              echo "Illegal choice, fix the workflow"
-              exit 1
-              ;;
-          esac
-          echo "testplan=${TESTPLAN}" | tee -a "${GITHUB_OUTPUT}"
+      - name: Checkout
+        uses: actions/checkout@v7
 
-  dispatch_stable:
-    if: ${{ inputs.use_dev_version == 'no' }}
-    needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v5
-    with:
-      testplan: ${{ needs.build_testplan.outputs.testplan }}
-      runs_on: ${{ inputs.runs_on }}
-      defaults: 'v5'
-      plan_folder: '.github/oxid-esales'
-    secrets:
-      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
-      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-      CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
-      CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
-      CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
-      enterprise_github_token: ${{ secrets.enterprise_github_token }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2.37.2
+        with:
+          php-version: ${{ inputs.php_version }}
 
-  dispatch_v0:
-    if: ${{ inputs.use_dev_version == 'v0' }}
-    needs: build_testplan
-    uses: oxid-eSales/github-actions/.github/workflows/universal_workflow_light.yaml@v0
-    with:
-      testplan: ${{ needs.build_testplan.outputs.testplan }}
-      runs_on: ${{ inputs.runs_on }}
-      defaults: 'v0'
-      plan_folder: '.github/oxid-esales'
-    secrets:
-      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
-      DOCKER_HUB_TOKEN: ${{ secrets.DOCKER_HUB_TOKEN }}
-      CACHE_ENDPOINT: ${{ secrets.CACHE_ENDPOINT }}
-      CACHE_ACCESS_KEY: ${{ secrets.CACHE_ACCESS_KEY }}
-      CACHE_SECRET_KEY: ${{ secrets.CACHE_SECRET_KEY }}
-      enterprise_github_token: ${{ secrets.enterprise_github_token }}
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Generate SBOM
+        id: sbom
+        uses: OXID-eSales/github-actions/generate_sbom@v5
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-oxideshop-ce
+          path: ${{ steps.sbom.outputs.sbom_path }}
+          if-no-files-found: error

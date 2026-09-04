@@ -1,0 +1,4 @@
+table_storage:
+  table_name: test_priority_medium_tracking
+migrations_paths:
+  'OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\Priority\Medium': data

@@ -94,6 +94,17 @@ class TaggedMigrationExecutorTest extends TestCase
         $this->assertFalse($connection->getSchemaManager()->tablesExist(['test_migration_table']));
     }
 
+    public function testProvidersExecuteInDescendingPriorityOrder(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/Priority');
+        $this->compileContainer();
+
+        $this->get(TaggedMigrationExecutor::class)->executeWithOptions();
+
+        $this->assertSame(['high', 'medium', 'low'], $this->getPriorityExecutionOrder());
+    }
+
     protected function tearDown(): void
     {
         $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
@@ -101,7 +112,22 @@ class TaggedMigrationExecutorTest extends TestCase
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_nomigrations_tracking`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_failing_migrations_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_priority_order_log`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_priority_high_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_priority_medium_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_priority_low_tracking`');
         parent::tearDown();
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getPriorityExecutionOrder(): array
+    {
+        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
+        $queryBuilder->select('source')->from('test_priority_order_log')->orderBy('id', 'ASC');
+
+        return $queryBuilder->execute()->fetchFirstColumn();
     }
 
     private function assertMigrationWasTracked(): void

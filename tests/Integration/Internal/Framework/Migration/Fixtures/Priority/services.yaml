@@ -1,0 +1,12 @@
+services:
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\Priority\Low\LowPriorityMigrationPathProvider:
+    tags:
+      - { name: 'oxid_esales.migration_path_provider', priority: -20 }
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\Priority\High\HighPriorityMigrationPathProvider:
+    tags:
+      - { name: 'oxid_esales.migration_path_provider', priority: 20 }
+
+  OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\Priority\Medium\MediumPriorityMigrationPathProvider:
+    tags:
+      - { name: 'oxid_esales.migration_path_provider' }

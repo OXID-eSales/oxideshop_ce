@@ -60,6 +60,41 @@ class ProjectYamlImportServiceTest extends TestCase
         );
     }
 
+    public function testAddImportFromFilePath(): void
+    {
+        $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
+        $this->service->addImportFromFilePath($this->getExistingServiceFilePath());
+        $resource = $this->savedArray['imports'][0]['resource'];
+        $this->assertStringEndsWith(
+            'TestModule1/services.yaml',
+            $resource
+        );
+    }
+
+    public function testAddImportFromNonExistingFilePath(): void
+    {
+        $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
+        $this->expectException(NoServiceYamlException::class);
+        $this->service->addImportFromFilePath(
+            __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1' .
+            DIRECTORY_SEPARATOR . 'nonexisting.yaml'
+        );
+    }
+
+    public function testRemoveImportFromFilePath(): void
+    {
+        $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
+        $this->service->addImportFromFilePath($this->getExistingServiceFilePath());
+        $this->service->removeImportFromFilePath($this->getExistingServiceFilePath());
+        $this->assertEquals([], $this->savedArray);
+    }
+
+    private function getExistingServiceFilePath(): string
+    {
+        return __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'TestModule1' .
+            DIRECTORY_SEPARATOR . 'services.yaml';
+    }
+
     public function testAddImportSeveralTimes()
     {
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));

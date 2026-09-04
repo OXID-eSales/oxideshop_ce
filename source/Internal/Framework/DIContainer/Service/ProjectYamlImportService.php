@@ -29,6 +29,8 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
     /**
      * @param string $serviceDir
+     *
+     * @deprecated will be removed in the next major version. Use addImportFromFilePath() with the full service file path instead.
      */
     public function addImport(string $serviceDir)
     {
@@ -43,12 +45,34 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
     /**
      * @param string $serviceDir
+     *
+     * @deprecated will be removed in the next major version. Use removeImportFromFilePath() with the full service file path instead.
      */
     public function removeImport(string $serviceDir)
     {
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
 
         $projectConfig->removeImport($this->getServiceRelativeFilePath($serviceDir));
+
+        $this->projectYamlDao->saveProjectConfigFile($projectConfig);
+    }
+
+    public function addImportFromFilePath(string $serviceFilePath): void
+    {
+        if (!file_exists($serviceFilePath)) {
+            throw new NoServiceYamlException();
+        }
+        $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
+        $projectConfig->addImport($this->getRelativeFilePath($serviceFilePath));
+
+        $this->projectYamlDao->saveProjectConfigFile($projectConfig);
+    }
+
+    public function removeImportFromFilePath(string $serviceFilePath): void
+    {
+        $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
+
+        $projectConfig->removeImport($this->getRelativeFilePath($serviceFilePath));
 
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
@@ -82,6 +106,14 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     {
         return Path::makeAbsolute(
             $fileName,
+            Path::getDirectory($this->context->getGeneratedServicesFilePath())
+        );
+    }
+
+    private function getRelativeFilePath(string $serviceFilePath): string
+    {
+        return Path::makeRelative(
+            $serviceFilePath,
             Path::getDirectory($this->context->getGeneratedServicesFilePath())
         );
     }

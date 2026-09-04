@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+
+  oxid_esales.tests.module_bootstrap_services_marker:
+    class: stdClass
+    public: true

@@ -18,13 +18,20 @@ interface ProjectYamlImportServiceInterface
      * @param string $serviceDir
      *
      * @return void
+     * @deprecated will be removed in the next major version. Use addImportFromFilePath() with the full service file path instead.
      */
     public function addImport(string $serviceDir);
 
     /**
      * @param string $serviceDir
+     *
+     * @deprecated will be removed in the next major version. Use removeImportFromFilePath() with the full service file path instead.
      */
     public function removeImport(string $serviceDir);
+
+    public function addImportFromFilePath(string $serviceFilePath): void;
+
+    public function removeImportFromFilePath(string $serviceFilePath): void;
 
     /**
      * Checks if the import files exist and if not removes them

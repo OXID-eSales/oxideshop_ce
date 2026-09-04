@@ -6,6 +6,8 @@
 - `oe:database:migrate` console command
 - Doctrine migrations can be registered via the `oxid_esales.migration_path_provider` DI tag (`MigrationPathProviderInterface`)
 - `SeoEncoderArticle::generateArticleCategoryUri()` method for generating an article's SEO URI for a specific category
+- Optional module `bootstrap-services.yaml`, loaded for every installed module regardless of activation state
+- `ProjectYamlImportServiceInterface::addImportFromFilePath()` and `removeImportFromFilePath()` methods to add or remove a service import by its full file path
 
 ### Changed
 - Console commands return consistent exit codes on success (0) and failure (1)
@@ -32,6 +34,8 @@
   - `Registry::getStorageKey()`
   - `BasicContextInterface::getBackwardsCompatibilityClassMap()`
 - `OXURL` user field from the storefront via `UserUpdatableFields::getUpdatableFields()`
+- Module `metadata.php` `events` (`onActivate` / `onDeactivate`), use a DI event subscriber instead
+- `ProjectYamlImportServiceInterface::addImport()` / `removeImport()`
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

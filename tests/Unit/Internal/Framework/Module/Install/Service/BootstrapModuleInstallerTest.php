@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Module\Install\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Service\ProjectYamlImportServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\BootstrapModuleInstaller;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleConfigurationInstallerInterface;
@@ -36,7 +37,11 @@ class BootstrapModuleInstallerTest extends TestCase
             ->with($path);
 
 
-        $moduleInstaller = new BootstrapModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);
+        $moduleInstaller = new BootstrapModuleInstaller(
+            $moduleFilesInstaller,
+            $moduleProjectConfigurationInstaller,
+            $this->createStub(ProjectYamlImportServiceInterface::class)
+        );
         $moduleInstaller->install($package);
     }
 
@@ -49,7 +54,11 @@ class BootstrapModuleInstallerTest extends TestCase
         $moduleProjectConfigurationInstaller = $this->createStub(ModuleConfigurationInstallerInterface::class);
         $moduleProjectConfigurationInstaller->method('isInstalled')->willReturn($projectConfigurationInstalled);
 
-        $moduleInstaller = new BootstrapModuleInstaller($moduleFilesInstaller, $moduleProjectConfigurationInstaller);
+        $moduleInstaller = new BootstrapModuleInstaller(
+            $moduleFilesInstaller,
+            $moduleProjectConfigurationInstaller,
+            $this->createStub(ProjectYamlImportServiceInterface::class)
+        );
 
         $this->assertSame(
             $moduleInstalled,

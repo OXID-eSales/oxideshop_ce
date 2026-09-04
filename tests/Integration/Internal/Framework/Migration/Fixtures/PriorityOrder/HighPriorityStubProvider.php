@@ -7,14 +7,14 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\Priority\High;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\PriorityOrder;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationPathProviderInterface;
 
-class HighPriorityMigrationPathProvider implements MigrationPathProviderInterface
+class HighPriorityStubProvider implements MigrationPathProviderInterface
 {
     public function getMigrationConfigPath(): string
     {
-        return __DIR__ . '/migration/migrations.yml';
+        return __DIR__;
     }
 }

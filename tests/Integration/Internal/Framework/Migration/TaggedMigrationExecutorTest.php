@@ -10,13 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationPathProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
 
-class TaggedMigrationExecutorTest extends TestCase
+final class TaggedMigrationExecutorTest extends TestCase
 {
     use ContainerTrait;
 
@@ -94,6 +95,19 @@ class TaggedMigrationExecutorTest extends TestCase
         $this->assertFalse($connection->getSchemaManager()->tablesExist(['test_migration_table']));
     }
 
+    public function testProvidersAreExecutedInDescendingPriorityOrder(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/Priority');
+        $this->compileContainer();
+        $executedProviders = [];
+        $this->registerProviderStubs(['low', 'high', 'default'], $executedProviders);
+
+        $this->get(TaggedMigrationExecutor::class)->executeWithOptions();
+
+        $this->assertSame(['high', 'default', 'low'], $executedProviders);
+    }
+
     protected function tearDown(): void
     {
         $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
@@ -102,6 +116,21 @@ class TaggedMigrationExecutorTest extends TestCase
         $connection->executeStatement('DROP TABLE IF EXISTS `test_nomigrations_tracking`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_failing_migrations_tracking`');
         parent::tearDown();
+    }
+
+    private function registerProviderStubs(array $providerIds, array &$executedProviders): void
+    {
+        foreach ($providerIds as $providerId) {
+            $provider = $this->createStub(MigrationPathProviderInterface::class);
+            $provider->method('getMigrationConfigPath')->willReturnCallback(
+                function () use ($providerId, &$executedProviders): string {
+                    $executedProviders[] = $providerId;
+
+                    return '/nonexistent/path/migrations.yml';
+                }
+            );
+            $this->container->set('oxid_esales.tests.migration_path_provider.' . $providerId, $provider);
+        }
     }
 
     private function assertMigrationWasTracked(): void

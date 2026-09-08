@@ -1,0 +1,4 @@
+table_storage:
+  table_name: test_module_with_migrations
+migrations_paths:
+  'OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Migration\Fixtures\WithMigrations': data

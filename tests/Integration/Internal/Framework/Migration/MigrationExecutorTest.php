@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migrati
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutor;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\NullOutput;
 
 final class MigrationExecutorTest extends TestCase
 {
@@ -19,7 +20,7 @@ final class MigrationExecutorTest extends TestCase
 
     public function testExecutesMigrations(): void
     {
-        $status = $this->get(MigrationExecutor::class)->executeWithOptions(['--dry-run' => true]);
+        $status = $this->get(MigrationExecutor::class)->executeWithOptions(['--dry-run' => true], new NullOutput());
 
         $this->assertSame(0, $status);
     }

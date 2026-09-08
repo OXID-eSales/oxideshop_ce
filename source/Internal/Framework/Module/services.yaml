@@ -8,3 +8,4 @@ imports:
    - { resource: Command/services.yaml }
    - { resource: Template/services.yaml }
    - { resource: Translation/services.yaml }
+   - { resource: Migration/services.yaml }

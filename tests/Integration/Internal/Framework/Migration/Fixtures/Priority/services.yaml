@@ -1,0 +1,18 @@
+services:
+  oxid_esales.tests.migration_path_provider.low:
+    synthetic: true
+    public: true
+    tags:
+      - { name: 'oxid_esales.migration_path_provider', priority: -20 }
+
+  oxid_esales.tests.migration_path_provider.high:
+    synthetic: true
+    public: true
+    tags:
+      - { name: 'oxid_esales.migration_path_provider', priority: 20 }
+
+  oxid_esales.tests.migration_path_provider.default:
+    synthetic: true
+    public: true
+    tags:
+      - { name: 'oxid_esales.migration_path_provider' }

@@ -11,47 +11,28 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Migration\Comm
 
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\Command\DatabaseMigrateCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationOptionsForwarderInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
 final class DatabaseMigrateCommandTest extends TestCase
 {
-    public function testExecutesWrapperAndTaggedMigrationsOnceAndCombinesExitCodes(): void
+    public function testForwardsCollectedOptionsToTheExecutorAndReturnsItsExitCode(): void
     {
         $options = ['--dry-run' => true];
 
         $optionsForwarder = $this->createStub(MigrationOptionsForwarderInterface::class);
         $optionsForwarder->method('collect')->willReturn($options);
 
-        $wrapperExecutor = $this->createMock(ConfigurableMigrationExecutorInterface::class);
-        $wrapperExecutor
+        $migrationExecutor = $this->createMock(ConfigurableMigrationExecutorInterface::class);
+        $migrationExecutor
             ->expects($this->once())
             ->method('executeWithOptions')
-            ->with($options)
-            ->willReturn(0);
-
-        $taggedExecutor = $this->createMock(ConfigurableMigrationExecutorInterface::class);
-        $taggedExecutor
-            ->expects($this->once())
-            ->method('executeWithOptions')
-            ->with($options)
+            ->with($options, $this->isInstanceOf(OutputInterface::class))
             ->willReturn(3);
 
-        $exitCodeResolver = $this->createMock(MigrationExitCodeResolverInterface::class);
-        $exitCodeResolver
-            ->expects($this->once())
-            ->method('combine')
-            ->with(0, 3)
-            ->willReturn(3);
-
-        $command = new DatabaseMigrateCommand(
-            $wrapperExecutor,
-            $taggedExecutor,
-            $optionsForwarder,
-            $exitCodeResolver
-        );
+        $command = new DatabaseMigrateCommand($migrationExecutor, $optionsForwarder);
 
         $this->assertSame(3, (new CommandTester($command))->execute([]));
     }

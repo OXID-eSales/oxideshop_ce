@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+    public: false
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationConfigLocatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationConfigLocator
+
+  OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor: ~

@@ -1,0 +1,36 @@
+name: Generate SBOM
+
+on:
+  workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP version for setup-php (match the target shop version, e.g. 8.2 / 8.3 / 8.4)'
+        required: false
+        default: '8.3'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240  # v2.37.2
+        with:
+          php-version: ${{ inputs.php_version }}
+
+      - name: Generate SBOM
+        id: sbom
+        uses: OXID-eSales/github-actions/generate_sbom@v5
+
+      - name: Upload SBOM artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: sbom-oxideshop-ce
+          path: ${{ steps.sbom.outputs.sbom_path }}
+          if-no-files-found: error

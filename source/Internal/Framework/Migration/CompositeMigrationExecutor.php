@@ -11,31 +11,20 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorInterface
+readonly class CompositeMigrationExecutor implements ConfigurableMigrationExecutorInterface
 {
-    /** @param iterable<MigrationPathProviderInterface> $providers */
     public function __construct(
-        private iterable $providers,
-        private MigrationRunnerInterface $migrationRunner,
+        private iterable $executors,
         private MigrationExitCodeResolverInterface $exitCodeResolver,
     ) {
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
     public function executeWithOptions(array $options = [], ?OutputInterface $output = null): int
     {
         $status = 0;
 
-        foreach ($this->providers as $provider) {
-            $configPath = $provider->getMigrationConfigPath();
-
-            if (!is_file($configPath)) {
-                continue;
-            }
-
-            $exitCode = $this->migrationRunner->run($configPath, $options, $output);
+        foreach ($this->executors as $executor) {
+            $exitCode = $executor->executeWithOptions($options, $output);
             $status = $this->exitCodeResolver->combine($status, $exitCode);
         }
 

@@ -13,6 +13,20 @@ services:
     arguments:
       $providers: !tagged_iterator oxid_esales.migration_path_provider
 
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\CompositeMigrationExecutor
+    arguments:
+      $executors: !iterator
+        - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutor'
+        - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
+        - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityCheckerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityChecker
+
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationOptionsForwarderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationOptionsForwarder
 

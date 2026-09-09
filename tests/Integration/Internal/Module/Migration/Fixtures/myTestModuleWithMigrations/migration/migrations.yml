@@ -1,4 +1,0 @@
-table_storage:
-  table_name: test_module_with_migrations
-migrations_paths:
-  'OxidEsales\EshopCommunity\Migrations': data

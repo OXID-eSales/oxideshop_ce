@@ -1,0 +1,5 @@
+table_storage:
+  table_name: test_availability_tracking
+migrations_paths:
+  'OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\Availability\PartiallyMissing\Existing': data
+  'OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\Availability\PartiallyMissing\Missing': missing

@@ -7,49 +7,86 @@
 
 declare(strict_types=1);
 
-namespace Integration\Internal\Framework\Module\Install\Service;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Install\Service;
 
-use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
-final class BootstrapModuleInstallerTest extends IntegrationTestCase
+final class BootstrapModuleInstallerTest extends TestCase
 {
     use ContainerTrait;
 
-    private string $moduleId = 'myTestModule';
+    private const MARKER_SERVICE_ID = 'oxid_esales.tests.module_bootstrap_services_marker';
 
-    public function testUninstall(): void
+    private string $modulePath;
+    private string $moduleWithoutBootstrapServicesPath;
+    private string $generatedServicesDirectory;
+    private string $generatedServicesFilePath;
+
+    protected function setUp(): void
     {
-        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->moduleId);
+        parent::setUp();
 
-        $this->installModule($package);
-        $this->activateTestModule($package);
+        $this->modulePath = realpath(__DIR__ . '/Fixtures/ModuleWithBootstrapServices');
+        $this->moduleWithoutBootstrapServicesPath = realpath(__DIR__ . '/Fixtures/myTestModule');
+        $this->generatedServicesDirectory = Path::join(sys_get_temp_dir(), 'oxid-module-bootstrap-services-test');
+        $this->generatedServicesFilePath = Path::join($this->generatedServicesDirectory, 'generated_services.yaml');
 
-        $moduleInstaller = $this->get(ModuleInstallerInterface::class);
-        $moduleInstaller->uninstall($package);
-
-        $this->assertFalse(
-            $moduleInstaller->isInstalled($package)
-        );
+        $this->createContainer();
+        $this->get(BasicContextInterface::class)->setGeneratedServicesFilePath($this->generatedServicesFilePath);
+        $this->compileContainer();
     }
 
-    private function installModule(OxidEshopPackage $package): void
+    protected function tearDown(): void
     {
-        $installService = $this->get(ModuleInstallerInterface::class);
-        $package = new OxidEshopPackage(__DIR__ . '/Fixtures/' . $this->moduleId);
-        $installService->install($package);
+        $this->get(ModuleInstallerInterface::class)->uninstall(new OxidEshopPackage($this->modulePath));
+        (new Filesystem())->remove($this->generatedServicesDirectory);
+
+        parent::tearDown();
     }
 
-    private function activateTestModule(OxidEshopPackage $package): void
+    public function testInstallImportsModuleBootstrapServices(): void
     {
-        $this->get(ModuleInstallerInterface::class)
-            ->install($package);
-        $this
-            ->get(ModuleActivationBridgeInterface::class)
-            ->activate($this->moduleId, Registry::getConfig()->getShopId());
+        $this->get(ModuleInstallerInterface::class)->install(new OxidEshopPackage($this->modulePath));
+
+        $this->assertTrue($this->buildContainerFromGeneratedServices()->has(self::MARKER_SERVICE_ID));
+    }
+
+    public function testUninstallRemovesModuleBootstrapServices(): void
+    {
+        $installer = $this->get(ModuleInstallerInterface::class);
+        $package = new OxidEshopPackage($this->modulePath);
+
+        $installer->install($package);
+        $installer->uninstall($package);
+
+        $this->assertFalse($this->buildContainerFromGeneratedServices()->has(self::MARKER_SERVICE_ID));
+    }
+
+    public function testInstallModuleWithoutBootstrapServices(): void
+    {
+        $installer = $this->get(ModuleInstallerInterface::class);
+        $package = new OxidEshopPackage($this->moduleWithoutBootstrapServicesPath);
+
+        $installer->install($package);
+
+        $this->assertFalse($this->buildContainerFromGeneratedServices()->has(self::MARKER_SERVICE_ID));
+
+        $installer->uninstall($package);
+    }
+
+    private function buildContainerFromGeneratedServices(): ContainerInterface
+    {
+        $container = (new ContainerBuilder($this->get(BasicContextInterface::class)))->getContainer();
+        $container->compile();
+
+        return $container;
     }
 }

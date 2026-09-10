@@ -53,6 +53,26 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
 
+    public function addImportFromFilePath(string $serviceFilePath): void
+    {
+        if (!is_file($serviceFilePath)) {
+            throw new NoServiceYamlException();
+        }
+        $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
+        $projectConfig->addImport($this->getRelativeFilePath($serviceFilePath));
+
+        $this->projectYamlDao->saveProjectConfigFile($projectConfig);
+    }
+
+    public function removeImportFromFilePath(string $serviceFilePath): void
+    {
+        $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
+
+        $projectConfig->removeImport($this->getRelativeFilePath($serviceFilePath));
+
+        $this->projectYamlDao->saveProjectConfigFile($projectConfig);
+    }
+
     /**
      * Checks if the import files exist and if not removes them
      */
@@ -82,6 +102,14 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     {
         return Path::makeAbsolute(
             $fileName,
+            Path::getDirectory($this->context->getGeneratedServicesFilePath())
+        );
+    }
+
+    private function getRelativeFilePath(string $serviceFilePath): string
+    {
+        return Path::makeRelative(
+            $serviceFilePath,
             Path::getDirectory($this->context->getGeneratedServicesFilePath())
         );
     }

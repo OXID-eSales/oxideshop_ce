@@ -44,7 +44,7 @@ final class BootstrapModuleInstallerTest extends IntegrationTestCase
         $this->compileContainer();
     }
 
-    protected function tearDown(): void
+    public function tearDown(): void
     {
         $this->get(ModuleInstallerInterface::class)->uninstall(new OxidEshopPackage($this->modulePath));
         (new Filesystem())->remove($this->generatedServicesDirectory);

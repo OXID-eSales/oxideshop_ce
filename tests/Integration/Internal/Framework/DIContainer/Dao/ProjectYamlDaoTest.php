@@ -44,6 +44,7 @@ final class ProjectYamlDaoTest extends TestCase
     public function tearDown(): void
     {
         (new Filesystem())->remove($this->tmpFixture);
+        $this->get('oxid_esales.symfony.file_system')->remove($this->getMissingDirectoryTestPath());
 
         parent::tearDown();
     }
@@ -75,5 +76,30 @@ final class ProjectYamlDaoTest extends TestCase
         $projectYaml = $this->dao->loadProjectConfigFile();
         $this->assertEquals($relativePath, $projectYaml->getImportFileNames()[0]);
         $this->assertTrue(Path::isRelative($projectYaml->getImportFileNames()[1]));
+    }
+
+    public function testSavingCreatesGeneratedServicesFileWhenDirectoryMissing(): void
+    {
+        $directory = $this->getMissingDirectoryTestPath();
+        $filePath = Path::join($directory, 'generated_services.yaml');
+        (new Filesystem())->remove($directory);
+
+        $context = new BasicContextStub();
+        $context->setGeneratedServicesFilePath($filePath);
+
+        $this->createContainer();
+        $this->replaceService(BasicContextInterface::class, $context);
+        $this->compileContainer();
+
+        $this->get(ProjectYamlDaoInterface::class)->saveProjectConfigFile(
+            new DIConfigWrapper(['imports' => [['resource' => 'some/services.yaml']]])
+        );
+
+        $this->assertFileExists($filePath);
+    }
+
+    private function getMissingDirectoryTestPath(): string
+    {
+        return Path::join(sys_get_temp_dir(), 'oxid-generated-services-missing-test');
     }
 }

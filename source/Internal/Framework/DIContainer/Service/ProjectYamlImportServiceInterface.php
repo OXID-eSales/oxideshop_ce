@@ -18,14 +18,14 @@ interface ProjectYamlImportServiceInterface
      * @param string $serviceDir
      *
      * @return void
-     * @deprecated will be removed in the next major version. Use addImportFromFilePath() with the full service file path instead.
+     * @deprecated will be removed in the next major version, use addImportFromFilePath() instead
      */
     public function addImport(string $serviceDir);
 
     /**
      * @param string $serviceDir
      *
-     * @deprecated will be removed in the next major version. Use removeImportFromFilePath() with the full service file path instead.
+     * @deprecated will be removed in the next major version, use removeImportFromFilePath() instead
      */
     public function removeImport(string $serviceDir);
 

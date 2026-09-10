@@ -29,8 +29,6 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
     /**
      * @param string $serviceDir
-     *
-     * @deprecated will be removed in the next major version. Use addImportFromFilePath() with the full service file path instead.
      */
     public function addImport(string $serviceDir)
     {
@@ -45,8 +43,6 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
     /**
      * @param string $serviceDir
-     *
-     * @deprecated will be removed in the next major version. Use removeImportFromFilePath() with the full service file path instead.
      */
     public function removeImport(string $serviceDir)
     {
@@ -59,7 +55,7 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 
     public function addImportFromFilePath(string $serviceFilePath): void
     {
-        if (!file_exists($serviceFilePath)) {
+        if (!is_file($serviceFilePath)) {
             throw new NoServiceYamlException();
         }
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();

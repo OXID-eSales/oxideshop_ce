@@ -34,6 +34,7 @@
 - `UtilsServer::getRemoteAddress()`
 - `ViewConfig::getRemoteAddress()`
 - `SeoEncoderArticle::createArticleCategoryUri()`
+- deprecated `ProjectYamlImportServiceInterface::addImport` and `ProjectYamlImportServiceInterface::removeImport()`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

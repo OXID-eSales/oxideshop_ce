@@ -22,12 +22,12 @@ final class ComponentInstallerTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    private string $servicesFilePath = 'Fixtures/services.yaml';
+    private string $servicesFilePath = 'test-module-package-installation/services.yaml';
 
     public function testInstall(): void
     {
         $installer = $this->createInstaller();
-        $installer->install(__DIR__ . '/Fixtures');
+        $installer->install(__DIR__ . '/Fixtures/test-module-package-installation');
 
         $this->assertTrue($this->doesServiceLineExists());
     }
@@ -35,7 +35,7 @@ final class ComponentInstallerTest extends IntegrationTestCase
     public function testUpdate(): void
     {
         $installer = $this->createInstaller();
-        $installer->update(__DIR__ . '/Fixtures');
+        $installer->update(__DIR__ . '/Fixtures/test-module-package-installation');
 
         $this->assertTrue($this->doesServiceLineExists());
     }

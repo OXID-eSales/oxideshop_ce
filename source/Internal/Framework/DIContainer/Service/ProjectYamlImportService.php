@@ -19,38 +19,10 @@ use Symfony\Component\Filesystem\Path;
  */
 class ProjectYamlImportService implements ProjectYamlImportServiceInterface
 {
-    private const SERVICE_FILE_NAME = 'services.yaml';
-
     public function __construct(
         private ProjectYamlDaoInterface $projectYamlDao,
         private BasicContextInterface $context
     ) {
-    }
-
-    /**
-     * @param string $serviceDir
-     */
-    public function addImport(string $serviceDir)
-    {
-        if (!realpath($serviceDir)) {
-            throw new NoServiceYamlException();
-        }
-        $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
-        $projectConfig->addImport($this->getServiceRelativeFilePath($serviceDir));
-
-        $this->projectYamlDao->saveProjectConfigFile($projectConfig);
-    }
-
-    /**
-     * @param string $serviceDir
-     */
-    public function removeImport(string $serviceDir)
-    {
-        $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
-
-        $projectConfig->removeImport($this->getServiceRelativeFilePath($serviceDir));
-
-        $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
 
     public function addImportFromFilePath(string $serviceFilePath): void
@@ -73,9 +45,6 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
         $this->projectYamlDao->saveProjectConfigFile($projectConfig);
     }
 
-    /**
-     * Checks if the import files exist and if not removes them
-     */
     public function removeNonExistingImports()
     {
         $projectConfig = $this->projectYamlDao->loadProjectConfigFile();
@@ -94,10 +63,6 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
         }
     }
 
-    /**
-     * @param $fileName
-     * @return string
-     */
     private function getAbsolutePath($fileName): string
     {
         return Path::makeAbsolute(
@@ -110,18 +75,6 @@ class ProjectYamlImportService implements ProjectYamlImportServiceInterface
     {
         return Path::makeRelative(
             $serviceFilePath,
-            Path::getDirectory($this->context->getGeneratedServicesFilePath())
-        );
-    }
-
-    /**
-     * @param string $serviceDir
-     * @return string
-     */
-    private function getServiceRelativeFilePath(string $serviceDir): string
-    {
-        return Path::makeRelative(
-            $serviceDir . DIRECTORY_SEPARATOR . static::SERVICE_FILE_NAME,
             Path::getDirectory($this->context->getGeneratedServicesFilePath())
         );
     }

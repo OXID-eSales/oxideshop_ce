@@ -14,6 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -39,8 +40,11 @@ final class BootstrapModuleInstallerTest extends TestCase
         $this->generatedServicesDirectory = Path::join(sys_get_temp_dir(), 'oxid-module-bootstrap-services-test');
         $this->generatedServicesFilePath = Path::join($this->generatedServicesDirectory, 'generated_services.yaml');
 
+        $context = new BasicContextStub();
+        $context->setGeneratedServicesFilePath($this->generatedServicesFilePath);
+
         $this->createContainer();
-        $this->get(BasicContextInterface::class)->setGeneratedServicesFilePath($this->generatedServicesFilePath);
+        $this->replaceService(BasicContextInterface::class, $context);
         $this->compileContainer();
     }
 

@@ -23,9 +23,9 @@ final class ProjectYamlImportServiceTest extends TestCase
 {
     private string $generatedServicesFile = __DIR__ . '/Fixtures/generated_services.yaml';
 
-    public function testAddImport(): void
+    public function testAddImportFromFilePath(): void
     {
-        $this->getImportService()->addImport($this->getFixturePath('module-1'));
+        $this->getImportService()->addImportFromFilePath($this->getFixturePath('module-1/services.yaml'));
 
         $imports = $this->getDao()->loadProjectConfigFile()->getImportFileNames();
         $this->assertStringEndsWith(
@@ -34,23 +34,23 @@ final class ProjectYamlImportServiceTest extends TestCase
         );
     }
 
-    public function testAddImportSeveralTimes(): void
+    public function testAddImportFromFilePathSeveralTimes(): void
     {
         $service = $this->getImportService();
-        $service->addImport($this->getFixturePath('module-1'));
-        $service->addImport($this->getFixturePath('module-2'));
-        $service->addImport($this->getFixturePath('module-1'));
+        $service->addImportFromFilePath($this->getFixturePath('module-1/services.yaml'));
+        $service->addImportFromFilePath($this->getFixturePath('module-2/services.yaml'));
+        $service->addImportFromFilePath($this->getFixturePath('module-1/services.yaml'));
 
         $imports = $this->getDao()->loadProjectConfigFile()->getImportFileNames();
         $this->assertCount(2, $imports);
     }
 
-    public function testRemoveImport(): void
+    public function testRemoveImportFromFilePath(): void
     {
         $service = $this->getImportService();
-        $service->addImport($this->getFixturePath('module-1'));
-        $service->addImport($this->getFixturePath('module-2'));
-        $service->removeImport($this->getFixturePath('module-1'));
+        $service->addImportFromFilePath($this->getFixturePath('module-1/services.yaml'));
+        $service->addImportFromFilePath($this->getFixturePath('module-2/services.yaml'));
+        $service->removeImportFromFilePath($this->getFixturePath('module-1/services.yaml'));
 
         $imports = $this->getDao()->loadProjectConfigFile()->getImportFileNames();
         $this->assertCount(1, $imports);
@@ -60,30 +60,30 @@ final class ProjectYamlImportServiceTest extends TestCase
         );
     }
 
-    public function testRemoveAllImports(): void
+    public function testRemoveAllImportsFromFilePath(): void
     {
         $service = $this->getImportService();
-        $service->addImport($this->getFixturePath('module-1'));
-        $service->addImport($this->getFixturePath('module-2'));
-        $service->removeImport($this->getFixturePath('module-1'));
-        $service->removeImport($this->getFixturePath('module-2'));
+        $service->addImportFromFilePath($this->getFixturePath('module-1/services.yaml'));
+        $service->addImportFromFilePath($this->getFixturePath('module-2/services.yaml'));
+        $service->removeImportFromFilePath($this->getFixturePath('module-1/services.yaml'));
+        $service->removeImportFromFilePath($this->getFixturePath('module-2/services.yaml'));
 
         $imports = $this->getDao()->loadProjectConfigFile()->getImportFileNames();
         $this->assertEmpty($imports);
     }
 
-    public function testAddNonExistingDirectory(): void
+    public function testAddImportFromNonExistingFilePath(): void
     {
         $this->expectException(NoServiceYamlException::class);
 
-        $this->getImportService()->addImport($this->getFixturePath('some-missing-directory'));
+        $this->getImportService()->addImportFromFilePath($this->getFixturePath('module-1/missing-services.yaml'));
     }
 
-    public function testAddNonExistingServiceYaml(): void
+    public function testAddImportFromDirectoryPath(): void
     {
         $this->expectException(NoServiceYamlException::class);
 
-        $this->getImportService()->addImport($this->getFixturePath('module-1/missing-services.yaml'));
+        $this->getImportService()->addImportFromFilePath($this->getFixturePath('module-1'));
     }
 
     public function testRemovingNonExistingImports(): void
@@ -104,7 +104,7 @@ final class ProjectYamlImportServiceTest extends TestCase
         $imports = $this->getDao()->loadProjectConfigFile()->getImportFileNames();
 
         $this->assertCount(1, $imports);
-        $this->assertEquals($path, $imports[0]);
+        $this->assertSame($path, $imports[0]);
     }
 
     private function getFixturePath(string $dir): string

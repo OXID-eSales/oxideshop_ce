@@ -73,6 +73,6 @@ final class ComponentInstallerTest extends TestCase
     {
         /** @var ProjectYamlImportServiceInterface $projectYamlImportService */
         $projectYamlImportService = $this->get(ProjectYamlImportServiceInterface::class);
-        $projectYamlImportService->removeImport(__DIR__ . '/Fixtures');
+        $projectYamlImportService->removeImportFromFilePath(__DIR__ . '/Fixtures/services.yaml');
     }
 }

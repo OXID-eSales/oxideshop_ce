@@ -86,7 +86,7 @@ class ProjectYamlImportServiceTest extends TestCase
         $this->dao->method('loadProjectConfigFile')->willReturn(new DIConfigWrapper([]));
         $this->service->addImportFromFilePath($this->getExistingServiceFilePath());
         $this->service->removeImportFromFilePath($this->getExistingServiceFilePath());
-        $this->assertEquals([], $this->savedArray);
+        $this->assertSame([], $this->savedArray);
     }
 
     private function getExistingServiceFilePath(): string

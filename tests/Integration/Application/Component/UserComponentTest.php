@@ -21,7 +21,6 @@ final class UserComponentTest extends IntegrationTestCase
     private string $userName = 'some-users-email@example.com';
     private string $password = 'password123';
 
-
     public function setUp(): void
     {
         parent::setUp();
@@ -288,7 +287,6 @@ final class UserComponentTest extends IntegrationTestCase
             ]
         ];
     }
-
 
     private function getUserComponent(): UserComponent
     {

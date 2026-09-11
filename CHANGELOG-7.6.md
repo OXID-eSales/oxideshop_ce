@@ -37,5 +37,6 @@
 - Case-sensitive column name handling in admin order article search [#0006025](https://bugs.oxid-esales.com/view.php?id=6025)
 - Products already assigned to a category are no longer listed in "All available Products" in the category product assignment popup [#0007073](https://bugs.oxid-esales.com/view.php?id=7073)
 - Endless redirect loop and wrong URL generation [#0007770](https://bugs.oxid-esales.com/view.php?id=7770)
+- Address selection validation in account and checkout
 
 ### Removed

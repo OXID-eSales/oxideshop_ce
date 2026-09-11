@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Core\Database\Adapter\DatabaseInterface;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Email;
@@ -1305,30 +1306,32 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      * creates new address entry or updates existing
      *
      * @param array $aDelAddress address data array
+     * @throws UserException
      */
     protected function assignAddress($aDelAddress)
     {
-        if (is_array($aDelAddress) && count($aDelAddress)) {
-            $sAddressId = Registry::getRequest()->getRequestEscapedParameter('oxaddressid');
-            $sAddressId = ($sAddressId === null || $sAddressId == -1 || $sAddressId == -2) ? null : $sAddressId;
-
-            $oAddress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
-            $oAddress->setId($sAddressId);
-            $oAddress->load($sAddressId);
-            $oAddress->assign($aDelAddress);
-            $oAddress->oxaddress__oxuserid = new \OxidEsales\Eshop\Core\Field($this->getId(), \OxidEsales\Eshop\Core\Field::T_RAW);
-            $oAddress->oxaddress__oxcountry = $this->getUserCountry($oAddress->oxaddress__oxcountryid->value);
-            $oAddress->save();
-
-            // resetting addresses
-            $this->_aAddresses = null;
-
-            // saving delivery Address for later use
-            Registry::getSession()->setVariable('deladrid', $oAddress->getId());
-        } else {
-            // resetting
+        if (!is_array($aDelAddress) || !count($aDelAddress)) {
             Registry::getSession()->setVariable('deladrid', null);
+            return;
         }
+
+        $requestedId = Registry::getRequest()->getRequestEscapedParameter('oxaddressid');
+        $address = in_array($requestedId, [null, '', '-1', '-2'], true)
+            ? oxNew(Address::class)
+            : $this->getUserAddresses()[$requestedId];
+        if (!$address) {
+            throw oxNew(UserException::class, 'ERROR_MESSAGE_USER_UPDATE_FAILED');
+        }
+
+        $addressId = $address->getId();
+        $address->assign($aDelAddress);
+        $address->setId($addressId);
+        $address->oxaddress__oxuserid = new Field($this->getId(), Field::T_RAW);
+        $address->oxaddress__oxcountry = $this->getUserCountry($address->oxaddress__oxcountryid->value);
+        $address->save();
+
+        $this->_aAddresses = [];
+        Registry::getSession()->setVariable('deladrid', $address->getId());
     }
 
     /**

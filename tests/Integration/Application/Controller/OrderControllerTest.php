@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller;
 
 use OxidEsales\Eshop\Application\Controller\OrderController;
+use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Basket;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
@@ -35,7 +36,14 @@ final class OrderControllerTest extends IntegrationTestCase
 
         $this->prepareUserStub();
         $this->prepareBasketMock();
+        Registry::getSession()->setUser(null);
         unset($_SESSION['Errors']);
+    }
+
+    public function tearDown(): void
+    {
+        unset($_SESSION['usr']);
+        parent::tearDown();
     }
 
     public function testExecuteWithBasketMissingSummaryHashParameterWillLogAnError(): void
@@ -99,6 +107,37 @@ final class OrderControllerTest extends IntegrationTestCase
         $orderController->render();
 
         $this->assertNotEmpty($_SESSION['sess_challenge']);
+    }
+
+    public function testGetDelAddressReturnsAddressOfActiveUser(): void
+    {
+        $this->prepareRequestedDeliveryAddress($this->userId);
+
+        $deliveryAddress = oxNew(OrderController::class)->getDelAddress();
+
+        $this->assertSame('test_delivery_address_id', $deliveryAddress->getId());
+    }
+
+    public function testGetDelAddressIgnoresAddressOfOtherUser(): void
+    {
+        $this->prepareRequestedDeliveryAddress('test_other_user_id');
+
+        $deliveryAddress = oxNew(OrderController::class)->getDelAddress();
+
+        $this->assertNull($deliveryAddress);
+    }
+
+    private function prepareRequestedDeliveryAddress(string $ownerId): void
+    {
+        Registry::getSession()->setVariable('usr', $this->userId);
+        Registry::getSession()->deleteVariable('login-token');
+        $this->basket->expects($this->never())
+            ->method('getProductsCount');
+        $address = oxNew(Address::class);
+        $address->setId('test_delivery_address_id');
+        $address->oxaddress__oxuserid = new Field($ownerId, Field::T_RAW);
+        $address->save();
+        $_POST['deladrid'] = 'test_delivery_address_id';
     }
 
     private function prepareUserStub(): void

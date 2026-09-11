@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Model;
 
 use Exception;
+use OxidEsales\Eshop\Application\Model\Address;
+use OxidEsales\Eshop\Application\Model\Country;
 use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
@@ -1162,23 +1164,22 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function getDelAddressInfo()
     {
-        $oDelAdress = null;
-        if (!($soxAddressId = Registry::getRequest()->getRequestEscapedParameter('deladrid'))) {
-            $soxAddressId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('deladrid');
-        }
-        if ($soxAddressId) {
-            $oDelAdress = oxNew(\OxidEsales\Eshop\Application\Model\Address::class);
-            $oDelAdress->load($soxAddressId);
-
-            //get delivery country name from delivery country id
-            if ($oDelAdress->oxaddress__oxcountryid->value && $oDelAdress->oxaddress__oxcountryid->value != -1) {
-                $oCountry = oxNew(\OxidEsales\Eshop\Application\Model\Country::class);
-                $oCountry->load($oDelAdress->oxaddress__oxcountryid->value);
-                $oDelAdress->oxaddress__oxcountry = clone $oCountry->oxcountry__oxtitle;
+        $deliveryAddress = null;
+        $addressId = Registry::getRequest()->getRequestEscapedParameter('deladrid')
+            ?: Registry::getSession()->getVariable('deladrid');
+        $user = $this->getUser();
+        if ($addressId && $user && isset($user->getUserAddresses()[$addressId])) {
+            $deliveryAddress = oxNew(Address::class);
+            $deliveryAddress->load($addressId);
+            $countryId = $deliveryAddress->oxaddress__oxcountryid->value;
+            if ($countryId && $countryId != -1) {
+                $country = oxNew(Country::class);
+                $country->load($countryId);
+                $deliveryAddress->oxaddress__oxcountry = clone $country->oxcountry__oxtitle;
             }
         }
 
-        return $oDelAdress;
+        return $deliveryAddress;
     }
 
     /**

@@ -42,17 +42,20 @@ final class ThemeActivationServiceTest extends TestCase
         $previousConfiguration = (new ThemeConfiguration())->setId('previous')->setActivated(true);
         $targetConfiguration = (new ThemeConfiguration())->setId('target');
 
+        $savedStates = [];
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('get')->willReturn($targetConfiguration);
         $dao->method('getAll')->willReturn([
             'previous' => $previousConfiguration,
             'target' => $targetConfiguration,
         ]);
+        $dao->method('save')->willReturnCallback(function (ThemeConfiguration $configuration, int $shopId) use (&$savedStates) {
+            $savedStates[$shopId][$configuration->getId()] = $configuration->isActivated();
+        });
 
         $this->createService($dao)->activate('target', self::SHOP_ID);
 
-        $this->assertFalse($previousConfiguration->isActivated());
-        $this->assertTrue($targetConfiguration->isActivated());
+        $this->assertSame([self::SHOP_ID => ['previous' => false, 'target' => true]], $savedStates);
     }
 
     public function testActivateDispatchesThemeActivatedEvent(): void

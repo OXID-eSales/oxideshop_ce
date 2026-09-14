@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\View;
 
 readonly class ThemeView
 {
@@ -19,7 +19,7 @@ readonly class ThemeView
         private string $author,
         private string $version,
         private bool $active,
-        private string $activationError,
+        private bool $activationError,
     ) {
     }
 
@@ -58,7 +58,7 @@ readonly class ThemeView
         return $this->active;
     }
 
-    public function getActivationError(): string
+    public function hasActivationError(): bool
     {
         return $this->activationError;
     }

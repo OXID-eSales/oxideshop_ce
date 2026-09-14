@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInt
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -1023,7 +1024,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         try {
             $activeTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveTheme((int) $shop);
-        } catch (ActiveThemeNotFoundException) {
+        } catch (ActiveThemeNotFoundException | ThemeNotLoadableException) {
             return false;
         }
 

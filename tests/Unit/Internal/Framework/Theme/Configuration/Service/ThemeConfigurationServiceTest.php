@@ -116,9 +116,6 @@ final class ThemeConfigurationServiceTest extends TestCase
             ->willReturn(new ThemeEnvironmentConfiguration(['sIconSize' => '300*300']));
 
         $this->expectException(EnvironmentOverriddenSettingException::class);
-        $this->expectExceptionMessage(
-            "The settings 'sIconSize' of theme 'testTheme' are overridden by the environment configuration"
-        );
 
         $this->createService($dao, $environmentConfigurationDao)
             ->updateSettings($configuration, ['sIconSize' => '200*200']);

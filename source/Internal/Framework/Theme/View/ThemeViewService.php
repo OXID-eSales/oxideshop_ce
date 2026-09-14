@@ -7,16 +7,17 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\View;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentDepthExceededException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use Psr\Log\LoggerInterface;
 
 readonly class ThemeViewService implements ThemeViewServiceInterface
@@ -24,7 +25,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
     public function __construct(
         private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
         private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker,
-        private ThemeStateServiceInterface $themeStateService,
+        private ActiveThemeProviderInterface $activeThemeProvider,
         private LoggerInterface $logger,
     ) {
     }
@@ -32,7 +33,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
     public function getTheme(string $themeId, int $shopId): ThemeView
     {
         $metaData = $this->themeMetaDataByIdProvider->getById($themeId, $shopId);
-        $active = $this->themeStateService->isActive($themeId, $shopId);
+        $active = $this->activeThemeProvider->isActive($themeId, $shopId);
 
         return new ThemeView(
             $metaData->getId(),
@@ -42,7 +43,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
             $metaData->getAuthor(),
             $metaData->getVersion(),
             $active,
-            $this->resolveActivationError($themeId, $shopId, $metaData, $active),
+            $this->hasActivationError($themeId, $shopId, $metaData, $active),
         );
     }
 
@@ -52,7 +53,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
             return false;
         }
 
-        if ($this->themeStateService->isActive($themeId, $shopId)) {
+        if ($this->activeThemeProvider->isActive($themeId, $shopId)) {
             return true;
         }
 
@@ -78,10 +79,10 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
         );
     }
 
-    private function resolveActivationError(string $themeId, int $shopId, ThemeMetaData $metaData, bool $active): string
+    private function hasActivationError(string $themeId, int $shopId, ThemeMetaData $metaData, bool $active): bool
     {
         if ($metaData->getParentTheme() === '' || $active) {
-            return '';
+            return false;
         }
 
         try {
@@ -89,14 +90,14 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
         } catch (ThemeParentCycleException | ThemeParentDepthExceededException $exception) {
             $this->logger->warning($exception->getMessage(), [$exception]);
 
-            return 'EXCEPTION_THEME_INHERITANCE_INVALID';
+            return true;
         } catch (ThemeParentCompatibilityException | InvalidThemeMetaDataException $exception) {
             $this->logger->error($exception->getMessage(), [$exception]);
 
-            return 'EXCEPTION_THEME_INHERITANCE_INVALID';
+            return true;
         }
 
-        return '';
+        return false;
     }
 
     private function resolveParentThemeTitle(string $parentThemeId, int $shopId): string

@@ -52,6 +52,20 @@ final class ThemeMetaDataProviderTest extends TestCase
         $this->get(ThemeMetaDataProviderInterface::class)->get(__DIR__ . '/Fixtures/malformedYamlTheme');
     }
 
+    public function testThrowsWhenVersionIsNotAQuotedString(): void
+    {
+        $this->expectException(InvalidThemeMetaDataException::class);
+
+        $this->get(ThemeMetaDataProviderInterface::class)->get(__DIR__ . '/Fixtures/numericVersionTheme');
+    }
+
+    public function testThrowsWhenParentVersionIsNotAQuotedString(): void
+    {
+        $this->expectException(InvalidThemeMetaDataException::class);
+
+        $this->get(ThemeMetaDataProviderInterface::class)->get(__DIR__ . '/Fixtures/numericParentVersionTheme');
+    }
+
     public function testThrowsWhenMetadataFieldHasAnUnexpectedType(): void
     {
         $this->expectException(InvalidThemeMetaDataException::class);

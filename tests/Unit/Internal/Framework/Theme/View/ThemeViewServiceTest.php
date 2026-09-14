@@ -7,16 +7,16 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Setup\Service;
+namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\View;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeViewService;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewService;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -43,7 +43,7 @@ final class ThemeViewServiceTest extends TestCase
         $this->assertSame('OXID', $theme->getAuthor());
         $this->assertSame('1.2.3', $theme->getVersion());
         $this->assertTrue($theme->isActive());
-        $this->assertSame('', $theme->getActivationError());
+        $this->assertFalse($theme->hasActivationError());
     }
 
     public function testGetThemeReportsInactiveTheme(): void
@@ -132,7 +132,7 @@ final class ThemeViewServiceTest extends TestCase
         $parent = (new ThemeViewService(
             $metaDataProvider,
             $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
-            $this->createStub(ThemeStateServiceInterface::class),
+            $this->createStub(ActiveThemeProviderInterface::class),
             $this->createStub(LoggerInterface::class)
         ))->getParentTheme('child', self::SHOP_ID);
 
@@ -144,7 +144,7 @@ final class ThemeViewServiceTest extends TestCase
     {
         $theme = $this->createService(['child' => $this->metaData('child')])->getTheme('child', self::SHOP_ID);
 
-        $this->assertSame('', $theme->getActivationError());
+        $this->assertFalse($theme->hasActivationError());
     }
 
     public function testGetThemeHasNoActivationErrorForCompatibleParent(): void
@@ -152,7 +152,7 @@ final class ThemeViewServiceTest extends TestCase
         $theme = $this->createService(['child' => $this->metaData('child', 'parent')])
             ->getTheme('child', self::SHOP_ID);
 
-        $this->assertSame('', $theme->getActivationError());
+        $this->assertFalse($theme->hasActivationError());
     }
 
     public function testGetThemeReportsActivationErrorForCycle(): void
@@ -162,7 +162,7 @@ final class ThemeViewServiceTest extends TestCase
             checker: $this->throwingChecker(new ThemeParentCycleException())
         )->getTheme('child', self::SHOP_ID);
 
-        $this->assertSame('EXCEPTION_THEME_INHERITANCE_INVALID', $theme->getActivationError());
+        $this->assertTrue($theme->hasActivationError());
     }
 
     public function testGetThemeReportsActivationErrorForIncompatibleVersion(): void
@@ -172,7 +172,7 @@ final class ThemeViewServiceTest extends TestCase
             checker: $this->throwingChecker(new ThemeParentCompatibilityException())
         )->getTheme('child', self::SHOP_ID);
 
-        $this->assertSame('EXCEPTION_THEME_INHERITANCE_INVALID', $theme->getActivationError());
+        $this->assertTrue($theme->hasActivationError());
     }
 
     public function testGetThemeSkipsActivationCheckForActiveTheme(): void
@@ -186,7 +186,7 @@ final class ThemeViewServiceTest extends TestCase
             checker: $checker
         )->getTheme('child', self::SHOP_ID);
 
-        $this->assertSame('', $theme->getActivationError());
+        $this->assertFalse($theme->hasActivationError());
     }
 
     /** @param string[] $parentVersions */
@@ -214,13 +214,13 @@ final class ThemeViewServiceTest extends TestCase
             fn (string $themeId): ThemeMetaData => $metaDataById[$themeId]
         );
 
-        $themeStateService = $this->createStub(ThemeStateServiceInterface::class);
-        $themeStateService->method('isActive')->willReturn($active);
+        $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);
+        $activeThemeProvider->method('isActive')->willReturn($active);
 
         return new ThemeViewService(
             $metaDataProvider,
             $checker ?? $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
-            $themeStateService,
+            $activeThemeProvider,
             $this->createStub(LoggerInterface::class)
         );
     }

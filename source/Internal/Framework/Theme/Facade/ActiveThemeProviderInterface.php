@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
@@ -20,7 +20,9 @@ interface ActiveThemeProviderInterface
 
     /**
      * @throws ActiveThemeNotFoundException
-     * @throws InvalidThemeMetaDataException
+     * @throws ThemeNotLoadableException
      */
     public function getActiveTheme(int $shopId): ActiveTheme;
+
+    public function isActive(string $themeId, int $shopId): bool;
 }

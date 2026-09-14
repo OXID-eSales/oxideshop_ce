@@ -16,12 +16,15 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\T
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentDepthExceededException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityChecker;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 
 final class ThemeParentCompatibilityCheckerTest extends TestCase
 {
     private const SHOP_ID = 1;
 
+    #[DoesNotPerformAssertions]
     public function testValidatePassesForThemeWithoutParent(): void
     {
         $checker = $this->createChecker(
@@ -30,10 +33,9 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
         );
 
         $checker->validate('child', self::SHOP_ID);
-
-        $this->addToAssertionCount(1);
     }
 
+    #[DoesNotPerformAssertions]
     public function testValidatePassesForCompatibleParentTheme(): void
     {
         $checker = $this->createChecker(
@@ -43,8 +45,6 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
         );
 
         $checker->validate('child', self::SHOP_ID);
-
-        $this->addToAssertionCount(1);
     }
 
     public function testValidateThrowsWhenThemeDeclaresItselfAsParent(): void
@@ -84,12 +84,20 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
         $checker->validate('child', self::SHOP_ID);
     }
 
-    public function testValidateThrowsWhenParentThemeDoesNotDeclareAVersion(): void
-    {
+    /** @param string[] $declaredParentVersions */
+    #[DataProvider('incompatibleVersionDeclarationsProvider')]
+    public function testValidateThrowsWhenVersionDeclarationsAreIncompatible(
+        string $installedParentVersion,
+        array $declaredParentVersions
+    ): void {
         $checker = $this->createChecker(
-            childMetaData: $this->createMetaData('child', parentTheme: 'parent', parentVersions: ['1.0.0']),
+            childMetaData: $this->createMetaData(
+                'child',
+                parentTheme: 'parent',
+                parentVersions: $declaredParentVersions
+            ),
             parentInstalled: true,
-            parentMetaData: $this->createMetaData('parent')
+            parentMetaData: $this->createMetaData('parent', version: $installedParentVersion)
         );
 
         $this->expectException(ThemeParentCompatibilityException::class);
@@ -97,30 +105,13 @@ final class ThemeParentCompatibilityCheckerTest extends TestCase
         $checker->validate('child', self::SHOP_ID);
     }
 
-    public function testValidateThrowsWhenThemeDoesNotDeclareCompatibleParentVersions(): void
+    public static function incompatibleVersionDeclarationsProvider(): array
     {
-        $checker = $this->createChecker(
-            childMetaData: $this->createMetaData('child', parentTheme: 'parent'),
-            parentInstalled: true,
-            parentMetaData: $this->createMetaData('parent', version: '1.0.0')
-        );
-
-        $this->expectException(ThemeParentCompatibilityException::class);
-
-        $checker->validate('child', self::SHOP_ID);
-    }
-
-    public function testValidateThrowsWhenInstalledParentVersionDoesNotMatchDeclaredVersions(): void
-    {
-        $checker = $this->createChecker(
-            childMetaData: $this->createMetaData('child', parentTheme: 'parent', parentVersions: ['1.0.0', '1.1.0']),
-            parentInstalled: true,
-            parentMetaData: $this->createMetaData('parent', version: '2.0.0')
-        );
-
-        $this->expectException(ThemeParentCompatibilityException::class);
-
-        $checker->validate('child', self::SHOP_ID);
+        return [
+            'parent theme does not declare a version' => ['', ['1.0.0']],
+            'child theme does not declare compatible parent versions' => ['1.0.0', []],
+            'installed parent version does not match declared versions' => ['2.0.0', ['1.0.0', '1.1.0']],
+        ];
     }
 
     /** @param string[] $parentVersions */

@@ -42,4 +42,13 @@ readonly class ActiveThemeProvider implements ActiveThemeProviderInterface
             $this->themeMetaDataByIdProvider->getById($activeThemeId, $shopId)->getParentTheme(),
         );
     }
+
+    public function isActive(string $themeId, int $shopId): bool
+    {
+        try {
+            return $this->getActiveThemeId($shopId) === $themeId;
+        } catch (ActiveThemeNotFoundException) {
+            return false;
+        }
+    }
 }

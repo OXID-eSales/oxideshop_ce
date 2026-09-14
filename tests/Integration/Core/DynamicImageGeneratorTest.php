@@ -119,6 +119,41 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
         $this->cleanupTestFiles();
     }
 
+    public function testImageGenerationIsRefusedWhenActiveThemeMetaDataIsBroken(): void
+    {
+        $this->activateTheme('imageBrokenMetaDataTheme');
+        $this->createTestMasterImage();
+        $requestUri = $_SERVER['REQUEST_URI'] ?? null;
+        $_SERVER['REQUEST_URI'] = '/out/pictures/generated/media/products/999_999_75/test-image.jpg';
+
+        try {
+            $imagePath = (new DynamicImageGenerator())->getImagePath();
+        } finally {
+            if ($requestUri === null) {
+                unset($_SERVER['REQUEST_URI']);
+            } else {
+                $_SERVER['REQUEST_URI'] = $requestUri;
+            }
+            $this->cleanupTestFiles();
+        }
+
+        $this->assertFalse($imagePath);
+    }
+
+    private function activateTheme(string $themeId): void
+    {
+        $context = $this->get(BasicContextInterface::class);
+        $themePath = __DIR__ . '/Fixtures/' . $themeId;
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save(
+            (new ThemeConfiguration())
+                ->setId($themeId)
+                ->setSource(Path::makeRelative($themePath, $context->getShopRootPath()))
+                ->setActivated(true),
+            $this->get(ContextInterface::class)->getCurrentShopId()
+        );
+    }
+
     private function activateChildThemeWithParentDeclaringSize(string $settingName, string $value): void
     {
         $context = $this->get(BasicContextInterface::class);

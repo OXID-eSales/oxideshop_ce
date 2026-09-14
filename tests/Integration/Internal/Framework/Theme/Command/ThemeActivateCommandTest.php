@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -91,7 +91,7 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
     private function isThemeActive(string $themeId): bool
     {
-        return $this->get(ThemeStateServiceInterface::class)->isActive($themeId, self::SHOP_ID);
+        return $this->get(ActiveThemeProviderInterface::class)->isActive($themeId, self::SHOP_ID);
     }
 
     private function setShopFixtures(): void

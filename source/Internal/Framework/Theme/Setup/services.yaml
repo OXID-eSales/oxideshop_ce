@@ -7,6 +7,3 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityChecker
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeViewServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeViewService

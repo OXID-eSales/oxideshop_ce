@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\View;
 
 readonly class ParentThemeView
 {

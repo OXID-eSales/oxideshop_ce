@@ -67,7 +67,7 @@ namespace OxidEsales\EshopCommunity\Core {
     use OxidEsales\Eshop\Core\Registry;
     use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
     use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\GeneratedImagePathProviderInterface;
-    use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+    use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
@@ -456,7 +456,7 @@ namespace OxidEsales\EshopCommunity\Core {
                 $activeThemeId = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveThemeId($shopId);
                 $configuration = ContainerFacade::get(ThemeConfigurationResolverInterface::class)
                     ->resolve($activeThemeId, $shopId);
-            } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
+            } catch (ActiveThemeNotFoundException | ThemeNotLoadableException) {
                 return false;
             }
 

@@ -66,6 +66,21 @@ final class ActiveThemeProviderTest extends TestCase
         $this->createProviderWithoutActiveTheme()->getActiveTheme(self::SHOP_ID);
     }
 
+    public function testIsActiveIsTrueForTheActivatedTheme(): void
+    {
+        $this->assertTrue($this->createProvider('active', '')->isActive('active', self::SHOP_ID));
+    }
+
+    public function testIsActiveIsFalseForAnotherTheme(): void
+    {
+        $this->assertFalse($this->createProvider('active', '')->isActive('other', self::SHOP_ID));
+    }
+
+    public function testIsActiveIsFalseWhenNoThemeIsActive(): void
+    {
+        $this->assertFalse($this->createProviderWithoutActiveTheme()->isActive('inactive', self::SHOP_ID));
+    }
+
     private function createProvider(string $themeId, string $parentThemeId): ActiveThemeProvider
     {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);

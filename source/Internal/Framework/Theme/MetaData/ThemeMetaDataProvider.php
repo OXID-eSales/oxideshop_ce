@@ -57,6 +57,8 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
 
     private function mapMetaData(array $data, string $metadataFilePath): ThemeMetaData
     {
+        $this->validateVersionsAreStrings($data, $metadataFilePath);
+
         try {
             return (new ThemeMetaData())
                 ->setId($data['id'])
@@ -72,6 +74,20 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
                 "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",
                 previous: $exception
             );
+        }
+    }
+
+    private function validateVersionsAreStrings(array $data, string $metadataFilePath): void
+    {
+        $parentVersions = is_array($data['parentVersions'] ?? null) ? $data['parentVersions'] : [];
+
+        foreach ([$data['version'] ?? '', ...$parentVersions] as $version) {
+            if (!is_string($version)) {
+                throw new InvalidThemeMetaDataException(
+                    "metadata.yaml at $metadataFilePath is invalid: 'version' and 'parentVersions' must be quoted"
+                    . " strings such as '1.0', found " . get_debug_type($version)
+                );
+            }
         }
     }
 }

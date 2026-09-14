@@ -12,8 +12,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Adm
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeMain;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
@@ -64,10 +64,7 @@ final class ThemeMainTest extends IntegrationTestCase
         $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);
         $controller->render();
 
-        $this->assertSame(
-            'EXCEPTION_THEME_INHERITANCE_INVALID',
-            $controller->getViewDataElement('theme')->getActivationError()
-        );
+        $this->assertTrue($controller->getViewDataElement('theme')->hasActivationError());
         $this->assertNull($controller->getViewDataElement('parentTheme'));
     }
 
@@ -100,7 +97,7 @@ final class ThemeMainTest extends IntegrationTestCase
 
     private function isThemeActive(string $themeId): bool
     {
-        return $this->get(ThemeStateServiceInterface::class)->isActive($themeId, self::SHOP_ID);
+        return $this->get(ActiveThemeProviderInterface::class)->isActive($themeId, self::SHOP_ID);
     }
 
     private function expectDisplayError(string $translationKey): void

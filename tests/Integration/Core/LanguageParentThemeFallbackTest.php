@@ -10,10 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Core\Language;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class LanguageParentThemeFallbackTest extends IntegrationTestCase
 {
@@ -93,11 +97,33 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
         $this->assertSame('parent value', $standaloneParentThemeTranslation);
     }
 
+    public function testChildThemeTranslationsAreResolvedWhenParentThemeConfigurationIsBroken(): void
+    {
+        $this->breakThemeConfiguration(self::PARENT_THEME_ID);
+        Registry::getUtils()->resetLanguageCache();
+
+        $translation = (new Language())->translateString('TEST_SHARED_KEY', 0);
+
+        $this->assertSame('child value', $translation);
+    }
+
     private function getLangFileCacheName(): string
     {
         $method = new \ReflectionMethod(Language::class, 'getLangFileCacheName');
 
         return $method->invoke(new Language(), false, 0);
+    }
+
+    private function breakThemeConfiguration(string $themeId): void
+    {
+        $configurationFilePath = Path::join(
+            $this->get(BasicContextInterface::class)->getShopConfigurationDirectory(self::SHOP_ID),
+            'themes',
+            "$themeId.yaml"
+        );
+
+        file_put_contents($configurationFilePath, "themeSettings: [unclosed\n");
+        $this->get(ThemeConfigurationCacheInterface::class)->evict($themeId, self::SHOP_ID);
     }
 
     private function installTheme(string $themeId): void

@@ -1,10 +1,10 @@
 imports:
   - { resource: MetaData/services.yaml }
   - { resource: Setup/services.yaml }
-  - { resource: State/services.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Configuration/services.yaml }
   - { resource: Path/services.yaml }
+  - { resource: View/services.yaml }
 
 parameters:
   oxid_esales.theme.admin.name: 'admin_twig'

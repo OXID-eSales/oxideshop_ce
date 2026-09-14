@@ -10,10 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class ConfigParentThemeFallbackTest extends IntegrationTestCase
 {
@@ -56,6 +59,24 @@ final class ConfigParentThemeFallbackTest extends IntegrationTestCase
             '/out/' . self::CHILD_THEME_ID . '/src/shared-asset.css',
             $path
         );
+    }
+
+    public function testMissingAssetLookupIsFalseInsteadOfFailingWhenActiveThemeMetaDataIsBroken(): void
+    {
+        $this->pointThemeSourceToBrokenMetaData(self::CHILD_THEME_ID);
+
+        $this->assertFalse(Registry::getConfig()->getDir('missing-asset.css', 'src', false));
+    }
+
+    private function pointThemeSourceToBrokenMetaData(string $themeId): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $brokenThemePath = realpath("$this->fixtureDirectory/imageBrokenMetaDataTheme");
+        $configuration = $dao->get($themeId, self::SHOP_ID)->setSource(
+            Path::makeRelative($brokenThemePath, $this->get(BasicContextInterface::class)->getShopRootPath())
+        );
+
+        $dao->save($configuration, self::SHOP_ID);
     }
 
     private function installTheme(string $themeId): void

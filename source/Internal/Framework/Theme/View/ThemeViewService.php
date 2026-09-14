@@ -31,9 +31,17 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
 
     public function getTheme(string $themeId, int $shopId): ThemeView
     {
+        $metaData = $this->themeMetaDataByIdProvider->getById($themeId, $shopId);
+
         return new ThemeView(
-            $this->themeMetaDataByIdProvider->getById($themeId, $shopId),
+            $metaData->getId(),
+            $metaData->getTitle(),
+            $metaData->getDescription(),
+            $metaData->getThumbnail(),
+            $metaData->getAuthor(),
+            $metaData->getVersion(),
             $this->activeThemeProvider->isActive($themeId, $shopId),
+            $metaData->getParentTheme(),
         );
     }
 

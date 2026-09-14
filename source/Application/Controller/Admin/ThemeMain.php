@@ -11,41 +11,39 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Theme;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ThemeMain extends AdminDetailsController
 {
-    private ThemeActivationServiceInterface $themeActivationService;
-    private ThemeStateServiceInterface $themeStateService;
-    private ContextInterface $context;
-
-    public function __construct()
-    {
-        $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
-        $this->themeStateService = ContainerFacade::get(ThemeStateServiceInterface::class);
-        $this->context = ContainerFacade::get(ContextInterface::class);
-
+    public function __construct(
+        private readonly ThemeActivationServiceInterface $themeActivationService,
+        private readonly ActiveThemeProviderInterface $activeThemeProvider,
+        private readonly ThemeViewServiceInterface $themeViewService,
+        private readonly ContextInterface $context,
+    ) {
         parent::__construct();
     }
 
-    /** @inheritdoc */
-    public function render()
+    public function render(): string
     {
-        $themeId = $this->resolveThemeId();
+        try {
+            $shopId = $this->context->getCurrentShopId();
+            $themeId = $this->getEditObjectId() ?: $this->activeThemeProvider->getActiveThemeId($shopId);
 
-        if ($themeId !== null) {
-            $theme = oxNew(Theme::class);
-            if ($theme->load($themeId)) {
-                $this->_aViewData['oTheme'] = $theme;
-            } else {
-                Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+            $theme = $this->themeViewService->getTheme($themeId, $shopId);
+            $this->_aViewData['theme'] = $theme;
+
+            if ($theme->hasParentTheme()) {
+                $this->_aViewData['parentTheme'] = $this->themeViewService->getParentTheme($themeId, $shopId);
             }
+        } catch (ActiveThemeNotFoundException | ThemeNotLoadableException) {
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         }
 
         parent::render();
@@ -53,47 +51,18 @@ class ThemeMain extends AdminDetailsController
         return 'theme_main';
     }
 
-    private function resolveThemeId(): ?string
+    public function setTheme(): void
     {
         $themeId = $this->getEditObjectId();
-        if ($themeId) {
-            return $themeId;
-        }
 
         try {
-            return $this->themeStateService->getActiveThemeId($this->context->getCurrentShopId());
-        } catch (ActiveThemeNotFoundException) {
-            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
-
-            return null;
-        }
-    }
-
-    /**
-     * Activate the selected theme
-     */
-    public function setTheme()
-    {
-        $theme = oxNew(Theme::class);
-        if (!$theme->load($this->getEditObjectId())) {
-            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
-
-            return;
-        }
-
-        $activationError = $theme->checkForActivationErrors();
-        if ($activationError) {
-            Registry::getUtilsView()->addErrorToDisplay($activationError);
-
-            return;
-        }
-
-        try {
-            $this->themeActivationService->activate($theme->getId(), $this->context->getCurrentShopId());
-            $this->resetContentCache();
-        } catch (ThemeConfigurationNotFoundException $exception) {
-            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+            $this->themeActivationService->activate($themeId, $this->context->getCurrentShopId());
+        } catch (ThemeNotLoadableException $exception) {
             Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
+        } catch (ThemeParentCompatibilityException $exception) {
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
+            Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_INHERITANCE_INVALID');
         }
     }
 }

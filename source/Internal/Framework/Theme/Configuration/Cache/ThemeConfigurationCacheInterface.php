@@ -18,4 +18,6 @@ interface ThemeConfigurationCacheInterface
     public function exists(string $themeId, int $shopId): bool;
 
     public function evict(string $themeId, int $shopId): void;
+
+    public function evictAll(int $shopId): void;
 }

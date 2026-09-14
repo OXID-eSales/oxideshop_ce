@@ -16,7 +16,7 @@
   - Theme packages provide `metadata.yaml` and `config.yaml`
   - Theme settings are installed per shop
   - Settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
-  - `ThemeSettingServiceInterface` to read theme settings
+  - `ThemeSettingServiceInterface`, `ActiveThemeProviderInterface` and `ThemeViewServiceInterface` to read theme settings, the active theme and theme data
   - `ViewConfig::getThemeSettings()` to read theme settings in templates
   - `ThemeConfigurationChangedEvent`
 
@@ -27,7 +27,8 @@
 - Theme settings and the active theme are stored in YAML files instead of the database
   - Theme settings are read from and written to YAML instead of the `oxconfig` table
   - Standard theme settings were renamed to remove Hungarian notation, e.g. `bl_showWishlist` is now `showWishlist`
-  - The `sTheme` config parameter is no longer used
+  - The `sTheme` and `sCustomTheme` config parameters are no longer used
+  - A child theme declares its parent theme in its `metadata.yaml`
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 
 ### Deprecated
@@ -60,6 +61,7 @@
   - `ThemeConfiguration::saveConfVars()`, `ThemeConfiguration::$_sTheme` and `ThemeMain::themeInConfigFile()`
   - `Config::isThemeOption()`, `Config::$_aThemeConfigParams` and `Config::OXMODULE_THEME_PREFIX`
   - `ViewConfig::getViewThemeParam()`, use `ViewConfig::getThemeSettings()` instead
+  - `Language::getCustomThemeLanguageFiles()`
   - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
 
 ## v8.0.0-alpha.2 - 2026-02-12

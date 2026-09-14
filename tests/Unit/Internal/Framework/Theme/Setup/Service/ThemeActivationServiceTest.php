@@ -13,7 +13,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationService;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -27,7 +30,6 @@ final class ThemeActivationServiceTest extends TestCase
 
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
         $dao->method('get')->willReturn($targetConfiguration);
-        $dao->method('getAll')->willReturn([]);
         $dao->expects($this->once())->method('save')->with($targetConfiguration, self::SHOP_ID);
 
         $this->createService($dao)->activate('target', self::SHOP_ID);
@@ -40,24 +42,26 @@ final class ThemeActivationServiceTest extends TestCase
         $previousConfiguration = (new ThemeConfiguration())->setId('previous')->setActivated(true);
         $targetConfiguration = (new ThemeConfiguration())->setId('target');
 
+        $savedStates = [];
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('get')->willReturn($targetConfiguration);
         $dao->method('getAll')->willReturn([
             'previous' => $previousConfiguration,
             'target' => $targetConfiguration,
         ]);
+        $dao->method('save')->willReturnCallback(function (ThemeConfiguration $configuration, int $shopId) use (&$savedStates) {
+            $savedStates[$shopId][$configuration->getId()] = $configuration->isActivated();
+        });
 
         $this->createService($dao)->activate('target', self::SHOP_ID);
 
-        $this->assertFalse($previousConfiguration->isActivated());
-        $this->assertTrue($targetConfiguration->isActivated());
+        $this->assertSame([self::SHOP_ID => ['previous' => false, 'target' => true]], $savedStates);
     }
 
     public function testActivateDispatchesThemeActivatedEvent(): void
     {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('get')->willReturn(new ThemeConfiguration());
-        $dao->method('getAll')->willReturn([]);
 
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $eventDispatcher
@@ -65,7 +69,11 @@ final class ThemeActivationServiceTest extends TestCase
             ->method('dispatch')
             ->with(new ThemeActivatedEvent(self::SHOP_ID, 'target'));
 
-        (new ThemeActivationService($dao, $eventDispatcher))->activate('target', self::SHOP_ID);
+        (new ThemeActivationService(
+            $dao,
+            $eventDispatcher,
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class)
+        ))->activate('target', self::SHOP_ID);
     }
 
     public function testActivateThrowsWhenThemeConfigurationIsMissing(): void
@@ -78,8 +86,50 @@ final class ThemeActivationServiceTest extends TestCase
         $this->createService($dao)->activate('unknown', self::SHOP_ID);
     }
 
-    private function createService(ThemeConfigurationDaoInterface $dao): ThemeActivationService
+    public function testActivateThrowsAndDoesNotSaveWhenIncompatibleWithParentTheme(): void
     {
-        return new ThemeActivationService($dao, $this->createStub(EventDispatcherInterface::class));
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->never())->method('save');
+
+        $this->expectException(ThemeParentCompatibilityException::class);
+
+        $this->createService($dao, $this->createIncompatibleChecker())->activate('target', self::SHOP_ID);
+    }
+
+    public function testActivateThrowsAndDoesNotSaveWhenThemesOwnMetadataIsUnreadable(): void
+    {
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->never())->method('save');
+
+        $this->expectException(InvalidThemeMetaDataException::class);
+
+        $this->createService($dao, $this->createUnreadableMetaDataChecker())->activate('target', self::SHOP_ID);
+    }
+
+    private function createService(
+        ?ThemeConfigurationDaoInterface $dao = null,
+        ?ThemeParentCompatibilityCheckerInterface $checker = null
+    ): ThemeActivationService {
+        return new ThemeActivationService(
+            $dao ?? $this->createStub(ThemeConfigurationDaoInterface::class),
+            $this->createStub(EventDispatcherInterface::class),
+            $checker ?? $this->createStub(ThemeParentCompatibilityCheckerInterface::class)
+        );
+    }
+
+    private function createIncompatibleChecker(): ThemeParentCompatibilityCheckerInterface
+    {
+        $checker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
+        $checker->method('validate')->willThrowException(new ThemeParentCompatibilityException());
+
+        return $checker;
+    }
+
+    private function createUnreadableMetaDataChecker(): ThemeParentCompatibilityCheckerInterface
+    {
+        $checker = $this->createStub(ThemeParentCompatibilityCheckerInterface::class);
+        $checker->method('validate')->willThrowException(new InvalidThemeMetaDataException());
+
+        return $checker;
     }
 }

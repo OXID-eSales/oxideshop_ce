@@ -18,12 +18,8 @@ services:
     class: Symfony\Component\Config\Definition\NodeInterface
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\TreeBuilderFactoryInterface', 'create']
 
-  oxid_esales.theme.configuration.processor:
-    class: Symfony\Component\Config\Definition\Processor
-
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDao
     arguments:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.node'
-      Symfony\Component\Config\Definition\Processor: '@oxid_esales.theme.configuration.processor'
     public: true

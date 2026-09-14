@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\Theme
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use Psr\Log\LoggerInterface;
 
 readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverInterface
@@ -21,6 +22,7 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao,
         private ThemeConfigurationCacheInterface $resolvedConfigurationCache,
+        private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
         private LoggerInterface $logger,
     ) {
     }
@@ -40,6 +42,39 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
     private function buildResolvedConfiguration(string $themeId, int $shopId): ThemeConfiguration
     {
         $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $parentThemeId = $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentTheme();
+
+        if ($parentThemeId !== '' && $this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
+            $this->inheritMissingSettings(
+                $configuration,
+                $this->getConfigurationWithEnvironmentValues($parentThemeId, $shopId)
+            );
+        }
+
+        $this->applyEnvironmentValues($configuration, $themeId, $shopId);
+
+        return $configuration;
+    }
+
+    private function getConfigurationWithEnvironmentValues(string $themeId, int $shopId): ThemeConfiguration
+    {
+        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $this->applyEnvironmentValues($configuration, $themeId, $shopId);
+
+        return $configuration;
+    }
+
+    private function inheritMissingSettings(ThemeConfiguration $configuration, ThemeConfiguration $parent): void
+    {
+        foreach ($parent->getThemeSettings() as $parentSetting) {
+            if ($configuration->getSettingByName($parentSetting->getName()) === null) {
+                $configuration->addThemeSetting(clone $parentSetting);
+            }
+        }
+    }
+
+    private function applyEnvironmentValues(ThemeConfiguration $configuration, string $themeId, int $shopId): void
+    {
         $environmentSettingValues = $this->environmentConfigurationDao
             ->get($themeId, $shopId)
             ->getSettingValues();
@@ -54,8 +89,6 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
 
             $setting->setValue($value);
         }
-
-        return $configuration;
     }
 
     private function logUnknownSetting(string $themeId, int $shopId, string $settingName): void

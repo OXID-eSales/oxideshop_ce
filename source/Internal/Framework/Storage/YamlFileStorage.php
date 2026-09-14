@@ -36,7 +36,7 @@ class YamlFileStorage implements ArrayStorageInterface
             $fileContent
         );
 
-        return $yaml ?? [];
+        return is_array($yaml) ? $yaml : [];
     }
 
     /**
@@ -48,7 +48,7 @@ class YamlFileStorage implements ArrayStorageInterface
 
         if ($lock->acquire(true)) {
             try {
-                file_put_contents(
+                $this->filesystemService->dumpFile(
                     $this->getLocatedFilePath(),
                     Yaml::dump($data, 10, 2)
                 );

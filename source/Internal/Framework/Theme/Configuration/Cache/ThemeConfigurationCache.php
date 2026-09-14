@@ -37,4 +37,9 @@ class ThemeConfigurationCache implements ThemeConfigurationCacheInterface
             unset($this->cache[$shopId][$themeId]);
         }
     }
+
+    public function evictAll(int $shopId): void
+    {
+        unset($this->cache[$shopId]);
+    }
 }

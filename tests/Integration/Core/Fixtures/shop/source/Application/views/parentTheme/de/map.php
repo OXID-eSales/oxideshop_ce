@@ -1,0 +1,5 @@
+<?php
+
+$aMap = array(
+    'TEST_PARENT_THEME_MAP_ALIAS_KEY' => 'TEST_PARENT_THEME_ONLY_KEY',
+);

@@ -1,9 +1,6 @@
-parameters:
-  oxid_esales.rate_limiter.enabled: true
-  oxid_esales.rate_limiter.limit: 100
-  oxid_esales.rate_limiter.interval: 60
-  oxid_esales.rate_limiter.policy: 'token_bucket'
-  oxid_esales.rate_limiter.excluded_routes: []
+imports:
+  - { resource: parameters.yaml }
+  - { resource: Storefront/services.yaml }
 
 services:
   _defaults:
@@ -29,3 +26,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\RateLimitHeadersListener:
     tags:
       - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Command\PruneCommand:
+    arguments:
+      $cachePool: '@oxid_esales.rate_limiter.storefront.cache'
+    tags:
+      - { name: 'console.command', command: 'oe:rate-limiter:prune' }

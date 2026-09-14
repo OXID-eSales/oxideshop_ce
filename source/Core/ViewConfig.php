@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathRes
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
@@ -1214,7 +1214,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     {
         if ($this->_sActiveTheme === null) {
             try {
-                $this->_sActiveTheme = ContainerFacade::get(ThemeStateServiceInterface::class)->getActiveThemeId(
+                $this->_sActiveTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveThemeId(
                     ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
                 );
             } catch (ActiveThemeNotFoundException) {

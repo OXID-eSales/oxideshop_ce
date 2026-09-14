@@ -18,12 +18,14 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
     public function __construct(
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private EventDispatcherInterface $eventDispatcher,
+        private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker,
     ) {
     }
 
     public function activate(string $themeId, int $shopId): void
     {
         $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $this->themeParentCompatibilityChecker->validate($themeId, $shopId);
 
         $this->deactivateActiveThemes($themeId, $shopId);
 

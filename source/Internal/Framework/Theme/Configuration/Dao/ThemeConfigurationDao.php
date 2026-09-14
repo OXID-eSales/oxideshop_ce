@@ -14,16 +14,17 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataMapper\ThemeConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use DirectoryIterator;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
 {
@@ -35,23 +36,20 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         private ThemeConfigurationCacheInterface $cache,
         private EventDispatcherInterface $eventDispatcher,
         private NodeInterface $node,
-        private Processor $processor,
     ) {
     }
 
     public function get(string $themeId, int $shopId): ThemeConfiguration
     {
         if (!$this->cache->exists($themeId, $shopId)) {
-            $path = $this->getThemeConfigurationFilePath($shopId, $themeId);
-
-            if (!$this->filesystem->exists($path)) {
+            if (!$this->filesystem->exists($this->getThemeConfigurationFilePath($themeId, $shopId))) {
                 throw new ThemeConfigurationNotFoundException(
                     "No theme configuration found for id '$themeId' in shop $shopId"
                 );
             }
 
             $configuration = $this->dataMapper->fromData(
-                $this->getProcessedData($shopId, $themeId)
+                $this->getProcessedData($themeId, $shopId)
             );
             $configuration->setId($themeId);
 
@@ -65,11 +63,11 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
     {
         $this->cache->evict($configuration->getId(), $shopId);
 
-        $this->getStorage($shopId, $configuration->getId())->save(
+        $this->getStorage($configuration->getId(), $shopId)->save(
             $this->dataMapper->toData($configuration)
         );
 
-        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration, $shopId));
+        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration->getId(), $shopId));
     }
 
     public function getAll(int $shopId): array
@@ -77,7 +75,11 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         $configurations = [];
 
         foreach ($this->getThemeIds($shopId) as $id) {
-            $configurations[$id] = $this->get($id, $shopId);
+            try {
+                $configurations[$id] = $this->get($id, $shopId);
+            } catch (InvalidThemeConfigurationException) {
+                continue;
+            }
         }
 
         return $configurations;
@@ -85,16 +87,14 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
 
     public function delete(string $themeId, int $shopId): void
     {
-        try {
-            $configuration = $this->get($themeId, $shopId);
-        } catch (ThemeConfigurationNotFoundException) {
+        if (!$this->exists($themeId, $shopId)) {
             return;
         }
 
         $this->cache->evict($themeId, $shopId);
-        $this->filesystem->remove($this->getThemeConfigurationFilePath($shopId, $themeId));
+        $this->filesystem->remove($this->getThemeConfigurationFilePath($themeId, $shopId));
 
-        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration, $shopId));
+        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($themeId, $shopId));
     }
 
     public function deleteAll(int $shopId): void
@@ -112,33 +112,31 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
             return true;
         }
 
-        return $this->filesystem->exists($this->getThemeConfigurationFilePath($shopId, $themeId));
+        return $this->filesystem->exists($this->getThemeConfigurationFilePath($themeId, $shopId));
     }
 
-    private function getProcessedData(int $shopId, string $themeId): array
+    private function getProcessedData(string $themeId, int $shopId): array
     {
         try {
-            return $this->processor->process(
-                $this->node,
-                [$this->getStorage($shopId, $themeId)->get()]
+            return $this->node->finalize(
+                $this->node->normalize($this->getStorage($themeId, $shopId)->get())
             );
-        } catch (InvalidConfigurationException $exception) {
-            throw new InvalidConfigurationException(
+        } catch (InvalidConfigurationException | ParseException $exception) {
+            throw new InvalidThemeConfigurationException(
                 sprintf(
                     'File %s is broken: %s',
-                    $this->getThemeConfigurationFilePath($shopId, $themeId),
+                    $this->getThemeConfigurationFilePath($themeId, $shopId),
                     $exception->getMessage()
                 ),
-                $exception->getCode(),
-                $exception
+                previous: $exception
             );
         }
     }
 
-    private function getStorage(int $shopId, string $themeId): ArrayStorageInterface
+    private function getStorage(string $themeId, int $shopId): ArrayStorageInterface
     {
         return $this->fileStorageFactory->create(
-            $this->getThemeConfigurationFilePath($shopId, $themeId)
+            $this->getThemeConfigurationFilePath($themeId, $shopId)
         );
     }
 
@@ -147,7 +145,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         return Path::join($this->context->getShopConfigurationDirectory($shopId), 'themes');
     }
 
-    private function getThemeConfigurationFilePath(int $shopId, string $themeId): string
+    private function getThemeConfigurationFilePath(string $themeId, int $shopId): string
     {
         return Path::join($this->getThemesConfigurationDirectory($shopId), $themeId . '.yaml');
     }

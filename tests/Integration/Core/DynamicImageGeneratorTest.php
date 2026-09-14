@@ -5,9 +5,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\EshopCommunity\Core\Curl;
+use OxidEsales\EshopCommunity\Core\DynamicImageGenerator;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -16,6 +20,9 @@ use Symfony\Component\Filesystem\Path;
 
 final class DynamicImageGeneratorTest extends IntegrationTestCase
 {
+    private const PARENT_THEME_ID = 'imageParentTheme';
+    private const CHILD_THEME_ID = 'imageChildTheme';
+
     public function setUp(): void
     {
         parent::setUp();
@@ -85,6 +92,91 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
                 '/getimg.php?out/pictures/generated/%2e%2e/%2e%2e/%2e%2e/index.php',
             ],
         ];
+    }
+
+    public function testValidImageGenerationForSizeConfiguredOnlyOnParentTheme(): void
+    {
+        $this->activateChildThemeWithParentDeclaringSize('detailImageSize', '999*999');
+        $this->createTestMasterImage();
+        $requestUri = $_SERVER['REQUEST_URI'] ?? null;
+        $_SERVER['REQUEST_URI'] = '/out/pictures/generated/media/products/999_999_75/test-image.jpg';
+
+        try {
+            $imagePath = (new DynamicImageGenerator())->getImagePath();
+        } finally {
+            if ($requestUri === null) {
+                unset($_SERVER['REQUEST_URI']);
+            } else {
+                $_SERVER['REQUEST_URI'] = $requestUri;
+            }
+        }
+
+        $this->assertNotFalse($imagePath);
+        $this->assertFileExists($imagePath);
+
+        unlink($imagePath);
+        rmdir(dirname($imagePath));
+        $this->cleanupTestFiles();
+    }
+
+    public function testImageGenerationIsRefusedWhenActiveThemeMetaDataIsBroken(): void
+    {
+        $this->activateTheme('imageBrokenMetaDataTheme');
+        $this->createTestMasterImage();
+        $requestUri = $_SERVER['REQUEST_URI'] ?? null;
+        $_SERVER['REQUEST_URI'] = '/out/pictures/generated/media/products/999_999_75/test-image.jpg';
+
+        try {
+            $imagePath = (new DynamicImageGenerator())->getImagePath();
+        } finally {
+            if ($requestUri === null) {
+                unset($_SERVER['REQUEST_URI']);
+            } else {
+                $_SERVER['REQUEST_URI'] = $requestUri;
+            }
+            $this->cleanupTestFiles();
+        }
+
+        $this->assertFalse($imagePath);
+    }
+
+    private function activateTheme(string $themeId): void
+    {
+        $context = $this->get(BasicContextInterface::class);
+        $themePath = __DIR__ . '/Fixtures/' . $themeId;
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save(
+            (new ThemeConfiguration())
+                ->setId($themeId)
+                ->setSource(Path::makeRelative($themePath, $context->getShopRootPath()))
+                ->setActivated(true),
+            $this->get(ContextInterface::class)->getCurrentShopId()
+        );
+    }
+
+    private function activateChildThemeWithParentDeclaringSize(string $settingName, string $value): void
+    {
+        $context = $this->get(BasicContextInterface::class);
+        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+
+        $parentPath = __DIR__ . '/Fixtures/' . self::PARENT_THEME_ID;
+        $dao->save(
+            (new ThemeConfiguration())
+                ->setId(self::PARENT_THEME_ID)
+                ->setSource(Path::makeRelative($parentPath, $context->getShopRootPath()))
+                ->addThemeSetting((new Setting())->setName($settingName)->setType('str')->setValue($value)),
+            $shopId
+        );
+
+        $childPath = __DIR__ . '/Fixtures/' . self::CHILD_THEME_ID;
+        $dao->save(
+            (new ThemeConfiguration())
+                ->setId(self::CHILD_THEME_ID)
+                ->setSource(Path::makeRelative($childPath, $context->getShopRootPath()))
+                ->setActivated(true),
+            $shopId
+        );
     }
 
     private function createTestMasterImage(): void

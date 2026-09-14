@@ -249,9 +249,13 @@ final class ManufacturerTest extends IntegrationTestCase
     private function overwriteConfig(string $configParam, string $iconSizeValue): void
     {
 
+        $themeSource = Path::makeRelative(
+            __DIR__ . '/Fixtures/testTheme',
+            $this->get(ContextInterface::class)->getShopRootPath()
+        );
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource('testSourcePath')
+            ->setSource($themeSource)
             ->setActivated(true);
         $configuration->addThemeSetting(
             (new Setting())->setName($configParam)->setType('bool')->setValue(false)

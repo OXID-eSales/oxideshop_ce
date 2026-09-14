@@ -1,0 +1,5 @@
+id: incompatibleChildTheme
+title: 'Incompatible Child Theme'
+parentTheme: neverInstalledParentTheme
+parentVersions:
+  - '1.0.0'

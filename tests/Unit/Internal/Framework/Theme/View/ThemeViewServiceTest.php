@@ -139,18 +139,15 @@ final class ThemeViewServiceTest extends TestCase
         ];
     }
 
-    public function testGetParentThemeOfActiveThemeIsCompatibleWithoutValidating(): void
+    public function testGetParentThemeValidatesActiveThemeAsWell(): void
     {
-        $checker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
-        $checker->expects($this->never())->method('validate');
-
         $parentTheme = $this->createService(
             ['child' => $this->metaData('child', 'parent')],
             active: true,
-            checker: $checker
+            checker: $this->throwingChecker(new ThemeParentCompatibilityException('parent removed'))
         )->getParentTheme('child', self::SHOP_ID);
 
-        $this->assertTrue($parentTheme->isCompatible());
+        $this->assertFalse($parentTheme->isCompatible());
     }
 
     /** @param string[] $parentVersions */

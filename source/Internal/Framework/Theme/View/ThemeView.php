@@ -18,8 +18,8 @@ readonly class ThemeView
         private string $thumbnail,
         private string $author,
         private string $version,
+        private string $parentThemeId,
         private bool $active,
-        private string $parentThemeId = '',
     ) {
     }
 

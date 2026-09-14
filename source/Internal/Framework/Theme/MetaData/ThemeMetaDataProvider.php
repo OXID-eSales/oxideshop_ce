@@ -11,7 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
 {
@@ -19,6 +22,7 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
 
     public function __construct(
         private FileStorageFactoryInterface $fileStorageFactory,
+        private NodeInterface $node,
     ) {
     }
 
@@ -32,62 +36,30 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
             );
         }
 
-        $data = $this->readData($metadataFilePath);
+        $data = $this->getProcessedData($metadataFilePath);
 
-        if (empty($data['id'])) {
-            throw new InvalidThemeMetaDataException(
-                "metadata.yaml is missing required 'id' field at $metadataFilePath"
-            );
-        }
-
-        return $this->mapMetaData($data, $metadataFilePath);
+        return (new ThemeMetaData())
+            ->setId($data['id'])
+            ->setVersion($data['version'])
+            ->setTitle($data['title'])
+            ->setDescription($data['description'])
+            ->setThumbnail($data['thumbnail'])
+            ->setAuthor($data['author'])
+            ->setParentTheme($data['parentTheme'])
+            ->setParentVersions($data['parentVersions']);
     }
 
-    private function readData(string $metadataFilePath): array
+    private function getProcessedData(string $metadataFilePath): array
     {
         try {
-            return $this->fileStorageFactory->create($metadataFilePath)->get();
-        } catch (\Throwable $exception) {
+            return $this->node->finalize(
+                $this->node->normalize($this->fileStorageFactory->create($metadataFilePath)->get())
+            );
+        } catch (InvalidConfigurationException | ParseException $exception) {
             throw new InvalidThemeMetaDataException(
                 "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",
                 previous: $exception
             );
-        }
-    }
-
-    private function mapMetaData(array $data, string $metadataFilePath): ThemeMetaData
-    {
-        $this->validateVersionsAreStrings($data, $metadataFilePath);
-
-        try {
-            return (new ThemeMetaData())
-                ->setId($data['id'])
-                ->setVersion($data['version'] ?? '')
-                ->setTitle($data['title'] ?? '')
-                ->setDescription($data['description'] ?? '')
-                ->setThumbnail($data['thumbnail'] ?? '')
-                ->setAuthor($data['author'] ?? '')
-                ->setParentTheme($data['parentTheme'] ?? '')
-                ->setParentVersions($data['parentVersions'] ?? []);
-        } catch (\Throwable $exception) {
-            throw new InvalidThemeMetaDataException(
-                "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",
-                previous: $exception
-            );
-        }
-    }
-
-    private function validateVersionsAreStrings(array $data, string $metadataFilePath): void
-    {
-        $parentVersions = is_array($data['parentVersions'] ?? null) ? $data['parentVersions'] : [];
-
-        foreach ([$data['version'] ?? '', ...$parentVersions] as $version) {
-            if (!is_string($version)) {
-                throw new InvalidThemeMetaDataException(
-                    "metadata.yaml at $metadataFilePath is invalid: 'version' and 'parentVersions' must be quoted"
-                    . " strings such as '1.0', found " . get_debug_type($version)
-                );
-            }
         }
     }
 }

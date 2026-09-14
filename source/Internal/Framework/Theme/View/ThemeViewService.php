@@ -40,8 +40,8 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
             $metaData->getThumbnail(),
             $metaData->getAuthor(),
             $metaData->getVersion(),
-            $this->activeThemeProvider->isActive($themeId, $shopId),
             $metaData->getParentTheme(),
+            $this->activeThemeProvider->isActive($themeId, $shopId),
         );
     }
 
@@ -53,7 +53,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
             $metaData->getParentTheme(),
             $this->resolveParentThemeTitle($metaData->getParentTheme(), $shopId),
             $metaData->getParentVersions(),
-            $this->activeThemeProvider->isActive($themeId, $shopId) || $this->isCompatible($themeId, $shopId),
+            $this->isCompatible($themeId, $shopId),
         );
     }
 

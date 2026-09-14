@@ -31,6 +31,7 @@
   - `UtilsObject::getClassAliasName()`
   - `Registry::getStorageKey()`
   - `BasicContextInterface::getBackwardsCompatibilityClassMap()`
+- `OXURL` user field from the storefront via `UserUpdatableFields::getUpdatableFields()`
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

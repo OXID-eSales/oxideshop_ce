@@ -6,6 +6,7 @@
 - `oe:database:migrate` console command
 - Doctrine migrations can be registered via the `oxid_esales.migration_path_provider` DI tag (`MigrationPathProviderInterface`)
 - `SeoEncoderArticle::generateArticleCategoryUri()` method for generating an article's SEO URI for a specific category
+- Storefront request rate limiter, disabled by default; opt in via `oxid_esales.rate_limiter.storefront.*`
 
 ### Changed
 - Console commands return consistent exit codes on success (0) and failure (1)

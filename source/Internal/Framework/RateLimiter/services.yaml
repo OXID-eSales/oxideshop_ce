@@ -1,9 +1,6 @@
-parameters:
-  oxid_esales.rate_limiter.enabled: true
-  oxid_esales.rate_limiter.limit: 100
-  oxid_esales.rate_limiter.interval: 60
-  oxid_esales.rate_limiter.policy: 'token_bucket'
-  oxid_esales.rate_limiter.excluded_routes: []
+imports:
+  - { resource: parameters.yaml }
+  - { resource: Storefront/services.yaml }
 
 services:
   _defaults:

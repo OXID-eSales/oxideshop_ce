@@ -1,0 +1,56 @@
+imports:
+  - { resource: parameters.yaml }
+
+services:
+  _defaults:
+    autowire: true
+
+  oxid_esales.rate_limiter.storefront.cache:
+    class: Symfony\Component\Cache\Adapter\FilesystemAdapter
+    arguments:
+      - 'rate_limiter'
+      - 0
+      - '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\BasicContextInterface").getCacheDirectory()'
+
+  oxid_esales.rate_limiter.storefront.storage:
+    class: Symfony\Component\RateLimiter\Storage\CacheStorage
+    arguments:
+      - '@oxid_esales.rate_limiter.storefront.cache'
+
+  oxid_esales.rate_limiter.storefront.lock_store:
+    class: Symfony\Component\Lock\Store\FlockStore
+    arguments:
+      - '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\BasicContextInterface").getCacheDirectory()'
+
+  oxid_esales.rate_limiter.storefront.lock_factory:
+    class: Symfony\Component\Lock\LockFactory
+    arguments:
+      - '@oxid_esales.rate_limiter.storefront.lock_store'
+
+  oxid_esales.rate_limiter.storefront.factory:
+    class: Symfony\Component\RateLimiter\RateLimiterFactory
+    arguments:
+      $config:
+        id: storefront
+        policy: token_bucket
+        limit: '%oxid_esales.rate_limiter.storefront.limit%'
+        rate:
+          interval: '%oxid_esales.rate_limiter.storefront.interval%'
+          amount: '%oxid_esales.rate_limiter.storefront.limit%'
+      $storage: '@oxid_esales.rate_limiter.storefront.storage'
+      $lockFactory: '@oxid_esales.rate_limiter.storefront.lock_factory'
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontClientIdentifierProvider: ~
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponder
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiter
+    public: true
+    arguments:
+      $excludedRoutes: '%oxid_esales.rate_limiter.storefront.excluded_routes%'
+      $excludedIps: '%oxid_esales.rate_limiter.storefront.excluded_ips%'
+      $rateLimiterFactory: '@oxid_esales.rate_limiter.storefront.factory'
+      $clientIdentifierProvider: '@OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontClientIdentifierProvider'

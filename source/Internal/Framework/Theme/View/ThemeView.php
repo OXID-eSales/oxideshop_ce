@@ -9,48 +9,44 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\View;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
+
 readonly class ThemeView
 {
     public function __construct(
-        private string $id,
-        private string $title,
-        private string $description,
-        private string $thumbnail,
-        private string $author,
-        private string $version,
+        private ThemeMetaData $metaData,
         private bool $active,
-        private bool $activationError,
     ) {
     }
 
     public function getId(): string
     {
-        return $this->id;
+        return $this->metaData->getId();
     }
 
     public function getTitle(): string
     {
-        return $this->title;
+        return $this->metaData->getTitle();
     }
 
     public function getDescription(): string
     {
-        return $this->description;
+        return $this->metaData->getDescription();
     }
 
     public function getThumbnail(): string
     {
-        return $this->thumbnail;
+        return $this->metaData->getThumbnail();
     }
 
     public function getAuthor(): string
     {
-        return $this->author;
+        return $this->metaData->getAuthor();
     }
 
     public function getVersion(): string
     {
-        return $this->version;
+        return $this->metaData->getVersion();
     }
 
     public function isActive(): bool
@@ -58,8 +54,8 @@ readonly class ThemeView
         return $this->active;
     }
 
-    public function hasActivationError(): bool
+    public function hasParentTheme(): bool
     {
-        return $this->activationError;
+        return $this->metaData->getParentTheme() !== '';
     }
 }

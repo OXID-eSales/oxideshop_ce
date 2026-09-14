@@ -16,6 +16,7 @@ readonly class ParentThemeView
         private string $id,
         private string $title,
         private array $versions,
+        private bool $compatible,
     ) {
     }
 
@@ -33,5 +34,10 @@ readonly class ParentThemeView
     public function getVersions(): array
     {
         return $this->versions;
+    }
+
+    public function isCompatible(): bool
+    {
+        return $this->compatible;
     }
 }

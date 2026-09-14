@@ -36,9 +36,10 @@ class ThemeMain extends AdminDetailsController
             $shopId = $this->context->getCurrentShopId();
             $themeId = $this->getEditObjectId() ?: $this->activeThemeProvider->getActiveThemeId($shopId);
 
-            $this->_aViewData['theme'] = $this->themeViewService->getTheme($themeId, $shopId);
+            $theme = $this->themeViewService->getTheme($themeId, $shopId);
+            $this->_aViewData['theme'] = $theme;
 
-            if ($this->themeViewService->hasParentTheme($themeId, $shopId)) {
+            if ($theme->hasParentTheme()) {
                 $this->_aViewData['parentTheme'] = $this->themeViewService->getParentTheme($themeId, $shopId);
             }
         } catch (ActiveThemeNotFoundException | ThemeNotLoadableException) {

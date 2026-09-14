@@ -15,8 +15,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCycleException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentDepthExceededException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewService;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -24,7 +26,7 @@ final class ThemeViewServiceTest extends TestCase
 {
     private const SHOP_ID = 1;
 
-    public function testGetThemeMapsMetaDataFieldsAndActiveState(): void
+    public function testGetThemeExposesMetaDataFieldsAndActiveState(): void
     {
         $metaData = (new ThemeMetaData())
             ->setId('child')
@@ -43,7 +45,6 @@ final class ThemeViewServiceTest extends TestCase
         $this->assertSame('OXID', $theme->getAuthor());
         $this->assertSame('1.2.3', $theme->getVersion());
         $this->assertTrue($theme->isActive());
-        $this->assertFalse($theme->hasActivationError());
     }
 
     public function testGetThemeReportsInactiveTheme(): void
@@ -54,66 +55,33 @@ final class ThemeViewServiceTest extends TestCase
         $this->assertFalse($theme->isActive());
     }
 
-    public function testHasParentThemeIsFalseWhenNoParentDeclared(): void
+    public function testThemeWithoutDeclaredParentHasNoParentTheme(): void
     {
-        $service = $this->createService(['child' => $this->metaData('child')]);
+        $theme = $this->createService(['child' => $this->metaData('child')])->getTheme('child', self::SHOP_ID);
 
-        $this->assertFalse($service->hasParentTheme('child', self::SHOP_ID));
+        $this->assertFalse($theme->hasParentTheme());
     }
 
-    public function testHasParentThemeIsTrueForActiveThemeWithoutValidating(): void
+    public function testThemeWithDeclaredParentHasParentTheme(): void
     {
-        $checker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
-        $checker->expects($this->never())->method('validate');
+        $theme = $this->createService(['child' => $this->metaData('child', 'parent')])
+            ->getTheme('child', self::SHOP_ID);
 
-        $service = $this->createService(
-            ['child' => $this->metaData('child', 'parent')],
-            active: true,
-            checker: $checker
-        );
-
-        $this->assertTrue($service->hasParentTheme('child', self::SHOP_ID));
+        $this->assertTrue($theme->hasParentTheme());
     }
 
-    public function testHasParentThemeIsFalseForCycle(): void
-    {
-        $service = $this->createService(
-            ['child' => $this->metaData('child', 'parent')],
-            checker: $this->throwingChecker(new ThemeParentCycleException())
-        );
-
-        $this->assertFalse($service->hasParentTheme('child', self::SHOP_ID));
-    }
-
-    public function testHasParentThemeIsTrueForIncompatibleVersion(): void
-    {
-        $service = $this->createService(
-            ['child' => $this->metaData('child', 'parent')],
-            checker: $this->throwingChecker(new ThemeParentCompatibilityException())
-        );
-
-        $this->assertTrue($service->hasParentTheme('child', self::SHOP_ID));
-    }
-
-    public function testHasParentThemeIsTrueForCompatibleParent(): void
-    {
-        $service = $this->createService(['child' => $this->metaData('child', 'parent')]);
-
-        $this->assertTrue($service->hasParentTheme('child', self::SHOP_ID));
-    }
-
-    public function testGetParentThemeReturnsIdTitleAndVersions(): void
+    public function testGetParentThemeCarriesIdTitleAndDeclaredVersions(): void
     {
         $service = $this->createService([
-            'child' => $this->metaData('child', 'parent', ['1.0.0']),
-            'parent' => $this->metaData('parent', title: 'Parent'),
+            'child' => $this->metaData('child', 'parent', ['1.0.0', '1.1.0']),
+            'parent' => $this->metaData('parent', title: 'Parent Theme'),
         ]);
 
-        $parent = $service->getParentTheme('child', self::SHOP_ID);
+        $parentTheme = $service->getParentTheme('child', self::SHOP_ID);
 
-        $this->assertSame('parent', $parent->getId());
-        $this->assertSame('Parent', $parent->getTitle());
-        $this->assertSame(['1.0.0'], $parent->getVersions());
+        $this->assertSame('parent', $parentTheme->getId());
+        $this->assertSame('Parent Theme', $parentTheme->getTitle());
+        $this->assertSame(['1.0.0', '1.1.0'], $parentTheme->getVersions());
     }
 
     public function testGetParentThemeTitleIsEmptyWhenParentMetaDataIsUnreadable(): void
@@ -122,71 +90,67 @@ final class ThemeViewServiceTest extends TestCase
         $metaDataProvider->method('getById')->willReturnCallback(
             function (string $themeId): ThemeMetaData {
                 if ($themeId === 'parent') {
-                    throw new InvalidThemeMetaDataException();
+                    throw new InvalidThemeMetaDataException('broken');
                 }
 
-                return $this->metaData('child', 'parent', ['1.0.0']);
+                return $this->metaData('child', 'parent');
             }
         );
-
-        $parent = (new ThemeViewService(
+        $service = new ThemeViewService(
             $metaDataProvider,
             $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
             $this->createStub(ActiveThemeProviderInterface::class),
             $this->createStub(LoggerInterface::class)
-        ))->getParentTheme('child', self::SHOP_ID);
+        );
 
-        $this->assertSame('parent', $parent->getId());
-        $this->assertSame('', $parent->getTitle());
+        $parentTheme = $service->getParentTheme('child', self::SHOP_ID);
+
+        $this->assertSame('parent', $parentTheme->getId());
+        $this->assertSame('', $parentTheme->getTitle());
     }
 
-    public function testGetThemeHasNoActivationErrorWhenNoParent(): void
+    public function testGetParentThemeIsCompatibleWhenValidationPasses(): void
     {
-        $theme = $this->createService(['child' => $this->metaData('child')])->getTheme('child', self::SHOP_ID);
+        $parentTheme = $this->createService(['child' => $this->metaData('child', 'parent')])
+            ->getParentTheme('child', self::SHOP_ID);
 
-        $this->assertFalse($theme->hasActivationError());
+        $this->assertTrue($parentTheme->isCompatible());
     }
 
-    public function testGetThemeHasNoActivationErrorForCompatibleParent(): void
+    /** @param class-string<\Throwable> $validationFailureClass */
+    #[DataProvider('compatibilityFailureProvider')]
+    public function testGetParentThemeIsIncompatibleWhenValidationFails(string $validationFailureClass): void
     {
-        $theme = $this->createService(['child' => $this->metaData('child', 'parent')])
-            ->getTheme('child', self::SHOP_ID);
-
-        $this->assertFalse($theme->hasActivationError());
-    }
-
-    public function testGetThemeReportsActivationErrorForCycle(): void
-    {
-        $theme = $this->createService(
+        $parentTheme = $this->createService(
             ['child' => $this->metaData('child', 'parent')],
-            checker: $this->throwingChecker(new ThemeParentCycleException())
-        )->getTheme('child', self::SHOP_ID);
+            checker: $this->throwingChecker(new $validationFailureClass('validation failed'))
+        )->getParentTheme('child', self::SHOP_ID);
 
-        $this->assertTrue($theme->hasActivationError());
+        $this->assertFalse($parentTheme->isCompatible());
     }
 
-    public function testGetThemeReportsActivationErrorForIncompatibleVersion(): void
+    public static function compatibilityFailureProvider(): array
     {
-        $theme = $this->createService(
-            ['child' => $this->metaData('child', 'parent')],
-            checker: $this->throwingChecker(new ThemeParentCompatibilityException())
-        )->getTheme('child', self::SHOP_ID);
-
-        $this->assertTrue($theme->hasActivationError());
+        return [
+            'parent cycle' => [ThemeParentCycleException::class],
+            'inheritance depth exceeded' => [ThemeParentDepthExceededException::class],
+            'incompatible version' => [ThemeParentCompatibilityException::class],
+            'unreadable meta data' => [InvalidThemeMetaDataException::class],
+        ];
     }
 
-    public function testGetThemeSkipsActivationCheckForActiveTheme(): void
+    public function testGetParentThemeOfActiveThemeIsCompatibleWithoutValidating(): void
     {
         $checker = $this->createMock(ThemeParentCompatibilityCheckerInterface::class);
         $checker->expects($this->never())->method('validate');
 
-        $theme = $this->createService(
+        $parentTheme = $this->createService(
             ['child' => $this->metaData('child', 'parent')],
             active: true,
             checker: $checker
-        )->getTheme('child', self::SHOP_ID);
+        )->getParentTheme('child', self::SHOP_ID);
 
-        $this->assertFalse($theme->hasActivationError());
+        $this->assertTrue($parentTheme->isCompatible());
     }
 
     /** @param string[] $parentVersions */
@@ -211,7 +175,7 @@ final class ThemeViewServiceTest extends TestCase
     ): ThemeViewService {
         $metaDataProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
         $metaDataProvider->method('getById')->willReturnCallback(
-            fn (string $themeId): ThemeMetaData => $metaDataById[$themeId]
+            fn (string $themeId): ThemeMetaData => $metaDataById[$themeId] ?? $this->metaData($themeId)
         );
 
         $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);

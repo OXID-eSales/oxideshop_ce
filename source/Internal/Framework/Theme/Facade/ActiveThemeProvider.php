@@ -24,13 +24,12 @@ readonly class ActiveThemeProvider implements ActiveThemeProviderInterface
 
     public function getActiveThemeId(int $shopId): string
     {
-        foreach ($this->themeConfigurationDao->getAll($shopId) as $themeConfiguration) {
-            if ($themeConfiguration->isActivated()) {
-                return $themeConfiguration->getId();
-            }
+        $activeThemeId = $this->findActiveThemeId($shopId);
+        if ($activeThemeId === '') {
+            throw new ActiveThemeNotFoundException();
         }
 
-        throw new ActiveThemeNotFoundException();
+        return $activeThemeId;
     }
 
     public function getActiveTheme(int $shopId): ActiveTheme
@@ -45,10 +44,17 @@ readonly class ActiveThemeProvider implements ActiveThemeProviderInterface
 
     public function isActive(string $themeId, int $shopId): bool
     {
-        try {
-            return $this->getActiveThemeId($shopId) === $themeId;
-        } catch (ActiveThemeNotFoundException) {
-            return false;
+        return $this->findActiveThemeId($shopId) === $themeId;
+    }
+
+    private function findActiveThemeId(int $shopId): string
+    {
+        foreach ($this->themeConfigurationDao->getAll($shopId) as $themeConfiguration) {
+            if ($themeConfiguration->isActivated()) {
+                return $themeConfiguration->getId();
+            }
         }
+
+        return '';
     }
 }

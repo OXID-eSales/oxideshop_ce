@@ -56,7 +56,7 @@ final class ThemeMainTest extends IntegrationTestCase
         $this->assertFalse($this->isThemeActive(self::SELF_REFERENCING_THEME_ID));
     }
 
-    public function testRenderShowsActivationErrorForThemeDeclaringItselfAsItsOwnParent(): void
+    public function testRenderMarksParentThemeIncompatibleForThemeDeclaringItselfAsItsOwnParent(): void
     {
         $this->installTheme(self::SELF_REFERENCING_THEME_ID);
 
@@ -64,8 +64,8 @@ final class ThemeMainTest extends IntegrationTestCase
         $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);
         $controller->render();
 
-        $this->assertTrue($controller->getViewDataElement('theme')->hasActivationError());
-        $this->assertNull($controller->getViewDataElement('parentTheme'));
+        $this->assertTrue($controller->getViewDataElement('theme')->hasParentTheme());
+        $this->assertFalse($controller->getViewDataElement('parentTheme')->isCompatible());
     }
 
     public function testSetThemeDisplaysNotLoadedErrorWhenConfigurationFileIsBroken(): void

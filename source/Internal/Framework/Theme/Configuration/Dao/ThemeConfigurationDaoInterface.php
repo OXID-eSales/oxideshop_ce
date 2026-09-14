@@ -8,11 +8,15 @@
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 
 interface ThemeConfigurationDaoInterface
 {
-    /** @throws ThemeConfigurationNotFoundException */
+    /**
+     * @throws ThemeConfigurationNotFoundException
+     * @throws InvalidThemeConfigurationException
+     */
     public function get(string $themeId, int $shopId): ThemeConfiguration;
 
     public function save(ThemeConfiguration $configuration, int $shopId): void;

@@ -1,0 +1,7 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolver
+    public: true

@@ -2,5 +2,14 @@ services:
   _defaults:
     autowire: true
 
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Definition\MetaDataTreeBuilderFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Definition\MetaDataTreeBuilderFactory
+
+  oxid_esales.theme.metadata.node:
+    class: Symfony\Component\Config\Definition\NodeInterface
+    factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Definition\MetaDataTreeBuilderFactoryInterface', 'create']
+
   OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProvider
+    arguments:
+      Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.metadata.node'

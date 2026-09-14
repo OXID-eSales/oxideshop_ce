@@ -11,7 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Config\Definition\NodeInterface;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Component\Yaml\Exception\ParseException;
 
 readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
 {
@@ -19,6 +22,7 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
 
     public function __construct(
         private FileStorageFactoryInterface $fileStorageFactory,
+        private NodeInterface $node,
     ) {
     }
 
@@ -32,22 +36,30 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
             );
         }
 
-        $data = $this->fileStorageFactory->create($metadataFilePath)->get();
-
-        if (empty($data['id'])) {
-            throw new InvalidThemeMetaDataException(
-                "metadata.yaml is missing required 'id' field at $metadataFilePath"
-            );
-        }
+        $data = $this->getProcessedData($metadataFilePath);
 
         return (new ThemeMetaData())
             ->setId($data['id'])
-            ->setVersion($data['version'] ?? '')
-            ->setTitle($data['title'] ?? '')
-            ->setDescription($data['description'] ?? '')
-            ->setThumbnail($data['thumbnail'] ?? '')
-            ->setAuthor($data['author'] ?? '')
-            ->setParentTheme($data['parentTheme'] ?? '')
-            ->setParentVersions($data['parentVersions'] ?? []);
+            ->setVersion($data['version'])
+            ->setTitle($data['title'])
+            ->setDescription($data['description'])
+            ->setThumbnail($data['thumbnail'])
+            ->setAuthor($data['author'])
+            ->setParentTheme($data['parentTheme'])
+            ->setParentVersions($data['parentVersions']);
+    }
+
+    private function getProcessedData(string $metadataFilePath): array
+    {
+        try {
+            return $this->node->finalize(
+                $this->node->normalize($this->fileStorageFactory->create($metadataFilePath)->get())
+            );
+        } catch (InvalidConfigurationException | ParseException $exception) {
+            throw new InvalidThemeMetaDataException(
+                "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",
+                previous: $exception
+            );
+        }
     }
 }

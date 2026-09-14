@@ -10,8 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ThemeStateServiceInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Console\Command\Command;
@@ -61,9 +61,37 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         $this->assertFalse($this->isThemeActive($this->themeId));
     }
 
+    public function testActivationFailsForThemeWithIncompatibleParent(): void
+    {
+        $incompatibleThemeId = 'incompatibleChildTheme';
+        $this->get(ThemeConfigurationInstallerInterface::class)->install(
+            "$this->fixtureDirectory/shop/source/Application/views/$incompatibleThemeId"
+        );
+
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $incompatibleThemeId]);
+
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        $this->assertFalse($this->isThemeActive($incompatibleThemeId));
+    }
+
+    public function testActivationFailsForThemeDeclaringItselfAsItsOwnParent(): void
+    {
+        $selfReferencingThemeId = 'selfReferencingTheme';
+        $this->get(ThemeConfigurationInstallerInterface::class)->install(
+            "$this->fixtureDirectory/shop/source/Application/views/$selfReferencingThemeId"
+        );
+
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $selfReferencingThemeId]);
+
+        $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
+        $this->assertFalse($this->isThemeActive($selfReferencingThemeId));
+    }
+
     private function isThemeActive(string $themeId): bool
     {
-        return $this->get(ThemeStateServiceInterface::class)->isActive($themeId, self::SHOP_ID);
+        return $this->get(ActiveThemeProviderInterface::class)->isActive($themeId, self::SHOP_ID);
     }
 
     private function setShopFixtures(): void

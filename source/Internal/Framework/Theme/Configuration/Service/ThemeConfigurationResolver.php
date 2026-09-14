@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\Theme
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use Psr\Log\LoggerInterface;
 
 readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverInterface
@@ -21,6 +22,7 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao,
         private ThemeConfigurationCacheInterface $resolvedConfigurationCache,
+        private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
         private LoggerInterface $logger,
     ) {
     }
@@ -39,7 +41,7 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
 
     private function buildResolvedConfiguration(string $themeId, int $shopId): ThemeConfiguration
     {
-        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $configuration = $this->resolveInheritedConfiguration($themeId, $shopId);
         $environmentSettingValues = $this->environmentConfigurationDao
             ->get($themeId, $shopId)
             ->getSettingValues();
@@ -53,6 +55,24 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
             }
 
             $setting->setValue($value);
+        }
+
+        return $configuration;
+    }
+
+    private function resolveInheritedConfiguration(string $themeId, int $shopId): ThemeConfiguration
+    {
+        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $parentThemeId = $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentTheme();
+
+        if ($parentThemeId === '' || !$this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
+            return $configuration;
+        }
+
+        foreach ($this->themeConfigurationDao->get($parentThemeId, $shopId)->getThemeSettings() as $parentSetting) {
+            if ($configuration->getSettingByName($parentSetting->getName()) === null) {
+                $configuration->addThemeSetting(clone $parentSetting);
+            }
         }
 
         return $configuration;

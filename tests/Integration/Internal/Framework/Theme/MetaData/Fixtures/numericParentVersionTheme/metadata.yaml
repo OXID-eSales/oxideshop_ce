@@ -1,0 +1,4 @@
+id: numericParentVersionTheme
+parentTheme: parentTheme
+parentVersions:
+  - 1.0

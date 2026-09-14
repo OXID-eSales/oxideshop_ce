@@ -408,11 +408,19 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     {
         $themeId = 'testTheme';
         $this->get(ThemeConfigurationDaoInterface::class)->save(
-            (new ThemeConfiguration())->setId($themeId)->setSource('testSourcePath')->setActivated(true),
+            (new ThemeConfiguration())->setId($themeId)->setSource($this->getTestThemeSource())->setActivated(true),
             $shopId
         );
 
         return $themeId;
+    }
+
+    private function getTestThemeSource(): string
+    {
+        return Path::makeRelative(
+            __DIR__ . '/Fixtures/testTheme',
+            $this->get(ContextInterface::class)->getShopRootPath()
+        );
     }
 
     private function setupTestData(): void
@@ -473,7 +481,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     private function configureImageSettings(): void
     {
         $configuration = new ThemeConfiguration();
-        $configuration->setId($this->themeId)->setSource('testSourcePath')->setActivated(true);
+        $configuration->setId($this->themeId)->setSource($this->getTestThemeSource())->setActivated(true);
 
         foreach ([
             self::CONFIG_KEY_ICON_SIZE => '87*87',

@@ -15,6 +15,9 @@ use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
+use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -117,11 +120,20 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         try {
             $this->runOnce();
 
+            if (
+                ContainerFacade::hasParameter('oxid_esales.rate_limiter.storefront.enabled')
+                && ContainerFacade::getParameter('oxid_esales.rate_limiter.storefront.enabled')
+            ) {
+                ContainerFacade::get(StorefrontRateLimiterInterface::class)->enforce();
+            }
+
             $function = !is_null($function) ? $function : Registry::getRequest()->getRequestEscapedParameter('fnc');
             $controllerKey = !is_null($controllerKey) ? $controllerKey : $this->getStartControllerKey();
             $controllerClass = $this->getControllerClass($controllerKey);
 
             $this->process($controllerClass, $function, $parameters, $viewsChain);
+        } catch (TooManyRequestsException $exception) {
+            ContainerFacade::get(RateLimitResponderInterface::class)->respond($exception);
         } catch (SystemComponentException $exception) {
             $this->handleSystemException($exception);
         } catch (\OxidEsales\Eshop\Core\Exception\CookieException $exception) {

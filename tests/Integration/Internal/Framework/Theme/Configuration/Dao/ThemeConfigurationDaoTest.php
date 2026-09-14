@@ -12,13 +12,13 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\C
 use ArrayObject;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Path;
 
@@ -84,6 +84,16 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $this->get(ThemeConfigurationDaoInterface::class)->delete('nonExistent', self::SHOP_ID);
 
         $this->assertCount(0, $dispatchedEvents);
+    }
+
+    public function testDeleteRemovesConfigurationViolatingTheSchema(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $this->saveConfigurationData('brokenTheme', ['unknownKey' => 'value']);
+
+        $dao->delete('brokenTheme', self::SHOP_ID);
+
+        $this->assertFalse($dao->exists('brokenTheme', self::SHOP_ID));
     }
 
     public function testGetThrowsForNonExistentTheme(): void
@@ -234,33 +244,62 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $this->assertSame([], $dao->getAll(self::SHOP_ID));
     }
 
-    public function testGetThrowsForConfigurationFileViolatingTheSchema(): void
+    public function testGetThrowsInvalidThemeConfigurationExceptionForConfigurationFileViolatingTheSchema(): void
     {
         $this->saveConfigurationData('brokenTheme', ['unknownKey' => 'value']);
 
-        $this->expectException(InvalidConfigurationException::class);
+        $this->expectException(InvalidThemeConfigurationException::class);
 
         $this->get(ThemeConfigurationDaoInterface::class)->get('brokenTheme', self::SHOP_ID);
     }
 
-    public function testGetThrowsForConfigurationWithoutRequiredSource(): void
+    public function testGetThrowsInvalidThemeConfigurationExceptionForConfigurationWithoutRequiredSource(): void
     {
         $this->saveConfigurationData('brokenTheme', ['title' => 'Broken Theme']);
 
-        $this->expectException(InvalidConfigurationException::class);
+        $this->expectException(InvalidThemeConfigurationException::class);
 
         $this->get(ThemeConfigurationDaoInterface::class)->get('brokenTheme', self::SHOP_ID);
+    }
+
+    public function testGetThrowsInvalidThemeConfigurationExceptionForMalformedYamlSyntax(): void
+    {
+        $this->saveMalformedYaml('malformedTheme');
+
+        $this->expectException(InvalidThemeConfigurationException::class);
+
+        $this->get(ThemeConfigurationDaoInterface::class)->get('malformedTheme', self::SHOP_ID);
+    }
+
+    public function testGetAllSkipsThemeWithInvalidConfigurationAndReturnsTheRest(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $dao->save($this->buildConfiguration('validTheme'), self::SHOP_ID);
+        $this->saveConfigurationData('brokenTheme', ['unknownKey' => 'value']);
+
+        $this->assertSame(['validTheme'], array_keys($dao->getAll(self::SHOP_ID)));
     }
 
     private function saveConfigurationData(string $themeId, array $data): void
     {
-        $path = Path::join(
+        $this->get(FileStorageFactoryInterface::class)->create($this->getConfigurationFilePath($themeId))->save($data);
+    }
+
+    private function saveMalformedYaml(string $themeId): void
+    {
+        $path = $this->getConfigurationFilePath($themeId);
+        mkdir(dirname($path), 0777, true);
+
+        file_put_contents($path, "themeSettings: [unclosed\n");
+    }
+
+    private function getConfigurationFilePath(string $themeId): string
+    {
+        return Path::join(
             $this->get(BasicContextInterface::class)->getShopConfigurationDirectory(self::SHOP_ID),
             'themes',
             $themeId . '.yaml'
         );
-
-        $this->get(FileStorageFactoryInterface::class)->create($path)->save($data);
     }
 
     private function buildConfiguration(string $id): ThemeConfiguration
@@ -282,4 +321,5 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
 
         return $events;
     }
+
 }

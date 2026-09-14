@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,7 +23,7 @@ readonly class InvalidateThemeCacheEventSubscriber implements EventSubscriberInt
     ) {
     }
 
-    public function invalidateThemeCache(ThemeConfigurationChangedEvent $event): void
+    public function invalidateThemeCache(ThemeConfigurationChangedEvent|ThemeActivatedEvent $event): void
     {
         $this->resolvedConfigurationCache->evict($event->getThemeId(), $event->getShopId());
         $this->shopCacheCleaner->clear($event->getShopId());
@@ -32,6 +33,7 @@ readonly class InvalidateThemeCacheEventSubscriber implements EventSubscriberInt
     {
         return [
             ThemeConfigurationChangedEvent::class => 'invalidateThemeCache',
+            ThemeActivatedEvent::class => 'invalidateThemeCache',
         ];
     }
 }

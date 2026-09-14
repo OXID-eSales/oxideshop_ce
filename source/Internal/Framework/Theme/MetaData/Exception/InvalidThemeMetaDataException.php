@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception;
 
-class InvalidThemeMetaDataException extends \InvalidArgumentException
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
+
+class InvalidThemeMetaDataException extends \InvalidArgumentException implements ThemeNotLoadableException
 {
 }

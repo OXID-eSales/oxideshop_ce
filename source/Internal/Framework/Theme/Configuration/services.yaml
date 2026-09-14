@@ -13,7 +13,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDao
     arguments:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.environment_node'
-      Symfony\Component\Config\Definition\Processor: '@oxid_esales.theme.configuration.processor'
 
   oxid_esales.theme.configuration.resolver_cache:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCache

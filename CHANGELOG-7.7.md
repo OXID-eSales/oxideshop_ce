@@ -1,3 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
 ## v7.7.0 - Unreleased
+
+### Added
+- Community and project migrations are registered as tagged `oxid_esales.migration_path_provider` services (`CommunityEditionMigrationPathProvider`, `ProjectMigrationPathProvider`)

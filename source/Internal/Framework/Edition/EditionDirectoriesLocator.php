@@ -10,22 +10,27 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Edition;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistentException;
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectDirectoriesLocator;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
 use Symfony\Component\Filesystem\Path;
 
 readonly class EditionDirectoriesLocator
 {
+    public function __construct(private ProjectRootLocator $projectRootLocator)
+    {
+    }
+
     public function getEditionRootPath(Edition $edition): string
     {
-        $projectDirectoriesLocator = new ProjectDirectoriesLocator();
+        $projectRoot = $this->projectRootLocator->getProjectRoot();
         $path = Path::join(
-            $projectDirectoriesLocator->getVendorPath(),
+            $projectRoot,
+            'vendor',
             EditionPaths::from($edition->value)->getVendorFolderName(),
             EditionPaths::from($edition->value)->getProjectFolderName(),
         );
         if (!is_dir($path)) {
             if ($edition->isCommunityEdition()) {
-                return $projectDirectoriesLocator->getRootPath();
+                return $projectRoot;
             }
             throw new DirectoryNotExistentException("Root directory for {$edition->name} does not exist!");
         }

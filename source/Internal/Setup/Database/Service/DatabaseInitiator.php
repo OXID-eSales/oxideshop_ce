@@ -11,7 +11,6 @@ namespace OxidEsales\EshopCommunity\Internal\Setup\Database\Service;
 
 use OxidEsales\Eshop\Core\Database\Adapter\Doctrine\Database;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutorInterface;
 use OxidEsales\EshopCommunity\Internal\Setup\Database\Exception\InitiateDatabaseException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PDO;
@@ -25,8 +24,7 @@ readonly class DatabaseInitiator implements DatabaseInitiatorInterface
 {
     public function __construct(
         private BasicContextInterface $context,
-        private MigrationExecutorInterface $migrationExecutor,
-        private ConfigurableMigrationExecutorInterface $taggedMigrationExecutor,
+        private ConfigurableMigrationExecutorInterface $migrationExecutor,
     ) {
     }
 
@@ -63,8 +61,7 @@ readonly class DatabaseInitiator implements DatabaseInitiatorInterface
     private function executeMigrations(): void
     {
         try {
-            $this->migrationExecutor->execute();
-            $status = $this->taggedMigrationExecutor->executeWithOptions();
+            $status = $this->migrationExecutor->executeWithOptions();
         } catch (\Throwable $exception) {
             throw new InitiateDatabaseException(
                 InitiateDatabaseException::EXECUTE_MIGRATIONS_PROBLEM,

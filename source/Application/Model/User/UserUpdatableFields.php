@@ -58,7 +58,9 @@ class UserUpdatableFields extends AbstractUpdatableFields
             'OXPRIVFON',
             'OXMOBFON',
             'OXBIRTHDATE',
+            // @deprecated will be removed in the next major version
             'OXURL',
+            // END deprecated
             'OXUPDATEKEY',
             'OXUPDATEEXP',
             'OXTIMESTAMP'

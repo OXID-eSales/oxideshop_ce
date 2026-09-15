@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationOptionsForwarderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,9 +19,7 @@ final class DatabaseMigrateCommand extends Command
 {
     public function __construct(
         private readonly ConfigurableMigrationExecutorInterface $migrationExecutor,
-        private readonly ConfigurableMigrationExecutorInterface $taggedMigrationExecutor,
         private readonly MigrationOptionsForwarderInterface $optionsForwarder,
-        private readonly MigrationExitCodeResolverInterface $exitCodeResolver,
     ) {
         parent::__construct();
     }
@@ -35,10 +32,6 @@ final class DatabaseMigrateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $options = $this->optionsForwarder->collect($input);
-
-        $status = $this->migrationExecutor->executeWithOptions($options, $output);
-
-        return $this->exitCodeResolver->combine($status, $this->taggedMigrationExecutor->executeWithOptions($options, $output));
+        return $this->migrationExecutor->executeWithOptions($this->optionsForwarder->collect($input), $output);
     }
 }

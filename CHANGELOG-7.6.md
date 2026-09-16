@@ -44,5 +44,6 @@
 - Endless redirect loop and wrong URL generation [#0007770](https://bugs.oxid-esales.com/view.php?id=7770)
 - Admin login no longer emits a PHP warning when the request has no `Accept-Language` header [PR-999](https://github.com/OXID-eSales/oxideshop_ce/pull/999)
 - Address selection validation in account and checkout
+- `EditionDirectoriesLocator` calling the non-existent `ProjectDirectoriesLocator`
 
 ### Removed

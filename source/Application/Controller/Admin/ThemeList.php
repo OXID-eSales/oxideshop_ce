@@ -5,29 +5,33 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-/**
- * Admin actionss manager.
- * Sets list template, list object class ('oxactions') and default sorting
- * field ('oxactions.oxtitle').
- * Admin Menu: Manage Products -> Actions.
- */
-class ThemeList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminListController
-{
-    /**
-     * Calls parent::render() and returns name of template to render
-     *
-     * @return string
-     */
-    public function render()
-    {
-        $oTheme = oxNew(\OxidEsales\Eshop\Core\Theme::class);
+use OxidEsales\Eshop\Application\Controller\Admin\AdminListController;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
+class ThemeList extends AdminListController
+{
+    private ThemeViewServiceInterface $themeViewService;
+    private ContextInterface $context;
+
+    public function __construct()
+    {
+        $this->themeViewService = ContainerFacade::get(ThemeViewServiceInterface::class);
+        $this->context = ContainerFacade::get(ContextInterface::class);
+
+        parent::__construct();
+    }
+
+    public function render(): string
+    {
         parent::render();
 
-        // assign our list
-        $this->_aViewData['mylist'] = $oTheme->getList();
+        $this->_aViewData['mylist'] = $this->themeViewService->getThemes($this->context->getCurrentShopId());
 
         return 'theme_list';
     }

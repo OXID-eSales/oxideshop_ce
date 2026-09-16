@@ -56,7 +56,7 @@
 - `MigrationExecutorInterface`
 - `ThemeSettingChangedEvent`, use `ThemeConfigurationChangedEvent` instead
 - Theme configuration classes and methods
-  - `SettingsHandler`
+  - `Theme` and `SettingsHandler`
   - `ThemeSettingDaoInterface` and `ThemeSetting`
   - `ThemeConfiguration::saveConfVars()`, `ThemeConfiguration::$_sTheme` and `ThemeMain::themeInConfigFile()`
   - `Config::isThemeOption()`, `Config::$_aThemeConfigParams` and `Config::OXMODULE_THEME_PREFIX`

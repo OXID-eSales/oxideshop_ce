@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\View;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
@@ -100,7 +102,8 @@ final class ThemeViewServiceTest extends TestCase
             $metaDataProvider,
             $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
             $this->createStub(ActiveThemeProviderInterface::class),
-            $this->createStub(LoggerInterface::class)
+            $this->createStub(LoggerInterface::class),
+            $this->createStub(ThemeConfigurationDaoInterface::class)
         );
 
         $parentTheme = $service->getParentTheme('child', self::SHOP_ID);
@@ -150,6 +153,60 @@ final class ThemeViewServiceTest extends TestCase
         $this->assertFalse($parentTheme->isCompatible());
     }
 
+    public function testGetThemesReturnsViewsForAllConfiguredThemesKeyedById(): void
+    {
+        $service = $this->createService(
+            ['apex' => $this->metaData('apex', title: 'Apex'), 'child' => $this->metaData('child', 'apex')],
+            configuredThemeIds: ['apex', 'child']
+        );
+
+        $themes = $service->getThemes(self::SHOP_ID);
+
+        $this->assertSame(['apex', 'child'], array_keys($themes));
+        $this->assertSame('Apex', $themes['apex']->getTitle());
+        $this->assertTrue($themes['child']->hasParentTheme());
+    }
+
+    public function testGetThemesSkipsThemesWithUnreadableMetaDataAndLogsError(): void
+    {
+        $metaDataProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
+        $metaDataProvider->method('getById')->willReturnCallback(
+            function (string $themeId): ThemeMetaData {
+                if ($themeId === 'broken') {
+                    throw new InvalidThemeMetaDataException('broken');
+                }
+
+                return $this->metaData($themeId);
+            }
+        );
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('error');
+        $service = new ThemeViewService(
+            $metaDataProvider,
+            $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
+            $this->createStub(ActiveThemeProviderInterface::class),
+            $logger,
+            $this->configurationDao(['apex', 'broken'])
+        );
+
+        $themes = $service->getThemes(self::SHOP_ID);
+
+        $this->assertSame(['apex'], array_keys($themes));
+    }
+
+    /** @param string[] $themeIds */
+    private function configurationDao(array $themeIds): ThemeConfigurationDaoInterface
+    {
+        $configurations = [];
+        foreach ($themeIds as $themeId) {
+            $configurations[$themeId] = (new ThemeConfiguration())->setId($themeId);
+        }
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('getAll')->willReturn($configurations);
+
+        return $dao;
+    }
+
     /** @param string[] $parentVersions */
     private function metaData(
         string $id,
@@ -168,7 +225,8 @@ final class ThemeViewServiceTest extends TestCase
     private function createService(
         array $metaDataById,
         bool $active = false,
-        ?ThemeParentCompatibilityCheckerInterface $checker = null
+        ?ThemeParentCompatibilityCheckerInterface $checker = null,
+        array $configuredThemeIds = []
     ): ThemeViewService {
         $metaDataProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
         $metaDataProvider->method('getById')->willReturnCallback(
@@ -182,7 +240,8 @@ final class ThemeViewServiceTest extends TestCase
             $metaDataProvider,
             $checker ?? $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
             $activeThemeProvider,
-            $this->createStub(LoggerInterface::class)
+            $this->createStub(LoggerInterface::class),
+            $this->configurationDao($configuredThemeIds)
         );
     }
 

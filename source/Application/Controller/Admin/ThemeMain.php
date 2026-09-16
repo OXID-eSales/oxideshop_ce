@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
@@ -21,12 +22,18 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ThemeMain extends AdminDetailsController
 {
-    public function __construct(
-        private readonly ThemeActivationServiceInterface $themeActivationService,
-        private readonly ActiveThemeProviderInterface $activeThemeProvider,
-        private readonly ThemeViewServiceInterface $themeViewService,
-        private readonly ContextInterface $context,
-    ) {
+    private ThemeActivationServiceInterface $themeActivationService;
+    private ActiveThemeProviderInterface $activeThemeProvider;
+    private ThemeViewServiceInterface $themeViewService;
+    private ContextInterface $context;
+
+    public function __construct()
+    {
+        $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
+        $this->activeThemeProvider = ContainerFacade::get(ActiveThemeProviderInterface::class);
+        $this->themeViewService = ContainerFacade::get(ThemeViewServiceInterface::class);
+        $this->context = ContainerFacade::get(ContextInterface::class);
+
         parent::__construct();
     }
 

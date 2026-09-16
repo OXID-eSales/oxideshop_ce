@@ -28,7 +28,7 @@ final class ThemeMainTest extends IntegrationTestCase
     {
         $this->installTheme(self::THEME_ID);
 
-        $controller = $this->get(ThemeMain::class);
+        $controller = oxNew(ThemeMain::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->setTheme();
 
@@ -39,7 +39,7 @@ final class ThemeMainTest extends IntegrationTestCase
     {
         $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');
 
-        $controller = $this->get(ThemeMain::class);
+        $controller = oxNew(ThemeMain::class);
         $controller->setEditObjectId('unknownTheme');
         $controller->setTheme();
     }
@@ -49,7 +49,7 @@ final class ThemeMainTest extends IntegrationTestCase
         $this->installTheme(self::SELF_REFERENCING_THEME_ID);
         $this->expectDisplayError('EXCEPTION_THEME_INHERITANCE_INVALID');
 
-        $controller = $this->get(ThemeMain::class);
+        $controller = oxNew(ThemeMain::class);
         $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);
         $controller->setTheme();
 
@@ -60,7 +60,7 @@ final class ThemeMainTest extends IntegrationTestCase
     {
         $this->installTheme(self::SELF_REFERENCING_THEME_ID);
 
-        $controller = $this->get(ThemeMain::class);
+        $controller = oxNew(ThemeMain::class);
         $controller->setEditObjectId(self::SELF_REFERENCING_THEME_ID);
         $controller->render();
 
@@ -74,7 +74,7 @@ final class ThemeMainTest extends IntegrationTestCase
         $this->corruptThemeConfiguration(self::THEME_ID);
         $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');
 
-        $controller = $this->get(ThemeMain::class);
+        $controller = oxNew(ThemeMain::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->setTheme();
     }

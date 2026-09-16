@@ -16,4 +16,9 @@ interface ThemeViewServiceInterface
 
     /** @throws ThemeNotLoadableException */
     public function getParentTheme(string $themeId, int $shopId): ParentThemeView;
+
+    /**
+     * @return ThemeView[]
+     */
+    public function getThemes(int $shopId): array;
 }

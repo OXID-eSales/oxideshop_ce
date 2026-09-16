@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\View;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
@@ -26,6 +27,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
         private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker,
         private ActiveThemeProviderInterface $activeThemeProvider,
         private LoggerInterface $logger,
+        private ThemeConfigurationDaoInterface $themeConfigurationDao,
     ) {
     }
 
@@ -43,6 +45,20 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
             $metaData->getParentTheme(),
             $this->activeThemeProvider->isActive($themeId, $shopId),
         );
+    }
+
+    public function getThemes(int $shopId): array
+    {
+        $themes = [];
+        foreach ($this->themeConfigurationDao->getAll($shopId) as $themeId => $configuration) {
+            try {
+                $themes[$themeId] = $this->getTheme($themeId, $shopId);
+            } catch (ThemeNotLoadableException $exception) {
+                $this->logger->error($exception->getMessage(), [$exception]);
+            }
+        }
+
+        return $themes;
     }
 
     public function getParentTheme(string $themeId, int $shopId): ParentThemeView

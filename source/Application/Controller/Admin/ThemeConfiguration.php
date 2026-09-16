@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\DisplayError;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration as Configuration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
@@ -24,12 +25,18 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ThemeConfiguration extends AdminDetailsController
 {
-    public function __construct(
-        private readonly ThemeConfigurationServiceInterface $themeConfigurationService,
-        private readonly SettingValueMapperInterface $settingValueMapper,
-        private readonly SettingValueValidatorInterface $settingValueValidator,
-        private readonly Request $request,
-    ) {
+    private ThemeConfigurationServiceInterface $themeConfigurationService;
+    private SettingValueMapperInterface $settingValueMapper;
+    private SettingValueValidatorInterface $settingValueValidator;
+    private Request $request;
+
+    public function __construct()
+    {
+        $this->themeConfigurationService = ContainerFacade::get(ThemeConfigurationServiceInterface::class);
+        $this->settingValueMapper = ContainerFacade::get(SettingValueMapperInterface::class);
+        $this->settingValueValidator = ContainerFacade::get(SettingValueValidatorInterface::class);
+        $this->request = ContainerFacade::get(Request::class);
+
         parent::__construct();
     }
 

@@ -4,3 +4,4 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewService
+    public: true

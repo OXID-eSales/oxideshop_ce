@@ -17,6 +17,7 @@
 - Theme settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
 - `ThemeSettingServiceInterface` for reading theme settings
 - `ViewConfig::getThemeSettings()` to read theme settings in templates
+- `ThemeViewServiceInterface::getThemes()` to list the installed themes of a shop
 
 ### Changed
 - Theme activation state is now stored in YAML configuration instead of the database
@@ -28,7 +29,7 @@
 - `Config::getConfigParam()` no longer returns theme settings — use `ThemeSettingServiceInterface` instead
 - `Config::getDir()` (assets) and `Language` (translations) now fall back to the parent theme for child themes, matching existing template behavior
 - `Config::getDir()` parameter `$ignoreCust` renamed to `$ignoreParentTheme`
-- `Theme::getList()` returns installed themes keyed by theme id
+- `ThemeList` admin controller lists themes as `ThemeView` objects via `ThemeViewServiceInterface`
 - `ThemeConfigurationDaoInterface::get()` throws `InvalidThemeConfigurationException` for broken configuration files, `getAll()` skips them
 - The active theme is resolved through `ActiveThemeProviderInterface` (`getActiveThemeId()`, `getActiveTheme()`, `isActive()`)
 - `version` and `parentVersions` in a theme's `metadata.yaml` must be quoted strings; numeric values are rejected as invalid metadata
@@ -48,8 +49,6 @@
 - `Config::$_aThemeConfigParams`
 - `Config::isThemeOption()`
 - `sCustomTheme` config parameter
-- `Theme::getParent()`
-- `Theme::checkForActivationErrors()`
 - `Language::getCustomThemeLanguageFiles()`
 - `ThemeStateServiceInterface`, replaced by `ActiveThemeProviderInterface`
 - `ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED`
@@ -60,9 +59,7 @@
 - `ViewConfig::getRemoteAddress()`
 - `SeoEncoderArticle::createArticleCategoryUri()`
 - deprecated `ProjectYamlImportServiceInterface::addImport()` and `ProjectYamlImportServiceInterface::removeImport()`
-- `Theme::activate()`
-- `Theme::getActiveThemeId()`
-- `Theme::getActiveThemesList()`
+- `Theme` class, use `ThemeViewServiceInterface` instead
 - `ThemeMain::themeInConfigFile()`
 - `ShopAdapterInterface::getActiveThemesList()`
 - `ShopAdapterInterface::getCustomTheme()`

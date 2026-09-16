@@ -40,3 +40,8 @@ services:
     tags:
       - { name: 'oxid.view_controller', controller_key: 'theme_main' }
     public: true
+
+  OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeList:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'theme_list' }
+    public: true

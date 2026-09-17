@@ -8,9 +8,10 @@
 namespace OxidEsales\EshopCommunity\Setup;
 
 use Exception;
+use LogicException;
 use OxidEsales\DatabaseViewsGenerator\ViewsGenerator;
-use OxidEsales\DoctrineMigrationWrapper\Migrations;
-use OxidEsales\DoctrineMigrationWrapper\MigrationsBuilder;
+use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
 use OxidEsales\Facts\Facts;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Filesystem\Path;
@@ -428,12 +429,13 @@ class Utilities extends Core
      */
     public function executeExternalDatabaseMigrationCommand(?ConsoleOutput $output = null, ?Facts $facts = null)
     {
-        $migrations = $this->createMigrations($facts);
-        $migrations->setOutput($output);
+        $status = ContainerFactory::getInstance()->getContainer()
+            ->get(ConfigurableMigrationExecutorInterface::class)
+            ->executeWithOptions([], $output);
 
-        $command = Migrations::MIGRATE_COMMAND;
-
-        $migrations->execute($command);
+        if ($status !== 0) {
+            throw new Exception('Database migration failed.');
+        }
     }
 
     /**
@@ -558,12 +560,12 @@ class Utilities extends Core
     /**
      * @param Facts|null $facts The facts object to use for the creation of the migrations.
      *
-     * @return Migrations
+     * @throws LogicException
      */
     protected function createMigrations(?Facts $facts = null)
     {
-        $migrationsBuilder = new MigrationsBuilder();
-
-        return $migrationsBuilder->build($facts);
+        throw new LogicException(
+            'Migrations wrapper is no longer available, use ' . ConfigurableMigrationExecutorInterface::class . ' instead.'
+        );
     }
 }

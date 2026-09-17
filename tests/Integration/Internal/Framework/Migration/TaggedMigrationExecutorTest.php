@@ -27,7 +27,7 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->loadYamlFixture(__DIR__ . '/Fixtures');
         $this->compileContainer();
 
-        $status = $this->get(TaggedMigrationExecutor::class)->executeWithOptions();
+        $status = $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput());
 
         $this->assertSame(0, $status);
         $this->assertMigrationWasTracked();
@@ -40,7 +40,7 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->loadYamlFixture(__DIR__ . '/Fixtures/NoConfig');
         $this->compileContainer();
 
-        $this->get(TaggedMigrationExecutor::class)->executeWithOptions();
+        $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput());
     }
 
     public function testReturnsZeroWhenProviderHasNoMigrations(): void
@@ -49,7 +49,7 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->loadYamlFixture(__DIR__ . '/Fixtures/NoMigrations');
         $this->compileContainer();
 
-        $this->assertSame(0, $this->get(TaggedMigrationExecutor::class)->executeWithOptions());
+        $this->assertSame(0, $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput()));
     }
 
     public function testReturnsNonZeroExitCodeWhenMigrationFails(): void
@@ -84,13 +84,13 @@ final class TaggedMigrationExecutorTest extends TestCase
         $executor = $this->get(TaggedMigrationExecutor::class);
         $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
 
-        $executor->executeWithOptions([]);
+        $executor->executeWithOptions([], new NullOutput());
         $this->assertTrue($connection->getSchemaManager()->tablesExist(['test_migration_table']));
 
         $connection->executeStatement('DROP TABLE test_migration_table');
         $connection->executeStatement('DROP TABLE test_migrations_tracking');
 
-        $executor->executeWithOptions(['--dry-run' => true]);
+        $executor->executeWithOptions(['--dry-run' => true], new NullOutput());
 
         $this->assertFalse($connection->getSchemaManager()->tablesExist(['test_migration_table']));
     }
@@ -103,7 +103,7 @@ final class TaggedMigrationExecutorTest extends TestCase
         $executedProviders = [];
         $this->registerProviderStubs(['low', 'high', 'default'], $executedProviders);
 
-        $this->get(TaggedMigrationExecutor::class)->executeWithOptions();
+        $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput());
 
         $this->assertSame(['high', 'default', 'low'], $executedProviders);
     }

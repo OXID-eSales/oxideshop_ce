@@ -17,12 +17,12 @@ services:
       - { name: 'oxid_esales.migration_path_provider' }
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor:
-    public: true
     arguments:
       $providers: !tagged_iterator oxid_esales.migration_path_provider
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\CompositeMigrationExecutor
+    public: true
     arguments:
       $executors: !iterator
         - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'

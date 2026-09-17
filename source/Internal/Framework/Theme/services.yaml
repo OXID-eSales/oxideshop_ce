@@ -35,13 +35,3 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:
     tags:
       - { name: 'console.command', command: 'oe:theme:activate' }
-
-  OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeMain:
-    tags:
-      - { name: 'oxid.view_controller', controller_key: 'theme_main' }
-    public: true
-
-  OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeList:
-    tags:
-      - { name: 'oxid.view_controller', controller_key: 'theme_list' }
-    public: true

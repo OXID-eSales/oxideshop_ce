@@ -10,15 +10,20 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\AdminListController;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ThemeList extends AdminListController
 {
-    public function __construct(
-        private readonly ThemeViewServiceInterface $themeViewService,
-        private readonly ContextInterface $context,
-    ) {
+    private ThemeViewServiceInterface $themeViewService;
+    private ContextInterface $context;
+
+    public function __construct()
+    {
+        $this->themeViewService = ContainerFacade::get(ThemeViewServiceInterface::class);
+        $this->context = ContainerFacade::get(ContextInterface::class);
+
         parent::__construct();
     }
 

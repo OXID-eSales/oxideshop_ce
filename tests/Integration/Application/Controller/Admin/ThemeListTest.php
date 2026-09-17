@@ -25,7 +25,7 @@ final class ThemeListTest extends IntegrationTestCase
         $this->get(ThemeConfigurationInstallerInterface::class)->install(__DIR__ . '/Fixtures/' . self::THEME_ID);
         $this->get(ThemeActivationServiceInterface::class)->activate(self::THEME_ID, self::SHOP_ID);
 
-        $controller = $this->get(ThemeList::class);
+        $controller = oxNew(ThemeList::class);
         $template = $controller->render();
         $themes = $controller->getViewDataElement('mylist');
 

@@ -33,7 +33,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     {
         $this->installTestTheme();
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId(self::THEME_ID);
 
         $this->assertSame('theme_config', $controller->render());
@@ -55,7 +55,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
         $this->installTestTheme();
         $this->activateTestTheme();
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->render();
 
         $this->assertSame(self::THEME_ID, $controller->getViewData()['themeId']);
@@ -70,7 +70,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
             ],
         ]);
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->render();
 
@@ -89,7 +89,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     {
         $this->installTestTheme();
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->render();
 
@@ -103,7 +103,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     {
         $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId('unknownTheme');
 
         $this->assertSame('theme_config', $controller->render());
@@ -119,7 +119,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
             'testSelectSetting' => 'option2',
         ]);
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->save();
 
@@ -137,7 +137,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
             'testStringSetting' => 'changedValue',
         ]);
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->save();
 
@@ -155,7 +155,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
             'testSelectSetting' => 'option3',
         ]);
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->save();
 
@@ -168,7 +168,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     {
         $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId('unknownTheme');
         $controller->save();
     }
@@ -186,7 +186,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
         ]);
         $this->expectDisplayError('THEME_SETTING_ENVIRONMENT_OVERRIDDEN_ERROR');
 
-        $controller = $this->get(ThemeConfiguration::class);
+        $controller = oxNew(ThemeConfiguration::class);
         $controller->setEditObjectId(self::THEME_ID);
         $controller->save();
 

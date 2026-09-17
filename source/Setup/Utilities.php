@@ -556,9 +556,7 @@ class Utilities extends Core
     }
 
     /**
-     * @param Facts|null $facts The facts object to use for the creation of the migrations.
-     *
-     * @return Migrations
+     * @deprecated since v7.6.0, will be removed in v8.0
      */
     protected function createMigrations(?Facts $facts = null)
     {

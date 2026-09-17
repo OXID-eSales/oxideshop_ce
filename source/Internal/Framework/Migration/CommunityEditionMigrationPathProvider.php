@@ -15,14 +15,10 @@ use Symfony\Component\Filesystem\Path;
 
 readonly class CommunityEditionMigrationPathProvider implements MigrationPathProviderInterface
 {
-    public function __construct(private EditionDirectoriesLocator $editionDirectoriesLocator)
-    {
-    }
-
     public function getMigrationConfigPath(): string
     {
         return Path::join(
-            $this->editionDirectoriesLocator->getEditionSourcePath(Edition::Community),
+            (new EditionDirectoriesLocator())->getEditionSourcePath(Edition::Community),
             'migration',
             'migrations.yml',
         );

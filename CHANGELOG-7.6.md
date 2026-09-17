@@ -26,6 +26,7 @@
 - `MigrationExecutorInterface`
 - `MigrationExecutor`
 - `Utilities::executeExternalDatabaseMigrationCommand()`
+- `Utilities::createMigrations()`
 - `oxid-esales/oxideshop-doctrine-migration-wrapper` package and `oe-eshop-db_migrate` script, use `oe:database:migrate` instead
 - `SeoEncoderArticle::createArticleCategoryUri()`, use `generateArticleCategoryUri()` instead
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)

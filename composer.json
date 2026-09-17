@@ -25,7 +25,6 @@
         "oxid-esales/oxideshop-composer-plugin": "dev-b-7.6.x",
         "oxid-esales/oxideshop-db-views-generator": "dev-b-7.6.x",
         "oxid-esales/oxideshop-demodata-installer": "dev-b-7.6.x",
-        "oxid-esales/oxideshop-doctrine-migration-wrapper": "dev-b-7.6.x",
         "oxid-esales/oxideshop-facts": "dev-b-7.6.x",
         "oxid-esales/oxideshop-unified-namespace-generator": "dev-b-7.6.x",
         "phpmailer/phpmailer": "^v6.5.0",

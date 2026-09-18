@@ -9,35 +9,60 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
-readonly class ActiveThemeProvider implements ActiveThemeProviderInterface
+class ActiveThemeProvider implements ActiveThemeProviderInterface
 {
+    private array $activeThemeIds = [];
+
+    /** @var array<int, ActiveTheme> */
+    private array $activeThemes = [];
+
     public function __construct(
-        private ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
+        private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private readonly ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
+        private readonly ThemeSettingCacheInterface $themeSettingCache,
     ) {
     }
 
     public function getActiveThemeId(int $shopId): string
     {
-        foreach ($this->themeConfigurationDao->getAll($shopId) as $themeConfiguration) {
-            if ($themeConfiguration->isActivated()) {
-                return $themeConfiguration->getId();
-            }
+        if (isset($this->activeThemeIds[$shopId])) {
+            return $this->activeThemeIds[$shopId];
         }
 
-        throw new ActiveThemeNotFoundException();
+        $cacheKey = 'theme-active-' . $shopId;
+
+        try {
+            return $this->activeThemeIds[$shopId] = $this->themeSettingCache->get($cacheKey)['value'];
+        } catch (CacheItemNotFoundException) {
+            foreach ($this->themeConfigurationDao->getAll($shopId) as $themeConfiguration) {
+                if ($themeConfiguration->isActivated()) {
+                    $themeId = $themeConfiguration->getId();
+                    $this->themeSettingCache->put($cacheKey, ['value' => $themeId]);
+
+                    return $this->activeThemeIds[$shopId] = $themeId;
+                }
+            }
+
+            throw new ActiveThemeNotFoundException();
+        }
     }
 
     public function getActiveTheme(int $shopId): ActiveTheme
     {
+        if (isset($this->activeThemes[$shopId])) {
+            return $this->activeThemes[$shopId];
+        }
+
         $activeThemeId = $this->getActiveThemeId($shopId);
 
-        return new ActiveTheme(
+        return $this->activeThemes[$shopId] = new ActiveTheme(
             $activeThemeId,
             $this->themeMetaDataByIdProvider->getById($activeThemeId, $shopId)->getParentTheme(),
         );

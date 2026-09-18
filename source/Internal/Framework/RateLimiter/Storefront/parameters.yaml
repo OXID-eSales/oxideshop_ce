@@ -1,6 +1,15 @@
 parameters:
   oxid_esales.rate_limiter.storefront.enabled: false
-  oxid_esales.rate_limiter.storefront.limit: 100
-  oxid_esales.rate_limiter.storefront.interval: '60 seconds'
   oxid_esales.rate_limiter.storefront.excluded_routes: []
   oxid_esales.rate_limiter.storefront.excluded_ips: []
+
+  # Each rule: { id, cl?, fnc?, key: user|ip|email, limit, interval }
+  #   no cl/fnc => matches every request; key: user => logged-in user id, else client IP;
+  #   key: ip => client IP; key: email => submitted login name (lgn_usr).
+  # Several rules may target one action (e.g. add a per-IP login rule next to the per-email one).
+  oxid_esales.rate_limiter.storefront.rules:
+    - { id: global, key: user, limit: 100, interval: '60 seconds' }
+
+    # Examples — uncomment and tune to protect sensitive actions:
+    # - { id: login_email, fnc: ['login', 'login_noredirect'], key: email, limit: 5, interval: '1 minute' }
+    # - { id: contact_ip,  cl: contact, fnc: send,             key: ip,    limit: 5, interval: '10 minutes' }

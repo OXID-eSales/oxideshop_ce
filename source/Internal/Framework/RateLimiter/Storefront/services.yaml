@@ -8,9 +8,8 @@ services:
   oxid_esales.rate_limiter.storefront.cache:
     class: Symfony\Component\Cache\Adapter\FilesystemAdapter
     arguments:
-      - 'rate_limiter'
-      - 0
-      - '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\BasicContextInterface").getCacheDirectory()'
+      $namespace: 'rate_limiter'
+      $directory: '@=service("OxidEsales\\EshopCommunity\\Internal\\Transition\\Utility\\BasicContextInterface").getCacheDirectory()'
 
   oxid_esales.rate_limiter.storefront.storage:
     class: Symfony\Component\RateLimiter\Storage\CacheStorage
@@ -27,19 +26,6 @@ services:
     arguments:
       - '@oxid_esales.rate_limiter.storefront.lock_store'
 
-  oxid_esales.rate_limiter.storefront.factory:
-    class: Symfony\Component\RateLimiter\RateLimiterFactory
-    arguments:
-      $config:
-        id: storefront
-        policy: token_bucket
-        limit: '%oxid_esales.rate_limiter.storefront.limit%'
-        rate:
-          interval: '%oxid_esales.rate_limiter.storefront.interval%'
-          amount: '%oxid_esales.rate_limiter.storefront.limit%'
-      $storage: '@oxid_esales.rate_limiter.storefront.storage'
-      $lockFactory: '@oxid_esales.rate_limiter.storefront.lock_factory'
-
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontClientIdentifierProvider: ~
 
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponderInterface:
@@ -52,5 +38,7 @@ services:
     arguments:
       $excludedRoutes: '%oxid_esales.rate_limiter.storefront.excluded_routes%'
       $excludedIps: '%oxid_esales.rate_limiter.storefront.excluded_ips%'
-      $rateLimiterFactory: '@oxid_esales.rate_limiter.storefront.factory'
+      $rules: '%oxid_esales.rate_limiter.storefront.rules%'
+      $storage: '@oxid_esales.rate_limiter.storefront.storage'
+      $lockFactory: '@oxid_esales.rate_limiter.storefront.lock_factory'
       $clientIdentifierProvider: '@OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontClientIdentifierProvider'

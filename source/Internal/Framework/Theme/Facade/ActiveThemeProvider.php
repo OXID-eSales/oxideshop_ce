@@ -14,19 +14,28 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByI
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
-readonly class ActiveThemeProvider implements ActiveThemeProviderInterface
+class ActiveThemeProvider implements ActiveThemeProviderInterface
 {
+    /**
+     * @var array<int, string>
+     */
+    private array $activeThemeIds = [];
+
     public function __construct(
-        private ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
+        private readonly ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private readonly ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
     ) {
     }
 
     public function getActiveThemeId(int $shopId): string
     {
+        if (isset($this->activeThemeIds[$shopId])) {
+            return $this->activeThemeIds[$shopId];
+        }
+
         foreach ($this->themeConfigurationDao->getAll($shopId) as $themeConfiguration) {
             if ($themeConfiguration->isActivated()) {
-                return $themeConfiguration->getId();
+                return $this->activeThemeIds[$shopId] = $themeConfiguration->getId();
             }
         }
 

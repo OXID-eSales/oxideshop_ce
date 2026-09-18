@@ -16,13 +16,18 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSe
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
-readonly class ThemeSettingService implements ThemeSettingServiceInterface
+class ThemeSettingService implements ThemeSettingServiceInterface
 {
+    /**
+     * @var array<string, array{exists: bool, value: mixed}>
+     */
+    private array $settingData = [];
+
     public function __construct(
-        private ContextInterface $context,
-        private ThemeConfigurationResolverInterface $themeConfigurationResolver,
-        private ThemeSettingCacheInterface $themeSettingCache,
-        private ActiveThemeProviderInterface $activeThemeProvider,
+        private readonly ContextInterface $context,
+        private readonly ThemeConfigurationResolverInterface $themeConfigurationResolver,
+        private readonly ThemeSettingCacheInterface $themeSettingCache,
+        private readonly ActiveThemeProviderInterface $activeThemeProvider,
     ) {
     }
 
@@ -85,8 +90,12 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
 
         $cacheKey = 'theme-' . $themeId . '-setting-' . $name;
 
+        if (isset($this->settingData[$cacheKey])) {
+            return $this->settingData[$cacheKey];
+        }
+
         try {
-            return $this->themeSettingCache->get($cacheKey);
+            return $this->settingData[$cacheKey] = $this->themeSettingCache->get($cacheKey);
         } catch (CacheItemNotFoundException) {
             $setting = $this->themeConfigurationResolver->resolve($themeId, $shopId)->getSettingByName($name);
             $settingData = [
@@ -95,7 +104,7 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
             ];
             $this->themeSettingCache->put($cacheKey, $settingData);
 
-            return $settingData;
+            return $this->settingData[$cacheKey] = $settingData;
         }
     }
 }

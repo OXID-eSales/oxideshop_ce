@@ -50,7 +50,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
     public function getThemes(int $shopId): array
     {
         $themes = [];
-        foreach (array_keys($this->themeConfigurationDao->getAll($shopId)) as $themeId) {
+        foreach ($this->themeConfigurationDao->getAll($shopId) as $themeId => $configuration) {
             try {
                 $themes[$themeId] = $this->getTheme($themeId, $shopId);
             } catch (ThemeNotLoadableException $exception) {

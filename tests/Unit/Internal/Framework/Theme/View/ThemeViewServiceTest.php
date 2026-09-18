@@ -189,7 +189,9 @@ final class ThemeViewServiceTest extends TestCase
             $this->configurationDao(['apex', 'broken'])
         );
 
-        $this->assertSame(['apex'], array_keys($service->getThemes(self::SHOP_ID)));
+        $themes = $service->getThemes(self::SHOP_ID);
+
+        $this->assertSame(['apex'], array_keys($themes));
     }
 
     /** @param string[] $themeIds */

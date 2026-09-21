@@ -1,0 +1,6 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\NullThemeSettingCache

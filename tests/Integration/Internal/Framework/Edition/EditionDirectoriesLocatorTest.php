@@ -13,26 +13,34 @@ use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionDirectoriesLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectDirectoriesLocator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Path;
 
 final class EditionDirectoriesLocatorTest extends TestCase
 {
-    public function testGetEditionRootPathFallsBackToProjectRootForCommunity(): void
+    public function testGetEditionRootPathForCommunity(): void
+    {
+        $locator = new EditionDirectoriesLocator();
+
+        $this->assertSame($this->getExpectedCommunityRootPath(), $locator->getEditionRootPath(Edition::Community));
+    }
+
+    public function testGetEditionSourcePathForCommunity(): void
     {
         $locator = new EditionDirectoriesLocator();
 
         $this->assertSame(
-            (new ProjectDirectoriesLocator())->getRootPath(),
-            $locator->getEditionRootPath(Edition::Community)
+            Path::join($this->getExpectedCommunityRootPath(), 'source'),
+            $locator->getEditionSourcePath(Edition::Community)
         );
     }
 
-    public function testGetEditionSourcePathMatchesProjectSourcePathForCommunity(): void
+    private function getExpectedCommunityRootPath(): string
     {
-        $locator = new EditionDirectoriesLocator();
+        $projectDirectoriesLocator = new ProjectDirectoriesLocator();
+        $vendoredCommunityPath = Path::join($projectDirectoriesLocator->getVendorPath(), 'oxid-esales', 'oxideshop-ce');
 
-        $this->assertSame(
-            (new ProjectDirectoriesLocator())->getSourcePath(),
-            $locator->getEditionSourcePath(Edition::Community)
-        );
+        return is_dir($vendoredCommunityPath)
+            ? $vendoredCommunityPath
+            : $projectDirectoriesLocator->getRootPath();
     }
 }

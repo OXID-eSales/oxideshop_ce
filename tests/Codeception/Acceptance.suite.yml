@@ -13,7 +13,9 @@ modules:
             clear_cookies: true
             restart: true
             capabilities:
-                chromeOptions:
+                'goog:chromeOptions':
+                    args:
+                        - '--force-prefers-reduced-motion'
                     excludeSwitches: ['enable-automation']
                     prefs:
                         'credentials_enable_service': false

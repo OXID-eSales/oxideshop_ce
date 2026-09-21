@@ -11,6 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\ArrayStorageInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataMapper\ThemeConfigurationDataMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
@@ -36,6 +38,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         private ThemeConfigurationCacheInterface $cache,
         private EventDispatcherInterface $eventDispatcher,
         private NodeInterface $node,
+        private ThemeSettingCacheInterface $processedDataCache,
     ) {
     }
 
@@ -117,10 +120,20 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
 
     private function getProcessedData(string $themeId, int $shopId): array
     {
+        $cacheKey = $this->processedDataCacheKey($this->getThemeConfigurationFilePath($themeId, $shopId));
+
         try {
-            return $this->node->finalize(
+            return $this->processedDataCache->get($cacheKey);
+        } catch (CacheItemNotFoundException) {
+        }
+
+        try {
+            $data = $this->node->finalize(
                 $this->node->normalize($this->getStorage($themeId, $shopId)->get())
             );
+            $this->processedDataCache->put($cacheKey, $data);
+
+            return $data;
         } catch (InvalidConfigurationException | ParseException $exception) {
             throw new InvalidThemeConfigurationException(
                 sprintf(
@@ -131,6 +144,11 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
                 previous: $exception
             );
         }
+    }
+
+    private function processedDataCacheKey(string $path): string
+    {
+        return 'theme-processed-cfg-' . md5($path) . '-' . (@filemtime($path) ?: 0);
     }
 
     private function getStorage(string $themeId, int $shopId): ArrayStorageInterface

@@ -10,6 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\NodeInterface;
@@ -23,6 +25,7 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
     public function __construct(
         private FileStorageFactoryInterface $fileStorageFactory,
         private NodeInterface $node,
+        private ThemeSettingCacheInterface $processedDataCache,
     ) {
     }
 
@@ -51,10 +54,20 @@ readonly class ThemeMetaDataProvider implements ThemeMetaDataProviderInterface
 
     private function getProcessedData(string $metadataFilePath): array
     {
+        $cacheKey = 'theme-processed-meta-' . md5($metadataFilePath) . '-' . (@filemtime($metadataFilePath) ?: 0);
+
         try {
-            return $this->node->finalize(
+            return $this->processedDataCache->get($cacheKey);
+        } catch (CacheItemNotFoundException) {
+        }
+
+        try {
+            $data = $this->node->finalize(
                 $this->node->normalize($this->fileStorageFactory->create($metadataFilePath)->get())
             );
+            $this->processedDataCache->put($cacheKey, $data);
+
+            return $data;
         } catch (InvalidConfigurationException | ParseException $exception) {
             throw new InvalidThemeMetaDataException(
                 "metadata.yaml at $metadataFilePath is invalid: {$exception->getMessage()}",

@@ -19,6 +19,7 @@
 - `ViewConfig::getThemeSettings()` to read theme settings in templates
 - `ActiveThemeProviderInterface` to resolve the active theme of a shop
 - `ThemeViewServiceInterface` to read theme data for the admin area
+- `ThemeConfigurationChangedEvent`
 
 ### Changed
 - Theme activation state is now stored in YAML configuration instead of the database

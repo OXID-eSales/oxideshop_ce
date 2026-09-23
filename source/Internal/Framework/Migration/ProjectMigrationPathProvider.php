@@ -9,17 +9,26 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationsNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Path;
 
 readonly class ProjectMigrationPathProvider implements MigrationPathProviderInterface
 {
-    public function __construct(private BasicContextInterface $context)
-    {
+    public function __construct(
+        private BasicContextInterface $context,
+        private MigrationAvailabilityCheckerInterface $availabilityChecker,
+    ) {
     }
 
     public function getMigrationConfigPath(): string
     {
-        return Path::join($this->context->getSourcePath(), 'migration', 'project_migrations.yml');
+        $migrationConfigPath = Path::join($this->context->getSourcePath(), 'migration', 'project_migrations.yml');
+
+        if (!$this->availabilityChecker->hasMigrations($migrationConfigPath)) {
+            throw new MigrationsNotFoundException();
+        }
+
+        return $migrationConfigPath;
     }
 }

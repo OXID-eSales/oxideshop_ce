@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationsNotFoundException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorInterface
@@ -29,9 +30,9 @@ readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorI
         $status = 0;
 
         foreach ($this->providers as $provider) {
-            $configPath = $provider->getMigrationConfigPath();
-
-            if (!is_file($configPath)) {
+            try {
+                $configPath = $provider->getMigrationConfigPath();
+            } catch (MigrationsNotFoundException) {
                 continue;
             }
 

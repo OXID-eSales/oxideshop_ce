@@ -14,11 +14,19 @@ use PHPUnit\Framework\TestCase;
 
 final class MigrationAvailabilityCheckerTest extends TestCase
 {
-    public function testReturnsTrueWhenAllMigrationDirectoriesExist(): void
+    public function testReturnsTrueWhenMigrationDirectoryContainsMigration(): void
     {
         $this->assertTrue(
             (new MigrationAvailabilityChecker())
-                ->hasMigrationDirectories(__DIR__ . '/Fixtures/Availability/WithDirectory/migrations.yml')
+                ->hasMigrations(__DIR__ . '/Fixtures/Availability/WithMigration/migrations.yml')
+        );
+    }
+
+    public function testReturnsFalseWhenMigrationDirectoryContainsNoMigration(): void
+    {
+        $this->assertFalse(
+            (new MigrationAvailabilityChecker())
+                ->hasMigrations(__DIR__ . '/Fixtures/Availability/WithoutMigration/migrations.yml')
         );
     }
 
@@ -26,15 +34,31 @@ final class MigrationAvailabilityCheckerTest extends TestCase
     {
         $this->assertFalse(
             (new MigrationAvailabilityChecker())
-                ->hasMigrationDirectories(__DIR__ . '/Fixtures/Availability/MissingDirectory/migrations.yml')
+                ->hasMigrations(__DIR__ . '/Fixtures/Availability/MissingDirectory/migrations.yml')
         );
     }
 
-    public function testReturnsFalseWhenOneOfSeveralMigrationDirectoriesIsMissing(): void
+    public function testReturnsTrueWhenOneOfSeveralMigrationDirectoriesContainsMigration(): void
+    {
+        $this->assertTrue(
+            (new MigrationAvailabilityChecker())
+                ->hasMigrations(__DIR__ . '/Fixtures/Availability/PartiallyMissing/migrations.yml')
+        );
+    }
+
+    public function testReturnsTrueWhenMigrationDirectoryContainsSubdirectory(): void
+    {
+        $this->assertTrue(
+            (new MigrationAvailabilityChecker())
+                ->hasMigrations(__DIR__ . '/Fixtures/Availability/WithSubdirectory/migrations.yml')
+        );
+    }
+
+    public function testReturnsFalseWhenConfigFileIsMissing(): void
     {
         $this->assertFalse(
             (new MigrationAvailabilityChecker())
-                ->hasMigrationDirectories(__DIR__ . '/Fixtures/Availability/PartiallyMissing/migrations.yml')
+                ->hasMigrations(__DIR__ . '/Fixtures/Availability/MissingConfig/migrations.yml')
         );
     }
 }

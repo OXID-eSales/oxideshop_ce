@@ -10,10 +10,13 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationsNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationPathProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\ProjectMigrationPathProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -33,23 +36,27 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->assertMigrationWasTracked();
     }
 
-    #[DoesNotPerformAssertions]
-    public function testNoErrorWhenConfigFileDoesNotExist(): void
-    {
-        $this->createContainer();
-        $this->loadYamlFixture(__DIR__ . '/Fixtures/NoConfig');
-        $this->compileContainer();
-
-        $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput());
-    }
-
-    public function testReturnsZeroWhenProviderHasNoMigrations(): void
+    public function testSkipsProviderWithoutMigrations(): void
     {
         $this->createContainer();
         $this->loadYamlFixture(__DIR__ . '/Fixtures/NoMigrations');
         $this->compileContainer();
 
         $this->assertSame(0, $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput()));
+    }
+
+    public function testSkipsShippedEmptyProjectMigrations(): void
+    {
+        $migrationRunner = $this->createMock(MigrationRunnerInterface::class);
+        $migrationRunner->expects($this->never())->method('run');
+
+        $executor = new TaggedMigrationExecutor(
+            [$this->get(ProjectMigrationPathProvider::class)],
+            $migrationRunner,
+            $this->get(MigrationExitCodeResolverInterface::class),
+        );
+
+        $this->assertSame(0, $executor->executeWithOptions([], new NullOutput()));
     }
 
     public function testReturnsNonZeroExitCodeWhenMigrationFails(): void
@@ -113,7 +120,6 @@ final class TaggedMigrationExecutorTest extends TestCase
         $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migration_table`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
-        $connection->executeStatement('DROP TABLE IF EXISTS `test_nomigrations_tracking`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_failing_migrations_tracking`');
         parent::tearDown();
     }
@@ -126,7 +132,7 @@ final class TaggedMigrationExecutorTest extends TestCase
                 function () use ($providerId, &$executedProviders): string {
                     $executedProviders[] = $providerId;
 
-                    return '/nonexistent/path/migrations.yml';
+                    throw new MigrationsNotFoundException();
                 }
             );
             $this->container->set('oxid_esales.tests.migration_path_provider.' . $providerId, $provider);

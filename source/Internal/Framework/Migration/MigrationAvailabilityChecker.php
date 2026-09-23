@@ -12,19 +12,32 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 use Doctrine\Migrations\Configuration\Migration\YamlFile;
 use Symfony\Component\Filesystem\Path;
 
+/**
+ * @deprecated
+ */
 readonly class MigrationAvailabilityChecker implements MigrationAvailabilityCheckerInterface
 {
-    public function hasMigrationDirectories(string $migrationConfigPath): bool
+    public function hasMigrations(string $migrationConfigPath): bool
     {
+        if (!is_file($migrationConfigPath)) {
+            return false;
+        }
+
         $configDirectory = Path::getDirectory($migrationConfigPath);
         $migrationDirectories = (new YamlFile($migrationConfigPath))->getConfiguration()->getMigrationDirectories();
 
         foreach ($migrationDirectories as $migrationDirectory) {
-            if (!is_dir(Path::makeAbsolute($migrationDirectory, $configDirectory))) {
-                return false;
+            if ($this->containsMigration(Path::makeAbsolute($migrationDirectory, $configDirectory))) {
+                return true;
             }
         }
 
-        return true;
+        return false;
+    }
+
+    private function containsMigration(string $directory): bool
+    {
+        return is_dir($directory)
+            && !empty(array_diff(scandir($directory), ['.', '..', '.gitkeep']));
     }
 }

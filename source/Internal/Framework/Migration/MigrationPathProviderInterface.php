@@ -7,7 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationsNotFoundException;
+
 interface MigrationPathProviderInterface
 {
+    /**
+     * @throws MigrationsNotFoundException
+     */
     public function getMigrationConfigPath(): string;
 }

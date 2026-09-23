@@ -4,10 +4,13 @@
 
 ### Added
 - Community and project migrations are registered as tagged `oxid_esales.migration_path_provider` services (`CommunityEditionMigrationPathProvider`, `ProjectMigrationPathProvider`)
+- `MigrationsNotFoundException`
 
 ### Changed
 - `MigrationExecutor` no longer uses `oxid-esales/oxideshop-doctrine-migration-wrapper` internally
 - `Utilities::createMigrations()` throws a `LogicException`
+
+### Deprecated
 
 ### Removed
 - `oxid-esales/oxideshop-doctrine-migration-wrapper` composer dependency

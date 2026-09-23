@@ -15,6 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeReso
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * @deprecated use TaggedMigrationExecutor
+ */
 readonly class ModuleMigrationExecutor implements ConfigurableMigrationExecutorInterface
 {
     public function __construct(
@@ -30,7 +33,7 @@ readonly class ModuleMigrationExecutor implements ConfigurableMigrationExecutorI
         $status = 0;
 
         foreach ($this->configLocator->getMigrationConfigPaths() as $configPath) {
-            if (!$this->availabilityChecker->hasMigrationDirectories($configPath)) {
+            if (!$this->availabilityChecker->hasMigrations($configPath)) {
                 continue;
             }
 

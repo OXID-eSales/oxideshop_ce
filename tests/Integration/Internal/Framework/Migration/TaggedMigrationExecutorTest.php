@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationPathProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -33,23 +32,26 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->assertMigrationWasTracked();
     }
 
-    #[DoesNotPerformAssertions]
     public function testNoErrorWhenConfigFileDoesNotExist(): void
     {
         $this->createContainer();
         $this->loadYamlFixture(__DIR__ . '/Fixtures/NoConfig');
         $this->compileContainer();
 
-        $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput());
+        $this->assertSame(0, $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput()));
     }
 
-    public function testReturnsZeroWhenProviderHasNoMigrations(): void
+    public function testSkipsProviderWithoutMigrations(): void
     {
         $this->createContainer();
         $this->loadYamlFixture(__DIR__ . '/Fixtures/NoMigrations');
         $this->compileContainer();
 
-        $this->assertSame(0, $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput()));
+        $status = $this->get(TaggedMigrationExecutor::class)->executeWithOptions([], new NullOutput());
+
+        $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
+        $this->assertSame(0, $status);
+        $this->assertFalse($connection->getSchemaManager()->tablesExist(['test_nomigrations_tracking']));
     }
 
     public function testReturnsNonZeroExitCodeWhenMigrationFails(): void

@@ -16,6 +16,7 @@ readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorI
     /** @param iterable<MigrationPathProviderInterface> $providers */
     public function __construct(
         private iterable $providers,
+        private MigrationAvailabilityCheckerInterface $availabilityChecker,
         private MigrationRunnerInterface $migrationRunner,
         private MigrationExitCodeResolverInterface $exitCodeResolver,
     ) {
@@ -31,7 +32,7 @@ readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorI
         foreach ($this->providers as $provider) {
             $configPath = $provider->getMigrationConfigPath();
 
-            if (!is_file($configPath)) {
+            if (!$this->availabilityChecker->hasMigrations($configPath)) {
                 continue;
             }
 

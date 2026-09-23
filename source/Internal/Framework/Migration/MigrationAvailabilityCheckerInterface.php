@@ -9,5 +9,5 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
 interface MigrationAvailabilityCheckerInterface
 {
-    public function hasMigrationDirectories(string $migrationConfigPath): bool;
+    public function hasMigrations(string $migrationConfigPath): bool;
 }

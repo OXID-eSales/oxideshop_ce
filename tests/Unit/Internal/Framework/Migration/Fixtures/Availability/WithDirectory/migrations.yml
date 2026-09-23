@@ -1,4 +1,0 @@
-table_storage:
-  table_name: test_availability_tracking
-migrations_paths:
-  'OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Migration\Fixtures\Availability\WithDirectory': data

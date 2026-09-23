@@ -8,6 +8,7 @@
 ### Changed
 - `MigrationExecutor` no longer uses `oxid-esales/oxideshop-doctrine-migration-wrapper` internally
 - `Utilities::createMigrations()` throws a `LogicException`
+- Migration suites without migrations are skipped
 
 ### Fixed
 

@@ -30,7 +30,7 @@ readonly class ModuleMigrationExecutor implements ConfigurableMigrationExecutorI
         $status = 0;
 
         foreach ($this->configLocator->getMigrationConfigPaths() as $configPath) {
-            if (!$this->availabilityChecker->hasMigrationDirectories($configPath)) {
+            if (!$this->availabilityChecker->hasMigrations($configPath)) {
                 continue;
             }
 

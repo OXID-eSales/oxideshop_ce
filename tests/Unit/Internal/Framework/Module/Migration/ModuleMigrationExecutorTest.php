@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\NullOutput;
 
 final class ModuleMigrationExecutorTest extends TestCase
 {
-    public function testRunsMigrationsOfModulesWithMigrations(): void
+    public function testRunsMigrationsOfModulesWithMigrationDirectories(): void
     {
         $configPath = '/modules/first/migration/migrations.yml';
         $options = ['--dry-run' => true];
@@ -28,7 +28,7 @@ final class ModuleMigrationExecutorTest extends TestCase
         $configLocator = $this->createStub(ModuleMigrationConfigLocatorInterface::class);
         $configLocator->method('getMigrationConfigPaths')->willReturn(['first-module' => $configPath]);
         $availabilityChecker = $this->createStub(MigrationAvailabilityCheckerInterface::class);
-        $availabilityChecker->method('hasMigrations')->willReturn(true);
+        $availabilityChecker->method('hasMigrationDirectories')->willReturn(true);
         $migrationRunner = $this->createMock(MigrationRunnerInterface::class);
         $migrationRunner->expects($this->once())->method('run')->with($configPath, $options, $output)->willReturn(0);
         $exitCodeResolver = $this->createStub(MigrationExitCodeResolverInterface::class);
@@ -50,7 +50,7 @@ final class ModuleMigrationExecutorTest extends TestCase
             'second-module' => $secondConfigPath,
         ]);
         $availabilityChecker = $this->createStub(MigrationAvailabilityCheckerInterface::class);
-        $availabilityChecker->method('hasMigrations')->willReturn(true);
+        $availabilityChecker->method('hasMigrationDirectories')->willReturn(true);
         $migrationRunner = $this->createStub(MigrationRunnerInterface::class);
         $migrationRunner->method('run')->willReturnMap([
             [$firstConfigPath, [], null, 0],
@@ -67,12 +67,12 @@ final class ModuleMigrationExecutorTest extends TestCase
         $this->assertSame(3, $executor->executeWithOptions());
     }
 
-    public function testSkipsModulesWithoutMigrations(): void
+    public function testSkipsModulesWithoutMigrationDirectories(): void
     {
         $configLocator = $this->createStub(ModuleMigrationConfigLocatorInterface::class);
         $configLocator->method('getMigrationConfigPaths')->willReturn(['first-module' => '/modules/first/migration/migrations.yml']);
         $availabilityChecker = $this->createStub(MigrationAvailabilityCheckerInterface::class);
-        $availabilityChecker->method('hasMigrations')->willReturn(false);
+        $availabilityChecker->method('hasMigrationDirectories')->willReturn(false);
         $migrationRunner = $this->createMock(MigrationRunnerInterface::class);
         $migrationRunner->expects($this->never())->method('run');
         $exitCodeResolver = $this->createMock(MigrationExitCodeResolverInterface::class);
@@ -83,23 +83,23 @@ final class ModuleMigrationExecutorTest extends TestCase
         $this->assertSame(0, $executor->executeWithOptions());
     }
 
-    public function testRunsOnlyModulesWhoseConfigHasMigrations(): void
+    public function testRunsOnlyModulesWithMigrationDirectories(): void
     {
-        $configWithMigrations = '/modules/first/migration/migrations.yml';
-        $configWithoutMigrations = '/modules/second/migration/migrations.yml';
+        $configWithDirectories = '/modules/first/migration/migrations.yml';
+        $configWithoutDirectories = '/modules/second/migration/migrations.yml';
 
         $configLocator = $this->createStub(ModuleMigrationConfigLocatorInterface::class);
         $configLocator->method('getMigrationConfigPaths')->willReturn([
-            'first-module' => $configWithMigrations,
-            'second-module' => $configWithoutMigrations,
+            'first-module' => $configWithDirectories,
+            'second-module' => $configWithoutDirectories,
         ]);
         $availabilityChecker = $this->createMock(MigrationAvailabilityCheckerInterface::class);
-        $availabilityChecker->expects($this->exactly(2))->method('hasMigrations')->willReturnMap([
-            [$configWithMigrations, true],
-            [$configWithoutMigrations, false],
+        $availabilityChecker->expects($this->exactly(2))->method('hasMigrationDirectories')->willReturnMap([
+            [$configWithDirectories, true],
+            [$configWithoutDirectories, false],
         ]);
         $migrationRunner = $this->createMock(MigrationRunnerInterface::class);
-        $migrationRunner->expects($this->once())->method('run')->with($configWithMigrations)->willReturn(0);
+        $migrationRunner->expects($this->once())->method('run')->with($configWithDirectories)->willReturn(0);
         $exitCodeResolver = $this->createStub(MigrationExitCodeResolverInterface::class);
         $exitCodeResolver->method('combine')->willReturn(0);
 

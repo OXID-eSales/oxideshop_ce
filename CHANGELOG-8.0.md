@@ -12,26 +12,17 @@
   - Admin page to edit alt text per image per locale
   - Storefront resolves the alt text through the locale's fallback chain
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
-- Theme configuration is now installed per-shop via the composer plugin, reading `metadata.yaml` and `config.yaml` from the theme package
-- Theme configuration YAML files are validated against a schema when loaded; broken files are skipped and reported as `InvalidThemeConfigurationException`
-- Theme settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
-- `ThemeSettingServiceInterface` for reading theme settings
-- `ViewConfig::getThemeSettings()` to read theme settings in templates
-- `ActiveThemeProviderInterface` to resolve the active theme of a shop
-- `ThemeViewServiceInterface` to read theme data for the admin area
+- YAML-based theme configuration
+  - Theme settings are installed per-shop from the theme package and validated against a schema on load
+  - Settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
+  - New services and events to read theme settings and the active theme in the storefront, templates and admin
 
 ### Changed
-- Theme activation state is now stored in YAML configuration instead of the database
-- `sTheme` is no longer written to the database during theme activation
+- Theme configuration moved from the database to YAML
+  - Theme activation state and settings are now read from and written to YAML instead of the `oxconfig` table
+  - `Config::getConfigParam()` no longer returns theme settings; use the theme setting service instead
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
-- Theme settings read from YAML configuration instead of the database
-- Theme settings in the admin area are saved to the theme YAML configuration instead of the `oxconfig` table
-- `Config::getConfigParam()` no longer returns theme settings — use `ThemeSettingServiceInterface` instead
-- `Config::getDir()` (assets) and `Language` (translations) now fall back to the parent theme for child themes, matching existing template behavior
-- `Config::getDir()` parameter `$ignoreCust` renamed to `$ignoreParentTheme`
-- `ThemeList` admin controller lists themes as `ThemeView` objects via `ThemeViewServiceInterface`
-- Theme setting names no longer use Hungarian notation or outdated terms
 
 ### Removed
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`
@@ -44,10 +35,10 @@
 - The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support
-- `Config::$_aThemeConfigParams`
-- `Config::isThemeOption()`
-- `sCustomTheme` config parameter
-- `Language::getCustomThemeLanguageFiles()`
+- Legacy database-backed theme configuration and theme management
+  - The `Theme` class and `ThemeConfiguration` — use `ThemeViewServiceInterface` and the theme setting service instead
+  - Theme methods on `ShopAdapterInterface`
+  - Legacy theme config helpers and constants
 - `ModuleActivateCommand::MESSAGE_MODULE_ACTIVATED`
 - `ModuleActivateCommand::MESSAGE_MODULE_NOT_FOUND`
 - `ModuleDeactivateCommand::MESSAGE_MODULE_DEACTIVATED`
@@ -56,20 +47,6 @@
 - `ViewConfig::getRemoteAddress()`
 - `SeoEncoderArticle::createArticleCategoryUri()`
 - deprecated `ProjectYamlImportServiceInterface::addImport()` and `ProjectYamlImportServiceInterface::removeImport()`
-- `Theme` class, use `ThemeViewServiceInterface` instead
-- `ThemeMain::themeInConfigFile()`
-- `ShopAdapterInterface::getActiveThemesList()`
-- `ShopAdapterInterface::getCustomTheme()`
-- `ShopAdapterInterface::getActiveThemeId()`
-- `ShopAdapterInterface::themeExists()`
-- `ShopAdapterInterface::activateTheme()`
-- `ViewConfig::getViewThemeParam()`
-- `ThemeSettingChangedEvent`
-- `SettingsHandler`
-- `Config::OXMODULE_THEME_PREFIX`
-- `ThemeConfiguration::saveConfVars()`
-- `ThemeConfiguration::getModuleForConfigVars()`
-- `ThemeConfiguration::$_sTheme`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

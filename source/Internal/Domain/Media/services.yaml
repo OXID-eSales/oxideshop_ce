@@ -19,6 +19,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeViewServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeViewService
 
+  OxidEsales\EshopCommunity\Internal\Domain\Media\Service\ProductOwnerShopResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Domain\Media\Service\ProductOwnerShopResolver
+
   OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGeneratorInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Media\MediaUrlGenerator
     public: true

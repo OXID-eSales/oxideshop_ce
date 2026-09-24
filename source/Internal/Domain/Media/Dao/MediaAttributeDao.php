@@ -24,30 +24,33 @@ readonly class MediaAttributeDao implements MediaAttributeDaoInterface
     ) {
     }
 
-    public function getAttributes(Id $mediaId, LocaleChain $chain, int $shopId): MediaAttributes
+    public function getAttributes(Id $mediaId, LocaleChain $chain, array $shopIds): MediaAttributes
     {
-        if ($chain->isEmpty()) {
+        $shopIds = array_values(array_unique($shopIds));
+        if ($chain->isEmpty() || $shopIds === []) {
             return new MediaAttributes();
         }
 
         $rows = $this->queryBuilderFactory
             ->create()
-            ->select('name', 'value', 'locale_code')
+            ->select('name', 'value', 'locale_code', 'shop_id')
             ->from($this->table)
             ->where('media_id = :media_id')
-            ->andWhere('shop_id = :shop_id')
+            ->andWhere('shop_id IN (:shop_ids)')
             ->andWhere('locale_code IN (:locale_codes)')
             ->setParameter('media_id', $mediaId)
-            ->setParameter('shop_id', $shopId)
+            ->setParameter('shop_ids', $shopIds, ArrayParameterType::INTEGER)
             ->setParameter('locale_codes', $chain->getCodes(), ArrayParameterType::STRING)
             ->executeQuery()
             ->fetchAllAssociative();
 
         $resolved = [];
         foreach ($chain->getCodes() as $localeCode) {
-            foreach ($rows as $row) {
-                if ($row['locale_code'] === $localeCode) {
-                    $resolved[$row['name']] ??= $row['value'];
+            foreach ($shopIds as $shopId) {
+                foreach ($rows as $row) {
+                    if ($row['locale_code'] === $localeCode && (int) $row['shop_id'] === $shopId) {
+                        $resolved[$row['name']] ??= $row['value'];
+                    }
                 }
             }
         }

@@ -33,7 +33,7 @@ readonly class MediaAttributeService implements MediaAttributeServiceInterface
         return $this->attributeDao->getAttributes(
             $media->getId(),
             new LocaleChain([$localeCode]),
-            $this->context->getCurrentShopId()
+            [$this->context->getCurrentShopId()]
         );
     }
 

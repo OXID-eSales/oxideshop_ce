@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Path;
 
-readonly class ProjectMigrationPathProvider implements MigrationPathProviderInterface
+readonly class ProjectMigrationPathProvider implements OptionalMigrationPathProviderInterface
 {
     public function __construct(private BasicContextInterface $context)
     {

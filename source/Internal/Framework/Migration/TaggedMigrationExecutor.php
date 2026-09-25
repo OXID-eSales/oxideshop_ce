@@ -32,7 +32,7 @@ readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorI
         foreach ($this->providers as $provider) {
             $configPath = $provider->getMigrationConfigPath();
 
-            if (!$this->availabilityChecker->hasMigrations($configPath)) {
+            if (!$this->isExecutable($provider, $configPath)) {
                 continue;
             }
 
@@ -41,5 +41,12 @@ readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorI
         }
 
         return $status;
+    }
+
+    private function isExecutable(MigrationPathProviderInterface $provider, string $configPath): bool
+    {
+        return $provider instanceof OptionalMigrationPathProviderInterface
+            ? $this->availabilityChecker->hasMigrations($configPath)
+            : is_file($configPath);
     }
 }

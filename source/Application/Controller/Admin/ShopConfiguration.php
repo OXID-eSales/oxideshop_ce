@@ -324,17 +324,17 @@ class ShopConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\A
 
             case "arr":
                 if (in_array($name, $this->_aSkipMultiline)) {
-                    $data = unserialize($value);
+                    $data = unserialize($value, ['allowed_classes' => false]);
                 } else {
-                    $data = $str->htmlentities($this->arrayToMultiline(unserialize($value)));
+                    $data = $str->htmlentities($this->arrayToMultiline(unserialize($value, ['allowed_classes' => false])));
                 }
                 break;
 
             case "aarr":
                 if (in_array($name, $this->_aSkipMultiline)) {
-                    $data = unserialize($value);
+                    $data = unserialize($value, ['allowed_classes' => false]);
                 } else {
-                    $data = $str->htmlentities($this->aarrayToMultiline(unserialize($value)));
+                    $data = $str->htmlentities($this->aarrayToMultiline(unserialize($value, ['allowed_classes' => false])));
                 }
                 break;
         }

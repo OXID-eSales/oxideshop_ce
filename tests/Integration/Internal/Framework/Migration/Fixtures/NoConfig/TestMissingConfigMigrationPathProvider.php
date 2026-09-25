@@ -17,4 +17,9 @@ class TestMissingConfigMigrationPathProvider implements MigrationPathProviderInt
     {
         return '/nonexistent/path/migrations.yml';
     }
+
+    public function isOptional(): bool
+    {
+        return false;
+    }
 }

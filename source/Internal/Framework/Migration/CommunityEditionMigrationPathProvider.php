@@ -23,4 +23,9 @@ readonly class CommunityEditionMigrationPathProvider implements MigrationPathPro
             'migrations.yml',
         );
     }
+
+    public function isOptional(): bool
+    {
+        return false;
+    }
 }

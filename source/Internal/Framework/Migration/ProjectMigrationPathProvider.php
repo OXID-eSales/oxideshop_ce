@@ -22,4 +22,9 @@ readonly class ProjectMigrationPathProvider implements MigrationPathProviderInte
     {
         return Path::join($this->context->getSourcePath(), 'migration', 'project_migrations.yml');
     }
+
+    public function isOptional(): bool
+    {
+        return true;
+    }
 }

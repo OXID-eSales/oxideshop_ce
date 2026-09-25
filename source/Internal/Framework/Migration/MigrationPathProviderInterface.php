@@ -10,4 +10,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 interface MigrationPathProviderInterface
 {
     public function getMigrationConfigPath(): string;
+
+    public function isOptional(): bool;
 }

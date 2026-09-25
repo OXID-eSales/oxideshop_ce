@@ -17,4 +17,9 @@ class NoMigrationsPathProvider implements MigrationPathProviderInterface
     {
         return __DIR__ . '/migration/migrations.yml';
     }
+
+    public function isOptional(): bool
+    {
+        return true;
+    }
 }

@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Se
 
 use Symfony\Component\HttpFoundation\Request;
 
-readonly class RequestExclusions implements RequestExclusionsInterface
+readonly class RequestExclusionFilter implements RequestExclusionFilterInterface
 {
     /**
      * @param string[] $excludedRoutes
@@ -23,7 +23,7 @@ readonly class RequestExclusions implements RequestExclusionsInterface
     ) {
     }
 
-    public function excludes(Request $request): bool
+    public function isExcluded(Request $request): bool
     {
         if (in_array($request->getClientIp() ?? 'unknown', $this->excludedIps, true)) {
             return true;

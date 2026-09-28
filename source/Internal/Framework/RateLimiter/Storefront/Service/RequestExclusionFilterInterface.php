@@ -9,10 +9,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Se
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface ThrottleKeyProviderInterface
+interface RequestExclusionFilterInterface
 {
-    /**
-     * @param array<string, mixed> $rule
-     */
-    public function keyFor(array $rule, Request $request): string;
+    public function isExcluded(Request $request): bool;
 }

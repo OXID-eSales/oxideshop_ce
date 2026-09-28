@@ -24,8 +24,8 @@ services:
     arguments:
       - '@oxid_esales.rate_limiter.storefront.lock_store'
 
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionsInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusions
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionFilterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionFilter
     arguments:
       $excludedRoutes: '%oxid_esales.rate_limiter.storefront.excluded_routes%'
       $excludedIps: '%oxid_esales.rate_limiter.storefront.excluded_ips%'
@@ -35,11 +35,11 @@ services:
     arguments:
       $rules: '%oxid_esales.rate_limiter.storefront.rules%'
 
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\ThrottleKeyProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\ThrottleKeyProvider
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProvider
 
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\LimiterProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\LimiterProvider
+  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleLimiterFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleLimiterFactory
     arguments:
       $storage: '@oxid_esales.rate_limiter.storefront.storage'
       $lockFactory: '@oxid_esales.rate_limiter.storefront.lock_factory'

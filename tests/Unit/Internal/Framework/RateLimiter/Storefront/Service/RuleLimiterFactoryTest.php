@@ -9,20 +9,20 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\RateLimiter\Storefront\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\LimiterProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleLimiterFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
-final class LimiterProviderTest extends TestCase
+final class RuleLimiterFactoryTest extends TestCase
 {
-    public function testProvidesLimiterEnforcingTheRule(): void
+    public function testCreatesLimiterEnforcingTheRule(): void
     {
-        $provider = new LimiterProvider(new InMemoryStorage(), new LockFactory(new FlockStore()));
+        $factory = new RuleLimiterFactory(new InMemoryStorage(), new LockFactory(new FlockStore()));
         $rule = ['id' => 'global', 'limit' => 1, 'interval' => '1 minute'];
 
-        $this->assertTrue($provider->limiterFor($rule, 'k')->consume()->isAccepted());
-        $this->assertFalse($provider->limiterFor($rule, 'k')->consume()->isAccepted());
+        $this->assertTrue($factory->create($rule, 'k')->consume()->isAccepted());
+        $this->assertFalse($factory->create($rule, 'k')->consume()->isAccepted());
     }
 }

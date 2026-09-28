@@ -6,83 +6,86 @@
  */
 
 declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\RateLimiter\Storefront\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\Request;
 
 final class RuleProviderTest extends TestCase
 {
     public function testReturnsIpRuleBeforeEmailRuleRegardlessOfConfiguredOrder(): void
     {
-        $provider = new RuleProvider([
+        $provider = $this->createProvider([
             ['id' => 'login_email', 'key' => 'email'],
             ['id' => 'login_ip', 'key' => 'ip'],
         ]);
 
-        $ids = array_column($provider->rulesFor($this->request()), 'id');
+        $ids = array_column($provider->getMatchingRules(), 'id');
 
         $this->assertSame(['login_ip', 'login_email'], $ids);
     }
 
     public function testReturnsOnlyRulesMatchingControllerAndFunction(): void
     {
-        $provider = new RuleProvider([
-            ['id' => 'contact_ip', 'cl' => 'contact', 'fnc' => 'send', 'key' => 'ip'],
-            ['id' => 'login_ip', 'fnc' => ['login', 'login_noredirect'], 'key' => 'ip'],
-        ]);
+        $provider = $this->createProvider(
+            [
+                ['id' => 'contact_ip', 'cl' => 'contact', 'fnc' => 'send', 'key' => 'ip'],
+                ['id' => 'login_ip', 'fnc' => ['login', 'login_noredirect'], 'key' => 'ip'],
+            ],
+            ['cl' => 'Contact', 'fnc' => 'Send'],
+        );
 
-        $ids = array_column($provider->rulesFor($this->request(['cl' => 'Contact', 'fnc' => 'Send'])), 'id');
+        $ids = array_column($provider->getMatchingRules(), 'id');
 
         $this->assertSame(['contact_ip'], $ids);
     }
 
     public function testRuleWithoutControllerAndFunctionMatchesEveryRequest(): void
     {
-        $provider = new RuleProvider([['id' => 'global', 'key' => 'user']]);
+        $provider = $this->createProvider([['id' => 'global', 'key' => 'user']]);
 
-        $ids = array_column($provider->rulesFor($this->request()), 'id');
+        $ids = array_column($provider->getMatchingRules(), 'id');
 
         $this->assertSame(['global'], $ids);
     }
 
-    public function testPostFunctionWinsOverQueryFunction(): void
-    {
-        $provider = new RuleProvider([['id' => 'login_ip', 'fnc' => ['login'], 'key' => 'ip']]);
-
-        $request = Request::create('/?fnc=start', 'POST', ['fnc' => 'login']);
-
-        $this->assertSame(['login_ip'], array_column($provider->rulesFor($request), 'id'));
-    }
-
-    public function testArrayParameterNeverMatchesBoundRule(): void
-    {
-        $provider = new RuleProvider([['id' => 'trap', 'fnc' => ['array'], 'key' => 'ip']]);
-
-        $request = Request::create('/', 'GET', ['fnc' => ['login']]);
-
-        $this->assertSame([], $provider->rulesFor($request));
-    }
-
     public function testReturnsNothingWithoutConfiguredRules(): void
     {
-        $this->assertSame([], (new RuleProvider([]))->rulesFor($this->request()));
+        $this->assertSame([], $this->createProvider([])->getMatchingRules());
     }
 
     public function testReturnsNothingForNonMatchingRequest(): void
     {
-        $provider = new RuleProvider([['id' => 'login_ip', 'fnc' => ['login'], 'key' => 'ip']]);
+        $provider = $this->createProvider(
+            [['id' => 'login_ip', 'fnc' => ['login'], 'key' => 'ip']],
+            ['fnc' => 'tobasket'],
+        );
 
-        $this->assertSame([], $provider->rulesFor($this->request(['fnc' => 'tobasket'])));
+        $this->assertSame([], $provider->getMatchingRules());
+    }
+
+    public function testFunctionBoundRuleNeverMatchesNonScalarParameter(): void
+    {
+        $provider = $this->createProvider(
+            [['id' => 'trap', 'fnc' => ['array'], 'key' => 'ip']],
+            ['fnc' => ['array']],
+        );
+
+        $this->assertSame([], $provider->getMatchingRules());
     }
 
     /**
-     * @param array<string, string> $query
+     * @param array<int, array<string, mixed>> $rules
+     * @param array<string, mixed> $parameters
      */
-    private function request(array $query = []): Request
+    private function createProvider(array $rules, array $parameters = []): RuleProvider
     {
-        return Request::create('/', 'GET', $query);
+        $request = $this->createStub(RequestInterface::class);
+        $request->method('get')->willReturnCallback(
+            fn (string $name, mixed $default = null): mixed => $parameters[$name] ?? $default,
+        );
+
+        return new RuleProvider($rules, $request);
     }
 }

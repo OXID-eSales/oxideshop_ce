@@ -11,10 +11,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront;
 
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Event\RateLimitExceededEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\LimiterProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionsInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RequestExclusionFilterInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleLimiterFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\ThrottleKeyProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -27,9 +27,9 @@ class StorefrontRateLimiter implements StorefrontRateLimiterInterface
     public function __construct(
         private readonly RequestFactory $requestFactory,
         private readonly RuleProviderInterface $ruleProvider,
-        private readonly RequestExclusionsInterface $requestExclusions,
-        private readonly ThrottleKeyProviderInterface $throttleKeyProvider,
-        private readonly LimiterProviderInterface $limiterProvider,
+        private readonly RequestExclusionFilterInterface $requestExclusionFilter,
+        private readonly KeyProviderInterface $keyProvider,
+        private readonly RuleLimiterFactoryInterface $limiterFactory,
         private readonly LoggerInterface $logger,
         private readonly EventDispatcherInterface $eventDispatcher,
     ) {
@@ -44,12 +44,12 @@ class StorefrontRateLimiter implements StorefrontRateLimiterInterface
 
         $request = $this->requestFactory->create();
 
-        if ($this->requestExclusions->excludes($request)) {
+        if ($this->requestExclusionFilter->isExcluded($request)) {
             return;
         }
 
-        foreach ($this->ruleProvider->rulesFor($request) as $rule) {
-            $key = $this->throttleKeyProvider->keyFor($rule, $request);
+        foreach ($this->ruleProvider->getMatchingRules() as $rule) {
+            $key = $this->keyProvider->get($rule, $request);
             if ($key !== '') {
                 $this->consume($rule, $key);
             }
@@ -59,7 +59,7 @@ class StorefrontRateLimiter implements StorefrontRateLimiterInterface
     private function consume(array $rule, string $key): void
     {
         try {
-            $rateLimit = $this->limiterProvider->limiterFor($rule, $key)->consume();
+            $rateLimit = $this->limiterFactory->create($rule, $key)->consume();
         } catch (\Throwable $throwable) {
             $this->logger->error('Storefront rate limiter failed open.', ['exception' => $throwable]);
             return;

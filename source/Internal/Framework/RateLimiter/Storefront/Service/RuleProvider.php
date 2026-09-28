@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service;
 
-use Symfony\Component\HttpFoundation\Request;
+use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
 
 readonly class RuleProvider implements RuleProviderInterface
 {
@@ -18,7 +18,7 @@ readonly class RuleProvider implements RuleProviderInterface
     /**
      * @param array<int, array<string, mixed>> $rules
      */
-    public function __construct(array $rules)
+    public function __construct(array $rules, private RequestInterface $request)
     {
         $this->rules = $this->ordered($rules);
     }
@@ -26,22 +26,15 @@ readonly class RuleProvider implements RuleProviderInterface
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function rulesFor(Request $request): array
+    public function getMatchingRules(): array
     {
-        $controllerKey = strtolower($this->param($request, 'cl'));
-        $function = strtolower($this->param($request, 'fnc'));
+        $controllerKey = strtolower($this->param('cl'));
+        $function = strtolower($this->param('fnc'));
 
         return array_filter(
             $this->rules,
             fn (array $rule): bool => $this->matches($rule, $controllerKey, $function),
         );
-    }
-
-    private function param(Request $request, string $name): string
-    {
-        $value = $request->request->all()[$name] ?? $request->query->all()[$name] ?? '';
-
-        return is_scalar($value) ? (string) $value : '';
     }
 
     /**
@@ -51,6 +44,13 @@ readonly class RuleProvider implements RuleProviderInterface
     {
         return (!isset($rule['fnc']) || in_array($function, array_map('strtolower', (array) $rule['fnc']), true))
             && (!isset($rule['cl']) || strtolower((string) $rule['cl']) === $controllerKey);
+    }
+
+    private function param(string $name): string
+    {
+        $value = $this->request->get($name, '');
+
+        return is_scalar($value) ? (string) $value : '';
     }
 
     /**

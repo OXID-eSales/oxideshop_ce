@@ -9,10 +9,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Se
 
 use Symfony\Component\RateLimiter\LimiterInterface;
 
-interface LimiterProviderInterface
+interface RuleLimiterFactoryInterface
 {
     /**
      * @param array<string, mixed> $rule
      */
-    public function limiterFor(array $rule, string $key): LimiterInterface;
+    public function create(array $rule, string $key): LimiterInterface;
 }

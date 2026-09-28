@@ -9,7 +9,10 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Se
 
 use Symfony\Component\HttpFoundation\Request;
 
-interface RequestExclusionsInterface
+interface KeyProviderInterface
 {
-    public function excludes(Request $request): bool;
+    /**
+     * @param array<string, mixed> $rule
+     */
+    public function get(array $rule, Request $request): string;
 }

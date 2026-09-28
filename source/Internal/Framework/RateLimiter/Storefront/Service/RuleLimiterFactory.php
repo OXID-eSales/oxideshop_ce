@@ -14,7 +14,7 @@ use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\StorageInterface;
 
-readonly class LimiterProvider implements LimiterProviderInterface
+readonly class RuleLimiterFactory implements RuleLimiterFactoryInterface
 {
     public function __construct(
         private StorageInterface $storage,
@@ -25,7 +25,7 @@ readonly class LimiterProvider implements LimiterProviderInterface
     /**
      * @param array<string, mixed> $rule
      */
-    public function limiterFor(array $rule, string $key): LimiterInterface
+    public function create(array $rule, string $key): LimiterInterface
     {
         $factory = new RateLimiterFactory(
             [

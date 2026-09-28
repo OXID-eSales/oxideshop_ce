@@ -37,9 +37,16 @@ readonly class ThrottleKeyProvider implements ThrottleKeyProviderInterface
 
     private function emailKey(Request $request): string
     {
-        $email = strtolower(trim((string) $request->get('lgn_usr', '')));
+        $email = strtolower(trim($this->param($request, 'lgn_usr')));
 
         return $email === '' ? '' : $this->hashKey($email . '-' . ($request->getClientIp() ?? 'unknown'));
+    }
+
+    private function param(Request $request, string $name): string
+    {
+        $value = $request->request->all()[$name] ?? $request->query->all()[$name] ?? '';
+
+        return is_scalar($value) ? (string) $value : '';
     }
 
     private function hashKey(string $data): string

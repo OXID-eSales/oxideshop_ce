@@ -54,6 +54,45 @@ final class ThrottleKeyProviderTest extends TestCase
         $this->assertSame(hash('sha256', 'shopper@example.com-203.0.113.10'), $key);
     }
 
+    public function testEmailKeyUsesPostValueOverQueryDecoy(): void
+    {
+        $request = Request::create(
+            '/?lgn_usr=decoy@example.com',
+            'POST',
+            ['lgn_usr' => 'victim@example.com'],
+            [],
+            [],
+            ['REMOTE_ADDR' => '203.0.113.10']
+        );
+
+        $key = $this->provider()->keyFor(['key' => 'email'], $request);
+
+        $this->assertSame(hash('sha256', 'victim@example.com-203.0.113.10'), $key);
+    }
+
+    public function testEmailKeyUsesPostValueDespiteEmptyQueryDecoy(): void
+    {
+        $request = Request::create(
+            '/?lgn_usr=',
+            'POST',
+            ['lgn_usr' => 'person@example.com'],
+            [],
+            [],
+            ['REMOTE_ADDR' => '203.0.113.10']
+        );
+
+        $key = $this->provider()->keyFor(['key' => 'email'], $request);
+
+        $this->assertSame(hash('sha256', 'person@example.com-203.0.113.10'), $key);
+    }
+
+    public function testEmailKeyIsEmptyForArrayParameter(): void
+    {
+        $request = Request::create('/', 'GET', ['lgn_usr' => ['x@example.com']]);
+
+        $this->assertSame('', $this->provider()->keyFor(['key' => 'email'], $request));
+    }
+
     public function testEmailKeyIsEmptyWithoutLoginUser(): void
     {
         $key = $this->provider()->keyFor(['key' => 'email'], $this->request());

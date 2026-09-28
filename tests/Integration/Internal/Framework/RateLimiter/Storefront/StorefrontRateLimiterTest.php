@@ -159,6 +159,39 @@ final class StorefrontRateLimiterTest extends TestCase
     }
 
     #[RunInSeparateProcess]
+    public function testFunctionBoundRuleCannotBeShadowedByQueryParameter(): void
+    {
+        $this->configureLimiter(
+            [$this->rule('login_ip', 'ip', 1, ['fnc' => ['login']])],
+            post: ['fnc' => 'login'],
+            query: ['fnc' => 'start']
+        );
+
+        $this->limiter()->enforce();
+
+        $this->expectException(TooManyRequestsException::class);
+
+        $this->limiter()->enforce();
+    }
+
+    #[RunInSeparateProcess]
+    public function testRotatingQueryEmailStaysInThePostEmailBucket(): void
+    {
+        $this->configureLimiter(
+            [$this->rule('login_email', 'email', 1, ['fnc' => ['login']])],
+            post: ['fnc' => 'login', 'lgn_usr' => 'victim@example.com'],
+            query: ['lgn_usr' => 'decoy-one@example.com']
+        );
+
+        $this->limiter()->enforce();
+        $_GET['lgn_usr'] = 'decoy-two@example.com';
+
+        $this->expectException(TooManyRequestsException::class);
+
+        $this->limiter()->enforce();
+    }
+
+    #[RunInSeparateProcess]
     public function testEmailRuleIsolatesDifferentSenders(): void
     {
         $this->configureLimiter(

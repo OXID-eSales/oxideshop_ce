@@ -48,6 +48,24 @@ final class RuleProviderTest extends TestCase
         $this->assertSame(['global'], $ids);
     }
 
+    public function testPostFunctionWinsOverQueryFunction(): void
+    {
+        $provider = new RuleProvider([['id' => 'login_ip', 'fnc' => ['login'], 'key' => 'ip']]);
+
+        $request = Request::create('/?fnc=start', 'POST', ['fnc' => 'login']);
+
+        $this->assertSame(['login_ip'], array_column($provider->rulesFor($request), 'id'));
+    }
+
+    public function testArrayParameterNeverMatchesBoundRule(): void
+    {
+        $provider = new RuleProvider([['id' => 'trap', 'fnc' => ['array'], 'key' => 'ip']]);
+
+        $request = Request::create('/', 'GET', ['fnc' => ['login']]);
+
+        $this->assertSame([], $provider->rulesFor($request));
+    }
+
     public function testReturnsNothingWithoutConfiguredRules(): void
     {
         $this->assertSame([], (new RuleProvider([]))->rulesFor($this->request()));

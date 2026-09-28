@@ -28,13 +28,20 @@ readonly class RuleProvider implements RuleProviderInterface
      */
     public function rulesFor(Request $request): array
     {
-        $controllerKey = strtolower((string) $request->get('cl', ''));
-        $function = strtolower((string) $request->get('fnc', ''));
+        $controllerKey = strtolower($this->param($request, 'cl'));
+        $function = strtolower($this->param($request, 'fnc'));
 
         return array_filter(
             $this->rules,
             fn (array $rule): bool => $this->matches($rule, $controllerKey, $function),
         );
+    }
+
+    private function param(Request $request, string $name): string
+    {
+        $value = $request->request->all()[$name] ?? $request->query->all()[$name] ?? '';
+
+        return is_scalar($value) ? (string) $value : '';
     }
 
     /**

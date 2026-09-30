@@ -27,13 +27,12 @@ final class AdminTemplateFileLocatorTest extends TestCase
      */
     private function getConfigMock($templateName)
     {
-        $config = $this
-            ->getMockBuilder(Config::class)
-            ->getMock();
-        $config->expects($this->any())
+        $config = $this->createStub(Config::class);
+        $config
             ->method('getTemplatePath')
-            ->with($templateName, true)
-            ->willReturn('pathToTpl/' . $templateName);
+            ->willReturnMap([
+                [$templateName, true, 'pathToTpl/' . $templateName],
+            ]);
 
         return $config;
     }

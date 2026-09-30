@@ -27,13 +27,12 @@ final class TemplateFileLocatorTest extends TestCase
      */
     private function getConfigMock($templateName)
     {
-        $config = $this
-            ->getMockBuilder(Config::class)
-            ->getMock();
-        $config->expects($this->any())
+        $config = $this->createStub(Config::class);
+        $config
             ->method('getTemplatePath')
-            ->with($templateName, false)
-            ->willReturn('pathToTpl/' . $templateName);
+            ->willReturnMap([
+                [$templateName, false, 'pathToTpl/' . $templateName],
+            ]);
 
         return $config;
     }

@@ -29,18 +29,20 @@ final class AdminUserServiceTest extends TestCase
 
         $adminStub = $this->createStub(Admin::class);
 
-        $adminFactorySpy = $this->createMock(AdminFactoryInterface::class);
-        $adminFactorySpy
+        $adminFactoryStub = $this->createStub(AdminFactoryInterface::class);
+        $adminFactoryStub
             ->method('createAdmin')
-            ->with($email, $password, $rights, $shopId)
-            ->willReturn($adminStub);
+            ->willReturnMap([
+                [$email, $password, $rights, $shopId, $adminStub],
+            ]);
 
         $adminDaoMock = $this->createMock(AdminDaoInterface::class);
         $adminDaoMock
+            ->expects($this->once())
             ->method('create')
             ->with($adminStub);
 
-        $sut = $this->getAdminDao(adminDao: $adminDaoMock, adminFactory: $adminFactorySpy);
+        $sut = $this->getAdminDao(adminDao: $adminDaoMock, adminFactory: $adminFactoryStub);
 
         $sut->createAdmin($email, $password, $rights, $shopId);
     }

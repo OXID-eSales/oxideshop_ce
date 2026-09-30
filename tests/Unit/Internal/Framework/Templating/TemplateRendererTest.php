@@ -21,11 +21,12 @@ final class TemplateRendererTest extends TestCase
     {
         $response = 'some template content';
         $templateName = 'some-template';
-        $engine = $this->createMock(TemplateEngineInterface::class);
+        $engine = $this->createStub(TemplateEngineInterface::class);
         $engine
             ->method('render')
-            ->with($templateName)
-            ->willReturn($response);
+            ->willReturnMap([
+                [$templateName, $response],
+            ]);
 
         $renderer = new TemplateRenderer($engine, $this->getContextStub());
 
@@ -102,11 +103,12 @@ final class TemplateRendererTest extends TestCase
     public function testExistsWithoutOptionalFileExtension(): void
     {
         $templateName = 'some-template';
-        $engine = $this->createMock(TemplateEngineInterface::class);
+        $engine = $this->createStub(TemplateEngineInterface::class);
         $engine
             ->method('exists')
-            ->with($templateName)
-            ->willReturn(true);
+            ->willReturnMap([
+                [$templateName, true],
+            ]);
 
         $renderer = new TemplateRenderer($engine, $this->getContextStub(), null);
 

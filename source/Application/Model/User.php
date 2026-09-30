@@ -22,6 +22,7 @@ use OxidEsales\EshopCommunity\Application\Enum\SubscriptionOptedInStatus;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 /**
@@ -1479,7 +1480,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $userIdParameter = $isAdmin ? 'auth' : 'usr';
         Registry::getSession()->setVariable($userIdParameter, $this->getFieldData('oxid'));
-        Registry::getSession()->setVariable('login-token', $this->getHash($passwordHash));
+        Registry::getSession()->setVariable(
+            'login-token',
+            ContainerFacade::get(SessionLoginTokenServiceInterface::class)->generate($passwordHash)
+        );
 
         // cookie must be set ?
         if ($setSessionCookie && $config->getConfigParam('blShowRememberMe')) {
@@ -1590,7 +1594,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->load($userId)) {
             $loginToken = (string)Registry::getSession()->getVariable('login-token');
             $passwordHash = (string)$this->getFieldData('oxpassword');
-            if ($loginToken && !$this->verifyHash($passwordHash, $loginToken)) {
+            if (
+                $loginToken
+                && !ContainerFacade::get(SessionLoginTokenServiceInterface::class)->isValid($loginToken, $passwordHash)
+            ) {
                 $this->logout();
                 return false;
             }

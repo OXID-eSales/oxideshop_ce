@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Application\Component\UserComponent;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
@@ -36,6 +37,18 @@ final class UserComponentTest extends IntegrationTestCase
         $this->getUserComponent()->createUser();
 
         $this->assertNotEmpty($this->fetchUserData()['OXACTIVE']);
+    }
+
+    public function testCreateUserStoresSessionLoginToken(): void
+    {
+        $_POST = $this->getUserFormData();
+
+        $this->getUserComponent()->createUser();
+
+        $this->assertSame(
+            $this->get(SessionLoginTokenServiceInterface::class)->generate($this->fetchUserData()['OXPASSWORD']),
+            Registry::getSession()->getVariable('login-token')
+        );
     }
 
     public function testCreateUserWithPrivateSalesWillNotActivateUserAutomatically(): void

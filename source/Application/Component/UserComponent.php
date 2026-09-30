@@ -24,7 +24,7 @@ use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenServiceInterface;
 
 use function array_key_exists;
 use function is_array;
@@ -920,7 +920,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         Registry::getSession()
             ->setVariable(
                 'login-token',
-                ContainerFacade::get(PasswordServiceBridgeInterface::class)->hash($passwordHash)
+                ContainerFacade::get(SessionLoginTokenServiceInterface::class)->generate($passwordHash)
             );
     }
 }

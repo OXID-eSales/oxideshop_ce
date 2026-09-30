@@ -66,14 +66,20 @@ class StorefrontRateLimiter implements StorefrontRateLimiterInterface
         }
 
         if (!$rateLimit->isAccepted()) {
-            $this->reject((string) $rule['id'], $key, $rateLimit);
+            $this->reject((string) $rule['id'], $key, $this->retryAfter($rule), $rateLimit);
         }
     }
 
-    private function reject(string $ruleId, string $key, RateLimit $rateLimit): never
+    private function retryAfter(array $rule): int
     {
-        $reset = $rateLimit->getRetryAfter()->getTimestamp();
-        $retryAfter = max(0, $reset - time());
+        $now = time();
+
+        return (new \DateTimeImmutable('@' . $now))->modify('+' . $rule['interval'])->getTimestamp() - $now;
+    }
+
+    private function reject(string $ruleId, string $key, int $retryAfter, RateLimit $rateLimit): never
+    {
+        $reset = time() + $retryAfter;
 
         $this->eventDispatcher->dispatch(new RateLimitExceededEvent($ruleId, $key, $retryAfter));
 

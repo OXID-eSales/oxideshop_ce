@@ -249,7 +249,7 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->assertCount(1, $events);
         $this->assertSame('global', $events[0]->getRuleId());
         $this->assertSame(hash('sha256', '203.0.113.10'), $events[0]->getKey());
-        $this->assertGreaterThan(0, $events[0]->getRetryAfter());
+        $this->assertSame(60, $events[0]->getRetryAfter());
     }
 
     #[RunInSeparateProcess]

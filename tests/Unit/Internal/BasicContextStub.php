@@ -174,6 +174,11 @@ class BasicContextStub implements BasicContextInterface
         $this->cacheDirectory = $cacheDirectory;
     }
 
+    public function setCacheDirectory(string $cacheDirectory): void
+    {
+        $this->cacheDirectory = $cacheDirectory;
+    }
+
     public function getModuleCacheDirectory(): string
     {
         return $this->basicContext->getModuleCacheDirectory();

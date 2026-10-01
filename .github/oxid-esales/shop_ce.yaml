@@ -7,6 +7,20 @@ install:
     prepared_shop: true
   composer:
     root_url: ''
+    transform: |
+      {
+        "preferred-install": {
+          "oxid-esales/*": "source"
+        },
+        "require": {
+          "oxid-esales/twig-admin-theme": "dev-b-8.0.x",
+          "oxid-esales/twig-component": "dev-b-8.0.x-php-unit-13-OXDEV-10592",
+          "oxid-esales/oxideshop-composer-plugin": "dev-b-8.0.x-php-unit-13-OXDEV-10592",
+          "oxid-esales/apex-theme": "dev-b-8.0.x",
+          "oxid-esales/codeception-modules": "dev-b-8.0.x",
+          "oxid-esales/codeception-page-objects": "dev-b-8.0.x"
+        }
+      }
 
 runscript:
   matrix:

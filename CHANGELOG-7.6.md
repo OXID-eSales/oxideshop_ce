@@ -40,6 +40,7 @@
 - `OXURL` user field from the storefront via `UserUpdatableFields::getUpdatableFields()`
 - Module `metadata.php` `events` (`onActivate` / `onDeactivate`), use a DI event subscriber instead
 - `ProjectYamlImportServiceInterface::addImport()` / `removeImport()`
+- `Utilities::createMigrations()`
 
 ### Fixed
 - Cascade delete now removes all related records when deleting a user by ID [#0007138](https://bugs.oxid-esales.com/view.php?id=7138)

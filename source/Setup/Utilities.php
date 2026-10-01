@@ -556,6 +556,7 @@ class Utilities extends Core
     }
 
     /**
+     * @deprecated
      * @param Facts|null $facts The facts object to use for the creation of the migrations.
      *
      * @return Migrations

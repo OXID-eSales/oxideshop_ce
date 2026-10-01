@@ -29,11 +29,9 @@ final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
             ['id' => 'cat', 'cl' => 'alist', 'key' => 'ip', 'limit' => 1, 'interval' => '1 minute'],
         ]);
 
-        $limiter = $this->limiter();
-
         oxNew(SeoDecoder::class)->processSeoCall($seoUrlPath, '/');
 
-        $limiter->enforce();
+        $this->limiter()->enforce();
 
         $this->expectException(TooManyRequestsException::class);
 
@@ -68,9 +66,9 @@ final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
         $this->createContainer();
         $this->container->register('oxid_esales.rate_limiter.storefront.storage', InMemoryStorage::class);
         $this->container->findDefinition(StorefrontRateLimiterInterface::class)->setShared(false);
-        $this->setParameter('oxid_esales.rate_limiter.storefront.rules', $rules);
-        $this->setParameter('oxid_esales.rate_limiter.storefront.excluded_routes', []);
-        $this->setParameter('oxid_esales.rate_limiter.storefront.excluded_ips', []);
+        $this->container->setParameter('oxid_esales.rate_limiter.storefront.rules', $rules);
+        $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_routes', []);
+        $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_ips', []);
         $this->compileContainer();
     }
 

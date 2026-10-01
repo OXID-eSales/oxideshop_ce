@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,7 +16,6 @@ readonly class KeyProvider implements KeyProviderInterface
 {
     public function __construct(
         private SessionInterface $session,
-        private RequestInterface $requestParameters,
     ) {
     }
 
@@ -40,14 +38,14 @@ readonly class KeyProvider implements KeyProviderInterface
 
     private function emailKey(Request $request): string
     {
-        $email = strtolower(trim($this->param('lgn_usr')));
+        $email = strtolower(trim($this->param($request, 'lgn_usr')));
 
         return $email === '' ? '' : $this->hashKey($email . '-' . $this->clientIp($request));
     }
 
-    private function param(string $name): string
+    private function param(Request $request, string $name): string
     {
-        $value = $this->requestParameters->get($name, '');
+        $value = $request->request->all()[$name] ?? $request->query->all()[$name] ?? '';
 
         return is_scalar($value) ? (string) $value : '';
     }

@@ -9,8 +9,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\RateLimiter\Storefront\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class RuleProviderTest extends TestCase
 {
@@ -65,6 +65,17 @@ final class RuleProviderTest extends TestCase
         $this->assertSame([], $provider->getMatchingRules());
     }
 
+    public function testPostParameterWinsOverQueryParameter(): void
+    {
+        $provider = $this->createProvider(
+            [['id' => 'login_ip', 'fnc' => ['login'], 'key' => 'ip']],
+            ['fnc' => 'login'],
+            ['fnc' => 'start'],
+        );
+
+        $this->assertSame(['login_ip'], array_column($provider->getMatchingRules(), 'id'));
+    }
+
     public function testFunctionBoundRuleNeverMatchesNonScalarParameter(): void
     {
         $provider = $this->createProvider(
@@ -77,15 +88,11 @@ final class RuleProviderTest extends TestCase
 
     /**
      * @param array<int, array<string, mixed>> $rules
-     * @param array<string, mixed> $parameters
+     * @param array<string, mixed> $post
+     * @param array<string, mixed> $query
      */
-    private function createProvider(array $rules, array $parameters = []): RuleProvider
+    private function createProvider(array $rules, array $post = [], array $query = []): RuleProvider
     {
-        $request = $this->createStub(RequestInterface::class);
-        $request->method('get')->willReturnCallback(
-            fn (string $name, mixed $default = null): mixed => $parameters[$name] ?? $default,
-        );
-
-        return new RuleProvider($rules, $request);
+        return new RuleProvider($rules, Request::create('/?' . http_build_query($query), 'POST', $post));
     }
 }

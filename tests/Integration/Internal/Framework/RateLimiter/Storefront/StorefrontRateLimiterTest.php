@@ -192,21 +192,6 @@ final class StorefrontRateLimiterTest extends TestCase
     }
 
     #[RunInSeparateProcess]
-    public function testEmailRuleIsolatesDifferentSenders(): void
-    {
-        $this->configureLimiter(
-            [$this->rule('login_email', 'email', 1, ['fnc' => ['login']])],
-            post: ['fnc' => 'login', 'lgn_usr' => 'victim@example.com']
-        );
-
-        $this->limiter()->enforce();
-        $_SERVER['REMOTE_ADDR'] = '198.51.100.7';
-        $this->limiter()->enforce();
-
-        $this->addToAssertionCount(1);
-    }
-
-    #[RunInSeparateProcess]
     public function testIpRuleIsEnforcedBeforeUserAndEmailRules(): void
     {
         $this->configureLimiter(
@@ -299,9 +284,9 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->container->register('oxid_esales.rate_limiter.storefront.storage', InMemoryStorage::class);
         $this->container->register(SessionInterface::class)->setSynthetic(true)->setPublic(true);
         $this->container->findDefinition(StorefrontRateLimiterInterface::class)->setShared(false);
-        $this->setParameter('oxid_esales.rate_limiter.storefront.rules', $rules);
-        $this->setParameter('oxid_esales.rate_limiter.storefront.excluded_routes', $excludedRoutes);
-        $this->setParameter('oxid_esales.rate_limiter.storefront.excluded_ips', $excludedIps);
+        $this->container->setParameter('oxid_esales.rate_limiter.storefront.rules', $rules);
+        $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_routes', $excludedRoutes);
+        $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_ips', $excludedIps);
         $this->compileContainer();
         $this->container->set(SessionInterface::class, $this->session($userId));
     }

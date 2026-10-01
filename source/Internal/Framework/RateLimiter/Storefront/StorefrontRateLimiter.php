@@ -15,9 +15,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleLimiterFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestFactory;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\RateLimiter\RateLimit;
 
 class StorefrontRateLimiter implements StorefrontRateLimiterInterface
@@ -25,7 +25,7 @@ class StorefrontRateLimiter implements StorefrontRateLimiterInterface
     private bool $enforced = false;
 
     public function __construct(
-        private readonly RequestFactory $requestFactory,
+        private readonly Request $request,
         private readonly RuleProviderInterface $ruleProvider,
         private readonly RequestExclusionFilterInterface $requestExclusionFilter,
         private readonly KeyProviderInterface $keyProvider,
@@ -42,14 +42,12 @@ class StorefrontRateLimiter implements StorefrontRateLimiterInterface
         }
         $this->enforced = true;
 
-        $request = $this->requestFactory->create();
-
-        if ($this->requestExclusionFilter->isExcluded($request)) {
+        if ($this->requestExclusionFilter->isExcluded($this->request)) {
             return;
         }
 
         foreach ($this->ruleProvider->getMatchingRules() as $rule) {
-            $key = $this->keyProvider->get($rule, $request);
+            $key = $this->keyProvider->get($rule, $this->request);
             if ($key !== '') {
                 $this->consume($rule, $key);
             }

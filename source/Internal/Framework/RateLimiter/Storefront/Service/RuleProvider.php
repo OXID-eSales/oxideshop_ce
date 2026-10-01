@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 readonly class RuleProvider implements RuleProviderInterface
 {
@@ -18,7 +18,7 @@ readonly class RuleProvider implements RuleProviderInterface
     /**
      * @param array<int, array<string, mixed>> $rules
      */
-    public function __construct(array $rules, private RequestInterface $request)
+    public function __construct(array $rules, private Request $request)
     {
         $this->rules = $this->ordered($rules);
     }
@@ -48,7 +48,7 @@ readonly class RuleProvider implements RuleProviderInterface
 
     private function param(string $name): string
     {
-        $value = $this->request->get($name, '');
+        $value = $this->request->request->all()[$name] ?? $this->request->query->all()[$name] ?? '';
 
         return is_scalar($value) ? (string) $value : '';
     }

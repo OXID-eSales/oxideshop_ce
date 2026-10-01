@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\RateLimiter\Storefront\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProvider;
-use OxidEsales\EshopCommunity\Internal\Framework\Request\RequestInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Session\SessionInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,9 +45,9 @@ final class KeyProviderTest extends TestCase
 
     public function testEmailKeyCombinesNormalizedEmailAndClientIp(): void
     {
-        $provider = $this->createProvider('', ['lgn_usr' => ' Shopper@Example.com ']);
+        $request = $this->createRequest(['lgn_usr' => ' Shopper@Example.com ']);
 
-        $key = $provider->get(['key' => 'email'], $this->createRequest());
+        $key = $this->createProvider()->get(['key' => 'email'], $request);
 
         $this->assertSame(hash('sha256', 'shopper@example.com-203.0.113.10'), $key);
     }
@@ -62,31 +61,37 @@ final class KeyProviderTest extends TestCase
 
     public function testEmailKeyIsEmptyForNonScalarLoginUser(): void
     {
-        $provider = $this->createProvider('', ['lgn_usr' => ['shopper@example.com']]);
+        $request = $this->createRequest(['lgn_usr' => ['shopper@example.com']]);
 
-        $key = $provider->get(['key' => 'email'], $this->createRequest());
+        $key = $this->createProvider()->get(['key' => 'email'], $request);
 
         $this->assertSame('', $key);
     }
 
-    /**
-     * @param array<string, mixed> $parameters
-     */
-    private function createProvider(string $userId = '', array $parameters = []): KeyProvider
+    public function testEmailKeyDiffersByClientIpForTheSameLoginName(): void
+    {
+        $provider = $this->createProvider();
+        $post = ['lgn_usr' => 'victim@example.com'];
+
+        $keyA = $provider->get(['key' => 'email'], $this->createRequest($post, '203.0.113.10'));
+        $keyB = $provider->get(['key' => 'email'], $this->createRequest($post, '198.51.100.7'));
+
+        $this->assertNotSame($keyA, $keyB);
+    }
+
+    private function createProvider(string $userId = ''): KeyProvider
     {
         $session = $this->createStub(SessionInterface::class);
         $session->method('get')->willReturnMap([['usr', '', $userId]]);
 
-        $request = $this->createStub(RequestInterface::class);
-        $request->method('get')->willReturnCallback(
-            fn (string $name, mixed $default = null): mixed => $parameters[$name] ?? $default,
-        );
-
-        return new KeyProvider($session, $request);
+        return new KeyProvider($session);
     }
 
-    private function createRequest(): Request
+    /**
+     * @param array<string, mixed> $post
+     */
+    private function createRequest(array $post = [], string $clientIp = '203.0.113.10'): Request
     {
-        return Request::create('/', 'GET', [], [], [], ['REMOTE_ADDR' => '203.0.113.10']);
+        return Request::create('/', 'POST', $post, [], [], ['REMOTE_ADDR' => $clientIp]);
     }
 }

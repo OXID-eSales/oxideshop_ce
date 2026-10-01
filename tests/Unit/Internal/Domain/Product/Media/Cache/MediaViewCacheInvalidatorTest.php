@@ -23,11 +23,12 @@ final class MediaViewCacheInvalidatorTest extends TestCase
         $firstProductId = Id::generate();
         $secondProductId = Id::generate();
 
-        $productMediaDao = $this->createMock(ProductMediaDaoInterface::class);
+        $productMediaDao = $this->createStub(ProductMediaDaoInterface::class);
         $productMediaDao
             ->method('getProductIdsByMedia')
-            ->with($mediaId)
-            ->willReturn([$firstProductId, $secondProductId]);
+            ->willReturnMap([
+                [$mediaId, [$firstProductId, $secondProductId]],
+            ]);
 
         $cache = $this->createMock(ProductMediaViewCacheInterface::class);
         $cache
@@ -44,11 +45,12 @@ final class MediaViewCacheInvalidatorTest extends TestCase
     {
         $mediaId = Id::generate();
 
-        $productMediaDao = $this->createMock(ProductMediaDaoInterface::class);
+        $productMediaDao = $this->createStub(ProductMediaDaoInterface::class);
         $productMediaDao
             ->method('getProductIdsByMedia')
-            ->with($mediaId)
-            ->willReturn([]);
+            ->willReturnMap([
+                [$mediaId, []],
+            ]);
 
         $cache = $this->createMock(ProductMediaViewCacheInterface::class);
         $cache->expects($this->never())->method('invalidateForProduct');

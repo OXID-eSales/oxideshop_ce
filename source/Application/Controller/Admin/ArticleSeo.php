@@ -307,6 +307,66 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     }
 
     /**
+     * Returns the article std url including the currently selected
+     * category / vendor / manufacturer context.
+     *
+     * ObjectSeo::getStdUrl() only returns the context-less base link
+     * (Article::getBaseStdLink()), so saving the SEO tab would drop the
+     * cnid/mnid the entry was generated with. This override mirrors the
+     * std-url parameters used on initial generation in SeoEncoderArticle.
+     *
+     * @param string $sOxid object id
+     *
+     * @return string
+     */
+    protected function getStdUrl($sOxid)
+    {
+        $oArticle = oxNew(\OxidEsales\Eshop\Application\Model\Article::class);
+        if (!$oArticle->load($sOxid)) {
+            return '';
+        }
+
+        $sStdUrl = $oArticle->getBaseStdLink($this->getEditLang(), true, false);
+
+        if ($aParams = $this->getContextStdParams()) {
+            $sStdUrl = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl($sStdUrl, $aParams);
+        }
+
+        return $sStdUrl;
+    }
+
+    /**
+     * Builds the std-url parameters for the SEO context currently selected in
+     * the editor, reusing the same parameter definitions the encoder uses on
+     * initial generation.
+     *
+     * @return array
+     */
+    protected function getContextStdParams()
+    {
+        $oEncoder = $this->getEncoder();
+
+        switch ($this->getActCatType()) {
+            case 'oxvendor':
+                if ($oVendor = $this->getActVendor()) {
+                    return $oEncoder->getVendorStdParameters($oVendor->getId(), $this->getListType());
+                }
+                break;
+            case 'oxmanufacturer':
+                if ($oManufacturer = $this->getActManufacturer()) {
+                    return $oEncoder->getManufacturerStdParameters($oManufacturer->getId(), $this->getListType());
+                }
+                break;
+            default:
+                if ($sCatId = $this->getActCatId()) {
+                    return $oEncoder->getCategoryStdParameters($sCatId);
+                }
+        }
+
+        return [];
+    }
+
+    /**
      * Returns current object type seo encoder object
      *
      * @return \OxidEsales\Eshop\Application\Model\SeoEncoderArticle

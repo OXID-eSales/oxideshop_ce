@@ -16,6 +16,7 @@
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
+- Login is accepted via POST only
 
 ### Removed
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`

@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Password reminder page.
@@ -61,7 +63,7 @@ class ForgotPasswordController extends \OxidEsales\Eshop\Application\Controller\
      */
     public function forgotPassword()
     {
-        $this->_sForgotEmail = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+        $this->_sForgotEmail = ContainerFacade::get(Request::class)->request->getString('lgn_usr');
         if ($this->_sForgotEmail) {
             $result = oxNew(Email::class)->sendForgotPwdEmail($this->_sForgotEmail);
             if ($result === -1) {

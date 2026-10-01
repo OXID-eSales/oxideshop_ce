@@ -48,9 +48,9 @@ readonly class RuleProvider implements RuleProviderInterface
 
     private function param(string $name): string
     {
-        $value = $this->request->request->all()[$name] ?? $this->request->query->all()[$name] ?? '';
+        $bag = $this->request->request->has($name) ? $this->request->request : $this->request->query;
 
-        return is_scalar($value) ? (string) $value : '';
+        return $bag->getString($name);
     }
 
     /**

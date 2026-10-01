@@ -25,6 +25,7 @@ use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 use function array_key_exists;
 use function is_array;
@@ -206,7 +207,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
      */
     public function login()
     {
-        $sUser = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+        $sUser = ContainerFacade::get(Request::class)->request->getString('lgn_usr');
         $sPassword = Registry::getRequest()->getRequestParameter('lgn_pwd');
         $sCookie = Registry::getRequest()->getRequestEscapedParameter('lgn_cook');
 
@@ -429,7 +430,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
             return false;
         }
 
-        $username = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+        $username = ContainerFacade::get(Request::class)->request->getString('lgn_usr');
         $password = Registry::getRequest()->getRequestParameter('lgn_pwd');
         $passwordConfirmation = Registry::getRequest()->getRequestParameter('lgn_pwd2');
 

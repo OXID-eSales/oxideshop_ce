@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\RateLimiter\St
 
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 final class RuleProviderTest extends TestCase
@@ -76,14 +77,27 @@ final class RuleProviderTest extends TestCase
         $this->assertSame(['login_ip'], array_column($provider->getMatchingRules(), 'id'));
     }
 
-    public function testFunctionBoundRuleNeverMatchesNonScalarParameter(): void
+    public function testEmptyPostParameterStillWinsOverQueryParameter(): void
+    {
+        $provider = $this->createProvider(
+            [['id' => 'login_ip', 'fnc' => ['login'], 'key' => 'ip']],
+            ['fnc' => ''],
+            ['fnc' => 'login'],
+        );
+
+        $this->assertSame([], $provider->getMatchingRules());
+    }
+
+    public function testRejectsNonStringParameter(): void
     {
         $provider = $this->createProvider(
             [['id' => 'trap', 'fnc' => ['array'], 'key' => 'ip']],
             ['fnc' => ['array']],
         );
 
-        $this->assertSame([], $provider->getMatchingRules());
+        $this->expectException(BadRequestException::class);
+
+        $provider->getMatchingRules();
     }
 
     /**

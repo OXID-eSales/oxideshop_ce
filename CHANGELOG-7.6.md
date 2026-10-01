@@ -5,9 +5,13 @@
 ### Added
 - `oe:database:migrate` console command
 - Doctrine migrations can be registered via the `oxid_esales.migration_path_provider` DI tag (`MigrationPathProviderInterface`)
-- `SeoEncoderArticle::generateArticleCategoryUri()` method for generating an article's SEO URI for a specific category
+- Storefront request rate limiter
+  - Disabled by default; enable via the `oxid_esales.rate_limiter.storefront.enabled` DI parameter
+  - Configure rules and exclusions via the other `oxid_esales.rate_limiter.storefront.*` parameters
+  - `RateLimitExceededEvent`, dispatched when a request is blocked
+  - `oe:rate-limiter:prune` console command deleting expired buckets, intended for cron
 - Optional module `bootstrap-services.yaml`, loaded for every installed module regardless of activation state
-- `ProjectYamlImportServiceInterface::addImportFromFilePath()` and `removeImportFromFilePath()` methods to add or remove a service import by its full file path
+- `SeoEncoderArticle::generateArticleCategoryUri()` method for generating an article's SEO URI for a specific category
 
 ### Changed
 - Console commands return consistent exit codes on success (0) and failure (1)

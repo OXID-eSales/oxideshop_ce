@@ -25,6 +25,7 @@ use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 use function array_key_exists;
 use function is_array;
@@ -206,9 +207,10 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
      */
     public function login()
     {
-        $sUser = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
-        $sPassword = Registry::getRequest()->getRequestParameter('lgn_pwd');
-        $sCookie = Registry::getRequest()->getRequestEscapedParameter('lgn_cook');
+        $post = ContainerFacade::get(Request::class)->request;
+        $sUser = $post->getString('lgn_usr');
+        $sPassword = $post->getString('lgn_pwd');
+        $sCookie = $post->getString('lgn_cook');
 
         $this->setLoginStatus(USER_LOGIN_FAIL);
 
@@ -417,11 +419,12 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
             return false;
         }
 
+        $post = ContainerFacade::get(Request::class)->request;
         $isPrivateSales = $this->getParent()->isEnabledPrivateSales();
 
         if (
             $isPrivateSales
-            && !Registry::getRequest()->getRequestEscapedParameter('ord_agb')
+            && !$post->getString('ord_agb')
             && Registry::getConfig()->getConfigParam('blConfirmAGB')
         ) {
             Registry::getUtilsView()->addErrorToDisplay('READ_AND_CONFIRM_TERMS', false, true);
@@ -429,9 +432,9 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
             return false;
         }
 
-        $username = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
-        $password = Registry::getRequest()->getRequestParameter('lgn_pwd');
-        $passwordConfirmation = Registry::getRequest()->getRequestParameter('lgn_pwd2');
+        $username = $post->getString('lgn_usr');
+        $password = $post->getString('lgn_pwd');
+        $passwordConfirmation = $post->getString('lgn_pwd2');
 
         $billingAddress = $this->getBillingAddress();
         $shippingAddress = $this->getShippingAddress();
@@ -483,7 +486,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
                 $user->setCreditPointsForRegistrant($invitationSenderUserId, $invitationRecipientEmail);
             }
 
-            $isSubscriptionRequested = Registry::getRequest()->getRequestEscapedParameter('blnewssubscribed');
+            $isSubscriptionRequested = $post->getString('blnewssubscribed');
             if ($isSubscriptionRequested && $userSubscriptionStatus == 1) {
                 // if user was assigned to newsletter
                 // and is creating account with newsletter checked,
@@ -514,13 +517,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
 
             // order remark
             //V #427: order remark for new users
-            $orderRemark = Registry::getRequest()->getRequestParameter('order_remark');
+            $orderRemark = $post->getString('order_remark');
             if ($orderRemark) {
                 Registry::getSession()->setVariable('ordrem', $orderRemark);
             }
         }
 
-        if ((int)Registry::getRequest()->getRequestEscapedParameter('option') === 3) {
+        if ((int)$post->getString('option') === 3) {
             $user->sendRegistrationEmail($isPrivateSales);
         }
 

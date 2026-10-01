@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\RateLimiter\St
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Session\SessionInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 
 final class KeyProviderTest extends TestCase
@@ -59,9 +60,18 @@ final class KeyProviderTest extends TestCase
         $this->assertSame('', $key);
     }
 
-    public function testEmailKeyIsEmptyForNonScalarLoginUser(): void
+    public function testEmailKeyRejectsNonStringLoginName(): void
     {
         $request = $this->createRequest(['lgn_usr' => ['shopper@example.com']]);
+
+        $this->expectException(BadRequestException::class);
+
+        $this->createProvider()->get(['key' => 'email'], $request);
+    }
+
+    public function testEmailKeyIgnoresLoginNameInQuery(): void
+    {
+        $request = Request::create('/?lgn_usr=shopper@example.com', 'POST', [], [], [], ['REMOTE_ADDR' => '203.0.113.10']);
 
         $key = $this->createProvider()->get(['key' => 'email'], $request);
 

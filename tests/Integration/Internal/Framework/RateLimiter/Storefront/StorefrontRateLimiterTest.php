@@ -51,11 +51,13 @@ final class StorefrontRateLimiterTest extends TestCase
     public function testExcludedIpBypassesAllRules(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)], excludedIps: ['203.0.113.10']);
+        $events = [];
+        $this->captureRateLimitEvents($events);
 
         $this->limiter()->enforce();
         $this->limiter()->enforce();
 
-        $this->addToAssertionCount(1);
+        $this->assertSame([], $events);
     }
 
     #[RunInSeparateProcess]
@@ -66,11 +68,13 @@ final class StorefrontRateLimiterTest extends TestCase
             excludedRoutes: ['/health'],
             path: '/health'
         );
+        $events = [];
+        $this->captureRateLimitEvents($events);
 
         $this->limiter()->enforce();
         $this->limiter()->enforce();
 
-        $this->addToAssertionCount(1);
+        $this->assertSame([], $events);
     }
 
     #[RunInSeparateProcess]
@@ -104,18 +108,19 @@ final class StorefrontRateLimiterTest extends TestCase
     }
 
     #[RunInSeparateProcess]
-    public function testActionRuleThrottlesByEmailSubmittedViaGet(): void
+    public function testEmailRuleIgnoresLoginNameSubmittedViaQuery(): void
     {
         $this->configureLimiter(
             [$this->rule('login_email', 'email', 1, ['fnc' => ['login']])],
             query: ['fnc' => 'login', 'lgn_usr' => 'shopper@example.com']
         );
+        $events = [];
+        $this->captureRateLimitEvents($events);
 
         $this->limiter()->enforce();
-
-        $this->expectException(TooManyRequestsException::class);
-
         $this->limiter()->enforce();
+
+        $this->assertSame([], $events);
     }
 
     #[RunInSeparateProcess]
@@ -125,11 +130,13 @@ final class StorefrontRateLimiterTest extends TestCase
             [$this->rule('login_email', 'email', 1, ['fnc' => ['login']])],
             post: ['fnc' => 'login']
         );
+        $events = [];
+        $this->captureRateLimitEvents($events);
 
         $this->limiter()->enforce();
         $this->limiter()->enforce();
 
-        $this->addToAssertionCount(1);
+        $this->assertSame([], $events);
     }
 
     #[RunInSeparateProcess]
@@ -139,23 +146,27 @@ final class StorefrontRateLimiterTest extends TestCase
             [$this->rule('contact_ip', 'ip', 1, ['cl' => 'contact', 'fnc' => 'send'])],
             post: ['cl' => 'newsletter', 'fnc' => 'send']
         );
+        $events = [];
+        $this->captureRateLimitEvents($events);
 
         $this->limiter()->enforce();
         $this->limiter()->enforce();
 
-        $this->addToAssertionCount(1);
+        $this->assertSame([], $events);
     }
 
     #[RunInSeparateProcess]
     public function testEnforcesOncePerRequest(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)]);
+        $events = [];
+        $this->captureRateLimitEvents($events);
 
         $limiter = $this->limiter();
         $limiter->enforce();
         $limiter->enforce();
 
-        $this->addToAssertionCount(1);
+        $this->assertSame([], $events);
     }
 
     #[RunInSeparateProcess]
@@ -247,7 +258,7 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->limiter()->enforce();
         $this->limiter()->enforce();
 
-        $this->assertCount(0, $events);
+        $this->assertSame([], $events);
     }
 
     /**

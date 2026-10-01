@@ -9,6 +9,7 @@ use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Session;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 
 final class UserComponentTest extends IntegrationTestCase
@@ -187,6 +188,25 @@ final class UserComponentTest extends IntegrationTestCase
         $this->assertEmailChangeAccepted($secondUser['email'], 'new-unique-email@example.com');
     }
 
+    public function testLoginIgnoresLoginNameSuppliedViaQuery(): void
+    {
+        $this->createUser($this->userName);
+        $component = $this->getUserComponent();
+
+        $this->submitForm(['lgn_usr' => $this->userName, 'lgn_pwd' => $this->password]);
+        $component->login();
+        $this->assertSame(USER_LOGIN_SUCCESS, $component->getLoginStatus());
+
+        $this->submitForm([]);
+        $_GET = ['lgn_usr' => $this->userName, 'lgn_pwd' => $this->password];
+        $this->get(Request::class)->query->replace($_GET);
+        $component->login();
+        $_GET = [];
+        $this->get(Request::class)->query->replace([]);
+
+        $this->assertSame(USER_LOGIN_FAIL, $component->getLoginStatus());
+    }
+
     private function createUser(string $email, bool $isGuest = false): array
     {
         $userData = $this->getUserFormData();
@@ -197,7 +217,7 @@ final class UserComponentTest extends IntegrationTestCase
 
         $userData['oxuser__oxusername'] = $email;
         $userData['lgn_usr'] = $email;
-        $_POST = $userData;
+        $this->submitForm($userData);
 
         $this->getUserComponent()->createUser();
 
@@ -209,9 +229,7 @@ final class UserComponentTest extends IntegrationTestCase
     private function assertEmailChangeRejected(string $currentEmail, string $newEmail): void
     {
         $this->userName = $currentEmail;
-
-        $requestData = $this->prepareChangeUserRequest($newEmail);
-        $_POST = $requestData;
+        $this->submitForm($this->prepareChangeUserRequest($newEmail));
 
         $result = $this->getUserComponent()->changeuser_testvalues();
 
@@ -223,9 +241,7 @@ final class UserComponentTest extends IntegrationTestCase
     private function assertEmailChangeAccepted(string $currentEmail, string $newEmail): void
     {
         $this->userName = $currentEmail;
-
-        $requestData = $this->prepareChangeUserRequest($newEmail);
-        $_POST = $requestData;
+        $this->submitForm($this->prepareChangeUserRequest($newEmail));
 
         $result = $this->getUserComponent()->changeuser_testvalues();
 
@@ -288,6 +304,12 @@ final class UserComponentTest extends IntegrationTestCase
         $userComponent = oxNew(UserComponent::class);
         $userComponent->setParent(oxNew(FrontendController::class));
         return $userComponent;
+    }
+
+    private function submitForm(array $post): void
+    {
+        $_POST = $post;
+        $this->get(Request::class)->request->replace($post);
     }
 
     private function fetchUserData(): array

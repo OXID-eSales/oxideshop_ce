@@ -17,6 +17,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\HttpFoundation\Request;
 
 final class ProductVatTest extends IntegrationTestCase
 {
@@ -124,6 +125,7 @@ final class ProductVatTest extends IntegrationTestCase
     {
         $_POST['lgn_usr'] = 'testuser@oxideshop.dev';
         $_POST['lgn_pwd'] = 'asdfasdf';
+        $this->get(Request::class)->request->replace($_POST);
         oxNew(UserComponent::class)->login();
     }
 

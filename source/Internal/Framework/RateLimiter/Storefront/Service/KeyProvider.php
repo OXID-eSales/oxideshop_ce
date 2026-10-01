@@ -38,16 +38,9 @@ readonly class KeyProvider implements KeyProviderInterface
 
     private function emailKey(Request $request): string
     {
-        $email = strtolower(trim($this->param($request, 'lgn_usr')));
+        $email = strtolower(trim($request->request->getString('lgn_usr')));
 
         return $email === '' ? '' : $this->hashKey($email . '-' . $this->clientIp($request));
-    }
-
-    private function param(Request $request, string $name): string
-    {
-        $value = $request->request->all()[$name] ?? $request->query->all()[$name] ?? '';
-
-        return is_scalar($value) ? (string) $value : '';
     }
 
     private function clientIp(Request $request): string

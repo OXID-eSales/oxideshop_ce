@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\UserReviewAndRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Core\SortingValidator;
 use stdClass;
+use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 use function rawurlencode;
 
@@ -2759,7 +2760,7 @@ class FrontendController extends BaseController
     {
         if ($this->_sActiveUsername == null) {
             $this->_sActiveUsername = false;
-            $username = Registry::getRequest()->getRequestEscapedParameter('lgn_usr');
+            $username = ContainerFacade::get(HttpRequest::class)->request->getString('lgn_usr');
             if ($username) {
                 $this->_sActiveUsername = $username;
             } elseif ($user = $this->getUser()) {

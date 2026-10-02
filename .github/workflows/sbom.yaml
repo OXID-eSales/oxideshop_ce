@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       php_version:
-        description: 'PHP version for setup-php (match the target shop version, e.g. 8.2 / 8.3 / 8.4)'
+        description: 'PHP version for setup-php (match the target shop version, e.g. 8.4 / 8.5)'
         required: false
-        default: '8.3'
+        default: '8.4'
         type: string
 
 permissions:

@@ -23,8 +23,6 @@ use OxidEsales\Eshop\Core\Form\FormFields;
 use OxidEsales\Eshop\Core\Form\FormFieldsTrimmer;
 use OxidEsales\Eshop\Core\Form\UpdatableFieldsConstructor;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenServiceInterface;
 
 use function array_key_exists;
 use function is_array;
@@ -515,7 +513,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
 
         if (!$isPrivateSales) {
             Registry::getSession()->setVariable('usr', $user->getId());
-            $this->setSessionLoginToken((string)$user->getFieldData('oxpassword'));
+            $user->setSessionLoginToken();
             $this->afterLogin($user);
 
             // order remark
@@ -913,14 +911,5 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController
         }
 
         return $addressFormData;
-    }
-
-    private function setSessionLoginToken(string $passwordHash): void
-    {
-        Registry::getSession()
-            ->setVariable(
-                'login-token',
-                ContainerFacade::get(SessionLoginTokenServiceInterface::class)->generate($passwordHash)
-            );
     }
 }

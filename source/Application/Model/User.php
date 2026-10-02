@@ -22,7 +22,6 @@ use OxidEsales\EshopCommunity\Application\Enum\SubscriptionOptedInStatus;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\RandomTokenGeneratorBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 
 /**
@@ -1480,10 +1479,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
 
         $userIdParameter = $isAdmin ? 'auth' : 'usr';
         Registry::getSession()->setVariable($userIdParameter, $this->getFieldData('oxid'));
-        Registry::getSession()->setVariable(
-            'login-token',
-            ContainerFacade::get(SessionLoginTokenServiceInterface::class)->generate($passwordHash)
-        );
+        $this->setSessionLoginToken();
 
         // cookie must be set ?
         if ($setSessionCookie && $config->getConfigParam('blShowRememberMe')) {
@@ -1559,6 +1555,14 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         return true;
     }
 
+    public function setSessionLoginToken(): void
+    {
+        Registry::getSession()->setVariable(
+            'login-token',
+            $this->sessionLoginToken((string)$this->getFieldData('oxpassword'))
+        );
+    }
+
     /**
      * Loads active admin user object (if possible). If
      * user is not available - returns false.
@@ -1594,10 +1598,7 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         if ($this->load($userId)) {
             $loginToken = (string)Registry::getSession()->getVariable('login-token');
             $passwordHash = (string)$this->getFieldData('oxpassword');
-            if (
-                $loginToken
-                && !ContainerFacade::get(SessionLoginTokenServiceInterface::class)->isValid($loginToken, $passwordHash)
-            ) {
+            if ($loginToken && !hash_equals($this->sessionLoginToken($passwordHash), $loginToken)) {
                 $this->logout();
                 return false;
             }
@@ -2690,5 +2691,10 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         return $this->getContainer()
             ->get(PasswordServiceBridgeInterface::class)
             ->verifyPassword($password, $hash);
+    }
+
+    private function sessionLoginToken(string $passwordHash): string
+    {
+        return hash('sha256', $passwordHash);
     }
 }

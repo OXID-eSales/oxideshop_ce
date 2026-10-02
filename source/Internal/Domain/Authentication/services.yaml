@@ -9,10 +9,6 @@ services:
   OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\PasswordVerificationService
 
-  OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenService
-    public: true
-
   OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicyInterface:
     class: OxidEsales\EshopCommunity\Internal\Utility\Authentication\Policy\PasswordPolicy
 

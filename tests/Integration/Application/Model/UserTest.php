@@ -15,7 +15,6 @@ use OxidEsales\Eshop\Core\Exception\UserException;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Service\SessionLoginTokenServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class UserTest extends IntegrationTestCase
@@ -38,7 +37,7 @@ final class UserTest extends IntegrationTestCase
         oxNew(User::class)->login(self::USER_NAME, 'some-pass');
 
         $this->assertSame(
-            $this->get(SessionLoginTokenServiceInterface::class)->generate($this->loadUser()->getFieldData('oxpassword')),
+            hash('sha256', $this->loadUser()->getFieldData('oxpassword')),
             Registry::getSession()->getVariable('login-token')
         );
     }

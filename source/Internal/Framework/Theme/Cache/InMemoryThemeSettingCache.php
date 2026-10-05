@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Event\ClearShopCacheEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class MemoizedThemeSettingCache implements ThemeSettingCacheInterface, EventSubscriberInterface
+class InMemoryThemeSettingCache implements ThemeSettingCacheInterface, EventSubscriberInterface
 {
     private array $settings = [];
 

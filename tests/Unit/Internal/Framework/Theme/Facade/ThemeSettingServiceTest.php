@@ -135,7 +135,7 @@ final class ThemeSettingServiceTest extends TestCase
     public function testGetReturnsCachedValue(): void
     {
         $cache = $this->createStub(ThemeSettingCacheInterface::class);
-        $cache->method('get')->willReturn(['exists' => true, 'value' => 'cached.png']);
+        $cache->method('get')->willReturn(['logoFile' => 'cached.png']);
 
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->never())->method('resolve');
@@ -150,14 +150,27 @@ final class ThemeSettingServiceTest extends TestCase
         $cache = $this->createMock(ThemeSettingCacheInterface::class);
         $cache->method('get')->willThrowException(new CacheItemNotFoundException('miss'));
         $cache->expects($this->once())->method('put')
-            ->with(
-                'theme-' . self::THEME_ID . '-setting-logoFile',
-                ['exists' => true, 'value' => 'logo.png']
-            );
+            ->with('theme-' . self::THEME_ID . '-settings', ['logoFile' => 'logo.png']);
 
         $service = $this->createServiceWithSetting('logoFile', 'str', 'logo.png', $cache);
 
         $service->getString('logoFile');
+    }
+
+    public function testThemeIsResolvedOnceForAllItsSettings(): void
+    {
+        $configuration = (new ThemeConfiguration())
+            ->setId(self::THEME_ID)
+            ->addThemeSetting((new Setting())->setName('logoFile')->setType('str')->setValue('logo.png'))
+            ->addThemeSetting((new Setting())->setName('showWishlist')->setType('bool')->setValue(true));
+
+        $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
+        $resolver->expects($this->once())->method('resolve')->willReturn($configuration);
+
+        $service = $this->createService(resolver: $resolver);
+
+        $this->assertSame('logo.png', $service->getString('logoFile'));
+        $this->assertTrue($service->getBoolean('showWishlist'));
     }
 
     public function testExistsReturnsTrueForExistingSetting(): void
@@ -170,7 +183,7 @@ final class ThemeSettingServiceTest extends TestCase
     public function testExistsReturnsTrueFromCacheWithoutResolving(): void
     {
         $cache = $this->createStub(ThemeSettingCacheInterface::class);
-        $cache->method('get')->willReturn(['exists' => true, 'value' => 'logo.png']);
+        $cache->method('get')->willReturn(['logoFile' => 'logo.png']);
 
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->never())->method('resolve');

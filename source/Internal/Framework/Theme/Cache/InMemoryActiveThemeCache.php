@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Cache\Event\ClearShopCacheEvent
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class MemoizedActiveThemeCache implements ActiveThemeCacheInterface, EventSubscriberInterface
+class InMemoryActiveThemeCache implements ActiveThemeCacheInterface, EventSubscriberInterface
 {
     private array $activeThemes = [];
 

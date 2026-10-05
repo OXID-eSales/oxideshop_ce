@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
 
 readonly class ActiveThemeCache implements ActiveThemeCacheInterface
 {
-    private const CACHE_KEY = 'active_theme';
+    private const CACHE_KEY = 'active-theme';
 
     public function __construct(private TagAwareAdapterFactoryInterface $cacheFactory)
     {

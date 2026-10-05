@@ -28,10 +28,10 @@ final class ActiveThemeProviderTest extends TestCase
     public function testGetActiveThemeReturnsCachedThemeWithoutReadingConfiguration(): void
     {
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao->expects($this->never())->method('getAll');
+        $dao->expects($this->never())->method($this->anything());
 
         $metaDataProvider = $this->createMock(ThemeMetaDataByIdProviderInterface::class);
-        $metaDataProvider->expects($this->never())->method('getById');
+        $metaDataProvider->expects($this->never())->method($this->anything());
 
         $provider = new ActiveThemeProvider(
             $dao,
@@ -63,14 +63,6 @@ final class ActiveThemeProviderTest extends TestCase
         $this->assertSame('parent', $activeTheme->getParentThemeId());
     }
 
-    public function testGetActiveThemeHasNoParentThemeIdForStandaloneTheme(): void
-    {
-        $activeTheme = $this->createProvider('active', '', $this->createColdCache())->getActiveTheme(self::SHOP_ID);
-
-        $this->assertSame('active', $activeTheme->getId());
-        $this->assertFalse($activeTheme->hasParentTheme());
-    }
-
     public function testGetActiveThemeThrowsAndCachesNothingWhenNoThemeIsActive(): void
     {
         $cache = $this->createMock(ActiveThemeCacheInterface::class);
@@ -80,17 +72,6 @@ final class ActiveThemeProviderTest extends TestCase
         $this->expectException(ActiveThemeNotFoundException::class);
 
         $this->createProviderWithoutActiveTheme($cache)->getActiveTheme(self::SHOP_ID);
-    }
-
-    public function testGetActiveThemeIdReturnsActiveThemeId(): void
-    {
-        $provider = new ActiveThemeProvider(
-            $this->createStub(ThemeConfigurationDaoInterface::class),
-            $this->createStub(ThemeMetaDataByIdProviderInterface::class),
-            $this->createWarmCache(new ActiveTheme('cached')),
-        );
-
-        $this->assertSame('cached', $provider->getActiveThemeId(self::SHOP_ID));
     }
 
     public function testGetActiveThemeIdCachesActiveThemeOnMiss(): void

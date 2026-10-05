@@ -53,14 +53,14 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
 
     public function exists(string $name): bool
     {
-        return $this->getSettingData($name)['exists'];
+        return array_key_exists($name, $this->getSettingValues());
     }
 
     private function getValue(string $name): mixed
     {
-        $settingData = $this->getSettingData($name);
+        $settingValues = $this->getSettingValues();
 
-        if (!$settingData['exists']) {
+        if (!array_key_exists($name, $settingValues)) {
             throw new ThemeSettingNotFoundException(
                 sprintf(
                     "Setting '%s' not found in shop %d",
@@ -70,32 +70,45 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
             );
         }
 
-        return $settingData['value'];
+        return $settingValues[$name];
     }
 
-    private function getSettingData(string $name): array
+    /**
+     * @return array<string, mixed>
+     */
+    private function getSettingValues(): array
     {
         $shopId = $this->context->getCurrentShopId();
 
         try {
             $themeId = $this->activeThemeProvider->getActiveThemeId($shopId);
         } catch (ActiveThemeNotFoundException) {
-            return ['exists' => false, 'value' => null];
+            return [];
         }
 
-        $cacheKey = 'theme-' . $themeId . '-setting-' . $name;
+        $cacheKey = 'theme-' . $themeId . '-settings';
 
         try {
             return $this->themeSettingCache->get($cacheKey);
         } catch (CacheItemNotFoundException) {
-            $setting = $this->themeConfigurationResolver->resolve($themeId, $shopId)->getSettingByName($name);
-            $settingData = [
-                'exists' => $setting !== null,
-                'value' => $setting?->getValue(),
-            ];
-            $this->themeSettingCache->put($cacheKey, $settingData);
+            $settingValues = $this->resolveSettingValues($themeId, $shopId);
+            $this->themeSettingCache->put($cacheKey, $settingValues);
 
-            return $settingData;
+            return $settingValues;
         }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function resolveSettingValues(string $themeId, int $shopId): array
+    {
+        $settingValues = [];
+
+        foreach ($this->themeConfigurationResolver->resolve($themeId, $shopId)->getThemeSettings() as $setting) {
+            $settingValues[$setting->getName()] = $setting->getValue();
+        }
+
+        return $settingValues;
     }
 }

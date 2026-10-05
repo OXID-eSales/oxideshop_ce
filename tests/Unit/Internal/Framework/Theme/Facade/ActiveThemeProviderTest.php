@@ -9,11 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ActiveThemeCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProvider;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use PHPUnit\Framework\TestCase;
 
@@ -21,29 +25,38 @@ final class ActiveThemeProviderTest extends TestCase
 {
     private const SHOP_ID = 1;
 
-    public function testGetActiveThemeIdReturnsActivatedThemeId(): void
+    public function testGetActiveThemeReturnsCachedThemeWithoutReadingConfiguration(): void
     {
-        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
-        $dao->method('getAll')->willReturn([
-            'inactive' => (new ThemeConfiguration())->setId('inactive'),
-            'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
-        ]);
+        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->expects($this->never())->method('getAll');
 
-        $provider = new ActiveThemeProvider($dao, $this->createStub(ThemeMetaDataByIdProviderInterface::class));
+        $metaDataProvider = $this->createMock(ThemeMetaDataByIdProviderInterface::class);
+        $metaDataProvider->expects($this->never())->method('getById');
 
-        $this->assertSame('active', $provider->getActiveThemeId(self::SHOP_ID));
+        $provider = new ActiveThemeProvider(
+            $dao,
+            $metaDataProvider,
+            $this->createWarmCache(new ActiveTheme('cached', 'parent')),
+        );
+
+        $activeTheme = $provider->getActiveTheme(self::SHOP_ID);
+
+        $this->assertSame('cached', $activeTheme->getId());
+        $this->assertSame('parent', $activeTheme->getParentThemeId());
     }
 
-    public function testGetActiveThemeIdThrowsWhenNoThemeIsActive(): void
+    public function testGetActiveThemeReadsConfigurationAndCachesItOnMiss(): void
     {
-        $this->expectException(ActiveThemeNotFoundException::class);
+        $cache = $this->createMock(ActiveThemeCacheInterface::class);
+        $cache->method('get')->willThrowException(new CacheItemNotFoundException());
+        $cache->expects($this->once())
+            ->method('put')
+            ->with(self::SHOP_ID, $this->callback(
+                static fn(ActiveTheme $theme): bool => $theme->getId() === 'active'
+                    && $theme->getParentThemeId() === 'parent'
+            ));
 
-        $this->createProviderWithoutActiveTheme()->getActiveThemeId(self::SHOP_ID);
-    }
-
-    public function testGetActiveThemeCarriesParentThemeId(): void
-    {
-        $activeTheme = $this->createProvider('active', 'parent')->getActiveTheme(self::SHOP_ID);
+        $activeTheme = $this->createProvider('active', 'parent', $cache)->getActiveTheme(self::SHOP_ID);
 
         $this->assertSame('active', $activeTheme->getId());
         $this->assertTrue($activeTheme->hasParentTheme());
@@ -52,39 +65,106 @@ final class ActiveThemeProviderTest extends TestCase
 
     public function testGetActiveThemeHasNoParentThemeIdForStandaloneTheme(): void
     {
-        $activeTheme = $this->createProvider('active', '')->getActiveTheme(self::SHOP_ID);
+        $activeTheme = $this->createProvider('active', '', $this->createColdCache())->getActiveTheme(self::SHOP_ID);
 
         $this->assertSame('active', $activeTheme->getId());
         $this->assertFalse($activeTheme->hasParentTheme());
-        $this->assertSame('', $activeTheme->getParentThemeId());
     }
 
-    public function testGetActiveThemeThrowsWhenNoThemeIsActive(): void
+    public function testGetActiveThemeThrowsAndCachesNothingWhenNoThemeIsActive(): void
+    {
+        $cache = $this->createMock(ActiveThemeCacheInterface::class);
+        $cache->method('get')->willThrowException(new CacheItemNotFoundException());
+        $cache->expects($this->never())->method('put');
+
+        $this->expectException(ActiveThemeNotFoundException::class);
+
+        $this->createProviderWithoutActiveTheme($cache)->getActiveTheme(self::SHOP_ID);
+    }
+
+    public function testGetActiveThemeIdReturnsActiveThemeId(): void
+    {
+        $provider = new ActiveThemeProvider(
+            $this->createStub(ThemeConfigurationDaoInterface::class),
+            $this->createStub(ThemeMetaDataByIdProviderInterface::class),
+            $this->createWarmCache(new ActiveTheme('cached')),
+        );
+
+        $this->assertSame('cached', $provider->getActiveThemeId(self::SHOP_ID));
+    }
+
+    public function testGetActiveThemeIdCachesActiveThemeOnMiss(): void
+    {
+        $cache = $this->createMock(ActiveThemeCacheInterface::class);
+        $cache->method('get')->willThrowException(new CacheItemNotFoundException());
+        $cache->expects($this->once())
+            ->method('put')
+            ->with(self::SHOP_ID, $this->callback(
+                static fn(ActiveTheme $theme): bool => $theme->getId() === 'active'
+                    && $theme->getParentThemeId() === 'parent'
+            ));
+
+        $this->assertSame(
+            'active',
+            $this->createProvider('active', 'parent', $cache)->getActiveThemeId(self::SHOP_ID)
+        );
+    }
+
+    public function testGetActiveThemeIdReturnsActiveThemeIdWithoutCachingWhenMetaDataIsNotLoadable(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('getAll')->willReturn([
+            'active' => (new ThemeConfiguration())->setId('active')->setActivated(true),
+        ]);
+
+        $metaDataProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
+        $metaDataProvider->method('getById')->willThrowException(new InvalidThemeMetaDataException());
+
+        $cache = $this->createMock(ActiveThemeCacheInterface::class);
+        $cache->method('get')->willThrowException(new CacheItemNotFoundException());
+        $cache->expects($this->never())->method('put');
+
+        $provider = new ActiveThemeProvider($dao, $metaDataProvider, $cache);
+
+        $this->assertSame('active', $provider->getActiveThemeId(self::SHOP_ID));
+    }
+
+    public function testGetActiveThemeIdThrowsWhenNoThemeIsActive(): void
     {
         $this->expectException(ActiveThemeNotFoundException::class);
 
-        $this->createProviderWithoutActiveTheme()->getActiveTheme(self::SHOP_ID);
+        $this->createProviderWithoutActiveTheme($this->createColdCache())->getActiveThemeId(self::SHOP_ID);
     }
 
-    public function testIsActiveIsTrueForTheActivatedTheme(): void
+    public function testIsActiveIsTrueForTheActiveTheme(): void
     {
-        $this->assertTrue($this->createProvider('active', '')->isActive('active', self::SHOP_ID));
+        $this->assertTrue(
+            $this->createProvider('active', '', $this->createColdCache())->isActive('active', self::SHOP_ID)
+        );
     }
 
     public function testIsActiveIsFalseForAnotherTheme(): void
     {
-        $this->assertFalse($this->createProvider('active', '')->isActive('other', self::SHOP_ID));
+        $this->assertFalse(
+            $this->createProvider('active', '', $this->createColdCache())->isActive('other', self::SHOP_ID)
+        );
     }
 
     public function testIsActiveIsFalseWhenNoThemeIsActive(): void
     {
-        $this->assertFalse($this->createProviderWithoutActiveTheme()->isActive('inactive', self::SHOP_ID));
+        $this->assertFalse(
+            $this->createProviderWithoutActiveTheme($this->createColdCache())->isActive('inactive', self::SHOP_ID)
+        );
     }
 
-    private function createProvider(string $themeId, string $parentThemeId): ActiveThemeProvider
-    {
+    private function createProvider(
+        string $themeId,
+        string $parentThemeId,
+        ActiveThemeCacheInterface $cache,
+    ): ActiveThemeProvider {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('getAll')->willReturn([
+            'inactive' => (new ThemeConfiguration())->setId('inactive'),
             $themeId => (new ThemeConfiguration())->setId($themeId)->setActivated(true),
         ]);
 
@@ -93,14 +173,30 @@ final class ActiveThemeProviderTest extends TestCase
             (new ThemeMetaData())->setId($themeId)->setParentTheme($parentThemeId)
         );
 
-        return new ActiveThemeProvider($dao, $metaDataProvider);
+        return new ActiveThemeProvider($dao, $metaDataProvider, $cache);
     }
 
-    private function createProviderWithoutActiveTheme(): ActiveThemeProvider
+    private function createProviderWithoutActiveTheme(ActiveThemeCacheInterface $cache): ActiveThemeProvider
     {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('getAll')->willReturn(['inactive' => (new ThemeConfiguration())->setId('inactive')]);
 
-        return new ActiveThemeProvider($dao, $this->createStub(ThemeMetaDataByIdProviderInterface::class));
+        return new ActiveThemeProvider($dao, $this->createStub(ThemeMetaDataByIdProviderInterface::class), $cache);
+    }
+
+    private function createWarmCache(ActiveTheme $activeTheme): ActiveThemeCacheInterface
+    {
+        $cache = $this->createStub(ActiveThemeCacheInterface::class);
+        $cache->method('get')->willReturn($activeTheme);
+
+        return $cache;
+    }
+
+    private function createColdCache(): ActiveThemeCacheInterface
+    {
+        $cache = $this->createStub(ActiveThemeCacheInterface::class);
+        $cache->method('get')->willThrowException(new CacheItemNotFoundException());
+
+        return $cache;
     }
 }

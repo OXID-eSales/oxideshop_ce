@@ -5,6 +5,9 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCache
 
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ActiveThemeCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ActiveThemeCache
+
   oxid_esales.theme.cache.invalidate_theme_cache_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\InvalidateThemeCacheEventSubscriber
     arguments:

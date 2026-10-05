@@ -8,6 +8,11 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ActiveThemeCacheInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ActiveThemeCache
 
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\MemoizedActiveThemeCache:
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ActiveThemeCacheInterface
+    tags:
+      - { name: kernel.event_subscriber }
+
   oxid_esales.theme.cache.invalidate_theme_cache_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\InvalidateThemeCacheEventSubscriber
     arguments:

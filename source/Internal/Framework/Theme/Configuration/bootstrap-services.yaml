@@ -16,6 +16,7 @@ services:
 
   oxid_esales.theme.configuration.node:
     class: Symfony\Component\Config\Definition\NodeInterface
+    lazy: true
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Definition\TreeBuilderFactoryInterface', 'create']
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface:

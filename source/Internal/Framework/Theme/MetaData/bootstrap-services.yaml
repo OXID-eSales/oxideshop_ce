@@ -7,6 +7,7 @@ services:
 
   oxid_esales.theme.metadata.node:
     class: Symfony\Component\Config\Definition\NodeInterface
+    lazy: true
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Definition\MetaDataTreeBuilderFactoryInterface', 'create']
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface:

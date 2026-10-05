@@ -33,6 +33,18 @@ final class UserComponentTest extends IntegrationTestCase
         $this->assertNotEmpty($this->fetchUserData()['OXACTIVE']);
     }
 
+    public function testCreateUserStoresSessionLoginToken(): void
+    {
+        $_POST = $this->getUserFormData();
+
+        $this->getUserComponent()->createUser();
+
+        $this->assertSame(
+            hash('sha256', $this->fetchUserData()['OXPASSWORD']),
+            Registry::getSession()->getVariable('login-token')
+        );
+    }
+
     public function testCreateUserWithPrivateSalesWillNotActivateUserAutomatically(): void
     {
         Registry::getConfig()->setConfigParam('blPsLoginEnabled', true);

@@ -29,8 +29,53 @@ final class UserTest extends IntegrationTestCase
 
     public function tearDown(): void
     {
-        unset($_SESSION['deladrid']);
+        unset($_SESSION['deladrid'], $_SESSION['usr'], $_SESSION['login-token']);
         parent::tearDown();
+    }
+
+    public function testLoginStoresSessionLoginToken(): void
+    {
+        $this->createUser();
+
+        oxNew(User::class)->login(self::USER_NAME, 'some-pass');
+
+        $this->assertSame(
+            hash('sha256', $this->loadUser()->getFieldData('oxpassword')),
+            Registry::getSession()->getVariable('login-token')
+        );
+    }
+
+    public function testLoadActiveUserKeepsUserLoggedInAfterLogin(): void
+    {
+        $this->createUser();
+
+        oxNew(User::class)->login(self::USER_NAME, 'some-pass');
+
+        $this->assertTrue(oxNew(User::class)->loadActiveUser());
+    }
+
+    public function testLoadActiveUserLogsOutAfterPasswordChange(): void
+    {
+        $this->createUser();
+        oxNew(User::class)->login(self::USER_NAME, 'some-pass');
+
+        $user = $this->loadUser();
+        $user->setPassword('changed-pass');
+        $user->save();
+
+        $this->assertFalse(oxNew(User::class)->loadActiveUser());
+    }
+
+    public function testLoadActiveUserLogsOutWithLegacyLoginToken(): void
+    {
+        $this->createUser();
+        Registry::getSession()->setVariable('usr', self::USER_ID);
+        Registry::getSession()->setVariable(
+            'login-token',
+            password_hash($this->loadUser()->getFieldData('oxpassword'), PASSWORD_BCRYPT, ['cost' => 4])
+        );
+
+        $this->assertFalse(oxNew(User::class)->loadActiveUser());
     }
 
     public function testSetPassword(): void
@@ -159,6 +204,7 @@ final class UserTest extends IntegrationTestCase
         $user->oxuser__oxusername = new Field(self::USER_NAME);
         $user->oxuser__oxshopid = new Field(Registry::getConfig()->getShopId());
         $user->oxuser__oxcity = new Field('Original city');
+        $user->oxuser__oxactive = new Field(1);
         $user->setPassword('some-pass');
         $user->save();
     }

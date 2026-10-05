@@ -21,6 +21,7 @@
 - Theme configuration moved from the database to YAML
   - Theme activation state and settings are now read from and written to YAML instead of the `oxconfig` table
   - `Config::getConfigParam()` no longer returns theme settings; use the theme setting service instead
+  - Theme settings are cached in the storefront
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
 

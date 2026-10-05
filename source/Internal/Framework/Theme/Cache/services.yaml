@@ -18,6 +18,9 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSourceCacheInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSourceCache
+
   oxid_esales.theme.cache.invalidate_theme_cache_event_subscriber:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\InvalidateThemeCacheEventSubscriber
     arguments:

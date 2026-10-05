@@ -107,6 +107,19 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
         $this->assertSame('child value', $translation);
     }
 
+    public function testTranslationsAreResolvedWithoutThemeConfigurationFilesWhenCacheIsWarm(): void
+    {
+        (new Language())->translateString('TEST_PARENT_THEME_MAP_ALIAS_KEY', 0);
+
+        $this->removeThemeConfiguration(self::PARENT_THEME_ID);
+        $this->removeThemeConfiguration(self::CHILD_THEME_ID);
+
+        $language = new Language();
+
+        $this->assertSame('from parent theme', $language->translateString('TEST_PARENT_THEME_MAP_ALIAS_KEY', 0));
+        $this->assertSame('child value', $language->translateString('TEST_SHARED_KEY', 0));
+    }
+
     private function getLangFileCacheName(): string
     {
         $method = new \ReflectionMethod(Language::class, 'getLangFileCacheName');
@@ -116,14 +129,23 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
 
     private function breakThemeConfiguration(string $themeId): void
     {
-        $configurationFilePath = Path::join(
+        file_put_contents($this->getThemeConfigurationFilePath($themeId), "themeSettings: [unclosed\n");
+        $this->get(ThemeConfigurationCacheInterface::class)->evict($themeId, self::SHOP_ID);
+    }
+
+    private function removeThemeConfiguration(string $themeId): void
+    {
+        unlink($this->getThemeConfigurationFilePath($themeId));
+        $this->get(ThemeConfigurationCacheInterface::class)->evict($themeId, self::SHOP_ID);
+    }
+
+    private function getThemeConfigurationFilePath(string $themeId): string
+    {
+        return Path::join(
             $this->get(BasicContextInterface::class)->getShopConfigurationDirectory(self::SHOP_ID),
             'themes',
             "$themeId.yaml"
         );
-
-        file_put_contents($configurationFilePath, "themeSettings: [unclosed\n");
-        $this->get(ThemeConfigurationCacheInterface::class)->evict($themeId, self::SHOP_ID);
     }
 
     private function installTheme(string $themeId): void

@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -19,6 +20,8 @@ use PHPUnit\Framework\TestCase;
 final class ThemeSettingCacheTest extends TestCase
 {
     use ContainerTrait;
+
+    private const SHOP_ID = 1;
 
     public function testPut(): void
     {
@@ -37,6 +40,18 @@ final class ThemeSettingCacheTest extends TestCase
 
         $this->expectException(CacheItemNotFoundException::class);
         $cache->get('nonExistent');
+    }
+
+    public function testShopCacheClearRemovesThemeSettings(): void
+    {
+        $cache = $this->getThemeSettingCache();
+        $cache->put('theme-apex-settings', ['showWishlist' => true]);
+
+        $this->get(ShopCacheCleanerInterface::class)->clear(self::SHOP_ID);
+
+        $this->expectException(CacheItemNotFoundException::class);
+
+        $cache->get('theme-apex-settings');
     }
 
     private function getThemeSettingCache(): ThemeSettingCacheInterface

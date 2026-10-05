@@ -16,7 +16,7 @@ services:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.environment_node'
 
   oxid_esales.theme.configuration.resolver_cache:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCache
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ResolvedThemeConfigurationCache
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolver

@@ -7,20 +7,17 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Migrations;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Migration\Fixtures\WithMigrations;
 
-use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
+use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Test migration to create data which could be used to check if Migrations actually works.
- */
 class Version20170530154603 extends AbstractMigration
 {
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE TABLE `test_doctrine_migration_wrapper` (`id` char(255) NOT NULL);');
-        $this->addSql("INSERT INTO `test_doctrine_migration_wrapper` (`id`) VALUES ('shop_migration');");
+        $this->addSql('CREATE TABLE `test_module_migration_table` (`id` char(255) NOT NULL);');
+        $this->addSql("INSERT INTO `test_module_migration_table` (`id`) VALUES ('module_migration');");
     }
 
     public function down(Schema $schema): void

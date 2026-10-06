@@ -3,17 +3,14 @@ services:
         autowire: true
         public: false
 
-    OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionFactoryInterface:
-        class: OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionFactory
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreatorInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCreator
 
-    OxidEsales\EshopCommunity\Internal\Setup\Database\ViewsGeneratorFactoryInterface:
-        class: OxidEsales\EshopCommunity\Internal\Setup\Database\ViewsGeneratorFactory
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiatorInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInitiator
 
-    OxidEsales\EshopCommunity\Internal\Setup\Database\ShopDbManagerInterface:
-        class: OxidEsales\EshopCommunity\Internal\Setup\Database\ShopDbManager
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstallerInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseInstaller
 
-    OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidatorInterface:
-        class: OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbConnectionValidator
-
-    OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbValidatorInterface:
-        class: OxidEsales\EshopCommunity\Internal\Setup\Database\SetupDbValidator
+    OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseCheckerInterface:
+        class: OxidEsales\EshopCommunity\Internal\Setup\Database\Service\DatabaseChecker

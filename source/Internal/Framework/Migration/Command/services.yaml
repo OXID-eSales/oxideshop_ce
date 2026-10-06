@@ -4,8 +4,5 @@ services:
     public: false
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\Command\DatabaseMigrateCommand:
-    arguments:
-      $migrationExecutor: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutor'
-      $taggedMigrationExecutor: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
     tags:
       - { name: 'console.command', command: 'oe:database:migrate' }

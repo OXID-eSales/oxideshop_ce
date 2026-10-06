@@ -9,23 +9,25 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
-readonly class CompositeMigrationExecutor implements MigrationExecutorInterface
+use Symfony\Component\Console\Output\OutputInterface;
+
+readonly class CompositeMigrationExecutor implements ConfigurableMigrationExecutorInterface
 {
     public function __construct(
-        private ConfigurableMigrationExecutorInterface $migrationExecutor,
-        private ConfigurableMigrationExecutorInterface $taggedMigrationExecutor,
         private MigrationExitCodeResolverInterface $exitCodeResolver,
+        private iterable $executors,
     ) {
     }
 
-    public function execute(): void
+    public function executeWithOptions(array $options = [], ?OutputInterface $output = null): int
     {
-        $migrationStatus = $this->migrationExecutor->executeWithOptions();
-        $taggedMigrationStatus = $this->taggedMigrationExecutor->executeWithOptions();
-        $status = $this->exitCodeResolver->combine($migrationStatus, $taggedMigrationStatus);
+        $status = 0;
 
-        if ($status !== 0) {
-            throw new MigrationExecutionFailedException($status);
+        foreach ($this->executors as $executor) {
+            $exitCode = $executor->executeWithOptions($options, $output);
+            $status = $this->exitCodeResolver->combine($status, $exitCode);
         }
+
+        return $status;
     }
 }

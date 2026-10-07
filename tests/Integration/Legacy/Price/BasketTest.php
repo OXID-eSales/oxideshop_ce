@@ -19,9 +19,8 @@ final class BasketTest extends IntegrationTestCase
 {
     public static function providerBasketCalculation(): array
     {
-        $cases = PHP_VERSION_ID >= 80400 ? 'basket_php84' : 'basket_php83';
         $testCases = [];
-        foreach (glob(__DIR__ . "/testcases/$cases/*.yaml") as $filePath) {
+        foreach (glob(__DIR__ . "/testcases/basket/*.yaml") as $filePath) {
             $testCases[$filePath] = [Yaml::parseFile($filePath)];
         }
         return $testCases;

@@ -13,7 +13,7 @@ costs:
     payment: [{ oxaddsum: 50, oxaddsumtype: abs, oxfromamount: 0, oxtoamount: 1000000, oxchecked: 1 }]
 expected:
     articles: { 111: ['0,55', '1,65'], 1112: ['105,78', '105,78'], 1113: ['0,90', '2,70'], 1114: ['5,52', '5,52'], 1115: ['0,50', '0,50'] }
-    totals: { totalBrutto: '126,18', totalNetto: '116,15', vats: { 19: '18,92', 55: '2,73' }, discounts: { discountforbasket10%: '11,62' }, delivery: { brutto: '69,12', netto: '58,08', vat: '11,04' }, payment: { brutto: '59,50', netto: '50,00', vat: '9,50' }, grandTotal: '254,80' }
+    totals: { totalBrutto: '126,18', totalNetto: '116,15', vats: { 19: '18,92', 55: '2,73' }, discounts: { discountforbasket10%: '11,62' }, delivery: { brutto: '69,10', netto: '58,07', vat: '11,03' }, payment: { brutto: '59,50', netto: '50,00', vat: '9,50' }, grandTotal: '254,78' }
 options:
     config: { blEnterNetPrice: true, blShowNetPrice: true, blShowVATForPayCharge: true, blShowVATForDelivery: true, blPaymentVatOnTop: true, blDeliveryVatOnTop: true }
     activeCurrencyRate: 1

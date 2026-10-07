@@ -17,36 +17,22 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThe
 readonly class ActiveThemeProvider implements ActiveThemeProviderInterface
 {
     public function __construct(
+        private string $activeThemeId,
+        private int $shopId,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
     ) {
     }
 
-    public function getActiveThemeId(int $shopId): string
+    public function getActiveTheme(): ActiveTheme
     {
-        foreach ($this->themeConfigurationDao->getAll($shopId) as $themeConfiguration) {
-            if ($themeConfiguration->isActivated()) {
-                return $themeConfiguration->getId();
-            }
+        if ($this->activeThemeId === '' || !$this->themeConfigurationDao->exists($this->activeThemeId, $this->shopId)) {
+            throw new ActiveThemeNotFoundException();
         }
 
-        throw new ActiveThemeNotFoundException();
-    }
-
-    public function getActiveTheme(int $shopId): ActiveTheme
-    {
-        $activeThemeId = $this->getActiveThemeId($shopId);
-
         return new ActiveTheme(
-            $activeThemeId,
-            $this->themeMetaDataByIdProvider->getById($activeThemeId, $shopId)->getParentTheme(),
+            $this->activeThemeId,
+            $this->themeMetaDataByIdProvider->getById($this->activeThemeId, $this->shopId)->getParentTheme(),
         );
-    }
-
-    public function isActive(string $themeId, int $shopId): bool
-    {
-        $themeConfigurations = $this->themeConfigurationDao->getAll($shopId);
-
-        return isset($themeConfigurations[$themeId]) && $themeConfigurations[$themeId]->isActivated();
     }
 }

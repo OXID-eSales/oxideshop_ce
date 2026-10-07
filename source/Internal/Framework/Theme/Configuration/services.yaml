@@ -25,6 +25,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationService
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\SettingValueMapperInterface:

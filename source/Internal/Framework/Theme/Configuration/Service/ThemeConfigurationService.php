@@ -13,7 +13,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 readonly class ThemeConfigurationService implements ThemeConfigurationServiceInterface
@@ -21,7 +20,7 @@ readonly class ThemeConfigurationService implements ThemeConfigurationServiceInt
     public function __construct(
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao,
-        private ActiveThemeProviderInterface $activeThemeProvider,
+        private string $activeThemeId,
         private ContextInterface $context,
     ) {
     }
@@ -33,9 +32,7 @@ readonly class ThemeConfigurationService implements ThemeConfigurationServiceInt
 
     public function getActiveConfiguration(): ThemeConfiguration
     {
-        return $this->getConfiguration(
-            $this->activeThemeProvider->getActiveThemeId($this->context->getCurrentShopId())
-        );
+        return $this->getConfiguration($this->activeThemeId);
     }
 
     public function getEnvironmentSettingValues(string $themeId): array

@@ -29,11 +29,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServic
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class ProductMediaViewServiceTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
+
     private const CONFIG_KEY_ICON_SIZE = 'iconSize';
     private const CONFIG_KEY_THUMBNAIL_SIZE = 'thumbnailSize';
     private const CONFIG_KEY_DETAIL_IMAGE_SIZE = 'detailImageSize';
@@ -48,6 +51,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     public function setUp(): void
     {
+        $this->setActiveThemeParameter('testTheme');
         parent::setUp();
 
         $context = $this->get(ContextInterface::class);
@@ -58,6 +62,12 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $this->productId = Id::generate();
         $this->configureImageSettings();
         $this->setupTestData();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->unsetActiveThemeParameter();
     }
 
     public function testGetIconReturnsMediaViewWithAllUrls(): void
@@ -408,7 +418,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     {
         $themeId = 'testTheme';
         $this->get(ThemeConfigurationDaoInterface::class)->save(
-            (new ThemeConfiguration())->setId($themeId)->setSource($this->getTestThemeSource())->setActivated(true),
+            (new ThemeConfiguration())->setId($themeId)->setSource($this->getTestThemeSource()),
             $shopId
         );
 
@@ -481,7 +491,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
     private function configureImageSettings(): void
     {
         $configuration = new ThemeConfiguration();
-        $configuration->setId($this->themeId)->setSource($this->getTestThemeSource())->setActivated(true);
+        $configuration->setId($this->themeId)->setSource($this->getTestThemeSource());
 
         foreach ([
             self::CONFIG_KEY_ICON_SIZE => '87*87',

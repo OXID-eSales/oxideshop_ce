@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeEnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationService;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
@@ -125,9 +124,6 @@ final class ThemeConfigurationServiceTest extends TestCase
         ThemeConfigurationDaoInterface $dao,
         ?ThemeEnvironmentConfigurationDaoInterface $environmentConfigurationDao = null,
     ): ThemeConfigurationService {
-        $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);
-        $activeThemeProvider->method('getActiveThemeId')->willReturn(self::THEME_ID);
-
         $context = $this->createStub(ContextInterface::class);
         $context->method('getCurrentShopId')->willReturn(self::SHOP_ID);
 
@@ -141,7 +137,7 @@ final class ThemeConfigurationServiceTest extends TestCase
         return new ThemeConfigurationService(
             $dao,
             $environmentConfigurationDao,
-            $activeThemeProvider,
+            self::THEME_ID,
             $context
         );
     }

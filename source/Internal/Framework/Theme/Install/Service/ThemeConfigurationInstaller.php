@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Exception\ThemeConfigurationInstallException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface;
@@ -24,7 +25,6 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         private ThemeMetaDataProviderInterface $metaDataProvider,
         private ThemeConfigurationProviderInterface $configurationProvider,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private ThemeConfigurationMergerInterface $merger,
         private ConfiguredShopIdProviderInterface $configuredShopIdProvider,
         private BasicContextInterface $context,
     ) {
@@ -43,7 +43,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
                 $configuration = clone $defaultConfiguration;
 
                 if ($this->themeConfigurationDao->exists($configuration->getId(), $shopId)) {
-                    $configuration = $this->merger->merge(
+                    $this->keepCustomisedValues(
                         $configuration,
                         $this->themeConfigurationDao->get($configuration->getId(), $shopId)
                     );
@@ -86,6 +86,16 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         }
 
         return true;
+    }
+
+    private function keepCustomisedValues(ThemeConfiguration $configuration, ThemeConfiguration $installed): void
+    {
+        foreach ($configuration->getThemeSettings() as $setting) {
+            $installedSetting = $installed->getSettingByName($setting->getName());
+            if ($installedSetting !== null) {
+                $setting->setValue($installedSetting->getValue());
+            }
+        }
     }
 
     /**

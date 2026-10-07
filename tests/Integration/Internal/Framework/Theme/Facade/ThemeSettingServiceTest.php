@@ -17,13 +17,28 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServic
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class ThemeSettingServiceTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
+
     private const SHOP_ID = 1;
     private const THEME_ID = 'testTheme';
+
+    public function setUp(): void
+    {
+        $this->setActiveThemeParameter(self::THEME_ID, self::SHOP_ID);
+        parent::setUp();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->unsetActiveThemeParameter(self::SHOP_ID);
+    }
 
     public function testGetStringReturnsSavedValue(): void
     {
@@ -144,7 +159,6 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
         $configuration = (new ThemeConfiguration())
             ->setId(self::THEME_ID)
             ->setSource(Path::makeRelative($themePath, $context->getShopRootPath()))
-            ->setActivated(true)
             ->addThemeSetting($setting);
 
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, self::SHOP_ID);

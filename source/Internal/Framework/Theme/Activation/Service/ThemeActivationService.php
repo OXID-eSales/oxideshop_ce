@@ -7,9 +7,11 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service;
 
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -17,6 +19,7 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
 {
     public function __construct(
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
+        private ParameterDaoInterface $parameterDao,
         private EventDispatcherInterface $eventDispatcher,
         private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker,
     ) {
@@ -24,24 +27,15 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
 
     public function activate(string $themeId, int $shopId): void
     {
-        $themeConfiguration = $this->themeConfigurationDao->get($themeId, $shopId);
+        if (!$this->themeConfigurationDao->exists($themeId, $shopId)) {
+            throw new ThemeConfigurationNotFoundException(
+                sprintf('Theme configuration "%s" not found for shop %d', $themeId, $shopId)
+            );
+        }
         $this->themeParentCompatibilityChecker->validate($themeId, $shopId);
 
-        $this->deactivateActiveThemes($themeId, $shopId);
-
-        $themeConfiguration->setActivated(true);
-        $this->themeConfigurationDao->save($themeConfiguration, $shopId);
+        $this->parameterDao->add('oxid_esales.theme.active', $themeId, $shopId);
 
         $this->eventDispatcher->dispatch(new ThemeActivatedEvent($shopId, $themeId));
-    }
-
-    private function deactivateActiveThemes(string $exceptThemeId, int $shopId): void
-    {
-        foreach ($this->themeConfigurationDao->getAll($shopId) as $themeConfiguration) {
-            if ($themeConfiguration->getId() !== $exceptThemeId && $themeConfiguration->isActivated()) {
-                $themeConfiguration->setActivated(false);
-                $this->themeConfigurationDao->save($themeConfiguration, $shopId);
-            }
-        }
     }
 }

@@ -4,4 +4,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewService
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
     public: true

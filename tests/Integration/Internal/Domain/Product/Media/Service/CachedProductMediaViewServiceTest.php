@@ -30,11 +30,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class CachedProductMediaViewServiceTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
+
     private ProductMediaViewServiceInterface $viewService;
     private ProductMediaServiceInterface $productMediaService;
     private MediaAttributeServiceInterface $mediaAttributeService;
@@ -43,6 +46,7 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
 
     public function setUp(): void
     {
+        $this->setActiveThemeParameter('testTheme');
         parent::setUp();
 
         $this->shopId = $this->get(ContextInterface::class)->getCurrentShopId();
@@ -52,6 +56,12 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
         $this->mediaAttributeService = $this->get(MediaAttributeServiceInterface::class);
 
         $this->configureImageSettings();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->unsetActiveThemeParameter();
     }
 
     public function testReturnsCachedViewWhenMediaChangesWithoutNotification(): void
@@ -256,7 +266,7 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     {
         $themeId = 'testTheme';
         $this->get(ThemeConfigurationDaoInterface::class)->save(
-            (new ThemeConfiguration())->setId($themeId)->setSource($this->getTestThemeSource())->setActivated(true),
+            (new ThemeConfiguration())->setId($themeId)->setSource($this->getTestThemeSource()),
             $shopId
         );
 
@@ -303,7 +313,7 @@ final class CachedProductMediaViewServiceTest extends IntegrationTestCase
     private function configureImageSettings(): void
     {
         $configuration = new ThemeConfiguration();
-        $configuration->setId($this->themeId)->setSource($this->getTestThemeSource())->setActivated(true);
+        $configuration->setId($this->themeId)->setSource($this->getTestThemeSource());
 
         foreach ([
             'iconSize' => '87*87',

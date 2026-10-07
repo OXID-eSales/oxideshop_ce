@@ -17,6 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -26,14 +27,23 @@ use Symfony\Component\Filesystem\Path;
 #[Group('manufacturer')]
 final class ManufacturerTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
+
     private string $oxid = 'id1';
     private Manufacturer $manufacturer;
     private Filesystem $filesystem;
 
     public function setUp(): void
     {
+        $this->setActiveThemeParameter('testTheme');
         parent::setUp();
         $this->filesystem = new Filesystem();
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->unsetActiveThemeParameter();
     }
 
     #[DataProvider('provideImageTypeData')]
@@ -255,8 +265,7 @@ final class ManufacturerTest extends IntegrationTestCase
         );
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource($themeSource)
-            ->setActivated(true);
+            ->setSource($themeSource);
         $configuration->addThemeSetting(
             (new Setting())->setName($configParam)->setType('bool')->setValue(false)
         );

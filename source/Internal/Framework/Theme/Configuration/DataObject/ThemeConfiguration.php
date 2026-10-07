@@ -15,7 +15,6 @@ class ThemeConfiguration
 {
     private string $id;
     private string $source;
-    private bool $activated = false;
     private string $title = '';
     private array $themeSettings = [];
 
@@ -38,17 +37,6 @@ class ThemeConfiguration
     public function setSource(string $source): self
     {
         $this->source = $source;
-        return $this;
-    }
-
-    public function isActivated(): bool
-    {
-        return $this->activated;
-    }
-
-    public function setActivated(bool $activated): self
-    {
-        $this->activated = $activated;
         return $this;
     }
 

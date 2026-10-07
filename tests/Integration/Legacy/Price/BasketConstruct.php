@@ -26,6 +26,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Model\BaseModel;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
@@ -154,10 +155,10 @@ class BasketConstruct
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
             ->setSource($themeSource)
-            ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
 
         ContainerFacade::get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
+        ContainerFacade::get(ThemeActivationServiceInterface::class)->activate('testTheme', $shopId);
     }
 
     public function createObj2Obj(array $data, string $object2ObjectTable): void

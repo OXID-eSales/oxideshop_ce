@@ -19,7 +19,8 @@
 
 ### Changed
 - Theme configuration moved from the database to YAML
-  - Theme activation state and settings are now read from and written to YAML instead of the `oxconfig` table
+  - Theme settings are now read from and written to YAML instead of the `oxconfig` table
+  - The active theme is the per-shop parameter `oxid_esales.theme.active` in `var/configuration/shops/<shop-id>/parameters.yaml`
   - `Config::getConfigParam()` no longer returns theme settings; use the theme setting service instead
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`

@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\ShopControl;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidEshopPackage;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
@@ -35,8 +36,7 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
         $shopRootPath = $this->get(BasicContextInterface::class)->getShopRootPath();
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource(Path::makeRelative($themePath, $shopRootPath))
-            ->setActivated(true);
+            ->setSource(Path::makeRelative($themePath, $shopRootPath));
         $configuration->addThemeSetting(
             (new Setting())->setName('defaultListDisplayType')->setType('str')->setValue('infogrid')
         );
@@ -48,6 +48,7 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
         );
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
+        $this->get(ThemeActivationServiceInterface::class)->activate('testTheme', $shopId);
 
 	    $_GET['searchparam'] = '';
 	    $_GET['page'] = '';

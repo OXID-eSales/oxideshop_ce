@@ -9,15 +9,14 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\View;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCompatibilityException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCycleException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentDepthExceededException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCycleException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentDepthExceededException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use Psr\Log\LoggerInterface;
 
 readonly class ThemeViewService implements ThemeViewServiceInterface
@@ -25,7 +24,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
     public function __construct(
         private ThemeMetaDataByIdProviderInterface $themeMetaDataByIdProvider,
         private ThemeParentCompatibilityCheckerInterface $themeParentCompatibilityChecker,
-        private ActiveThemeProviderInterface $activeThemeProvider,
+        private string $activeThemeId,
         private LoggerInterface $logger,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
     ) {
@@ -43,7 +42,7 @@ readonly class ThemeViewService implements ThemeViewServiceInterface
             $metaData->getAuthor(),
             $metaData->getVersion(),
             $metaData->getParentTheme(),
-            $this->activeThemeProvider->isActive($themeId, $shopId),
+            $themeId === $this->activeThemeId,
         );
     }
 

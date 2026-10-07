@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\View;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 
 interface ThemeViewServiceInterface
 {

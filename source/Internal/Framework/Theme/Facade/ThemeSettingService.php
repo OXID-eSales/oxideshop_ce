@@ -11,9 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 readonly class ThemeSettingService implements ThemeSettingServiceInterface
@@ -22,7 +22,7 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
         private ContextInterface $context,
         private ThemeConfigurationResolverInterface $themeConfigurationResolver,
         private ThemeSettingCacheInterface $themeSettingCache,
-        private ActiveThemeProviderInterface $activeThemeProvider,
+        private string $activeThemeId,
     ) {
     }
 
@@ -75,27 +75,35 @@ readonly class ThemeSettingService implements ThemeSettingServiceInterface
 
     private function getSettingData(string $name): array
     {
-        $shopId = $this->context->getCurrentShopId();
-
-        try {
-            $themeId = $this->activeThemeProvider->getActiveThemeId($shopId);
-        } catch (ActiveThemeNotFoundException) {
+        if ($this->activeThemeId === '') {
             return ['exists' => false, 'value' => null];
         }
 
-        $cacheKey = 'theme-' . $themeId . '-setting-' . $name;
+        $cacheKey = 'theme-' . $this->activeThemeId . '-setting-' . $name;
 
         try {
             return $this->themeSettingCache->get($cacheKey);
         } catch (CacheItemNotFoundException) {
-            $setting = $this->themeConfigurationResolver->resolve($themeId, $shopId)->getSettingByName($name);
-            $settingData = [
-                'exists' => $setting !== null,
-                'value' => $setting?->getValue(),
-            ];
+            $settingData = $this->resolveSettingData($name);
             $this->themeSettingCache->put($cacheKey, $settingData);
 
             return $settingData;
         }
+    }
+
+    private function resolveSettingData(string $name): array
+    {
+        try {
+            $setting = $this->themeConfigurationResolver
+                ->resolve($this->activeThemeId, $this->context->getCurrentShopId())
+                ->getSettingByName($name);
+        } catch (ThemeConfigurationNotFoundException) {
+            return ['exists' => false, 'value' => null];
+        }
+
+        return [
+            'exists' => $setting !== null,
+            'value' => $setting?->getValue(),
+        ];
     }
 }

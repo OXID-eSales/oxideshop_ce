@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInt
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
@@ -249,15 +249,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if (defined('OX_ADMIN_DIR')) {
             $this->setConfigParam('sAdminDir', OX_ADMIN_DIR);
-        }
-    }
-
-    private function getActiveThemeId(int $shopId): ?string
-    {
-        try {
-            return ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveThemeId($shopId);
-        } catch (ActiveThemeNotFoundException) {
-            return null;
         }
     }
 
@@ -933,7 +924,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if (is_null($theme)) {
-            $theme = $this->getActiveThemeId((int) $shop);
+            $theme = ContainerFacade::getParameter('oxid_esales.theme.active') ?: null;
         }
 
         if ($admin) {
@@ -1023,7 +1014,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         try {
-            $activeTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveTheme((int) $shop);
+            $activeTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveTheme();
         } catch (ActiveThemeNotFoundException | ThemeNotLoadableException) {
             return false;
         }

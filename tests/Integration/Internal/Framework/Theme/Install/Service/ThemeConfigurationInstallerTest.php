@@ -14,7 +14,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstaller;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationMergerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
@@ -56,16 +55,6 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
         $dao = $this->get(ThemeConfigurationDaoInterface::class);
         $this->assertTrue($dao->exists($this->themeId, 1));
         $this->assertTrue($dao->exists($this->themeId, 2));
-    }
-
-    public function testInstallSetsActivatedToFalseByDefault(): void
-    {
-        $this->get(ThemeConfigurationInstallerInterface::class)->install($this->themePath);
-
-        $configuration = $this->get(ThemeConfigurationDaoInterface::class)
-            ->get($this->themeId, $this->get(BasicContextInterface::class)->getDefaultShopId());
-
-        $this->assertFalse($configuration->isActivated());
     }
 
     public function testInstallWritesDefaultSettingValues(): void
@@ -169,7 +158,6 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
             $this->get(ThemeMetaDataProviderInterface::class),
             $this->get(ThemeConfigurationProviderInterface::class),
             $dao,
-            $this->get(ThemeConfigurationMergerInterface::class),
             $shopIdProvider,
             $context,
         );
@@ -177,7 +165,6 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
         $installer->install($this->themePath);
 
         $shop1Config = $dao->get($this->themeId, 1);
-        $shop1Config->setActivated(true);
         foreach ($shop1Config->getThemeSettings() as $setting) {
             if ($setting->getName() === 'testStringSetting') {
                 $setting->setValue('shop1custom');
@@ -188,8 +175,6 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
         $installer->install($this->themePath);
 
         $reinstalledShop2 = $dao->get($this->themeId, 2);
-
-        $this->assertFalse($reinstalledShop2->isActivated(), 'Shop 2 must not inherit shop 1 activated state');
 
         $settings = [];
         foreach ($reinstalledShop2->getThemeSettings() as $setting) {

@@ -14,12 +14,15 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Path;
 
 final class DynamicImageGeneratorTest extends IntegrationTestCase
 {
+    use ContainerTrait;
+
     private const PARENT_THEME_ID = 'imageParentTheme';
     private const CHILD_THEME_ID = 'imageChildTheme';
 
@@ -148,10 +151,10 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
         $this->get(ThemeConfigurationDaoInterface::class)->save(
             (new ThemeConfiguration())
                 ->setId($themeId)
-                ->setSource(Path::makeRelative($themePath, $context->getShopRootPath()))
-                ->setActivated(true),
+                ->setSource(Path::makeRelative($themePath, $context->getShopRootPath())),
             $this->get(ContextInterface::class)->getCurrentShopId()
         );
+        $this->setParameter('oxid_esales.theme.active', $themeId);
     }
 
     private function activateChildThemeWithParentDeclaringSize(string $settingName, string $value): void
@@ -173,10 +176,10 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
         $dao->save(
             (new ThemeConfiguration())
                 ->setId(self::CHILD_THEME_ID)
-                ->setSource(Path::makeRelative($childPath, $context->getShopRootPath()))
-                ->setActivated(true),
+                ->setSource(Path::makeRelative($childPath, $context->getShopRootPath())),
             $shopId
         );
+        $this->setParameter('oxid_esales.theme.active', self::CHILD_THEME_ID);
     }
 
     private function createTestMasterImage(): void

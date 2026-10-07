@@ -29,7 +29,6 @@ final class ThemeConfigurationDataMapperTest extends TestCase
 
         $this->assertSame('', $config->getTitle());
         $this->assertSame('', $config->getSource());
-        $this->assertFalse($config->isActivated());
         $this->assertFalse($config->hasThemeSettings());
     }
 
@@ -61,7 +60,6 @@ final class ThemeConfigurationDataMapperTest extends TestCase
     {
         $original = [
             'source'        => 'Application/views/apex',
-            'activated'     => true,
             'title'         => 'APEX Theme',
             'themeSettings' => [
                 'setting1' => [

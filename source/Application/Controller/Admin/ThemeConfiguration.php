@@ -20,7 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\Settin
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidatorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use Symfony\Component\HttpFoundation\Request;
 
 class ThemeConfiguration extends AdminDetailsController
@@ -51,7 +50,7 @@ class ThemeConfiguration extends AdminDetailsController
             $this->_aViewData['themeId'] = $configuration->getId();
             $this->_aViewData['themeTitle'] = $configuration->getTitle() ?: $configuration->getId();
             $this->_aViewData['settingGroups'] = $this->buildSettingGroups($configuration, $environmentValues);
-        } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
+        } catch (ThemeConfigurationNotFoundException) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         }
 
@@ -69,7 +68,7 @@ class ThemeConfiguration extends AdminDetailsController
                 $configuration,
                 $this->settingValueMapper->fromFormValues($configuration, $this->getValidSettingValues())
             );
-        } catch (ActiveThemeNotFoundException | ThemeConfigurationNotFoundException) {
+        } catch (ThemeConfigurationNotFoundException) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         } catch (EnvironmentOverriddenSettingException) {
             Registry::getUtilsView()->addErrorToDisplay('THEME_SETTING_ENVIRONMENT_OVERRIDDEN_ERROR');

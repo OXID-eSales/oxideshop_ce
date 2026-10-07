@@ -12,12 +12,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Facade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\CacheItemNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -189,17 +188,22 @@ final class ThemeSettingServiceTest extends TestCase
 
     public function testExistsReturnsFalseWithoutActiveTheme(): void
     {
-        $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);
-        $activeThemeProvider->method('getActiveThemeId')->willThrowException(new ActiveThemeNotFoundException());
-
         $service = new ThemeSettingService(
             $this->createContext(),
             $this->createStub(ThemeConfigurationResolverInterface::class),
             $this->createCacheMiss(),
-            $activeThemeProvider
+            ''
         );
 
         $this->assertFalse($service->exists('logoFile'));
+    }
+
+    public function testExistsReturnsFalseWhenActiveThemeConfigurationIsMissing(): void
+    {
+        $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
+        $resolver->method('resolve')->willThrowException(new ThemeConfigurationNotFoundException());
+
+        $this->assertFalse($this->createService(resolver: $resolver)->exists('logoFile'));
     }
 
     private function createServiceWithSetting(
@@ -229,14 +233,11 @@ final class ThemeSettingServiceTest extends TestCase
         ?ThemeSettingCacheInterface $cache = null,
         ?ThemeConfigurationResolverInterface $resolver = null,
     ): ThemeSettingService {
-        $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);
-        $activeThemeProvider->method('getActiveThemeId')->willReturn(self::THEME_ID);
-
         return new ThemeSettingService(
             $this->createContext(),
             $resolver ?? $this->createStub(ThemeConfigurationResolverInterface::class),
             $cache ?? $this->createCacheMiss(),
-            $activeThemeProvider
+            self::THEME_ID
         );
     }
 

@@ -1,13 +1,15 @@
 imports:
   - { resource: MetaData/services.yaml }
-  - { resource: Setup/services.yaml }
+  - { resource: Activation/services.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Configuration/services.yaml }
   - { resource: Path/services.yaml }
   - { resource: View/services.yaml }
 
 parameters:
+  oxid_esales.theme.active: ''
   oxid_esales.theme.admin.name: 'admin_twig'
+
   oxid_esales.theme.admin.media.image_grid_size: '400*400'
   oxid_esales.theme.admin.media.image_zoom_size: '800*800'
   oxid_esales.theme.media.allowed_image_sizes:
@@ -26,12 +28,19 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProvider
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
+      $shopId: '%oxid_esales.current_shop_id%'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
     tags:
       - { name: 'console.command', command: 'oe:theme:activate' }

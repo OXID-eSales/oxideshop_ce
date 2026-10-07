@@ -15,7 +15,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Exception\ThemeConfigurationInstallException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstaller;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationMerger;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
@@ -57,6 +56,25 @@ final class ThemeConfigurationInstallerTest extends TestCase
 
         $this->assertSettingValue('shop1CustomValue', 'testSetting', $savedConfigs[1]);
         $this->assertSettingValue('defaultValue', 'testSetting', $savedConfigs[2]);
+    }
+
+    public function testReinstallKeepsCustomisedValueButTakesPackageSettingType(): void
+    {
+        $installedSetting = (new Setting())->setName('testSetting')->setType('bool')->setValue('customValue');
+        $installed = (new ThemeConfiguration())->setId('testTheme')->addThemeSetting($installedSetting);
+
+        $savedConfigs = [];
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+        $dao->method('get')->willReturn($installed);
+        $dao->method('save')->willReturnCallback(function (ThemeConfiguration $config, int $shopId) use (&$savedConfigs) {
+            $savedConfigs[$shopId] = $config;
+        });
+
+        $this->createInstaller($dao, shopIds: [1])->install($this->themePath);
+
+        $this->assertSettingValue('customValue', 'testSetting', $savedConfigs[1]);
+        $this->assertSame('str', $savedConfigs[1]->getSettingByName('testSetting')->getType());
     }
 
     public function testInstallThrowsWhenShopFails(): void
@@ -144,7 +162,6 @@ final class ThemeConfigurationInstallerTest extends TestCase
             $metaDataProvider,
             $configurationProvider,
             $dao,
-            new ThemeConfigurationMerger(),
             $shopIdProvider,
             $context,
         );

@@ -24,9 +24,9 @@ class TestContainerFactory implements ContainerProviderInterface
 {
     private static $symfonyContainer;
 
-    public function create(): SymfonyContainerBuilder
+    public function create(?int $shopId = null): SymfonyContainerBuilder
     {
-        $shopId = (new ShopIdCalculator(new UtilsServer()))->getShopId();
+        $shopId ??= (new ShopIdCalculator(new UtilsServer()))->getShopId();
         $contextStub = new ContextStub($shopId);
 
         $container = (new ContainerBuilder($contextStub, $shopId))->getContainer();

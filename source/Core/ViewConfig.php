@@ -14,9 +14,6 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 /**
  * View config data access class. Keeps most
@@ -1205,22 +1202,9 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         return (bool) Registry::getConfig()->getConfigParam($sParamName);
     }
 
-    /**
-     * Returns active theme name
-     *
-     * @return string
-     */
-    public function getActiveTheme()
+    public function getActiveTheme(): string
     {
-        if ($this->_sActiveTheme === null) {
-            try {
-                $this->_sActiveTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveThemeId(
-                    ContainerFacade::get(ContextInterface::class)->getCurrentShopId()
-                );
-            } catch (ActiveThemeNotFoundException) {
-                $this->_sActiveTheme = '';
-            }
-        }
+        $this->_sActiveTheme ??= ContainerFacade::getParameter('oxid_esales.theme.active');
 
         return $this->_sActiveTheme;
     }

@@ -5,12 +5,12 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCompatibilityException;
 
 interface ThemeActivationServiceInterface
 {
@@ -21,4 +21,6 @@ interface ThemeActivationServiceInterface
      * @throws ThemeParentCompatibilityException
      */
     public function activate(string $themeId, int $shopId): void;
+
+    public function deactivate(string $themeId, int $shopId): void;
 }

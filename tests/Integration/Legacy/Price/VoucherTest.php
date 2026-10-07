@@ -28,11 +28,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class VoucherTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
+
     private const FIRST_VOUCHER_ID = 'testVoucherId1';
     private const SECOND_VOUCHER_ID = 'testVoucherId2';
     private const FIRST_VOUCHER_SERIES_ID = 'testVoucherSeries1';
@@ -49,6 +52,7 @@ final class VoucherTest extends IntegrationTestCase
 
     public function setUp(): void
     {
+        $this->setActiveThemeParameter('testTheme');
         parent::setUp();
 
         $this->installThemeDefaults();
@@ -205,10 +209,15 @@ final class VoucherTest extends IntegrationTestCase
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
             ->setSource($themeSource)
-            ->setActivated(true)
             ->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
 
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->unsetActiveThemeParameter();
     }
 
     private function createVoucherSeries(string $seriesId, int $discount, bool $calculateOnce): void

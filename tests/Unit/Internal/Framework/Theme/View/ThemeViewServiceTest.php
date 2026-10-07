@@ -9,16 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\View;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCompatibilityException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCycleException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentDepthExceededException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCycleException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentDepthExceededException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewService;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +37,7 @@ final class ThemeViewServiceTest extends TestCase
             ->setAuthor('OXID')
             ->setVersion('1.2.3');
 
-        $theme = $this->createService(['child' => $metaData], active: true)->getTheme('child', self::SHOP_ID);
+        $theme = $this->createService(['child' => $metaData], activeThemeId: 'child')->getTheme('child', self::SHOP_ID);
 
         $this->assertSame('child', $theme->getId());
         $this->assertSame('Child', $theme->getTitle());
@@ -51,7 +50,7 @@ final class ThemeViewServiceTest extends TestCase
 
     public function testGetThemeReportsInactiveTheme(): void
     {
-        $theme = $this->createService(['child' => $this->metaData('child')], active: false)
+        $theme = $this->createService(['child' => $this->metaData('child')], activeThemeId: 'other')
             ->getTheme('child', self::SHOP_ID);
 
         $this->assertFalse($theme->isActive());
@@ -101,7 +100,7 @@ final class ThemeViewServiceTest extends TestCase
         $service = new ThemeViewService(
             $metaDataProvider,
             $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
-            $this->createStub(ActiveThemeProviderInterface::class),
+            '',
             $this->createStub(LoggerInterface::class),
             $this->createStub(ThemeConfigurationDaoInterface::class)
         );
@@ -146,7 +145,7 @@ final class ThemeViewServiceTest extends TestCase
     {
         $parentTheme = $this->createService(
             ['child' => $this->metaData('child', 'parent')],
-            active: true,
+            activeThemeId: 'child',
             checker: $this->throwingChecker(new ThemeParentCompatibilityException('parent removed'))
         )->getParentTheme('child', self::SHOP_ID);
 
@@ -184,7 +183,7 @@ final class ThemeViewServiceTest extends TestCase
         $service = new ThemeViewService(
             $metaDataProvider,
             $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
-            $this->createStub(ActiveThemeProviderInterface::class),
+            '',
             $logger,
             $this->configurationDao(['apex', 'broken'])
         );
@@ -224,7 +223,7 @@ final class ThemeViewServiceTest extends TestCase
     /** @param ThemeMetaData[] $metaDataById */
     private function createService(
         array $metaDataById,
-        bool $active = false,
+        string $activeThemeId = '',
         ?ThemeParentCompatibilityCheckerInterface $checker = null,
         array $configuredThemeIds = []
     ): ThemeViewService {
@@ -233,13 +232,10 @@ final class ThemeViewServiceTest extends TestCase
             fn (string $themeId): ThemeMetaData => $metaDataById[$themeId] ?? $this->metaData($themeId)
         );
 
-        $activeThemeProvider = $this->createStub(ActiveThemeProviderInterface::class);
-        $activeThemeProvider->method('isActive')->willReturn($active);
-
         return new ThemeViewService(
             $metaDataProvider,
             $checker ?? $this->createStub(ThemeParentCompatibilityCheckerInterface::class),
-            $activeThemeProvider,
+            $activeThemeId,
             $this->createStub(LoggerInterface::class),
             $this->configurationDao($configuredThemeIds)
         );

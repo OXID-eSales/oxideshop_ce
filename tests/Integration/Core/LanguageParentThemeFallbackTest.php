@@ -13,14 +13,15 @@ use OxidEsales\Eshop\Core\Language;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class LanguageParentThemeFallbackTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
     use ContainerTrait;
 
     private const SHOP_ID = 1;
@@ -33,11 +34,10 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
+        $this->switchActiveTheme(self::CHILD_THEME_ID);
 
         $this->installTheme(self::PARENT_THEME_ID);
         $this->installTheme(self::CHILD_THEME_ID);
-        $this->get(ThemeActivationServiceInterface::class)->activate(self::CHILD_THEME_ID, self::SHOP_ID);
     }
 
     public function testChildThemeInheritsLanguageFileFromParentTheme(): void
@@ -79,7 +79,7 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
     {
         $childThemeCacheKey = $this->getLangFileCacheName();
 
-        $this->get(ThemeActivationServiceInterface::class)->activate(self::PARENT_THEME_ID, self::SHOP_ID);
+        $this->switchActiveTheme(self::PARENT_THEME_ID);
         $standaloneParentThemeCacheKey = $this->getLangFileCacheName();
 
         $this->assertStringEndsWith('_' . self::PARENT_THEME_ID . '_' . self::CHILD_THEME_ID . '_default', $childThemeCacheKey);
@@ -90,7 +90,7 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
     {
         $childThemeTranslation = (new Language())->translateString('TEST_SHARED_KEY', 0);
 
-        $this->get(ThemeActivationServiceInterface::class)->activate(self::PARENT_THEME_ID, self::SHOP_ID);
+        $this->switchActiveTheme(self::PARENT_THEME_ID);
         $standaloneParentThemeTranslation = (new Language())->translateString('TEST_SHARED_KEY', 0);
 
         $this->assertSame('child value', $childThemeTranslation);
@@ -105,6 +105,17 @@ final class LanguageParentThemeFallbackTest extends IntegrationTestCase
         $translation = (new Language())->translateString('TEST_SHARED_KEY', 0);
 
         $this->assertSame('child value', $translation);
+    }
+
+    private function switchActiveTheme(string $themeId): void
+    {
+        $this->setActiveThemeParameter($themeId, self::SHOP_ID);
+        $this->useFixtureShopSource();
+    }
+
+    private function useFixtureShopSource(): void
+    {
+        $this->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
     }
 
     private function getLangFileCacheName(): string

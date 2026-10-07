@@ -29,12 +29,6 @@ final class TreeBuilderFactoryTest extends TestCase
     public static function invalidTypedValueProvider(): array
     {
         return [
-            'activated must be boolean' => [
-                [
-                    'source' => 'Application/views/testTheme',
-                    'activated' => 'true',
-                ],
-            ],
             'position must be integer' => [
                 [
                     'source' => 'Application/views/testTheme',

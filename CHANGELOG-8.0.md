@@ -27,6 +27,7 @@
 - Theme settings and the active theme are stored in YAML files instead of the database
   - Theme settings are read from and written to YAML instead of the `oxconfig` table
   - Standard theme settings were renamed to remove Hungarian notation, e.g. `bl_showWishlist` is now `showWishlist`
+  - The active theme is configured via the per-shop DI parameter `oxid_esales.theme.active` in `var/configuration/shops/<shop-id>/parameters.yaml`
   - The `sTheme` and `sCustomTheme` config parameters are no longer used
   - A child theme declares its parent theme in its `metadata.yaml`
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead

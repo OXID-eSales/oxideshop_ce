@@ -21,15 +21,19 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class AccountReviewControllerTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
+
     public const TESTUSER_ID = 'AccountReviewControllerTest';
 
     public function setUp(): void
     {
+        $this->setActiveThemeParameter('testTheme');
         parent::setUp();
 
         $themeSource = Path::makeRelative(
@@ -38,8 +42,7 @@ final class AccountReviewControllerTest extends IntegrationTestCase
         );
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource($themeSource)
-            ->setActivated(true);
+            ->setSource($themeSource);
         $configuration->addThemeSetting(
             (new Setting())->setName('defaultListDisplayType')->setType('str')->setValue('infogrid')
         );
@@ -57,6 +60,7 @@ final class AccountReviewControllerTest extends IntegrationTestCase
         $this->getUser(self::TESTUSER_ID)->delete();
 
         parent::tearDown();
+        $this->unsetActiveThemeParameter();
     }
 
     public function testDeleteReviewAndRating(): void

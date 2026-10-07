@@ -53,7 +53,7 @@ final class LanguageTest extends IntegrationTestCase
         $language = new Language();
         $shopId = (int) Registry::getConfig()->getShopId();
         try {
-            $activeTheme = $this->get(ActiveThemeProviderInterface::class)->getActiveTheme($shopId);
+            $activeTheme = $this->get(ActiveThemeProviderInterface::class)->getActiveTheme();
         } catch (ActiveThemeNotFoundException) {
             $activeTheme = null;
         }

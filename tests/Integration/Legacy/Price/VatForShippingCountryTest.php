@@ -21,11 +21,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class VatForShippingCountryTest extends IntegrationTestCase
 {
+    use ActiveThemeTrait;
+
     private const USER_ID = '_testVatUserId';
     private const ADDRESS_ID = '_testVatAddressId';
     private const FIRST_PRODUCT_ID = '101';
@@ -35,6 +38,7 @@ final class VatForShippingCountryTest extends IntegrationTestCase
 
     public function setUp(): void
     {
+        $this->setActiveThemeParameter('testTheme');
         parent::setUp();
 
         $themeSource = Path::makeRelative(
@@ -43,8 +47,7 @@ final class VatForShippingCountryTest extends IntegrationTestCase
         );
         $configuration = (new ThemeConfiguration())
             ->setId('testTheme')
-            ->setSource($themeSource)
-            ->setActivated(true);
+            ->setSource($themeSource);
         $configuration->addThemeSetting((new Setting())->setName('showVouchers')->setType('bool')->setValue(true));
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
@@ -58,6 +61,12 @@ final class VatForShippingCountryTest extends IntegrationTestCase
         $this->createActiveUser();
         $this->updateProductVat(self::FIRST_PRODUCT_ID, 5);
         $this->updateProductVat(self::SECOND_PRODUCT_ID, 10);
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        $this->unsetActiveThemeParameter();
     }
 
     public function testProductVat(): void

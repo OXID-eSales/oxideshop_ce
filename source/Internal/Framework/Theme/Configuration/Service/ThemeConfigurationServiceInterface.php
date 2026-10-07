@@ -10,17 +10,13 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Servi
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
 interface ThemeConfigurationServiceInterface
 {
     /** @throws ThemeConfigurationNotFoundException */
     public function getConfiguration(string $themeId): ThemeConfiguration;
 
-    /**
-     * @throws ActiveThemeNotFoundException
-     * @throws ThemeConfigurationNotFoundException
-     */
+    /** @throws ThemeConfigurationNotFoundException */
     public function getActiveConfiguration(): ThemeConfiguration;
 
     /** @return array<string, mixed> */

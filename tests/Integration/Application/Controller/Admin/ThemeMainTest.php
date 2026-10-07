@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Adm
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeMain;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -97,7 +97,7 @@ final class ThemeMainTest extends IntegrationTestCase
 
     private function isThemeActive(string $themeId): bool
     {
-        return $this->get(ActiveThemeProviderInterface::class)->isActive($themeId, self::SHOP_ID);
+        return ContainerFacade::getParameter('oxid_esales.theme.active') === $themeId;
     }
 
     private function expectDisplayError(string $translationKey): void

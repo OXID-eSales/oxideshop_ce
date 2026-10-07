@@ -30,7 +30,6 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
     {
         $configuration = $this->buildConfiguration('testTheme');
         $configuration->setSource('Application/views/testTheme');
-        $configuration->setActivated(true);
 
         $dao = $this->get(ThemeConfigurationDaoInterface::class);
         $dao->save($configuration, self::SHOP_ID);
@@ -38,7 +37,6 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
         $retrieved = $dao->get('testTheme', self::SHOP_ID);
 
         $this->assertSame('Application/views/testTheme', $retrieved->getSource());
-        $this->assertTrue($retrieved->isActivated());
     }
 
     public function testGetAllReturnsConfigurationsOrderedById(): void

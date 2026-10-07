@@ -12,25 +12,21 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCompatibilityException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ThemeMain extends AdminDetailsController
 {
     private ThemeActivationServiceInterface $themeActivationService;
-    private ActiveThemeProviderInterface $activeThemeProvider;
     private ThemeViewServiceInterface $themeViewService;
     private ContextInterface $context;
 
     public function __construct()
     {
         $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
-        $this->activeThemeProvider = ContainerFacade::get(ActiveThemeProviderInterface::class);
         $this->themeViewService = ContainerFacade::get(ThemeViewServiceInterface::class);
         $this->context = ContainerFacade::get(ContextInterface::class);
 
@@ -41,7 +37,7 @@ class ThemeMain extends AdminDetailsController
     {
         try {
             $shopId = $this->context->getCurrentShopId();
-            $themeId = $this->getEditObjectId() ?: $this->activeThemeProvider->getActiveThemeId($shopId);
+            $themeId = $this->getEditObjectId() ?: ContainerFacade::getParameter('oxid_esales.theme.active');
 
             $theme = $this->themeViewService->getTheme($themeId, $shopId);
             $this->_aViewData['theme'] = $theme;
@@ -49,7 +45,7 @@ class ThemeMain extends AdminDetailsController
             if ($theme->hasParentTheme()) {
                 $this->_aViewData['parentTheme'] = $this->themeViewService->getParentTheme($themeId, $shopId);
             }
-        } catch (ActiveThemeNotFoundException | ThemeNotLoadableException) {
+        } catch (ThemeNotLoadableException) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');
         }
 

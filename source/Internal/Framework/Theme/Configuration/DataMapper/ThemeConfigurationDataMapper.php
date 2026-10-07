@@ -17,9 +17,8 @@ readonly class ThemeConfigurationDataMapper implements ThemeConfigurationDataMap
     public function toData(ThemeConfiguration $configuration): array
     {
         $data = [
-            'source'    => $configuration->getSource(),
-            'activated' => $configuration->isActivated(),
-            'title'     => $configuration->getTitle(),
+            'source' => $configuration->getSource(),
+            'title'  => $configuration->getTitle(),
         ];
 
         foreach ($configuration->getThemeSettings() as $setting) {
@@ -33,7 +32,6 @@ readonly class ThemeConfigurationDataMapper implements ThemeConfigurationDataMap
     {
         $configuration = (new ThemeConfiguration())
             ->setSource($data['source'] ?? '')
-            ->setActivated($data['activated'] ?? false)
             ->setTitle($data['title'] ?? '');
 
         foreach ($data['themeSettings'] ?? [] as $name => $settingData) {

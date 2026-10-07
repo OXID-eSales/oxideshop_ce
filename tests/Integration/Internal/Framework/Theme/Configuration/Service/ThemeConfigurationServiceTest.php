@@ -14,11 +14,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class ThemeConfigurationServiceTest extends IntegrationTestCase
 {
+    use ContainerTrait;
+
     private const SHOP_ID = 1;
     private const THEME_ID = 'testTheme';
 
@@ -52,7 +54,7 @@ final class ThemeConfigurationServiceTest extends IntegrationTestCase
     {
         $this->saveThemeConfiguration(activated: false);
 
-        $this->expectException(ActiveThemeNotFoundException::class);
+        $this->expectException(ThemeConfigurationNotFoundException::class);
 
         $this->get(ThemeConfigurationServiceInterface::class)->getActiveConfiguration();
     }
@@ -75,9 +77,12 @@ final class ThemeConfigurationServiceTest extends IntegrationTestCase
         $configuration = (new ThemeConfiguration())
             ->setId(self::THEME_ID)
             ->setSource('testSourcePath')
-            ->setActivated($activated)
             ->addThemeSetting((new Setting())->setName('sIconSize')->setType('str')->setValue('100*100'));
 
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, self::SHOP_ID);
+
+        if ($activated) {
+            $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
+        }
     }
 }

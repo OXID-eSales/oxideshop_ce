@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception;
 
 class ThemeParentCycleException extends ThemeParentCompatibilityException
 {

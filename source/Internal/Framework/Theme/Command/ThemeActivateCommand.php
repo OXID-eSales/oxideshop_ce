@@ -9,12 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Command;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCompatibilityException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\InvalidThemeConfigurationException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\Exception\ThemeParentCompatibilityException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setup\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -26,7 +25,7 @@ final class ThemeActivateCommand extends Command
 {
     public function __construct(
         private readonly ThemeActivationServiceInterface $themeActivationService,
-        private readonly ActiveThemeProviderInterface $activeThemeProvider,
+        private readonly string $activeThemeId,
         private readonly ContextInterface $context,
     ) {
         parent::__construct();
@@ -46,7 +45,7 @@ final class ThemeActivateCommand extends Command
         $shopId = $this->context->getCurrentShopId();
 
         try {
-            if ($this->activeThemeProvider->isActive($themeId, $shopId)) {
+            if ($themeId === $this->activeThemeId) {
                 $style->info(sprintf('Theme - "%s" is already active.', $themeId));
 
                 return Command::SUCCESS;

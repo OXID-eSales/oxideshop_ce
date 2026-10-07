@@ -11,7 +11,7 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Exception\ThemeNotLoadableException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
@@ -1003,7 +1003,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     private function getActiveThemeIds(): array
     {
         try {
-            $activeTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveTheme($this->getShopId());
+            $activeTheme = ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveTheme();
         } catch (ActiveThemeNotFoundException | ThemeNotLoadableException) {
             return [];
         }

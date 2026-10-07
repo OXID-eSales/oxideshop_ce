@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationsNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationPathProviderInterface;
@@ -89,17 +89,17 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->compileContainer();
 
         $executor = $this->get(TaggedMigrationExecutor::class);
-        $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
+        $connection = $this->get(ConnectionFactoryInterface::class)->create();
 
         $executor->executeWithOptions([], new NullOutput());
-        $this->assertTrue($connection->getSchemaManager()->tablesExist(['test_migration_table']));
+        $this->assertTrue($connection->createSchemaManager()->tablesExist(['test_migration_table']));
 
         $connection->executeStatement('DROP TABLE test_migration_table');
         $connection->executeStatement('DROP TABLE test_migrations_tracking');
 
         $executor->executeWithOptions(['--dry-run' => true], new NullOutput());
 
-        $this->assertFalse($connection->getSchemaManager()->tablesExist(['test_migration_table']));
+        $this->assertFalse($connection->createSchemaManager()->tablesExist(['test_migration_table']));
     }
 
     public function testProvidersAreExecutedInDescendingPriorityOrder(): void
@@ -117,7 +117,7 @@ final class TaggedMigrationExecutorTest extends TestCase
 
     protected function tearDown(): void
     {
-        $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
+        $connection = $this->get(ConnectionFactoryInterface::class)->create();
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migration_table`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_failing_migrations_tracking`');
@@ -141,9 +141,8 @@ final class TaggedMigrationExecutorTest extends TestCase
 
     private function assertMigrationWasTracked(): void
     {
-        $queryBuilder = $this->get(QueryBuilderFactoryInterface::class)->create();
-        $queryBuilder->select('*')->from('test_migrations_tracking');
+        $connection = $this->get(ConnectionFactoryInterface::class)->create();
 
-        $this->assertEquals(1, $queryBuilder->execute()->rowCount());
+        $this->assertEquals(1, $connection->fetchOne('SELECT COUNT(*) FROM test_migrations_tracking'));
     }
 }

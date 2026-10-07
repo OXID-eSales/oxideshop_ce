@@ -16,6 +16,10 @@
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
+- Module migrations are no longer discovered automatically; register them via a `MigrationPathProviderInterface` service tagged `oxid_esales.migration_path_provider`
+
+### Deprecated
+- `ProjectMigrationPathProvider`
 
 ### Removed
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`

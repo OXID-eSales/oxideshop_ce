@@ -10,7 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Setup\Database;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationExecutionFailedException;
 use Symfony\Component\Filesystem\Path;
 
 class ShopDbManager implements ShopDbManagerInterface
@@ -19,7 +20,7 @@ class ShopDbManager implements ShopDbManagerInterface
 
     public function __construct(
         private readonly SetupDbConnectionFactoryInterface $databaseConnectionFactory,
-        private readonly MigrationExecutorInterface $migrationExecutor,
+        private readonly ConfigurableMigrationExecutorInterface $migrationExecutor,
         private readonly ViewsGeneratorFactoryInterface $databaseViewsGeneratorFactory,
     ) {
     }
@@ -30,10 +31,19 @@ class ShopDbManager implements ShopDbManagerInterface
 
         $this->createDatabase();
         $this->loadSqlDumps();
-        $this->migrationExecutor->execute();
+        $this->runMigrations();
         $this->databaseViewsGeneratorFactory
             ->create()
             ->generate();
+    }
+
+    private function runMigrations(): void
+    {
+        $exitCode = $this->migrationExecutor->executeWithOptions();
+
+        if ($exitCode !== 0) {
+            throw new MigrationExecutionFailedException($exitCode);
+        }
     }
 
     private function createDatabase(): void

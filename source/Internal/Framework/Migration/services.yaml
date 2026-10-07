@@ -6,8 +6,6 @@ services:
     autowire: true
     public: false
 
-  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExecutor: ~
-
   OxidEsales\EshopCommunity\Internal\Framework\Migration\CommunityEditionMigrationPathProvider:
     tags:
       - { name: 'oxid_esales.migration_path_provider', priority: 300 }
@@ -21,12 +19,7 @@ services:
       $providers: !tagged_iterator oxid_esales.migration_path_provider
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\CompositeMigrationExecutor
-    public: true
-    arguments:
-      $executors: !iterator
-        - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
-        - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor'
+    alias: OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner

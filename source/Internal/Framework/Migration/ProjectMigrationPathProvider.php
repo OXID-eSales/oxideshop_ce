@@ -13,6 +13,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationsN
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Path;
 
+/**
+ * @deprecated
+ */
 readonly class ProjectMigrationPathProvider implements MigrationPathProviderInterface
 {
     public function __construct(

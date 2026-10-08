@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\AdminListController;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Service\ThemeViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ThemeList extends AdminListController

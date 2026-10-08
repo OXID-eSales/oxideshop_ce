@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Exception\ThemeSettingNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeSettingNotFoundException;
 
 interface ThemeSettingServiceInterface
 {

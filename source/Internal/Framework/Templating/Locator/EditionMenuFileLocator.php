@@ -10,22 +10,19 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 class EditionMenuFileLocator implements NavigationFileLocatorInterface
 {
-    private string $themeName;
     private string $fileName = 'menu.xml';
 
     public function __construct(
-        AdminThemeBridgeInterface $adminThemeBridge,
+        private readonly string $themeName,
         private readonly BasicContextInterface $context,
         private readonly Filesystem $fileSystem
     ) {
-        $this->themeName = $adminThemeBridge->getActiveTheme();
     }
 
     public function locate(): array

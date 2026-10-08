@@ -13,7 +13,6 @@ use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamDirectory;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +27,7 @@ final class EditionMenuFileLocatorTest extends TestCase
     {
         $this->createModuleStructure($edition);
         $locator = new EditionMenuFileLocator(
-            $this->getAdminThemeStub(),
+            'admin',
             $this->getContext($edition),
             new Filesystem()
         );
@@ -47,14 +46,6 @@ final class EditionMenuFileLocatorTest extends TestCase
             ['PE'],
             ['EE'],
         ];
-    }
-
-    private function getAdminThemeStub(): AdminThemeBridgeInterface
-    {
-        $adminTheme = $this->createStub(AdminThemeBridgeInterface::class);
-        $adminTheme->method('getActiveTheme')->willReturn('admin');
-
-        return $adminTheme;
     }
 
     private function getContext(string $edition): BasicContextStub

@@ -3,6 +3,7 @@ imports:
   - { resource: Activation/services.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Configuration/services.yaml }
+  - { resource: Facade/services.yaml }
   - { resource: Path/services.yaml }
   - { resource: View/services.yaml }
 
@@ -15,32 +16,3 @@ parameters:
   oxid_esales.theme.media.allowed_image_sizes:
     - '%oxid_esales.theme.admin.media.image_grid_size%'
     - '%oxid_esales.theme.admin.media.image_zoom_size%'
-
-services:
-  _defaults:
-    autowire: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridge
-    arguments:
-      - '%oxid_esales.theme.admin.name%'
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService
-    arguments:
-      $activeThemeId: '%oxid_esales.theme.active%'
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProvider
-    arguments:
-      $activeThemeId: '%oxid_esales.theme.active%'
-      $shopId: '%oxid_esales.current_shop_id%'
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:
-    arguments:
-      $activeThemeId: '%oxid_esales.theme.active%'
-    tags:
-      - { name: 'console.command', command: 'oe:theme:activate' }

@@ -12,13 +12,12 @@ use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
 use Symfony\Component\Filesystem\Path;
@@ -928,8 +927,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($admin) {
-            $theme = ContainerFacade::get(AdminThemeBridgeInterface::class)
-                ->getActiveTheme();
+            $theme = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
         }
 
         if ($dir != $this->_sTemplateDir) {

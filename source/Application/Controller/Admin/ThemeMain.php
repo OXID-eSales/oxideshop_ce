@@ -15,7 +15,7 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCompatibilityException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Service\ThemeViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 class ThemeMain extends AdminDetailsController

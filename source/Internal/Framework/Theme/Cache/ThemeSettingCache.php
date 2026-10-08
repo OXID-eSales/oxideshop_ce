@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\Exception\CacheItemNotFoundException;
 use Psr\Cache\CacheItemPoolInterface;
 
 readonly class ThemeSettingCache implements ThemeSettingCacheInterface

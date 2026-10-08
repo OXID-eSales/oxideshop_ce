@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Configur
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeEnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationService;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 

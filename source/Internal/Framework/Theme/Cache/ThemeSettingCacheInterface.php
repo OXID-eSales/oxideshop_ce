@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\Exception\CacheItemNotFoundException;
+
 interface ThemeSettingCacheInterface
 {
     public function put(string $key, array $data): void;

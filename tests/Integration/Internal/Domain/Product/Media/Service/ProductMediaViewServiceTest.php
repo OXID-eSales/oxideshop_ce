@@ -14,28 +14,28 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaPath;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaType;
+use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMedia;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRole;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMediaRoleSet;
-use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\MediaAttributeServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaViewServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class ProductMediaViewServiceTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
+    use ContainerTrait;
 
     private const CONFIG_KEY_ICON_SIZE = 'iconSize';
     private const CONFIG_KEY_THUMBNAIL_SIZE = 'thumbnailSize';
@@ -51,7 +51,7 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
 
     public function setUp(): void
     {
-        $this->setActiveThemeParameter('testTheme');
+        $this->setParameter('oxid_esales.theme.active', 'testTheme');
         parent::setUp();
 
         $context = $this->get(ContextInterface::class);
@@ -62,12 +62,6 @@ final class ProductMediaViewServiceTest extends IntegrationTestCase
         $this->productId = Id::generate();
         $this->configureImageSettings();
         $this->setupTestData();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->unsetActiveThemeParameter();
     }
 
     public function testGetIconReturnsMediaViewWithAllUrls(): void

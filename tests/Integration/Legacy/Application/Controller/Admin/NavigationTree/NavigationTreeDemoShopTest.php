@@ -14,7 +14,6 @@ use DOMElement;
 use DOMXPath;
 use OxidEsales\Eshop\Application\Controller\Admin\NavigationTree;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -99,7 +98,7 @@ class NavigationTreeDemoShopTest extends IntegrationTestCase
             $context->getSourcePath(),
             'Application',
             'views',
-            $this->get(AdminThemeBridgeInterface::class)->getActiveTheme()
+            $this->getParameter('oxid_esales.theme.admin.name')
         );
 
         $edition = strtolower($context->getEdition()->value);

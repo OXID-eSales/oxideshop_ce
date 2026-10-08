@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class ThemeActivationService implements ThemeActivationServiceInterface

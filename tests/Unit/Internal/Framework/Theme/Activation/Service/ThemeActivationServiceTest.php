@@ -10,12 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Activation\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCompatibilityException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationService;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeParentCompatibilityCheckerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Exception\InvalidThemeMetaDataException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

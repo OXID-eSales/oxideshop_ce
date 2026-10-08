@@ -13,22 +13,21 @@ use OxidEsales\EshopCommunity\Application\Controller\SearchController;
 use OxidEsales\EshopCommunity\Application\Model\Article;
 use OxidEsales\EshopCommunity\Core\Field;
 use OxidEsales\EshopCommunity\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchCriteria;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchResult;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchException;
-use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\Event\AfterProductSearchEvent;
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\Event\BeforeProductSearchEvent;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchCriteria;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchException;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchResult;
+use OxidEsales\EshopCommunity\Internal\Domain\Product\Search\ProductSearchServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\EqualsFilter;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\Pagination;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\SearchTerm;
 use OxidEsales\EshopCommunity\Internal\Framework\Search\SortDirection;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -39,7 +38,6 @@ use Symfony\Component\Filesystem\Path;
 #[RunTestsInSeparateProcesses]
 final class SearchControllerTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
     use ContainerTrait;
 
     private string $productTitle1 = '1000';
@@ -72,7 +70,6 @@ final class SearchControllerTest extends IntegrationTestCase
         );
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
-        $this->setActiveThemeParameter('testTheme');
         $this->setParameter('oxid_esales.theme.active', 'testTheme');
 
         $product1 = oxNew(Article::class);

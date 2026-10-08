@@ -28,11 +28,3 @@ services:
     arguments:
       $activeThemeId: '%oxid_esales.theme.active%'
     public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\SettingValueMapperInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Form\SettingValueMapper
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidatorInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Validator\SettingValueValidator
-    public: true

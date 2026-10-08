@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProvider
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
+      $shopId: '%oxid_esales.current_shop_id%'
+    public: true

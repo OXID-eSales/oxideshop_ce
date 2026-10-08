@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 
 class ThemeConfiguration
 {

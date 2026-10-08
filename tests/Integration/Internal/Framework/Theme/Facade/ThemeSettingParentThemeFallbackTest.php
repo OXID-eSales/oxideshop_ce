@@ -10,16 +10,14 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Facade;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class ThemeSettingParentThemeFallbackTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
     use ContainerTrait;
 
     private const SHOP_ID = 1;
@@ -32,7 +30,7 @@ final class ThemeSettingParentThemeFallbackTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->setActiveThemeParameter(self::CHILD_THEME_ID, self::SHOP_ID);
+        $this->setParameter('oxid_esales.theme.active', self::CHILD_THEME_ID);
         $this->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
 
         $this->installTheme(self::PARENT_THEME_ID);

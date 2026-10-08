@@ -5,8 +5,10 @@
  * See LICENSE file for license details.
  */
 
+declare(strict_types=1);
+
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception;
 
-interface ThemeNotLoadableException extends \Throwable
+class ThemeNotLoadableException extends \Exception
 {
 }

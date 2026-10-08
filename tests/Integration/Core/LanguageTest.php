@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 use OxidEsales\Eshop\Core\Language;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Log\LoggerInterface;

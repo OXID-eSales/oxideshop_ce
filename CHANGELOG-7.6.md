@@ -1,6 +1,6 @@
 # Change Log for OXID eShop Community Edition Core Component
 
-## v7.6.0 - Unreleased
+## v7.6.0 - 2026-10-06
 
 ### Added
 - `oe:database:migrate` console command

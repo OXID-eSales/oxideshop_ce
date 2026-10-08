@@ -9,6 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception;
 
-class ThemeConfigurationNotFoundException extends \Exception implements ThemeNotLoadableException
+class ThemeConfigurationNotFoundException extends ThemeNotLoadableException
 {
 }

@@ -31,6 +31,7 @@
   - The `sTheme` and `sCustomTheme` config parameters are no longer used
   - A child theme declares its parent theme in its `metadata.yaml`
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
+- `ThemeActivatedEvent` moved from namespace `Internal\Framework\Theme\Event` to `Internal\Framework\Theme\Activation\Event`
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
@@ -55,6 +56,7 @@
 - `SeoEncoderArticle::createArticleCategoryUri()`
 - deprecated `ProjectYamlImportServiceInterface::addImport()` and `ProjectYamlImportServiceInterface::removeImport()`
 - `MigrationExecutorInterface`
+- `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.theme.admin.name` instead
 - `ThemeSettingChangedEvent`, use `ThemeConfigurationChangedEvent` instead
 - Theme configuration classes and methods
   - `Theme` and `SettingsHandler`

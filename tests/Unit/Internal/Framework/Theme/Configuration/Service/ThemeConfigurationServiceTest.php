@@ -11,11 +11,11 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Configur
 
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeEnvironmentConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeEnvironmentConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\EnvironmentOverriddenSettingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationService;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -27,8 +27,8 @@ final class ThemeConfigurationServiceTest extends TestCase
     public function testGetConfigurationReturnsConfigurationFromDao(): void
     {
         $configuration = (new ThemeConfiguration())->setId(self::THEME_ID);
-        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao->method('get')->with(self::THEME_ID, self::SHOP_ID)->willReturn($configuration);
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('get')->willReturnMap([[self::THEME_ID, self::SHOP_ID, $configuration]]);
 
         $this->assertSame(
             $configuration,
@@ -39,8 +39,8 @@ final class ThemeConfigurationServiceTest extends TestCase
     public function testGetActiveConfigurationReturnsConfigurationOfActiveTheme(): void
     {
         $configuration = (new ThemeConfiguration())->setId(self::THEME_ID);
-        $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
-        $dao->method('get')->with(self::THEME_ID, self::SHOP_ID)->willReturn($configuration);
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('get')->willReturnMap([[self::THEME_ID, self::SHOP_ID, $configuration]]);
 
         $this->assertSame(
             $configuration,

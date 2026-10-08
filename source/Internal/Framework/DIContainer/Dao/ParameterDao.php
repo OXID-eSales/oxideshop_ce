@@ -46,6 +46,11 @@ readonly class ParameterDao implements ParameterDaoInterface
         );
     }
 
+    public function get(string $name, int $shopId): mixed
+    {
+        return $this->getParameters($this->getShopParameterFilePath($shopId))[$name] ?? null;
+    }
+
     private function getParameters(string $filePath): array
     {
         if (file_exists($filePath)) {

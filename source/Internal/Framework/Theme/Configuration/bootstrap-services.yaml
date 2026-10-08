@@ -22,4 +22,3 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDao
     arguments:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.configuration.node'
-    public: true

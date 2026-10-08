@@ -12,7 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Adm
 use OxidEsales\EshopCommunity\Application\Controller\Admin\ThemeList;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeView;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\DataObject\ThemeView;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
 final class ThemeListTest extends IntegrationTestCase

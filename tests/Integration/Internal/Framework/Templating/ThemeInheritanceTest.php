@@ -13,14 +13,12 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateEngineInterf
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class ThemeInheritanceTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
     use ContainerTrait;
 
     private const SHOP_ID = 1;
@@ -33,7 +31,7 @@ final class ThemeInheritanceTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $this->setActiveThemeParameter(self::CHILD_THEME_ID, self::SHOP_ID);
+        $this->setParameter('oxid_esales.theme.active', self::CHILD_THEME_ID);
         $this->setParameter('oxid_esales.shop_source_directory', "$this->fixtureDirectory/shop/source/");
 
         $this->installTheme(self::PARENT_THEME_ID);

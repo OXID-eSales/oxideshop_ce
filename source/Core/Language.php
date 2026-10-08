@@ -7,17 +7,16 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge\AdminThemeBridgeInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\ThemePathResolverInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\Service\ThemePathResolverInterface;
 use stdClass;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -345,8 +344,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $langArray = $this->getLanguageArray();
             $this->_aAdminTplLanguageArray = [];
 
-            $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
-                ->getActiveTheme();
+            $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
             $sourceDirectory =
                 $config->getAppDir() .
                 'views' . DIRECTORY_SEPARATOR .
@@ -726,8 +724,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
 
         // admin lang files
-        $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
-            ->getActiveTheme();
+        $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
         $adminPath = $appDirectory .
             'views' . DIRECTORY_SEPARATOR .
             $adminThemeName . DIRECTORY_SEPARATOR .
@@ -792,8 +789,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
     protected function appendCustomLangFiles($languageFiles, $language, $forAdmin = false)
     {
         if ($forAdmin) {
-            $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
-                ->getActiveTheme();
+            $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
             $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
 
             return $languageFiles;
@@ -965,8 +961,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
      */
     private function getAdminThemeLanguageFileMapLocations(string $languageAbbreviation): array
     {
-        $adminThemeName = ContainerFacade::get(AdminThemeBridgeInterface::class)
-            ->getActiveTheme();
+        $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
         $themeDirectory = Registry::getConfig()->getAppDir() . DIRECTORY_SEPARATOR
             . 'views' . DIRECTORY_SEPARATOR
             . $adminThemeName . DIRECTORY_SEPARATOR;

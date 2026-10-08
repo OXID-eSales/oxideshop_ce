@@ -7,9 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\DataObject\ActiveTheme;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\ActiveTheme;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\State\Exception\ActiveThemeNotFoundException;
 
 interface ActiveThemeProviderInterface
 {

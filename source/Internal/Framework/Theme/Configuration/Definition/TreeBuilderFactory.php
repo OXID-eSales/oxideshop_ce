@@ -26,8 +26,6 @@ readonly class TreeBuilderFactory implements TreeBuilderFactoryInterface
                 ->end()
                 ->scalarNode('title')
                 ->end()
-                ->booleanNode('activated')
-                ->end()
                 ->arrayNode('themeSettings')
                     ->normalizeKeys(false)
                     ->arrayPrototype()

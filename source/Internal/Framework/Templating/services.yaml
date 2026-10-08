@@ -39,12 +39,14 @@ services:
     tags:
       - { name: 'oxid.menu.file.locator', priority: 10 }
     arguments:
+      $themeName: '%oxid_esales.theme.admin.name%'
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator:
     tags:
       - { name: 'oxid.menu.file.locator', priority: 20 }
     arguments:
+      $themeName: '%oxid_esales.theme.admin.name%'
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface:

@@ -1,0 +1,9 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Command\ThemeActivateCommand:
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
+    tags:
+      - { name: 'console.command', command: 'oe:theme:activate' }

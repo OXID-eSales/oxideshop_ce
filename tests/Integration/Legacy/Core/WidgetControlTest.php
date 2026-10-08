@@ -14,17 +14,15 @@ use OxidEsales\Eshop\Core\Exception\ObjectException;
 use OxidEsales\Eshop\Core\Routing\ControllerClassNameResolver;
 use OxidEsales\Eshop\Core\WidgetControl;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class WidgetControlTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
     use ContainerTrait;
 
     public function setUp(): void
@@ -47,7 +45,7 @@ final class WidgetControlTest extends IntegrationTestCase
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
 
-        $this->setActiveThemeParameter('testTheme');
+        $this->setParameter('oxid_esales.theme.active', 'testTheme');
         $this->setParameter('oxid_esales.debug_mode', true);
         $this->replaceContainerInstance();
         $_SERVER['REQUEST_METHOD'] = 'POST';

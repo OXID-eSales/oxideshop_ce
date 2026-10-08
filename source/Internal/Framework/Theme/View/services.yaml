@@ -2,8 +2,16 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\View\ThemeViewService
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Service\ThemeViewServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Service\ThemeViewService
     arguments:
       $activeThemeId: '%oxid_esales.theme.active%'
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Form\SettingValueMapperInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Form\SettingValueMapper
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Form\SettingValueValidatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Form\SettingValueValidator
     public: true

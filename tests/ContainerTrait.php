@@ -26,6 +26,8 @@ trait ContainerTrait
 {
     private $container;
 
+    private array $containerParameters = [];
+
     protected function get(string $serviceId)
     {
         $this->prepareContainer();
@@ -40,8 +42,11 @@ trait ContainerTrait
 
     private function setParameter(string $name, array|bool|string|int|float|UnitEnum|null $value): void
     {
+        $this->containerParameters[$name] = $value;
         $this->createContainer();
-        $this->container->setParameter($name, $value);
+        foreach ($this->containerParameters as $parameterName => $parameterValue) {
+            $this->container->setParameter($parameterName, $parameterValue);
+        }
         $this->compileContainer();
         $this->replaceContainerInstance();
     }

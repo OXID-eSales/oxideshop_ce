@@ -13,8 +13,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\Them
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentCycleException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ThemeParentDepthExceededException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaData;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\DataObject\ThemeMetaData;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataByIdProviderInterface;
 
 readonly class ThemeParentCompatibilityChecker implements ThemeParentCompatibilityCheckerInterface
 {

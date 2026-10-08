@@ -9,11 +9,10 @@ services:
     class: Symfony\Component\Config\Definition\NodeInterface
     factory: ['@OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Definition\MetaDataTreeBuilderFactoryInterface', 'create']
 
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProvider
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataProvider
     arguments:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.metadata.node'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataByIdProvider
-    public: true
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataByIdProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataByIdProvider

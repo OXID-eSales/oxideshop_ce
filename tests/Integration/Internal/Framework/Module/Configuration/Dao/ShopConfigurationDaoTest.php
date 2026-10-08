@@ -140,6 +140,17 @@ final class ShopConfigurationDaoTest extends IntegrationTestCase
         $this->assertEquals([], $shopConfigurationDao->get(1)->getModuleConfigurations());
     }
 
+    public function testGetShopIdsReturnsIdsOfConfiguredShops(): void
+    {
+        $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->save(new ShopConfiguration(), 2);
+
+        $shopIds = $shopConfigurationDao->getShopIds();
+        sort($shopIds);
+
+        $this->assertSame([1, 2], $shopIds);
+    }
+
     public function testDeleteAll(): void
     {
         $this->expectException(ShopConfigurationNotFoundException::class);

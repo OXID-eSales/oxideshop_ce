@@ -94,6 +94,21 @@ final class ParameterDaoTest extends IntegrationTestCase
         );
     }
 
+    public function testGetReturnsValueOfTheGivenShop(): void
+    {
+        $dao = $this->get(ParameterDaoInterface::class);
+        $dao->add('param_1', 'value-shop-1', 1);
+        $dao->add('param_1', 'value-shop-2', 2);
+
+        $this->assertSame('value-shop-1', $dao->get('param_1', 1));
+        $this->assertSame('value-shop-2', $dao->get('param_1', 2));
+    }
+
+    public function testGetReturnsNullForMissingParameter(): void
+    {
+        $this->assertNull($this->get(ParameterDaoInterface::class)->get('not_existing_param', 1));
+    }
+
     public function testAddParameterToMultipleShops(): void
     {
         $dao = $this->get(ParameterDaoInterface::class);

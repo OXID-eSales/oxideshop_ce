@@ -10,9 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Event\ThemeActivatedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Cache\ThemeConfigurationCacheInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeConfigurationChangedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Event\ThemeConfigurationChangedEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 readonly class InvalidateThemeCacheEventSubscriber implements EventSubscriberInterface

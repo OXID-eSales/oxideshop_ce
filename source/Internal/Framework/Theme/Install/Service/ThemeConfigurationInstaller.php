@@ -9,13 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Exception\ThemeConfigurationInstallException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\ThemeMetaDataProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Path;
 use Throwable;
@@ -26,7 +26,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         private ThemeMetaDataProviderInterface $metaDataProvider,
         private ThemeConfigurationProviderInterface $configurationProvider,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private ConfiguredShopIdProviderInterface $configuredShopIdProvider,
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
         private BasicContextInterface $context,
         private ThemeActivationServiceInterface $themeActivationService,
     ) {
@@ -107,7 +107,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
     private function getShopIds(): array
     {
         $shopIds = array_unique(
-            array_merge([$this->context->getDefaultShopId()], $this->configuredShopIdProvider->getShopIds())
+            array_merge([$this->context->getDefaultShopId()], $this->shopConfigurationDao->getShopIds())
         );
 
         sort($shopIds);

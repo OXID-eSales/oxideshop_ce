@@ -153,6 +153,11 @@ final class AssignProductsToCategoryCest
             ->assignProductByArtNr('1000')
             ->saveSorting();
 
+        $I->expect('saved products to be listed again');
+        $sortProductsPopup
+            ->seeProductInUnassignedList('1001')
+            ->seeProductInUnassignedList('1000');
+
         $I->amGoingTo('apply column sorting');
         $sortProductsPopup->sortByColumn(3);
 

@@ -14,30 +14,22 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class ViewConfigTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
     use ContainerTrait;
 
     private ViewConfig $viewConfig;
 
     public function setUp(): void
     {
-        $this->setActiveThemeParameter('apex');
+        $this->setParameter('oxid_esales.theme.active', 'apex');
         parent::setUp();
 
         $this->viewConfig = new ViewConfig();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->unsetActiveThemeParameter();
     }
 
     public function testIsAltImageServerConfiguredWithEmptyParameter(): void

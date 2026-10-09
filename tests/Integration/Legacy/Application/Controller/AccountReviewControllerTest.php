@@ -21,19 +21,19 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class AccountReviewControllerTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
+    use ContainerTrait;
 
     public const TESTUSER_ID = 'AccountReviewControllerTest';
 
     public function setUp(): void
     {
-        $this->setActiveThemeParameter('testTheme');
+        $this->setParameter('oxid_esales.theme.active', 'testTheme');
         parent::setUp();
 
         $themeSource = Path::makeRelative(
@@ -60,7 +60,6 @@ final class AccountReviewControllerTest extends IntegrationTestCase
         $this->getUser(self::TESTUSER_ID)->delete();
 
         parent::tearDown();
-        $this->unsetActiveThemeParameter();
     }
 
     public function testDeleteReviewAndRating(): void

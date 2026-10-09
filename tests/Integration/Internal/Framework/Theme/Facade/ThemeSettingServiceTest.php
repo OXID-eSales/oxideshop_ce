@@ -17,27 +17,21 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeSettingNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class ThemeSettingServiceTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
+    use ContainerTrait;
 
     private const SHOP_ID = 1;
     private const THEME_ID = 'testTheme';
 
     public function setUp(): void
     {
-        $this->setActiveThemeParameter(self::THEME_ID, self::SHOP_ID);
+        $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
         parent::setUp();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->unsetActiveThemeParameter(self::SHOP_ID);
     }
 
     public function testGetStringReturnsSavedValue(): void

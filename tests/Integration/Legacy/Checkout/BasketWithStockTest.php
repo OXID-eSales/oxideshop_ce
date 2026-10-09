@@ -18,13 +18,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 
 final class BasketWithStockTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
+    use ContainerTrait;
 
     private const PRODUCT_ID = 'abc';
 
@@ -34,7 +34,7 @@ final class BasketWithStockTest extends IntegrationTestCase
 
     public function setUp(): void
     {
-        $this->setActiveThemeParameter('testTheme');
+        $this->setParameter('oxid_esales.theme.active', 'testTheme');
         parent::setUp();
 
         $themeSource = Path::makeRelative(
@@ -51,12 +51,6 @@ final class BasketWithStockTest extends IntegrationTestCase
         $this->createProduct();
         Registry::getConfig()->setConfigParam('blAllowNegativeStock', false);
         Registry::getConfig()->setConfigParam('blUseStock', true);
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->unsetActiveThemeParameter();
     }
 
     public function testAddToBasketWithinStockWillAddExpectedAmount(): void

@@ -28,7 +28,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -39,7 +38,6 @@ use Symfony\Component\Filesystem\Path;
 #[RunTestsInSeparateProcesses]
 final class SearchControllerTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
     use ContainerTrait;
 
     private string $productTitle1 = '1000';
@@ -72,7 +70,6 @@ final class SearchControllerTest extends IntegrationTestCase
         );
         $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
-        $this->setActiveThemeParameter('testTheme');
         $this->setParameter('oxid_esales.theme.active', 'testTheme');
 
         $product1 = oxNew(Article::class);

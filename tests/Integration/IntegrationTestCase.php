@@ -23,7 +23,6 @@ class IntegrationTestCase extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        TestContainerFactory::resetContainer();
         $this->backupVarDirectory();
         $this->beginTransaction();
         $this->get('oxid_esales.module.install.service.launched_shop_project_configuration_generator')->generate();
@@ -33,6 +32,7 @@ class IntegrationTestCase extends TestCase
     {
         $this->rollBackTransaction();
         $this->restoreVarDirectory();
+        TestContainerFactory::resetContainer();
 
         parent::tearDown();
     }

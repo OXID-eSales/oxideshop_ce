@@ -33,14 +33,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeCo
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\ActiveThemeTrait;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Component\Filesystem\Path;
 
 final class ArticleTest extends IntegrationTestCase
 {
-    use ActiveThemeTrait;
+    use ContainerTrait;
 
     private static string $timeFormat = 'Y-m-d H:i:s';
     private static string $defaultTimestamp = '0000-00-00 00:00:00';
@@ -50,7 +50,7 @@ final class ArticleTest extends IntegrationTestCase
 
     public function setUp(): void
     {
-        $this->setActiveThemeParameter('testTheme');
+        $this->setParameter('oxid_esales.theme.active', 'testTheme');
         parent::setUp();
 
         Registry::getConfig()->init();
@@ -59,12 +59,6 @@ final class ArticleTest extends IntegrationTestCase
 
         $this->productMediaService = ContainerFacade::get(ProductMediaServiceInterface::class);
         $this->productMediaViewService = ContainerFacade::get(ProductMediaViewServiceInterface::class);
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-        $this->unsetActiveThemeParameter();
     }
 
     private function configureImageSettings(): void

@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
@@ -25,7 +25,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         private ThemeMetaDataProviderInterface $metaDataProvider,
         private ThemeConfigurationProviderInterface $configurationProvider,
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
-        private ConfiguredShopIdProviderInterface $configuredShopIdProvider,
+        private ShopConfigurationDaoInterface $shopConfigurationDao,
         private BasicContextInterface $context,
     ) {
     }
@@ -104,7 +104,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
     private function getShopIds(): array
     {
         $shopIds = array_unique(
-            array_merge([$this->context->getDefaultShopId()], $this->configuredShopIdProvider->getShopIds())
+            array_merge([$this->context->getDefaultShopId()], $this->shopConfigurationDao->getShopIds())
         );
 
         sort($shopIds);

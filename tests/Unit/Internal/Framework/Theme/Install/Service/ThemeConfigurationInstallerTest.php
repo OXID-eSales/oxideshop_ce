@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Install\Service;
 
-use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ConfiguredShopIdProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
@@ -151,8 +151,8 @@ final class ThemeConfigurationInstallerTest extends TestCase
         $configurationProvider = $this->createStub(ThemeConfigurationProviderInterface::class);
         $configurationProvider->method('get')->willReturn($defaultConfiguration);
 
-        $shopIdProvider = $this->createStub(ConfiguredShopIdProviderInterface::class);
-        $shopIdProvider->method('getShopIds')->willReturn($shopIds);
+        $shopConfigurationDao = $this->createStub(ShopConfigurationDaoInterface::class);
+        $shopConfigurationDao->method('getShopIds')->willReturn($shopIds);
 
         $context = $this->createStub(BasicContextInterface::class);
         $context->method('getDefaultShopId')->willReturn(1);
@@ -162,7 +162,7 @@ final class ThemeConfigurationInstallerTest extends TestCase
             $metaDataProvider,
             $configurationProvider,
             $dao,
-            $shopIdProvider,
+            $shopConfigurationDao,
             $context,
         );
     }

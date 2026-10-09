@@ -88,21 +88,9 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
     }
 
     /**
-     * @deprecated will be completely removed
-     */
-    public function deleteAll(): void
-    {
-        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
-            $this->fileSystem->remove(
-                $this->getShopsConfigurationDirectory()
-            );
-        }
-    }
-
-    /**
      * @return int[]
      */
-    private function getShopIds(): array
+    public function getShopIds(): array
     {
         $shopIds = [];
 
@@ -117,6 +105,18 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
         }
 
         return $shopIds;
+    }
+
+    /**
+     * @deprecated will be completely removed
+     */
+    public function deleteAll(): void
+    {
+        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
+            $this->fileSystem->remove(
+                $this->getShopsConfigurationDirectory()
+            );
+        }
     }
 
     private function getShopsConfigurationDirectory(): string

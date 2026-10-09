@@ -31,6 +31,11 @@ interface ShopConfigurationDaoInterface
     public function getAll(): array;
 
     /**
+     * @return int[]
+     */
+    public function getShopIds(): array;
+
+    /**
      * @deprecated will be completely removed
      */
     public function deleteAll(): void;

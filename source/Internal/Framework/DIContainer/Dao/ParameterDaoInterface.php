@@ -14,4 +14,6 @@ interface ParameterDaoInterface
     public function remove(string $name, int $shopId): void;
 
     public function has(string $name, int $shopId): bool;
+
+    public function get(string $name, int $shopId): mixed;
 }

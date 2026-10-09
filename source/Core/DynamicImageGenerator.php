@@ -67,6 +67,7 @@ namespace OxidEsales\EshopCommunity\Core {
     use OxidEsales\Eshop\Core\Registry;
     use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
     use OxidEsales\EshopCommunity\Internal\Domain\Media\Service\GeneratedImagePathProviderInterface;
+    use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
     use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationResolverInterface;
     use Symfony\Component\Filesystem\Path;
@@ -450,8 +451,10 @@ namespace OxidEsales\EshopCommunity\Core {
 
         private function isSizeConfiguredForShop(int $shopId, string $checkSize): bool
         {
+            $activeThemeId = (string) ContainerFacade::get(ParameterDaoInterface::class)
+                ->get('oxid_esales.theme.active', $shopId);
+
             try {
-                $activeThemeId = ContainerFacade::getParameter('oxid_esales.theme.active');
                 $configuration = ContainerFacade::get(ThemeConfigurationResolverInterface::class)
                     ->resolve($activeThemeId, $shopId);
             } catch (ThemeNotLoadableException) {

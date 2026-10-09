@@ -9,6 +9,7 @@ use OxidEsales\EshopCommunity\Core\DynamicImageGenerator;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopSettingType;
+use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Dao\ParameterDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
@@ -154,32 +155,30 @@ final class DynamicImageGeneratorTest extends IntegrationTestCase
                 ->setSource(Path::makeRelative($themePath, $context->getShopRootPath())),
             $this->get(ContextInterface::class)->getCurrentShopId()
         );
-        $this->setParameter('oxid_esales.theme.active', $themeId);
+        $this->get(ParameterDaoInterface::class)->add(
+            'oxid_esales.theme.active',
+            $themeId,
+            $this->get(ContextInterface::class)->getCurrentShopId()
+        );
     }
 
     private function activateChildThemeWithParentDeclaringSize(string $settingName, string $value): void
     {
-        $context = $this->get(BasicContextInterface::class);
-        $shopId = $this->get(ContextInterface::class)->getCurrentShopId();
-        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $this->installThemeDeclaringSize(self::PARENT_THEME_ID, $settingName, $value);
+        $this->activateTheme(self::CHILD_THEME_ID);
+    }
 
-        $parentPath = __DIR__ . '/Fixtures/' . self::PARENT_THEME_ID;
-        $dao->save(
+    private function installThemeDeclaringSize(string $themeId, string $settingName, string $value): void
+    {
+        $themePath = __DIR__ . '/Fixtures/' . $themeId;
+
+        $this->get(ThemeConfigurationDaoInterface::class)->save(
             (new ThemeConfiguration())
-                ->setId(self::PARENT_THEME_ID)
-                ->setSource(Path::makeRelative($parentPath, $context->getShopRootPath()))
+                ->setId($themeId)
+                ->setSource(Path::makeRelative($themePath, $this->get(BasicContextInterface::class)->getShopRootPath()))
                 ->addThemeSetting((new Setting())->setName($settingName)->setType('str')->setValue($value)),
-            $shopId
+            $this->get(ContextInterface::class)->getCurrentShopId()
         );
-
-        $childPath = __DIR__ . '/Fixtures/' . self::CHILD_THEME_ID;
-        $dao->save(
-            (new ThemeConfiguration())
-                ->setId(self::CHILD_THEME_ID)
-                ->setSource(Path::makeRelative($childPath, $context->getShopRootPath())),
-            $shopId
-        );
-        $this->setParameter('oxid_esales.theme.active', self::CHILD_THEME_ID);
     }
 
     private function createTestMasterImage(): void

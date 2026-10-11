@@ -1322,7 +1322,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $aConfigValues = $this->selectLanguageParamValues($sLanguageParameterName, $iShopId);
 
         foreach ($aConfigValues as $sConfigValue) {
-            $aConfigLanguages = unserialize($sConfigValue['oxvarvalue']);
+            $aConfigLanguages = unserialize($sConfigValue['oxvarvalue'], ['allowed_classes' => false]);
 
             $aLanguages = [];
             if ($sLanguageParameterName == 'aLanguageParams') {

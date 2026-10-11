@@ -137,7 +137,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getSelList()
     {
         if ($this->_aSelList == null && $this->oxuserbasketitems__oxsellist->value) {
-            $this->_aSelList = unserialize($this->oxuserbasketitems__oxsellist->value);
+            $this->_aSelList = unserialize($this->oxuserbasketitems__oxsellist->value, ['allowed_classes' => false]);
         }
 
         return $this->_aSelList;
@@ -161,7 +161,7 @@ class UserBasketItem extends \OxidEsales\Eshop\Core\Model\BaseModel
     public function getPersParams()
     {
         if ($this->_aPersParam == null && $this->oxuserbasketitems__oxpersparam->value) {
-            $this->_aPersParam = unserialize($this->oxuserbasketitems__oxpersparam->value);
+            $this->_aPersParam = unserialize($this->oxuserbasketitems__oxpersparam->value, ['allowed_classes' => false]);
         }
 
         return $this->_aPersParam;

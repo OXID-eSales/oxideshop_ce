@@ -32,7 +32,7 @@ services:
   oxid_esales.templating.admin.navigation.file.locator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminNavigationFileLocator
     arguments:
-      - !tagged oxid.menu.file.locator
+      - !tagged_iterator oxid.menu.file.locator
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator:

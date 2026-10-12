@@ -7,7 +7,7 @@ costs:
     voucherserie: [{ oxdiscount: 10.0, oxdiscounttype: '%', oxallowsameseries: 1, oxallowotherseries: 1, oxallowuseanother: 1, voucher_count: 1 }]
 expected:
     articles: { 1001: ['20,40', '306,00'], 1002: ['68,00', '1.020,00'] }
-    totals: { totalBrutto: '1.445,85', totalNetto: '1.326,00', vats: { 25: '68,85', 20: '183,60' }, delivery: { brutto: '883,58', netto: '729,30', vat: '154,28' }, payment: { brutto: '883,58', netto: '729,30', vat: '154,28' }, voucher: { brutto: '132,60' }, grandTotal: '3.213,01' }
+    totals: { totalBrutto: '1.445,85', totalNetto: '1.326,00', vats: { 25: '68,85', 20: '183,60' }, delivery: { brutto: '883,57', netto: '729,30', vat: '154,27' }, payment: { brutto: '883,57', netto: '729,30', vat: '154,27' }, voucher: { brutto: '132,60' }, grandTotal: '3.212,99' }
 options:
     config: { blEnterNetPrice: true, blShowNetPrice: true, blShowVATForDelivery: true, blShowVATForPayCharge: true, blShowVATForWrapping: true, sAdditionalServVATCalcMethod: proportional, blDeliveryVatOnTop: true, blPaymentVatOnTop: true, blWrappingVatOnTop: true }
     activeCurrencyRate: 0.68

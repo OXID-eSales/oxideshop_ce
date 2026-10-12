@@ -9,16 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeSettingNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 final class ThemeSettingServiceTest extends IntegrationTestCase
@@ -32,6 +35,8 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
     {
         $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
         parent::setUp();
+
+        $this->get(TagAwareAdapterFactoryInterface::class)->create(self::SHOP_ID)->clear();
     }
 
     public function testGetStringReturnsSavedValue(): void
@@ -63,6 +68,33 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
                 ->getSettingByName('sLogoFile')
                 ->getValue()
         );
+    }
+
+    public function testGetStringReturnsUpdatedValueInNewContainerWhenCacheIsWarm(): void
+    {
+        $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
+        $this->assertSame('logo.png', $this->get(ThemeSettingServiceInterface::class)->getString('logoFile'));
+
+        $configurationService = $this->get(ThemeConfigurationServiceInterface::class);
+        $configurationService->updateSettings(
+            $configurationService->getConfiguration(self::THEME_ID),
+            ['logoFile' => 'new-logo.png']
+        );
+        $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
+
+        $this->assertSame('new-logo.png', $this->get(ThemeSettingServiceInterface::class)->getString('logoFile'));
+    }
+
+    public function testGetStringReadsWarmCacheWithoutThemeConfigurationFileInNewContainer(): void
+    {
+        $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
+        $this->get(ThemeSettingServiceInterface::class)->getString('logoFile');
+
+        $this->assertFileExists($this->getThemeConfigurationFilePath());
+        (new Filesystem())->remove($this->getThemeConfigurationFilePath());
+        $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
+
+        $this->assertSame('logo.png', $this->get(ThemeSettingServiceInterface::class)->getString('logoFile'));
     }
 
     public function testGetBooleanReturnsSavedValue(): void
@@ -126,6 +158,13 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
         $this->assertFalse($service->exists('logoFile'));
     }
 
+    public function testExistsReturnsFalseWithoutActiveTheme(): void
+    {
+        $this->setParameter('oxid_esales.theme.active', '');
+
+        $this->assertFalse($this->get(ThemeSettingServiceInterface::class)->exists('logoFile'));
+    }
+
     public function testGetThrowsForMissingSetting(): void
     {
         $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
@@ -156,6 +195,17 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
             ->addThemeSetting($setting);
 
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, self::SHOP_ID);
+    }
+
+    private function getThemeConfigurationFilePath(): string
+    {
+        return Path::join(
+            $this->get(BasicContextInterface::class)->getProjectConfigurationDirectory(),
+            'shops',
+            (string) self::SHOP_ID,
+            'themes',
+            self::THEME_ID . '.yaml'
+        );
     }
 
     private function saveEnvironmentConfiguration(array $configuration): void

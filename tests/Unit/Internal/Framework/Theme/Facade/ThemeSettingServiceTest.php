@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Facade;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\Exception\CacheItemNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
@@ -19,6 +17,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\The
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\TagAwareAdapter;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 final class ThemeSettingServiceTest extends TestCase
 {
@@ -118,23 +119,25 @@ final class ThemeSettingServiceTest extends TestCase
         $service->getString('missing');
     }
 
-    public function testMissingSettingIsCached(): void
+    public function testSettingValuesAreResolvedOnceForAllSettings(): void
     {
-        $configuration = (new ThemeConfiguration())->setId(self::THEME_ID);
+        $configuration = (new ThemeConfiguration())
+            ->setId(self::THEME_ID)
+            ->addThemeSetting((new Setting())->setName('logoFile')->setType('str')->setValue('logo.png'));
 
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->once())->method('resolve')->willReturn($configuration);
 
         $service = $this->createService(resolver: $resolver);
 
-        $this->assertFalse($service->exists('missing'));
+        $this->assertSame('logo.png', $service->getString('logoFile'));
         $this->assertFalse($service->exists('missing'));
     }
 
     public function testGetReturnsCachedValue(): void
     {
-        $cache = $this->createStub(ThemeSettingCacheInterface::class);
-        $cache->method('get')->willReturn(['exists' => true, 'value' => 'cached.png']);
+        $cache = $this->createStub(TagAwareCacheInterface::class);
+        $cache->method('get')->willReturn(['logoFile' => 'cached.png']);
 
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->never())->method('resolve');
@@ -144,19 +147,41 @@ final class ThemeSettingServiceTest extends TestCase
         $this->assertSame('cached.png', $service->getString('logoFile'));
     }
 
-    public function testGetPopulatesCacheOnMiss(): void
+    public function testCachesSettingValuesOfActiveTheme(): void
     {
-        $cache = $this->createMock(ThemeSettingCacheInterface::class);
-        $cache->method('get')->willThrowException(new CacheItemNotFoundException('miss'));
-        $cache->expects($this->once())->method('put')
-            ->with(
-                'theme-' . self::THEME_ID . '-setting-logoFile',
-                ['exists' => true, 'value' => 'logo.png']
-            );
+        $cache = $this->createMock(TagAwareCacheInterface::class);
+        $cache->expects($this->once())
+            ->method('get')
+            ->with('theme_settings_' . self::THEME_ID)
+            ->willReturnCallback(fn (string $key, callable $callback): array => $callback());
 
         $service = $this->createServiceWithSetting('logoFile', 'str', 'logo.png', $cache);
 
+        $this->assertSame('logo.png', $service->getString('logoFile'));
+    }
+
+    public function testSettingValuesAreReadFromCacheOncePerInstance(): void
+    {
+        $cache = $this->createMock(TagAwareCacheInterface::class);
+        $cache->expects($this->once())->method('get')->willReturn(['logoFile' => 'logo.png']);
+
+        $service = $this->createService($cache);
         $service->getString('logoFile');
+
+        $this->assertTrue($service->exists('logoFile'));
+    }
+
+    public function testMissingThemeConfigurationIsNotCached(): void
+    {
+        $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
+        $resolver->expects($this->exactly(2))
+            ->method('resolve')
+            ->willThrowException(new ThemeConfigurationNotFoundException());
+
+        $service = $this->createService(resolver: $resolver);
+
+        $this->assertFalse($service->exists('logoFile'));
+        $this->assertFalse($service->exists('logoFile'));
     }
 
     public function testExistsReturnsTrueForExistingSetting(): void
@@ -168,8 +193,8 @@ final class ThemeSettingServiceTest extends TestCase
 
     public function testExistsReturnsTrueFromCacheWithoutResolving(): void
     {
-        $cache = $this->createStub(ThemeSettingCacheInterface::class);
-        $cache->method('get')->willReturn(['exists' => true, 'value' => 'logo.png']);
+        $cache = $this->createStub(TagAwareCacheInterface::class);
+        $cache->method('get')->willReturn(['logoFile' => 'logo.png']);
 
         $resolver = $this->createMock(ThemeConfigurationResolverInterface::class);
         $resolver->expects($this->never())->method('resolve');
@@ -186,18 +211,6 @@ final class ThemeSettingServiceTest extends TestCase
         $this->assertFalse($service->exists('missing'));
     }
 
-    public function testExistsReturnsFalseWithoutActiveTheme(): void
-    {
-        $service = new ThemeSettingService(
-            $this->createContext(),
-            $this->createStub(ThemeConfigurationResolverInterface::class),
-            $this->createCacheMiss(),
-            ''
-        );
-
-        $this->assertFalse($service->exists('logoFile'));
-    }
-
     public function testExistsReturnsFalseWhenActiveThemeConfigurationIsMissing(): void
     {
         $resolver = $this->createStub(ThemeConfigurationResolverInterface::class);
@@ -210,7 +223,7 @@ final class ThemeSettingServiceTest extends TestCase
         string $name,
         string $type,
         mixed $value,
-        ?ThemeSettingCacheInterface $cache = null,
+        ?TagAwareCacheInterface $cache = null,
     ): ThemeSettingService {
         $setting = (new Setting())->setName($name)->setType($type)->setValue($value);
         $configuration = (new ThemeConfiguration())->setId(self::THEME_ID)->addThemeSetting($setting);
@@ -230,13 +243,13 @@ final class ThemeSettingServiceTest extends TestCase
     }
 
     private function createService(
-        ?ThemeSettingCacheInterface $cache = null,
+        ?TagAwareCacheInterface $cache = null,
         ?ThemeConfigurationResolverInterface $resolver = null,
     ): ThemeSettingService {
         return new ThemeSettingService(
             $this->createContext(),
             $resolver ?? $this->createStub(ThemeConfigurationResolverInterface::class),
-            $cache ?? $this->createCacheMiss(),
+            $cache ?? new TagAwareAdapter(new ArrayAdapter()),
             self::THEME_ID
         );
     }
@@ -247,24 +260,5 @@ final class ThemeSettingServiceTest extends TestCase
         $context->method('getCurrentShopId')->willReturn(self::SHOP_ID);
 
         return $context;
-    }
-
-    private function createCacheMiss(): ThemeSettingCacheInterface
-    {
-        $stored = [];
-
-        $cache = $this->createStub(ThemeSettingCacheInterface::class);
-        $cache->method('put')->willReturnCallback(function (string $key, array $data) use (&$stored) {
-            $stored[$key] = $data;
-        });
-        $cache->method('get')->willReturnCallback(function (string $key) use (&$stored) {
-            if (!isset($stored[$key])) {
-                throw new CacheItemNotFoundException("Cache item with key '$key' not found.");
-            }
-
-            return $stored[$key];
-        });
-
-        return $cache;
     }
 }

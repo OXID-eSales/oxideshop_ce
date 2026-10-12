@@ -14,3 +14,14 @@ services:
       $activeThemeId: '%oxid_esales.theme.active%'
       $shopId: '%oxid_esales.current_shop_id%'
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\CachedActiveThemeProvider:
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface
+    arguments:
+      $activeThemeId: '%oxid_esales.theme.active%'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemePathProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemePathProvider
+    arguments:
+      $shopId: '%oxid_esales.current_shop_id%'
+    public: true

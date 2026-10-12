@@ -16,7 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\Front
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\Service\ThemePathResolverInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemePathProviderInterface;
 use stdClass;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
@@ -1009,13 +1009,13 @@ class Language extends \OxidEsales\Eshop\Core\Base
     /** @return string[] */
     private function getActiveThemeDirectories(): array
     {
-        $themePathResolver = ContainerFacade::get(ThemePathResolverInterface::class);
+        $themePathProvider = ContainerFacade::get(ThemePathProviderInterface::class);
         $shopId = $this->getShopId();
         $directories = [];
 
         foreach ($this->getActiveThemeIds() as $themeId) {
             try {
-                $directories[] = $themePathResolver->getAbsolutePath($themeId, $shopId) . DIRECTORY_SEPARATOR;
+                $directories[] = $themePathProvider->getAbsolutePath($themeId) . DIRECTORY_SEPARATOR;
             } catch (ThemeNotLoadableException $exception) {
                 Registry::getLogger()->warning(
                     "Translations of theme '$themeId' are skipped because it could not be loaded for shop $shopId",

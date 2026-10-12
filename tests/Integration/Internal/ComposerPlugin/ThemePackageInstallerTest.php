@@ -13,8 +13,6 @@ use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ThemePackageInstaller;
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\Exception\CacheItemNotFoundException;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Cache\ThemeSettingCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -22,6 +20,7 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 final class ThemePackageInstallerTest extends IntegrationTestCase
 {
@@ -83,15 +82,14 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
 
     public function testThemeCacheIsClearedAfterUninstallProcess(): void
     {
-        $themeSettingCache = $this->get(ThemeSettingCacheInterface::class);
-        $themeSettingCache->put('theme-uninstall-cache-probe', ['something']);
-
         $installer = $this->getPackageInstaller($this->packageName);
         $installer->install($this->themePackagePath);
+        $cache = $this->get(TagAwareCacheInterface::class);
+        $cache->get('theme_uninstall_cache_probe', fn (): string => 'cached');
+
         $installer->uninstall($this->themePackagePath);
 
-        $this->expectException(CacheItemNotFoundException::class);
-        $themeSettingCache->get('theme-uninstall-cache-probe');
+        $this->assertSame('recomputed', $cache->get('theme_uninstall_cache_probe', fn (): string => 'recomputed'));
     }
 
     private function getPackageInstaller(string $packageName, array $extra = []): ThemePackageInstaller

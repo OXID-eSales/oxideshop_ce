@@ -16,7 +16,7 @@
   - Theme packages provide `metadata.yaml` and `config.yaml`
   - Theme settings are installed per shop
   - Settings can be overridden per environment via `var/configuration.<OXID_ENV>/shops/<shop-id>/themes/<theme-id>.yaml`
-  - `ThemeSettingServiceInterface`, `ActiveThemeProviderInterface` and `ThemeViewServiceInterface` to read theme settings, the active theme and theme data
+  - `ThemeSettingServiceInterface`, `ActiveThemeProviderInterface`, `ThemePathProviderInterface` and `ThemeViewServiceInterface` to read theme settings, the active theme and theme data
   - `ViewConfig::getThemeSettings()` to read theme settings in templates
   - `ThemeConfigurationChangedEvent`
 

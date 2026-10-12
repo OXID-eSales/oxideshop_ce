@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\A
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Command\ThemeActivateCommand;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -52,6 +53,22 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
+    public function testActivatingAnotherThemeReplacesCachedActiveTheme(): void
+    {
+        $otherThemeId = 'otherTheme';
+        $this->get(ThemeConfigurationInstallerInterface::class)->install(
+            "$this->fixtureDirectory/shop/source/Application/views/$otherThemeId"
+        );
+        $commandTester = $this->createCommandTester();
+        $commandTester->execute(['theme-id' => $this->themeId]);
+        $this->assertSame($this->themeId, $this->getActiveThemeId());
+
+        $commandTester->execute(['theme-id' => $otherThemeId]);
+
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+        $this->assertSame($otherThemeId, $this->getActiveThemeId());
+    }
+
     public function testNonExistingThemeActivation(): void
     {
         $commandTester = $this->createCommandTester();
@@ -87,6 +104,11 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
 
         $this->assertSame(Command::FAILURE, $commandTester->getStatusCode());
         $this->assertFalse($this->isThemeActive($selfReferencingThemeId));
+    }
+
+    private function getActiveThemeId(): string
+    {
+        return ContainerFacade::get(ActiveThemeProviderInterface::class)->getActiveTheme()->getId();
     }
 
     private function isThemeActive(string $themeId): bool

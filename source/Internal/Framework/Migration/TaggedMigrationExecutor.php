@@ -9,21 +9,15 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
-use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
-use Doctrine\Migrations\Configuration\Migration\YamlFile;
-use Doctrine\Migrations\DependencyFactory;
-use Doctrine\Migrations\Tools\Console\Command\MigrateCommand as DoctrineMigrateCommand;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationsNotFoundException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorInterface
 {
     /** @param iterable<MigrationPathProviderInterface> $providers */
     public function __construct(
-        private ConnectionFactoryInterface $connectionFactory,
         private iterable $providers,
+        private MigrationRunnerInterface $migrationRunner,
         private MigrationExitCodeResolverInterface $exitCodeResolver,
     ) {
     }
@@ -36,37 +30,16 @@ readonly class TaggedMigrationExecutor implements ConfigurableMigrationExecutorI
         $status = 0;
 
         foreach ($this->providers as $provider) {
-            $configPath = $provider->getMigrationConfigPath();
-
-            if (!is_file($configPath)) {
+            try {
+                $configPath = $provider->getMigrationConfigPath();
+            } catch (MigrationsNotFoundException) {
                 continue;
             }
 
-            $connectionLoader ??= new ExistingConnection($this->connectionFactory->create());
-            $migrationStatus = $this->runMigrations($configPath, $connectionLoader, $options, $output);
-            $status = $this->exitCodeResolver->combine($status, $migrationStatus);
+            $exitCode = $this->migrationRunner->run($configPath, $options, $output);
+            $status = $this->exitCodeResolver->combine($status, $exitCode);
         }
 
         return $status;
-    }
-
-    /**
-     * @param array<string, mixed> $options
-     */
-    private function runMigrations(
-        string $configPath,
-        ExistingConnection $connectionLoader,
-        array $options,
-        ?OutputInterface $output
-    ): int {
-        $dependencyFactory = DependencyFactory::fromConnection(
-            new YamlFile($configPath),
-            $connectionLoader
-        );
-
-        $input = new ArrayInput($options + ['--allow-no-migration' => true]);
-        $input->setInteractive(false);
-
-        return (new DoctrineMigrateCommand($dependencyFactory))->run($input, $output ?? new ConsoleOutput());
     }
 }

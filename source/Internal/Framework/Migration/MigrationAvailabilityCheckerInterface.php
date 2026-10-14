@@ -5,11 +5,12 @@
  * See LICENSE file for license details.
  */
 
-declare(strict_types=1);
-
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
-interface MigrationExecutorInterface
+/**
+ * @deprecated
+ */
+interface MigrationAvailabilityCheckerInterface
 {
-    public function execute(): void;
+    public function hasMigrations(string $migrationConfigPath): bool;
 }

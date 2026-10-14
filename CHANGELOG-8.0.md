@@ -16,6 +16,10 @@
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
+- Module migrations are no longer discovered automatically; register them via a `MigrationPathProviderInterface` service tagged `oxid_esales.migration_path_provider`
+
+### Deprecated
+- `ProjectMigrationPathProvider`
 
 ### Removed
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`
@@ -36,6 +40,7 @@
 - `ViewConfig::getRemoteAddress()`
 - `SeoEncoderArticle::createArticleCategoryUri()`
 - deprecated `ProjectYamlImportServiceInterface::addImport()` and `ProjectYamlImportServiceInterface::removeImport()`
+- `MigrationExecutorInterface`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

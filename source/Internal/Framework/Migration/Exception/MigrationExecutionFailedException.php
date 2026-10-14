@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
+namespace OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception;
 
 use RuntimeException;
 

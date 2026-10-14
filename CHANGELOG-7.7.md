@@ -14,6 +14,9 @@
 ### Deprecated
 - `Utilities::createMigrations()`
 
+### Fixed
+- Password reset links are invalidated when the user's email address or password is changed
+
 ### Removed
 - PHP v8.3 support
 - PHPUnit v12 support

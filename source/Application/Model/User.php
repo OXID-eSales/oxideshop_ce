@@ -1735,12 +1735,30 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->_aSkipSaveFields[] = 'oxrights';
         }
 
-        // updating subscription information
-        if (($blUpdate = parent::update())) {
+        if ($this->isUsernameChanged()) {
+            $this->invalidateUpdateKey();
+        }
+
+        if ($isUpdated = parent::update()) {
             $this->getNewsSubscription()->updateSubscription($this);
         }
 
-        return $blUpdate;
+        return $isUpdated;
+    }
+
+    private function isUsernameChanged(): bool
+    {
+        $queryBuilder = ContainerFacade::get(QueryBuilderFactoryInterface::class)->create();
+        $queryBuilder
+            ->select('oxusername')
+            ->from('oxuser')
+            ->where('oxid = :oxid')
+            ->setParameter('oxid', $this->getId());
+
+        $storedUsername = $queryBuilder->execute()->fetchOne();
+
+        return $storedUsername !== false
+            && (string) $storedUsername !== (string) $this->getRawFieldData('oxusername');
     }
 
     /**
@@ -1958,12 +1976,22 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function setUpdateKey($reset = false)
     {
-        $token = $reset ? '' : $this->getRandomToken();
-        $tokenExpirationTime = $reset ? 0 : Registry::getUtilsDate()->getTime() + $this->getUpdateLinkTerm();
-
-        $this->oxuser__oxupdatekey = new Field($token, Field::T_RAW);
-        $this->oxuser__oxupdateexp = new Field($tokenExpirationTime, Field::T_RAW);
+        if ($reset) {
+            $this->invalidateUpdateKey();
+        } else {
+            $this->oxuser__oxupdatekey = new Field($this->getRandomToken(), Field::T_RAW);
+            $this->oxuser__oxupdateexp = new Field(
+                Registry::getUtilsDate()->getTime() + $this->getUpdateLinkTerm(),
+                Field::T_RAW
+            );
+        }
         $this->save();
+    }
+
+    private function invalidateUpdateKey(): void
+    {
+        $this->oxuser__oxupdatekey = new Field('', Field::T_RAW);
+        $this->oxuser__oxupdateexp = new Field(0, Field::T_RAW);
     }
 
     /**
@@ -2029,11 +2057,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         return $oHasher->hash($sPassword, $sSalt);
     }
 
-    /**
-     * Sets new password for user (save is not called)
-     *
-     * @param string $password
-     */
     public function setPassword($password = null)
     {
         $this->oxuser__oxpassword = new Field(

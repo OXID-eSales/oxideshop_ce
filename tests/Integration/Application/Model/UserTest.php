@@ -21,6 +21,7 @@ final class UserTest extends IntegrationTestCase
 {
     private const USER_ID = 'test_user_id';
     private const USER_NAME = 'test_user@example.com';
+    private const NEW_USER_NAME = 'new_test_user@example.com';
     private const ADDRESS_ID = 'test_address_id';
     private const COUNTRY_ID = 'a7c40f631fc920687.20179984';
 
@@ -143,7 +144,20 @@ final class UserTest extends IntegrationTestCase
         $this->fail('Foreign delivery address must be rejected');
     }
 
-    private function changeUserData(array $deliveryAddress): void
+    public function testChangeUserEmailInvalidatesPasswordResetLink(): void
+    {
+        $this->createUser();
+        $resetId = $this->loadUser()->getUpdateId();
+        $this->assertNotEmpty(oxNew(User::class)->loadUserByUpdateId($resetId));
+        $_POST['user_password'] = 'some-pass';
+
+        $this->changeUserData([], self::NEW_USER_NAME);
+
+        $this->assertEmpty(oxNew(User::class)->loadUserByUpdateId($resetId));
+        $this->assertTrue(oxNew(User::class)->isExpiredUpdateId($resetId));
+    }
+
+    private function changeUserData(array $deliveryAddress, string $email = self::USER_NAME): void
     {
         $user = $this->loadUser();
         $password = $user->getFieldData('oxpassword');
@@ -153,7 +167,7 @@ final class UserTest extends IntegrationTestCase
             $password,
             $password,
             [
-                'oxuser__oxusername' => self::USER_NAME,
+                'oxuser__oxusername' => $email,
                 'oxuser__oxfname' => 'First name',
                 'oxuser__oxlname' => 'Last name',
                 'oxuser__oxstreet' => 'Street',

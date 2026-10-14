@@ -94,58 +94,57 @@ class UserMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDetai
         return "user_main";
     }
 
-    /**
-     * Saves main user parameters.
-     *
-     * @return mixed
-     */
     public function save()
     {
         parent::save();
 
-        $soxId = $this->getEditObjectId();
-        if ($this->allowAdminEdit($soxId)) {
-            $aParams = Registry::getRequest()->getRequestEscapedParameter("editval");
+        $userId = $this->getEditObjectId();
+        if ($this->allowAdminEdit($userId)) {
+            $params = Registry::getRequest()->getRequestEscapedParameter("editval");
 
-            if (!isset($aParams['oxuser__oxactive'])) {
-                $aParams['oxuser__oxactive'] = 0;
+            if (!isset($params['oxuser__oxactive'])) {
+                $params['oxuser__oxactive'] = 0;
             }
 
-            $oUser = oxNew(User::class);
-            if ($soxId != "-1") {
-                $oUser->load($soxId);
+            $user = oxNew(User::class);
+            if ($userId != "-1") {
+                $user->load($userId);
             } else {
-                $aParams['oxuser__oxid'] = null;
+                $params['oxuser__oxid'] = null;
             }
 
-            if (($sNewPass = Registry::getRequest()->getRequestEscapedParameter("newPassword"))) {
-                $oUser->setPassword($sNewPass);
+            if (($newPassword = Registry::getRequest()->getRequestEscapedParameter("newPassword"))) {
+                $user->setPassword($newPassword);
             }
 
             if (
-                isset($aParams['oxuser__oxusername'])
-                && ($aParams['oxuser__oxusername'] !== $oUser->getRawFieldData('oxusername'))
-                && $oUser->isEmailInUse($aParams['oxuser__oxusername'])
+                isset($params['oxuser__oxusername'])
+                && ($params['oxuser__oxusername'] !== $user->getRawFieldData('oxusername'))
+                && $user->isEmailInUse($params['oxuser__oxusername'])
             ) {
                 $this->_sSaveError = 'EXCEPTION_USER_USEREXISTS';
 
                 return;
             }
 
-            $oUser->assign($aParams);
+            $user->assign($params);
 
-            if ($soxId == "-1") {
-                $this->onUserCreation($oUser);
+            if ($userId == "-1") {
+                $this->onUserCreation($user);
             }
 
-            $oUser->oxuser__oxbirthdate->fldtype = 'char';
+            $user->oxuser__oxbirthdate->fldtype = 'char';
 
             try {
-                $oUser->save();
+                $user->save();
 
-                $this->setEditObjectId($oUser->getId());
-            } catch (Exception $oExcp) {
-                $this->_sSaveError = $oExcp->getMessage();
+                if ($newPassword) {
+                    $user->setUpdateKey(true);
+                }
+
+                $this->setEditObjectId($user->getId());
+            } catch (Exception $exception) {
+                $this->_sSaveError = $exception->getMessage();
             }
         }
     }

@@ -16,7 +16,7 @@ class ThemeConfigurationCache implements ThemeConfigurationCacheInterface
     /** @var ThemeConfiguration[][] */
     private array $cache = [];
 
-    public function put(int $shopId, ThemeConfiguration $configuration): void
+    public function put(ThemeConfiguration $configuration, int $shopId): void
     {
         $this->cache[$shopId][$configuration->getId()] = $configuration;
     }
@@ -36,5 +36,10 @@ class ThemeConfigurationCache implements ThemeConfigurationCacheInterface
         if ($this->exists($themeId, $shopId)) {
             unset($this->cache[$shopId][$themeId]);
         }
+    }
+
+    public function evictAll(int $shopId): void
+    {
+        unset($this->cache[$shopId]);
     }
 }

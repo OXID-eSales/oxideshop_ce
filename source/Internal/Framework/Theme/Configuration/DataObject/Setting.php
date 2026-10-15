@@ -11,8 +11,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataO
 
 class Setting
 {
-    private string $name;
-    private ?string $type = null;
+    private string $name = '';
+    private string $type = '';
     private mixed $value = null;
     private array $constraints = [];
     private string $groupName = '';
@@ -31,10 +31,6 @@ class Setting
 
     public function getType(): string
     {
-        if ($this->type === null) {
-            return gettype($this->value);
-        }
-
         return $this->type;
     }
 

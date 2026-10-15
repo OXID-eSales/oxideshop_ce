@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
@@ -98,6 +99,31 @@ final class ThemeConfigurationInstallerTest extends TestCase
         $this->createInstaller($dao, shopIds: [1])->uninstall($this->themePath);
     }
 
+    public function testUninstallDeactivatesThemeBeforeDeletingConfigurationOfEachShop(): void
+    {
+        $calls = [];
+        $activationService = $this->createStub(ThemeActivationServiceInterface::class);
+        $activationService->method('deactivate')->willReturnCallback(
+            function (string $themeId, int $shopId) use (&$calls): void {
+                $calls[] = "deactivate $themeId $shopId";
+            }
+        );
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('delete')->willReturnCallback(
+            function (string $themeId, int $shopId) use (&$calls): void {
+                $calls[] = "delete $themeId $shopId";
+            }
+        );
+
+        $this->createInstaller($dao, shopIds: [1, 2], activationService: $activationService)
+            ->uninstall($this->themePath);
+
+        $this->assertSame(
+            ['deactivate testTheme 1', 'delete testTheme 1', 'deactivate testTheme 2', 'delete testTheme 2'],
+            $calls
+        );
+    }
+
     public function testIsInstalledReturnsFalseWhenMissingForAnyShop(): void
     {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
@@ -139,6 +165,7 @@ final class ThemeConfigurationInstallerTest extends TestCase
     private function createInstaller(
         ThemeConfigurationDaoInterface $dao,
         array $shopIds = [1],
+        ?ThemeActivationServiceInterface $activationService = null,
     ): ThemeConfigurationInstaller {
         $metaData = (new ThemeMetaData())->setId('testTheme');
 
@@ -164,6 +191,7 @@ final class ThemeConfigurationInstallerTest extends TestCase
             $dao,
             $shopConfigurationDao,
             $context,
+            $activationService ?? $this->createStub(ThemeActivationServiceInterface::class),
         );
     }
 

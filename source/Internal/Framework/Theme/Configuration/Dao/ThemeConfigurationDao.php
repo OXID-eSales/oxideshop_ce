@@ -53,7 +53,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
             );
             $configuration->setId($themeId);
 
-            $this->cache->put($shopId, $configuration);
+            $this->cache->put($configuration, $shopId);
         }
 
         return clone $this->cache->get($themeId, $shopId);
@@ -67,7 +67,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
             $this->dataMapper->toData($configuration)
         );
 
-        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($configuration->getId(), $shopId));
+        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($shopId, $configuration->getId()));
     }
 
     public function getAll(int $shopId): array
@@ -94,7 +94,7 @@ readonly class ThemeConfigurationDao implements ThemeConfigurationDaoInterface
         $this->cache->evict($themeId, $shopId);
         $this->filesystem->remove($this->getThemeConfigurationFilePath($themeId, $shopId));
 
-        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($themeId, $shopId));
+        $this->eventDispatcher->dispatch(new ThemeConfigurationChangedEvent($shopId, $themeId));
     }
 
     public function deleteAll(int $shopId): void

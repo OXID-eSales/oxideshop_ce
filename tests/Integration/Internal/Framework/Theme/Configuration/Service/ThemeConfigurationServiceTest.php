@@ -64,7 +64,7 @@ final class ThemeConfigurationServiceTest extends IntegrationTestCase
         $this->saveThemeConfiguration(activated: false);
         $service = $this->get(ThemeConfigurationServiceInterface::class);
 
-        $service->updateSettings($service->getConfiguration(self::THEME_ID), ['sIconSize' => '200*200']);
+        $service->updateSettings(self::THEME_ID, ['sIconSize' => '200*200']);
 
         $this->assertSame(
             '200*200',

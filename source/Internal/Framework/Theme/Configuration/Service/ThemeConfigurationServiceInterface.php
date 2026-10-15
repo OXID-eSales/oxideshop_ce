@@ -25,6 +25,7 @@ interface ThemeConfigurationServiceInterface
     /**
      * @param array<string, mixed> $settingValues
      * @throws EnvironmentOverriddenSettingException
+     * @throws ThemeConfigurationNotFoundException
      */
-    public function updateSettings(ThemeConfiguration $configuration, array $settingValues): void;
+    public function updateSettings(string $themeId, array $settingValues): void;
 }

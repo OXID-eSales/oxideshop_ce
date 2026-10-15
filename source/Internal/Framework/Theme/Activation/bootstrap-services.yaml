@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationService
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeParentCompatibilityCheckerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeParentCompatibilityChecker

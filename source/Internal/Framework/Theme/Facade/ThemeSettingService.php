@@ -24,6 +24,7 @@ class ThemeSettingService implements ThemeSettingServiceInterface
         private readonly ThemeConfigurationResolverInterface $themeConfigurationResolver,
         private readonly TagAwareCacheInterface $cache,
         private readonly string $activeThemeId,
+        private readonly string $environment,
     ) {
     }
 
@@ -105,6 +106,6 @@ class ThemeSettingService implements ThemeSettingServiceInterface
 
     private function getCacheKey(): string
     {
-        return 'theme_settings_' . $this->activeThemeId;
+        return sprintf('theme_settings_%s_%s', $this->environment, $this->activeThemeId);
     }
 }

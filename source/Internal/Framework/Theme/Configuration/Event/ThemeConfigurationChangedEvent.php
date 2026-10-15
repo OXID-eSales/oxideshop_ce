@@ -13,17 +13,17 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ThemeConfigurationChangedEvent extends Event
 {
-    public function __construct(private readonly string $themeId, private readonly int $shopId)
+    public function __construct(private readonly int $shopId, private readonly string $themeId)
     {
-    }
-
-    public function getThemeId(): string
-    {
-        return $this->themeId;
     }
 
     public function getShopId(): int
     {
         return $this->shopId;
+    }
+
+    public function getThemeId(): string
+    {
+        return $this->themeId;
     }
 }

@@ -25,6 +25,7 @@ final class ThemeSettingServiceTest extends TestCase
 {
     private const SHOP_ID = 1;
     private const THEME_ID = 'apex';
+    private const ENVIRONMENT = 'staging';
 
     public function testGetStringReturnsSetting(): void
     {
@@ -152,7 +153,7 @@ final class ThemeSettingServiceTest extends TestCase
         $cache = $this->createMock(TagAwareCacheInterface::class);
         $cache->expects($this->once())
             ->method('get')
-            ->with('theme_settings_' . self::THEME_ID)
+            ->with('theme_settings_' . self::ENVIRONMENT . '_' . self::THEME_ID)
             ->willReturnCallback(fn (string $key, callable $callback): array => $callback());
 
         $service = $this->createServiceWithSetting('logoFile', 'str', 'logo.png', $cache);
@@ -250,7 +251,8 @@ final class ThemeSettingServiceTest extends TestCase
             $this->createContext(),
             $resolver ?? $this->createStub(ThemeConfigurationResolverInterface::class),
             $cache ?? new TagAwareAdapter(new ArrayAdapter()),
-            self::THEME_ID
+            self::THEME_ID,
+            self::ENVIRONMENT,
         );
     }
 

@@ -98,10 +98,6 @@ VALUES ('BB', 'testcountry_de', 'Brandenburg', 'BB', 'Brandenburg', '', ''),
        ('TH', 'testcountry_de', 'Thüringen', 'TH', 'Thuringia', '', '');
 
 UPDATE `oxconfig`
-SET `OXVARVALUE` = '0'
-WHERE `OXVARNAME` = 'newBasketItemMessage';
-
-UPDATE `oxconfig`
 SET `OXVARVALUE` = ''
 WHERE `OXVARNAME` = 'blDisableNavBars';
 

@@ -20,7 +20,7 @@ final class ThemeConfigurationCacheTest extends TestCase
         $cache = new ThemeConfigurationCache();
 
         $configuration = (new ThemeConfiguration())->setId('apex');
-        $cache->put(1, $configuration);
+        $cache->put($configuration, 1);
 
         $this->assertSame($configuration, $cache->get('apex', 1));
     }
@@ -29,7 +29,7 @@ final class ThemeConfigurationCacheTest extends TestCase
     {
         $cache = new ThemeConfigurationCache();
 
-        $cache->put(1, (new ThemeConfiguration())->setId('apex'));
+        $cache->put((new ThemeConfiguration())->setId('apex'), 1);
 
         $this->assertTrue($cache->exists('apex', 1));
     }
@@ -45,10 +45,24 @@ final class ThemeConfigurationCacheTest extends TestCase
     {
         $cache = new ThemeConfigurationCache();
 
-        $cache->put(1, (new ThemeConfiguration())->setId('apex'));
+        $cache->put((new ThemeConfiguration())->setId('apex'), 1);
         $cache->evict('apex', 1);
 
         $this->assertFalse($cache->exists('apex', 1));
+    }
+
+    public function testEvictAllRemovesEveryEntryOfTheShopOnly(): void
+    {
+        $cache = new ThemeConfigurationCache();
+
+        $cache->put((new ThemeConfiguration())->setId('apex'), 1);
+        $cache->put((new ThemeConfiguration())->setId('childTheme'), 1);
+        $cache->put((new ThemeConfiguration())->setId('apex'), 2);
+        $cache->evictAll(1);
+
+        $this->assertFalse($cache->exists('apex', 1));
+        $this->assertFalse($cache->exists('childTheme', 1));
+        $this->assertTrue($cache->exists('apex', 2));
     }
 
     public function testEvictNonExistentEntryDoesNotFail(): void
@@ -64,7 +78,7 @@ final class ThemeConfigurationCacheTest extends TestCase
     {
         $cache = new ThemeConfigurationCache();
 
-        $cache->put(1, (new ThemeConfiguration())->setId('apex')->setSource('shop1'));
+        $cache->put((new ThemeConfiguration())->setId('apex')->setSource('shop1'), 1);
 
         $this->assertTrue($cache->exists('apex', 1));
         $this->assertFalse($cache->exists('apex', 2));

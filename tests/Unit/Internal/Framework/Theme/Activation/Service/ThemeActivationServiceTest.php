@@ -80,6 +80,27 @@ final class ThemeActivationServiceTest extends TestCase
             ->activate('target', self::SHOP_ID);
     }
 
+    public function testDeactivateRemovesActiveThemeParameterOfTheTheme(): void
+    {
+        $parameterDao = $this->createMock(ParameterDaoInterface::class);
+        $parameterDao->method('get')->willReturnMap([['oxid_esales.theme.active', self::SHOP_ID, 'target']]);
+        $parameterDao
+            ->expects($this->once())
+            ->method('remove')
+            ->with('oxid_esales.theme.active', self::SHOP_ID);
+
+        $this->createService(parameterDao: $parameterDao)->deactivate('target', self::SHOP_ID);
+    }
+
+    public function testDeactivateKeepsActiveThemeParameterOfAnotherTheme(): void
+    {
+        $parameterDao = $this->createMock(ParameterDaoInterface::class);
+        $parameterDao->method('get')->willReturn('other');
+        $parameterDao->expects($this->never())->method('remove');
+
+        $this->createService(parameterDao: $parameterDao)->deactivate('target', self::SHOP_ID);
+    }
+
     private function createService(
         ?ThemeConfigurationDaoInterface $dao = null,
         ?ParameterDaoInterface $parameterDao = null,

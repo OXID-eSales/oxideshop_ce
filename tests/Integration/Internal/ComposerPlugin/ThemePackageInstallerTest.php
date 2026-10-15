@@ -18,6 +18,8 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 
 final class ThemePackageInstallerTest extends IntegrationTestCase
@@ -27,6 +29,17 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
     private string $themePackagePath = __DIR__ . '/Fixtures/test-theme-package-installation';
     private string $packageName = 'test-vendor/test-theme-package-installation';
     private string $themeId = 'test-theme-package-installation';
+
+    public function tearDown(): void
+    {
+        $sourcePath = $this->get(BasicContextInterface::class)->getSourcePath();
+        (new Filesystem())->remove([
+            Path::join($sourcePath, ThemePackageInstaller::PATH_TO_THEMES, $this->themeId),
+            Path::join($sourcePath, 'out', $this->themeId),
+        ]);
+
+        parent::tearDown();
+    }
 
     public function testThemeConfigurationIsInstalledAfterInstallProcess(): void
     {

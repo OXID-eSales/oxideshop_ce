@@ -42,9 +42,10 @@ readonly class ThemeConfigurationService implements ThemeConfigurationServiceInt
             ->getSettingValues();
     }
 
-    public function updateSettings(ThemeConfiguration $configuration, array $settingValues): void
+    public function updateSettings(string $themeId, array $settingValues): void
     {
-        $this->validateSettingUpdates($configuration->getId(), $settingValues);
+        $this->validateSettingUpdates($themeId, $settingValues);
+        $configuration = $this->getConfiguration($themeId);
 
         foreach ($settingValues as $name => $value) {
             $configuration->getSettingByName((string) $name)?->setValue($value);

@@ -21,4 +21,6 @@ interface ThemeActivationServiceInterface
      * @throws ThemeParentCompatibilityException
      */
     public function activate(string $themeId, int $shopId): void;
+
+    public function deactivate(string $themeId, int $shopId): void;
 }

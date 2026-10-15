@@ -7,8 +7,15 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
+
 abstract class AbstractInsertNewBasketItemLogic
 {
+    public function __construct(
+        private readonly ThemeSettingServiceInterface $themeSettingService,
+    ) {
+    }
+
     /**
      * @param array  $params
      * @param object $templateEngine
@@ -21,12 +28,9 @@ abstract class AbstractInsertNewBasketItemLogic
             throw new \Exception('Please check if correct template engine is used.');
         }
         $renderedTemplate = '';
-        $themeSettingService = \OxidEsales\EshopCommunity\Core\Di\ContainerFacade::get(
-            \OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface::class
-        );
 
         $types = ['0' => 'none', '1' => 'message', '2' => 'popup', '3' => 'basket'];
-        $newBasketItemMessage = $themeSettingService->getInteger('newBasketItemMessage');
+        $newBasketItemMessage = $this->themeSettingService->getInteger('newBasketItemMessage');
 
         // If correct type of message is expected
         if (

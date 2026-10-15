@@ -56,9 +56,10 @@ final class ThemeConfigurationServiceTest extends TestCase
             ->addThemeSetting((new Setting())->setName('blShowVouchers')->setType('bool')->setValue(true));
 
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->method('get')->willReturnMap([[self::THEME_ID, self::SHOP_ID, $configuration]]);
         $dao->expects($this->once())->method('save')->with($configuration, self::SHOP_ID);
 
-        $this->createService($dao)->updateSettings($configuration, [
+        $this->createService($dao)->updateSettings(self::THEME_ID, [
             'sIconSize' => '200*200',
             'blShowVouchers' => false,
         ]);
@@ -74,9 +75,10 @@ final class ThemeConfigurationServiceTest extends TestCase
             ->addThemeSetting((new Setting())->setName('sIconSize')->setType('str')->setValue('100*100'));
 
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $dao->method('get')->willReturnMap([[self::THEME_ID, self::SHOP_ID, $configuration]]);
         $dao->expects($this->once())->method('save')->with($configuration, self::SHOP_ID);
 
-        $this->createService($dao)->updateSettings($configuration, ['unknownSetting' => 'value']);
+        $this->createService($dao)->updateSettings(self::THEME_ID, ['unknownSetting' => 'value']);
 
         $this->assertSame('100*100', $configuration->getSettingByName('sIconSize')->getValue());
         $this->assertNull($configuration->getSettingByName('unknownSetting'));
@@ -102,10 +104,6 @@ final class ThemeConfigurationServiceTest extends TestCase
 
     public function testUpdateSettingsRejectsEnvironmentOverriddenSettingsWithoutSaving(): void
     {
-        $configuration = (new ThemeConfiguration())
-            ->setId(self::THEME_ID)
-            ->addThemeSetting((new Setting())->setName('sIconSize')->setType('str')->setValue('100*100'));
-
         $dao = $this->createMock(ThemeConfigurationDaoInterface::class);
         $dao->expects($this->never())->method('save');
 
@@ -117,7 +115,7 @@ final class ThemeConfigurationServiceTest extends TestCase
         $this->expectException(EnvironmentOverriddenSettingException::class);
 
         $this->createService($dao, $environmentConfigurationDao)
-            ->updateSettings($configuration, ['sIconSize' => '200*200']);
+            ->updateSettings(self::THEME_ID, ['sIconSize' => '200*200']);
     }
 
     private function createService(

@@ -9,11 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject;
 
-
 class ThemeConfiguration
 {
-    private string $id;
-    private string $source;
+    private string $id = '';
+    private string $source = '';
     private string $title = '';
     private array $themeSettings = [];
 

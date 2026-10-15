@@ -31,8 +31,8 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
     {
         if (!$this->resolvedConfigurationCache->exists($themeId, $shopId)) {
             $this->resolvedConfigurationCache->put(
-                $shopId,
-                $this->buildResolvedConfiguration($themeId, $shopId)
+                $this->buildResolvedConfiguration($themeId, $shopId),
+                $shopId
             );
         }
 
@@ -41,7 +41,40 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
 
     private function buildResolvedConfiguration(string $themeId, int $shopId): ThemeConfiguration
     {
-        $configuration = $this->resolveInheritedConfiguration($themeId, $shopId);
+        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $parentThemeId = $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentTheme();
+
+        if ($parentThemeId !== '' && $this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
+            $this->inheritMissingSettings(
+                $configuration,
+                $this->getConfigurationWithEnvironmentValues($parentThemeId, $shopId)
+            );
+        }
+
+        $this->applyEnvironmentValues($configuration, $themeId, $shopId);
+
+        return $configuration;
+    }
+
+    private function getConfigurationWithEnvironmentValues(string $themeId, int $shopId): ThemeConfiguration
+    {
+        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+        $this->applyEnvironmentValues($configuration, $themeId, $shopId);
+
+        return $configuration;
+    }
+
+    private function inheritMissingSettings(ThemeConfiguration $configuration, ThemeConfiguration $parent): void
+    {
+        foreach ($parent->getThemeSettings() as $parentSetting) {
+            if ($configuration->getSettingByName($parentSetting->getName()) === null) {
+                $configuration->addThemeSetting(clone $parentSetting);
+            }
+        }
+    }
+
+    private function applyEnvironmentValues(ThemeConfiguration $configuration, string $themeId, int $shopId): void
+    {
         $environmentSettingValues = $this->environmentConfigurationDao
             ->get($themeId, $shopId)
             ->getSettingValues();
@@ -56,26 +89,6 @@ readonly class ThemeConfigurationResolver implements ThemeConfigurationResolverI
 
             $setting->setValue($value);
         }
-
-        return $configuration;
-    }
-
-    private function resolveInheritedConfiguration(string $themeId, int $shopId): ThemeConfiguration
-    {
-        $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
-        $parentThemeId = $this->themeMetaDataByIdProvider->getById($themeId, $shopId)->getParentTheme();
-
-        if ($parentThemeId === '' || !$this->themeConfigurationDao->exists($parentThemeId, $shopId)) {
-            return $configuration;
-        }
-
-        foreach ($this->themeConfigurationDao->get($parentThemeId, $shopId)->getThemeSettings() as $parentSetting) {
-            if ($configuration->getSettingByName($parentSetting->getName()) === null) {
-                $configuration->addThemeSetting(clone $parentSetting);
-            }
-        }
-
-        return $configuration;
     }
 
     private function logUnknownSetting(string $themeId, int $shopId, string $settingName): void

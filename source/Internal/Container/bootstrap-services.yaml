@@ -9,4 +9,6 @@ imports:
     - { resource: ../Transition/Utility/bootstrap-services.yaml }
     - { resource: ../Framework/Theme/Configuration/bootstrap-services.yaml }
     - { resource: ../Framework/Theme/MetaData/bootstrap-services.yaml }
+    - { resource: ../Framework/Theme/Path/bootstrap-services.yaml }
+    - { resource: ../Framework/Theme/Activation/bootstrap-services.yaml }
     - { resource: ../Framework/Theme/Install/bootstrap-services.yaml }

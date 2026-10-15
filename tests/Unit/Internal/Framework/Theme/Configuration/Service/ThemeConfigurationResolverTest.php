@@ -117,6 +117,55 @@ final class ThemeConfigurationResolverTest extends TestCase
         $this->assertSame('200*200', $resolvedConfiguration->getSettingByName('iconSize')->getValue());
     }
 
+    public function testResolveAppliesParentEnvironmentOverrideToInheritedSetting(): void
+    {
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [
+                    $this->createConfiguration(self::CHILD_THEME_ID, []),
+                    $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']),
+                ],
+                parentThemeId: self::PARENT_THEME_ID,
+                parentEnvironmentValues: ['iconSize' => '300*300']
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('300*300', $resolvedConfiguration->getSettingByName('iconSize')->getValue());
+    }
+
+    public function testResolvePrefersChildEnvironmentOverrideOverParentEnvironmentOverride(): void
+    {
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [
+                    $this->createConfiguration(self::CHILD_THEME_ID, []),
+                    $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']),
+                ],
+                environmentValues: ['iconSize' => '200*200'],
+                parentThemeId: self::PARENT_THEME_ID,
+                parentEnvironmentValues: ['iconSize' => '300*300']
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('200*200', $resolvedConfiguration->getSettingByName('iconSize')->getValue());
+    }
+
+    public function testResolveIgnoresParentEnvironmentOverrideForSettingDeclaredByChild(): void
+    {
+        $resolvedConfiguration = $this
+            ->createResolver(
+                configurations: [
+                    $this->createConfiguration(self::CHILD_THEME_ID, ['iconSize' => '100*100']),
+                    $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']),
+                ],
+                parentThemeId: self::PARENT_THEME_ID,
+                parentEnvironmentValues: ['iconSize' => '300*300']
+            )
+            ->resolve(self::CHILD_THEME_ID, self::SHOP_ID);
+
+        $this->assertSame('100*100', $resolvedConfiguration->getSettingByName('iconSize')->getValue());
+    }
+
     public function testResolveInheritedValueDoesNotChangeParentConfiguration(): void
     {
         $parentConfiguration = $this->createConfiguration(self::PARENT_THEME_ID, ['iconSize' => '87*87']);
@@ -153,7 +202,8 @@ final class ThemeConfigurationResolverTest extends TestCase
         array $configurations,
         array $environmentValues = [],
         string $parentThemeId = '',
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
+        array $parentEnvironmentValues = [],
     ): ThemeConfigurationResolver {
         $configurationsById = [];
         foreach ($configurations as $configuration) {
@@ -171,7 +221,9 @@ final class ThemeConfigurationResolverTest extends TestCase
         $environmentConfigurationDao = $this->createStub(ThemeEnvironmentConfigurationDaoInterface::class);
         $environmentConfigurationDao
             ->method('get')
-            ->willReturn(new ThemeEnvironmentConfiguration($environmentValues));
+            ->willReturnCallback(fn (string $themeId) => new ThemeEnvironmentConfiguration(
+                $themeId === self::PARENT_THEME_ID ? $parentEnvironmentValues : $environmentValues
+            ));
 
         $metaDataProvider = $this->createStub(ThemeMetaDataByIdProviderInterface::class);
         $metaDataProvider->method('getById')->willReturn(

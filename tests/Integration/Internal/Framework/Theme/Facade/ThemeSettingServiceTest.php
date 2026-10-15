@@ -75,11 +75,8 @@ final class ThemeSettingServiceTest extends IntegrationTestCase
         $this->saveThemeWithSetting('logoFile', 'str', 'logo.png');
         $this->assertSame('logo.png', $this->get(ThemeSettingServiceInterface::class)->getString('logoFile'));
 
-        $configurationService = $this->get(ThemeConfigurationServiceInterface::class);
-        $configurationService->updateSettings(
-            $configurationService->getConfiguration(self::THEME_ID),
-            ['logoFile' => 'new-logo.png']
-        );
+        $this->get(ThemeConfigurationServiceInterface::class)
+            ->updateSettings(self::THEME_ID, ['logoFile' => 'new-logo.png']);
         $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
 
         $this->assertSame('new-logo.png', $this->get(ThemeSettingServiceInterface::class)->getString('logoFile'));

@@ -11,11 +11,13 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\
 
 interface ThemeConfigurationCacheInterface
 {
-    public function put(int $shopId, ThemeConfiguration $configuration): void;
+    public function put(ThemeConfiguration $configuration, int $shopId): void;
 
     public function get(string $themeId, int $shopId): ThemeConfiguration;
 
     public function exists(string $themeId, int $shopId): bool;
 
     public function evict(string $themeId, int $shopId): void;
+
+    public function evictAll(int $shopId): void;
 }

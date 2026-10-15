@@ -1189,7 +1189,6 @@ class FrontendController extends BaseController
 
         if (!is_array($numbersOfCategoryArticles) || !isset($numbersOfCategoryArticles[0])) {
             $numbersOfCategoryArticles = [$numberOfCategoryArticles];
-            $config->setConfigParam('numberOfCategoryProducts', $numbersOfCategoryArticles);
         } else {
             $numberOfCategoryArticles = $numbersOfCategoryArticles[0];
         }

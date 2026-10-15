@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 final class InvalidateThemeCacheEventSubscriberTest extends TestCase
 {
-    public function testSubscriberEvictsConfigurationAndClearsShopCache(): void
+    public function testSubscriberEvictsResolvedConfigurationsAndClearsShopCache(): void
     {
         $shopCacheCleaner = $this->createMock(ShopCacheCleanerInterface::class);
         $shopCacheCleaner
@@ -29,14 +29,14 @@ final class InvalidateThemeCacheEventSubscriberTest extends TestCase
         $configurationCache = $this->createMock(ThemeConfigurationCacheInterface::class);
         $configurationCache
             ->expects($this->once())
-            ->method('evict')
-            ->with('apex', 1);
+            ->method('evictAll')
+            ->with(1);
 
         $subscriber = new InvalidateThemeCacheEventSubscriber($shopCacheCleaner, $configurationCache);
-        $subscriber->invalidateThemeCache(new ThemeConfigurationChangedEvent('apex', 1));
+        $subscriber->invalidateThemeCache(new ThemeConfigurationChangedEvent(1, 'apex'));
     }
 
-    public function testSubscriberEvictsConfigurationAndClearsShopCacheOnThemeActivation(): void
+    public function testSubscriberEvictsResolvedConfigurationsAndClearsShopCacheOnThemeActivation(): void
     {
         $shopCacheCleaner = $this->createMock(ShopCacheCleanerInterface::class);
         $shopCacheCleaner
@@ -47,8 +47,8 @@ final class InvalidateThemeCacheEventSubscriberTest extends TestCase
         $configurationCache = $this->createMock(ThemeConfigurationCacheInterface::class);
         $configurationCache
             ->expects($this->once())
-            ->method('evict')
-            ->with('apex', 1);
+            ->method('evictAll')
+            ->with(1);
 
         $subscriber = new InvalidateThemeCacheEventSubscriber($shopCacheCleaner, $configurationCache);
         $subscriber->invalidateThemeCache(new ThemeActivatedEvent(1, 'apex'));

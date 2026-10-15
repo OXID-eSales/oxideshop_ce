@@ -68,7 +68,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected $_aConfigParams = [];
 
-
     /**
      * Current language Id
      *
@@ -368,7 +367,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
             $varVal = $value['oxvarvalue'];
 
             $this->setConfVarFromDb($varName, $varType, $varVal);
-
         }
 
         return (bool) count($result);

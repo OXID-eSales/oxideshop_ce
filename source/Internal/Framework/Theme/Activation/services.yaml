@@ -2,13 +2,6 @@ services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationService
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeParentCompatibilityCheckerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeParentCompatibilityChecker
-
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Command\ThemeActivateCommand:
     arguments:
       $activeThemeId: '%oxid_esales.theme.active%'

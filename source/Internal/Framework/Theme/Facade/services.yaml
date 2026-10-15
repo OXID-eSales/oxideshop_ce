@@ -6,6 +6,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingService
     arguments:
       $activeThemeId: '%oxid_esales.theme.active%'
+      $environment: '%env(string:default::OXID_ENV)%'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface:

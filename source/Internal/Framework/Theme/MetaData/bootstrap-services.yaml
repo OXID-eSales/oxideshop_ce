@@ -13,3 +13,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataProvider
     arguments:
       Symfony\Component\Config\Definition\NodeInterface: '@oxid_esales.theme.metadata.node'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataByIdProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataByIdProvider

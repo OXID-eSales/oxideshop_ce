@@ -65,7 +65,7 @@ class ThemeConfiguration extends AdminDetailsController
             $configuration = $this->getThemeConfiguration();
 
             $this->themeConfigurationService->updateSettings(
-                $configuration,
+                $configuration->getId(),
                 $this->settingValueMapper->fromFormValues($configuration, $this->getValidSettingValues())
             );
         } catch (ThemeConfigurationNotFoundException) {

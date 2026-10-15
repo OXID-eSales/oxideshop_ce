@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
@@ -27,6 +28,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         private ThemeConfigurationDaoInterface $themeConfigurationDao,
         private ShopConfigurationDaoInterface $shopConfigurationDao,
         private BasicContextInterface $context,
+        private ThemeActivationServiceInterface $themeActivationService,
     ) {
     }
 
@@ -65,6 +67,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
 
         foreach ($this->getShopIds() as $shopId) {
             try {
+                $this->themeActivationService->deactivate($themeId, $shopId);
                 $this->themeConfigurationDao->delete($themeId, $shopId);
             } catch (Throwable $e) {
                 throw new ThemeConfigurationInstallException(

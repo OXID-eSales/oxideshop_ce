@@ -38,4 +38,11 @@ readonly class ThemeActivationService implements ThemeActivationServiceInterface
 
         $this->eventDispatcher->dispatch(new ThemeActivatedEvent($shopId, $themeId));
     }
+
+    public function deactivate(string $themeId, int $shopId): void
+    {
+        if ($this->parameterDao->get('oxid_esales.theme.active', $shopId) === $themeId) {
+            $this->parameterDao->remove('oxid_esales.theme.active', $shopId);
+        }
+    }
 }

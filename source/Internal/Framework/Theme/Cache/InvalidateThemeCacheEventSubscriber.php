@@ -25,7 +25,7 @@ readonly class InvalidateThemeCacheEventSubscriber implements EventSubscriberInt
 
     public function invalidateThemeCache(ThemeConfigurationChangedEvent|ThemeActivatedEvent $event): void
     {
-        $this->resolvedConfigurationCache->evict($event->getThemeId(), $event->getShopId());
+        $this->resolvedConfigurationCache->evictAll($event->getShopId());
         $this->shopCacheCleaner->clear($event->getShopId());
     }
 

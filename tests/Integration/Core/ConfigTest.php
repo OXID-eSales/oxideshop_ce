@@ -9,7 +9,10 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
+use OxidEsales\Eshop\Application\Component\Widget\ArticleBox;
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -43,6 +46,24 @@ final class ConfigTest extends IntegrationTestCase
         $config->setConfigParam('sSSLShopURL', 'https://shop.example.com/');
 
         $this->assertFalse($config->isSsl());
+    }
+
+    public function testGetTopActivePageViewReturnsNullWhenOnlyWidgetIsInStack(): void
+    {
+        $config = Registry::getConfig();
+        $config->setActiveView(oxNew(ArticleBox::class));
+
+        $this->assertNull($config->getTopActivePageView());
+    }
+
+    public function testGetTopActivePageViewReturnsPageViewWhenWidgetIsEmbedded(): void
+    {
+        $config = Registry::getConfig();
+        $pageView = oxNew(FrontendController::class);
+        $config->setActiveView($pageView);
+        $config->setActiveView(oxNew(ArticleBox::class));
+
+        $this->assertSame($pageView, $config->getTopActivePageView());
     }
 
     private function bootContainerWithTrustedProxies(array $trustedProxies): void

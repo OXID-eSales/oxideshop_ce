@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
 use OxidEsales\Eshop\Application\Controller\OxidStartController;
 use OxidEsales\Eshop\Application\Model\Shop;
 use OxidEsales\Eshop\Core\Registry;
@@ -1896,6 +1897,17 @@ class Config extends \OxidEsales\Eshop\Core\Base
         } else {
             return $this->getActiveView();
         }
+    }
+
+    public function getTopActivePageView()
+    {
+        foreach ($this->_aActiveViews as $view) {
+            if (!($view instanceof WidgetController)) {
+                return $view;
+            }
+        }
+
+        return null;
     }
 
     /**

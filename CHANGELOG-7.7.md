@@ -14,6 +14,9 @@
 ### Deprecated
 - `Utilities::createMigrations()`
 
+### Fixed
+- Infinite recursion when article box or review widgets are called directly without a parent view [#0005484](https://bugs.oxid-esales.com/view.php?id=5484)
+
 ### Removed
 - PHP v8.3 support
 - PHPUnit v12 support

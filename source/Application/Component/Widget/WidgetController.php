@@ -7,6 +7,8 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
+use OxidEsales\Eshop\Core\Registry;
+
 /**
  * Widget parent.
  * Gather functionality needed for all widgets but not for other views.
@@ -38,22 +40,27 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
     {
         self::$_aCollectedComponentNames = null;
 
-        if (!empty($this->_aComponentNames)) {
-            foreach ($this->_aComponentNames as $sComponentName => $sCompCache) {
-                $oActTopView = \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView();
-                if ($oActTopView) {
-                    $this->_oaComponents[$sComponentName] = $oActTopView->getComponent($sComponentName);
-                    if (!isset($this->_oaComponents[$sComponentName])) {
-                        $this->_blLoadComponents = true;
-                        break;
-                    } else {
-                        $this->_oaComponents[$sComponentName]->setParent($this);
-                    }
-                }
+        $topActiveView = Registry::getConfig()->getTopActiveView();
+
+        foreach ($this->_aComponentNames as $componentName => $compCache) {
+            $this->_oaComponents[$componentName] = $topActiveView->getComponent($componentName);
+            if (!isset($this->_oaComponents[$componentName])) {
+                $this->_blLoadComponents = true;
+                break;
             }
+            $this->_oaComponents[$componentName]->setParent($this);
         }
 
         parent::init();
+    }
+
+    public function render()
+    {
+        if (Registry::getConfig()->getTopActiveView() === $this) {
+            return '';
+        }
+
+        return parent::render();
     }
 
     /**

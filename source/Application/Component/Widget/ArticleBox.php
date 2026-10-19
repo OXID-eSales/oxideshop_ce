@@ -7,8 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
-use oxRegistry;
-use oxArticle;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Article box widget
@@ -45,9 +44,9 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function getActiveCategory()
     {
-        $oCategory = \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getActiveCategory();
-        if ($oCategory) {
-            $this->setActiveCategory($oCategory);
+        $category = Registry::getConfig()->getTopActiveView()->getActiveCategory();
+        if ($category) {
+            $this->setActiveCategory($category);
         }
 
         return $this->_oActCategory;
@@ -96,17 +95,17 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     {
         if (is_null($this->_oArticle)) {
             if ($this->getViewParameter('_object')) {
-                $oArticle = $this->getViewParameter('_object');
+                $article = $this->getViewParameter('_object');
             } else {
-                $sAddDynParams = \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getAddUrlParams();
+                $addDynParams = Registry::getConfig()->getTopActiveView()->getAddUrlParams();
 
-                $sAddDynParams = $this->updateDynamicParameters($sAddDynParams);
+                $addDynParams = $this->updateDynamicParameters($addDynParams);
 
-                $oArticle = $this->getArticleById($this->getViewParameter('anid'));
-                $this->addDynParamsToLink($sAddDynParams, $oArticle);
+                $article = $this->getArticleById($this->getViewParameter('anid'));
+                $this->addDynParamsToLink($addDynParams, $article);
             }
 
-            $this->setProduct($oArticle);
+            $this->setProduct($article);
         }
 
         return $this->_oArticle;
@@ -121,7 +120,7 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function getLink($iLang = null)
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getLink($iLang);
+        return Registry::getConfig()->getTopActiveView()->getLink($iLang);
     }
 
     /**
@@ -238,9 +237,8 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     {
         $blAddedParams = false;
         if ($sAddDynParams) {
-            $blSeo = \OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive();
+            $blSeo = Registry::getUtils()->seoIsActive();
             if (!$blSeo) {
-                // only if seo is off..
                 $oArticle->appendStdLink($sAddDynParams);
             }
             $oArticle->appendLink($sAddDynParams);

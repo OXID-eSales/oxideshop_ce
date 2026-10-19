@@ -50,6 +50,25 @@ final class RuleProviderTest extends TestCase
         $this->assertSame(['global'], $ids);
     }
 
+    public function testFormatBoundRuleMatchesOnlyRequestsOfThatFormat(): void
+    {
+        $rules = [
+            ['id' => 'api', 'format' => 'json', 'key' => 'ip', 'limit' => 1, 'interval' => '1 minute'],
+            ['id' => 'pages', 'key' => 'ip', 'limit' => 1, 'interval' => '1 minute'],
+        ];
+        $jsonRequest = Request::create('/api/products');
+        $jsonRequest->attributes->set('_format', 'json');
+
+        $this->assertSame(
+            ['api', 'pages'],
+            array_column(new RuleProvider($rules, $jsonRequest)->getMatchingRules(), 'id')
+        );
+        $this->assertSame(
+            ['pages'],
+            array_column(new RuleProvider($rules, Request::create('/'))->getMatchingRules(), 'id')
+        );
+    }
+
     public function testReturnsNothingWithoutConfiguredRules(): void
     {
         $this->assertSame([], $this->createProvider([])->getMatchingRules());

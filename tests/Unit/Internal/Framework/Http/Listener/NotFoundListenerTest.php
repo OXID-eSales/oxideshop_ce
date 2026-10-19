@@ -11,19 +11,27 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http\Listener;
 
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\NotFoundListener;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 final class NotFoundListenerTest extends TestCase
 {
+    public function testSubscribesToKernelExceptionAfterTheHttpExceptionListener(): void
+    {
+        $this->assertSame(
+            [KernelEvents::EXCEPTION => ['onKernelException', -30]],
+            NotFoundListener::getSubscribedEvents()
+        );
+    }
+
     public function testIgnoresOtherThrowables(): void
     {
         $event = $this->createExceptionEvent(new \RuntimeException(), HttpKernelInterface::MAIN_REQUEST);
 
-        $this->createListener()->onKernelException($event);
+        new NotFoundListener()->onKernelException($event);
 
         $this->assertNull($event->getResponse());
     }
@@ -32,17 +40,9 @@ final class NotFoundListenerTest extends TestCase
     {
         $event = $this->createExceptionEvent(new RoutingException(), HttpKernelInterface::SUB_REQUEST);
 
-        $this->createListener()->onKernelException($event);
+        new NotFoundListener()->onKernelException($event);
 
         $this->assertNull($event->getResponse());
-    }
-
-    private function createListener(): NotFoundListener
-    {
-        $renderer = $this->createMock(TemplateRendererInterface::class);
-        $renderer->expects($this->never())->method('renderTemplate');
-
-        return new NotFoundListener($renderer);
     }
 
     private function createExceptionEvent(\Throwable $throwable, int $requestType): ExceptionEvent

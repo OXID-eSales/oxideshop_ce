@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Config;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
@@ -20,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBrid
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 final class ShopControlTest extends IntegrationTestCase
 {
@@ -45,6 +47,42 @@ final class ShopControlTest extends IntegrationTestCase
         new ShopControl()->buildResponse();
     }
 
+    public function testBuildResponseRejectsUnknownPathReachingTheFrontController(): void
+    {
+        $_SERVER['REQUEST_URI'] = '/unrouted/path';
+
+        $this->expectException(RoutingException::class);
+
+        new ShopControl()->buildResponse();
+    }
+
+    public function testBuildResponseDeliversTheResponseReturnedByRender(): void
+    {
+        $response = new Response('file');
+        $view = $this->createStub(FrontendController::class);
+        $view->method('render')->willReturn($response);
+        $view->method('getFncName')->willReturn('');
+        $shopControl = new class ($view) extends ShopControl {
+            public function __construct(private readonly FrontendController $view)
+            {
+            }
+
+            protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
+            {
+                return $this->view;
+            }
+        };
+
+        $this->assertSame($response, $shopControl->buildResponse('download'));
+    }
+
+    public function testRenderRejectsViewWithoutTemplate(): void
+    {
+        $this->expectException(RoutingException::class);
+
+        $this->renderView(null);
+    }
+
     public function testRenderRethrowsShopExceptionWrappedByTemplateEngine(): void
     {
         $this->useTemplateRendererThrowing(new \Exception('', 0, new StandardException()));
@@ -67,10 +105,10 @@ final class ShopControlTest extends IntegrationTestCase
         }
     }
 
-    private function renderView(): void
+    private function renderView(?string $templateName = 'page'): void
     {
         $view = $this->createStub(FrontendController::class);
-        $view->method('render')->willReturn('page');
+        $view->method('render')->willReturn($templateName);
         $view->method('getViewData')->willReturn([]);
         $view->method('getClassKey')->willReturn('start');
         $view->method('getViewId')->willReturn('viewId');

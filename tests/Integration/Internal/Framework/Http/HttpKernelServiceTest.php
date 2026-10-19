@@ -9,7 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http;
 
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
+use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,6 +53,20 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame('https://shop.example/target', $response->headers->get('Location'));
         $this->assertSame(302, $response->getStatusCode());
+    }
+
+    public function testAnswersRoutingExceptionWithJsonWithoutBuildingTheTemplateRenderer(): void
+    {
+        $request = Request::create('/nothing', 'GET', server: ['HTTP_ACCEPT' => 'application/json']);
+        $request->attributes->set('_controller', static function (): Response {
+            throw new RoutingException();
+        });
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertSame('{"error":"Not Found"}', $response->getContent());
+        $this->assertFalse($this->container->initialized(TemplateRendererInterface::class));
     }
 
     public function testSetsHtmlContentTypeOnResponseWithoutOne(): void

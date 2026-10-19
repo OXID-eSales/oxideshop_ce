@@ -62,6 +62,19 @@ final class ModuleControllerApiTest extends TestCase
         $response = $httpBrowser->getResponse();
 
         $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('{"error":"Not Found"}', $response->getContent());
+    }
+
+    public function testApiControllerWrongMethod(): void
+    {
+        $shopUrl = Registry::getConfig()->getShopUrl();
+        $httpBrowser = new HttpBrowser();
+        $httpBrowser->request('POST', $shopUrl . 'api/oxid/8/');
+        $response = $httpBrowser->getResponse();
+
+        $this->assertSame(405, $response->getStatusCode());
+        $this->assertSame('GET', $response->getHeader('Allow'));
+        $this->assertSame('{"error":"Method Not Allowed"}', $response->getContent());
     }
 
     private function get(string $serviceId)

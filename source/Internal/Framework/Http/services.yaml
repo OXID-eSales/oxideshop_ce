@@ -39,7 +39,15 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\JsonNotFoundListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
   OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\NotFoundListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\HttpExceptionListener:
     tags:
       - { name: kernel.event_subscriber }
 

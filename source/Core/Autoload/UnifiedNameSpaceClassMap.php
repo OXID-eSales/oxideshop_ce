@@ -1455,12 +1455,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Controller\ExceptionErrorController'           => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\ExceptionErrorController::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Application\Controller\ForgotPasswordController'           => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\ForgotPasswordController::class,
         'isAbstract'       => false,
@@ -1499,6 +1493,12 @@ return [
     ],
     'OxidEsales\Eshop\Application\Controller\NewsletterController'               => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\NewsletterController::class,
+        'isAbstract'       => false,
+        'isInterface'      => false,
+        'isDeprecated'     => false
+    ],
+    'OxidEsales\Eshop\Application\Controller\NotFoundController'                 => [
+        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\NotFoundController::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

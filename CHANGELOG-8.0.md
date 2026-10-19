@@ -46,11 +46,15 @@
   - `Utils::redirect()` throws a `RedirectException` delivered as a redirect on `kernel.exception`
   - The `Cache-Control` header is owned by the `Response`
   - The default `Content-Type` and charset are configured via `oxid_esales.http.charset`
+  - HTTP errors are rendered as JSON or plain text by the request's preferred format
+- Rate limiting rules accept `format: json`; JSON routes are limited by default
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
 
 ### Removed
+- `api.php` - use `index.php`
+- `ApiRateLimiterFactoryInterface`, `ClientIdentifierProviderInterface` and the `oxid_esales.rate_limiter.*` parameters - use `oxid_esales.rate_limiter.storefront.rules`
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)
   - `BaseModel::getClassName()` and `BaseModel::$_sClassName`
@@ -60,6 +64,10 @@
   - The `$classAlias` parameter of `ModuleChainsGenerator::createClassChain()`
 - `Oxid`, `ShopControl::start()` and `WidgetControl::start()`
 - `ShopControl` internals superseded by the kernel migration
+- `ShopControl::formOutput()` - override `ShopControl::render()`
+- `ExceptionErrorController` and the `exceptionerror` controller key
+- `Config::handleDbConnectionException()`, `Config::handleCookieException()` and `Config::getExceptionHandler()`
+- `UtilsView::getTemplateOutput()` and `Session::isHeaderSent()`
 - Inclusion of `modules/functions.php`
 - `Output` - process output with a `kernel.response` listener
 - `Header` - set headers on the `Response` or use a `kernel.response` listener

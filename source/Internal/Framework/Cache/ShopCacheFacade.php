@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCa
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 readonly class ShopCacheFacade implements ShopCacheCleanerInterface
 {
@@ -23,7 +24,8 @@ readonly class ShopCacheFacade implements ShopCacheCleanerInterface
         private TagAwareAdapterFactoryInterface $tagAwareAdapterFactory,
         private ShopAdapterInterface $shopAdapter,
         private ShopTemplateCacheServiceInterface $templateCacheService,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
+        private Filesystem $filesystem,
     ) {
     }
 
@@ -32,6 +34,7 @@ readonly class ShopCacheFacade implements ShopCacheCleanerInterface
         $this->shopAdapter->invalidateModulesCache();
         $this->templateCacheService->invalidateCache($shopId);
         $this->tagAwareAdapterFactory->create($shopId)->clear();
+        $this->renewCachePoolGeneration($shopId);
 
         $this->eventDispatcher->dispatch(new ClearShopCacheEvent($shopId));
     }
@@ -42,7 +45,16 @@ readonly class ShopCacheFacade implements ShopCacheCleanerInterface
         $this->templateCacheService->invalidateAllShopsCache();
         foreach ($this->context->getAllShopIds() as $shopId) {
             $this->tagAwareAdapterFactory->create($shopId)->clear();
+            $this->renewCachePoolGeneration($shopId);
             $this->eventDispatcher->dispatch(new ClearShopCacheEvent($shopId));
         }
+    }
+
+    private function renewCachePoolGeneration(int $shopId): void
+    {
+        $this->filesystem->dumpFile(
+            $this->context->getCachePoolGenerationFilePath($shopId),
+            bin2hex(random_bytes(4))
+        );
     }
 }

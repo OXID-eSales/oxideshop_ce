@@ -75,7 +75,7 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 
     public function testRenderServiceController(): void
     {
-        $output = $this->shopControl->buildResponse('test_module_controller_as_service', '')->getContent();
+        $output = $this->buildResponseCapturingEchoedOutput('test_module_controller_as_service', '');
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
     }

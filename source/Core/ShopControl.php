@@ -14,15 +14,13 @@ use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponderInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RequestTerminationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
@@ -41,14 +39,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         Registry::getConfig()->init();
 
-        if (
-                ContainerFacade::hasParameter('oxid_esales.rate_limiter.storefront.enabled')
-                && ContainerFacade::getParameter('oxid_esales.rate_limiter.storefront.enabled')
-            ) {
-                ContainerFacade::get(StorefrontRateLimiterInterface::class)->enforce();
-            }
-
-            $function ??= Registry::getRequest()->getRequestEscapedParameter('fnc');
+        $function ??= Registry::getRequest()->getRequestEscapedParameter('fnc');
         $controllerKey ??= $this->getStartControllerKey();
         $controllerClass = $this->resolveControllerClass($controllerKey);
 
@@ -60,6 +51,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $controllerKey = Registry::getConfig()->getRequestControllerId();
 
         if (!$controllerKey) {
+            $this->rejectUnknownPath();
+
             $session = Registry::getSession();
             if ($this->isAdmin()) {
                 $controllerKey = $session->getVariable('auth') ? 'admin_start' : 'login';
@@ -137,18 +130,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
 
         $view->executeFunction($functionName);
-    }
-
-    /**
-     * Forms output from view object.
-     *
-     * @param FrontendController $view
-     *
-     * @return string|Response
-     */
-    protected function formOutput($view)
-    {
-        return $this->render($view);
     }
 
     /**
@@ -246,6 +227,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if ($templateName instanceof Response) {
             return $templateName;
         }
+        if ($templateName === null) {
+            throw new RoutingException(sprintf('Controller "%s" has no template', $view->getClassKey()));
+        }
 
         $viewData = $view->getViewData();
 
@@ -288,13 +272,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     private function resolveResponse(ViewControllerInterface $view): Response
     {
-        if ($view->getResponse() !== null) {
-            return $view->getResponse();
-        }
-
-        $output = $this->formOutput($view);
-        if ($view->getResponse() !== null) {
-            return $view->getResponse();
+        $output = $view->getResponse() ?? $this->render($view);
+        if ($output instanceof Response) {
+            return $output;
         }
 
         ContainerFacade::dispatch(new ViewRenderedEvent($this));
@@ -342,6 +322,15 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             if ($controllerName == $currentControllerName) {
                 unset($this->remainingErrors[$errorName], $this->errorControllers[$errorName]);
             }
+        }
+    }
+
+    private function rejectUnknownPath(): void
+    {
+        $pathInfo = ContainerFacade::get(Request::class)->getPathInfo();
+
+        if ($pathInfo !== '/') {
+            throw new RoutingException($pathInfo);
         }
     }
 

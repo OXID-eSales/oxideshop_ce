@@ -1,31 +1,9 @@
 imports:
-  - { resource: parameters.yaml }
   - { resource: Storefront/services.yaml }
 
 services:
   _defaults:
     autowire: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ApiRateLimiterFactoryInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ApiRateLimiterFactory
-    arguments:
-      $limit: '%oxid_esales.rate_limiter.limit%'
-      $interval: '%oxid_esales.rate_limiter.interval%'
-      $policy: '%oxid_esales.rate_limiter.policy%'
-
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ClientIdentifierProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ClientIdentifierProvider
-
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\ApiRateLimitListener:
-    arguments:
-      $enabled: '%oxid_esales.rate_limiter.enabled%'
-      $excludedRoutes: '%oxid_esales.rate_limiter.excluded_routes%'
-    tags:
-      - { name: kernel.event_subscriber }
-
-  OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\RateLimitHeadersListener:
-    tags:
-      - { name: kernel.event_subscriber }
 
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Command\PruneCommand:
     arguments:

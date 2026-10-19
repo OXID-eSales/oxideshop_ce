@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Settings handler class.
+ *
+ * @deprecated
  */
 class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 {

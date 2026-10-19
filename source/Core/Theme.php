@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeActivatedEvent
  * Themes handler class.
  *
  * @internal Do not make a module extension for this class.
+ * @deprecated
  */
 class Theme extends \OxidEsales\Eshop\Core\Base
 {

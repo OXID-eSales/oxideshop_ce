@@ -13,6 +13,16 @@
 
 ### Deprecated
 - `Utilities::createMigrations()`
+- Theme configuration classes and methods
+  - `Theme` and `SettingsHandler`
+  - `ThemeConfiguration::saveConfVars()`, `ThemeConfiguration::$_sTheme` and `ThemeMain::themeInConfigFile()`
+  - `Config::isThemeOption()`, `Config::$_aThemeConfigParams` and `Config::OXMODULE_THEME_PREFIX`
+  - `ViewConfig::getViewThemeParam()`
+  - `Language::getCustomThemeLanguageFiles()`
+  - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
+- `ThemeSettingChangedEvent`
+- `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.theme.admin.name` instead
+- `Internal\Framework\Theme\Event\ThemeActivatedEvent`
 
 ### Removed
 - PHP v8.3 support

@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * @deprecated
+ */
 final class ThemeActivatedEvent extends Event
 {
     public function __construct(private readonly int $shopId, private readonly string $themeId)

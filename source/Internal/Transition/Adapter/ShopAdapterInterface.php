@@ -59,14 +59,29 @@ interface ShopAdapterInterface
      */
     public function validateShopId(int $shopId): bool;
 
+    /**
+     * @deprecated
+     */
     public function getActiveThemesList(): array;
 
+    /**
+     * @deprecated
+     */
     public function getCustomTheme(): string;
 
+    /**
+     * @deprecated
+     */
     public function getActiveThemeId(): string;
 
+    /**
+     * @deprecated
+     */
     public function themeExists(string $themeId): bool;
 
+    /**
+     * @deprecated
+     */
     public function activateTheme(string $themeId): void;
 
     public function generateDatabaseViewName(string $tableName, int $languageId, int $shopId): string;

@@ -715,6 +715,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param int $language active language
      *
      * @return array
+     *
+     * @deprecated
      */
     protected function getCustomThemeLanguageFiles($language)
     {

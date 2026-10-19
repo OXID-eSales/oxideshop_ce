@@ -96,6 +96,8 @@ class ShopAdapter implements ShopAdapterInterface
      *      if flow theme is active we will get ['flow']
      *      if azure is extended by some other we will get ['azure', 'extending_theme']
      *
+     * @deprecated
+     *
      * @return array
      */
     public function getActiveThemesList(): array
@@ -114,11 +116,17 @@ class ShopAdapter implements ShopAdapterInterface
         return $activeThemeList;
     }
 
+    /**
+     * @deprecated
+     */
     public function getCustomTheme(): string
     {
         return (string)Registry::getConfig()->getConfigParam('sCustomTheme');
     }
 
+    /**
+     * @deprecated
+     */
     public function getActiveThemeId(): string
     {
         $customTheme = Registry::getConfig()->getConfigParam('sCustomTheme');
@@ -129,11 +137,17 @@ class ShopAdapter implements ShopAdapterInterface
         return (string)Registry::getConfig()->getConfigParam('sTheme');
     }
 
+    /**
+     * @deprecated
+     */
     public function themeExists(string $themeId): bool
     {
         return oxNew(Theme::class)->load($themeId);
     }
 
+    /**
+     * @deprecated
+     */
     public function activateTheme(string $themeId): void
     {
         $theme = oxNew(Theme::class);

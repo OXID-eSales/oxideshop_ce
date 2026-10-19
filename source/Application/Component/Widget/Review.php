@@ -112,8 +112,7 @@ class Review extends \OxidEsales\Eshop\Application\Component\Widget\WidgetContro
      */
     public function getReviews()
     {
-        $pageView = Registry::getConfig()->getTopActiveView();
-
-        return $pageView->getReviews();
+        $topView = Registry::getConfig()->getTopActiveView();
+        return $topView !== $this ? $topView->getReviews() : null;
     }
 }

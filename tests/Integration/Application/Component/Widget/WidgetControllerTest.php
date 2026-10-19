@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Component\Widget;
 
-use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
+use OxidEsales\Eshop\Application\Component\Widget\Review;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -17,11 +17,11 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[RunTestsInSeparateProcesses]
 final class WidgetControllerTest extends IntegrationTestCase
 {
-    public function testRenderReturnsEmptyWhenCalledWithoutParentView(): void
+    public function testWidgetDelegationMethodsReturnNullWhenCalledWithoutParentView(): void
     {
-        $widget = oxNew(WidgetController::class);
+        $widget = oxNew(Review::class);
         Registry::getConfig()->setActiveView($widget);
 
-        $this->assertSame('', $widget->render());
+        $this->assertNull($widget->getReviews());
     }
 }

@@ -54,15 +54,6 @@ class WidgetController extends \OxidEsales\Eshop\Application\Controller\Frontend
         parent::init();
     }
 
-    public function render()
-    {
-        if (Registry::getConfig()->getTopActiveView() === $this) {
-            return '';
-        }
-
-        return parent::render();
-    }
-
     /**
      * In widgets we do not need to parse seo and do any work related to that
      * Shop main control is responsible for that, and that has to be done once

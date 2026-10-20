@@ -40,6 +40,8 @@ class ThemeMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
     /**
      * Check if theme config is in config file.
      *
+     * @deprecated
+     *
      * @return bool
      */
     public function themeInConfigFile()

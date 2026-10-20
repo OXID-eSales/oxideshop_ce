@@ -71,6 +71,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Theme config parameters storage array
      *
      * @var array
+     *
+     * @deprecated
      */
     protected $_aThemeConfigParams = [];
 
@@ -170,6 +172,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * prefix for oxModule field for themes in oxConfig and oxConfigDisplay tables
+     *
+     * @deprecated
      *
      * @var string
      */
@@ -1722,6 +1726,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $name option name
      *
      * @return bool
+     *
+     * @deprecated
      */
     public function isThemeOption($name)
     {

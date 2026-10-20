@@ -12,6 +12,8 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Bridge;
 /**
  * @stable
  * @see OxidEsales/EshopCommunity/Internal/README.md
+ *
+ * @deprecated
  */
 interface AdminThemeBridgeInterface
 {

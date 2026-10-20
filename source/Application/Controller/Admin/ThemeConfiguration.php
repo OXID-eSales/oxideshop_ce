@@ -12,6 +12,9 @@ use OxidEsales\Eshop\Core\Registry;
 
 class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\ShopConfiguration
 {
+    /**
+     * @deprecated
+     */
     protected $_sTheme = null;
 
     /** @inheritdoc */
@@ -64,6 +67,8 @@ class ThemeConfiguration extends \OxidEsales\Eshop\Application\Controller\Admin\
 
     /**
      * Saves shop configuration variables
+     *
+     * @deprecated
      */
     public function saveConfVars()
     {

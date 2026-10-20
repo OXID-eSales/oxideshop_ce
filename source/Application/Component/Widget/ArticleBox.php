@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Application\Component\Widget;
 
 use oxRegistry;
 use oxArticle;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Article box widget
@@ -45,9 +46,13 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function getActiveCategory()
     {
-        $oCategory = \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getActiveCategory();
-        if ($oCategory) {
-            $this->setActiveCategory($oCategory);
+        if ($this->isTopActiveView()) {
+            return parent::getActiveCategory();
+        }
+
+        $category = Registry::getConfig()->getTopActiveView()->getActiveCategory();
+        if ($category) {
+            $this->setActiveCategory($category);
         }
 
         return $this->_oActCategory;
@@ -121,7 +126,11 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
      */
     public function getLink($iLang = null)
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getTopActiveView()->getLink($iLang);
+        if ($this->isTopActiveView()) {
+            return parent::getLink($iLang);
+        }
+
+        return Registry::getConfig()->getTopActiveView()->getLink($iLang);
     }
 
     /**
@@ -287,5 +296,10 @@ class ArticleBox extends \OxidEsales\Eshop\Application\Component\Widget\WidgetCo
     protected function updateDynamicParameters($dynamicParameters)
     {
         return $dynamicParameters;
+    }
+
+    private function isTopActiveView(): bool
+    {
+        return Registry::getConfig()->getTopActiveView() === $this;
     }
 }

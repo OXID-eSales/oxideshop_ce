@@ -24,6 +24,9 @@
 - `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.theme.admin.name` instead
 - `Internal\Framework\Theme\Event\ThemeActivatedEvent`
 
+### Fixed
+- Infinite recursion when the `ArticleBox` or `Review` widget is called directly without a parent view [#0005484](https://bugs.oxid-esales.com/view.php?id=5484)
+
 ### Removed
 - PHP v8.3 support
 - PHPUnit v12 support

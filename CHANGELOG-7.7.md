@@ -24,6 +24,9 @@
 - `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.theme.admin.name` instead
 - `Internal\Framework\Theme\Event\ThemeActivatedEvent`
 
+### Fixed
+- Password reset links are invalidated when the user's email address or password is changed
+
 ### Removed
 - PHP v8.3 support
 - PHPUnit v12 support

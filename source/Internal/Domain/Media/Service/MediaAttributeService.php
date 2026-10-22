@@ -16,14 +16,12 @@ use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Event\MediaAttributeChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 readonly class MediaAttributeService implements MediaAttributeServiceInterface
 {
     public function __construct(
         private MediaAttributeDaoInterface $attributeDao,
-        private ContextInterface $context,
         private EventDispatcherInterface $eventDispatcher,
     ) {
     }
@@ -32,8 +30,7 @@ readonly class MediaAttributeService implements MediaAttributeServiceInterface
     {
         return $this->attributeDao->getAttributes(
             $media->getId(),
-            new LocaleChain([$localeCode]),
-            $this->context->getCurrentShopId()
+            new LocaleChain([$localeCode])
         );
     }
 
@@ -44,7 +41,6 @@ readonly class MediaAttributeService implements MediaAttributeServiceInterface
                 Id::generate(),
                 $media->getId(),
                 $localeCode,
-                $this->context->getCurrentShopId(),
                 $name,
                 $value
             )
@@ -58,8 +54,7 @@ readonly class MediaAttributeService implements MediaAttributeServiceInterface
         $this->attributeDao->delete(
             $name,
             $media->getId(),
-            $localeCode,
-            $this->context->getCurrentShopId()
+            $localeCode
         );
 
         $this->dispatchChange($media);

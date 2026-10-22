@@ -171,8 +171,8 @@ final class ArticlePictureAltTest extends IntegrationTestCase
         $controller->save();
 
         $dao = $this->get(MediaAttributeDaoInterface::class);
-        $this->assertSame('selected', $dao->getAttributes($selectedMediaId, new LocaleChain(['de_DE']), 1)->getAlt());
-        $this->assertFalse($dao->getAttributes($otherMediaId, new LocaleChain(['de_DE']), 1)->has(MediaAttribute::ALT));
+        $this->assertSame('selected', $dao->getAttributes($selectedMediaId, new LocaleChain(['de_DE']))->getAlt());
+        $this->assertFalse($dao->getAttributes($otherMediaId, new LocaleChain(['de_DE']))->has(MediaAttribute::ALT));
     }
 
     public function testSaveRemovesAltWhenTextIsEmpty(): void
@@ -207,7 +207,7 @@ final class ArticlePictureAltTest extends IntegrationTestCase
 
         $this->assertFalse(
             $this->get(MediaAttributeDaoInterface::class)
-                ->getAttributes($mediaId, new LocaleChain(['de_DE']), 1)
+                ->getAttributes($mediaId, new LocaleChain(['de_DE']))
                 ->has(MediaAttribute::ALT)
         );
     }

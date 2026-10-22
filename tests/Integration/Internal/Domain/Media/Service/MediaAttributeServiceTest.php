@@ -66,7 +66,7 @@ final class MediaAttributeServiceTest extends IntegrationTestCase
 
         $this->assertSame(
             'some alt text',
-            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->getAlt()
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]))->getAlt()
         );
     }
 
@@ -74,7 +74,7 @@ final class MediaAttributeServiceTest extends IntegrationTestCase
     {
         $this->service->save('title', 'some title', $this->media, $this->locale->getCode());
 
-        $media = $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId);
+        $media = $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]));
 
         $this->assertSame('some title', $media->get('title'));
     }
@@ -86,7 +86,7 @@ final class MediaAttributeServiceTest extends IntegrationTestCase
 
         $this->assertSame(
             'updated',
-            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->getAlt()
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]))->getAlt()
         );
     }
 
@@ -97,7 +97,7 @@ final class MediaAttributeServiceTest extends IntegrationTestCase
         $this->service->delete(MediaAttribute::ALT, $this->media, $this->locale->getCode());
 
         $this->assertFalse(
-            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->has(MediaAttribute::ALT)
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]))->has(MediaAttribute::ALT)
         );
     }
 
@@ -107,7 +107,7 @@ final class MediaAttributeServiceTest extends IntegrationTestCase
 
         $this->assertSame(
             '  stored  ',
-            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->getAlt()
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]))->getAlt()
         );
     }
 
@@ -120,7 +120,7 @@ final class MediaAttributeServiceTest extends IntegrationTestCase
 
         $this->assertSame(
             'some title',
-            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]), $this->shopId)->get('title')
+            $this->dao->getAttributes($this->media->getId(), new LocaleChain([$this->locale->getCode()]))->get('title')
         );
     }
 
@@ -151,7 +151,6 @@ final class MediaAttributeServiceTest extends IntegrationTestCase
             Id::generate(),
             $media->getId(),
             $locale->getCode(),
-            $this->shopId,
             $name,
             $value
         );

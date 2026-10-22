@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
 use Doctrine\Migrations\Configuration\Migration\YamlFile;
 use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\QueryWriter;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand as DoctrineMigrateCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -30,6 +31,10 @@ readonly class MigrationRunner implements MigrationRunnerInterface
             new YamlFile($migrationConfigPath),
             new ExistingConnection($this->connectionFactory->create())
         );
+
+        if (is_string($options['--write-sql'] ?? null)) {
+            $dependencyFactory->setService(QueryWriter::class, new AppendingQueryWriter());
+        }
 
         $input = new ArrayInput($options + ['--allow-no-migration' => true]);
         $input->setInteractive(false);

@@ -102,6 +102,22 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->assertFalse($connection->getSchemaManager()->tablesExist(['test_migration_table']));
     }
 
+    public function testWrittenSqlContainsMigrationsOfAllProviders(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlFile = tempnam(sys_get_temp_dir(), 'migration_sql_');
+
+        $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+
+        $writtenSql = file_get_contents($sqlFile);
+        unlink($sqlFile);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $writtenSql);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $writtenSql);
+    }
+
     public function testProvidersAreExecutedInDescendingPriorityOrder(): void
     {
         $this->createContainer();
@@ -121,6 +137,7 @@ final class TaggedMigrationExecutorTest extends TestCase
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migration_table`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_failing_migrations_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_second_migrations_tracking`');
         parent::tearDown();
     }
 

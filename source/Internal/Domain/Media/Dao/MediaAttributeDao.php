@@ -24,7 +24,7 @@ readonly class MediaAttributeDao implements MediaAttributeDaoInterface
     ) {
     }
 
-    public function getAttributes(Id $mediaId, LocaleChain $chain, int $shopId): MediaAttributes
+    public function getAttributes(Id $mediaId, LocaleChain $chain): MediaAttributes
     {
         if ($chain->isEmpty()) {
             return new MediaAttributes();
@@ -35,10 +35,8 @@ readonly class MediaAttributeDao implements MediaAttributeDaoInterface
             ->select('name', 'value', 'locale_code')
             ->from($this->table)
             ->where('media_id = :media_id')
-            ->andWhere('shop_id = :shop_id')
             ->andWhere('locale_code IN (:locale_codes)')
             ->setParameter('media_id', $mediaId)
-            ->setParameter('shop_id', $shopId)
             ->setParameter('locale_codes', $chain->getCodes(), ArrayParameterType::STRING)
             ->executeQuery()
             ->fetchAllAssociative();
@@ -60,8 +58,7 @@ readonly class MediaAttributeDao implements MediaAttributeDaoInterface
         $this->delete(
             $attribute->getName(),
             $attribute->getMediaId(),
-            $attribute->getLocaleCode(),
-            $attribute->getShopId()
+            $attribute->getLocaleCode()
         );
         $this->queryBuilderFactory
             ->create()
@@ -70,7 +67,6 @@ readonly class MediaAttributeDao implements MediaAttributeDaoInterface
                 'id'          => ':id',
                 'media_id'    => ':media_id',
                 'locale_code' => ':locale_code',
-                'shop_id'     => ':shop_id',
                 'name'        => ':name',
                 'value'       => ':value',
             ])
@@ -78,25 +74,22 @@ readonly class MediaAttributeDao implements MediaAttributeDaoInterface
                 'id'          => (string) $attribute->getId(),
                 'media_id'    => (string) $attribute->getMediaId(),
                 'locale_code' => $attribute->getLocaleCode(),
-                'shop_id'     => $attribute->getShopId(),
                 'name'        => $attribute->getName(),
                 'value'       => $attribute->getValue(),
             ])
             ->executeStatement();
     }
 
-    public function delete(string $name, Id $mediaId, string $localeCode, int $shopId): void
+    public function delete(string $name, Id $mediaId, string $localeCode): void
     {
         $this->queryBuilderFactory
             ->create()
             ->delete($this->table)
             ->where('media_id = :media_id')
             ->andWhere('locale_code = :locale_code')
-            ->andWhere('shop_id = :shop_id')
             ->andWhere('name = :name')
             ->setParameter('media_id', $mediaId)
             ->setParameter('locale_code', $localeCode)
-            ->setParameter('shop_id', $shopId)
             ->setParameter('name', $name)
             ->executeStatement();
     }

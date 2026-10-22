@@ -36,7 +36,7 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
         $mediaId = $this->createMedia();
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'some alt text'));
 
-        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']), 1);
+        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']));
 
         $this->assertTrue($result->has(MediaAttribute::ALT));
         $this->assertSame('some alt text', $result->get(MediaAttribute::ALT));
@@ -49,7 +49,7 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
 
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'updated value'));
 
-        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']), 1);
+        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']));
         $this->assertSame('updated value', $result->get(MediaAttribute::ALT));
     }
 
@@ -59,7 +59,7 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'alt value'));
         $this->dao->save($this->createAttribute($mediaId, 'title', 'title value'));
 
-        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']), 1);
+        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']));
 
         $this->assertTrue($result->has(MediaAttribute::ALT));
         $this->assertTrue($result->has('title'));
@@ -69,7 +69,7 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
 
     public function testGetReturnsEmptyAttributesWhenNoneExist(): void
     {
-        $result = $this->dao->getAttributes($this->createMedia(), new LocaleChain(['de_DE']), 1);
+        $result = $this->dao->getAttributes($this->createMedia(), new LocaleChain(['de_DE']));
 
         $this->assertFalse($result->has(MediaAttribute::ALT));
     }
@@ -80,20 +80,9 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'german'));
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'english', 'en_GB'));
 
-        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']), 1);
+        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']));
 
         $this->assertSame('german', $result->get(MediaAttribute::ALT));
-    }
-
-    public function testGetIgnoresOtherShops(): void
-    {
-        $mediaId = $this->createMedia();
-        $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'shop 1'));
-        $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'shop 2', 'de_DE', 2));
-
-        $result = $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']), 1);
-
-        $this->assertSame('shop 1', $result->get(MediaAttribute::ALT));
     }
 
     public function testGetByChainUsesFirstAvailableAttributeInLocaleOrder(): void
@@ -105,27 +94,11 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
 
         $result = $this->dao->getAttributes(
             $mediaId,
-            new LocaleChain(['fr_FR', 'en_GB', 'de_DE']),
-            1
+            new LocaleChain(['fr_FR', 'en_GB', 'de_DE'])
         );
 
         $this->assertSame('english title', $result->get('title'));
         $this->assertSame('german alt', $result->getAlt());
-    }
-
-    public function testGetByChainIgnoresOtherShops(): void
-    {
-        $mediaId = $this->createMedia();
-        $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'shop 2 alt', 'en_GB', 2));
-        $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'shop 1 alt', 'de_DE', 1));
-
-        $result = $this->dao->getAttributes(
-            $mediaId,
-            new LocaleChain(['en_GB', 'de_DE']),
-            1
-        );
-
-        $this->assertSame('shop 1 alt', $result->getAlt());
     }
 
     public function testGetByEmptyChainReturnsEmptyAttributes(): void
@@ -133,7 +106,7 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
         $mediaId = $this->createMedia();
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'german alt', 'de_DE'));
 
-        $result = $this->dao->getAttributes($mediaId, new LocaleChain([]), 1);
+        $result = $this->dao->getAttributes($mediaId, new LocaleChain([]));
 
         $this->assertFalse($result->has(MediaAttribute::ALT));
     }
@@ -143,10 +116,10 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
         $mediaId = $this->createMedia();
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'some alt text'));
 
-        $this->dao->delete(MediaAttribute::ALT, $mediaId, 'de_DE', 1);
+        $this->dao->delete(MediaAttribute::ALT, $mediaId, 'de_DE');
 
         $this->assertFalse(
-            $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']), 1)->has(MediaAttribute::ALT)
+            $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']))->has(MediaAttribute::ALT)
         );
     }
 
@@ -156,14 +129,14 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'german', 'de_DE'));
         $this->dao->save($this->createAttribute($mediaId, MediaAttribute::ALT, 'english', 'en_GB'));
 
-        $this->dao->delete(MediaAttribute::ALT, $mediaId, 'de_DE', 1);
+        $this->dao->delete(MediaAttribute::ALT, $mediaId, 'de_DE');
 
         $this->assertFalse(
-            $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']), 1)->has(MediaAttribute::ALT)
+            $this->dao->getAttributes($mediaId, new LocaleChain(['de_DE']))->has(MediaAttribute::ALT)
         );
         $this->assertSame(
             'english',
-            $this->dao->getAttributes($mediaId, new LocaleChain(['en_GB']), 1)->get(MediaAttribute::ALT)
+            $this->dao->getAttributes($mediaId, new LocaleChain(['en_GB']))->get(MediaAttribute::ALT)
         );
     }
 
@@ -178,9 +151,8 @@ final class MediaAttributeDaoTest extends IntegrationTestCase
         Id $mediaId,
         string $name,
         string $value,
-        string $localeCode = 'de_DE',
-        int $shopId = 1
+        string $localeCode = 'de_DE'
     ): MediaAttribute {
-        return new MediaAttribute(Id::generate(), $mediaId, $localeCode, $shopId, $name, $value);
+        return new MediaAttribute(Id::generate(), $mediaId, $localeCode, $name, $value);
     }
 }

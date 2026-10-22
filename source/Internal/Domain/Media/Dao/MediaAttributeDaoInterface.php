@@ -14,9 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 interface MediaAttributeDaoInterface
 {
-    public function getAttributes(Id $mediaId, LocaleChain $chain, int $shopId): MediaAttributes;
+    public function getAttributes(Id $mediaId, LocaleChain $chain): MediaAttributes;
 
     public function save(MediaAttribute $attribute): void;
 
-    public function delete(string $name, Id $mediaId, string $localeCode, int $shopId): void;
+    public function delete(string $name, Id $mediaId, string $localeCode): void;
 }

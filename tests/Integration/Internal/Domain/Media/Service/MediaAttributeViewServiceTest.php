@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Domain\Media\Serv
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Dao\LocaleDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
-use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\ActiveLocaleProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaAttributeDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
@@ -109,23 +108,6 @@ final class MediaAttributeViewServiceTest extends IntegrationTestCase
         $this->assertFalse($result->has(MediaAttribute::ALT));
     }
 
-    public function testGetAttributesIgnoresOtherShops(): void
-    {
-        $activeLocale = $this->get(ActiveLocaleProviderInterface::class)->getActiveLocale();
-        $this->dao->save(new MediaAttribute(
-            Id::generate(),
-            $this->media->getId(),
-            $activeLocale->getCode(),
-            2,
-            MediaAttribute::ALT,
-            'other shop alt',
-        ));
-
-        $result = $this->service->getAttributes($this->media);
-
-        $this->assertFalse($result->has(MediaAttribute::ALT));
-    }
-
     private function switchActiveLocale(string $code): void
     {
         $config = Registry::getConfig();
@@ -156,7 +138,6 @@ final class MediaAttributeViewServiceTest extends IntegrationTestCase
             Id::generate(),
             $media->getId(),
             $localeCode,
-            $this->shopId,
             $name,
             $value
         );

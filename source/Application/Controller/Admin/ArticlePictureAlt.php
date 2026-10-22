@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\AdminDetailsController;
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttribute;
@@ -40,6 +41,10 @@ class ArticlePictureAlt extends AdminDetailsController
     {
         parent::render();
 
+        if ($this->isInheritedProduct()) {
+            $this->_aViewData['readonly'] = true;
+        }
+
         $productId = Id::fromString($this->getEditObjectId());
         $shopId = $this->context->getCurrentShopId();
         $locales = $this->localeService->getForShop($shopId);
@@ -60,6 +65,10 @@ class ArticlePictureAlt extends AdminDetailsController
 
     public function save(): void
     {
+        if ($this->isInheritedProduct()) {
+            return;
+        }
+
         $productMediaId = (string) $this->request->request->get('productMediaId', '');
         $productMedia = $this->productMediaService->get(Id::fromString($productMediaId));
         if ((string) $productMedia->getProductId() !== $this->getEditObjectId()) {
@@ -72,6 +81,14 @@ class ArticlePictureAlt extends AdminDetailsController
                 ? $this->attributeService->save(MediaAttribute::ALT, $altText, $media, $localeCode)
                 : $this->attributeService->delete(MediaAttribute::ALT, $media, $localeCode);
         }
+    }
+
+    private function isInheritedProduct(): bool
+    {
+        $product = oxNew(Article::class);
+        $product->load($this->getEditObjectId());
+
+        return (bool) $product->isDerived();
     }
 
     /** @return array<string, string> */

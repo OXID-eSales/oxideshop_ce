@@ -11,6 +11,7 @@
 - Alt text for product images
   - Admin page to edit alt text per image per locale
   - Storefront resolves the alt text through the locale's fallback chain
+  - Alt texts are shared by all shops and read-only for products inherited from a parent shop
 - `ProductMediaChangedEvent`, `ProductMediaSortedEvent`, `MediaAttributeChangedEvent` and `LocaleChangedEvent`
 - YAML-based theme configuration
   - Theme packages provide `metadata.yaml` and `config.yaml`

@@ -19,7 +19,6 @@ readonly class MediaAttribute
         private Id $id,
         private Id $mediaId,
         private string $localeCode,
-        private int $shopId,
         private string $name,
         private string $value,
     ) {
@@ -38,11 +37,6 @@ readonly class MediaAttribute
     public function getLocaleCode(): string
     {
         return $this->localeCode;
-    }
-
-    public function getShopId(): int
-    {
-        return $this->shopId;
     }
 
     public function getName(): string

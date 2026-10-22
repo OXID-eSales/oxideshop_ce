@@ -14,13 +14,11 @@ use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleChainResolver
 use OxidEsales\EshopCommunity\Internal\Domain\Media\Dao\MediaAttributeDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\Media;
 use OxidEsales\EshopCommunity\Internal\Domain\Media\DataObject\MediaAttributes;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 readonly class MediaAttributeViewService implements MediaAttributeViewServiceInterface
 {
     public function __construct(
         private MediaAttributeDaoInterface $attributeDao,
-        private ContextInterface $context,
         private LocaleChainResolverInterface $localeChainResolver,
         private ActiveLocaleProviderInterface $activeLocaleProvider,
     ) {
@@ -32,8 +30,7 @@ readonly class MediaAttributeViewService implements MediaAttributeViewServiceInt
             $media->getId(),
             $this->localeChainResolver->getActiveFallbackChain(
                 $this->activeLocaleProvider->getActiveLocale()->getCode()
-            ),
-            $this->context->getCurrentShopId()
+            )
         );
     }
 }

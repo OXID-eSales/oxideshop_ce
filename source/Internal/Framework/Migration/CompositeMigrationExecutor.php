@@ -16,13 +16,22 @@ readonly class CompositeMigrationExecutor implements ConfigurableMigrationExecut
     public function __construct(
         private iterable $executors,
         private MigrationExitCodeResolverInterface $exitCodeResolver,
+        private MigrationSqlOutputInterface $sqlOutput,
     ) {
     }
 
     public function executeWithOptions(array $options = [], ?OutputInterface $output = null): int
     {
-        $status = 0;
+        $sqlFile = $this->sqlOutput->resolveFile($options);
+        if ($sqlFile !== null) {
+            if (!$this->sqlOutput->prepare($sqlFile)) {
+                $output?->writeln('Failed to write the migration SQL output file.');
+                return 1;
+            }
+            $options['--write-sql'] = $sqlFile;
+        }
 
+        $status = 0;
         foreach ($this->executors as $executor) {
             $exitCode = $executor->executeWithOptions($options, $output);
             $status = $this->exitCodeResolver->combine($status, $exitCode);

@@ -28,8 +28,13 @@ services:
         - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
         - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor'
 
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner: ~
+
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\AccumulatingSqlMigrationRunner
+    arguments:
+      $runner: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner'
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityCheckerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityChecker
@@ -39,3 +44,8 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolver
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlOutputInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlOutput
+    arguments:
+      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'

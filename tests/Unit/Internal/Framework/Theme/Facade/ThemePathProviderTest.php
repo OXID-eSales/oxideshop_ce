@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Theme\Facade;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemePathProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\Service\ThemePathResolverInterface;
@@ -21,7 +23,7 @@ final class ThemePathProviderTest extends TestCase
 {
     private const SHOP_ID = 2;
 
-    public function testGetAbsolutePathResolvesPathOfCurrentShopOnCacheMiss(): void
+    public function testGetForThemeResolvesPathOfCurrentShopOnCacheMiss(): void
     {
         $themePathResolver = $this->createMock(ThemePathResolverInterface::class);
         $themePathResolver->expects($this->once())
@@ -29,31 +31,87 @@ final class ThemePathProviderTest extends TestCase
             ->with('apex', self::SHOP_ID)
             ->willReturn('/shop/apex');
 
-        $provider = new ThemePathProvider($themePathResolver, $this->createCache(), self::SHOP_ID);
+        $provider = new ThemePathProvider(
+            $themePathResolver,
+            $this->createStub(ThemeConfigurationDaoInterface::class),
+            $this->createCache(),
+            self::SHOP_ID
+        );
 
-        $this->assertSame('/shop/apex', $provider->getAbsolutePath('apex'));
+        $this->assertSame('/shop/apex', $provider->getForTheme('apex'));
     }
 
-    public function testGetAbsolutePathUsesCacheOnHit(): void
+    public function testGetForThemeUsesCacheOnHit(): void
     {
         $themePathResolver = $this->createMock(ThemePathResolverInterface::class);
         $themePathResolver->expects($this->once())->method('getAbsolutePath')->willReturn('/shop/apex');
 
-        $provider = new ThemePathProvider($themePathResolver, $this->createCache(), self::SHOP_ID);
-        $provider->getAbsolutePath('apex');
+        $provider = new ThemePathProvider(
+            $themePathResolver,
+            $this->createStub(ThemeConfigurationDaoInterface::class),
+            $this->createCache(),
+            self::SHOP_ID
+        );
+        $provider->getForTheme('apex');
 
-        $this->assertSame('/shop/apex', $provider->getAbsolutePath('apex'));
+        $this->assertSame('/shop/apex', $provider->getForTheme('apex'));
     }
 
-    public function testGetAbsolutePathPropagatesExceptionOfResolver(): void
+    public function testGetForThemePropagatesExceptionOfResolver(): void
     {
         $themePathResolver = $this->createStub(ThemePathResolverInterface::class);
         $themePathResolver->method('getAbsolutePath')->willThrowException(new ThemeConfigurationNotFoundException());
 
-        $provider = new ThemePathProvider($themePathResolver, $this->createCache(), self::SHOP_ID);
+        $provider = new ThemePathProvider(
+            $themePathResolver,
+            $this->createStub(ThemeConfigurationDaoInterface::class),
+            $this->createCache(),
+            self::SHOP_ID
+        );
 
         $this->expectException(ThemeConfigurationNotFoundException::class);
-        $provider->getAbsolutePath('apex');
+        $provider->getForTheme('apex');
+    }
+
+    public function testGetForInstalledThemesResolvesPathsOfThemesInstalledInCurrentShop(): void
+    {
+        $themeConfigurationDao = $this->createMock(ThemeConfigurationDaoInterface::class);
+        $themeConfigurationDao->expects($this->once())
+            ->method('getAll')
+            ->with(self::SHOP_ID)
+            ->willReturn([
+                'apex' => (new ThemeConfiguration())->setId('apex'),
+                'childTheme' => (new ThemeConfiguration())->setId('childTheme'),
+            ]);
+        $themePathResolver = $this->createStub(ThemePathResolverInterface::class);
+        $themePathResolver->method('getAbsolutePath')->willReturnMap([
+            ['apex', self::SHOP_ID, '/vendor/apex'],
+            ['childTheme', self::SHOP_ID, '/vendor/child-theme'],
+        ]);
+
+        $provider = new ThemePathProvider(
+            $themePathResolver,
+            $themeConfigurationDao,
+            $this->createCache(),
+            self::SHOP_ID
+        );
+
+        $this->assertSame(['/vendor/apex', '/vendor/child-theme'], $provider->getForInstalledThemes());
+    }
+
+    public function testGetForInstalledThemesReturnsEmptyListWhenNoThemeIsInstalled(): void
+    {
+        $themeConfigurationDao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $themeConfigurationDao->method('getAll')->willReturn([]);
+
+        $provider = new ThemePathProvider(
+            $this->createStub(ThemePathResolverInterface::class),
+            $themeConfigurationDao,
+            $this->createCache(),
+            self::SHOP_ID
+        );
+
+        $this->assertSame([], $provider->getForInstalledThemes());
     }
 
     private function createCache(): TagAwareCacheInterface

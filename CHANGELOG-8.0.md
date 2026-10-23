@@ -32,6 +32,9 @@
   - A child theme declares its parent theme in its `metadata.yaml`
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 - `ThemeActivatedEvent` moved from namespace `Internal\Framework\Theme\Event` to `Internal\Framework\Theme\Activation\Event`
+- Storefront templates and admin theme option translations are read from the configured directory of the installed theme instead of `Application/views`
+  - Theme option translations are only loaded for themes installed in the current shop
+  - `Config::getShopLevelDir()` receives the theme's directory instead of `Application/views` as base path
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
@@ -66,6 +69,8 @@
   - `ViewConfig::getViewThemeParam()`, use `ViewConfig::getThemeSettings()` instead
   - `Language::getCustomThemeLanguageFiles()`
   - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
+- `Config::getTemplateUrl()` and `Config::getTemplateBase()`
+- `ViewConfig::getUrlTemplateDir()`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

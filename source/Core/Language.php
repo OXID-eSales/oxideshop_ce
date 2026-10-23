@@ -723,7 +723,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $appDirectory = $config->getAppDir();
         $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
 
-        // admin lang files
         $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
         $adminPath = $appDirectory .
             'views' . DIRECTORY_SEPARATOR .
@@ -737,18 +736,15 @@ class Language extends \OxidEsales\Eshop\Core\Base
             'translit_lang.php';
         $langFiles = $this->appendLangFile($langFiles, $adminPath);
 
-        // themes options lang files
-        $themePath = $appDirectory . 'views/*/' . $language;
-        $langFiles = $this->appendLangFile($langFiles, $themePath, "options");
+        $themeDirectories = $this->getInstalledThemeDirectories();
+        foreach ([$language, 'translations' . DIRECTORY_SEPARATOR . $language] as $languageDirectory) {
+            foreach ($themeDirectories as $themeDirectory) {
+                $langFiles = $this->appendLangFile($langFiles, $themeDirectory . $languageDirectory, "options");
+            }
+        }
 
-        $themePath = $appDirectory . 'views/*/translations/' . $language;
-        $langFiles = $this->appendLangFile($langFiles, $themePath, "options");
-
-        // module language files
         $langFiles = $this->appendModuleLangFilesForAdminArea($langFiles, $language);
 
-
-        // custom language files
         $langFiles = $this->appendCustomLangFiles($langFiles, $language, true);
 
         return count($langFiles) ? $langFiles : false;
@@ -1015,7 +1011,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
 
         foreach ($this->getActiveThemeIds() as $themeId) {
             try {
-                $directories[] = $themePathProvider->getAbsolutePath($themeId) . DIRECTORY_SEPARATOR;
+                $directories[] = $themePathProvider->getForTheme($themeId) . DIRECTORY_SEPARATOR;
             } catch (ThemeNotLoadableException $exception) {
                 Registry::getLogger()->warning(
                     "Translations of theme '$themeId' are skipped because it could not be loaded for shop $shopId",
@@ -1025,6 +1021,15 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
 
         return $directories;
+    }
+
+    /** @return string[] */
+    private function getInstalledThemeDirectories(): array
+    {
+        return array_map(
+            fn (string $themePath): string => $themePath . DIRECTORY_SEPARATOR,
+            ContainerFacade::get(ThemePathProviderInterface::class)->getForInstalledThemes()
+        );
     }
 
     private function getShopId(): int

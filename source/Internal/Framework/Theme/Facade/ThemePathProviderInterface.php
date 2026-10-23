@@ -16,5 +16,12 @@ interface ThemePathProviderInterface
      * @throws ThemeConfigurationNotFoundException
      * @throws InvalidThemeConfigurationException
      */
-    public function getAbsolutePath(string $themeId): string;
+    public function getForTheme(string $themeId): string;
+
+    /**
+     * @return string[]
+     * @throws ThemeConfigurationNotFoundException
+     * @throws InvalidThemeConfigurationException
+     */
+    public function getForInstalledThemes(): array;
 }

@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInt
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemePathProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
 use Symfony\Component\Filesystem\Path;
@@ -956,28 +957,43 @@ class Config extends \OxidEsales\Eshop\Core\Base
             return $return;
         }
 
+        try {
+            $absThemeBase = $this->getThemeDir($absBase, $dir, $admin, $theme);
+        } catch (ThemeNotLoadableException $exception) {
+            Registry::getLogger()->warning(
+                "Files of theme '$theme' are not found because it could not be loaded for shop $shop",
+                [$exception]
+            );
+            Registry::getUtils()->toStaticCache($cacheKey, false);
+
+            return false;
+        }
+
+        $themeBase = $absolute ? $absThemeBase : $this->makeRelativeToShopSourceDir($absThemeBase);
+
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
 
         //test lang level ..
-        if (!$return && !$admin && is_readable($absBase . $path)) {
-            $return = $base . $path;
+        $path = "{$shop}/{$langAbbr}/{$dir}/{$file}";
+        if (!$return && !$admin && is_readable($absThemeBase . $path)) {
+            $return = $themeBase . $path;
         }
 
         //test shop level ..
         if (!$return && !$admin) {
-            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
+            $return = $this->getShopLevelDir($themeBase, $absThemeBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
         }
 
         //test theme language level ..
-        $path = "$theme/$langAbbr/$dir/$file";
-        if (!$return && $lang !== false && is_readable($absBase . $path)) {
-            $return = $base . $path;
+        $path = "$langAbbr/$dir/$file";
+        if (!$return && $lang !== false && is_readable($absThemeBase . $path)) {
+            $return = $themeBase . $path;
         }
 
         //test theme level ..
-        $path = "$theme/$dir/$file";
-        if (!$return && is_readable($absBase . $path)) {
-            $return = $base . $path;
+        $path = "$dir/$file";
+        if (!$return && is_readable($absThemeBase . $path)) {
+            $return = $themeBase . $path;
         }
 
         //test out language level ..
@@ -1001,6 +1017,28 @@ class Config extends \OxidEsales\Eshop\Core\Base
         Registry::getUtils()->toStaticCache($cacheKey, $return);
 
         return $return;
+    }
+
+    /**
+     * @throws ThemeNotLoadableException
+     */
+    private function getThemeDir(string $absBase, $dir, $admin, $theme): string
+    {
+        if (!$this->isStorefrontThemeTemplateDir($dir, $admin, $theme)) {
+            return "{$absBase}{$theme}/";
+        }
+
+        return ContainerFacade::get(ThemePathProviderInterface::class)->getForTheme($theme) . '/';
+    }
+
+    private function makeRelativeToShopSourceDir(string $path): string
+    {
+        return Path::makeRelative($path, ContainerFacade::getParameter('oxid_esales.shop_source_directory')) . '/';
+    }
+
+    private function isStorefrontThemeTemplateDir($dir, $admin, $theme): bool
+    {
+        return $dir == $this->_sTemplateDir && !$admin && $theme;
     }
 
     private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme): bool|string
@@ -1040,7 +1078,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $return = false;
 
-        $path = "$theme/$shop/$dir/$file";
+        $path = "$shop/$dir/$file";
         if (is_readable($absBase . $path)) {
             $return = $base . $path;
         }
@@ -1218,34 +1256,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getTemplateDir($admin = false)
     {
         return $this->getDir(null, $this->_sTemplateDir, $admin);
-    }
-
-    /**
-     * Finds and returns template file or folder url
-     *
-     * @param string $file  File name
-     * @param bool   $admin Whether to force admin
-     * @param bool   $ssl   Whether to force ssl
-     * @param int    $lang  Language id
-     *
-     * @return string
-     */
-    public function getTemplateUrl($file = null, $admin = false, $ssl = null, $lang = null)
-    {
-        return $this->getShopMainUrl() . $this->getDir($file, $this->_sTemplateDir, $admin, $lang, null, null, false);
-    }
-
-    /**
-     * Finds and returns base template folder url
-     *
-     * @param bool $admin Whether to force admin
-     *
-     * @return string
-     */
-    public function getTemplateBase($admin = false)
-    {
-        // Base template dir is the parent dir of template dir
-        return str_replace($this->_sTemplateDir . '/', '', $this->getDir(null, $this->_sTemplateDir, $admin, null, null, null, false));
     }
 
     /**

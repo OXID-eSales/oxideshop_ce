@@ -598,21 +598,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns shops current templates url
-     *
-     * @return string
-     */
-    public function getUrlTemplateDir()
-    {
-        if (($sValue = $this->getViewConfigParam('urltemplatedir')) === null) {
-            $sValue = Registry::getConfig()->getTemplateUrl($this->isAdmin());
-            $this->setViewConfigParam('urltemplatedir', $sValue);
-        }
-
-        return $sValue;
-    }
-
-    /**
      * Returns image url
      *
      * @param string $sFile Image file name

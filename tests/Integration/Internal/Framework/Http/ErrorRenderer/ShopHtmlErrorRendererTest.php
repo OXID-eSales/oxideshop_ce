@@ -7,12 +7,12 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http\Listener;
+namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http\ErrorRenderer;
 
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ShopHtmlErrorRenderer;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\NotFoundListener;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
@@ -20,13 +20,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConf
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-final class NotFoundListenerTest extends IntegrationTestCase
+final class ShopHtmlErrorRendererTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
@@ -40,17 +41,15 @@ final class NotFoundListenerTest extends IntegrationTestCase
         $this->get(ThemeActivationServiceInterface::class)->activate('apex', $context->getDefaultShopId());
     }
 
-    public function testDeliversRenderedPageWithNotFoundStatus(): void
+    public function testRendersTheNotFoundPageWithNotFoundStatus(): void
     {
-        $event = $this->createExceptionEvent();
         $this->useTemplateRenderer($this->rendererReturning('<html>404</html>'));
 
-        new NotFoundListener()->onKernelException($event);
+        $exception = $this->createRenderer()->render(new NotFoundHttpException());
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $event->getResponse()->getStatusCode());
-        $this->assertSame('<html>404</html>', $event->getResponse()->getContent());
-        $this->assertTrue($event->isPropagationStopped());
-        $this->assertTrue($event->isAllowingCustomResponseCode());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
+        $this->assertSame('<html>404</html>', $exception->getAsString());
+        $this->assertSame('text/html', $exception->getHeaders()['Content-Type']);
     }
 
     public function testRendersTheNotFoundTemplateWithTheRequestedUri(): void
@@ -72,7 +71,7 @@ final class NotFoundListenerTest extends IntegrationTestCase
         $this->useTemplateRenderer($renderer);
         ContainerFacade::get(Request::class)->server->set('REQUEST_URI', '/retired-url/?a=1');
 
-        new NotFoundListener()->onKernelException($this->createExceptionEvent());
+        $this->createRenderer()->render(new NotFoundHttpException());
 
         $this->assertSame(
             [
@@ -85,23 +84,22 @@ final class NotFoundListenerTest extends IntegrationTestCase
         );
     }
 
-    public function testDeliversRedirectWhenTheViewRequestsOne(): void
+    public function testRedirectsWhenTheNotFoundPageRequestsIt(): void
     {
-        $event = $this->createExceptionEvent();
         $renderer = $this->createStub(TemplateRendererInterface::class);
         $renderer->method('renderTemplate')
             ->willThrowException(new RedirectException('https://shop.example/target', 301));
         $this->useTemplateRenderer($renderer);
 
-        new NotFoundListener()->onKernelException($event);
+        $exception = $this->createRenderer()->render(new NotFoundHttpException());
 
-        $this->assertSame(301, $event->getResponse()->getStatusCode());
-        $this->assertSame('https://shop.example/target', $event->getResponse()->headers->get('Location'));
+        $this->assertSame(301, $exception->getStatusCode());
+        $this->assertSame('https://shop.example/target', $exception->getHeaders()['Location']);
+        $this->assertSame('', $exception->getAsString());
     }
 
     public function testFallsBackToTheExceptionPageWhenTheTemplateFails(): void
     {
-        $event = $this->createExceptionEvent();
         $renderer = $this->createStub(TemplateRendererInterface::class);
         $renderer->method('renderTemplate')->willReturnCallback(
             static function (string $template): string {
@@ -114,24 +112,22 @@ final class NotFoundListenerTest extends IntegrationTestCase
         );
         $this->useTemplateRenderer($renderer);
 
-        new NotFoundListener()->onKernelException($event);
+        $exception = $this->createRenderer()->render(new NotFoundHttpException());
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $event->getResponse()->getStatusCode());
-        $this->assertSame('fallback', $event->getResponse()->getContent());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
+        $this->assertSame('fallback', $exception->getAsString());
     }
 
     public function testRendersTheThemedNotFoundPage(): void
     {
         $this->skipWithoutTemplateEngine($this->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer());
         ContainerFacade::get(Request::class)->server->set('REQUEST_URI', '/"><script>alert(1)</script>');
-        $event = $this->createExceptionEvent();
 
-        new NotFoundListener()->onKernelException($event);
+        $exception = $this->createRenderer()->render(new NotFoundHttpException());
 
-        $content = $event->getResponse()->getContent();
-        $this->assertSame(Response::HTTP_NOT_FOUND, $event->getResponse()->getStatusCode());
-        $this->assertStringContainsString('err-404', $content);
-        $this->assertStringNotContainsString('<script>alert(1)</script>', $content);
+        $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
+        $this->assertStringContainsString('err-404', $exception->getAsString());
+        $this->assertStringNotContainsString('<script>alert(1)</script>', $exception->getAsString());
     }
 
     public function testKernelRendersTheThemedPageForHtmlClients(): void
@@ -146,6 +142,11 @@ final class NotFoundListenerTest extends IntegrationTestCase
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         $this->assertStringContainsString('err-404', $response->getContent());
+    }
+
+    private function createRenderer(): ShopHtmlErrorRenderer
+    {
+        return new ShopHtmlErrorRenderer(new HtmlErrorRenderer(), false);
     }
 
     private function skipWithoutTemplateEngine(TemplateRendererInterface $renderer): void
@@ -170,15 +171,5 @@ final class NotFoundListenerTest extends IntegrationTestCase
         $renderer->method('renderTemplate')->willReturn($output);
 
         return $renderer;
-    }
-
-    private function createExceptionEvent(): ExceptionEvent
-    {
-        return new ExceptionEvent(
-            $this->createStub(HttpKernelInterface::class),
-            Request::create('/'),
-            HttpKernelInterface::MAIN_REQUEST,
-            new RoutingException()
-        );
     }
 }

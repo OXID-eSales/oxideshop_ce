@@ -25,6 +25,6 @@ class RedirectException extends \Error implements RequestTerminationInterface
 
     public function getStatusCode(): int
     {
-        return $this->statusCode;
+        return in_array($this->statusCode, [301, 302, 303, 307, 308], true) ? $this->statusCode : 302;
     }
 }

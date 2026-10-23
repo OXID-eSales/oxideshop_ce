@@ -1,3 +1,6 @@
+imports:
+  - { resource: parameters.yaml }
+
 services:
   _defaults:
     autowire: true
@@ -39,17 +42,33 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\JsonNotFoundListener:
+  Symfony\Component\HttpKernel\EventListener\ErrorListener:
+    arguments:
+      $controller: '@Symfony\Component\HttpKernel\Controller\ErrorController'
+      $debug: '%oxid_esales.debug_mode%'
+      $exceptionsMapping: '%oxid_esales.http.exceptions%'
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\NotFoundListener:
-    tags:
-      - { name: kernel.event_subscriber }
+  Symfony\Component\HttpKernel\Controller\ErrorController:
+    arguments:
+      $controller: null
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\HttpExceptionListener:
-    tags:
-      - { name: kernel.event_subscriber }
+  Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ProblemJsonErrorRenderer
+    arguments:
+      $htmlErrorRenderer: '@OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ShopHtmlErrorRenderer'
+      $debug: '%oxid_esales.debug_mode%'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ShopHtmlErrorRenderer:
+    arguments:
+      $htmlErrorRenderer: '@Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer'
+      $debug: '%oxid_esales.debug_mode%'
+
+  Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer:
+    arguments:
+      $debug: '%oxid_esales.debug_mode%'
+      $charset: '%oxid_esales.http.charset%'
 
   OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\SecurityHeadersListener:
     arguments:

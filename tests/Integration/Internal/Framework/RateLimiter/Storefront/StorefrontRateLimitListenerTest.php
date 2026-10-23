@@ -38,14 +38,16 @@ final class StorefrontRateLimitListenerTest extends IntegrationTestCase
         $response = $this->handleAsNewRequest();
 
         $this->assertSame(Response::HTTP_TOO_MANY_REQUESTS, $response->getStatusCode());
-        $this->assertSame('{"error":"Too Many Requests"}', $response->getContent());
+        $this->assertSame($this->tooManyRequestsProblem(), json_decode($response->getContent(), true));
+        $this->assertSame('application/json', $response->headers->get('Content-Type'));
+        $this->assertTrue($response->headers->has('Retry-After'));
     }
 
     public function testRoutedApiRequestWithoutDeclaredFormatIsLimited(): void
     {
         $this->assertSame('api-body', $this->runRoutedApiRequest());
 
-        $this->assertSame('{"error":"Too Many Requests"}', $this->runRoutedApiRequest());
+        $this->assertSame($this->tooManyRequestsProblem(), json_decode($this->runRoutedApiRequest(), true));
     }
 
     public static function apiController(): Response
@@ -78,6 +80,16 @@ final class StorefrontRateLimitListenerTest extends IntegrationTestCase
         $runner->run(static fn(): Response => new Response('fallback-body'));
 
         return (string) ob_get_clean();
+    }
+
+    private function tooManyRequestsProblem(): array
+    {
+        return [
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
+            'title' => 'An error occurred',
+            'status' => 429,
+            'detail' => 'Too Many Requests',
+        ];
     }
 
     private function configureLimiter(): void

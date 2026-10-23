@@ -9,18 +9,20 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\HttpExceptionListener;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ProblemJsonErrorRenderer;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
 use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
+use Symfony\Component\HttpKernel\Controller\ErrorController;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Symfony\Component\HttpKernel\EventListener\ErrorListener;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
@@ -79,7 +81,7 @@ final class ShopRunnerTest extends TestCase
         $response = $this->handleRequest(Request::create('/api/nothing'));
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame('{"error":"Not Found"}', $response->getContent());
+        $this->assertSame($this->problem(404, 'Not Found'), json_decode($response->getContent(), true));
     }
 
     public function testAnswersWrongMethodOnApiRoutesWithJsonMethodNotAllowed(): void
@@ -88,7 +90,7 @@ final class ShopRunnerTest extends TestCase
 
         $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $response->getStatusCode());
         $this->assertSame('GET', $response->headers->get('Allow'));
-        $this->assertSame('{"error":"Method Not Allowed"}', $response->getContent());
+        $this->assertSame($this->problem(405, 'Method Not Allowed'), json_decode($response->getContent(), true));
     }
 
     public static function routedController(string $id): Response
@@ -111,22 +113,34 @@ final class ShopRunnerTest extends TestCase
     private function createRunner(Request $request): ShopRunner
     {
         $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new HttpExceptionListener($this->createStub(LoggerInterface::class)));
+        $requestStack = new RequestStack();
+        $kernel = new HttpKernel(
+            $dispatcher,
+            new ContainerControllerResolver(new Container()),
+            $requestStack,
+            new ArgumentResolver(),
+            handleAllThrowables: true
+        );
+        $dispatcher->addSubscriber(new ErrorListener(new ErrorController(
+            $kernel,
+            null,
+            new ProblemJsonErrorRenderer($requestStack, new HtmlErrorRenderer(), false)
+        )));
         $dispatcher->addListener(KernelEvents::RESPONSE, function (ResponseEvent $event): void {
             $this->response = $event->getResponse();
         });
 
-        return new ShopRunner(
-            new HttpKernel(
-                $dispatcher,
-                new ContainerControllerResolver(new Container()),
-                new RequestStack(),
-                new ArgumentResolver(),
-                handleAllThrowables: true
-            ),
-            $request,
-            $this->compiledRoutes()
-        );
+        return new ShopRunner($kernel, $request, $this->compiledRoutes());
+    }
+
+    private function problem(int $status, string $detail): array
+    {
+        return [
+            'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
+            'title' => 'An error occurred',
+            'status' => $status,
+            'detail' => $detail,
+        ];
     }
 
     private function compiledRoutes(): array

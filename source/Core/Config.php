@@ -1682,9 +1682,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         if (is_array($this->getActiveViewsList())) {
             foreach ($this->getActiveViewsList() as $view) {
-                if ($view->getClassKey() !== null) {
-                    $ids[] = $view->getClassKey();
-                }
+                $ids[] = (string) $view->getClassKey();
             }
         }
 

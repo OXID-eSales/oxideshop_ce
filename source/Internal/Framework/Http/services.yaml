@@ -44,7 +44,7 @@ services:
 
   Symfony\Component\HttpKernel\EventListener\ErrorListener:
     arguments:
-      $controller: '@Symfony\Component\HttpKernel\Controller\ErrorController'
+      $controller: 'Symfony\Component\HttpKernel\Controller\ErrorController'
       $debug: '%oxid_esales.debug_mode%'
       $exceptionsMapping: '%oxid_esales.http.exceptions%'
     tags:
@@ -53,6 +53,7 @@ services:
   Symfony\Component\HttpKernel\Controller\ErrorController:
     arguments:
       $controller: null
+    public: true
 
   Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ProblemJsonErrorRenderer

@@ -74,31 +74,20 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $this->saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
         }
 
-        if (php_sapi_name() === 'cli') {
-            // do NOT set cookies in cli because it would issue warnings
-            return;
-        }
-
         //if shop runs in https only mode we can set secure flag to all cookies
         $blSecure = $blSecure || Registry::getConfig()->isSsl();
 
-        $this->queueResponseCookie(
-            Cookie::create(
-                $sName,
-                (string) $sValue,
-                $iExpire,
-                $this->getCookiePath($sPath),
-                $this->getCookieDomain($sDomain),
-                $blSecure,
-                $blHttpOnly,
-                false,
-                null
-            )
+        $cookie = Cookie::create(
+            $sName,
+            (string) $sValue,
+            $iExpire,
+            $this->getCookiePath($sPath),
+            $this->getCookieDomain($sDomain),
+            $blSecure,
+            $blHttpOnly,
+            false,
+            null
         );
-    }
-
-    private function queueResponseCookie(Cookie $cookie): void
-    {
         ContainerFacade::get(EventDispatcherInterface::class)->addListener(
             KernelEvents::RESPONSE,
             static function (ResponseEvent $event) use ($cookie): void {

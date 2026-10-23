@@ -24,9 +24,6 @@
 - Default `Cache-Control` policy for responses without an explicit one (DI parameter `oxid_esales.http.default_cache_control`)
 - `FileResponseFactoryInterface` for building file download responses
 
-### Fixed
-- Undefined array key warning in `ExceptionErrorController::displayExceptionError()` when no errors are queued for display
-
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
 - Hardened resolution of generated image paths in `GeneratedImagePathProvider`
@@ -46,7 +43,7 @@
   - `Utils::redirect()` throws a `RedirectException` delivered as a redirect on `kernel.exception`
   - The `Cache-Control` header is owned by the `Response`
   - The default `Content-Type` and charset are configured via `oxid_esales.http.charset`
-  - HTTP errors are rendered as JSON or plain text by the request's preferred format
+  - Errors are rendered by Symfony's `ErrorListener`, as RFC 7807 problem details for JSON requests
 - Rate limiting rules accept `format: json`; JSON routes are limited by default
 
 ### Deprecated

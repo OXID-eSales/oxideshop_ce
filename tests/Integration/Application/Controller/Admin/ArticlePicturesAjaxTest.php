@@ -300,9 +300,9 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
             }
         };
 
-        $content = $component->processRequest('emitGridData');
+        $response = $component->processRequest('emitGridData');
 
-        $this->assertSame(json_encode(['records' => [['id' => 'abc']]]), $content);
+        $this->assertSame(json_encode(['records' => [['id' => 'abc']]]), $response->getContent());
     }
 
     /**

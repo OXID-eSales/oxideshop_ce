@@ -643,17 +643,13 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * redirect user to the specified URL
      *
      * @param string $sUrl               URL to be redirected
-     * @param bool   $blAddRedirectParam add "redirect" param
+     * @param bool   $blAddRedirectParam ignored, the "redirected" parameter is no longer added
      * @param int    $iHeaderCode        header code, default 302; a code that cannot carry a redirect is normalised to 302
      *
      * @throws RedirectException
      */
     public function redirect($sUrl, $blAddRedirectParam = true, $iHeaderCode = 302)
     {
-        if ($blAddRedirectParam) {
-            $sUrl = $this->addUrlParameters($sUrl, ['redirected' => 1]);
-        }
-
         $sUrl = str_ireplace("&amp;", "&", $sUrl);
 
         throw new RedirectException($sUrl, $iHeaderCode);

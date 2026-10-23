@@ -23,6 +23,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Controller\ErrorController;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -47,6 +48,17 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $response = $this->get(HttpKernelInterface::class)->handle($request);
 
         $this->assertSame('from-controller', $response->getContent());
+    }
+
+    public function testBuildsTheErrorControllerOnlyWhenHandlingAnError(): void
+    {
+        $this->get(HttpKernelInterface::class)->handle(
+            $this->requestWithController(static fn(): Response => new Response())
+        );
+        $this->assertFalse($this->container->initialized(ErrorController::class));
+
+        $this->handleJsonRequestThrowing(new RoutingException());
+        $this->assertTrue($this->container->initialized(ErrorController::class));
     }
 
     public function testDeliversRedirectResponseForRedirectExceptionFromTheController(): void

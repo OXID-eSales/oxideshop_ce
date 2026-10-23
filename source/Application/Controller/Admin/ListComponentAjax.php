@@ -141,7 +141,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         return 'select count( * ) ' . $sQ;
     }
 
-    public function processRequest($function = null): string|Response
+    public function processRequest($function = null): Response
     {
         if ($function) {
             $response = $this->$function();
@@ -160,7 +160,7 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
             $this->outputResponse($this->getData($sCountQ, $sQ));
         }
 
-        return $this->renderedOutput;
+        return new Response($this->renderedOutput);
     }
 
     /**

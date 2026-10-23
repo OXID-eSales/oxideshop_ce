@@ -50,33 +50,20 @@ ContainerFacade::get(LegacyAjaxRunnerInterface::class)->runController(static fun
         Registry::getUtils()->redirect('index.php', false);
     }
 
-    $content = '';
-    $status = Response::HTTP_OK;
+    $response = new Response();
     if ($sContainer = Registry::getRequest()->getRequestParameter('container')) {
         $sContainer = strtolower(trim(basename($sContainer)));
-
-        // Ajax class is derived from the container name plus the "_ajax" suffix.
-        $ajaxContainerClassName = $sContainer . '_ajax';
-        $containerClass = Registry::getControllerClassNameResolver()->getClassNameById($ajaxContainerClassName);
+        $containerClass = Registry::getControllerClassNameResolver()->getClassNameById($sContainer . '_ajax');
+        $response = new Response('', Response::HTTP_NOT_FOUND);
 
         if ($containerClass !== null) {
             $oAjaxComponent = oxNew($containerClass);
             $oAjaxComponent->setName($sContainer);
-            $result = $oAjaxComponent->processRequest(Registry::getRequest()->getRequestParameter('fnc'));
-
-            if ($result instanceof Response) {
-                $myConfig->pageClose();
-
-                return $result;
-            }
-
-            $content = (string) $result;
-        } else {
-            $status = Response::HTTP_NOT_FOUND;
+            $response = $oAjaxComponent->processRequest(Registry::getRequest()->getRequestParameter('fnc'));
         }
     }
 
     $myConfig->pageClose();
 
-    return new Response($content, $status);
+    return $response;
 });

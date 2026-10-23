@@ -47,6 +47,15 @@ final class SessionCommitListenerTest extends TestCase
         new SessionCommitListener()->onKernelResponse($this->createResponseEvent(HttpKernelInterface::MAIN_REQUEST));
     }
 
+    public function testDoesNotCreateSessionWhenRequestHadNone(): void
+    {
+        Registry::set(Session::class, null);
+
+        new SessionCommitListener()->onKernelResponse($this->createResponseEvent(HttpKernelInterface::MAIN_REQUEST));
+
+        $this->assertFalse(Registry::instanceExists(Session::class));
+    }
+
     public function testSkipsSubRequests(): void
     {
         $session = $this->createMock(Session::class);

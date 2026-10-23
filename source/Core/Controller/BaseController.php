@@ -533,7 +533,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
     protected function executeNewAction($sNewAction)
     {
         if ($sNewAction) {
-            $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
+            $myConfig = Registry::getConfig();
 
             // page parameters is the part which goes after '?'
             $params = explode('?', $sNewAction);
@@ -544,8 +544,8 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
             // looking for function name
             $params = explode('/', $params[0]);
             $className = $params[0];
-            $resolvedClassName = \OxidEsales\Eshop\Core\Registry::getControllerClassNameResolver()->getClassNameById($className);
-            $realClassName = $resolvedClassName ? \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($resolvedClassName) : \OxidEsales\Eshop\Core\Registry::getUtilsObject()->getClassName($className);
+            $resolvedClassName = Registry::getControllerClassNameResolver()->getClassNameById($className);
+            $realClassName = $resolvedClassName ? Registry::getUtilsObject()->getClassName($resolvedClassName) : Registry::getUtilsObject()->getClassName($className);
 
             if (false === class_exists($realClassName)) {
                 //If redirect tries to use a not existing class throw an exception.
@@ -557,7 +557,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
                 throw $exception;
             }
 
-            $session = \OxidEsales\Eshop\Core\Registry::getSession();
+            $session = Registry::getSession();
 
             // building redirect path ...
             $header = ($className) ? "cl=$className&" : ''; // adding view name
@@ -568,9 +568,9 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
 
             $url = "{$url}index.php?{$header}";
 
-            $url = \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl($url);
+            $url = Registry::getUtilsUrl()->processUrl($url);
 
-            if (\OxidEsales\Eshop\Core\Registry::getUtils()->seoIsActive() && $seoUrl = \OxidEsales\Eshop\Core\Registry::getSeoEncoder()->getStaticUrl($url)) {
+            if (Registry::getUtils()->seoIsActive() && $seoUrl = Registry::getSeoEncoder()->getStaticUrl($url)) {
                 $url = $seoUrl;
             }
 
@@ -578,8 +578,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
 
             ContainerFacade::dispatch(new AfterRequestProcessedEvent());
 
-            //#M341 do not add redirect parameter
-            \OxidEsales\Eshop\Core\Registry::getUtils()->redirect($url, (bool) Registry::getRequest()->getRequestEscapedParameter('redirected'), 302);
+            Registry::getUtils()->redirect($url);
         }
     }
 
@@ -597,7 +596,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
      */
     public function getAdditionalParams()
     {
-        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->processUrl('', false);
+        return Registry::getUtilsUrl()->processUrl('', false);
     }
 
     /**
@@ -608,7 +607,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
     public function getCharSet()
     {
         if ($this->_sCharSet == null) {
-            $this->_sCharSet = \OxidEsales\Eshop\Core\Registry::getLang()->translateString('charset');
+            $this->_sCharSet = Registry::getLang()->translateString('charset');
         }
 
         return $this->_sCharSet;
@@ -641,7 +640,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
      */
     public function getPackageInfo()
     {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getPackageInfo();
+        return Registry::getConfig()->getPackageInfo();
     }
 
     /**
@@ -673,7 +672,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
     public function isDemoVersion()
     {
         if ($this->_blDemoVersion == null) {
-            $this->_blDemoVersion = \OxidEsales\Eshop\Core\Registry::getConfig()->detectVersion() == 1;
+            $this->_blDemoVersion = Registry::getConfig()->detectVersion() == 1;
         }
 
         return $this->_blDemoVersion;
@@ -707,7 +706,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
     public function isDemoShop()
     {
         if ($this->_blDemoShop == null) {
-            $this->_blDemoShop = \OxidEsales\Eshop\Core\Registry::getConfig()->isDemoShop();
+            $this->_blDemoShop = Registry::getConfig()->isDemoShop();
         }
 
         return $this->_blDemoShop;
@@ -837,7 +836,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
      */
     public function getSidForWidget()
     {
-        $session = \OxidEsales\Eshop\Core\Registry::getSession();
+        $session = Registry::getSession();
         $sid = null;
         if (!$session->isActualSidInCookie()) {
             $sid = $session->getId();

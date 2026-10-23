@@ -4,3 +4,4 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\Service\ThemePathResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Path\Service\ThemePathResolver
+    lazy: true

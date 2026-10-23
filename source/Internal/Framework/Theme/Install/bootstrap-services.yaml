@@ -5,3 +5,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstaller
     public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeAssetsInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeAssetsInstaller
+    public: true

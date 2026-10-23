@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\Front
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\InstalledThemeProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemePathProviderInterface;
 use stdClass;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -738,11 +739,14 @@ class Language extends \OxidEsales\Eshop\Core\Base
         $langFiles = $this->appendLangFile($langFiles, $adminPath);
 
         // themes options lang files
-        $themePath = $appDirectory . 'views/*/' . $language;
-        $langFiles = $this->appendLangFile($langFiles, $themePath, "options");
-
-        $themePath = $appDirectory . 'views/*/translations/' . $language;
-        $langFiles = $this->appendLangFile($langFiles, $themePath, "options");
+        foreach ($this->getInstalledThemeDirectories() as $themeDirectory) {
+            $langFiles = $this->appendLangFile($langFiles, $themeDirectory . $language, "options");
+            $langFiles = $this->appendLangFile(
+                $langFiles,
+                $themeDirectory . 'translations' . DIRECTORY_SEPARATOR . $language,
+                "options"
+            );
+        }
 
         // module language files
         $langFiles = $this->appendModuleLangFilesForAdminArea($langFiles, $language);
@@ -1025,6 +1029,17 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
 
         return $directories;
+    }
+
+    /** @return string[] */
+    private function getInstalledThemeDirectories(): array
+    {
+        $themePathProvider = ContainerFacade::get(ThemePathProviderInterface::class);
+
+        return array_map(
+            fn (string $themeId): string => $themePathProvider->getAbsolutePath($themeId) . DIRECTORY_SEPARATOR,
+            ContainerFacade::get(InstalledThemeProviderInterface::class)->getThemeIds()
+        );
     }
 
     private function getShopId(): int

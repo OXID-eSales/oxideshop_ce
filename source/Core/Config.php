@@ -18,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInt
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemePathProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use stdClass;
 use Symfony\Component\Filesystem\Path;
@@ -956,28 +957,36 @@ class Config extends \OxidEsales\Eshop\Core\Base
             return $return;
         }
 
+        try {
+            $themeBase = $this->getThemeDir($base, $dir, $admin, $theme, $absolute);
+            $absThemeBase = $this->getThemeDir($absBase, $dir, $admin, $theme, true);
+        } catch (ThemeNotLoadableException) {
+            return false;
+        }
+
         $return = $this->getEditionTemplate("{$theme}/{$dir}/{$file}");
 
         //test lang level ..
-        if (!$return && !$admin && is_readable($absBase . $path)) {
-            $return = $base . $path;
+        $path = "{$shop}/{$langAbbr}/{$dir}/{$file}";
+        if (!$return && !$admin && is_readable($absThemeBase . $path)) {
+            $return = $themeBase . $path;
         }
 
         //test shop level ..
         if (!$return && !$admin) {
-            $return = $this->getShopLevelDir($base, $absBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
+            $return = $this->getShopLevelDir($themeBase, $absThemeBase, $file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme);
         }
 
         //test theme language level ..
-        $path = "$theme/$langAbbr/$dir/$file";
-        if (!$return && $lang !== false && is_readable($absBase . $path)) {
-            $return = $base . $path;
+        $path = "$langAbbr/$dir/$file";
+        if (!$return && $lang !== false && is_readable($absThemeBase . $path)) {
+            $return = $themeBase . $path;
         }
 
         //test theme level ..
-        $path = "$theme/$dir/$file";
-        if (!$return && is_readable($absBase . $path)) {
-            $return = $base . $path;
+        $path = "$dir/$file";
+        if (!$return && is_readable($absThemeBase . $path)) {
+            $return = $themeBase . $path;
         }
 
         //test out language level ..
@@ -1001,6 +1010,32 @@ class Config extends \OxidEsales\Eshop\Core\Base
         Registry::getUtils()->toStaticCache($cacheKey, $return);
 
         return $return;
+    }
+
+    /**
+     * @throws ThemeNotLoadableException
+     */
+    private function getThemeDir(string $base, $dir, $admin, $theme, bool $absolute): string
+    {
+        if (!$this->isStorefrontThemeTemplateDir($dir, $admin, $theme)) {
+            return "{$base}{$theme}/";
+        }
+
+        $themePath = ContainerFacade::get(ThemePathProviderInterface::class)->getAbsolutePath($theme);
+
+        if (!$absolute) {
+            $themePath = Path::makeRelative(
+                $themePath,
+                ContainerFacade::getParameter('oxid_esales.shop_source_directory')
+            );
+        }
+
+        return "{$themePath}/";
+    }
+
+    private function isStorefrontThemeTemplateDir($dir, $admin, $theme): bool
+    {
+        return $dir == $this->_sTemplateDir && !$admin && $theme;
     }
 
     private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme): bool|string
@@ -1040,7 +1075,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     {
         $return = false;
 
-        $path = "$theme/$shop/$dir/$file";
+        $path = "$shop/$dir/$file";
         if (is_readable($absBase . $path)) {
             $return = $base . $path;
         }

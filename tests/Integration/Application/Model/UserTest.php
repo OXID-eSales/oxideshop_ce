@@ -24,6 +24,7 @@ final class UserTest extends IntegrationTestCase
 
     private const USER_ID = 'test_user_id';
     private const USER_NAME = 'test_user@example.com';
+    private const NEW_USER_NAME = 'new_test_user@example.com';
     private const ADDRESS_ID = 'test_address_id';
     private const COUNTRY_ID = 'a7c40f631fc920687.20179984';
 
@@ -164,6 +165,56 @@ final class UserTest extends IntegrationTestCase
         }
 
         $this->fail('Foreign delivery address must be rejected');
+    }
+
+    public function testSaveWithNewPasswordInvalidatesPasswordResetLink(): void
+    {
+        $this->createUser();
+        $passwordResetId = $this->loadUser()->getUpdateId();
+        $user = $this->loadUser();
+        $user->setPassword('changed-pass');
+
+        $user->save();
+
+        $this->assertTrue(oxNew(User::class)->isExpiredUpdateId($passwordResetId));
+    }
+
+    public function testSaveWithNewUsernameInvalidatesPasswordResetLink(): void
+    {
+        $this->createUser();
+        $passwordResetId = $this->loadUser()->getUpdateId();
+        $user = $this->loadUser();
+        $user->oxuser__oxusername = new Field(self::NEW_USER_NAME);
+
+        $user->save();
+
+        $this->assertTrue(oxNew(User::class)->isExpiredUpdateId($passwordResetId));
+    }
+
+    public function testGetUpdateIdAfterUsernameChangeReturnsNewPasswordResetLink(): void
+    {
+        $this->createUser();
+        $user = $this->loadUser();
+        $invalidatedPasswordResetId = $user->getUpdateId();
+        $user->oxuser__oxusername = new Field(self::NEW_USER_NAME);
+        $user->save();
+
+        $passwordResetId = $user->getUpdateId();
+
+        $this->assertNotSame($invalidatedPasswordResetId, $passwordResetId);
+        $this->assertFalse(oxNew(User::class)->isExpiredUpdateId($passwordResetId));
+    }
+
+    public function testSaveWithUnchangedCredentialsKeepsPasswordResetLink(): void
+    {
+        $this->createUser();
+        $passwordResetId = $this->loadUser()->getUpdateId();
+        $user = $this->loadUser();
+        $user->oxuser__oxcity = new Field('Updated city');
+
+        $user->save();
+
+        $this->assertFalse(oxNew(User::class)->isExpiredUpdateId($passwordResetId));
     }
 
     private function changeUserData(array $deliveryAddress): void

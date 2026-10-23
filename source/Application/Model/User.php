@@ -1710,11 +1710,6 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         return parent::insert();
     }
 
-    /**
-     * Updates changed user object data to DB. Returns true on success.
-     *
-     * @return bool
-     */
     protected function update()
     {
         //V #M418: for not registered users, don't change boni during update
@@ -1729,12 +1724,34 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
             $this->_aSkipSaveFields[] = 'oxrights';
         }
 
-        // updating subscription information
-        if (($blUpdate = parent::update())) {
-            $this->getNewsSubscription()->updateSubscription($this);
+        if ($this->areCredentialsChanged()) {
+            $this->invalidateUpdateKey();
         }
 
-        return $blUpdate;
+        if (!parent::update()) {
+            return false;
+        }
+
+        $this->getNewsSubscription()->updateSubscription($this);
+
+        return true;
+    }
+
+    private function areCredentialsChanged(): bool
+    {
+        return !ContainerFacade::get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->select('1')
+            ->from('oxuser')
+            ->where('oxid = :oxid')
+            ->andWhere('oxusername = :username')
+            ->andWhere('oxpassword = :password')
+            ->setParameters([
+                'oxid' => $this->getId(),
+                'username' => $this->getRawFieldData('oxusername'),
+                'password' => $this->getRawFieldData('oxpassword'),
+            ])
+            ->fetchOne();
     }
 
     /**
@@ -1958,6 +1975,13 @@ class User extends \OxidEsales\Eshop\Core\Model\BaseModel
         $this->oxuser__oxupdatekey = new Field($token, Field::T_RAW);
         $this->oxuser__oxupdateexp = new Field($tokenExpirationTime, Field::T_RAW);
         $this->save();
+    }
+
+    private function invalidateUpdateKey(): void
+    {
+        $this->oxuser__oxupdatekey = new Field('', Field::T_RAW);
+        $this->oxuser__oxupdateexp = new Field(0, Field::T_RAW);
+        $this->_sUpdateKey = null;
     }
 
     /**

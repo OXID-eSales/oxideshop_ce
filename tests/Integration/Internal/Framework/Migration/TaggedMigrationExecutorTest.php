@@ -20,6 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecut
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\MultipleSets\SecondMigrationPathProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 
 final class TaggedMigrationExecutorTest extends TestCase
@@ -207,6 +208,81 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->assertCount(1, $sqlFiles);
         $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $sqlFiles[0]);
         $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $sqlFiles[0]);
+    }
+
+    public function testWritingSqlIntoExistingFileReplacesItsContent(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlFile = tempnam(sys_get_temp_dir(), 'migration_sql_');
+        file_put_contents($sqlFile, '-- previous run;');
+
+        $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+
+        $writtenSql = file_get_contents($sqlFile);
+        unlink($sqlFile);
+        $this->assertStringNotContainsString('-- previous run;', $writtenSql);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $writtenSql);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $writtenSql);
+    }
+
+    public function testWritingSqlIntoDirectoryCreatesOneFileWithoutComposite(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlDirectory = $this->createTemporaryDirectory();
+
+        $status = $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlDirectory], new NullOutput());
+
+        $sqlFiles = $this->readSqlFiles($sqlDirectory);
+        $this->assertSame(0, $status);
+        $this->assertCount(1, $sqlFiles);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $sqlFiles[0]);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $sqlFiles[0]);
+    }
+
+    public function testWritingSqlWithoutPathCreatesOneFileWithoutComposite(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlDirectory = $this->createTemporaryDirectory();
+        $workingDirectory = getcwd();
+
+        chdir($sqlDirectory);
+        try {
+            $this->get(TaggedMigrationExecutor::class)
+                ->executeWithOptions(['--dry-run' => true, '--write-sql' => null], new NullOutput());
+        } finally {
+            chdir($workingDirectory);
+        }
+
+        $sqlFiles = $this->readSqlFiles($sqlDirectory);
+        $this->assertCount(1, $sqlFiles);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $sqlFiles[0]);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $sqlFiles[0]);
+    }
+
+    public function testReportsFailureWhenSqlCannotBeAppended(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlFile = $this->createTemporaryDirectory() . '/readonly.sql';
+        touch($sqlFile);
+        chmod($sqlFile, 0444);
+        $output = new BufferedOutput();
+
+        $status = $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], $output);
+
+        chmod($sqlFile, 0644);
+        $this->assertSame(1, $status);
+        $this->assertStringContainsString('Failed to write the migration SQL output file', $output->fetch());
     }
 
     public function testProvidersAreExecutedInDescendingPriorityOrder(): void

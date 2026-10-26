@@ -7,9 +7,17 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationSqlOutputException;
+
 interface MigrationSqlOutputInterface
 {
-    public function resolveFile(array $options): ?string;
+    /**
+     * @throws MigrationSqlOutputException
+     */
+    public function collect(array $options, callable $migrations): int;
 
-    public function prepare(string $file): bool;
+    /**
+     * @throws MigrationSqlOutputException
+     */
+    public function capture(array $options, callable $migration): int;
 }

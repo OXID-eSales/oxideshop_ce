@@ -54,6 +54,21 @@ final class ModuleMigrationExecutorTest extends TestCase
         $this->assertFalse($this->tableExists('test_module_migration_table'));
     }
 
+    public function testWritingSqlIntoExistingFileReplacesItsContent(): void
+    {
+        $this->installModule('myTestModuleWithMigrations');
+        $sqlFile = tempnam(sys_get_temp_dir(), 'migration_sql_');
+        file_put_contents($sqlFile, '-- previous run;');
+
+        $this->get(ModuleMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+
+        $writtenSql = file_get_contents($sqlFile);
+        unlink($sqlFile);
+        $this->assertStringNotContainsString('-- previous run;', $writtenSql);
+        $this->assertStringContainsString('CREATE TABLE `test_module_migration_table`', $writtenSql);
+    }
+
     public function testReturnsSuccessWhenModuleHasNoMigrationDirectory(): void
     {
         $this->installModule('myTestModuleWithoutMigrations');

@@ -12,8 +12,6 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Migration;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\CompositeMigrationExecutor;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolverInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolver;
-use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlOutputInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -31,11 +29,7 @@ final class CompositeMigrationExecutorTest extends TestCase
         $exitCodeResolver = $this->createStub(MigrationExitCodeResolverInterface::class);
         $exitCodeResolver->method('combine')->willReturn(0);
 
-        $executor = new CompositeMigrationExecutor(
-            [$firstExecutor, $secondExecutor],
-            $exitCodeResolver,
-            $this->createStub(MigrationSqlOutputInterface::class),
-        );
+        $executor = new CompositeMigrationExecutor([$firstExecutor, $secondExecutor], $exitCodeResolver);
 
         $this->assertSame(0, $executor->executeWithOptions($options, $output));
     }
@@ -58,11 +52,7 @@ final class CompositeMigrationExecutorTest extends TestCase
         $exitCodeResolver = $this->createStub(MigrationExitCodeResolverInterface::class);
         $exitCodeResolver->method('combine')->willReturn(0);
 
-        (new CompositeMigrationExecutor(
-            [$firstExecutor, $secondExecutor],
-            $exitCodeResolver,
-            $this->createStub(MigrationSqlOutputInterface::class),
-        ))->executeWithOptions();
+        (new CompositeMigrationExecutor([$firstExecutor, $secondExecutor], $exitCodeResolver))->executeWithOptions();
 
         $this->assertSame(['first', 'second'], $executed);
     }
@@ -82,11 +72,7 @@ final class CompositeMigrationExecutorTest extends TestCase
             [3, 0, 3],
         ]);
 
-        $executor = new CompositeMigrationExecutor(
-            [$firstExecutor, $secondExecutor, $thirdExecutor],
-            $exitCodeResolver,
-            $this->createStub(MigrationSqlOutputInterface::class),
-        );
+        $executor = new CompositeMigrationExecutor([$firstExecutor, $secondExecutor, $thirdExecutor], $exitCodeResolver);
 
         $this->assertSame(3, $executor->executeWithOptions());
     }
@@ -96,46 +82,6 @@ final class CompositeMigrationExecutorTest extends TestCase
         $exitCodeResolver = $this->createMock(MigrationExitCodeResolverInterface::class);
         $exitCodeResolver->expects($this->never())->method('combine');
 
-        $this->assertSame(
-            0,
-            (new CompositeMigrationExecutor([], $exitCodeResolver, $this->createStub(MigrationSqlOutputInterface::class)))->executeWithOptions()
-        );
-    }
-
-    public function testPassesOneSharedSqlFileToAllExecutors(): void
-    {
-        $sqlOutput = $this->createStub(MigrationSqlOutputInterface::class);
-        $sqlOutput->method('resolveFile')->willReturn('/resolved/out.sql');
-        $sqlOutput->method('prepare')->willReturn(true);
-        $received = [];
-        $executors = array_map(function () use (&$received) {
-            $executor = $this->createStub(ConfigurableMigrationExecutorInterface::class);
-            $executor->method('executeWithOptions')->willReturnCallback(
-                function (array $options) use (&$received): int {
-                    $received[] = $options['--write-sql'];
-                    return 0;
-                }
-            );
-            return $executor;
-        }, [1, 2]);
-
-        new CompositeMigrationExecutor($executors, new MigrationExitCodeResolver(), $sqlOutput)
-            ->executeWithOptions(['--write-sql' => null]);
-
-        $this->assertSame(['/resolved/out.sql', '/resolved/out.sql'], $received);
-    }
-
-    public function testFailsWithoutRunningExecutorsWhenSqlFileCannotBeWritten(): void
-    {
-        $sqlOutput = $this->createStub(MigrationSqlOutputInterface::class);
-        $sqlOutput->method('resolveFile')->willReturn('/resolved/out.sql');
-        $sqlOutput->method('prepare')->willReturn(false);
-        $executor = $this->createMock(ConfigurableMigrationExecutorInterface::class);
-        $executor->expects($this->never())->method('executeWithOptions');
-
-        $status = new CompositeMigrationExecutor([$executor], new MigrationExitCodeResolver(), $sqlOutput)
-            ->executeWithOptions(['--write-sql' => null], new NullOutput());
-
-        $this->assertSame(1, $status);
+        $this->assertSame(0, (new CompositeMigrationExecutor([], $exitCodeResolver))->executeWithOptions());
     }
 }

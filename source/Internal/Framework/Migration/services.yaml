@@ -28,13 +28,22 @@ services:
         - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
         - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner: ~
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCollectingMigrationExecutor:
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface
+
+  oxid_esales.migration.sql_collecting_tagged_migration_executor:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCollectingMigrationExecutor
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor
+
+  oxid_esales.migration.sql_collecting_module_migration_executor:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCollectingMigrationExecutor
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\AccumulatingSqlMigrationRunner
-    arguments:
-      $runner: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner'
-      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCapturingMigrationRunner:
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityCheckerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityChecker

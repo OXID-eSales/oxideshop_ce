@@ -17,12 +17,16 @@ use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterf
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\ProjectMigrationPathProvider;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Fixtures\MultipleSets\SecondMigrationPathProvider;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 
 final class TaggedMigrationExecutorTest extends TestCase
 {
     use ContainerTrait;
+
+    private array $temporaryDirectories = [];
 
     public function testMigrationIsExecuted(): void
     {
@@ -102,6 +106,130 @@ final class TaggedMigrationExecutorTest extends TestCase
         $this->assertFalse($connection->createSchemaManager()->tablesExist(['test_migration_table']));
     }
 
+    public function testWrittenSqlContainsMigrationsOfAllProviders(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlFile = tempnam(sys_get_temp_dir(), 'migration_sql_');
+
+        $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+
+        $writtenSql = file_get_contents($sqlFile);
+        unlink($sqlFile);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $writtenSql);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $writtenSql);
+    }
+
+    public function testSqlOfEarlierSetIsNotDuplicatedWhenLaterSetHasNothingToMigrate(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $this->get(MigrationRunnerInterface::class)
+            ->run((new SecondMigrationPathProvider())->getMigrationConfigPath(), [], new NullOutput());
+        $sqlFile = tempnam(sys_get_temp_dir(), 'migration_sql_');
+
+        $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+
+        $writtenSql = file_get_contents($sqlFile);
+        unlink($sqlFile);
+        $this->assertSame(1, substr_count($writtenSql, 'CREATE TABLE `test_migration_table`'));
+    }
+
+    public function testWritingSqlTwiceIntoSameFileDoesNotKeepSqlOfPreviousRun(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
+        $this->compileContainer();
+        $sqlFile = tempnam(sys_get_temp_dir(), 'migration_sql_');
+        $executor = $this->get(TaggedMigrationExecutor::class);
+
+        $executor->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+        $executor->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+
+        $writtenSql = file_get_contents($sqlFile);
+        unlink($sqlFile);
+        $this->assertSame(1, substr_count($writtenSql, 'CREATE TABLE `test_migration_table`'));
+    }
+
+    public function testWritingSqlIntoDirectoryCreatesOneFileWithMigrationsOfAllProviders(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlDirectory = $this->createTemporaryDirectory();
+
+        $status = $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlDirectory], new NullOutput());
+
+        $sqlFiles = $this->readSqlFiles($sqlDirectory);
+        $this->assertSame(0, $status);
+        $this->assertCount(1, $sqlFiles);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $sqlFiles[0]);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $sqlFiles[0]);
+    }
+
+    public function testWritingSqlWithoutPathCreatesOneFileInWorkingDirectoryWithMigrationsOfAllProviders(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlDirectory = $this->createTemporaryDirectory();
+        $workingDirectory = getcwd();
+
+        chdir($sqlDirectory);
+        try {
+            $this->get(TaggedMigrationExecutor::class)
+                ->executeWithOptions(['--dry-run' => true, '--write-sql' => null], new NullOutput());
+        } finally {
+            chdir($workingDirectory);
+        }
+
+        $sqlFiles = $this->readSqlFiles($sqlDirectory);
+        $this->assertCount(1, $sqlFiles);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $sqlFiles[0]);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $sqlFiles[0]);
+    }
+
+    public function testWritingSqlIntoExistingFileReplacesItsContent(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlFile = tempnam(sys_get_temp_dir(), 'migration_sql_');
+        file_put_contents($sqlFile, '-- previous run;');
+
+        $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], new NullOutput());
+
+        $writtenSql = file_get_contents($sqlFile);
+        unlink($sqlFile);
+        $this->assertStringNotContainsString('-- previous run;', $writtenSql);
+        $this->assertStringContainsString('CREATE TABLE `test_migration_table`', $writtenSql);
+        $this->assertStringContainsString('CREATE TABLE `test_second_migration_table`', $writtenSql);
+    }
+
+    public function testReportsFailureWhenSqlCannotBeAppended(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures/MultipleSets');
+        $this->compileContainer();
+        $sqlFile = $this->createTemporaryDirectory() . '/readonly.sql';
+        touch($sqlFile);
+        chmod($sqlFile, 0444);
+        $output = new BufferedOutput();
+
+        $status = $this->get(TaggedMigrationExecutor::class)
+            ->executeWithOptions(['--dry-run' => true, '--write-sql' => $sqlFile], $output);
+
+        chmod($sqlFile, 0644);
+        $this->assertSame(1, $status);
+        $this->assertStringContainsString('Failed to write the migration SQL output file', $output->fetch());
+    }
+
     public function testProvidersAreExecutedInDescendingPriorityOrder(): void
     {
         $this->createContainer();
@@ -121,7 +249,33 @@ final class TaggedMigrationExecutorTest extends TestCase
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migration_table`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
         $connection->executeStatement('DROP TABLE IF EXISTS `test_failing_migrations_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_second_migrations_tracking`');
+        $connection->executeStatement('DROP TABLE IF EXISTS `test_second_migration_table`');
+        $this->removeTemporaryDirectories();
         parent::tearDown();
+    }
+
+    private function createTemporaryDirectory(): string
+    {
+        $directory = sys_get_temp_dir() . '/migration_sql_' . uniqid();
+        mkdir($directory);
+        $this->temporaryDirectories[] = $directory;
+
+        return $directory;
+    }
+
+    private function removeTemporaryDirectories(): void
+    {
+        foreach ($this->temporaryDirectories as $directory) {
+            array_map('unlink', glob($directory . '/*'));
+            rmdir($directory);
+        }
+    }
+
+    /** @return string[] */
+    private function readSqlFiles(string $directory): array
+    {
+        return array_map('file_get_contents', glob($directory . '/*.sql'));
     }
 
     private function registerProviderStubs(array $providerIds, array &$executedProviders): void

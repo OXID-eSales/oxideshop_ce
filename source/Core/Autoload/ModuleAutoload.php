@@ -63,6 +63,10 @@ class ModuleAutoload
             return false;
         }
 
+        if (!self::isModuleExtensionParentAlias($class)) {
+            return false;
+        }
+
         $instance = static::getInstance();
         $class = strtolower(basename($class));
         $class = preg_replace('/_parent$/i', '', $class);
@@ -119,5 +123,10 @@ class ModuleAutoload
         );
         $subShopSpecificCache = new SubShopSpecificFileCache($shopIdCalculator);
         return new ModuleVariablesLocator($subShopSpecificCache, $shopIdCalculator);
+    }
+
+    private static function isModuleExtensionParentAlias(string $class): bool
+    {
+        return str_ends_with(strtolower($class), '_parent');
     }
 }

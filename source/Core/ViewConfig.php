@@ -600,6 +600,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated
+     *
      * Returns shops current templates url
      *
      * @return string

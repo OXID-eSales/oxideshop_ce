@@ -1481,6 +1481,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated
+     *
      * Finds and returns template file or folder url
      *
      * @param string $file  File name
@@ -1496,6 +1498,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
+     * @deprecated
+     *
      * Finds and returns base template folder url
      *
      * @param bool $admin Whether to force admin

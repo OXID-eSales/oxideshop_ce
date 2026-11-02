@@ -23,6 +23,8 @@
 - `ThemeSettingChangedEvent`
 - `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.theme.admin.name` instead
 - `Internal\Framework\Theme\Event\ThemeActivatedEvent`
+- `Config::getTemplateUrl()` and `Config::getTemplateBase()`
+- `ViewConfig::getUrlTemplateDir()`
 
 ### Fixed
 - Password reset links are invalidated when the user's email address or password is changed

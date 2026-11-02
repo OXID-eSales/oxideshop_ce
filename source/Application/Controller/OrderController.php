@@ -15,6 +15,7 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsObject;
 use OxidEsales\Eshop\Application\Model\BasketContentMarkGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Exception\PaymentRedirectException;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -251,6 +252,8 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
             return 'basket';
         } catch (ArticleInputException $exception) {
             Registry::getUtilsView()->addErrorToDisplay($exception);
+        } catch (PaymentRedirectException $exception) {
+            Registry::getUtils()->redirect($exception->getUrl(), false, 302);
         }
     }
 

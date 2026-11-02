@@ -598,7 +598,7 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
      */
     public function cancelOrderArticle()
     {
-        if ($this->oxorderarticles__oxstorno->value == 0) {
+        if ((int) $this->getFieldData('oxstorno') === 0) {
             $myConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
             $this->oxorderarticles__oxstorno = new \OxidEsales\Eshop\Core\Field(1);
             if ($this->save()) {
@@ -779,6 +779,11 @@ class OrderArticle extends \OxidEsales\Eshop\Core\Model\BaseModel implements Art
     public function setArticle($oArticle)
     {
         $this->_oArticle = $oArticle;
+    }
+
+    public function getIconUrl(int $index = 0): string
+    {
+        return $this->getArticle()->getIconUrl($index);
     }
 
     /**

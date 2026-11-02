@@ -7,14 +7,24 @@
 
 namespace OxidEsales\EshopCommunity\Application\Model;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use Exception;
 use OxidEsales\Eshop\Application\Model\Address;
 use OxidEsales\Eshop\Application\Model\Country;
 use OxidEsales\Eshop\Core\DatabaseProvider;
+use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Price as ShopPrice;
 use OxidEsales\Eshop\Application\Model\Payment as EshopPayment;
 use OxidEsales\Eshop\Application\Model\Voucher as EshopVoucherModel;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Exception\PaymentRedirectException;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Transition\Event\BeforeOrderFinalizeEvent;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Transition\Event\BeforePaymentExecuteEvent;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Transition\Event\OrderCancelledEvent;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Transition\Event\OrderCompletedEvent;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Transition\Event\OrderRecalculatedEvent;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -473,19 +483,31 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     public function finalizeOrder(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUser, $blRecalculatingOrder = false)
     {
-        // check if this order is already stored
         $orderId = \OxidEsales\Eshop\Core\Registry::getSession()->getVariable('sess_challenge');
-        if ($this->checkOrderExist($orderId)) {
-            \OxidEsales\Eshop\Core\Registry::getLogger()->debug('finalizeOrder: Order already exists: ' . $orderId, [$oBasket, $oUser]);
-            // we might use this later, this means that somebody clicked like mad on order button
-            return self::ORDER_STATE_ORDEREXISTS;
-        }
 
         // if not recalculating order, use sess_challenge id, else leave old order id
         if (!$blRecalculatingOrder) {
             // use this ID
             $this->setId($orderId);
 
+            $finalizeEvent = ContainerFacade::dispatch(new BeforeOrderFinalizeEvent($this, $oBasket));
+            if ($finalizeEvent->isInterrupted()) {
+                if ($finalizeEvent->getRedirectUrl() !== '') {
+                    throw new PaymentRedirectException($finalizeEvent->getRedirectUrl());
+                }
+
+                return $finalizeEvent->getResult();
+            }
+        }
+
+        // check if this order is already stored
+        if ($this->checkOrderExist($orderId)) {
+            \OxidEsales\Eshop\Core\Registry::getLogger()->debug('finalizeOrder: Order already exists: ' . $orderId, [$oBasket, $oUser]);
+            // we might use this later, this means that somebody clicked like mad on order button
+            return self::ORDER_STATE_ORDEREXISTS;
+        }
+
+        if (!$blRecalculatingOrder) {
             // validating various order/basket parameters before finalizing
             if ($iOrderState = $this->validateOrder($oBasket, $oUser)) {
                 return $iOrderState;
@@ -558,6 +580,9 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         // skipping this action in case of order recalculation
         if (!$blRecalculatingOrder) {
             $iRet = $this->sendOrderByEmail($oUser, $oBasket, $oUserPayment);
+            if ($this->getFieldData('oxtransstatus') === 'OK') {
+                ContainerFacade::dispatch(new OrderCompletedEvent($this));
+            }
         } else {
             $iRet = self::ORDER_STATE_OK;
         }
@@ -575,6 +600,53 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         return (bool) $this->oxorder__oxisnettomode->value;
     }
 
+    public function assignOrderNumber(): int
+    {
+        if (!$this->getFieldData('oxordernr')) {
+            $this->setNumber();
+        }
+
+        return (int) $this->getFieldData('oxordernr');
+    }
+
+    public function assignTransactionId(string $transactionId): void
+    {
+        $this->createQueryBuilder()
+            ->update('oxorder')
+            ->set('oxtransid', ':transactionId')
+            ->where('oxid = :oxid')
+            ->setParameters(['transactionId' => $transactionId, 'oxid' => $this->getId()])
+            ->execute();
+        $this->oxorder__oxtransid = new Field($transactionId, Field::T_RAW);
+    }
+
+    public function completeOrder(): int
+    {
+        if (!$this->claimCompletion()) {
+            return $this->isStoredAsCompleted() ? self::ORDER_STATE_OK : self::ORDER_STATE_PAYMENTERROR;
+        }
+        $this->setOrderStatus('OK');
+        $this->assignOrderNumber();
+
+        return $this->confirmCompletion();
+    }
+
+    public function releaseVouchers(): void
+    {
+        foreach ($this->findReleasableVoucherIds() as $voucherId) {
+            $voucher = oxNew(EshopVoucherModel::class);
+            $voucher->load($voucherId);
+            $voucher->unMarkAsUsed();
+        }
+    }
+
+    public function markPaid(): void
+    {
+        $paid = date('Y-m-d H:i:s', Registry::getUtilsDate()->getTime());
+        if ($this->storeFirstPaymentDate($paid)) {
+            $this->oxorder__oxpaid = new Field($paid, Field::T_RAW);
+        }
+    }
 
     /**
      * Updates order transaction status. Faster than saving whole object
@@ -912,6 +984,27 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
      */
     protected function executePayment(\OxidEsales\Eshop\Application\Model\Basket $oBasket, $oUserpayment)
     {
+        $paymentEvent = ContainerFacade::dispatch(new BeforePaymentExecuteEvent($this, $oBasket));
+        if ($paymentEvent->isPaid()) {
+            return true;
+        }
+        if ($paymentEvent->getRedirectUrl() !== '') {
+            $this->assignBasketToOrder($oBasket);
+            throw new PaymentRedirectException($paymentEvent->getRedirectUrl());
+        }
+        if ($paymentEvent->isPending()) {
+            $this->assignBasketToOrder($oBasket);
+
+            return $paymentEvent->getResult();
+        }
+        if ($paymentEvent->isRefused()) {
+            if (!$this->getFieldData('oxstorno')) {
+                $this->delete();
+            }
+
+            return $paymentEvent->getResult();
+        }
+
         $oPayTransaction = $this->getGateway();
         $oPayTransaction->setPaymentParams($oUserpayment);
 
@@ -1379,6 +1472,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
                 \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
             } else {
                 \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->commitTransaction();
+                ContainerFacade::dispatch(new OrderRecalculatedEvent($this));
             }
         } catch (Exception $exception) {
             \OxidEsales\Eshop\Core\DatabaseProvider::getDb()->rollbackTransaction();
@@ -1996,6 +2090,7 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
             foreach ($this->getOrderArticles() as $oOrderArticle) {
                 $oOrderArticle->cancelOrderArticle();
             }
+            ContainerFacade::dispatch(new OrderCancelledEvent($this));
         }
     }
 
@@ -2398,5 +2493,95 @@ class Order extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
 
         return $dynamicValues;
+    }
+
+    private function assignBasketToOrder(\OxidEsales\Eshop\Application\Model\Basket $basket): void
+    {
+        $user = $basket->getBasketUser();
+        $basket->setOrderId($this->getId());
+        $this->updateWishlist($basket->getContents(), $user);
+        $this->updateNoticeList($basket->getContents(), $user);
+        $this->markVouchers($basket, $user);
+        Registry::getSession()->deleteVariable('ordrem');
+    }
+
+    private function claimCompletion(): bool
+    {
+        return (bool) $this->createQueryBuilder()
+            ->update('oxorder')
+            ->set('oxtransstatus', ':completed')
+            ->where('oxid = :oxid')
+            ->andWhere('oxtransstatus = :pending')
+            ->andWhere('oxstorno = 0')
+            ->setParameters(['completed' => 'OK', 'oxid' => $this->getId(), 'pending' => 'NOT_FINISHED'])
+            ->execute();
+    }
+
+    private function isStoredAsCompleted(): bool
+    {
+        $this->load($this->getId());
+
+        return $this->getFieldData('oxtransstatus') === 'OK';
+    }
+
+    private function confirmCompletion(): int
+    {
+        $user = $this->getOrderUser();
+        $basket = $this->getOrderBasket(false);
+        $this->addOrderArticlesToBasket($basket, $this->getUnbundledOrderArticles());
+        $basket->calculateBasket(true);
+        $this->markVouchers($basket, $user);
+        $result = $this->sendOrderByEmail($user, $basket, $this->getPaymentType() ?: null);
+        $user->onOrderExecute($basket, $result);
+        ContainerFacade::dispatch(new OrderCompletedEvent($this));
+
+        return $result;
+    }
+
+    private function storeFirstPaymentDate(string $paid): bool
+    {
+        return (bool) $this->createQueryBuilder()
+            ->update('oxorder')
+            ->set('oxpaid', ':paid')
+            ->where('oxid = :oxid')
+            ->andWhere('oxpaid = :unpaid')
+            ->setParameters(['paid' => $paid, 'oxid' => $this->getId(), 'unpaid' => '0000-00-00 00:00:00'])
+            ->execute();
+    }
+
+    /**
+     * @return string[]
+     */
+    private function findReleasableVoucherIds(): array
+    {
+        return $this->createQueryBuilder()
+            ->select('oxvouchers.oxid')
+            ->from('oxvouchers')
+            ->join('oxvouchers', 'oxorder', 'oxorder', 'oxorder.oxid = oxvouchers.oxorderid')
+            ->where('oxorder.oxid = :oxid')
+            ->andWhere('oxorder.oxtransstatus = :pending')
+            ->setParameters(['oxid' => $this->getId(), 'pending' => 'NOT_FINISHED'])
+            ->execute()
+            ->fetchFirstColumn();
+    }
+
+    /**
+     * @return \OxidEsales\Eshop\Application\Model\OrderArticle[]
+     */
+    private function getUnbundledOrderArticles(): array
+    {
+        $orderArticles = [];
+        foreach ($this->getOrderArticles(true) as $orderArticle) {
+            if (!$orderArticle->isBundle()) {
+                $orderArticles[] = $orderArticle;
+            }
+        }
+
+        return $orderArticles;
+    }
+
+    private function createQueryBuilder(): QueryBuilder
+    {
+        return ContainerFacade::get(QueryBuilderFactoryInterface::class)->create();
     }
 }

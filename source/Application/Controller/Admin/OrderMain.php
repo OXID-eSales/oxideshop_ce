@@ -8,6 +8,8 @@
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Domain\Order\Transition\Event\OrderShippedEvent;
 
 /**
  * Admin article main order manager.
@@ -166,6 +168,7 @@ class OrderMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminDeta
                 $oEmail = oxNew(\OxidEsales\Eshop\Core\Email::class);
                 $oEmail->sendSendedNowMail($oOrder);
             }
+            ContainerFacade::dispatch(new OrderShippedEvent($oOrder));
             $this->onOrderSend();
         }
     }

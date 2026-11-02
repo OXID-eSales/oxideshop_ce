@@ -111,6 +111,18 @@ class Voucher extends \OxidEsales\Eshop\Core\Model\BaseModel
         }
     }
 
+    public function unMarkAsUsed(): void
+    {
+        if ($this->oxvouchers__oxid->value) {
+            $this->oxvouchers__oxorderid->setValue('');
+            $this->oxvouchers__oxuserid->setValue('');
+            $this->oxvouchers__oxdiscount->setValue(null);
+            $this->oxvouchers__oxdateused->setValue(null);
+            $this->oxvouchers__oxreserved->setValue(0);
+            $this->save();
+        }
+    }
+
     /**
      * mark voucher as reserved
      */

@@ -20,9 +20,16 @@ use PHPUnit\Framework\Attributes\Group;
 
 final class ModuleVariablesLocatorTest extends IntegrationTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        ContainerFactory::resetContainer();
+    }
+
     public function tearDown(): void
     {
         ModuleVariablesLocator::resetModuleVariables();
+        ContainerFactory::resetContainer();
         parent::tearDown();
     }
 

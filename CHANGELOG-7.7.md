@@ -26,6 +26,7 @@
 
 ### Fixed
 - Password reset links are invalidated when the user's email address or password is changed
+- `class_exists()` checks for unknown classes no longer cause a circular service reference while the DI container is being built
 
 ### Removed
 - PHP v8.3 support

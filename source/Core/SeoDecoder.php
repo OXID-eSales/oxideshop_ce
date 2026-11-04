@@ -61,9 +61,14 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
     {
         $stringObject = Str::getStr();
         $baseUrl = \OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL();
+        $basePath = parse_url($baseUrl, PHP_URL_PATH);
+
         if ($stringObject->strpos($seoUrl, $baseUrl) === 0) {
             $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($baseUrl));
+        } elseif ($stringObject->strpos($seoUrl, $basePath) === 0) {
+            $seoUrl = $stringObject->substr($seoUrl, $stringObject->strlen($basePath));
         }
+
         $seoUrl = rawurldecode($seoUrl);
 
         //extract page number from seo url

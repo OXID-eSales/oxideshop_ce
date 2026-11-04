@@ -917,6 +917,10 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreParentTheme = false)
     {
+        if ($this->isAdminTemplateDir($dir, $admin)) {
+            return false;
+        }
+
         if (is_null($shop)) {
             $shop = $this->getShopId();
         }
@@ -926,7 +930,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         if ($admin) {
-            $theme = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
+            $theme = ContainerFacade::getParameter('oxid_esales.admin_ui.name');
         }
 
         if ($dir != $this->_sTemplateDir) {
@@ -1034,6 +1038,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     private function makeRelativeToShopSourceDir(string $path): string
     {
         return Path::makeRelative($path, ContainerFacade::getParameter('oxid_esales.shop_source_directory')) . '/';
+    }
+
+    private function isAdminTemplateDir($dir, $admin): bool
+    {
+        return $dir == $this->_sTemplateDir && $admin;
     }
 
     private function isStorefrontThemeTemplateDir($dir, $admin, $theme): bool

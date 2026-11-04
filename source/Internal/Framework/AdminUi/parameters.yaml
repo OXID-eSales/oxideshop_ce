@@ -1,0 +1,5 @@
+parameters:
+  oxid_esales.admin_ui.package_directory: 'oxid-esales/twig-admin-theme'
+  oxid_esales.admin_ui.name: 'admin_twig'
+  oxid_esales.admin_ui.media.image_grid_size: '400*400'
+  oxid_esales.admin_ui.media.image_zoom_size: '800*800'

@@ -1,0 +1,12 @@
+imports:
+  - { resource: parameters.yaml }
+
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProviderInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProvider
+    arguments:
+      $packageDirectory: '%oxid_esales.admin_ui.package_directory%'
+    public: true

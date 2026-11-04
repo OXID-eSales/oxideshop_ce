@@ -9,30 +9,23 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProviderInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
-class EditionUserFileLocator implements NavigationFileLocatorInterface
+class AdminUiUserFileLocator implements NavigationFileLocatorInterface
 {
     private string $fileName = 'user.xml';
 
     public function __construct(
-        private readonly string $themeName,
-        private readonly BasicContextInterface $context,
+        private readonly AdminUiPathProviderInterface $adminUiPathProvider,
         private readonly Filesystem $fileSystem
     ) {
     }
 
     public function locate(): array
     {
-        $filePath = Path::join(
-            $this->context->getEditionSourcePath($this->context->getEdition()),
-            'Application',
-            'views',
-            $this->themeName,
-            $this->fileName,
-        );
+        $filePath = Path::join($this->adminUiPathProvider->getAbsolutePath(), $this->fileName);
 
         return $this->fileSystem->exists($filePath) ? [$filePath] : [];
     }

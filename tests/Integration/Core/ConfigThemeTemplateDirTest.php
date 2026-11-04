@@ -29,7 +29,6 @@ final class ConfigThemeTemplateDirTest extends IntegrationTestCase
     private const GERMAN = 0;
     private const THEME_ID = 'vendorTheme';
     private const CHILD_THEME_ID = 'vendorChildTheme';
-    private const ADMIN_THEME_ID = 'vendorAdminTheme';
     private const BROKEN_THEME_ID = 'brokenTheme';
     private const TEMPLATE_DIR = 'tpl';
 
@@ -40,7 +39,6 @@ final class ConfigThemeTemplateDirTest extends IntegrationTestCase
         parent::setUp();
 
         $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
-        $this->setParameter('oxid_esales.theme.admin.name', self::ADMIN_THEME_ID);
         $this->setParameter('oxid_esales.shop_source_directory', $this->getShopSourceDirectory());
 
         $this->installTheme(self::THEME_ID);
@@ -136,12 +134,9 @@ final class ConfigThemeTemplateDirTest extends IntegrationTestCase
         );
     }
 
-    public function testAdminTemplateIsReadFromViewsDirectory(): void
+    public function testAdminTemplateIsNotFound(): void
     {
-        $this->assertSame(
-            Path::join($this->getShopSourceDirectory(), 'Application/views', self::ADMIN_THEME_ID, 'tpl/admin.html.twig'),
-            Registry::getConfig()->getTemplatePath('admin.html.twig', true)
-        );
+        $this->assertFalse(Registry::getConfig()->getTemplatePath('admin.html.twig', true));
     }
 
     private function activateTheme(string $themeId): void
@@ -187,6 +182,6 @@ final class ConfigThemeTemplateDirTest extends IntegrationTestCase
 
     private function getShopSourceDirectory(): string
     {
-        return realpath("$this->fixtureDirectory/shop/source");
+        return Path::join(realpath($this->fixtureDirectory), 'shop/source');
     }
 }

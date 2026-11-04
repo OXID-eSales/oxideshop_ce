@@ -29,8 +29,8 @@ class ArticlePictures extends AdminDetailsController
         $this->mediaUrlGenerator = ContainerFacade::get(MediaUrlGeneratorInterface::class);
         $this->productMediaDao = ContainerFacade::get(ProductMediaDaoInterface::class);
 
-        $this->detailImageSize = ContainerFacade::getParameter('oxid_esales.theme.admin.media.image_grid_size');
-        $this->zoomImageSize = ContainerFacade::getParameter('oxid_esales.theme.admin.media.image_zoom_size');
+        $this->detailImageSize = ContainerFacade::getParameter('oxid_esales.admin_ui.media.image_grid_size');
+        $this->zoomImageSize = ContainerFacade::getParameter('oxid_esales.admin_ui.media.image_zoom_size');
 
         parent::__construct();
     }

@@ -14,6 +14,7 @@ use DOMElement;
 use DOMXPath;
 use OxidEsales\Eshop\Application\Controller\Admin\NavigationTree;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -94,12 +95,7 @@ class NavigationTreeDemoShopTest extends IntegrationTestCase
     private function getMenuFilePath(): string
     {
         $context = ContainerFacade::get(ContextInterface::class);
-        $adminViewsDirectory = Path::join(
-            $context->getSourcePath(),
-            'Application',
-            'views',
-            $this->getParameter('oxid_esales.theme.admin.name')
-        );
+        $adminViewsDirectory = $this->get(AdminUiPathProviderInterface::class)->getAbsolutePath();
 
         $edition = strtolower($context->getEdition()->value);
         $menuFilePath = Path::join($adminViewsDirectory, "menu_$edition.xml");

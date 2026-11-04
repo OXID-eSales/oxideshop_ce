@@ -25,28 +25,22 @@ services:
     arguments:
       - '@OxidEsales\Eshop\Core\Config'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminTemplateFileLocator:
-    arguments:
-      - '@OxidEsales\Eshop\Core\Config'
-
   oxid_esales.templating.admin.navigation.file.locator:
     class: OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminNavigationFileLocator
     arguments:
       - !tagged_iterator oxid.menu.file.locator
     public: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionMenuFileLocator:
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminUiMenuFileLocator:
     tags:
       - { name: 'oxid.menu.file.locator', priority: 10 }
     arguments:
-      $themeName: '%oxid_esales.theme.admin.name%'
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\EditionUserFileLocator:
+  OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator\AdminUiUserFileLocator:
     tags:
       - { name: 'oxid.menu.file.locator', priority: 20 }
     arguments:
-      $themeName: '%oxid_esales.theme.admin.name%'
       Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'
 
   OxidEsales\EshopCommunity\Internal\Framework\Templating\Cache\ShopTemplateCacheServiceInterface:

@@ -1,5 +1,6 @@
 imports:
   - { resource: parameters.yaml }
+  - { resource: AdminUi/services.yaml }
   - { resource: Api/services.yaml }
   - { resource: Cache/services.yaml }
   - { resource: Console/services.yaml }

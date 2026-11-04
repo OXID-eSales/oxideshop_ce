@@ -1,5 +1,10 @@
 # Change Log for OXID eShop Community Edition Core Component
 
+## v7.4.7 - 2026-11-03
+
+### Changed
+- Update the shop version to 7.4.5
+
 ## v7.4.6 - 2026-10-16
 
 ### Changed

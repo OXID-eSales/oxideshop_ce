@@ -6,10 +6,8 @@
 - PHPUnit v13 support
 - Community and project migrations are registered as tagged `oxid_esales.migration_path_provider` services (`CommunityEditionMigrationPathProvider`, `ProjectMigrationPathProvider`)
 - `MigrationsNotFoundException`
-- `MigrationSqlOutputException`
 
 ### Changed
-- `oe:database:migrate --write-sql` fails before running any migration when the target file cannot be written
 - `MigrationExecutor` no longer uses `oxid-esales/oxideshop-doctrine-migration-wrapper` internally
 - `Utilities::createMigrations()` throws a `LogicException`
 
@@ -28,7 +26,6 @@
 
 ### Fixed
 - Password reset links are invalidated when the user's email address or password is changed
-- `--write-sql` output being overwritten when multiple migration sets exist
 
 ### Removed
 - PHP v8.3 support

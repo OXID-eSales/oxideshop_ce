@@ -28,22 +28,21 @@ services:
         - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
         - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCollectingMigrationExecutor:
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\WriteSqlMigrationExecutor:
     decorates: OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface
-
-  oxid_esales.migration.sql_collecting_tagged_migration_executor:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCollectingMigrationExecutor
-    decorates: OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor
-
-  oxid_esales.migration.sql_collecting_module_migration_executor:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCollectingMigrationExecutor
-    decorates: OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner
+    arguments:
+      $queryWriter: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\AppendingQueryWriter'
 
-  OxidEsales\EshopCommunity\Internal\Framework\Migration\SqlCapturingMigrationRunner:
-    decorates: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\AppendingQueryWriter: ~
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlFilePathResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlFilePathResolver
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlFileWriterInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlFileWriter
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityCheckerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityChecker
@@ -53,8 +52,3 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolverInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationExitCodeResolver
-
-  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlOutputInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlOutput
-    arguments:
-      Symfony\Component\Filesystem\Filesystem: '@oxid_esales.symfony.file_system'

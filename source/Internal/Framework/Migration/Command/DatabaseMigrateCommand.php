@@ -10,10 +10,12 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Framework\Migration\Command;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationSqlFileNotWritableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationOptionsForwarderInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class DatabaseMigrateCommand extends Command
 {
@@ -32,6 +34,11 @@ final class DatabaseMigrateCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        return $this->migrationExecutor->executeWithOptions($this->optionsForwarder->collect($input), $output);
+        try {
+            return $this->migrationExecutor->executeWithOptions($this->optionsForwarder->collect($input), $output);
+        } catch (MigrationSqlFileNotWritableException $exception) {
+            (new SymfonyStyle($input, $output))->error($exception->getMessage());
+            return Command::FAILURE;
+        }
     }
 }

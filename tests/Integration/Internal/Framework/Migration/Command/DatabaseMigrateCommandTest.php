@@ -17,11 +17,22 @@ use OxidEsales\EshopCommunity\Tests\ConsoleRunnerTrait;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 final class DatabaseMigrateCommandTest extends TestCase
 {
     use ConsoleRunnerTrait;
     use ContainerTrait;
+
+    private string $sqlFile;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->sqlFile = Path::join(sys_get_temp_dir(), uniqid('migration_', true) . '.sql');
+    }
 
     public function testMigrateOutputsEditionMigrations(): void
     {
@@ -52,6 +63,26 @@ final class DatabaseMigrateCommandTest extends TestCase
         $this->assertMigrationWasTracked();
     }
 
+    public function testWritesSqlOfAllMigrationSetsIntoGivenFile(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/../Fixtures/MultipleSets');
+        $this->compileContainer();
+        (new Filesystem())->dumpFile($this->sqlFile, '-- previous run');
+        $commandTester = new CommandTester($this->get(DatabaseMigrateCommand::class));
+
+        $status = $commandTester->execute(['--dry-run' => true, '--write-sql' => $this->sqlFile]);
+
+        $writtenSql = file_get_contents($this->sqlFile);
+
+        $this->assertSame(0, $status);
+        $this->assertStringNotContainsString('-- previous run', $writtenSql);
+        $this->assertMatchesRegularExpression(
+            '/CREATE TABLE `test_migration_table`.+CREATE TABLE `test_second_migration_table`/s',
+            $writtenSql
+        );
+    }
+
     public function testMigrateExecutesModuleMigrations(): void
     {
         $this->installModule('myTestModuleWithMigrations');
@@ -72,8 +103,10 @@ final class DatabaseMigrateCommandTest extends TestCase
             $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
             $connection->executeStatement('DROP TABLE IF EXISTS `test_module_migration_table`');
             $connection->executeStatement('DROP TABLE IF EXISTS `test_module_with_migrations`');
+            $connection->executeStatement('DROP TABLE IF EXISTS `test_second_migrations_tracking`');
         } catch (\Throwable) {
         }
+        (new Filesystem())->remove($this->sqlFile);
         parent::tearDown();
     }
 

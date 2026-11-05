@@ -11,8 +11,10 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Migration\Comm
 
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\Command\DatabaseMigrateCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Migration\Exception\MigrationSqlFileNotWritableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationOptionsForwarderInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -35,5 +37,18 @@ final class DatabaseMigrateCommandTest extends TestCase
         $command = new DatabaseMigrateCommand($migrationExecutor, $optionsForwarder);
 
         $this->assertSame(3, (new CommandTester($command))->execute([]));
+    }
+
+    public function testReturnsFailureWhenSqlFileIsNotWritable(): void
+    {
+        $migrationExecutor = $this->createStub(ConfigurableMigrationExecutorInterface::class);
+        $migrationExecutor->method('executeWithOptions')->willThrowException(new MigrationSqlFileNotWritableException());
+
+        $command = new DatabaseMigrateCommand(
+            $migrationExecutor,
+            $this->createStub(MigrationOptionsForwarderInterface::class)
+        );
+
+        $this->assertSame(Command::FAILURE, (new CommandTester($command))->execute([]));
     }
 }

@@ -593,17 +593,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Checks if shop runs in https only mode
-     * https only mode means there is no http url but only a https url
-     *
-     * @return bool
-     */
-    public function isHttpsOnly()
-    {
-        return $this->isSsl();
-    }
-
-    /**
      * Compares current URL to supplied string
      *
      * @param string $url URL
@@ -745,16 +734,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         $widgetUrl = $utilsUrl->appendUrl($widgetUrl, $urlLang, true);
 
         return $utilsUrl->appendUrl($widgetUrl, $urlParameters, true, true);
-    }
-
-    /**
-     * Returns shop SSL URL with index.php and sid.
-     *
-     * @return string
-     */
-    public function getShopSecureHomeUrl()
-    {
-        return Registry::getUtilsUrl()->processUrl($this->getShopUrl() . 'index.php', false);
     }
 
     /**

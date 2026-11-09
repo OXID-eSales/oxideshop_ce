@@ -209,16 +209,6 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     }
 
     /**
-     * Returns service url protocol: "https" is admin works in ssl mode, "http" if no ssl
-     *
-     * @return string
-     */
-    protected function getServiceProtocol()
-    {
-        return Registry::getConfig()->isSsl() ? 'https' : 'http';
-    }
-
-    /**
      * Sets-up navigation parameters
      *
      * @param string $sNode active view id

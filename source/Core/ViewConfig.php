@@ -171,7 +171,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
         $oConfig = Registry::getConfig();
 
-        return ($oConfig->isSsl() ? $oConfig->getShopSecureHomeUrl() : $oConfig->getShopHomeUrl())
+        return $oConfig->getShopHomeUrl()
                . "cl={$sClass}"
                . ($sCatnid ? "&amp;cnid={$sCatnid}" : '')
                . ($sArtnid ? "&amp;anid={$sArtnid}" : '')
@@ -420,7 +420,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         }
 
         if (($sValue = $this->getViewConfigParam('sslselflink')) === null) {
-            $sValue = Registry::getConfig()->getShopSecureHomeURL();
+            $sValue = Registry::getConfig()->getShopHomeUrl();
             $this->setViewConfigParam('sslselflink', $sValue);
         }
 
@@ -511,7 +511,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getOrderLink()
     {
         if (($sValue = $this->getViewConfigParam('orderlink')) === null) {
-            $sValue = Registry::getConfig()->getShopSecureHomeUrl() . 'cl=user';
+            $sValue = Registry::getConfig()->getShopHomeUrl() . 'cl=user';
             $this->setViewConfigParam('orderlink', $sValue);
         }
 
@@ -526,7 +526,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getPaymentLink()
     {
         if (($sValue = $this->getViewConfigParam('paymentlink')) === null) {
-            $sValue = Registry::getConfig()->getShopSecureHomeUrl() . 'cl=payment';
+            $sValue = Registry::getConfig()->getShopHomeUrl() . 'cl=payment';
             $this->setViewConfigParam('paymentlink', $sValue);
         }
 
@@ -541,7 +541,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getExeOrderLink()
     {
         if (($sValue = $this->getViewConfigParam('exeorderlink')) === null) {
-            $sValue = Registry::getConfig()->getShopSecureHomeUrl() . 'cl=order&amp;fnc=execute';
+            $sValue = Registry::getConfig()->getShopHomeUrl() . 'cl=order&amp;fnc=execute';
             $this->setViewConfigParam('exeorderlink', $sValue);
         }
 
@@ -556,7 +556,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getOrderConfirmLink()
     {
         if (($sValue = $this->getViewConfigParam('orderconfirmlink')) === null) {
-            $sValue = Registry::getConfig()->getShopSecureHomeUrl() . 'cl=order';
+            $sValue = Registry::getConfig()->getShopHomeUrl() . 'cl=order';
             $this->setViewConfigParam('orderconfirmlink', $sValue);
         }
 
@@ -633,21 +633,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns non ssl image url
-     *
-     * @return string
-     */
-    public function getNoSslImageDir()
-    {
-        if (($sValue = $this->getViewConfigParam('nossl_imagedir')) === null) {
-            $sValue = Registry::getConfig()->getImageUrl($this->isAdmin(), false);
-            $this->setViewConfigParam('nossl_imagedir', $sValue);
-        }
-
-        return $sValue;
-    }
-
-    /**
      * Returns url to pictures directory.
      *
      * @return string
@@ -687,21 +672,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
         if (($sValue = $this->getViewConfigParam('shopid')) === null) {
             $sValue = Registry::getConfig()->getShopId();
             $this->setViewConfigParam('shopid', $sValue);
-        }
-
-        return $sValue;
-    }
-
-    /**
-     * Returns ssl mode (on/off)
-     *
-     * @return string
-     */
-    public function isSsl()
-    {
-        if (($sValue = $this->getViewConfigParam('isssl')) === null) {
-            $sValue = Registry::getConfig()->isSsl();
-            $this->setViewConfigParam('isssl', $sValue);
         }
 
         return $sValue;

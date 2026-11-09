@@ -166,11 +166,11 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
         if ($myConfig->getCurrentShopURL() != $myConfig->getShopURL() && !$blAlreadyRedirected && !$sFncParameter) {
             $sPayErrorParameter = Registry::getRequest()->getRequestEscapedParameter('payerror');
             $sPayErrorTextParameter = Registry::getRequest()->getRequestEscapedParameter('payerrortext');
-            $shopSecureHomeURL = $myConfig->getShopSecureHomeURL();
+            $shopHomeUrl = $myConfig->getShopHomeUrl();
 
             $sPayError = $sPayErrorParameter ? 'payerror=' . $sPayErrorParameter : '';
             $sPayErrorText = $sPayErrorTextParameter ? 'payerrortext=' . $sPayErrorTextParameter : '';
-            $sRedirectURL = $shopSecureHomeURL . 'sslredirect=forced&cl=payment&' . $sPayError . "&" . $sPayErrorText;
+            $sRedirectURL = $shopHomeUrl . 'sslredirect=forced&cl=payment&' . $sPayError . "&" . $sPayErrorText;
             Registry::getUtils()->redirect($sRedirectURL, true, 302);
         }
 

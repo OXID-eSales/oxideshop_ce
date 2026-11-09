@@ -741,7 +741,7 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
     {
         $oConfig = Registry::getConfig();
 
-        $sLogoutLink = $oConfig->isSsl() ? $oConfig->getShopSecureHomeUrl() : $oConfig->getShopHomeUrl();
+        $sLogoutLink = $oConfig->getShopHomeUrl();
         $sLogoutLink .= 'cl=' . $oConfig->getRequestControllerId() . $this->getParent()->getDynUrlParams();
         if ($sParam = Registry::getRequest()->getRequestEscapedParameter('anid')) {
             $sLogoutLink .= '&amp;anid=' . $sParam;

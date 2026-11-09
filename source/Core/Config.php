@@ -14,7 +14,6 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Event\ShopConfigurationChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\Edition;
-use OxidEsales\EshopCommunity\Internal\Framework\Request\HttpsRequestResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\ThemeNotLoadableException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ActiveThemeProviderInterface;
@@ -130,13 +129,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @var string
      */
     protected $_sModulesDir = 'modules';
-
-    /**
-     * Whether shop is in SSL mode
-     *
-     * @var bool
-     */
-    protected $_blIsSsl = null;
 
     /**
      * Absolute image dirs for each shops
@@ -540,59 +532,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Set is shop url
-     *
-     * @param bool $isSsl - state bool value
-     */
-    public function setIsSsl($isSsl = false)
-    {
-        $this->_blIsSsl = $isSsl;
-    }
-
-    /**
-     * Checks if WEB session is SSL.
-     */
-    protected function checkSsl()
-    {
-        $serverVars = Registry::getUtilsServer()->getServerVar();
-
-        $this->setIsSsl();
-        if (ContainerFacade::get(HttpsRequestResolverInterface::class)->isHttps()) {
-            $this->setIsSsl($this->getConfigParam('sSSLShopURL') || $this->getConfigParam('sMallSSLShopURL'));
-            if ($this->isAdmin() && !$this->_blIsSsl) {
-                //#4026
-                $this->setIsSsl(!is_null($this->getConfigParam('sAdminSSLURL')));
-            }
-        }
-
-        //additional special handling for profihost customers
-        if (
-            isset($serverVars['HTTP_X_FORWARDED_SERVER']) &&
-            (
-                str_contains($serverVars['HTTP_X_FORWARDED_SERVER'], 'ssl') ||
-                str_contains($serverVars['HTTP_X_FORWARDED_SERVER'], 'secure-online-shopping.de')
-            )
-        ) {
-            $this->setIsSsl(true);
-        }
-    }
-
-
-    /**
-     * Checks if WEB session is SSL. Returns true if yes.
-     *
-     * @return bool
-     */
-    public function isSsl()
-    {
-        if (is_null($this->_blIsSsl)) {
-            $this->checkSsl();
-        }
-
-        return $this->_blIsSsl;
-    }
-
-    /**
      * Compares current URL to supplied string
      *
      * @param string $url URL
@@ -604,23 +543,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
         /** @var UtilsServer $utilsServer */
         $utilsServer = Registry::getUtilsServer();
         return $utilsServer->isCurrentUrl($url);
-    }
-
-    /**
-     * Compares current protocol to supplied url string
-     *
-     * @param string $url URL
-     *
-     * @return bool true if $url is equal to current page URL
-     */
-    public function isCurrentProtocol($url)
-    {
-        // Missing protocol, cannot proceed, assuming true.
-        if (!$url || (strpos($url, "http") !== 0)) {
-            return true;
-        }
-
-        return (strpos($url, "https:") === 0) == $this->isSsl();
     }
 
     /**

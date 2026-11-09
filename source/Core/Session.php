@@ -258,9 +258,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
                 if ($this->_sErrorMsg && ContainerFacade::getParameter('oxid_esales.debug_mode')) {
                     Registry::getUtilsView()->addErrorToDisplay(oxNew(\OxidEsales\Eshop\Core\Exception\StandardException::class, $this->_sErrorMsg));
                 }
-            } elseif (!$blSwapped) {
-                // transferring cookies between hosts
-                Registry::getUtilsServer()->loadSessionCookies();
             }
         }
     }
@@ -710,8 +707,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
 
         $oConfig = Registry::getConfig();
 
-        if (!$this->getSessionUseCookies() || ($sUrl && $this->getCookieSid() && !$oConfig->isCurrentProtocol($sUrl))) {
-            // switching from ssl to non ssl or vice versa?
+        if (!$this->getSessionUseCookies()) {
             return true;
         }
 

@@ -31,20 +31,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     protected $_aUserCookie = [];
 
     /**
-     * Session cookie parameter name
-     *
-     * @var string
-     */
-    protected $_sSessionCookiesName = 'aSessionCookies';
-
-    /**
-     * Session stored cookies
-     *
-     * @var array
-     */
-    protected $_sSessionCookies = [];
-
-    /**
      * sets cookie
      *
      * @param string $sName cookie name
@@ -52,8 +38,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param int $iExpire expire time
      * @param string $sPath The path on the server in which the cookie will be available on
      * @param string $sDomain The domain that the cookie is available.
-     * @param bool $blToSession is true, records cookie information to session
-     * @param bool $blSecure if true, transfer cookie only via SSL
      * @param bool $blHttpOnly if true, only accessible via HTTP
      *
      * @return bool
@@ -64,119 +48,22 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $iExpire = 0,
         $sPath = '/',
         $sDomain = null,
-        $blToSession = true,
-        $blSecure = false,
         $blHttpOnly = true
     ) {
-        if ($blToSession && !$this->isAdmin()) {
-            $this->saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
-        }
-
         if (php_sapi_name() === 'cli') {
             // do NOT set cookies in cli because it would issue warnings
             return;
         }
 
-        //if shop runs in https only mode we can set secure flag to all cookies
-        $blSecure = $blSecure || Registry::getConfig()->isSsl();
         return setcookie(
             $sName,
             $sValue,
             $iExpire,
             $this->getCookiePath($sPath),
             $this->getCookieDomain($sDomain),
-            $blSecure,
+            true,
             $blHttpOnly
         );
-    }
-
-    protected $_blSaveToSession = null;
-
-    /**
-     * Checks if cookie must be saved to session in order to transfer it to different domain
-     *
-     * @return bool
-     */
-    protected function mustSaveToSession()
-    {
-        if ($this->_blSaveToSession === null) {
-            $this->_blSaveToSession = false;
-
-            $myConfig = Registry::getConfig();
-            if ($myConfig->getShopUrl()) {
-                return true;
-            }
-        }
-
-        return $this->_blSaveToSession;
-    }
-
-    /**
-     * Returns session cookie key
-     *
-     * @param bool $blGet mode - true - get, false - set cookie
-     *
-     * @return string
-     */
-    protected function getSessionCookieKey($blGet)
-    {
-        $blSsl = Registry::getConfig()->isSsl();
-        $sKey = $blSsl ? 'nossl' : 'ssl';
-
-        if ($blGet) {
-            $sKey = $blSsl ? 'ssl' : 'nossl';
-        }
-
-        return $sKey;
-    }
-
-    /**
-     * Copies cookie info to session
-     *
-     * @param string $sName cookie name
-     * @param string $sValue cookie value
-     * @param int $iExpire expiration time
-     * @param string $sPath cookie path
-     * @param string $sDomain cookie domain
-     */
-    protected function saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain)
-    {
-        if ($this->mustSaveToSession()) {
-            $aCookieData = ['value' => $sValue, 'expire' => $iExpire, 'path' => $sPath, 'domain' => $sDomain];
-
-            $aSessionCookies = (array)Registry::getSession()->getVariable($this->_sSessionCookiesName);
-            $aSessionCookies[$this->getSessionCookieKey(false)][$sName] = $aCookieData;
-
-            Registry::getSession()->setVariable($this->_sSessionCookiesName, $aSessionCookies);
-        }
-    }
-
-    /**
-     * Stored all session cookie info to cookies
-     */
-    public function loadSessionCookies()
-    {
-        $sessionCookies = Registry::getSession()->getVariable($this->_sSessionCookiesName);
-        if ($sessionCookies) {
-            $sKey = $this->getSessionCookieKey(true);
-            if (isset($sessionCookies[$sKey])) {
-                // writing session data to cookies
-                foreach ($sessionCookies[$sKey] as $sName => $aCookieData) {
-                    $this->setOxCookie(
-                        $sName,
-                        $aCookieData['value'],
-                        $aCookieData['expire'],
-                        $aCookieData['path'],
-                        $aCookieData['domain'],
-                        false
-                    );
-                    $this->_sSessionCookies[$sName] = $aCookieData['value'];
-                }
-                // cleanup
-                unset($sessionCookies[$sKey]);
-                Registry::getSession()->setVariable($this->_sSessionCookiesName, $sessionCookies);
-            }
-        }
     }
 
     /**
@@ -220,8 +107,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         $sValue = null;
         if ($sName && isset($_COOKIE[$sName])) {
             $sValue = Registry::getConfig()->checkParamSpecialChars($_COOKIE[$sName]);
-        } elseif ($sName && !isset($_COOKIE[$sName])) {
-            $sValue = isset($this->_sSessionCookies[$sName]) ? $this->_sSessionCookies[$sName] : null;
         } elseif (!$sName && isset($_COOKIE)) {
             $sValue = $_COOKIE;
         }
@@ -259,7 +144,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     ) {
         $myConfig = Registry::getConfig();
         $shopId = $shopId ?? $myConfig->getShopId();
-        $sslUrl = $myConfig->getShopUrl();
         $passwordServiceBridge = ContainerFacade::get(PasswordServiceBridgeInterface::class);
 
         $this->_aUserCookie[$shopId] = $userName . '@@@' .  $passwordServiceBridge->hash($passwordHash . $salt);
@@ -268,9 +152,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
             $this->_aUserCookie[$shopId],
             Registry::getUtilsDate()->getTime() + $timeout,
             '/',
-            null,
-            true,
-            strncasecmp($sslUrl, 'https', 5) === 0
+            null
         );
         $this->setOxCookie(
             'oxid_' . $shopId . '_autologin',
@@ -281,18 +163,14 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
 
     public function deleteUserCookie($shopId = null)
     {
-        $myConfig = Registry::getConfig();
         $shopId = (!$shopId) ? Registry::getConfig()->getShopId() : $shopId;
-        $sslUrl = $myConfig->getShopUrl();
         $this->_aUserCookie[$shopId] = '';
         $this->setOxCookie(
             'oxid_' . $shopId,
             '',
             Registry::getUtilsDate()->getTime() - 3600,
             '/',
-            null,
-            true,
-            strncasecmp($sslUrl, 'https', 5) === 0
+            null
         );
         $this->setOxCookie(
             'oxid_' . $shopId . '_autologin',
@@ -312,13 +190,6 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     {
         $myConfig = Registry::getConfig();
         $sShopId = (!$sShopId) ? $myConfig->getShopId() : $sShopId;
-        // check for SSL connection
-        if (!$myConfig->isSsl() && $this->getOxCookie('oxid_' . $sShopId . '_autologin') == '1') {
-            $sslUrl = rtrim($myConfig->getShopUrl(), '/') . $_SERVER['REQUEST_URI'];
-            if (strncasecmp($sslUrl, 'https', 5) === 0) {
-                Registry::getUtils()->redirect($sslUrl, true, 302);
-            }
-        }
 
         if (array_key_exists($sShopId, $this->_aUserCookie) && $this->_aUserCookie[$sShopId] !== null) {
             return $this->_aUserCookie[$sShopId] ?: null;

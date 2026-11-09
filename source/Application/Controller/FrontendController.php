@@ -574,15 +574,8 @@ class FrontendController extends BaseController
      */
     protected function generateViewId()
     {
-        $config = Registry::getConfig();
         $viewId = $this->generateViewIdBase();
-
         $viewId .= "|" . ((int) $this->_blForceNoIndex) . '|' . ((int) $this->isRootCatChanged());
-
-        // #0004798: SSL should be included in viewId
-        if ($config->isSsl()) {
-            $viewId .= "|ssl";
-        }
 
         // #0002866: external global viewID addition
         if (function_exists('customGetViewId')) {

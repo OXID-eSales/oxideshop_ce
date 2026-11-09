@@ -189,16 +189,6 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     }
 
     /**
-     * Returns returns dyn image dir (not ssl)
-     *
-     * @return string
-     */
-    public function getNoSslDynImageDir()
-    {
-        return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl(null, false, false, null, $this->oxwrapping__oxshopid->value);
-    }
-
-    /**
      * Returns returns dyn image dir
      *
      * @return string
@@ -206,7 +196,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getPictureUrl()
     {
         if ($this->oxwrapping__oxpic->value) {
-            return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, \OxidEsales\Eshop\Core\Registry::getConfig()->isSsl(), null, $this->oxwrapping__oxshopid->value);
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, null, null, $this->oxwrapping__oxshopid->value);
         }
     }
 }

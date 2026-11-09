@@ -139,20 +139,6 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     protected $_oArticle = null;
 
     /**
-     * Image NON SSL url
-     *
-     * @var string
-     */
-    protected $_sDimageDirNoSsl = null;
-
-    /**
-     * Image SSL url
-     *
-     * @var string
-     */
-    protected $_sDimageDirSsl = null;
-
-    /**
      * User chosen selectlists
      *
      * @var array
@@ -695,8 +681,6 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
      *  - link        - details URL's;
      *  - sShopId     - current shop ID;
      *  - sNativeShopId  - article shop ID;
-     *  - _sDimageDirNoSsl - NON SSL mode image path;
-     *  - _sDimageDirSsl   - SSL mode image path;
      *
      * @param string $sProductId product id
      *
@@ -720,10 +704,6 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
         // shop Ids
         $this->_sShopId = $oConfig->getShopId();
         $this->_sNativeShopId = $oArticle->oxarticles__oxshopid->value;
-
-        // SSL/NON SSL image paths
-        $this->_sDimageDirNoSsl = $oArticle->nossl_dimagedir;
-        $this->_sDimageDirSsl = $oArticle->ssl_dimagedir;
     }
 
     /**

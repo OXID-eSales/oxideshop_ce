@@ -4478,12 +4478,8 @@ class Article extends MultiLanguageModel implements ArticleInterface, IUrl
     {
         $myConfig = Registry::getConfig();
 
-        $sThisShop = $this->oxarticles__oxshopid->value;
-
         $this->_sDynImageDir = $myConfig->getPictureUrl(null, false);
         $this->dabsimagedir = $myConfig->getPictureDir(false); //$sThisShop
-        $this->nossl_dimagedir = $myConfig->getPictureUrl(null, false, false, null, $sThisShop); //$sThisShop
-        $this->ssl_dimagedir = $myConfig->getPictureUrl(null, false, true, null, $sThisShop); //$sThisShop
     }
 
     /**

@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Migration;
 use Doctrine\Migrations\Configuration\Connection\ExistingConnection;
 use Doctrine\Migrations\Configuration\Migration\YamlFile;
 use Doctrine\Migrations\DependencyFactory;
+use Doctrine\Migrations\QueryWriter;
 use Doctrine\Migrations\Tools\Console\Command\MigrateCommand as DoctrineMigrateCommand;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -20,8 +21,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 readonly class MigrationRunner implements MigrationRunnerInterface
 {
-    public function __construct(private ConnectionFactoryInterface $connectionFactory)
-    {
+    public function __construct(
+        private ConnectionFactoryInterface $connectionFactory,
+        private QueryWriter $queryWriter,
+    ) {
     }
 
     public function run(string $migrationConfigPath, array $options = [], ?OutputInterface $output = null): int
@@ -30,6 +33,7 @@ readonly class MigrationRunner implements MigrationRunnerInterface
             new YamlFile($migrationConfigPath),
             new ExistingConnection($this->connectionFactory->create())
         );
+        $dependencyFactory->setService(QueryWriter::class, $this->queryWriter);
 
         $input = new ArrayInput($options + ['--allow-no-migration' => true]);
         $input->setInteractive(false);

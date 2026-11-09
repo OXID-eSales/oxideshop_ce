@@ -28,8 +28,15 @@ services:
         - '@OxidEsales\EshopCommunity\Internal\Framework\Migration\TaggedMigrationExecutor'
         - '@OxidEsales\EshopCommunity\Internal\Framework\Module\Migration\ModuleMigrationExecutor'
 
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\WriteSqlMigrationExecutor:
+    decorates: OxidEsales\EshopCommunity\Internal\Framework\Migration\ConfigurableMigrationExecutorInterface
+
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunnerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationRunner
+    arguments:
+      $queryWriter: '@OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlFileWriter'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationSqlFileWriter: ~
 
   OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityCheckerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Migration\MigrationAvailabilityChecker

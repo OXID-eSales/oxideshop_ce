@@ -26,6 +26,7 @@
 
 ### Fixed
 - Password reset links are invalidated when the user's email address or password is changed
+- `oe:database:migrate --write-sql` keeps the SQL of all migration sets instead of only the last one [#0006869](https://bugs.oxid-esales.com/view.php?id=6869)
 
 ### Removed
 - PHP v8.3 support

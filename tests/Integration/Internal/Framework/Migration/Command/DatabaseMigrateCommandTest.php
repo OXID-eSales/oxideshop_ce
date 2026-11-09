@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Migration\Command;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Migration\Command\DatabaseMigrateCommand;
 use OxidEsales\EshopCommunity\Tests\ConsoleRunnerTrait;
@@ -84,7 +85,7 @@ final class DatabaseMigrateCommandTest extends TestCase
     protected function tearDown(): void
     {
         try {
-            $connection = $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
+            $connection = $this->get(ConnectionFactoryInterface::class)->create();
             $connection->executeStatement('DROP TABLE IF EXISTS `test_migration_table`');
             $connection->executeStatement('DROP TABLE IF EXISTS `test_migrations_tracking`');
             $connection->executeStatement('DROP TABLE IF EXISTS `test_second_migrations_tracking`');

@@ -616,16 +616,15 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * Returns image url
      *
      * @param string $sFile Image file name
-     * @param bool   $bSsl  Whether to force SSL
      *
      * @return string
      */
-    public function getImageUrl($sFile = null, $bSsl = null)
+    public function getImageUrl($sFile = null)
     {
         if ($sFile) {
-            $sValue = Registry::getConfig()->getImageUrl($this->isAdmin(), $bSsl, null, $sFile);
+            $sValue = Registry::getConfig()->getImageUrl($this->isAdmin(), null, $sFile);
         } elseif (($sValue = $this->getViewConfigParam('imagedir')) === null) {
-            $sValue = Registry::getConfig()->getImageUrl($this->isAdmin(), $bSsl);
+            $sValue = Registry::getConfig()->getImageUrl($this->isAdmin());
             $this->setViewConfigParam('imagedir', $sValue);
         }
 

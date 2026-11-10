@@ -249,13 +249,12 @@ class PictureHandler extends Base
      * @param string $sFilePath path to file
      * @param string $sFile     filename in pictures dir
      * @param bool   $blAdmin   is admin mode ?
-     * @param bool   $blSSL     is ssl ?
      * @param int    $iLang     language id
      * @param int    $iShopId   shop id
      *
      * @return array
      */
-    protected function getPictureInfo($sFilePath, $sFile, $blAdmin = false, $blSSL = null, $iLang = null, $iShopId = null)
+    protected function getPictureInfo($sFilePath, $sFile, $blAdmin = false, $iLang = null, $iShopId = null)
     {
         // custom server as image storage?
         if ($sAltUrl = $this->getAltImageUrl($sFilePath, $sFile)) {
@@ -269,7 +268,7 @@ class PictureHandler extends Base
         }
 
         $sDirPrefix = $oConfig->getOutDir();
-        $sUrlPrefix = $oConfig->getOutUrl($blSSL, $blAdmin, $oConfig->getConfigParam('blNativeImages'));
+        $sUrlPrefix = $oConfig->getOutUrl($blAdmin, $oConfig->getConfigParam('blNativeImages'));
 
         return ['path' => $sPath, 'url' => str_replace($sDirPrefix, $sUrlPrefix, $sPath)];
     }
@@ -293,15 +292,14 @@ class PictureHandler extends Base
      * @param string $sSize    picture sizes (x, y)
      * @param string $sIndex   picture index [optional]
      * @param string|false $sAltPath alternative picture path [optional]
-     * @param bool   $bSsl     Whether to force SSL
      *
      * @return string|bool
      */
-    public function getPicUrl($sPath, $sFile, $sSize, $sIndex = null, $sAltPath = false, $bSsl = null)
+    public function getPicUrl($sPath, $sFile, $sSize, $sIndex = null, $sAltPath = false)
     {
         $sUrl = null;
         if ($sPath && $sFile && ($aSize = $this->getImageSize($sSize, $sIndex))) {
-            $aPicInfo = $this->getPictureInfo("master/" . ($sAltPath ?: $sPath), $sFile, $this->isAdmin(), $bSsl);
+            $aPicInfo = $this->getPictureInfo("master/" . ($sAltPath ?: $sPath), $sFile, $this->isAdmin());
             if ($aPicInfo['url'] && $aSize[0] && $aSize[1]) {
                 $sDirName = "{$aSize[0]}_{$aSize[1]}_" . Registry::getConfig()->getConfigParam('sDefaultImageQuality');
                 $sUrl = str_replace("/master/" . ($sAltPath ?: $sPath), "/generated/{$sPath}{$sDirName}/", $aPicInfo['url']);
@@ -327,15 +325,14 @@ class PictureHandler extends Base
      * @param string $sFile  picture file name
      * @param string $sSize  picture sizes (x, y)
      * @param string $sIndex picture index [optional]
-     * @param bool   $bSsl   Whether to force SSL
      *
      * @return string|bool
      */
-    public function getProductPicUrl($sPath, $sFile, $sSize, $sIndex = null, $bSsl = null)
+    public function getProductPicUrl($sPath, $sFile, $sSize, $sIndex = null)
     {
         $sUrl = null;
-        if (!$sFile || !($sUrl = $this->getPicUrl($sPath, $sFile, $sSize, $sIndex, false, $bSsl))) {
-            $sUrl = $this->getPicUrl($sPath, $this->getNopicFilename(), $sSize, $sIndex, "/", $bSsl);
+        if (!$sFile || !($sUrl = $this->getPicUrl($sPath, $sFile, $sSize, $sIndex, false))) {
+            $sUrl = $this->getPicUrl($sPath, $this->getNopicFilename(), $sSize, $sIndex, "/");
         }
 
         return $sUrl;

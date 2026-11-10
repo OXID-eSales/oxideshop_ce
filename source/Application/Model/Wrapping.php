@@ -196,7 +196,7 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     public function getPictureUrl()
     {
         if ($this->oxwrapping__oxpic->value) {
-            return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, null, null, $this->oxwrapping__oxshopid->value);
+            return \OxidEsales\Eshop\Core\Registry::getConfig()->getPictureUrl("master/wrapping/" . $this->oxwrapping__oxpic->value, false, null, $this->oxwrapping__oxshopid->value);
         }
     }
 }

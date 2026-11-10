@@ -525,7 +525,7 @@ class Category extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel implement
     {
         if ($this->_sDynImageDir === null) {
             $sThisShop = $this->oxcategories__oxshopid->value;
-            $this->_sDynImageDir = Registry::getConfig()->getPictureUrl(null, false, null, null, $sThisShop);
+            $this->_sDynImageDir = Registry::getConfig()->getPictureUrl(null, false, null, $sThisShop);
         }
 
         return $this->_sDynImageDir;

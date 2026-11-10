@@ -583,8 +583,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns SSL or non SSL shop URL without index.php depending on Mall
-     * affecting environment is admin mode and current ssl usage status
+     * Returns shop URL without index.php depending on Mall
+     * affecting environment is admin mode
      *
      * @param bool $admin if admin
      *
@@ -608,7 +608,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns SSL or not SSL shop URL with index.php and sid
+     * Returns shop URL with index.php and sid
      *
      * @param int $lang language (optional)
      *
@@ -620,7 +620,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns shop non SSL URL including index.php and sid.
+     * Returns shop including index.php and sid.
      *
      * @param int  $lang  language
      * @param bool $admin if admin
@@ -633,7 +633,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns widget start non SSL URL including widget.php and sid.
+     * Returns widget start URL including widget.php and sid.
      *
      * @param int   $languageId    language
      * @param bool  $inAdmin       if admin
@@ -779,13 +779,12 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns url to out dir
      *
-     * @param bool $ssl       Whether to force ssl
      * @param bool $admin     Whether to force admin
      * @param bool $nativeImg Whether to force native image dirs
      *
      * @return string
      */
-    public function getOutUrl($ssl = null, $admin = null, $nativeImg = false)
+    public function getOutUrl($admin = null, $nativeImg = false)
     {
         $admin = is_null($admin) ? $this->isAdmin() : $admin;
 
@@ -955,7 +954,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $file      File name
      * @param string $dir       Directory name
      * @param bool   $admin     Whether to force admin
-     * @param bool   $ssl       Whether to force ssl
      * @param bool   $nativeImg Whether to force native image dirs
      * @param int    $lang      Language id
      * @param int    $shop      Shop id
@@ -963,11 +961,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @return string
      */
-    public function getUrl($file, $dir, $admin = null, $ssl = null, $nativeImg = false, $lang = null, $shop = null, $theme = null)
+    public function getUrl($file, $dir, $admin = null, $nativeImg = false, $lang = null, $shop = null, $theme = null)
     {
         return str_replace(
             $this->getOutDir(),
-            $this->getOutUrl($ssl, $admin, $nativeImg),
+            $this->getOutUrl($admin, $nativeImg),
             $this->getDir($file, $dir, $admin, $lang, $shop, $theme)
         );
     }
@@ -989,17 +987,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Finds and returns image folder url
      *
      * @param bool   $admin     Whether to force admin
-     * @param bool   $ssl       Whether to force ssl
      * @param bool   $nativeImg Whether to force native image dirs
      * @param string $file      Image file name
      *
      * @return string
      */
-    public function getImageUrl($admin = false, $ssl = null, $nativeImg = null, $file = null)
+    public function getImageUrl($admin = false, $nativeImg = null, $file = null)
     {
         $nativeImg = is_null($nativeImg) ? $this->getConfigParam('blNativeImages') : $nativeImg;
 
-        return $this->getUrl($file, $this->_sImageDir, $admin, $ssl, $nativeImg);
+        return $this->getUrl($file, $this->_sImageDir, $admin, $nativeImg);
     }
 
     /**
@@ -1060,25 +1057,24 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $file   File name
      * @param bool   $admin  Whether to force admin
-     * @param bool   $ssl    Whether to force ssl
      * @param int    $lang   Language
      * @param int    $shopId Shop id
      * @param string $defPic Default (nopic) image path ["0/nopic.jpg"]
      *
      * @return string
      */
-    public function getPictureUrl($file, $admin = false, $ssl = null, $lang = null, $shopId = null, $defPic = "master/nopic.jpg")
+    public function getPictureUrl($file, $admin = false, $lang = null, $shopId = null, $defPic = "master/nopic.jpg")
     {
         if ($altUrl = Registry::getPictureHandler()->getAltImageUrl('', $file)) {
             return $altUrl;
         }
 
         $nativeImg = $this->getConfigParam('blNativeImages');
-        $url = $this->getUrl($file, $this->_sPictureDir, $admin, $ssl, $nativeImg, $lang, $shopId);
+        $url = $this->getUrl($file, $this->_sPictureDir, $admin, $nativeImg, $lang, $shopId);
 
         //anything is better than empty name, because <img src=""> calls shop once more = x2 SLOW.
         if (!$url && $defPic) {
-            $url = $this->getUrl($defPic, $this->_sPictureDir, $admin, $ssl, $nativeImg, $lang, $shopId);
+            $url = $this->getUrl($defPic, $this->_sPictureDir, $admin, $nativeImg, $lang, $shopId);
         }
 
         return $url;
@@ -1126,12 +1122,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
-     * @param bool   $ssl   Whether to force ssl
      * @param int    $lang  Language id
      *
      * @return string
      */
-    public function getTemplateUrl($file = null, $admin = false, $ssl = null, $lang = null)
+    public function getTemplateUrl($file = null, $admin = false, $lang = null)
     {
         return $this->getShopMainUrl() . $this->getDir($file, $this->_sTemplateDir, $admin, $lang, null, null, false);
     }
@@ -1167,16 +1162,15 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
-     * @param bool   $ssl   Whether to force ssl
      * @param int    $lang  Language id
      *
      * @return string
      */
-    public function getResourceUrl($file = '', $admin = false, $ssl = null, $lang = null)
+    public function getResourceUrl($file = '', $admin = false, $lang = null)
     {
         $nativeImg = $this->getConfigParam('blNativeImages');
 
-        return $this->getUrl($file, $this->_sResourceDir, $admin, $ssl, $nativeImg, $lang);
+        return $this->getUrl($file, $this->_sResourceDir, $admin, $nativeImg, $lang);
     }
 
     /**
@@ -1608,7 +1602,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns  SSL or non SSL shop main URL without index.php
+     * Returns shop main URL without index.php
      *
      * @return string
      */
@@ -1635,15 +1629,13 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * #680 per language another URL
      *
      * @param integer $lang Language id.
-     * @param bool    $ssl  Whether to use ssl.
      *
      * @return null|string
      */
-    public function getShopUrlByLanguage($lang, $ssl = false)
+    public function getShopUrlByLanguage($lang)
     {
-        $configParameter = $ssl ? 'aLanguageSSLURLs' : 'aLanguageURLs';
         $lang = isset($lang) ? $lang : Registry::getLang()->getBaseLanguage();
-        $languageURLs = $this->getConfigParam($configParameter);
+        $languageURLs = $this->getConfigParam('aLanguageURLs');
         if (isset($lang) && isset($languageURLs[$lang]) && !empty($languageURLs[$lang])) {
             $languageURLs[$lang] = Registry::getUtils()->checkUrlEndingSlash($languageURLs[$lang]);
             return $languageURLs[$lang];

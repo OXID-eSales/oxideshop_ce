@@ -318,7 +318,7 @@ class Email extends PHPMailer
         if ($this->getUseInlineImages()) {
             $this->includeImages(
                 $myConfig->getImageUrl(),
-                $myConfig->getImageUrl(false, false),
+                $myConfig->getImageUrl(false),
                 $myConfig->getPictureUrl(null, false),
                 $myConfig->getImageDir(),
                 $myConfig->getPictureDir(false)

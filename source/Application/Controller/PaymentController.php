@@ -137,13 +137,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
 
         parent::render();
 
-        //if it happens that you are not in SSL
-        //then forcing to HTTPS
-
-        //but first checking maybe there were redirection already to prevent infinite redirections
-        //due to possible buggy ssl detection on server
-        $blAlreadyRedirected = Registry::getRequest()->getRequestEscapedParameter('sslredirect') == 'forced';
-
         if ($this->getIsOrderStep()) {
             //additional check if we really really have a user now
             //and the basket is not empty
@@ -160,18 +153,6 @@ class PaymentController extends \OxidEsales\Eshop\Application\Controller\Fronten
             } elseif (!$oBasket || !$oUser || ($oBasket && !$oBasket->getProductsCount())) {
                 Registry::getUtils()->redirect($myConfig->getShopHomeUrl() . 'cl=start', false, 302);
             }
-        }
-
-        $sFncParameter = Registry::getRequest()->getRequestEscapedParameter('fnc');
-        if ($myConfig->getCurrentShopURL() != $myConfig->getShopURL() && !$blAlreadyRedirected && !$sFncParameter) {
-            $sPayErrorParameter = Registry::getRequest()->getRequestEscapedParameter('payerror');
-            $sPayErrorTextParameter = Registry::getRequest()->getRequestEscapedParameter('payerrortext');
-            $shopHomeUrl = $myConfig->getShopHomeUrl();
-
-            $sPayError = $sPayErrorParameter ? 'payerror=' . $sPayErrorParameter : '';
-            $sPayErrorText = $sPayErrorTextParameter ? 'payerrortext=' . $sPayErrorTextParameter : '';
-            $sRedirectURL = $shopHomeUrl . 'sslredirect=forced&cl=payment&' . $sPayError . "&" . $sPayErrorText;
-            Registry::getUtils()->redirect($sRedirectURL, true, 302);
         }
 
         if (!$this->getAllSetsCnt()) {

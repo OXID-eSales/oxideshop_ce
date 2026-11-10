@@ -348,10 +348,10 @@ class SystemRequirements
      *
      * @return array|false
      */
-    protected function getShopSSLHostInfoFromConfig()
+    protected function getShopHostInfoFromConfig()
     {
-        $sslShopURL = ContainerFacade::getParameter('oxid_esales.shop_url');
-        if (!preg_match('#^(https?://)?([^/:]+)(:(\d+))?(/.*)?$#i', $sslShopURL, $shopUrlComponents)) {
+        $shopURL = ContainerFacade::getParameter('oxid_esales.shop_url');
+        if (!preg_match('#^(https?://)?([^/:]+)(:(\d+))?(/.*)?$#i', $shopURL, $shopUrlComponents)) {
             return false;
         }
         $host = $shopUrlComponents[2];
@@ -372,14 +372,14 @@ class SystemRequirements
 
     /**
      * returns host, port, current script, ssl information as assotiative array, false on error
-     * Takes ssl address from config so important only in admin.
+     * Takes shop address from config so important only in admin.
      *
      * @return array
      */
-    protected function getShopSSLHostInfo()
+    protected function getShopHostInfo()
     {
         if ($this->isAdmin()) {
-            return $this->getShopSSLHostInfoFromConfig();
+            return $this->getShopHostInfoFromConfig();
         }
 
         return false;
@@ -393,23 +393,7 @@ class SystemRequirements
      */
     public function checkModRewrite()
     {
-        $sslHostInfo = $this->getShopSSLHostInfo();
-        $modStat = $this->isModeRewriteExtensionLoaded($sslHostInfo);
-
-        if (0 != $modStat && $sslHostInfo) {
-            $sslModStat = $this->isModeRewriteExtensionLoaded($sslHostInfo);
-
-            // Send if failed, even if you couldn't check another
-            if (0 == $sslModStat) {
-                return 0;
-            } elseif (1 == $sslModStat || 1 == $modStat) {
-                return 1;
-            }
-
-            return min($modStat, $sslModStat);
-        }
-
-        return $modStat;
+        return $this->isModeRewriteExtensionLoaded($this->getShopHostInfo());
     }
 
     /**

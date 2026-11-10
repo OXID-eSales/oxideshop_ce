@@ -133,6 +133,30 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         return \OxidEsales\Eshop\Core\Registry::getConfig()->getActiveView()->getListType();
     }
 
+    public function getArticleCategoryStdUrl($article, $languageId, $categoryId)
+    {
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
+            $article->getBaseStdLink($languageId),
+            ['cnid' => $categoryId]
+        );
+    }
+
+    public function getArticleVendorStdUrl($article, $languageId, $vendorId, $listType)
+    {
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
+            $article->getBaseStdLink($languageId),
+            ['cnid' => 'v_' . $vendorId, 'listtype' => $listType]
+        );
+    }
+
+    public function getArticleManufacturerStdUrl($article, $languageId, $manufacturerId, $listType)
+    {
+        return \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
+            $article->getBaseStdLink($languageId),
+            ['mnid' => $manufacturerId, 'listtype' => $listType]
+        );
+    }
+
     public function generateArticleCategoryUri($article, $category, $languageId)
     {
         return $this->createArticleCategoryUri($article, $category, $languageId);
@@ -167,10 +191,7 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         $this->saveToDb(
             'oxarticle',
             $oArticle->getId(),
-            \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
-                $oArticle->getBaseStdLink($iLang),
-                ['cnid' => $sCatId]
-            ),
+            $this->getArticleCategoryStdUrl($oArticle, $iLang, $sCatId),
             $sSeoUri,
             $iLang,
             null,
@@ -395,14 +416,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $sSeoUri = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderVendor::class)->getVendorUri($oVendor, $iLang);
                 $sSeoUri = $this->processSeoUrl($sSeoUri . $sTitle, $oArticle->getId(), $iLang);
 
-                $aStdParams = ['cnid' => "v_" . $oVendor->getId(), 'listtype' => $this->getListType()];
                 $this->saveToDb(
                     'oxarticle',
                     $oArticle->getId(),
-                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
-                        $oArticle->getBaseStdLink($iLang),
-                        $aStdParams
-                    ),
+                    $this->getArticleVendorStdUrl($oArticle, $iLang, $oVendor->getId(), $this->getListType()),
                     $sSeoUri,
                     $iLang,
                     null,
@@ -472,13 +489,14 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $sSeoUri = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class)->getManufacturerUri($oManufacturer, $iLang);
                 $sSeoUri = $this->processSeoUrl($sSeoUri . $sTitle, $oArticle->getId(), $iLang);
 
-                $aStdParams = ['mnid' => $oManufacturer->getId(), 'listtype' => $this->getListType()];
                 $this->saveToDb(
                     'oxarticle',
                     $oArticle->getId(),
-                    \OxidEsales\Eshop\Core\Registry::getUtilsUrl()->appendUrl(
-                        $oArticle->getBaseStdLink($iLang),
-                        $aStdParams
+                    $this->getArticleManufacturerStdUrl(
+                        $oArticle,
+                        $iLang,
+                        $oManufacturer->getId(),
+                        $this->getListType()
                     ),
                     $sSeoUri,
                     $iLang,

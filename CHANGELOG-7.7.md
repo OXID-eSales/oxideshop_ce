@@ -26,6 +26,7 @@
 
 ### Fixed
 - Password reset links are invalidated when the user's email address or password is changed
+- Product SEO url context is kept when the SEO settings are saved in the admin area [#0007952](https://bugs.oxid-esales.com/view.php?id=7952)
 
 ### Removed
 - PHP v8.3 support

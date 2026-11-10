@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
+use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
@@ -282,6 +283,31 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     protected function getAltSeoEntryId()
     {
         return $this->getEditObjectId();
+    }
+
+    protected function getStdUrl($sOxid)
+    {
+        $contextId = $this->getActCatId();
+        $product = oxNew(Article::class);
+
+        if (!$contextId || !$product->load($sOxid)) {
+            return parent::getStdUrl($sOxid);
+        }
+
+        $seoEncoder = $this->getEncoder();
+        $languageId = $this->getEditLang();
+
+        return match ($this->getActCatType()) {
+            'oxcategory' => $seoEncoder->getArticleCategoryStdUrl($product, $languageId, $contextId),
+            'oxvendor' => $seoEncoder->getArticleVendorStdUrl($product, $languageId, $contextId, $this->getListType()),
+            'oxmanufacturer' => $seoEncoder->getArticleManufacturerStdUrl(
+                $product,
+                $languageId,
+                $contextId,
+                $this->getListType()
+            ),
+            default => parent::getStdUrl($sOxid),
+        };
     }
 
     /**

@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBrid
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ShopControlTest extends IntegrationTestCase
@@ -54,6 +55,14 @@ final class ShopControlTest extends IntegrationTestCase
         $this->expectException(RoutingException::class);
 
         new ShopControl()->buildResponse();
+    }
+
+    #[RunInSeparateProcess]
+    public function testActionLeadingToAnUnknownControllerIsNotFound(): void
+    {
+        $this->expectException(RoutingException::class);
+
+        new ShopControl()->buildResponse('start', 'getTitle');
     }
 
     public function testBuildResponseDeliversTheResponseReturnedByRender(): void

@@ -10,7 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use Exception;
 use OxidEsales\Eshop\Core\Str;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\AccessDeniedException;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileTypeNotAllowedException;
 
 /**
  * Admin systeminfo manager.
@@ -47,7 +47,12 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $oAuthUser->loadAdminUser();
         if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
             $sUpdateSQL = Registry::getRequest()->getRequestEscapedParameter("updatesql");
-            $sUpdateSQLFile = $this->processFiles();
+            try {
+                $sUpdateSQLFile = $this->processFiles();
+            } catch (FileTypeNotAllowedException) {
+                Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+                return;
+            }
 
             if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {
                 if (isset($sUpdateSQL) && strlen($sUpdateSQL)) {
@@ -139,7 +144,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
                 $aBadFiles = ["php", 'php4', 'php5', "jsp", "cgi", "cmf", "exe"];
 
                 if (in_array($aFilename[1], $aBadFiles)) {
-                    throw new AccessDeniedException("File didn't pass our allowed files filter.");
+                    throw new FileTypeNotAllowedException(sprintf('File type "%s" is not allowed.', $aFilename[1]));
                 }
 
                 //reading SQL dump file

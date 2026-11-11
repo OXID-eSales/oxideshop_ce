@@ -11,31 +11,50 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\RateLim
 
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
-use OxidEsales\Eshop\Core\SeoDecoder;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
 final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
+    private array $server;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->server = $_SERVER;
+    }
+
+    public function tearDown(): void
+    {
+        $_SERVER = $this->server;
+        $_GET = [];
+
+        parent::tearDown();
+    }
+
     public function testControllerBoundRuleThrottlesSeoUrl(): void
     {
-        $seoUrlPath = $this->givenCategorySeoUrlPath();
-        $this->configureLimiter([
-            ['id' => 'cat', 'cl' => 'alist', 'key' => 'ip', 'limit' => 1, 'interval' => '1 minute'],
-        ]);
+        $this->configureLimiter(
+            $this->givenCategorySeoUrlPath(),
+            [['id' => 'cat', 'cl' => 'alist', 'key' => 'ip', 'limit' => 1, 'interval' => '1 minute']]
+        );
+        $request = $this->get(Request::class);
+        $request->attributes->set('_controller', static fn(): Response => new Response());
+        $kernel = $this->get(HttpKernelInterface::class);
 
-        oxNew(SeoDecoder::class)->processSeoCall($seoUrlPath, '/');
+        $accepted = $kernel->handle($request);
+        $rejected = $kernel->handle($request);
 
-        $this->limiter()->enforce();
-
-        $this->expectException(TooManyRequestsHttpException::class);
-
-        $this->limiter()->enforce();
+        $this->assertSame(200, $accepted->getStatusCode());
+        $this->assertSame(429, $rejected->getStatusCode());
     }
 
     private function givenCategorySeoUrlPath(): string
@@ -56,10 +75,11 @@ final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
     /**
      * @param array<int, array<string, mixed>> $rules
      */
-    private function configureLimiter(array $rules): void
+    private function configureLimiter(string $requestPath, array $rules): void
     {
         $_SERVER['REMOTE_ADDR'] = '203.0.113.10';
-        $_SERVER['REQUEST_URI'] = '/';
+        $_SERVER['REQUEST_URI'] = $requestPath;
+        $_SERVER['SCRIPT_NAME'] = '/oxseo.php';
         $_POST = [];
         $_GET = [];
 
@@ -70,10 +90,5 @@ final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
         $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_routes', []);
         $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_ips', []);
         $this->compileContainer();
-    }
-
-    private function limiter(): StorefrontRateLimiterInterface
-    {
-        return $this->get(StorefrontRateLimiterInterface::class);
     }
 }

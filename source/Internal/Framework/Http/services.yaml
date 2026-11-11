@@ -41,6 +41,10 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\SeoUrlListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
   Symfony\Component\HttpKernel\EventListener\ErrorListener:
     arguments:
       $controller: 'Symfony\Component\HttpKernel\Controller\ErrorController'

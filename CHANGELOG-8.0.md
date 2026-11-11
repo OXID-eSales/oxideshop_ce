@@ -67,6 +67,7 @@
 - `ShopControl::formOutput()` - override `ShopControl::render()`
 - `ExceptionErrorController` and the `exceptionerror` controller key
 - `Config::handleDbConnectionException()`, `Config::handleCookieException()` and `Config::getExceptionHandler()`
+- `Config::processSeoCall()` - SEO URLs are decoded by `SeoUrlListener`
 - `UtilsView::getTemplateOutput()` and `Session::isHeaderSent()`
 - Inclusion of `modules/functions.php` and `modules/functions.php.dist`
 - `Output` - process output with a `kernel.response` listener

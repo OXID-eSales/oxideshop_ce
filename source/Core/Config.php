@@ -203,17 +203,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Parse SEO url parameters.
-     */
-    protected function processSeoCall()
-    {
-        // TODO: refactor shop bootstrap and parse url params as soon as possible
-        if (isSearchEngineUrl()) {
-            oxNew(\OxidEsales\Eshop\Core\SeoDecoder::class)->processSeoCall();
-        }
-    }
-
-    /**
      * Initialize configuration variables
      *
      * @throws \OxidEsales\Eshop\Core\Exception\DatabaseException
@@ -294,7 +283,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     protected function initializeShop()
     {
-        $this->processSeoCall();
         $session = \OxidEsales\Eshop\Core\Registry::getSession();
         $session->start();
     }

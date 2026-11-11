@@ -439,21 +439,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns shops action link
-     *
-     * @return string
-     */
-    public function getSelfActionLink()
-    {
-        if (($sValue = $this->getViewConfigParam('selfactionlink')) === null) {
-            $sValue = Registry::getConfig()->getShopHomeUrl();
-            $this->setViewConfigParam('selfactionlink', $sValue);
-        }
-
-        return $sValue;
-    }
-
-    /**
      * Returns shops home path
      *
      * @return string

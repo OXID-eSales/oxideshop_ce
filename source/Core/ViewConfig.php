@@ -408,26 +408,6 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns shops self ssl link
-     *
-     * @return string
-     */
-    public function getSslSelfLink()
-    {
-        if ($this->isAdmin()) {
-            // using getSelfLink() method in admin mode (#2745)
-            return $this->getSelfLink();
-        }
-
-        if (($sValue = $this->getViewConfigParam('sslselflink')) === null) {
-            $sValue = Registry::getConfig()->getShopHomeUrl();
-            $this->setViewConfigParam('sslselflink', $sValue);
-        }
-
-        return $sValue;
-    }
-
-    /**
      * Returns shops base directory path
      *
      * @return string
@@ -466,7 +446,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getSelfActionLink()
     {
         if (($sValue = $this->getViewConfigParam('selfactionlink')) === null) {
-            $sValue = Registry::getConfig()->getShopCurrentUrl();
+            $sValue = Registry::getConfig()->getShopHomeUrl();
             $this->setViewConfigParam('selfactionlink', $sValue);
         }
 
@@ -714,7 +694,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getArtPerPageForm()
     {
         if (($sValue = $this->getViewConfigParam('artperpageform')) === null) {
-            $sValue = Registry::getConfig()->getShopCurrentUrl();
+            $sValue = Registry::getConfig()->getShopHomeUrl();
             $this->setViewConfigParam('artperpageform', $sValue);
         }
 

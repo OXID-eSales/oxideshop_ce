@@ -608,18 +608,6 @@ class Config extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns shop URL with index.php and sid
-     *
-     * @param int $lang language (optional)
-     *
-     * @return string
-     */
-    public function getShopCurrentUrl($lang = null)
-    {
-        return Registry::getUtilsUrl()->processUrl($this->getShopURL($lang) . 'index.php', false);
-    }
-
-    /**
      * Returns shop including index.php and sid.
      *
      * @param int  $lang  language

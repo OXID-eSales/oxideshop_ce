@@ -1532,7 +1532,7 @@ class FrontendController extends BaseController
         }
 
         if (!$url) {
-            $constructedUrl = $config->getShopCurrentURL($languageId) . $this->getRequestParams();
+            $constructedUrl = $config->getShopHomeUrl($languageId) . $this->getRequestParams();
             $url = Registry::getUtilsUrl()->processUrl($constructedUrl, true, null, $languageId);
         }
 

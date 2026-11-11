@@ -165,7 +165,7 @@ class OrderController extends \OxidEsales\Eshop\Application\Controller\FrontendC
 
             if (!$this->getPayment()) {
                 Registry::getUtils()->redirect(
-                    Registry::getConfig()->getShopCurrentURL() . '&cl=payment',
+                    Registry::getConfig()->getShopHomeUrl() . '&cl=payment',
                     true,
                     302
                 );

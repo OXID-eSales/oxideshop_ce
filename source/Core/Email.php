@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Admin\Event\AdminModeChangedEvent;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\EmailAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeEmailSendEvent;
 use OxidEsales\EshopCommunity\Internal\Utility\Email\EmailValidatorServiceBridgeInterface;
 use PHPMailer\PHPMailer\PHPMailer;
 use Psr\Log\LoggerInterface;
@@ -324,6 +325,8 @@ class Email extends PHPMailer
                 $myConfig->getPictureDir(false)
             );
         }
+
+        ContainerFacade::dispatch(new BeforeEmailSendEvent($this));
 
         if ($this->isSymfonyMailerEnabled()) {
             try {

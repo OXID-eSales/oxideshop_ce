@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopVersion;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileTypeNotAllowedException;
 use Symfony\Component\Filesystem\Path;
 
 class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Admin\AdminController
@@ -40,6 +41,15 @@ class AdminDetailsController extends \OxidEsales\Eshop\Application\Controller\Ad
         $this->_aViewData['sHelpURL'] = $sDir;
 
         return $sReturn;
+    }
+
+    public function executeFunction($sFunction)
+    {
+        try {
+            parent::executeFunction($sFunction);
+        } catch (FileTypeNotAllowedException) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+        }
     }
 
     /**

@@ -548,13 +548,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
             $realClassName = $resolvedClassName ? Registry::getUtilsObject()->getClassName($resolvedClassName) : Registry::getUtilsObject()->getClassName($className);
 
             if (false === class_exists($realClassName)) {
-                //If redirect tries to use a not existing class throw an exception.
-                //we'll be redirected to start page directly.
-                $exception =  new \OxidEsales\Eshop\Core\Exception\SystemComponentException();
-                /** Use setMessage here instead of passing it in constructor in order to test exception message */
-                $exception->setMessage('ERROR_MESSAGE_SYSTEMCOMPONENT_CLASSNOTFOUND' . ' ' . $className);
-                $exception->setComponent($className);
-                throw $exception;
+                throw new RoutingException(sprintf('Controller does not exist: %s', $className));
             }
 
             $session = Registry::getSession();

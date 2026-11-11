@@ -25,29 +25,41 @@ final class UserComponentBlockedUserTest extends IntegrationTestCase
 
     public function tearDown(): void
     {
-        unset($_SESSION['usr'], $_SESSION['login-token']);
+        unset($_SESSION['usr'], $_SESSION['login-token'], $_POST['lgn_usr'], $_POST['lgn_pwd']);
         Registry::getSession()->setUser(null);
 
         parent::tearDown();
     }
 
-    public function testInitRedirectsBlockedUserToTheBlockedPage(): void
+    public function testSignedInBlockedUserIsSignedOutAndSentToTheBlockedPage(): void
     {
-        $this->loginBlockedUser();
-        $component = oxNew(UserComponent::class);
-        $component->setParent(oxNew(FrontendController::class));
+        $this->createBlockedUser();
+        oxNew(User::class)->login(self::USER_NAME, self::PASSWORD);
 
-        try {
-            $component->init();
-            $this->fail('Redirect to the blocked page was expected');
-        } catch (RedirectException $redirect) {
-            parse_str((string) parse_url($redirect->getUrl(), PHP_URL_QUERY), $query);
-            $this->assertSame('content', $query['cl']);
-            $this->assertSame('user_blocked', $query['tpl']);
-        }
+        $redirect = $this->catchRedirect($this->createComponent()->init(...));
+        $blockedPageRedirect = $this->catchRedirect($this->createComponent()->init(...));
+
+        $this->assertSame(
+            [['content', 'user_blocked'], null, null],
+            [$this->getRedirectTarget($redirect), Registry::getSession()->getVariable('usr'), $blockedPageRedirect]
+        );
     }
 
-    private function loginBlockedUser(): void
+    public function testBlockedUserLoggingInIsSignedOutAndSentToTheBlockedPage(): void
+    {
+        $this->createBlockedUser();
+        $_POST['lgn_usr'] = self::USER_NAME;
+        $_POST['lgn_pwd'] = self::PASSWORD;
+
+        $redirect = $this->catchRedirect($this->createComponent()->login(...));
+
+        $this->assertSame(
+            [['content', 'user_blocked'], null],
+            [$this->getRedirectTarget($redirect), Registry::getSession()->getVariable('usr')]
+        );
+    }
+
+    private function createBlockedUser(): void
     {
         $user = oxNew(User::class);
         $user->setId(self::USER_ID);
@@ -57,7 +69,34 @@ final class UserComponentBlockedUserTest extends IntegrationTestCase
         $user->setPassword(self::PASSWORD);
         $user->save();
         $user->addToGroup('oxidblocked');
+    }
 
-        oxNew(User::class)->login(self::USER_NAME, self::PASSWORD);
+    private function createComponent(): UserComponent
+    {
+        $component = oxNew(UserComponent::class);
+        $component->setParent(oxNew(FrontendController::class));
+
+        return $component;
+    }
+
+    private function catchRedirect(callable $action): ?RedirectException
+    {
+        try {
+            $action();
+        } catch (RedirectException $redirect) {
+            return $redirect;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return array<int, string|null>
+     */
+    private function getRedirectTarget(?RedirectException $redirect): array
+    {
+        parse_str((string) parse_url((string) $redirect?->getUrl(), PHP_URL_QUERY), $query);
+
+        return [$query['cl'] ?? null, $query['tpl'] ?? null];
     }
 }

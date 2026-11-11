@@ -7,7 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic;
 
-use OxidEsales\EshopCommunity\Core\WidgetControl;
+use Exception;
+use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\WidgetControl;
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 
 class IncludeWidgetLogic
 {
@@ -33,8 +36,17 @@ class IncludeWidgetLogic
         /**
          * @var WidgetControl $widgetControl
          */
-        $widgetControl = \OxidEsales\Eshop\Core\Registry::get(\OxidEsales\Eshop\Core\WidgetControl::class);
+        $widgetControl = Registry::get(WidgetControl::class);
 
-        return $widgetControl->buildWidgetResponse($class, null, $params, $parentViews)->getContent();
+        try {
+            return $widgetControl->buildWidgetResponse($class, '', $params, $parentViews)->getContent();
+        } catch (Exception $exception) {
+            if (ContainerFacade::getParameter('oxid_esales.debug_mode')) {
+                throw $exception;
+            }
+            Registry::getLogger()->error($exception->getMessage(), [$exception]);
+
+            return '';
+        }
     }
 }

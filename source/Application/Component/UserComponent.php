@@ -175,10 +175,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
             return;
         }
 
-        // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = $myConfig->getShopHomeUrl() . 'cl=content&tpl=user_blocked';
-            Registry::getUtils()->redirect($sUrl, true, 302);
+            $this->signOutBlockedUser($oUser);
         }
 
         // TODO: move this to a proper place
@@ -235,8 +233,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
     /**
      * Special functionality which is performed after user logs in (or user is created without pass).
      * Performes additional checking if user is not BLOCKED
-     * (User::InGroup("oxidblocked")) - if yes - redirects to blocked user
-     * page ("cl=content&tpl=user_blocked").
+     * (User::InGroup("oxidblocked")) - if yes - signs the user out and redirects
+     * to the blocked user page ("cl=content&tpl=user_blocked").
      * Stores cookie info if user confirmed in login screen.
      * Then loads delivery info and forces basket to recalculate
      * (\OxidEsales\Eshop\Core\Session::getBasket() + oBasket::blCalcNeeded = true). Returns
@@ -255,10 +253,8 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
             $session->regenerateSessionId();
         }
 
-        // this user is blocked, deny him
         if ($oUser->inGroup('oxidblocked')) {
-            $sUrl = Registry::getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked';
-            Registry::getUtils()->redirect($sUrl, true, 302);
+            $this->signOutBlockedUser($oUser);
         }
 
         // recalc basket
@@ -906,5 +902,13 @@ class UserComponent extends \OxidEsales\Eshop\Core\Controller\BaseController imp
         }
 
         return $addressFormData;
+    }
+
+    private function signOutBlockedUser(User $user): void
+    {
+        $user->logout();
+        Registry::getUtils()->redirect(
+            Registry::getConfig()->getShopHomeUrl() . 'cl=content&tpl=user_blocked'
+        );
     }
 }

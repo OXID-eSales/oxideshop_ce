@@ -23,6 +23,7 @@
 - Security headers on shop responses (DI parameter `oxid_esales.http.security_headers`)
 - Default `Cache-Control` policy for responses without an explicit one (DI parameter `oxid_esales.http.default_cache_control`)
 - `FileResponseFactoryInterface` for building file download responses
+- `BeforeEmailSendEvent` - replaces `Output::process()` and `Output::processEmail()` for emails
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
@@ -50,9 +51,9 @@
 ### Deprecated
 - `ProjectMigrationPathProvider`
 - The `$blAddRedirectParam` parameter of `Utils::redirect()`
+- `api.php` - use `index.php`
 
 ### Removed
-- `api.php` - use `index.php`
 - `ApiRateLimiterFactoryInterface`, `ClientIdentifierProviderInterface` and the `oxid_esales.rate_limiter.*` parameters - use `oxid_esales.rate_limiter.storefront.rules`
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)

@@ -185,12 +185,17 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
             // we do have an error !
             $this->stop(ERR_FILEIO);
         } else {
-            $this->_aViewData['refresh'] = 0;
-            $this->_aViewData['iStart'] = 0;
             fclose($this->fpFile);
 
-            // prepare it
-            $iEnd = $this->prepareExport();
+            try {
+                $iEnd = $this->prepareExport();
+            } catch (SystemComponentException $exception) {
+                Registry::getUtilsView()->addErrorToDisplay($exception);
+                return;
+            }
+
+            $this->_aViewData['refresh'] = 0;
+            $this->_aViewData['iStart'] = 0;
             Registry::getSession()->setVariable("iEnd", $iEnd);
             $this->_aViewData['iEnd'] = $iEnd;
         }
@@ -486,12 +491,12 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // create heap table
         if (!($this->createHeapTable($sHeapTable, $sTableCharset))) {
-            throw new SystemComponentException("Could not create HEAP Table {$sHeapTable}\n<br>");
+            throw new SystemComponentException("Could not create HEAP Table {$sHeapTable}");
         }
 
         $sCatAdd = $this->getCatAdd(Registry::getRequest()->getRequestEscapedParameter("acat"));
         if (!$this->insertArticles($sHeapTable, $sCatAdd)) {
-            throw new SystemComponentException("Could not insert Articles in Table {$sHeapTable}\n<br>");
+            throw new SystemComponentException("Could not insert Articles in Table {$sHeapTable}");
         }
 
         $this->removeParentArticles($sHeapTable);

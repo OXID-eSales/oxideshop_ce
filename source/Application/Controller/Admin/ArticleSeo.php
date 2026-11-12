@@ -287,26 +287,22 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
     protected function getStdUrl($sOxid)
     {
         $contextId = $this->getActCatId();
-        $product = oxNew(Article::class);
-
-        if (!$contextId || !$product->load($sOxid)) {
+        if (!$contextId) {
             return parent::getStdUrl($sOxid);
         }
 
-        $seoEncoder = $this->getEncoder();
-        $languageId = $this->getEditLang();
+        $product = oxNew(Article::class);
+        if (!$product->load($sOxid)) {
+            return null;
+        }
 
-        return match ($this->getActCatType()) {
-            'oxcategory' => $seoEncoder->getArticleCategoryStdUrl($product, $languageId, $contextId),
-            'oxvendor' => $seoEncoder->getArticleVendorStdUrl($product, $languageId, $contextId, $this->getListType()),
-            'oxmanufacturer' => $seoEncoder->getArticleManufacturerStdUrl(
-                $product,
-                $languageId,
-                $contextId,
-                $this->getListType()
-            ),
-            default => parent::getStdUrl($sOxid),
-        };
+        return $this->getEncoder()->getArticleStdUrl(
+            $product,
+            $this->getEditLang(),
+            $this->getActCatType(),
+            $contextId,
+            $this->getListType()
+        );
     }
 
     /**

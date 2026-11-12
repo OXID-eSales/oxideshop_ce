@@ -57,6 +57,7 @@ final class ArticleSeoTest extends IntegrationTestCase
 
         $stdUrl = $this->getStdUrl($product, $vendor->getId());
         $this->assertStringContainsString('cnid=v_' . $vendor->getId(), $stdUrl);
+        $this->assertStringContainsString('listtype=vendor', $stdUrl);
     }
 
     public function testSaveKeepsManufacturerContextInStdUrl(): void
@@ -68,6 +69,7 @@ final class ArticleSeoTest extends IntegrationTestCase
 
         $stdUrl = $this->getStdUrl($product, $manufacturer->getId());
         $this->assertStringContainsString('mnid=' . $manufacturer->getId(), $stdUrl);
+        $this->assertStringContainsString('listtype=manufacturer', $stdUrl);
     }
 
     public function testSaveKeepsStdUrlGeneratedByOpeningTabForCategory(): void
@@ -114,10 +116,10 @@ final class ArticleSeoTest extends IntegrationTestCase
         $category = $this->createCategory();
         $product = $this->createProduct(['category' => $category]);
 
-        $this->saveSeo($product, 'oxcategory#' . $category->getId() . '#' . $this->languageId);
+        $seoUrl = $this->saveSeo($product, 'oxcategory#' . $category->getId() . '#' . $this->languageId);
 
         $row = $this->fetchSeoRow($product, $category->getId());
-        $this->assertStringStartsWith('seo-test/product-', $row['OXSEOURL']);
+        $this->assertSame($seoUrl, $row['OXSEOURL']);
         $this->assertSame($category->getId(), $row['OXPARAMS']);
     }
 
@@ -133,7 +135,7 @@ final class ArticleSeoTest extends IntegrationTestCase
 
     private function saveSeo(Article $product, string $params): string
     {
-        $seoUrl = uniqid('seo-test/product-', true) . '/';
+        $seoUrl = uniqid('seo-test/product-') . '.html';
         $_POST['aSeoData'] = [
             'oxparams' => $params,
             'oxseourl' => $seoUrl,

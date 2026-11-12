@@ -134,11 +134,6 @@ final class ConfigThemeTemplateDirTest extends IntegrationTestCase
         );
     }
 
-    public function testAdminTemplateIsNotFound(): void
-    {
-        $this->assertFalse(Registry::getConfig()->getTemplatePath('admin.html.twig', true));
-    }
-
     private function activateTheme(string $themeId): void
     {
         $this->setParameter('oxid_esales.theme.active', $themeId);

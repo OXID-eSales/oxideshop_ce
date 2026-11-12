@@ -7,21 +7,21 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Internal\Framework\AdminUi;
+namespace OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Provider;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Path;
 
-readonly class AdminUiPathProvider implements AdminUiPathProviderInterface
+readonly class AdminUiPackageDirectoryProvider implements AdminUiDirectoryProviderInterface
 {
     public function __construct(
         private BasicContextInterface $context,
-        private string $packageDirectory,
+        private string $packageName,
     ) {
     }
 
-    public function getAbsolutePath(): string
+    public function getDirectory(): string
     {
-        return Path::join($this->context->getVendorPath(), $this->packageDirectory);
+        return Path::join($this->context->getVendorPath(), $this->packageName);
     }
 }

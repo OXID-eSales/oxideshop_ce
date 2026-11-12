@@ -11,7 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Core\Language;
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProviderInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiDirectoryResolverInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
@@ -25,10 +25,13 @@ final class LanguageAdminUiTest extends IntegrationTestCase
     {
         parent::setUp();
 
-        $adminUiPathProvider = $this->createStub(AdminUiPathProviderInterface::class);
-        $adminUiPathProvider->method('getAbsolutePath')->willReturn(__DIR__ . '/Fixtures/adminUi');
+        $directoryResolver = $this->createStub(AdminUiDirectoryResolverInterface::class);
+        $directoryResolver->method('getDirectories')->willReturn([
+            __DIR__ . '/Fixtures/adminUiOverlay',
+            __DIR__ . '/Fixtures/adminUi',
+        ]);
         $this->createContainer();
-        $this->replaceService(AdminUiPathProviderInterface::class, $adminUiPathProvider);
+        $this->replaceService(AdminUiDirectoryResolverInterface::class, $directoryResolver);
         $this->replaceContainerInstance();
 
         Registry::getUtils()->resetLanguageCache();
@@ -52,6 +55,24 @@ final class LanguageAdminUiTest extends IntegrationTestCase
     public function testAdminTextIsReadThroughMapOfAdminUi(): void
     {
         $this->assertSame('from lang file', $this->translateInAdmin('TEST_ADMIN_UI_MAPPED_KEY'));
+    }
+
+    public function testAdminTextOfPrecedingAdminUiDirectoryWins(): void
+    {
+        $this->assertSame('from overlay lang file', $this->translateInAdmin('TEST_ADMIN_UI_OVERRIDDEN_KEY'));
+    }
+
+    public function testAdminTextOfPrecedingAdminUiDirectoryWinsOverAdditionalLangFile(): void
+    {
+        $this->assertSame(
+            'from overlay lang file',
+            $this->translateInAdmin('TEST_ADMIN_UI_OVERRIDDEN_ADDITIONAL_KEY')
+        );
+    }
+
+    public function testCustomLangFileOfAdminUiIsNotLoaded(): void
+    {
+        $this->assertSame('TEST_ADMIN_UI_CUSTOM_KEY', $this->translateInAdmin('TEST_ADMIN_UI_CUSTOM_KEY'));
     }
 
     private function translateInAdmin(string $key): string

@@ -1,12 +1,13 @@
-imports:
-  - { resource: parameters.yaml }
-
 services:
   _defaults:
     autowire: true
 
-  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProviderInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProvider
+  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiDirectoryResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiDirectoryResolver
     arguments:
-      $packageDirectory: '%oxid_esales.admin_ui.package_directory%'
+      $directoryProviders: !tagged_iterator oxid_esales.admin_ui.directory_provider
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiFileLocatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiFileLocator
     public: true

@@ -55,7 +55,7 @@ modules:
             paths:
                 - 'Application/views/%THEME_ID%'
             paths_admin:
-                - 'Application/views/admin_twig'
+                - '../vendor/oxid-esales/twig-admin-theme'
                 - 'Application/views/%THEME_ID%'
         - OxidEsales\Codeception\Module\OxideshopModules:
         - Mailpit:

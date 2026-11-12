@@ -13,13 +13,10 @@ use DOMDocument;
 use DOMElement;
 use DOMXPath;
 use OxidEsales\Eshop\Application\Controller\Admin\NavigationTree;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\AdminUiPathProviderInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiFileLocatorInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Symfony\Component\Filesystem\Path;
 
 class NavigationTreeDemoShopTest extends IntegrationTestCase
 {
@@ -94,21 +91,6 @@ class NavigationTreeDemoShopTest extends IntegrationTestCase
 
     private function getMenuFilePath(): string
     {
-        $context = ContainerFacade::get(ContextInterface::class);
-        $adminViewsDirectory = $this->get(AdminUiPathProviderInterface::class)->getAbsolutePath();
-
-        $edition = strtolower($context->getEdition()->value);
-        $menuFilePath = Path::join($adminViewsDirectory, "menu_$edition.xml");
-
-        if (file_exists($menuFilePath)) {
-            return $menuFilePath;
-        }
-
-        $menuFilePath = Path::join($adminViewsDirectory, 'menu.xml');
-        if (!file_exists($menuFilePath)) {
-            $this->fail('Admin menu.xml not found');
-        }
-
-        return $menuFilePath;
+        return $this->get(AdminUiFileLocatorInterface::class)->locate('menu.xml')[0];
     }
 }

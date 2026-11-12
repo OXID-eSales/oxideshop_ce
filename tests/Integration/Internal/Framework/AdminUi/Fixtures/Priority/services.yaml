@@ -1,0 +1,12 @@
+services:
+  oxid_esales.tests.admin_ui.directory_provider.high:
+    synthetic: true
+    public: true
+    tags:
+      - { name: 'oxid_esales.admin_ui.directory_provider', priority: 1000 }
+
+  oxid_esales.tests.admin_ui.directory_provider.low:
+    synthetic: true
+    public: true
+    tags:
+      - { name: 'oxid_esales.admin_ui.directory_provider', priority: -1000 }

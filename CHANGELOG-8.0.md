@@ -19,6 +19,7 @@
   - `ThemeSettingServiceInterface`, `ActiveThemeProviderInterface`, `ThemePathProviderInterface` and `ThemeViewServiceInterface` to read theme settings, the active theme and theme data
   - `ViewConfig::getThemeSettings()` to read theme settings in templates
   - `ThemeConfigurationChangedEvent`
+- `AdminUiDirectoryResolverInterface`, `AdminUiFileLocatorInterface` and DI tag `oxid_esales.admin_ui.directory_provider` to read and extend the admin UI
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
@@ -35,6 +36,10 @@
 - Storefront templates and admin theme option translations are read from the configured directory of the installed theme instead of `Application/views`
   - Theme option translations are only loaded for themes installed in the current shop
   - `Config::getShopLevelDir()` receives the theme's directory instead of `Application/views` as base path
+- The admin UI is read from the `vendor` directory instead of `Application/views/admin_twig`
+  - `cust_lang.php` of the admin is no longer loaded, use module translations instead
+  - `Config::getTemplatePath()` and `Config::getTemplateDir()` no longer return admin templates, use `AdminUiFileLocatorInterface` instead
+- DI parameter `oxid_esales.theme.admin.name` renamed to `oxid_esales.admin_ui.name`, the same for `oxid_esales.theme.admin.media.*`
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
@@ -59,7 +64,9 @@
 - `SeoEncoderArticle::createArticleCategoryUri()`
 - deprecated `ProjectYamlImportServiceInterface::addImport()` and `ProjectYamlImportServiceInterface::removeImport()`
 - `MigrationExecutorInterface`
-- `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.theme.admin.name` instead
+- `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.admin_ui.name` instead
+- `AdminTemplateFileLocator`, `EditionMenuFileLocator` and `EditionUserFileLocator`, use `AdminUiFileLocatorInterface` instead
+- The `$forAdmin` parameter of `Language::appendCustomLangFiles()`
 - `ThemeSettingChangedEvent`, use `ThemeConfigurationChangedEvent` instead
 - Theme configuration classes and methods
   - `Theme` and `SettingsHandler`

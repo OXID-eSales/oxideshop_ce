@@ -209,7 +209,6 @@ class Session extends \OxidEsales\Eshop\Core\Base
         }
         $sidParam = Registry::getRequest()->getRequestEscapedParameter($this->getName());
 
-        //forcing sid for SSL<->nonSSL transitions
         if ($forceSidParam) {
             $sid = $forceSidParam;
         } elseif ($this->getSessionUseCookies() && $this->getCookieSid()) {

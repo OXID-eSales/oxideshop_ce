@@ -423,32 +423,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Return current url.
-     *
-     * @return string
-     */
-    public function getCurrentUrl()
-    {
-        $oUtilsServer = \OxidEsales\Eshop\Core\Registry::getUtilsServer();
-
-        $aServerParams["HTTPS"] = $oUtilsServer->getServerVar("HTTPS");
-        $aServerParams["HTTP_X_FORWARDED_PROTO"] = $oUtilsServer->getServerVar("HTTP_X_FORWARDED_PROTO");
-        $aServerParams["HTTP_HOST"] = $oUtilsServer->getServerVar("HTTP_HOST");
-        $aServerParams["REQUEST_URI"] = $oUtilsServer->getServerVar("REQUEST_URI");
-
-        $sProtocol = "http://";
-
-        if (
-            isset($aServerParams['HTTPS']) && (($aServerParams['HTTPS'] == 'on' || $aServerParams['HTTPS'] == 1))
-            || (isset($aServerParams['HTTP_X_FORWARDED_PROTO']) && $aServerParams['HTTP_X_FORWARDED_PROTO'] == 'https')
-        ) {
-            $sProtocol = 'https://';
-        }
-
-        return $sProtocol . $aServerParams['HTTP_HOST'] . $aServerParams['REQUEST_URI'];
-    }
-
-    /**
      * Forms parameters array out of a string.
      * Takes & and &amp; as delimiters.
      * Returns associative array with parameters.

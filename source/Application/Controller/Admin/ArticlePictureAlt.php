@@ -20,7 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\DataObject\ProductMe
 use OxidEsales\EshopCommunity\Internal\Domain\Product\Media\Service\ProductMediaServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ArticlePictureAlt extends AdminDetailsController
 {
@@ -30,7 +30,7 @@ class ArticlePictureAlt extends AdminDetailsController
         private readonly LocaleServiceInterface $localeService,
         private readonly MediaUrlGeneratorInterface $mediaUrlGenerator,
         private readonly ContextInterface $context,
-        private readonly Request $request,
+        private readonly RequestStack $requestStack,
         private readonly string $thumbnailSize,
     ) {
         parent::__construct();
@@ -60,7 +60,7 @@ class ArticlePictureAlt extends AdminDetailsController
 
     public function save(): void
     {
-        $productMediaId = (string) $this->request->request->get('productMediaId', '');
+        $productMediaId = (string) $this->requestStack->getCurrentRequest()?->request->get('productMediaId', '');
         $productMedia = $this->productMediaService->get(Id::fromString($productMediaId));
         if ((string) $productMedia->getProductId() !== $this->getEditObjectId()) {
             return;
@@ -77,7 +77,7 @@ class ArticlePictureAlt extends AdminDetailsController
     /** @return array<string, string> */
     private function getSubmittedAltTexts(string $productMediaId): array
     {
-        $altTexts = $this->request->request->all('altTexts')[$productMediaId] ?? [];
+        $altTexts = $this->requestStack->getCurrentRequest()?->request->all('altTexts')[$productMediaId] ?? [];
 
         return array_map(static fn($altText) => trim((string) $altText), $altTexts);
     }

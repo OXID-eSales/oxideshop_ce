@@ -19,7 +19,8 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 final class StorefrontRateLimitListenerTest extends TestCase
 {
-    private int $enforcements = 0;
+    /** @var Request[] */
+    private array $enforcedRequests = [];
 
     public function testSubscribesToKernelRequest(): void
     {
@@ -31,16 +32,18 @@ final class StorefrontRateLimitListenerTest extends TestCase
 
     public function testEnforcesForMainRequest(): void
     {
-        $this->createListener(enabled: true)->onKernelRequest($this->createRequestEvent());
+        $event = $this->createRequestEvent();
 
-        $this->assertSame(1, $this->enforcements);
+        $this->createListener(enabled: true)->onKernelRequest($event);
+
+        $this->assertSame([$event->getRequest()], $this->enforcedRequests);
     }
 
     public function testDoesNotEnforceWhenDisabled(): void
     {
         $this->createListener(enabled: false)->onKernelRequest($this->createRequestEvent());
 
-        $this->assertSame(0, $this->enforcements);
+        $this->assertSame([], $this->enforcedRequests);
     }
 
     public function testDoesNotEnforceForSubRequest(): void
@@ -49,14 +52,14 @@ final class StorefrontRateLimitListenerTest extends TestCase
             $this->createRequestEvent(HttpKernelInterface::SUB_REQUEST)
         );
 
-        $this->assertSame(0, $this->enforcements);
+        $this->assertSame([], $this->enforcedRequests);
     }
 
     private function createListener(bool $enabled): StorefrontRateLimitListener
     {
         $rateLimiter = $this->createStub(StorefrontRateLimiterInterface::class);
-        $rateLimiter->method('enforce')->willReturnCallback(function (): void {
-            $this->enforcements++;
+        $rateLimiter->method('enforce')->willReturnCallback(function (Request $request): void {
+            $this->enforcedRequests[] = $request;
         });
 
         return new StorefrontRateLimitListener($rateLimiter, $enabled);

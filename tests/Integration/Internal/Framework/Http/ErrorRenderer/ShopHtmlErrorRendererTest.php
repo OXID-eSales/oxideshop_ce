@@ -23,6 +23,7 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -69,7 +70,7 @@ final class ShopHtmlErrorRendererTest extends IntegrationTestCase
             }
         );
         $this->useTemplateRenderer($renderer);
-        ContainerFacade::get(Request::class)->server->set('REQUEST_URI', '/retired-url/?a=1');
+        ContainerFacade::get(RequestStack::class)->push(Request::create('/retired-url/?a=1'));
 
         $this->createRenderer()->render(new NotFoundHttpException());
 
@@ -121,13 +122,14 @@ final class ShopHtmlErrorRendererTest extends IntegrationTestCase
     public function testRendersTheThemedNotFoundPage(): void
     {
         $this->skipWithoutTemplateEngine($this->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer());
-        ContainerFacade::get(Request::class)->server->set('REQUEST_URI', '/"><script>alert(1)</script>');
+        ContainerFacade::get(RequestStack::class)->push(new Request(server: ['REQUEST_URI' => '/"><script>alert(1)</script>']));
 
         $exception = $this->createRenderer()->render(new NotFoundHttpException());
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
         $this->assertStringContainsString('err-404', $exception->getAsString());
         $this->assertStringNotContainsString('<script>alert(1)</script>', $exception->getAsString());
+        $this->assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $exception->getAsString());
     }
 
     public function testKernelRendersTheThemedPageForHtmlClients(): void

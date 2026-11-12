@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http;
 
+use LogicException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
@@ -23,6 +24,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Controller\ErrorController;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
@@ -196,6 +198,49 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $response = $this->get(HttpKernelInterface::class)->handle($request);
 
         $this->assertSame('', $response->getContent());
+    }
+
+    public function testAppliesTheCacheAttributeOfTheController(): void
+    {
+        $request = $this->requestWithController(
+            #[Cache(public: true, maxage: 600)] static fn(): Response => new Response()
+        );
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame('max-age=600, public', $response->headers->get('Cache-Control'));
+    }
+
+    public function testAppliesTheDefaultCachePolicyToControllerWithoutCacheAttribute(): void
+    {
+        $request = $this->requestWithController(static fn(): Response => new Response());
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame('must-revalidate, no-cache, no-store, private', $response->headers->get('Cache-Control'));
+    }
+
+    public function testAnswersMatchingConditionalRequestWithNotModifiedWithoutRunningTheController(): void
+    {
+        $request = $this->requestWithController(
+            #[Cache(etag: "'v1'")] static fn(): Response => throw new LogicException()
+        );
+        $request->headers->set('If-None-Match', '"' . hash('sha256', 'v1') . '"');
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_NOT_MODIFIED, $response->getStatusCode());
+    }
+
+    public function testKeepsRevalidationForControllerDeclaringAnEtag(): void
+    {
+        $request = $this->requestWithController(#[Cache(etag: "'v1'")] static fn(): Response => new Response());
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertSame('"' . hash('sha256', 'v1') . '"', $response->getEtag());
+        $this->assertSame('no-cache, private', $response->headers->get('Cache-Control'));
     }
 
     public function testCookiesQueuedDuringHandlingGetSecureDefaultOnHttpsRequest(): void

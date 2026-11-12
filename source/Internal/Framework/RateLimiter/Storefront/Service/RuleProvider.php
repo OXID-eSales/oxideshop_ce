@@ -18,7 +18,7 @@ readonly class RuleProvider implements RuleProviderInterface
     /**
      * @param array<int, array<string, mixed>> $rules
      */
-    public function __construct(array $rules, private Request $request)
+    public function __construct(array $rules)
     {
         $this->rules = $this->ordered($rules);
     }
@@ -26,11 +26,11 @@ readonly class RuleProvider implements RuleProviderInterface
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function getMatchingRules(): array
+    public function getMatchingRules(Request $request): array
     {
-        $controllerKey = strtolower($this->param('cl'));
-        $function = strtolower($this->param('fnc'));
-        $format = (string) $this->request->getRequestFormat(null);
+        $controllerKey = strtolower($this->param($request, 'cl'));
+        $function = strtolower($this->param($request, 'fnc'));
+        $format = (string) $request->getRequestFormat(null);
 
         return array_filter(
             $this->rules,
@@ -48,9 +48,9 @@ readonly class RuleProvider implements RuleProviderInterface
             && (!isset($rule['format']) || (string) $rule['format'] === $format);
     }
 
-    private function param(string $name): string
+    private function param(Request $request, string $name): string
     {
-        $value = $this->request->request->all()[$name] ?? $this->request->query->all()[$name] ?? '';
+        $value = $request->request->all()[$name] ?? $request->query->all()[$name] ?? '';
 
         return is_scalar($value) ? (string) $value : '';
     }

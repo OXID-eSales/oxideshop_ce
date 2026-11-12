@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Domain\Locale\Exception\LocaleNotFoundExc
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleServiceInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class LocalesTest extends IntegrationTestCase
 {
@@ -38,7 +39,7 @@ final class LocalesTest extends IntegrationTestCase
 
     public function testSaveUpdatesExistingLocale(): void
     {
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('locales', [
             'de_DE' => ['name' => 'German', 'fallback' => 'en_GB', 'active' => '1'],
             'en_GB' => ['name' => 'English', 'fallback' => 'de_DE', 'active' => '1'],
@@ -55,7 +56,7 @@ final class LocalesTest extends IntegrationTestCase
 
     public function testSaveAddsNewLocale(): void
     {
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('locales', [
             'de_DE' => ['name' => 'Deutsch (Deutschland)', 'fallback' => '', 'active' => '1'],
             'en_GB' => ['name' => 'English (United Kingdom)', 'fallback' => 'de_DE', 'active' => '1'],
@@ -75,7 +76,7 @@ final class LocalesTest extends IntegrationTestCase
 
     public function testSaveSkipsNewLocaleWithEmptyCode(): void
     {
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('locales', [
             'de_DE' => ['name' => 'Deutsch (Deutschland)', 'fallback' => '', 'active' => '1'],
             'en_GB' => ['name' => 'English (United Kingdom)', 'fallback' => 'de_DE', 'active' => '1'],
@@ -93,7 +94,7 @@ final class LocalesTest extends IntegrationTestCase
 
     public function testSaveSkipsDuplicateNewLocaleAndAddsValidOnes(): void
     {
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('locales', [
             'de_DE' => ['name' => 'Deutsch (Deutschland)', 'fallback' => '', 'active' => '1'],
             'en_GB' => ['name' => 'English (United Kingdom)', 'fallback' => 'de_DE', 'active' => '1'],
@@ -114,7 +115,7 @@ final class LocalesTest extends IntegrationTestCase
 
     public function testSaveDeactivatesLocale(): void
     {
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('locales', [
             'de_DE' => ['name' => 'Deutsch (Deutschland)', 'fallback' => '', 'active' => '1'],
             'en_GB' => ['name' => 'English (United Kingdom)', 'fallback' => 'de_DE'],
@@ -137,7 +138,7 @@ final class LocalesTest extends IntegrationTestCase
         $service = $this->get(LocaleServiceInterface::class);
         $service->removeFromShop('en_GB', 1);
 
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('locales', [
             'de_DE' => ['name' => 'Deutsch (Deutschland)', 'fallback' => '', 'active' => '1'],
             'en_GB' => ['name' => 'English (United Kingdom)', 'fallback' => 'de_DE', 'active' => '1'],
@@ -158,7 +159,7 @@ final class LocalesTest extends IntegrationTestCase
         $service = $this->get(LocaleServiceInterface::class);
         $service->add(new Locale('fr_FR', 'Français', 'de_DE'));
 
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('localeCode', 'fr_FR');
 
         $controller = $this->get(Locales::class);
@@ -170,7 +171,7 @@ final class LocalesTest extends IntegrationTestCase
 
     public function testRenderShowsNewLocaleAfterAdd(): void
     {
-        $request = $this->get(Request::class);
+        $request = $this->pushRequest();
         $request->request->set('locales', [
             'de_DE' => ['name' => 'Deutsch (Deutschland)', 'fallback' => '', 'active' => '1'],
             'en_GB' => ['name' => 'English (United Kingdom)', 'fallback' => 'de_DE', 'active' => '1'],
@@ -202,5 +203,13 @@ final class LocalesTest extends IntegrationTestCase
             }
         }
         $this->fail("Locale '$code' not found in view data");
+    }
+
+    private function pushRequest(): Request
+    {
+        $request = new Request();
+        $this->get(RequestStack::class)->push($request);
+
+        return $request;
     }
 }

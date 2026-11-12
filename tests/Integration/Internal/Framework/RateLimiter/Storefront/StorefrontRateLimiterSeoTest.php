@@ -46,7 +46,7 @@ final class StorefrontRateLimiterSeoTest extends IntegrationTestCase
             $this->givenCategorySeoUrlPath(),
             [['id' => 'cat', 'cl' => 'alist', 'key' => 'ip', 'limit' => 1, 'interval' => '1 minute']]
         );
-        $request = $this->get(Request::class);
+        $request = clone $this->get(Request::class);
         $request->attributes->set('_controller', static fn(): Response => new Response());
         $kernel = $this->get(HttpKernelInterface::class);
 

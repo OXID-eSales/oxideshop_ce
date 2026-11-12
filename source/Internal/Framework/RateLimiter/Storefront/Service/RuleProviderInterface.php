@@ -7,10 +7,12 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service;
 
+use Symfony\Component\HttpFoundation\Request;
+
 interface RuleProviderInterface
 {
     /**
      * @return array<int, array<string, mixed>>
      */
-    public function getMatchingRules(): array;
+    public function getMatchingRules(Request $request): array;
 }

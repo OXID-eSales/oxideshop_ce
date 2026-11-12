@@ -80,6 +80,10 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
+  Symfony\Component\HttpKernel\EventListener\CacheAttributeListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
   OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\CacheControlListener:
     arguments:
       $defaultCacheControl: '%oxid_esales.http.default_cache_control%'

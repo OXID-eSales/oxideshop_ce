@@ -15,14 +15,14 @@ use OxidEsales\EshopCommunity\Internal\Domain\Locale\DataObject\Locale;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Exception\LocaleAlreadyExistsException;
 use OxidEsales\EshopCommunity\Internal\Domain\Locale\Service\LocaleServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class Locales extends AdminDetailsController
 {
     public function __construct(
         private readonly LocaleServiceInterface $localeService,
         private readonly ContextInterface $context,
-        private readonly Request $request,
+        private readonly RequestStack $requestStack,
     ) {
         parent::__construct();
     }
@@ -57,12 +57,12 @@ class Locales extends AdminDetailsController
 
     public function delete(): void
     {
-        $this->localeService->delete($this->request->request->get('localeCode'));
+        $this->localeService->delete($this->requestStack->getCurrentRequest()?->request->get('localeCode'));
     }
 
     private function updateExistingLocales(array $assignedCodes, int $shopId): void
     {
-        foreach ($this->request->request->all('locales') as $code => $data) {
+        foreach ($this->requestStack->getCurrentRequest()?->request->all('locales') ?? [] as $code => $data) {
             $code = (string) $code;
             $this->localeService->update(new Locale($code, $data['name'], $data['fallback']));
             $this->updateShopAssignment($code, !empty($data['active']), $assignedCodes, $shopId);
@@ -71,7 +71,7 @@ class Locales extends AdminDetailsController
 
     private function addNewLocales(array $assignedCodes, int $shopId): void
     {
-        foreach ($this->request->request->all('newLocales') as $data) {
+        foreach ($this->requestStack->getCurrentRequest()?->request->all('newLocales') ?? [] as $data) {
             if (empty($data['code'])) {
                 continue;
             }

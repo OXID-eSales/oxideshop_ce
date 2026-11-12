@@ -52,6 +52,27 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame('from-controller', $response->getContent());
     }
 
+    public function testRoutesTheRequestToTheControllerOfTheMatchingRoute(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
+        $this->compileContainer();
+
+        $response = $this->get(HttpKernelInterface::class)->handle(Request::create('/kernel-routing/7'));
+
+        $this->assertSame('routed-body id=7', $response->getContent());
+    }
+
+    public function testRunsTheFallbackControllerForTheRootPath(): void
+    {
+        $request = Request::create('/');
+        $request->attributes->set('_fallback_controller', static fn(): Response => new Response('fallback-body'));
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame('fallback-body', $response->getContent());
+    }
+
     public function testBuildsTheErrorControllerOnlyWhenHandlingAnError(): void
     {
         $this->get(HttpKernelInterface::class)->handle(

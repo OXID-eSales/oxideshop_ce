@@ -27,7 +27,6 @@ services:
     arguments:
       $kernel: '@Symfony\Component\HttpKernel\HttpKernelInterface'
       $request: '@Symfony\Component\HttpFoundation\Request'
-      $routes: '%oxid.routes%'
     public: true
 
   OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyAjaxRunnerInterface:
@@ -41,7 +40,9 @@ services:
     tags:
       - { name: kernel.event_subscriber }
 
-  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\SeoUrlListener:
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RoutingListener:
+    arguments:
+      $routes: '%oxid.routes%'
     tags:
       - { name: kernel.event_subscriber }
 

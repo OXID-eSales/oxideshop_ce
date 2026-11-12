@@ -24,3 +24,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http\SessionCommitListener:
     tags:
       - { name: kernel.event_subscriber }
+
+  OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http\LegacyRoutingListener:
+    tags:
+      - { name: kernel.event_subscriber }

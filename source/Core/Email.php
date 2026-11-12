@@ -318,7 +318,6 @@ class Email extends PHPMailer
         if ($this->getUseInlineImages()) {
             $this->includeImages(
                 $myConfig->getImageUrl(),
-                $myConfig->getImageUrl(false),
                 $myConfig->getPictureUrl(null, false),
                 $myConfig->getImageDir(),
                 $myConfig->getPictureDir(false)
@@ -1115,7 +1114,6 @@ class Email extends PHPMailer
 
     protected function includeImages(
         $imageDir = null,
-        $imageDirNoSSL = null,
         $dynImageDir = null,
         $absImageDir = null,
         $absDynImageDir = null
@@ -1135,7 +1133,6 @@ class Email extends PHPMailer
             // preparing input
             $dynImageDir = $fileUtils->normalizeDir($dynImageDir);
             $imageDir = $fileUtils->normalizeDir($imageDir);
-            $imageDirNoSSL = $fileUtils->normalizeDir($imageDirNoSSL);
 
             if (is_array($matches) && count($matches)) {
                 $imageCache = [];
@@ -1151,9 +1148,6 @@ class Email extends PHPMailer
                             . str_replace($dynImageDir, '', $imageName);
                     } elseif (str_starts_with($imageName, $imageDir)) {
                         $fileName = $fileUtils->normalizeDir($absImageDir) . str_replace($imageDir, '', $imageName);
-                    } elseif (str_starts_with($imageName, $imageDirNoSSL)) {
-                        $fileName = $fileUtils->normalizeDir($absImageDir)
-                            . str_replace($imageDirNoSSL, '', $imageName);
                     }
 
                     if ($fileName && !@is_readable($fileName)) {

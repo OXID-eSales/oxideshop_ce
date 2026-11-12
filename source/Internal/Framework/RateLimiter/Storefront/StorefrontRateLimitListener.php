@@ -32,6 +32,6 @@ readonly class StorefrontRateLimitListener implements EventSubscriberInterface
             return;
         }
 
-        $this->rateLimiter->enforce();
+        $this->rateLimiter->enforce($event->getRequest());
     }
 }

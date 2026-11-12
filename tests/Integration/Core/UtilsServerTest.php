@@ -13,12 +13,14 @@ use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -43,6 +45,7 @@ final class UtilsServerTest extends TestCase
     {
         $_SERVER = $this->serverBackup;
         $_COOKIE = $this->cookieBackup;
+        TestContainerFactory::resetContainer();
         parent::tearDown();
     }
 
@@ -124,9 +127,8 @@ final class UtilsServerTest extends TestCase
     public function testIsTrustedServerWithConfiguredIp(): void
     {
         $someIp = '255.255.255.255';
-        $_SERVER['REMOTE_ADDR'] = $someIp;
-
         $this->setParameter('oxid_esales.trusted_ips', [$someIp]);
+        $this->get(RequestStack::class)->push(new Request(server: ['REMOTE_ADDR' => $someIp]));
 
         $isTrusted = oxNew(UtilsServer::class)->isTrustedClientIp();
 
@@ -136,8 +138,8 @@ final class UtilsServerTest extends TestCase
     public function testIsTrustedServerWithNonTrustedIp(): void
     {
         $someIp = '255.255.255.255';
-        $_SERVER['REMOTE_ADDR'] = $someIp;
         $this->setParameter('oxid_esales.trusted_ips', ['1.2.3.4', '5.6.7.8']);
+        $this->get(RequestStack::class)->push(new Request(server: ['REMOTE_ADDR' => $someIp]));
 
         $isTrusted = oxNew(UtilsServer::class)->isTrustedClientIp();
 

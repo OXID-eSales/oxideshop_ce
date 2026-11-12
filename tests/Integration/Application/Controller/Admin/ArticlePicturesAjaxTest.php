@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ArticlePicturesAjaxTest extends IntegrationTestCase
@@ -381,9 +382,9 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
             $request->files = new FileBag(['uploadedFiles' => $files]);
         }
 
-        $this->container->set(Request::class, $request);
         $this->compileContainer();
         $this->replaceContainerInstance();
+        $this->get(RequestStack::class)->push($request);
     }
 
     private function setupContainerWithRequestAndMocks(array $postParameters, array $files = []): void
@@ -410,9 +411,9 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
                 );
             });
 
-        $this->container->set(Request::class, $request);
         $this->container->set('oxid_esales.product.media.media_uploader', $mediaUploader);
         $this->compileContainer();
         $this->replaceContainerInstance();
+        $this->get(RequestStack::class)->push($request);
     }
 }

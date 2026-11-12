@@ -20,7 +20,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
@@ -327,7 +327,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     private function rejectUnknownPath(): void
     {
-        $pathInfo = ContainerFacade::get(Request::class)->getPathInfo();
+        $pathInfo = ContainerFacade::get(RequestStack::class)->getCurrentRequest()?->getPathInfo() ?? '/';
 
         if ($pathInfo !== '/') {
             throw new RoutingException($pathInfo);

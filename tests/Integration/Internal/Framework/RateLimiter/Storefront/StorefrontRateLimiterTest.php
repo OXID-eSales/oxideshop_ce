@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
@@ -23,15 +24,17 @@ final class StorefrontRateLimiterTest extends TestCase
 {
     use ContainerTrait;
 
+    private Request $request;
+
     #[RunInSeparateProcess]
     public function testGlobalRuleThrottlesAnonymousByIp(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)]);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         try {
-            $this->limiter()->enforce();
+            $this->limiter()->enforce($this->request);
             $this->fail('Second request must be rejected');
         } catch (TooManyRequestsHttpException $exception) {
             $this->assertSame(429, $exception->getStatusCode());
@@ -47,11 +50,11 @@ final class StorefrontRateLimiterTest extends TestCase
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)], userId: 'user-x');
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         $this->expectException(TooManyRequestsHttpException::class);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
     }
 
     #[RunInSeparateProcess]
@@ -59,8 +62,8 @@ final class StorefrontRateLimiterTest extends TestCase
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)], excludedIps: ['203.0.113.10']);
 
-        $this->limiter()->enforce();
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
+        $this->limiter()->enforce($this->request);
 
         $this->addToAssertionCount(1);
     }
@@ -74,8 +77,8 @@ final class StorefrontRateLimiterTest extends TestCase
             path: '/health'
         );
 
-        $this->limiter()->enforce();
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
+        $this->limiter()->enforce($this->request);
 
         $this->addToAssertionCount(1);
     }
@@ -88,11 +91,11 @@ final class StorefrontRateLimiterTest extends TestCase
             post: ['fnc' => 'login_noredirect']
         );
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         $this->expectException(TooManyRequestsHttpException::class);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
     }
 
     #[RunInSeparateProcess]
@@ -103,11 +106,11 @@ final class StorefrontRateLimiterTest extends TestCase
             post: ['fnc' => 'login', 'lgn_usr' => 'shopper@example.com']
         );
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         $this->expectException(TooManyRequestsHttpException::class);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
     }
 
     #[RunInSeparateProcess]
@@ -118,11 +121,11 @@ final class StorefrontRateLimiterTest extends TestCase
             query: ['fnc' => 'login', 'lgn_usr' => 'shopper@example.com']
         );
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         $this->expectException(TooManyRequestsHttpException::class);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
     }
 
     #[RunInSeparateProcess]
@@ -133,8 +136,8 @@ final class StorefrontRateLimiterTest extends TestCase
             post: ['fnc' => 'login']
         );
 
-        $this->limiter()->enforce();
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
+        $this->limiter()->enforce($this->request);
 
         $this->addToAssertionCount(1);
     }
@@ -147,8 +150,8 @@ final class StorefrontRateLimiterTest extends TestCase
             post: ['cl' => 'newsletter', 'fnc' => 'send']
         );
 
-        $this->limiter()->enforce();
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
+        $this->limiter()->enforce($this->request);
 
         $this->addToAssertionCount(1);
     }
@@ -162,11 +165,11 @@ final class StorefrontRateLimiterTest extends TestCase
             query: ['fnc' => 'start']
         );
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         $this->expectException(TooManyRequestsHttpException::class);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
     }
 
     #[RunInSeparateProcess]
@@ -178,12 +181,12 @@ final class StorefrontRateLimiterTest extends TestCase
             query: ['lgn_usr' => 'decoy-one@example.com']
         );
 
-        $this->limiter()->enforce();
-        $_GET['lgn_usr'] = 'decoy-two@example.com';
+        $this->limiter()->enforce($this->request);
+        $this->request->query->set('lgn_usr', 'decoy-two@example.com');
 
         $this->expectException(TooManyRequestsHttpException::class);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
     }
 
     #[RunInSeparateProcess]
@@ -199,10 +202,10 @@ final class StorefrontRateLimiterTest extends TestCase
         $events = [];
         $this->captureRateLimitEvents($events);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         try {
-            $this->limiter()->enforce();
+            $this->limiter()->enforce($this->request);
             $this->fail('Second request was not blocked');
         } catch (TooManyRequestsHttpException) {
         }
@@ -218,10 +221,10 @@ final class StorefrontRateLimiterTest extends TestCase
         $events = [];
         $this->captureRateLimitEvents($events);
 
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
 
         try {
-            $this->limiter()->enforce();
+            $this->limiter()->enforce($this->request);
             $this->fail('Second request was not blocked');
         } catch (TooManyRequestsHttpException) {
         }
@@ -239,8 +242,8 @@ final class StorefrontRateLimiterTest extends TestCase
         $events = [];
         $this->captureRateLimitEvents($events);
 
-        $this->limiter()->enforce();
-        $this->limiter()->enforce();
+        $this->limiter()->enforce($this->request);
+        $this->limiter()->enforce($this->request);
 
         $this->assertCount(0, $events);
     }
@@ -270,10 +273,7 @@ final class StorefrontRateLimiterTest extends TestCase
         array $excludedIps = [],
         string $path = '/'
     ): void {
-        $_SERVER['REMOTE_ADDR'] = '203.0.113.10';
-        $_SERVER['REQUEST_URI'] = $path;
-        $_POST = $post;
-        $_GET = $query;
+        $this->request = new Request($query, $post, server: ['REMOTE_ADDR' => '203.0.113.10', 'REQUEST_URI' => $path]);
 
         $this->createContainer();
         $this->container->register('oxid_esales.rate_limiter.storefront.storage', InMemoryStorage::class);

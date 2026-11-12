@@ -23,6 +23,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ThemeConfigurationTest extends IntegrationTestCase
 {
@@ -113,7 +114,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     public function testSaveUpdatesThemeConfiguration(): void
     {
         $this->installTestTheme();
-        $this->get(Request::class)->request->set('settings', [
+        $this->pushRequest()->request->set('settings', [
             'testStringSetting' => 'changedValue',
             'testBoolSetting' => 'false',
             'testSelectSetting' => 'option2',
@@ -132,7 +133,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     public function testSaveIgnoresUnknownSettingNames(): void
     {
         $this->installTestTheme();
-        $this->get(Request::class)->request->set('settings', [
+        $this->pushRequest()->request->set('settings', [
             'unknownSetting' => 'value',
             'testStringSetting' => 'changedValue',
         ]);
@@ -150,7 +151,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
     {
         $this->installTestTheme();
         $this->expectInvalidValueError();
-        $this->get(Request::class)->request->set('settings', [
+        $this->pushRequest()->request->set('settings', [
             'testStringSetting' => '<script>alert(1)</script>',
             'testSelectSetting' => 'option3',
         ]);
@@ -181,7 +182,7 @@ final class ThemeConfigurationTest extends IntegrationTestCase
                 'testStringSetting' => ['value' => 'environmentValue'],
             ],
         ]);
-        $this->get(Request::class)->request->set('settings', [
+        $this->pushRequest()->request->set('settings', [
             'testStringSetting' => 'tamperedValue',
         ]);
         $this->expectDisplayError('THEME_SETTING_ENVIRONMENT_OVERRIDDEN_ERROR');
@@ -245,5 +246,13 @@ final class ThemeConfigurationTest extends IntegrationTestCase
         $utilsView->expects($this->once())->method('addErrorToDisplay')->with($this->isInstanceOf(DisplayError::class));
 
         Registry::set(UtilsView::class, $utilsView);
+    }
+
+    private function pushRequest(): Request
+    {
+        $request = new Request();
+        $this->get(RequestStack::class)->push($request);
+
+        return $request;
     }
 }

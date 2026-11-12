@@ -34,7 +34,6 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\RuleProvider
     arguments:
       $rules: '%oxid_esales.rate_limiter.storefront.rules%'
-      $request: '@Symfony\Component\HttpFoundation\Request'
 
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProviderInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Service\KeyProvider
@@ -47,8 +46,6 @@ services:
 
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiter
-    arguments:
-      $request: '@Symfony\Component\HttpFoundation\Request'
 
   OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimitListener:
     arguments:

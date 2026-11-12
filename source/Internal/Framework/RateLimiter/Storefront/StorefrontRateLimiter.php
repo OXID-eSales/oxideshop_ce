@@ -23,7 +23,6 @@ use Symfony\Component\RateLimiter\RateLimit;
 readonly class StorefrontRateLimiter implements StorefrontRateLimiterInterface
 {
     public function __construct(
-        private Request $request,
         private RuleProviderInterface $ruleProvider,
         private RequestExclusionFilterInterface $requestExclusionFilter,
         private KeyProviderInterface $keyProvider,
@@ -33,14 +32,14 @@ readonly class StorefrontRateLimiter implements StorefrontRateLimiterInterface
     ) {
     }
 
-    public function enforce(): void
+    public function enforce(Request $request): void
     {
-        if ($this->requestExclusionFilter->isExcluded($this->request)) {
+        if ($this->requestExclusionFilter->isExcluded($request)) {
             return;
         }
 
-        foreach ($this->ruleProvider->getMatchingRules() as $rule) {
-            $key = $this->keyProvider->get($rule, $this->request);
+        foreach ($this->ruleProvider->getMatchingRules($request) as $rule) {
+            $key = $this->keyProvider->get($rule, $request);
             if ($key !== '') {
                 $this->consume($rule, $key);
             }

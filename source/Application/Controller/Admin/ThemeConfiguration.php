@@ -20,21 +20,21 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\T
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Service\ThemeConfigurationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Form\SettingValueMapperInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\View\Form\SettingValueValidatorInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ThemeConfiguration extends AdminDetailsController
 {
     private ThemeConfigurationServiceInterface $themeConfigurationService;
     private SettingValueMapperInterface $settingValueMapper;
     private SettingValueValidatorInterface $settingValueValidator;
-    private Request $request;
+    private RequestStack $requestStack;
 
     public function __construct()
     {
         $this->themeConfigurationService = ContainerFacade::get(ThemeConfigurationServiceInterface::class);
         $this->settingValueMapper = ContainerFacade::get(SettingValueMapperInterface::class);
         $this->settingValueValidator = ContainerFacade::get(SettingValueValidatorInterface::class);
-        $this->request = ContainerFacade::get(Request::class);
+        $this->requestStack = ContainerFacade::get(RequestStack::class);
 
         parent::__construct();
     }
@@ -135,7 +135,7 @@ class ThemeConfiguration extends AdminDetailsController
     private function getValidSettingValues(): array
     {
         return array_filter(
-            $this->request->request->all('settings'),
+            $this->requestStack->getCurrentRequest()?->request->all('settings') ?? [],
             fn(mixed $value): bool => is_string($value) && $this->isValidSettingValue($value)
         );
     }

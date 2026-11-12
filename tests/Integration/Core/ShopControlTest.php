@@ -22,6 +22,8 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 final class ShopControlTest extends IntegrationTestCase
@@ -50,7 +52,7 @@ final class ShopControlTest extends IntegrationTestCase
 
     public function testBuildResponseRejectsUnknownPathReachingTheFrontController(): void
     {
-        $_SERVER['REQUEST_URI'] = '/unrouted/path';
+        $this->get(RequestStack::class)->push(Request::create('/unrouted/path'));
 
         $this->expectException(RoutingException::class);
 

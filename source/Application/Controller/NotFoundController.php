@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class NotFoundController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {
@@ -18,7 +18,7 @@ class NotFoundController extends \OxidEsales\Eshop\Application\Controller\Fronte
 
     public function render()
     {
-        $this->addTplParam('sUrl', ContainerFacade::get(Request::class)->getRequestUri());
+        $this->addTplParam('sUrl', ContainerFacade::get(RequestStack::class)->getCurrentRequest()?->getRequestUri() ?? '');
 
         return parent::render();
     }

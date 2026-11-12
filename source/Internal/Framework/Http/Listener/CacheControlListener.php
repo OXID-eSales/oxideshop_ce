@@ -32,9 +32,15 @@ readonly class CacheControlListener implements EventSubscriberInterface
             return;
         }
 
-        $responseHeaders = $event->getResponse()->headers;
-        if ($responseHeaders->get('Cache-Control') === self::SYMFONY_COMPUTED_DEFAULT) {
-            $responseHeaders->set('Cache-Control', $this->defaultCacheControl);
+        $response = $event->getResponse();
+        if (
+            $event->getRequest()->attributes->has('_cache')
+            || $response->getEtag() !== null
+            || $response->headers->get('Cache-Control') !== self::SYMFONY_COMPUTED_DEFAULT
+        ) {
+            return;
         }
+
+        $response->headers->set('Cache-Control', $this->defaultCacheControl);
     }
 }

@@ -13,12 +13,13 @@ use OxidEsales\Eshop\Application\Controller\NotFoundController;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class NotFoundControllerTest extends IntegrationTestCase
 {
     public function testRendersTheNotFoundTemplateForTheRequestedUri(): void
     {
-        ContainerFacade::get(Request::class)->server->set('REQUEST_URI', '/retired-url/?a=1');
+        ContainerFacade::get(RequestStack::class)->push(Request::create('/retired-url/?a=1'));
         $controller = oxNew(NotFoundController::class);
 
         $template = $controller->render();

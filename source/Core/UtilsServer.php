@@ -14,7 +14,7 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
@@ -339,7 +339,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isTrustedClientIp()
     {
         return in_array(
-            ContainerFacade::get(Request::class)->getClientIp(),
+            ContainerFacade::get(RequestStack::class)->getCurrentRequest()?->getClientIp(),
             ContainerFacade::getParameter('oxid_esales.trusted_ips'),
             true
         );

@@ -26,6 +26,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 final class ArticlePictureAltTest extends IntegrationTestCase
 {
@@ -118,7 +119,7 @@ final class ArticlePictureAltTest extends IntegrationTestCase
         $productMediaId = Id::generate();
         $this->addProductMediaWithProductMediaId($productMediaId, $productId, ProductMediaRole::DETAIL);
 
-        $request = $this->get(SymfonyRequest::class);
+        $request = $this->pushRequest();
         $request->request->set('productMediaId', (string) $productMediaId);
         $request->request->set(
             'altTexts',
@@ -159,7 +160,7 @@ final class ArticlePictureAltTest extends IntegrationTestCase
         $selectedMediaId = $selectedProductMedia->getMedia()->getId();
         $otherMediaId = $otherProductMedia->getMedia()->getId();
 
-        $request = $this->get(SymfonyRequest::class);
+        $request = $this->pushRequest();
         $request->request->set('productMediaId', (string) $selectedProductMediaId);
         $request->request->set('altTexts', [
             (string) $selectedProductMediaId => ['de_DE' => 'selected'],
@@ -184,7 +185,7 @@ final class ArticlePictureAltTest extends IntegrationTestCase
         $productMediaId = $productMedia->getId();
         $mediaId = $productMedia->getMedia()->getId();
 
-        $request = $this->get(SymfonyRequest::class);
+        $request = $this->pushRequest();
         $request->request->set('productMediaId', (string) $productMediaId);
         $request->request->set('altTexts', [(string) $productMediaId => ['de_DE' => 'Deutsches Alt']]);
 
@@ -242,5 +243,13 @@ final class ArticlePictureAltTest extends IntegrationTestCase
         $this->get(ProductMediaServiceInterface::class)->add($productMedia);
 
         return $productMedia;
+    }
+
+    private function pushRequest(): SymfonyRequest
+    {
+        $request = new SymfonyRequest();
+        $this->get(RequestStack::class)->push($request);
+
+        return $request;
     }
 }

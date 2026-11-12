@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
 interface StorefrontRateLimiterInterface
@@ -14,5 +15,5 @@ interface StorefrontRateLimiterInterface
     /**
      * @throws TooManyRequestsHttpException
      */
-    public function enforce(): void;
+    public function enforce(Request $request): void;
 }

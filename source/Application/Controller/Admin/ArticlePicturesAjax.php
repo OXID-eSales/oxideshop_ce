@@ -27,6 +27,7 @@ use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class ArticlePicturesAjax extends ListComponentAjax
 {
@@ -40,8 +41,9 @@ class ArticlePicturesAjax extends ListComponentAjax
         parent::__construct();
         $this->productMediaUploadProcessor = ContainerFacade::get(ProductMediaUploadProcessorInterface::class);
         $this->productMediaService = ContainerFacade::get(ProductMediaServiceInterface::class);
-        $this->requestData = ContainerFacade::get(Request::class)->request;
-        $this->requestFiles = ContainerFacade::get(Request::class)->files;
+        $request = ContainerFacade::get(RequestStack::class)->getCurrentRequest() ?? new Request();
+        $this->requestData = $request->request;
+        $this->requestFiles = $request->files;
     }
 
     public function addMedia(): JsonResponse

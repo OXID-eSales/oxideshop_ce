@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\CacheControlListe
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
@@ -52,11 +53,33 @@ final class CacheControlListenerTest extends TestCase
         $this->assertSame('no-cache, private', $event->getResponse()->headers->get('Cache-Control'));
     }
 
-    private function createResponseEvent(Response $response): ResponseEvent
+    public function testKeepsCachingDeclaredWithTheCacheAttribute(): void
+    {
+        $request = new Request();
+        $request->attributes->set('_cache', [new Cache(maxage: 600)]);
+        $event = $this->createResponseEvent(new Response(), $request);
+
+        (new CacheControlListener('no-store, no-cache, must-revalidate'))->onKernelResponse($event);
+
+        $this->assertSame('no-cache, private', $event->getResponse()->headers->get('Cache-Control'));
+    }
+
+    public function testKeepsRevalidationOfResponseWithEtag(): void
+    {
+        $response = new Response();
+        $response->setEtag('v1');
+        $event = $this->createResponseEvent($response);
+
+        (new CacheControlListener('no-store, no-cache, must-revalidate'))->onKernelResponse($event);
+
+        $this->assertSame('no-cache, private', $event->getResponse()->headers->get('Cache-Control'));
+    }
+
+    private function createResponseEvent(Response $response, Request $request = new Request()): ResponseEvent
     {
         return new ResponseEvent(
             $this->createStub(HttpKernelInterface::class),
-            new Request(),
+            $request,
             HttpKernelInterface::MAIN_REQUEST,
             $response
         );

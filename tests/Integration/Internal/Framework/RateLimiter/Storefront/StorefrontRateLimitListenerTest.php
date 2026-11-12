@@ -9,15 +9,11 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\RateLimiter\Storefront;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 
 final class StorefrontRateLimitListenerTest extends IntegrationTestCase
 {
@@ -50,11 +46,6 @@ final class StorefrontRateLimitListenerTest extends IntegrationTestCase
         $this->assertSame($this->tooManyRequestsProblem(), json_decode($this->runRoutedApiRequest(), true));
     }
 
-    public static function apiController(): Response
-    {
-        return new Response('api-body');
-    }
-
     private function handleAsNewRequest(): Response
     {
         $this->configureLimiter();
@@ -68,18 +59,8 @@ final class StorefrontRateLimitListenerTest extends IntegrationTestCase
     private function runRoutedApiRequest(): string
     {
         $this->configureLimiter();
-        $routes = new RouteCollection();
-        $routes->add('api', new Route('/api/products', ['_controller' => self::class . '::apiController']));
-        $runner = new ShopRunner(
-            $this->get(HttpKernelInterface::class),
-            $this->get(Request::class),
-            new CompiledUrlMatcherDumper($routes)->getCompiledRoutes()
-        );
 
-        ob_start();
-        $runner->run(static fn(): Response => new Response('fallback-body'));
-
-        return (string) ob_get_clean();
+        return $this->get(HttpKernelInterface::class)->handle($this->get(Request::class))->getContent();
     }
 
     private function tooManyRequestsProblem(): array
@@ -95,6 +76,7 @@ final class StorefrontRateLimitListenerTest extends IntegrationTestCase
     private function configureLimiter(): void
     {
         $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
         $this->container->setParameter(
             'oxid_esales.rate_limiter.storefront.rules',
             [['id' => 'api', 'format' => 'json', 'key' => 'ip', 'limit' => 1, 'interval' => '1 minute']]

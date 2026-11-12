@@ -13,6 +13,8 @@ use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ShopHtmlErrorRenderer;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
@@ -117,6 +119,18 @@ final class ShopHtmlErrorRendererTest extends IntegrationTestCase
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
         $this->assertSame('fallback', $exception->getAsString());
+    }
+
+    public function testRendersTheOfflinePageWhenTheShopGoesOfflineWhileRenderingTheNotFoundPage(): void
+    {
+        $renderer = $this->createStub(TemplateRendererInterface::class);
+        $renderer->method('renderTemplate')->willThrowException(new ShopOfflineException());
+        $this->useTemplateRenderer($renderer);
+
+        $exception = $this->createRenderer()->render(new NotFoundHttpException());
+
+        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $exception->getStatusCode());
+        $this->assertSame(new OfflinePageResponse()->getContent(), $exception->getAsString());
     }
 
     public function testRendersTheThemedNotFoundPage(): void

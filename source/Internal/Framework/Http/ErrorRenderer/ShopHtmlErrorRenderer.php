@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer;
 
 use OxidEsales\Eshop\Core\ShopControl;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
 use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
@@ -50,6 +51,8 @@ readonly class ShopHtmlErrorRenderer implements ErrorRendererInterface
                 ->setStatusCode($redirect->getStatusCode())
                 ->setHeaders(['Location' => $redirect->getUrl()])
                 ->setAsString('');
+        } catch (ShopOfflineException $offline) {
+            return $this->renderOfflinePage(FlattenException::createFromThrowable($offline));
         }
 
         return $exception

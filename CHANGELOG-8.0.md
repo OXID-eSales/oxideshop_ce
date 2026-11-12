@@ -38,7 +38,7 @@
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 - `ThemeActivatedEvent` moved from namespace `Internal\Framework\Theme\Event` to `Internal\Framework\Theme\Activation\Event`
 - HTTP header and request handling on the shop kernel
-  - `index.php` resolves Symfony `#[Route]` controllers, falling back to the legacy shop controller resolution
+  - Symfony `#[Route]` controllers are resolved on `kernel.request`
   - The response status, headers and cookies are owned by the Symfony `Response`
   - Controllers can return a Symfony `Response` object
   - `Utils::redirect()` throws a `RedirectException` delivered as a redirect on `kernel.exception`
@@ -67,7 +67,7 @@
 - `ShopControl::formOutput()` - override `ShopControl::render()`
 - `ExceptionErrorController` and the `exceptionerror` controller key
 - `Config::handleDbConnectionException()`, `Config::handleCookieException()` and `Config::getExceptionHandler()`
-- `Config::processSeoCall()` - SEO URLs are decoded by `SeoUrlListener`
+- `Config::processSeoCall()` - SEO URLs are decoded on `kernel.request`
 - `UtilsView::getTemplateOutput()` and `Session::isHeaderSent()`
 - Inclusion of `modules/functions.php` and `modules/functions.php.dist`
 - `Output` - process output with a `kernel.response` listener

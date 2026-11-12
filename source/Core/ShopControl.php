@@ -20,7 +20,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInte
 use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
@@ -51,8 +50,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         $controllerKey = Registry::getConfig()->getRequestControllerId();
 
         if (!$controllerKey) {
-            $this->rejectUnknownPath();
-
             $session = Registry::getSession();
             if ($this->isAdmin()) {
                 $controllerKey = $session->getVariable('auth') ? 'admin_start' : 'login';
@@ -322,15 +319,6 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
             if ($controllerName == $currentControllerName) {
                 unset($this->remainingErrors[$errorName], $this->errorControllers[$errorName]);
             }
-        }
-    }
-
-    private function rejectUnknownPath(): void
-    {
-        $pathInfo = ContainerFacade::get(RequestStack::class)->getCurrentRequest()?->getPathInfo() ?? '/';
-
-        if ($pathInfo !== '/') {
-            throw new RoutingException($pathInfo);
         }
     }
 

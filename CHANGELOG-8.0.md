@@ -32,6 +32,13 @@
   - A child theme declares its parent theme in its `metadata.yaml`
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 - `ThemeActivatedEvent` moved from namespace `Internal\Framework\Theme\Event` to `Internal\Framework\Theme\Activation\Event`
+- The shop runs on HTTPS only, the HTTP/HTTPS switching logic has been removed
+  - Cookies set via `UtilsServer::setOxCookie()` always get the `secure` flag
+  - View IDs no longer contain the `|ssl` suffix, view cache keys change once after the update
+  - `Session::isSidNeeded()` no longer forces the session ID into URLs when the protocol changes
+  - `SystemRequirements::checkModRewrite()` checks the shop URL only once
+  - The config parameters `sSSLShopURL` and `sAdminSSLURL` are no longer used
+- Renamed `SystemRequirements::getShopSSLHostInfo()` and `SystemRequirements::getShopSSLHostInfoFromConfig()` to `getShopHostInfo()` and `getShopHostInfoFromConfig()`
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
@@ -66,6 +73,23 @@
   - `ViewConfig::getViewThemeParam()`, use `ViewConfig::getThemeSettings()` instead
   - `Language::getCustomThemeLanguageFiles()`
   - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
+- SSL related functionality, HTTPS is mandatory now
+  - `Config::isSsl()`, `Config::setIsSsl()`, `Config::checkSsl()`, `Config::isHttpsOnly()`, `Config::isCurrentProtocol()` and `Config::$_blIsSsl`
+  - `Config::getShopSecureHomeUrl()` and `Config::getShopCurrentUrl()`, use `Config::getShopHomeUrl()` instead
+  - `ViewConfig::getSslSelfLink()` and `ViewConfig::getSelfActionLink()`, use `ViewConfig::getSelfLink()` instead
+  - `ViewConfig::isSsl()` and `ViewConfig::getNoSslImageDir()`
+  - `AdminController::getServiceProtocol()`
+  - `Wrapping::getNoSslDynImageDir()`
+  - `BasketItem::$_sDimageDirNoSsl`, `BasketItem::$_sDimageDirSsl` and the `nossl_dimagedir` / `ssl_dimagedir` properties of `Article`
+  - `HttpsRequestResolverInterface` and `HttpsRequestResolver`
+  - Transfer of cookies between HTTP and HTTPS via the session: `UtilsServer::loadSessionCookies()`, `UtilsServer::saveSessionCookie()`, `UtilsServer::getSessionCookieKey()`, `UtilsServer::mustSaveToSession()` and the `aSessionCookies` session variable
+  - Redirects to HTTPS on the admin login page, for the autologin cookie and on the payment page (`sslredirect` request parameter)
+  - Special SSL detection for Profihost (`HTTP_X_FORWARDED_SERVER`)
+  - The `$ssl` parameter of `Config::getOutUrl()`, `Config::getUrl()`, `Config::getImageUrl()`, `Config::getPictureUrl()`, `Config::getTemplateUrl()`, `Config::getResourceUrl()`, `Config::getShopUrlByLanguage()`, `ViewConfig::getImageUrl()`, `PictureHandler::getPicUrl()`, `PictureHandler::getProductPicUrl()` and `PictureHandler::getPictureInfo()`, the following parameters move one position forward
+  - The `$blToSession` and `$blSecure` parameters of `UtilsServer::setOxCookie()`
+  - `UtilsUrl::getCurrentUrl()`
+  - The `$imageDirNoSSL` parameter of `Email::includeImages()`
+  - The `SSLAltImageUrl` view variable of `ArticleDetails`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

@@ -1,12 +1,25 @@
 install:
   add_services: 'selenium-chrome'
   git:
-    sdk_ref: b-8.0.x
+    sdk_ref: b-8.0.x-cleanup-ssl-OXDEV-8512
   script: 'source/.github/oxid-esales/install.sh'
   cache:
     prepared_shop: true
   composer:
     root_url: ''
+    transform: |
+      {
+        "preferred-install": {
+          "oxid-esales/*": "source",
+          "oxid-professional-services/*": "source",
+          "ddoe/*": "source"
+        },
+        "require": {
+          "oxid-esales/twig-component": "dev-b-8.0.x",
+          "oxid-esales/twig-admin-theme": "dev-b-8.0.x-cleanup-ssl-OXDEV-8512",
+          "oxid-esales/apex-theme": "dev-b-8.0.x-cleanup-ssl-OXDEV-8512"
+        }
+      }
 
 runscript:
   matrix:

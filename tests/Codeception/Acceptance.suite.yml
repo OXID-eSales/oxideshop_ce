@@ -13,6 +13,7 @@ modules:
             clear_cookies: true
             restart: true
             capabilities:
+                acceptInsecureCerts: true
                 'goog:chromeOptions':
                     args:
                         - '--force-prefers-reduced-motion'

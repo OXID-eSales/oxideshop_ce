@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Application\Model;
 use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
+use OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer;
+use OxidEsales\Eshop\Application\Model\SeoEncoderRecomm;
 use OxidEsales\Eshop\Application\Model\SeoEncoderVendor;
 use oxView;
 use oxRegistry;
@@ -73,30 +75,38 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
     public function getArticleRecommUri($oArticle, $iLang)
     {
         $seoUri = null;
-        if ($recommendationList = $this->_getRecomm($oArticle, $iLang)) {
-            if (!($seoUri = $this->loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $recommendationList->getId(), true))) {
-                $oArticle = $this->getProductForLang($oArticle, $iLang);
+        if (
+            ($recommendationList = $this->_getRecomm($oArticle, $iLang))
+            && !($seoUri = $this->loadFromDb(
+                'oxarticle',
+                $oArticle->getId(),
+                $iLang,
+                null,
+                $recommendationList->getId(),
+                true
+            ))
+        ) {
+            $oArticle = $this->getProductForLang($oArticle, $iLang);
 
-                $title = $this->prepareArticleTitle($oArticle);
+            $title = $this->prepareArticleTitle($oArticle);
 
-                $seoUri = Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderRecomm::class)->getRecommUri($recommendationList, $iLang);
-                $seoUri = $this->processSeoUrl($seoUri . $title, $oArticle->getId(), $iLang);
+            $seoUri = Registry::get(SeoEncoderRecomm::class)->getRecommUri($recommendationList, $iLang);
+            $seoUri = $this->processSeoUrl($seoUri . $title, $oArticle->getId(), $iLang);
 
-                $stdParams = ['recommid' => $recommendationList->getId(), 'listtype' => $this->getListType()];
-                $this->saveToDb(
-                    'oxarticle',
-                    $oArticle->getId(),
-                    Registry::getUtilsUrl()->appendUrl(
-                        $oArticle->getBaseStdLink($iLang),
-                        $stdParams
-                    ),
-                    $seoUri,
-                    $iLang,
-                    null,
-                    0,
-                    $recommendationList->getId()
-                );
-            }
+            $stdParams = ['recommid' => $recommendationList->getId(), 'listtype' => $this->getListType()];
+            $this->saveToDb(
+                'oxarticle',
+                $oArticle->getId(),
+                Registry::getUtilsUrl()->appendUrl(
+                    $oArticle->getBaseStdLink($iLang),
+                    $stdParams
+                ),
+                $seoUri,
+                $iLang,
+                null,
+                0,
+                $recommendationList->getId()
+            );
         }
 
         return $seoUri;
@@ -133,18 +143,6 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         return Registry::getConfig()->getActiveView()->getListType();
     }
 
-    public function getArticleStdUrl($article, $languageId, $contextType, $contextId, $listType = null)
-    {
-        $contextParameters = match ($contextType) {
-            'oxcategory' => ['cnid' => $contextId],
-            'oxvendor' => ['cnid' => 'v_' . $contextId, 'listtype' => $listType ?? $this->getListType()],
-            'oxmanufacturer' => ['mnid' => $contextId, 'listtype' => $listType ?? $this->getListType()],
-            default => [],
-        };
-
-        return Registry::getUtilsUrl()->appendUrl($article->getBaseStdLink($languageId), $contextParameters);
-    }
-
     public function generateArticleCategoryUri($article, $category, $languageId)
     {
         return $this->createArticleCategoryUri($article, $category, $languageId);
@@ -176,7 +174,10 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         $this->saveToDb(
             'oxarticle',
             $article->getId(),
-            $this->getArticleStdUrl($article, $iLang, 'oxcategory', $categoryId),
+            Registry::getUtilsUrl()->appendUrl(
+                $article->getBaseStdLink($iLang),
+                ['cnid' => $categoryId]
+            ),
             $seoUri,
             $iLang,
             null,
@@ -206,21 +207,33 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
 
         $activeCategory = $this->getCategory($oArticle, $iLang);
 
-        if ($activeCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
-            $activeCategoryId = $activeCategory->getId();
-        } elseif ($activeCategory = $this->getMainCategory($oArticle)) {
+        if (!$activeCategory instanceof \OxidEsales\Eshop\Application\Model\Category) {
+            $activeCategory = $this->getMainCategory($oArticle);
+        }
+        if ($activeCategory) {
             $activeCategoryId = $activeCategory->getId();
         }
 
-        if ($blRegenerate || !($seoUri = $this->loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $activeCategoryId, true))) {
-            if ($activeCategory) {
-                $isInCategory = $activeCategory->isPriceCategory()
-                    ? $oArticle->inPriceCategory($activeCategoryId)
-                    : $oArticle->inCategory($activeCategoryId);
+        if (
+            (
+                $blRegenerate
+                || !($seoUri = $this->loadFromDb(
+                    'oxarticle',
+                    $oArticle->getId(),
+                    $iLang,
+                    null,
+                    $activeCategoryId,
+                    true
+                ))
+            )
+            && $activeCategory
+        ) {
+            $isInCategory = $activeCategory->isPriceCategory()
+                ? $oArticle->inPriceCategory($activeCategoryId)
+                : $oArticle->inCategory($activeCategoryId);
 
-                if ($isInCategory) {
-                    $seoUri = $this->createArticleCategoryUri($oArticle, $activeCategory, $iLang);
-                }
+            if ($isInCategory) {
+                $seoUri = $this->createArticleCategoryUri($oArticle, $activeCategory, $iLang);
             }
         }
 
@@ -259,36 +272,38 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function getMainCategory($oArticle)
     {
-        $mainCategory = null;
+        $oMainCat = null;
 
         // if variant parent id must be used
-        $articleId = $oArticle->getId();
+        $sArtId = $oArticle->getId();
         if (isset($oArticle->oxarticles__oxparentid->value) && $oArticle->oxarticles__oxparentid->value) {
-            $articleId = $oArticle->oxarticles__oxparentid->value;
+            $sArtId = $oArticle->oxarticles__oxparentid->value;
         }
 
-        $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+        $oDb = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
         $tableViewNameGenerator = oxNew(TableViewNameGenerator::class);
         $categoryViewName = $tableViewNameGenerator->getViewName("oxobject2category");
 
-        $query = "select oxcatnid from " . $categoryViewName . " where oxobjectid = :oxobjectid order by oxtime";
-        $identifier = md5($categoryViewName . $articleId);
+        // add main category caching;
+        $sQ = "select oxcatnid from " . $categoryViewName . " where oxobjectid = :oxobjectid order by oxtime";
+        $sIdent = md5($categoryViewName . $sArtId);
 
-        if (($mainCategoryId = $this->loadFromCache($identifier, "oxarticle")) === false) {
-            $mainCategoryId = $database->getOne($query, [
-                ':oxobjectid' => $articleId
+        if (($sMainCatId = $this->loadFromCache($sIdent, "oxarticle")) === false) {
+            $sMainCatId = $oDb->getOne($sQ, [
+                ':oxobjectid' => $sArtId
             ]);
-            $this->saveInCache($identifier, $mainCategoryId, "oxarticle");
+            // storing in cache
+            $this->saveInCache($sIdent, $sMainCatId, "oxarticle");
         }
 
-        if ($mainCategoryId) {
-            $mainCategory = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
-            if (!$mainCategory->load($mainCategoryId)) {
-                $mainCategory = null;
+        if ($sMainCatId) {
+            $oMainCat = oxNew(\OxidEsales\Eshop\Application\Model\Category::class);
+            if (!$oMainCat->load($sMainCatId)) {
+                $oMainCat = null;
             }
         }
 
-        return $mainCategory;
+        return $oMainCat;
     }
 
     /**
@@ -341,17 +356,18 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
      */
     protected function prepareArticleTitle($oArticle)
     {
-        if (!($title = $oArticle->oxarticles__oxtitle->value)) {
-            if (($parentId = $oArticle->oxarticles__oxparentid->value)) {
-                if (!isset(self::$_aTitleCache[$parentId])) {
-                    $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
-                    $query = "select oxtitle from " . $oArticle->getViewName() . " where oxid = :oxid";
-                    self::$_aTitleCache[$parentId] = $database->getOne($query, [
-                        ':oxid' => $parentId
-                    ]);
-                }
-                $title = self::$_aTitleCache[$parentId];
+        if (
+            !($title = $oArticle->oxarticles__oxtitle->value)
+            && $parentId = $oArticle->oxarticles__oxparentid->value
+        ) {
+            if (!isset(self::$_aTitleCache[$parentId])) {
+                $database = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
+                $query = "select oxtitle from " . $oArticle->getViewName() . " where oxid = :oxid";
+                self::$_aTitleCache[$parentId] = $database->getOne($query, [
+                    ':oxid' => $parentId
+                ]);
             }
+            $title = self::$_aTitleCache[$parentId];
         }
 
         if ($oArticle->oxarticles__oxvarselect->value) {
@@ -397,10 +413,14 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
                 $seoUri = Registry::get(SeoEncoderVendor::class)->getVendorUri($vendor, $iLang);
                 $seoUri = $this->processSeoUrl($seoUri . $title, $oArticle->getId(), $iLang);
 
+                $stdParams = ['cnid' => "v_" . $vendor->getId(), 'listtype' => $this->getListType()];
                 $this->saveToDb(
                     'oxarticle',
                     $oArticle->getId(),
-                    $this->getArticleStdUrl($oArticle, $iLang, 'oxvendor', $vendor->getId()),
+                    Registry::getUtilsUrl()->appendUrl(
+                        $oArticle->getBaseStdLink($iLang),
+                        $stdParams
+                    ),
                     $seoUri,
                     $iLang,
                     null,
@@ -459,18 +479,32 @@ class SeoEncoderArticle extends \OxidEsales\Eshop\Core\SeoEncoder
         $seoUri = null;
         startProfile(__FUNCTION__);
         if ($manufacturer = $this->getManufacturer($oArticle, $iLang)) {
-            if ($blRegenerate || !($seoUri = $this->loadFromDb('oxarticle', $oArticle->getId(), $iLang, null, $manufacturer->getId(), true))) {
+            if (
+                $blRegenerate
+                || !($seoUri = $this->loadFromDb(
+                    'oxarticle',
+                    $oArticle->getId(),
+                    $iLang,
+                    null,
+                    $manufacturer->getId(),
+                    true
+                ))
+            ) {
                 $oArticle = $this->getProductForLang($oArticle, $iLang);
 
                 $title = $this->prepareArticleTitle($oArticle);
 
-                $seoUri = Registry::get(\OxidEsales\Eshop\Application\Model\SeoEncoderManufacturer::class)->getManufacturerUri($manufacturer, $iLang);
+                $seoUri = Registry::get(SeoEncoderManufacturer::class)->getManufacturerUri($manufacturer, $iLang);
                 $seoUri = $this->processSeoUrl($seoUri . $title, $oArticle->getId(), $iLang);
 
+                $stdParams = ['mnid' => $manufacturer->getId(), 'listtype' => $this->getListType()];
                 $this->saveToDb(
                     'oxarticle',
                     $oArticle->getId(),
-                    $this->getArticleStdUrl($oArticle, $iLang, 'oxmanufacturer', $manufacturer->getId()),
+                    Registry::getUtilsUrl()->appendUrl(
+                        $oArticle->getBaseStdLink($iLang),
+                        $stdParams
+                    ),
                     $seoUri,
                     $iLang,
                     null,

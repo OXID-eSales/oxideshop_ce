@@ -22,12 +22,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class ArticleSeoTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    private int $languageId = 0;
+    private const LANGUAGE_ID = 0;
+    private const SECOND_LANGUAGE_ID = 1;
 
     public function tearDown(): void
     {
@@ -36,91 +38,150 @@ final class ArticleSeoTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    public function testSaveKeepsCategoryContextInStdUrl(): void
+    public static function contextDataProvider(): array
+    {
+        return [
+            'category' => ['oxcategory'],
+            'vendor' => ['oxvendor'],
+            'manufacturer' => ['oxmanufacturer'],
+        ];
+    }
+
+    #[DataProvider('contextDataProvider')]
+    public function testSaveKeepsContextInStdUrl(string $contextType): void
+    {
+        [$product, $contextId] = $this->createProductInContext($contextType);
+
+        $this->saveSeo($product, $this->getParams($contextType, $contextId));
+
+        $this->assertSame(
+            $this->getExpectedStdUrl($product, $contextType, $contextId),
+            $this->getStdUrl($product, $contextId)
+        );
+    }
+
+    #[DataProvider('contextDataProvider')]
+    public function testSaveKeepsStdUrlGeneratedByOpeningTab(string $contextType): void
+    {
+        [$product, $contextId] = $this->createProductInContext($contextType);
+        $params = $this->getParams($contextType, $contextId);
+
+        $this->openSeo($product, $params);
+        $generatedStdUrl = $this->getStdUrl($product, $contextId);
+        $this->saveSeo($product, $params);
+
+        $this->assertSame($generatedStdUrl, $this->getStdUrl($product, $contextId));
+    }
+
+    public function testSaveKeepsNonMainCategoryContextInStdUrl(): void
+    {
+        $mainCategory = $this->createCategory();
+        $secondCategory = $this->createCategory();
+        $product = $this->createProduct(['categories' => [$mainCategory, $secondCategory]]);
+
+        $this->saveSeo($product, $this->getParams('oxcategory', $secondCategory->getId()));
+
+        $this->assertSame(
+            $this->getExpectedStdUrl($product, 'oxcategory', $secondCategory->getId()),
+            $this->getStdUrl($product, $secondCategory->getId())
+        );
+    }
+
+    public function testSaveDoesNotChangeStdUrlOfOtherCategory(): void
+    {
+        $mainCategory = $this->createCategory();
+        $secondCategory = $this->createCategory();
+        $product = $this->createProduct(['categories' => [$mainCategory, $secondCategory]]);
+
+        $this->saveSeo($product, $this->getParams('oxcategory', $mainCategory->getId()));
+        $this->saveSeo($product, $this->getParams('oxcategory', $secondCategory->getId()));
+
+        $this->assertSame(
+            $this->getExpectedStdUrl($product, 'oxcategory', $mainCategory->getId()),
+            $this->getStdUrl($product, $mainCategory->getId())
+        );
+    }
+
+    public function testSaveWithoutContextStoresStdUrlWithoutContext(): void
+    {
+        $product = $this->createProduct([]);
+
+        $this->saveSeo($product, '');
+
+        $this->assertSame($this->getExpectedStdUrl($product), $this->getStdUrl($product, ''));
+    }
+
+    public function testSaveWithUnknownContextTypeStoresStdUrlWithoutContext(): void
     {
         $category = $this->createCategory();
-        $product = $this->createProduct(['category' => $category]);
+        $product = $this->createProduct(['categories' => [$category]]);
 
-        $this->saveSeo($product, 'oxcategory#' . $category->getId() . '#' . $this->languageId);
+        $this->saveSeo($product, $this->getParams('oxcategori', $category->getId()));
 
-        $stdUrl = $this->getStdUrl($product, $category->getId());
-        $this->assertStringContainsString('anid=' . $product->getId(), $stdUrl);
-        $this->assertStringContainsString('cnid=' . $category->getId(), $stdUrl);
+        $this->assertSame($this->getExpectedStdUrl($product), $this->getStdUrl($product, $category->getId()));
     }
 
-    public function testSaveKeepsVendorContextInStdUrl(): void
+    #[DataProvider('contextDataProvider')]
+    public function testSaveStoresRelativeStdUrlWithLanguageUrl(string $contextType): void
     {
-        $vendor = $this->createVendor();
-        $product = $this->createProduct(['vendor' => $vendor]);
+        Registry::getConfig()->saveShopConfVar(
+            'arr',
+            'aLanguageURLs',
+            [self::SECOND_LANGUAGE_ID => 'http://second-language.local/']
+        );
+        [$product, $contextId] = $this->createProductInContext($contextType);
 
-        $this->saveSeo($product, 'oxvendor#' . $vendor->getId() . '#' . $this->languageId);
+        $this->saveSeo($product, $this->getParams($contextType, $contextId, self::SECOND_LANGUAGE_ID));
 
-        $stdUrl = $this->getStdUrl($product, $vendor->getId());
-        $this->assertStringContainsString('cnid=v_' . $vendor->getId(), $stdUrl);
-        $this->assertStringContainsString('listtype=vendor', $stdUrl);
-    }
-
-    public function testSaveKeepsManufacturerContextInStdUrl(): void
-    {
-        $manufacturer = $this->createManufacturer();
-        $product = $this->createProduct(['manufacturer' => $manufacturer]);
-
-        $this->saveSeo($product, 'oxmanufacturer#' . $manufacturer->getId() . '#' . $this->languageId);
-
-        $stdUrl = $this->getStdUrl($product, $manufacturer->getId());
-        $this->assertStringContainsString('mnid=' . $manufacturer->getId(), $stdUrl);
-        $this->assertStringContainsString('listtype=manufacturer', $stdUrl);
-    }
-
-    public function testSaveKeepsStdUrlGeneratedByOpeningTabForCategory(): void
-    {
-        $category = $this->createCategory();
-        $product = $this->createProduct(['category' => $category]);
-        $params = 'oxcategory#' . $category->getId() . '#' . $this->languageId;
-
-        $this->openSeo($product, $params);
-        $generatedStdUrl = $this->getStdUrl($product, $category->getId());
-        $this->saveSeo($product, $params);
-
-        $this->assertSame($generatedStdUrl, $this->getStdUrl($product, $category->getId()));
-    }
-
-    public function testSaveKeepsStdUrlGeneratedByOpeningTabForVendor(): void
-    {
-        $vendor = $this->createVendor();
-        $product = $this->createProduct(['vendor' => $vendor]);
-        $params = 'oxvendor#' . $vendor->getId() . '#' . $this->languageId;
-
-        $this->openSeo($product, $params);
-        $generatedStdUrl = $this->getStdUrl($product, $vendor->getId());
-        $this->saveSeo($product, $params);
-
-        $this->assertSame($generatedStdUrl, $this->getStdUrl($product, $vendor->getId()));
-    }
-
-    public function testSaveKeepsStdUrlGeneratedByOpeningTabForManufacturer(): void
-    {
-        $manufacturer = $this->createManufacturer();
-        $product = $this->createProduct(['manufacturer' => $manufacturer]);
-        $params = 'oxmanufacturer#' . $manufacturer->getId() . '#' . $this->languageId;
-
-        $this->openSeo($product, $params);
-        $generatedStdUrl = $this->getStdUrl($product, $manufacturer->getId());
-        $this->saveSeo($product, $params);
-
-        $this->assertSame($generatedStdUrl, $this->getStdUrl($product, $manufacturer->getId()));
+        $this->assertSame(
+            $this->getExpectedStdUrl($product, $contextType, $contextId),
+            $this->getStdUrl($product, $contextId, self::SECOND_LANGUAGE_ID)
+        );
     }
 
     public function testSaveStoresSubmittedSeoUrlUnderCategoryParam(): void
     {
         $category = $this->createCategory();
-        $product = $this->createProduct(['category' => $category]);
+        $product = $this->createProduct(['categories' => [$category]]);
 
-        $seoUrl = $this->saveSeo($product, 'oxcategory#' . $category->getId() . '#' . $this->languageId);
+        $seoUrl = $this->saveSeo($product, $this->getParams('oxcategory', $category->getId()));
 
         $row = $this->fetchSeoRow($product, $category->getId());
         $this->assertSame($seoUrl, $row['OXSEOURL']);
         $this->assertSame($category->getId(), $row['OXPARAMS']);
+    }
+
+    private function createProductInContext(string $contextType): array
+    {
+        $context = match ($contextType) {
+            'oxcategory' => $this->createCategory(),
+            'oxvendor' => $this->createVendor(),
+            'oxmanufacturer' => $this->createManufacturer(),
+        };
+        $product = $this->createProduct(match ($contextType) {
+            'oxcategory' => ['categories' => [$context]],
+            'oxvendor' => ['vendor' => $context],
+            'oxmanufacturer' => ['manufacturer' => $context],
+        });
+
+        return [$product, $context->getId()];
+    }
+
+    private function getParams(string $contextType, string $contextId, int $languageId = self::LANGUAGE_ID): string
+    {
+        return $contextType . '#' . $contextId . '#' . $languageId;
+    }
+
+    private function getExpectedStdUrl(Article $product, ?string $contextType = null, ?string $contextId = null): string
+    {
+        $contextParameters = match ($contextType) {
+            'oxcategory' => '&amp;cnid=' . $contextId,
+            'oxvendor' => '&amp;cnid=v_' . $contextId . '&amp;listtype=vendor',
+            'oxmanufacturer' => '&amp;mnid=' . $contextId . '&amp;listtype=manufacturer',
+            null => '',
+        };
+
+        return 'index.php?cl=details&amp;anid=' . $product->getId() . $contextParameters;
     }
 
     private function openSeo(Article $product, string $params): void
@@ -150,17 +211,17 @@ final class ArticleSeoTest extends IntegrationTestCase
         return $seoUrl;
     }
 
-    private function getStdUrl(Article $product, string $context): string
+    private function getStdUrl(Article $product, string $context, int $languageId = self::LANGUAGE_ID): string
     {
-        return $this->fetchSeoRow($product, $context)['OXSTDURL'];
+        return $this->fetchSeoRow($product, $context, $languageId)['OXSTDURL'];
     }
 
-    private function fetchSeoRow(Article $product, string $context): array
+    private function fetchSeoRow(Article $product, string $context, int $languageId = self::LANGUAGE_ID): array
     {
         return $this->getConnection()->fetchAssociative(
             'SELECT * FROM `oxseo`
              WHERE `OXOBJECTID` = ? AND `OXTYPE` = "oxarticle" AND `OXLANG` = ? AND `OXPARAMS` = ?',
-            [$product->getId(), $this->languageId, $context]
+            [$product->getId(), $languageId, $context]
         );
     }
 
@@ -189,11 +250,12 @@ final class ArticleSeoTest extends IntegrationTestCase
                 $relations['manufacturer']->getId()
             );
         }
-        if (isset($relations['category'])) {
+        foreach ($relations['categories'] ?? [] as $position => $category) {
             $productToCategory = oxNew(Object2Category::class);
             $productToCategory->setId((string) Id::generate());
             $productToCategory->setProductId($product->getId());
-            $productToCategory->setCategoryId($relations['category']->getId());
+            $productToCategory->setCategoryId($category->getId());
+            $productToCategory->oxobject2category__oxtime = new Field($position);
             $productToCategory->save();
         }
 

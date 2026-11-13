@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use Symfony\Component\Filesystem\Filesystem;
+
 use function dirname;
 use function in_array;
 
@@ -112,10 +113,9 @@ class ShopConfigurationDao implements ShopConfigurationDaoInterface
      */
     public function deleteAll(): void
     {
-        if ($this->fileSystem->exists($this->getShopsConfigurationDirectory())) {
-            $this->fileSystem->remove(
-                $this->getShopsConfigurationDirectory()
-            );
+        foreach ($this->getShopIds() as $shopId) {
+            $this->save(new ShopConfiguration(), $shopId);
+            $this->fileSystem->remove($this->context->getActiveModuleServicesFilePath($shopId));
         }
     }
 

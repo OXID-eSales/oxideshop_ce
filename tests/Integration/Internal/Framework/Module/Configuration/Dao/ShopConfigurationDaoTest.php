@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Env\EnvUrlFormatter;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataMapper\{
     ModuleConfiguration\ModuleSettingsDataMapper};
+use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ClassExtensionsChain;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ShopConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Exception\ShopConfigurationNotFoundException;
@@ -21,6 +22,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Storage\FileStorageFactoryInter
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 final class ShopConfigurationDaoTest extends IntegrationTestCase
@@ -151,20 +153,43 @@ final class ShopConfigurationDaoTest extends IntegrationTestCase
         $this->assertSame([1, 2], $shopIds);
     }
 
-    public function testDeleteAll(): void
+    public function testDeleteAllResetsTheModuleConfigurationOfEveryShop(): void
     {
-        $this->expectException(ShopConfigurationNotFoundException::class);
         $shopConfigurationDao = $this->get(ShopConfigurationDaoInterface::class);
-        $shopConfigurationDao->save(new ShopConfiguration(), 1);
-        $shopConfigurationDao->save(new ShopConfiguration(), 2);
-        $shopConfigurationDao->save(new ShopConfiguration(), 3);
+        $module = new ModuleConfiguration();
+        $module
+            ->setId('test')
+            ->setModuleSource('test');
+        $shopConfiguration = new ShopConfiguration();
+        $shopConfiguration->addModuleConfiguration($module);
+        $shopConfiguration->setClassExtensionsChain(new ClassExtensionsChain(['shopClass' => ['moduleClass']]));
+        $shopConfigurationDao->save($shopConfiguration, 1);
+        $shopConfigurationDao->save($shopConfiguration, 2);
 
         $shopConfigurationDao->deleteAll();
 
-        $this->expectException(ShopConfigurationNotFoundException::class);
         $this->assertEquals(
-            [],
-            $shopConfigurationDao->get(1)
+            [new ShopConfiguration(), new ShopConfiguration()],
+            [$shopConfigurationDao->get(1), $shopConfigurationDao->get(2)]
+        );
+    }
+
+    public function testDeleteAllKeepsThemeConfigurationAndShopParametersButDropsModuleServices(): void
+    {
+        $context = $this->get(ContextInterface::class);
+        $themeConfiguration = Path::join($context->getShopConfigurationDirectory(1), 'themes', 'some-theme.yaml');
+        $shopParameters = Path::join($context->getShopConfigurationDirectory(1), 'parameters.yaml');
+        $moduleServices = $context->getActiveModuleServicesFilePath(1);
+        $filesystem = new Filesystem();
+        $filesystem->dumpFile($themeConfiguration, 'id: some-theme');
+        $filesystem->dumpFile($shopParameters, 'parameters: {  }');
+        $filesystem->dumpFile($moduleServices, 'imports: {  }');
+
+        $this->get(ShopConfigurationDaoInterface::class)->deleteAll();
+
+        $this->assertSame(
+            [true, true, false],
+            [is_file($themeConfiguration), is_file($shopParameters), is_file($moduleServices)]
         );
     }
 

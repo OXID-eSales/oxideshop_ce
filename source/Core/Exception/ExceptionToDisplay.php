@@ -48,6 +48,8 @@ class ExceptionToDisplay implements \OxidEsales\Eshop\Core\Contract\IDisplayErro
      */
     private $_sType;
 
+    protected $_aMessageArgs = [];
+
     /**
      * Stack trace setter
      *

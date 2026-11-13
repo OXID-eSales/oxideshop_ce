@@ -20,11 +20,19 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Exception\T
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 final class ThemeConfigurationDaoTest extends IntegrationTestCase
 {
     private const SHOP_ID = 1;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->get(ThemeConfigurationDaoInterface::class)->deleteAll(self::SHOP_ID);
+    }
 
     public function testSaveAndGet(): void
     {
@@ -285,10 +293,7 @@ final class ThemeConfigurationDaoTest extends IntegrationTestCase
 
     private function saveMalformedYaml(string $themeId): void
     {
-        $path = $this->getConfigurationFilePath($themeId);
-        mkdir(dirname($path), 0777, true);
-
-        file_put_contents($path, "themeSettings: [unclosed\n");
+        (new Filesystem())->dumpFile($this->getConfigurationFilePath($themeId), "themeSettings: [unclosed\n");
     }
 
     private function getConfigurationFilePath(string $themeId): string

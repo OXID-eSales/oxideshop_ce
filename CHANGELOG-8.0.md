@@ -127,6 +127,7 @@
 - The method `prepareModulesInformation` now returns module data as arrays instead of stdClass objects
 - `SetupDbValidatorInterface` no longer throws `DatabaseNotEmptyException`; database checks are now handled by a separate validator.
 - `database_schema.sql` no longer removes existing `oxmigrations` tables during shop setup. The schema dump should only be applied to an empty database.
+- The default `OXID_SHOP_BASE_URL` in `.env.dist` uses HTTPS
 
 ### Deprecated
 

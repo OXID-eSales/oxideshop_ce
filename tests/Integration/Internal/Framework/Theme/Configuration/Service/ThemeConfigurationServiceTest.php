@@ -81,8 +81,6 @@ final class ThemeConfigurationServiceTest extends IntegrationTestCase
 
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, self::SHOP_ID);
 
-        if ($activated) {
-            $this->setParameter('oxid_esales.theme.active', self::THEME_ID);
-        }
+        $this->setParameter('oxid_esales.theme.active', $activated ? self::THEME_ID : '');
     }
 }

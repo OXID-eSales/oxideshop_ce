@@ -917,7 +917,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getDir($file, $dir, $admin, $lang = null, $shop = null, $theme = null, $absolute = true, $ignoreParentTheme = false)
     {
-        if ($this->isAdminTemplateDir($dir, $admin)) {
+        if ($this->isAdminTemplateDir((string) $dir, (bool) $admin)) {
             return false;
         }
 
@@ -962,7 +962,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
         }
 
         try {
-            $absThemeBase = $this->getThemeDir($absBase, $dir, $admin, $theme);
+            $absThemeBase = $this->getThemeDir($absBase, (string) $dir, (bool) $admin, (string) $theme);
         } catch (ThemeNotLoadableException $exception) {
             Registry::getLogger()->warning(
                 "Files of theme '$theme' are not found because it could not be loaded for shop $shop",
@@ -1026,7 +1026,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * @throws ThemeNotLoadableException
      */
-    private function getThemeDir(string $absBase, $dir, $admin, $theme): string
+    private function getThemeDir(string $absBase, string $dir, bool $admin, string $theme): string
     {
         if (!$this->isStorefrontThemeTemplateDir($dir, $admin, $theme)) {
             return "{$absBase}{$theme}/";
@@ -1040,14 +1040,14 @@ class Config extends \OxidEsales\Eshop\Core\Base
         return Path::makeRelative($path, ContainerFacade::getParameter('oxid_esales.shop_source_directory')) . '/';
     }
 
-    private function isAdminTemplateDir($dir, $admin): bool
+    private function isAdminTemplateDir(string $dir, bool $admin): bool
     {
-        return $dir == $this->_sTemplateDir && $admin;
+        return $admin && $dir === $this->_sTemplateDir;
     }
 
-    private function isStorefrontThemeTemplateDir($dir, $admin, $theme): bool
+    private function isStorefrontThemeTemplateDir(string $dir, bool $admin, string $theme): bool
     {
-        return $dir == $this->_sTemplateDir && !$admin && $theme;
+        return !$admin && $theme !== '' && $dir === $this->_sTemplateDir;
     }
 
     private function getDirFromParentTheme($file, $dir, $admin, $lang, $shop, $theme, $absolute, $ignoreParentTheme): bool|string

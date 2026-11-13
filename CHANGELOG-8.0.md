@@ -38,7 +38,7 @@
   - `Config::getShopLevelDir()` receives the theme's directory instead of `Application/views` as base path
 - The admin UI is read from the `vendor` directory instead of `Application/views/admin_twig`
   - `cust_lang.php` of the admin is no longer loaded, use module translations instead
-  - `Config::getTemplatePath()` and `Config::getTemplateDir()` no longer return admin templates, use `AdminUiFileLocatorInterface` instead
+  - `Config::getTemplatePath()`, `Config::getTemplateDir()`, `Config::getDir()` and `ViewConfig::getTemplateDir()` no longer return admin templates, use `AdminUiFileLocatorInterface` instead
 - DI parameter `oxid_esales.theme.admin.name` renamed to `oxid_esales.admin_ui.name`, the same for `oxid_esales.theme.admin.media.*`
 
 ### Deprecated

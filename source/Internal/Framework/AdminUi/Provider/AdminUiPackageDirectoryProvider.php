@@ -17,11 +17,12 @@ readonly class AdminUiPackageDirectoryProvider implements AdminUiDirectoryProvid
     public function __construct(
         private BasicContextInterface $context,
         private string $packageName,
+        private string $relativePath = '',
     ) {
     }
 
     public function getDirectory(): string
     {
-        return Path::join($this->context->getVendorPath(), $this->packageName);
+        return Path::join($this->context->getVendorPath(), $this->packageName, $this->relativePath);
     }
 }

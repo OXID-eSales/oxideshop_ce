@@ -57,9 +57,10 @@ class ContainerFactory implements ContainerProviderInterface
 
     private function initializeContainer(): void
     {
-        if ($this->cache->exists(self::getShopId())) {
+        try {
             $this->symfonyContainer = $this->cache->get(self::getShopId());
-        } else {
+        } catch (\Throwable) {
+            // cache is missing, unreadable or corrupt (e.g. ParseError): rebuild it
             $this->compileSymfonyContainer();
             $this->cache->put($this->symfonyContainer, self::getShopId());
         }

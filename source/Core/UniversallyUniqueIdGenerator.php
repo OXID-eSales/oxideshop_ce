@@ -7,33 +7,13 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
-use OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker;
-
 /**
  * Class oxUniversallyUniqueIdGenerator used as universally unique id generator.
  */
 class UniversallyUniqueIdGenerator
 {
     /**
-     * @var OpenSSLFunctionalityChecker
-     */
-    private $_openSSLChecker;
-
-    /**
-     * Sets dependencies.
-     *
-     * @param OpenSSLFunctionalityChecker|null $openSSLChecker
-     */
-    public function __construct(?OpenSSLFunctionalityChecker $openSSLChecker = null)
-    {
-        if (is_null($openSSLChecker)) {
-            $openSSLChecker = oxNew(OpenSSLFunctionalityChecker::class);
-        }
-        $this->_openSSLChecker = $openSSLChecker;
-    }
-
-    /**
-     * Generates UUID based on either openSSL's openssl_random_pseudo_bytes or mt_rand.
+     * Generates UUID.
      *
      * @return string
      */
@@ -51,11 +31,11 @@ class UniversallyUniqueIdGenerator
      */
     public function generateV4()
     {
-        if ($this->getOpenSSLChecker()->isOpenSslRandomBytesGeneratorAvailable()) {
-            return $this->generateBasedOnOpenSSL();
-        }
+        $sRandomData = random_bytes(16);
+        $sRandomData[6] = chr(ord($sRandomData[6]) & 0x0f | 0x40); // set version to 0100
+        $sRandomData[8] = chr(ord($sRandomData[8]) & 0x3f | 0x80); // set bits 6-7 to 10
 
-        return $this->generateBasedOnMtRand();
+        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($sRandomData), 4));
     }
 
     /**
@@ -84,49 +64,5 @@ class UniversallyUniqueIdGenerator
         );
 
         return $sUUID;
-    }
-
-    /**
-     * gets open SSL checker.
-     *
-     * @return OpenSSLFunctionalityChecker
-     */
-    protected function getOpenSSLChecker()
-    {
-        return $this->_openSSLChecker;
-    }
-
-    /**
-     * Generates UUID based on OpenSSL's openssl_random_pseudo_bytes.
-     *
-     * @return string
-     */
-    protected function generateBasedOnOpenSSL()
-    {
-        $sRandomData = openssl_random_pseudo_bytes(16);
-        $sRandomData[6] = chr(ord($sRandomData[6]) & 0x0f | 0x40); // set version to 0100
-        $sRandomData[8] = chr(ord($sRandomData[8]) & 0x3f | 0x80); // set bits 6-7 to 10
-
-        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($sRandomData), 4));
-    }
-
-    /**
-     * Generates UUID based on mt_rand.
-     *
-     * @return string
-     */
-    protected function generateBasedOnMtRand()
-    {
-        return sprintf(
-            '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0x0fff) | 0x4000,
-            mt_rand(0, 0x3fff) | 0x8000,
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff),
-            mt_rand(0, 0xffff)
-        );
     }
 }

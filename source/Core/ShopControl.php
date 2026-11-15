@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\RateLimitResponderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface;
@@ -572,7 +573,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         if ($this->isDebugMode() && !$this->isAdmin()) {
             $debugInfo = oxNew(\OxidEsales\Eshop\Core\DebugInfo::class);
 
-            $logId = md5(time() . rand() . rand());
+            $logId = Id::generate();
             $header = $debugInfo->formatGeneralInfo();
             $display = 'none';
             $monitorMessage = $this->formMonitorMessage($view);

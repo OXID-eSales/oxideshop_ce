@@ -11,6 +11,7 @@ use OxidEsales\Eshop\Core\Exception\FileException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Path\ModuleAssetsPathResolverBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Facade\ThemeSettingServiceInterface;
@@ -730,7 +731,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     public function getPopupIdentRand()
     {
         if (($sValue = $this->getViewConfigParam('popupidentrand')) === null) {
-            $sValue = md5(time());
+            $sValue = Id::generate();
             $this->setViewConfigParam('popupidentrand', $sValue);
         }
 

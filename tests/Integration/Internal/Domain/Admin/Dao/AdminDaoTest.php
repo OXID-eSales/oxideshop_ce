@@ -27,7 +27,7 @@ final class AdminDaoTest extends IntegrationTestCase
             email: $this->generateEmail(),
             passwordHash: md5(uniqid()),
             rights: uniqid(),
-            shopId: rand(1, 10),
+            shopId: random_int(1, 10),
         );
 
         $this->getAdminDao()->create($admin);
@@ -39,7 +39,7 @@ final class AdminDaoTest extends IntegrationTestCase
     public function testCreateThrowsExceptionIfEmailAlreadyExists(): void
     {
         $email = $this->generateEmail();
-        $shopId = rand(1, 10);
+        $shopId = random_int(1, 10);
 
         $admin = new Admin(
             id: uniqid(),

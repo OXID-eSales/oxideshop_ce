@@ -9,28 +9,35 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Templating\Locator;
 
-class AdminNavigationFileLocator implements NavigationFileLocatorInterface
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Exception\AdminUiDirectoryNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiFileLocatorInterface;
+
+readonly class AdminNavigationFileLocator implements NavigationFileLocatorInterface
 {
-    /**
-     * @param NavigationFileLocatorInterface[] $menuFileLocators
-     */
-    public function __construct(private iterable $menuFileLocators = [])
-    {
+    private const USER_FILE_NAME = 'user.xml';
+    private const MENU_FILE_NAME = 'menu.xml';
+
+    /** @param iterable<NavigationFileLocatorInterface> $menuFileLocators */
+    public function __construct(
+        private AdminUiFileLocatorInterface $adminUiFileLocator,
+        private iterable $menuFileLocators = [],
+    ) {
     }
 
     /**
-     * Returns a full path for a given file name.
-     *
-     * @return array An array of file paths
-     *
-     * @throws \Exception
+     * @return string[]
+     * @throws AdminUiDirectoryNotFoundException
      */
     public function locate(): array
     {
-        $menuFilePaths = [];
-        foreach ($this->menuFileLocators as $locator) {
-            $menuFilePaths[] = $locator->locate();
+        $menuFilePaths = [
+            $this->adminUiFileLocator->locate(self::USER_FILE_NAME),
+            $this->adminUiFileLocator->locate(self::MENU_FILE_NAME),
+        ];
+        foreach ($this->menuFileLocators as $menuFileLocator) {
+            $menuFilePaths[] = $menuFileLocator->locate();
         }
-        return array_merge([], ...$menuFilePaths);
+
+        return array_merge(...$menuFilePaths);
     }
 }

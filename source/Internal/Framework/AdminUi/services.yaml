@@ -1,0 +1,13 @@
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiDirectoryResolverInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiDirectoryResolver
+    arguments:
+      $directoryProviders: !tagged_iterator oxid_esales.admin_ui.directory_provider
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiFileLocatorInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiFileLocator
+    public: true

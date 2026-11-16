@@ -1,0 +1,19 @@
+imports:
+  - { resource: parameters.yaml }
+
+services:
+  _defaults:
+    autowire: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Provider\AdminUiPackageDirectoryProvider:
+    arguments:
+      $packageName: '%oxid_esales.admin_ui.package_name%'
+    tags:
+      - { name: 'oxid_esales.admin_ui.directory_provider', priority: 100 }
+
+  OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiAssetsInstallerInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiAssetsInstaller
+    arguments:
+      $directoryProvider: '@OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Provider\AdminUiPackageDirectoryProvider'
+      $adminUiName: '%oxid_esales.admin_ui.name%'
+    public: true

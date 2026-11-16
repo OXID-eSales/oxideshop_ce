@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Core\Exception\LanguageNotFoundException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Exception\AdminUiDirectoryNotFoundException;
+use OxidEsales\EshopCommunity\Internal\Framework\AdminUi\Service\AdminUiDirectoryResolverInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\AdminAreaModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Translation\Bridge\FrontendModuleTranslationFileLocatorBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Exception\ActiveThemeNotFoundException;
@@ -335,24 +337,17 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * Returns languages array containing possible admin template translations
      *
      * @return array
+     *
+     * @throws AdminUiDirectoryNotFoundException
      */
     public function getAdminTplLanguageArray()
     {
         if ($this->_aAdminTplLanguageArray === null) {
-            $config = Registry::getConfig();
-
-            $langArray = $this->getLanguageArray();
+            $adminUiDirectories = $this->getAdminUiDirectories();
             $this->_aAdminTplLanguageArray = [];
 
-            $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
-            $sourceDirectory =
-                $config->getAppDir() .
-                'views' . DIRECTORY_SEPARATOR .
-                $adminThemeName . DIRECTORY_SEPARATOR;
-
-            foreach ($langArray as $langKey => $language) {
-                $filePath = $sourceDirectory . $language->abbr . DIRECTORY_SEPARATOR . 'lang.php';
-                if (file_exists($filePath) && is_readable($filePath)) {
+            foreach ($this->getLanguageArray() as $langKey => $language) {
+                if ($this->hasAdminUiLangFile($adminUiDirectories, $language->abbr)) {
                     $this->_aAdminTplLanguageArray[$langKey] = $language;
                 }
             }
@@ -714,27 +709,27 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param int $activeLanguage The active language
      *
      * @return array
+     *
+     * @throws AdminUiDirectoryNotFoundException
      */
     protected function getAdminLangFilesPathArray($activeLanguage)
     {
         $config = Registry::getConfig();
-        $langFiles = [];
 
         $appDirectory = $config->getAppDir();
         $language = Registry::getLang()->getLanguageAbbr($activeLanguage);
 
-        $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
-        $adminPath = $appDirectory .
-            'views' . DIRECTORY_SEPARATOR .
-            $adminThemeName . DIRECTORY_SEPARATOR .
-            $language;
-
-        $langFiles[] = $adminPath . DIRECTORY_SEPARATOR . 'lang.php';
-        $langFiles[] = $appDirectory .
-            'translations' . DIRECTORY_SEPARATOR .
+        $langFiles = [
+            $appDirectory . 'translations' . DIRECTORY_SEPARATOR .
             $language . DIRECTORY_SEPARATOR .
-            'translit_lang.php';
-        $langFiles = $this->appendLangFile($langFiles, $adminPath);
+            'translit_lang.php',
+        ];
+        foreach (array_reverse($this->getAdminUiDirectories()) as $adminUiDirectory) {
+            $langFiles = array_merge(
+                $langFiles,
+                $this->getAbbreviationDirectoryLanguageFiles($adminUiDirectory . $language)
+            );
+        }
 
         $themeDirectories = $this->getInstalledThemeDirectories();
         foreach ([$language, 'translations' . DIRECTORY_SEPARATOR . $language] as $languageDirectory) {
@@ -744,8 +739,6 @@ class Language extends \OxidEsales\Eshop\Core\Base
         }
 
         $langFiles = $this->appendModuleLangFilesForAdminArea($langFiles, $language);
-
-        $langFiles = $this->appendCustomLangFiles($langFiles, $language, true);
 
         return count($langFiles) ? $langFiles : false;
     }
@@ -778,40 +771,16 @@ class Language extends \OxidEsales\Eshop\Core\Base
      *
      * @param array  $languageFiles existing language files
      * @param string $language      language abbreviation
-     * @param bool   $forAdmin      add files for admin
      *
      * @return array
      */
-    protected function appendCustomLangFiles($languageFiles, $language, $forAdmin = false)
+    protected function appendCustomLangFiles($languageFiles, $language)
     {
-        if ($forAdmin) {
-            $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
-            $languageFiles[] = $this->getCustomFilePath($language, $adminThemeName);
-
-            return $languageFiles;
-        }
-
         foreach ($this->getActiveThemeDirectories() as $themeDirectory) {
             $languageFiles[] = $themeDirectory . $language . DIRECTORY_SEPARATOR . 'cust_lang.php';
         }
 
         return $languageFiles;
-    }
-
-    /**
-     * @param int    $language  The language index
-     * @param string $themeName The name of the theme
-     *
-     * @return string
-     */
-    private function getCustomFilePath($language, $themeName)
-    {
-        $config = Registry::getConfig();
-        return $config->getAppDir() .
-            'views' . DIRECTORY_SEPARATOR .
-            $themeName . DIRECTORY_SEPARATOR  .
-            $language . DIRECTORY_SEPARATOR .
-            'cust_lang.php';
     }
 
     /**
@@ -918,6 +887,8 @@ class Language extends \OxidEsales\Eshop\Core\Base
      * @param bool $isAdmin  admin mode [default NULL]
      *
      * @return array
+     *
+     * @throws AdminUiDirectoryNotFoundException
      */
     protected function getLanguageMap($language, $isAdmin = null)
     {
@@ -929,7 +900,7 @@ class Language extends \OxidEsales\Eshop\Core\Base
             $mapFile = '';
             $languageAbbr = Registry::getLang()->getLanguageAbbr($language);
             $possibleMapFileLocations = $isAdmin
-                ? $this->getAdminThemeLanguageFileMapLocations($languageAbbr)
+                ? $this->getAdminUiLanguageFileMapLocations($languageAbbr)
                 : $this->getThemeInheritanceLanguageFileMapLocations($languageAbbr);
 
             foreach ($possibleMapFileLocations as $tmpMapFileLocation) {
@@ -951,18 +922,45 @@ class Language extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * @param string $languageAbbreviation Language abbreviation
-     *
      * @return string[]
+     * @throws AdminUiDirectoryNotFoundException
      */
-    private function getAdminThemeLanguageFileMapLocations(string $languageAbbreviation): array
+    private function getAdminUiLanguageFileMapLocations(string $languageAbbreviation): array
     {
-        $adminThemeName = ContainerFacade::getParameter('oxid_esales.theme.admin.name');
-        $themeDirectory = Registry::getConfig()->getAppDir() . DIRECTORY_SEPARATOR
-            . 'views' . DIRECTORY_SEPARATOR
-            . $adminThemeName . DIRECTORY_SEPARATOR;
+        $locations = [];
 
-        return $this->getThemeLanguageFileMapLocations($themeDirectory, $languageAbbreviation);
+        foreach ($this->getAdminUiDirectories() as $adminUiDirectory) {
+            $locations = array_merge(
+                $locations,
+                $this->getThemeLanguageFileMapLocations($adminUiDirectory, $languageAbbreviation)
+            );
+        }
+
+        return $locations;
+    }
+
+    /** @param string[] $adminUiDirectories */
+    private function hasAdminUiLangFile(array $adminUiDirectories, string $languageAbbreviation): bool
+    {
+        foreach ($adminUiDirectories as $adminUiDirectory) {
+            if (is_readable($adminUiDirectory . $languageAbbreviation . DIRECTORY_SEPARATOR . 'lang.php')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return string[]
+     * @throws AdminUiDirectoryNotFoundException
+     */
+    private function getAdminUiDirectories(): array
+    {
+        return array_map(
+            fn (string $directory): string => $directory . DIRECTORY_SEPARATOR,
+            ContainerFacade::get(AdminUiDirectoryResolverInterface::class)->getDirectories()
+        );
     }
 
     /** @return string[] */

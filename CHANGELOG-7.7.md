@@ -28,6 +28,7 @@
 - Password reset links are invalidated when the user's email address or password is changed
 - `oe:database:migrate --write-sql` keeps the SQL of all migration sets instead of only the last one [#0006869](https://bugs.oxid-esales.com/view.php?id=6869)
 - `class_exists()` checks for unknown classes no longer cause a circular service reference while the DI container is being built
+- Product SEO url context is kept when the SEO settings are saved in the admin area, existing entries need to be saved again [#0007952](https://bugs.oxid-esales.com/view.php?id=7952)
 
 ### Removed
 - PHP v8.3 support

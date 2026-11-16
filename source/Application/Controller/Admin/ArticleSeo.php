@@ -284,6 +284,24 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         return $this->getEditObjectId();
     }
 
+    protected function getStdUrl($sOxid)
+    {
+        $stdUrl = parent::getStdUrl($sOxid);
+        $contextId = $this->getActCatId();
+        if (!$stdUrl || !$contextId) {
+            return $stdUrl;
+        }
+
+        $contextParameters = match ($this->getActCatType()) {
+            'oxvendor' => ['cnid' => 'v_' . $contextId, 'listtype' => $this->getListType()],
+            'oxmanufacturer' => ['mnid' => $contextId, 'listtype' => $this->getListType()],
+            'oxcategory' => ['cnid' => $contextId],
+            default => [],
+        };
+
+        return Registry::getUtilsUrl()->appendUrl($stdUrl, $contextParameters);
+    }
+
     /**
      * Returns url type
      *

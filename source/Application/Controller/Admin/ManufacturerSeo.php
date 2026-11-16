@@ -64,6 +64,11 @@ class ManufacturerSeo extends \OxidEsales\Eshop\Application\Controller\Admin\Obj
         return Manufacturer::class;
     }
 
+    protected function getSeoEntryType()
+    {
+        return 'oxmanufacturer';
+    }
+
     /**
      * Returns true if SEO object id has suffix enabled
      *

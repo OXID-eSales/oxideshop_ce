@@ -15,8 +15,8 @@ install:
           "ddoe/*": "source"
         },
         "require": {
-          "oxid-esales/twig-component": "dev-b-8.0.x",
-          "oxid-esales/twig-admin-theme": "dev-b-8.0.x",
+          "oxid-esales/twig-component": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525",
+          "oxid-esales/twig-admin-theme": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525",
           "oxid-esales/apex-theme": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525"
         }
       }

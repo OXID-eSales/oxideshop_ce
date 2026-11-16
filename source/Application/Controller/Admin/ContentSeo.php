@@ -24,6 +24,11 @@ class ContentSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         return Content::class;
     }
 
+    protected function getSeoEntryType()
+    {
+        return 'oxcontent';
+    }
+
     /**
      * Returns current object type seo encoder object
      *

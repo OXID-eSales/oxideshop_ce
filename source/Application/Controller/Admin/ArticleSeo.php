@@ -310,6 +310,11 @@ class ArticleSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSe
         return Article::class;
     }
 
+    protected function getSeoEntryType()
+    {
+        return 'oxarticle';
+    }
+
     /**
      * Processes parameter before writing to db
      *

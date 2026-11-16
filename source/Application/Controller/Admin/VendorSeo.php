@@ -77,6 +77,11 @@ class VendorSeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectSeo
         return Vendor::class;
     }
 
+    protected function getSeoEntryType()
+    {
+        return 'oxvendor';
+    }
+
     /**
      * Returns seo uri
      *

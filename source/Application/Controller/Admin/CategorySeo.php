@@ -66,6 +66,11 @@ class CategorySeo extends \OxidEsales\Eshop\Application\Controller\Admin\ObjectS
         return Category::class;
     }
 
+    protected function getSeoEntryType()
+    {
+        return 'oxcategory';
+    }
+
     /**
      * Returns true if SEO object id has suffix enabled
      *

@@ -53,10 +53,10 @@ modules:
         - OxidEsales\Codeception\Module\Translation\TranslationsModule:
             shop_path: '%PROJECT_ROOT%/source'
             paths:
-                - 'Application/views/%THEME_ID%'
+                - '%THEME_PATH%'
             paths_admin:
                 - '../vendor/oxid-esales/twig-admin-theme'
-                - 'Application/views/%THEME_ID%'
+                - '%THEME_PATH%'
         - OxidEsales\Codeception\Module\OxideshopModules:
         - Mailpit:
             url: '%MAIL_HOST%'

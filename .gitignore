@@ -31,6 +31,3 @@
 /.env.local
 /.env.local.php
 /.env.*.local
-
-# Template files
-/source/Application/views/*

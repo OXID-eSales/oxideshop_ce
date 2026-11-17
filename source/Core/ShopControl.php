@@ -434,6 +434,13 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     protected function render($view)
     {
         $templateName = $view->render();
+
+        if (empty($templateName)) {
+            throw new RoutingException(
+                sprintf('Controller %s has no template and cannot be rendered', get_class($view))
+            );
+        }
+
         // Output processing. This is useful for modules. As sometimes you may want to process output manually.
         $outputManager = $this->getOutputManager();
         $viewData = $outputManager->processViewArray($view->getViewData(), $view->getClassKey());

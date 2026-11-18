@@ -34,13 +34,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected $_aLangParams = null;
 
-    /**
-     * Current shop base languages base urls
-     *
-     * @var array
-     */
-    protected $_aLanguagesUrls = null;
-
     /** @var \OxidEsales\Eshop\Core\NoJsValidator */
     private $noJsValidator;
 

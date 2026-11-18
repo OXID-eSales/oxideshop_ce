@@ -1637,7 +1637,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      */
     public function getMallShopUrl()
     {
-        $mallShopUrl = $this->getConfigParam('sMallSSLShopURL');
+        $mallShopUrl = $this->getConfigParam('sMallShopURL');
         if ($mallShopUrl) {
             return Registry::getUtils()->checkUrlEndingSlash($mallShopUrl);
         }

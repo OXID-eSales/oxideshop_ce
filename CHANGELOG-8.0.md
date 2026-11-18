@@ -91,6 +91,9 @@
   - The `$imageDirNoSSL` parameter of `Email::includeImages()`
   - The `SSLAltImageUrl` view variable of `ArticleDetails`
 
+### Fixed
+- `Config::getMallShopUrl()` reads `sMallShopURL` instead of `sMallSSLShopURL`, subshops with only `sMallShopURL` set no longer fall back to the main shop URL
+
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*
 

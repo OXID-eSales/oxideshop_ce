@@ -56,7 +56,6 @@ trait MultilanguageTrait
         Registry::getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $languages['params']);
         Registry::getConfig()->saveShopConfVar('aarr', 'aLanguages', $languages['lang']);
         Registry::getConfig()->saveShopConfVar('arr', 'aLanguageURLs', $languages['urls']);
-        Registry::getConfig()->saveShopConfVar('arr', 'aLanguageSSLURLs', $languages['sslUrls']);
 
         if (!$this->getController()->checkMultilangFieldsExistsInDb($languageCode)) {
             $this->getController()->addNewMultilangFieldsToDb();

@@ -41,13 +41,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
      */
     protected $_aLanguagesUrls = null;
 
-    /**
-     * Current shop base languages base ssl urls
-     *
-     * @var array
-     */
-    protected $_aLanguagesSslUrls = null;
-
     /** @var \OxidEsales\Eshop\Core\NoJsValidator */
     private $noJsValidator;
 
@@ -145,7 +138,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         //updating language urls
         $iBaseId = $this->_aLangData['params'][$sOxId]['baseId'];
         $this->_aLangData['urls'][$iBaseId] = $aParams['baseurl'];
-        $this->_aLangData['sslUrls'][$iBaseId] = $aParams['basesslurl'];
 
         //sort parameters, urls and languages arrays by language base id
         $this->sortLangArraysByBaseId();
@@ -157,7 +149,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
             \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aLanguageParams', $this->_aLangData['params']);
             \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('aarr', 'aLanguages', $this->_aLangData['lang']);
             \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('arr', 'aLanguageURLs', $this->_aLangData['urls']);
-            \OxidEsales\Eshop\Core\Registry::getConfig()->saveShopConfVar('arr', 'aLanguageSSLURLs', $this->_aLangData['sslUrls']);
             //checking if added language already has created multilang fields
             //with new base ID - if not, creating new fields
             if ($blNewLanguage) {
@@ -191,7 +182,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $aLangData['abbr'] = $sOxId;
         $aLangData['desc'] = $this->_aLangData['lang'][$sOxId];
         $aLangData['baseurl'] = $this->_aLangData['urls'][$aLangData['baseId']];
-        $aLangData['basesslurl'] = $this->_aLangData['sslUrls'][$aLangData['baseId']];
         $aLangData['default'] = ($this->_aLangData['params'][$sOxId]["baseId"] == $sDefaultLang) ? true : false;
         $aLangData['locale'] = $this->_aLangData['params'][$sOxId]['locale'] ?? '';
 
@@ -220,7 +210,6 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         $aLangData['params'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageParams');
         $aLangData['lang'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguages');
         $aLangData['urls'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageURLs');
-        $aLangData['sslUrls'] = \OxidEsales\Eshop\Core\Registry::getConfig()->getConfigParam('aLanguageSSLURLs');
 
         // empty languages parameters array - creating new one with default values
         if (!is_array($aLangData['params'])) {
@@ -240,7 +229,7 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     {
         foreach (array_keys($this->_aLangData) as $sTypeKey) {
             if (is_array($this->_aLangData[$sTypeKey]) && count($this->_aLangData[$sTypeKey]) > 0) {
-                if ($sTypeKey == 'urls' || $sTypeKey == 'sslUrls') {
+                if ($sTypeKey == 'urls') {
                     continue;
                 }
 
@@ -256,13 +245,12 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     }
 
     /**
-     * Sort languages, languages parameters, urls, ssl urls arrays according
+     * Sort languages, languages parameters, urls arrays according
      * base land ID
      */
     protected function sortLangArraysByBaseId()
     {
         $aUrls = [];
-        $aSslUrls = [];
         $aLanguages = [];
 
         uasort($this->_aLangData['params'], [$this, 'sortLangParamsByBaseIdCallback']);
@@ -270,13 +258,11 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
         foreach ($this->_aLangData['params'] as $sAbbr => $aParams) {
             $iId = (int) $aParams['baseId'];
             $aUrls[$iId] = $this->_aLangData['urls'][$iId];
-            $aSslUrls[$iId] = $this->_aLangData['sslUrls'][$iId];
             $aLanguages[$sAbbr] = $this->_aLangData['lang'][$sAbbr];
         }
 
         $this->_aLangData['lang'] = $aLanguages;
         $this->_aLangData['urls'] = $aUrls;
-        $this->_aLangData['sslUrls'] = $aSslUrls;
     }
 
     /**

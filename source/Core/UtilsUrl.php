@@ -504,7 +504,6 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
 
             // language url
             $this->addLanguageHost($oConfig->getConfigParam('aLanguageURLs'), $this->_aHosts);
-            $this->addLanguageHost($oConfig->getConfigParam('aLanguageSSLURLs'), $this->_aHosts);
 
             // current url
             $this->addHost(ContainerFacade::getParameter('oxid_esales.shop_url'), $this->_aHosts);

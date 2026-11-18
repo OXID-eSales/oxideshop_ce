@@ -110,7 +110,6 @@ INSERT INTO `oxconfig` (`OXID`, `OXSHOPID`, `OXMODULE`, `OXVARNAME`, `OXVARTYPE`
 ('mhjf24905a5b49c8d60aa31087b97971',	1,	'',	'blEnableSeoCache',	'bool',	'1'),
 ('mhjf24905a5b49c8d60aa31087b9797f',	1,	'',	'blShowRememberMe',	'bool',	'1'),
 ('mla50c74dd79703312ffb8cfd82c3741',	1,	'',	'aLanguageURLs',	'arr',	'a:2:{i:0;s:0:\"\";i:1;N;}'),
-('mlabefd7ebdb5946e8f3f7e7a953b323',	1,	'',	'aLanguageSSLURLs',	'arr',	'a:2:{i:0;s:0:\"\";i:1;N;}'),
 ('mlae44cdad808d9b994c58540db39e7a',	1,	'',	'aLanguages',	'aarr',	'a:2:{s:2:\"de\";s:7:\"Deutsch\";s:2:\"en\";s:7:\"English\";}'),
 ('omc4555952125c3c2.98253113',	1,	'',	'blDisableNavBars',	'bool',	'1'),
 ('feb42aecdf7bacc7c76c9d36102da622',	1,	'',	'blSkipDebitOldBankInfo',	'bool',	'1');

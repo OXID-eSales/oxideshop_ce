@@ -44,7 +44,7 @@ class ShopIdCalculator
             $variableName = $row['oxvarname'];
             $urlValues = $row['oxvarvalue'];
 
-            if ($variableName === 'aLanguageURLs' || $variableName === 'aLanguageSSLURLs') {
+            if ($variableName === 'aLanguageURLs') {
                 $urls = unserialize($urlValues, ['allowed_classes' => false]);
                 if (is_array($urls) && count($urls)) {
                     $urls = array_filter($urls);
@@ -69,7 +69,7 @@ class ShopIdCalculator
             ->prepare(
                 "SELECT oxshopid, oxvarname, oxvarvalue
                 FROM oxconfig
-                WHERE oxvarname IN ('aLanguageURLs', 'aLanguageSSLURLs', 'sMallShopURL','sMallSSLShopURL')"
+                WHERE oxvarname IN ('aLanguageURLs', 'sMallShopURL')"
             );
 
         return $statement->executeQuery()->fetchAllAssociative();

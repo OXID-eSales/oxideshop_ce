@@ -41,7 +41,6 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         $aLangData['params'] = $myConfig->getConfigParam('aLanguageParams');
         $aLangData['lang'] = $myConfig->getConfigParam('aLanguages');
         $aLangData['urls'] = $myConfig->getConfigParam('aLanguageURLs');
-        $aLangData['sslUrls'] = $myConfig->getConfigParam('aLanguageSSLURLs');
 
         $iBaseId = (int) $aLangData['params'][$sOxId]['baseId'];
 
@@ -58,13 +57,11 @@ class LanguageList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminL
         unset($aLangData['params'][$sOxId]);
         unset($aLangData['lang'][$sOxId]);
         unset($aLangData['urls'][$iBaseId]);
-        unset($aLangData['sslUrls'][$iBaseId]);
 
         //saving languages info back to DB
         $myConfig->saveShopConfVar('aarr', 'aLanguageParams', $aLangData['params']);
         $myConfig->saveShopConfVar('aarr', 'aLanguages', $aLangData['lang']);
         $myConfig->saveShopConfVar('arr', 'aLanguageURLs', $aLangData['urls']);
-        $myConfig->saveShopConfVar('arr', 'aLanguageSSLURLs', $aLangData['sslUrls']);
 
         //if deleted language was default, setting defalt lang to 0
         if ($iBaseId == $myConfig->getConfigParam('sDefaultLang')) {

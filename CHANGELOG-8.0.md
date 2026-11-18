@@ -90,6 +90,8 @@
   - `UtilsUrl::getCurrentUrl()`
   - The `$imageDirNoSSL` parameter of `Email::includeImages()`
   - The `SSLAltImageUrl` view variable of `ArticleDetails`
+  - The `aLanguageSSLURLs` and `sMallSSLShopURL` config parameters, use `aLanguageURLs` and `sMallShopURL` instead
+  - The `basesslurl` view data and the `$_aLanguagesSslUrls` property of `LanguageMain` (admin "Base SSL URL" field)
 
 ### Fixed
 - `Config::getMallShopUrl()` reads `sMallShopURL` instead of `sMallSSLShopURL`, subshops with only `sMallShopURL` set no longer fall back to the main shop URL

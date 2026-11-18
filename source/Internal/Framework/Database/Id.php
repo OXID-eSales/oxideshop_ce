@@ -35,6 +35,6 @@ readonly class Id
 
     private function generateUid(): string
     {
-        return md5(uniqid('', true) . '|' . microtime());
+        return bin2hex(random_bytes(16));
     }
 }

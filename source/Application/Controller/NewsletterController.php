@@ -158,7 +158,7 @@ class NewsletterController extends \OxidEsales\Eshop\Application\Controller\Fron
         if ($oUser->load(Registry::getRequest()->getRequestEscapedParameter('uid'))) {
             $sConfirmCode = md5($oUser->oxuser__oxusername->value . $oUser->oxuser__oxpasssalt->value);
             // is confirm code ok?
-            if (Registry::getRequest()->getRequestEscapedParameter('confirm') == $sConfirmCode) {
+            if (hash_equals($sConfirmCode, (string) Registry::getRequest()->getRequestEscapedParameter('confirm'))) {
                 $oUser->getNewsSubscription()->setOptInStatus(1);
                 $oUser->addToGroup('oxidnewsletter');
                 $this->_iNewsletterStatus = 2;

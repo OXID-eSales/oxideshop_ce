@@ -22,6 +22,11 @@ use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 class Session extends \OxidEsales\Eshop\Core\Base
 {
     /**
+     * Remote access token length in hex characters.
+     */
+    public const REMOTE_ACCESS_TOKEN_LENGTH = 32;
+
+    /**
      * Session parameter name
      *
      * @var string
@@ -301,7 +306,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         $sToken = $this->getSessionChallengeToken();
 
-        return $sToken && ($sToken == $this->getRequestChallengeToken());
+        return $sToken && hash_equals((string) $sToken, (string) $this->getRequestChallengeToken());
     }
 
     /**
@@ -809,8 +814,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
     {
         $sToken = $this->getVariable('_rtoken');
         if (!$sToken && $blGenerateNew) {
-            $sToken = md5(rand() . $this->getId());
-            $sToken = substr($sToken, 0, 8);
+            $bytes = (int) ceil(static::REMOTE_ACCESS_TOKEN_LENGTH / 2);
+            $sToken = substr(bin2hex(random_bytes($bytes)), 0, static::REMOTE_ACCESS_TOKEN_LENGTH);
             $this->setVariable('_rtoken', $sToken);
         }
 
@@ -1075,7 +1080,7 @@ class Session extends \OxidEsales\Eshop\Core\Base
         $inputToken = Registry::getRequest()->getRequestEscapedParameter('rtoken');
         $token = $this->getRemoteAccessToken(false);
 
-        return !empty($inputToken) ? ($token === $inputToken) : false;
+        return (!empty($inputToken) && is_string($token)) ? hash_equals($token, (string) $inputToken) : false;
     }
 
     /**

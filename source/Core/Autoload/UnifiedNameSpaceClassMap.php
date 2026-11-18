@@ -2337,12 +2337,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Core\Decryptor'                                            => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Decryptor::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Core\DisplayError'                                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\DisplayError::class,
         'isAbstract'       => false,
@@ -2363,12 +2357,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\EmailBuilder'                                         => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\EmailBuilder::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\Encryptor'                                            => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\Encryptor::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false
@@ -2795,12 +2783,6 @@ return [
     ],
     'OxidEsales\Eshop\Core\OnlineVatIdCheck'                                     => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\OnlineVatIdCheck::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
-    'OxidEsales\Eshop\Core\OpenSSLFunctionalityChecker'                          => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Core\OpenSSLFunctionalityChecker::class,
         'isAbstract'       => false,
         'isInterface'      => false,
         'isDeprecated'     => false

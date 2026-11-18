@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Module\ModuleChainsGenerator;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 
 /**
  * Object Factory implementation (oxNew() method is implemented in this class).
@@ -170,7 +171,7 @@ class UtilsObject
      */
     public function generateUId()
     {
-        return md5(uniqid('', true) . '|' . microtime());
+        return (string) Id::generate();
     }
 
     /**

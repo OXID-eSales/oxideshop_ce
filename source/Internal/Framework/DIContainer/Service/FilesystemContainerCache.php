@@ -32,7 +32,11 @@ class FilesystemContainerCache implements ContainerCacheInterface
      */
     public function get(int $shopId): ContainerInterface
     {
-        include_once $this->context->getContainerCacheFilePath($shopId);
+        $path = $this->context->getContainerCacheFilePath($shopId);
+        if (!is_file($path)) {
+            throw new \RuntimeException("Container cache file '$path' does not exist.");
+        }
+        include_once $path;
         return new \ProjectServiceContainer();
     }
 

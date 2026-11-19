@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
-use Doctrine\DBAL\Connection;
 use OxidEsales\Eshop\Application\Controller\Admin\ArticleSeo;
 use OxidEsales\Eshop\Application\Model\Article;
 use OxidEsales\Eshop\Application\Model\Category;
@@ -18,8 +17,8 @@ use OxidEsales\Eshop\Application\Model\Object2Category;
 use OxidEsales\Eshop\Application\Model\Vendor;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\ConnectionFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
-use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -193,16 +192,11 @@ final class ArticleSeoTest extends IntegrationTestCase
 
     private function fetchSeoRow(Article $product, string $context, int $languageId = self::LANGUAGE_ID): array
     {
-        return $this->getConnection()->fetchAssociative(
+        return $this->get(ConnectionFactoryInterface::class)->create()->fetchAssociative(
             'SELECT * FROM `oxseo`
              WHERE `OXOBJECTID` = ? AND `OXTYPE` = "oxarticle" AND `OXLANG` = ? AND `OXPARAMS` = ?',
             [$product->getId(), $languageId, $context]
         );
-    }
-
-    private function getConnection(): Connection
-    {
-        return $this->get(QueryBuilderFactoryInterface::class)->create()->getConnection();
     }
 
     private function createProduct(array $relations): Article

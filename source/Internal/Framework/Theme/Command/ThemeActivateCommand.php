@@ -20,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ThemeActivateCommand extends Command
 {
-    private const MESSAGE_THEME_IS_ACTIVE = 'Theme - "%s" is already active.';
+    private const MESSAGE_THEME_IS_ACTIVE = 'Theme - "%s" is already active. Theme settings were synchronized.';
     private const MESSAGE_THEME_ACTIVATED = 'Theme - "%s" was activated.';
     private const MESSAGE_THEME_NOT_FOUND = 'Theme - "%s" not found.';
 
@@ -49,15 +49,15 @@ class ThemeActivateCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($this->shopAdapter->getActiveThemeId() === $themeId) {
-            $style->info(sprintf(self::MESSAGE_THEME_IS_ACTIVE, $themeId));
-            return Command::SUCCESS;
-        }
+        $alreadyActive = $this->shopAdapter->getActiveThemeId() === $themeId;
 
         $this->shopAdapter->activateTheme($themeId);
         $this->moduleCacheService->invalidateAll();
         $this->templateCacheService->invalidateTemplateCache();
-        $style->success(sprintf(self::MESSAGE_THEME_ACTIVATED, $themeId));
+
+        $alreadyActive
+            ? $style->info(sprintf(self::MESSAGE_THEME_IS_ACTIVE, $themeId))
+            : $style->success(sprintf(self::MESSAGE_THEME_ACTIVATED, $themeId));
 
         return Command::SUCCESS;
     }

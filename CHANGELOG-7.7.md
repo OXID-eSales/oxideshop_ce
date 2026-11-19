@@ -6,6 +6,7 @@
 - PHPUnit v13 support
 - Community and project migrations are registered as tagged `oxid_esales.migration_path_provider` services (`CommunityEditionMigrationPathProvider`, `ProjectMigrationPathProvider`)
 - `MigrationsNotFoundException`
+- `--force` option for `oe:theme:activate` to activate an already active theme again
 
 ### Changed
 - `MigrationExecutor` no longer uses `oxid-esales/oxideshop-doctrine-migration-wrapper` internally
@@ -28,6 +29,7 @@
 - Password reset links are invalidated when the user's email address or password is changed
 - `oe:database:migrate --write-sql` keeps the SQL of all migration sets instead of only the last one [#0006869](https://bugs.oxid-esales.com/view.php?id=6869)
 - `class_exists()` checks for unknown classes no longer cause a circular service reference while the DI container is being built
+- Theme settings with a changed type get the value from `theme.php` and the change is logged
 
 ### Removed
 - PHP v8.3 support

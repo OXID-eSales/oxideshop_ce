@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\Command;
 
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -66,6 +67,30 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
         $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
     }
 
+    public function testForceSynchronizesSettingsOfActiveTheme(): void
+    {
+        $commandTester = new CommandTester($this->getCommandObject());
+        $commandTester->execute(['theme-id' => $this->themeId]);
+        $this->removeThemeSetting('sTestThemeSetting');
+
+        $commandTester->execute(['theme-id' => $this->themeId, '--force' => true]);
+
+        $this->assertSame('default-value', $this->getThemeSettingValue('sTestThemeSetting'));
+        $this->assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+    }
+
+    public function testActiveThemeIsNotActivatedAgainWithoutForce(): void
+    {
+        $arguments = ['theme-id' => $this->themeId];
+        $commandTester = new CommandTester($this->getCommandObject());
+        $commandTester->execute($arguments);
+        $this->removeThemeSetting('sTestThemeSetting');
+
+        $commandTester->execute($arguments);
+
+        $this->assertFalse($this->getThemeSettingValue('sTestThemeSetting'));
+    }
+
     public function testNonExistingThemeActivation(): void
     {
         $nonExistingThemeId = 'some-theme-id';
@@ -91,6 +116,30 @@ final class ThemeActivateCommandTest extends IntegrationTestCase
     private function getActiveTheme(): string
     {
         return Registry::getConfig()->getConfigParam('sTheme');
+    }
+
+    private function removeThemeSetting(string $name): void
+    {
+        $this->get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->delete('oxconfig')
+            ->where('oxmodule = :module')
+            ->andWhere('oxvarname = :name')
+            ->setParameters(['module' => "theme:$this->themeId", 'name' => $name])
+            ->execute();
+    }
+
+    private function getThemeSettingValue(string $name): mixed
+    {
+        return $this->get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->select('oxvarvalue')
+            ->from('oxconfig')
+            ->where('oxmodule = :module')
+            ->andWhere('oxvarname = :name')
+            ->setParameters(['module' => "theme:$this->themeId", 'name' => $name])
+            ->execute()
+            ->fetchOne();
     }
 
     private function setShopFixtures(): void

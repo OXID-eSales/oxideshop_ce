@@ -7,6 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
+use Psr\Log\LoggerInterface;
+
 /**
  * Settings handler class.
  *
@@ -66,6 +70,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
         $config = \OxidEsales\Eshop\Core\Registry::getConfig();
         $shopId = $config->getShopId();
         $moduleConfigs = $this->getModuleConfigs($moduleId);
+        $moduleConfigTypes = $this->getModuleConfigTypes($moduleId);
         $db = \OxidEsales\Eshop\Core\DatabaseProvider::getDb();
 
         if (is_array($moduleSettings)) {
@@ -78,6 +83,21 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 
                 if ($this->isTheme($moduleId)) {
                     $value = array_key_exists($name, $moduleConfigs) ? $moduleConfigs[$name] : $setting["value"];
+                    if ($this->hasTypeChanged($name, $type, $moduleConfigTypes)) {
+                        ContainerFacade::get(LoggerInterface::class)->error(
+                            'Type of theme setting changed. Its value was replaced with the value from theme.php',
+                            [
+                                'shopId' => $shopId,
+                                'themeId' => $moduleId,
+                                'settingName' => $name,
+                                'previousType' => $moduleConfigTypes[$name],
+                                'previousValue' => $value,
+                                'type' => $type,
+                                'value' => $setting["value"],
+                            ]
+                        );
+                        $value = $setting["value"];
+                    }
                 } else {
                     $value = is_null($config->getConfigParam($name)) ? $setting["value"] : $config->getConfigParam($name);
                 }
@@ -228,5 +248,32 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     protected function getModuleConfigId($moduleId)
     {
         return $this->moduleType . ':' . $moduleId;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getModuleConfigTypes(string $moduleId): array
+    {
+        return ContainerFacade::get(QueryBuilderFactoryInterface::class)
+            ->create()
+            ->select('oxvarname', 'oxvartype')
+            ->from('oxconfig')
+            ->where('oxmodule = :module')
+            ->andWhere('oxshopid = :shopId')
+            ->setParameters([
+                'module' => $this->getModuleConfigId($moduleId),
+                'shopId' => \OxidEsales\Eshop\Core\Registry::getConfig()->getShopId(),
+            ])
+            ->execute()
+            ->fetchAllKeyValue();
+    }
+
+    /**
+     * @param array<string, string> $moduleConfigTypes
+     */
+    private function hasTypeChanged(string $name, string $type, array $moduleConfigTypes): bool
+    {
+        return array_key_exists($name, $moduleConfigTypes) && $moduleConfigTypes[$name] !== $type;
     }
 }

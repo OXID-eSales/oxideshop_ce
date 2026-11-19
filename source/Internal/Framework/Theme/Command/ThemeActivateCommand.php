@@ -15,6 +15,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -36,6 +37,7 @@ class ThemeActivateCommand extends Command
     {
         $this->setDescription('Activates a theme.')
             ->addArgument('theme-id', InputArgument::REQUIRED, 'Theme ID')
+            ->addOption('force', 'f', InputOption::VALUE_NONE, 'Activates the theme again if it is already active')
             ->setHelp('Command activates theme by defined theme ID.');
     }
 
@@ -49,7 +51,7 @@ class ThemeActivateCommand extends Command
             return Command::FAILURE;
         }
 
-        if ($this->shopAdapter->getActiveThemeId() === $themeId) {
+        if (!$input->getOption('force') && $this->shopAdapter->getActiveThemeId() === $themeId) {
             $style->info(sprintf(self::MESSAGE_THEME_IS_ACTIVE, $themeId));
             return Command::SUCCESS;
         }

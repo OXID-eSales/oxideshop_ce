@@ -35,6 +35,19 @@ final class ThemeMainTest extends IntegrationTestCase
         $this->assertTrue($this->isThemeActive(self::THEME_ID));
     }
 
+    public function testRenderAfterSetThemeShowsThemeAsActive(): void
+    {
+        $this->installTheme(self::THEME_ID);
+        $this->assertFalse($this->isThemeActive(self::THEME_ID));
+
+        $controller = oxNew(ThemeMain::class);
+        $controller->setEditObjectId(self::THEME_ID);
+        $controller->setTheme();
+        $controller->render();
+
+        $this->assertTrue($controller->getViewDataElement('theme')->isActive());
+    }
+
     public function testSetThemeDisplaysErrorForUnknownTheme(): void
     {
         $this->expectDisplayError('EXCEPTION_THEME_NOT_LOADED');

@@ -25,6 +25,7 @@ class FilesystemContainerCache implements ContainerCacheInterface
     {
         $dumper = new PhpDumper($container);
         $this->filesystem->dumpFile($this->context->getContainerCacheFilePath($shopId), $dumper->dump());
+        $this->resetContainerCacheOpcache($shopId);
     }
 
     /**
@@ -46,6 +47,13 @@ class FilesystemContainerCache implements ContainerCacheInterface
     {
         if ($this->filesystem->exists($this->context->getContainerCacheFilePath($shopId))) {
             $this->filesystem->remove($this->context->getContainerCacheFilePath($shopId));
+        }
+    }
+
+    private function resetContainerCacheOpcache(int $shopId): void
+    {
+        if (function_exists('opcache_invalidate')) {
+            opcache_invalidate($this->context->getContainerCacheFilePath($shopId), true);
         }
     }
 }

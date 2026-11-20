@@ -21,13 +21,11 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 class ThemeMain extends AdminDetailsController
 {
     private ThemeActivationServiceInterface $themeActivationService;
-    private ThemeViewServiceInterface $themeViewService;
     private ContextInterface $context;
 
     public function __construct()
     {
         $this->themeActivationService = ContainerFacade::get(ThemeActivationServiceInterface::class);
-        $this->themeViewService = ContainerFacade::get(ThemeViewServiceInterface::class);
         $this->context = ContainerFacade::get(ContextInterface::class);
 
         parent::__construct();
@@ -38,12 +36,13 @@ class ThemeMain extends AdminDetailsController
         try {
             $shopId = $this->context->getCurrentShopId();
             $themeId = $this->getEditObjectId() ?: ContainerFacade::getParameter('oxid_esales.theme.active');
+            $themeViewService = ContainerFacade::get(ThemeViewServiceInterface::class);
 
-            $theme = $this->themeViewService->getTheme($themeId, $shopId);
+            $theme = $themeViewService->getTheme($themeId, $shopId);
             $this->_aViewData['theme'] = $theme;
 
             if ($theme->hasParentTheme()) {
-                $this->_aViewData['parentTheme'] = $this->themeViewService->getParentTheme($themeId, $shopId);
+                $this->_aViewData['parentTheme'] = $themeViewService->getParentTheme($themeId, $shopId);
             }
         } catch (ThemeNotLoadableException) {
             Registry::getUtilsView()->addErrorToDisplay('EXCEPTION_THEME_NOT_LOADED');

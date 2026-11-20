@@ -14,3 +14,7 @@ services:
   OxidEsales\EshopCommunity\Internal\Framework\Theme\Command\ThemeActivateCommand:
     tags:
       - { name: 'console.command', command: 'oe:theme:activate' }
+
+  OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingTypeChangedEventSubscriber:
+    tags:
+      - { name: kernel.event_subscriber }

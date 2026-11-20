@@ -6,6 +6,7 @@
 - PHPUnit v13 support
 - Community and project migrations are registered as tagged `oxid_esales.migration_path_provider` services (`CommunityEditionMigrationPathProvider`, `ProjectMigrationPathProvider`)
 - `MigrationsNotFoundException`
+- `ThemeSettingTypeChangedEvent`
 
 ### Changed
 - `MigrationExecutor` no longer uses `oxid-esales/oxideshop-doctrine-migration-wrapper` internally
@@ -29,6 +30,7 @@
 - `oe:database:migrate --write-sql` keeps the SQL of all migration sets instead of only the last one [#0006869](https://bugs.oxid-esales.com/view.php?id=6869)
 - `class_exists()` checks for unknown classes no longer cause a circular service reference while the DI container is being built
 - `oe:theme:activate` synchronizes the settings of an already active theme
+- Theme settings with a changed type get the value from `theme.php` and a warning is logged
 
 ### Removed
 - PHP v8.3 support

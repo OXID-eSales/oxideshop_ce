@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Event\ThemeSettingTypeChangedEvent;
+
 /**
  * Settings handler class.
  *
@@ -77,7 +80,19 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
                 $type = $setting["type"];
 
                 if ($this->isTheme($moduleId)) {
-                    $value = array_key_exists($name, $moduleConfigs) ? $moduleConfigs[$name] : $setting["value"];
+                    $value = array_key_exists($name, $moduleConfigs) ? $moduleConfigs[$name]['value'] : $setting["value"];
+                    if ($this->hasTypeChanged($name, $type, $moduleConfigs)) {
+                        $value = $setting["value"];
+                        ContainerFacade::dispatch(
+                            new ThemeSettingTypeChangedEvent(
+                                $shopId,
+                                $moduleId,
+                                $name,
+                                $moduleConfigs[$name]['type'],
+                                $type
+                            )
+                        );
+                    }
                 } else {
                     $value = is_null($config->getConfigParam($name)) ? $setting["value"] : $config->getConfigParam($name);
                 }
@@ -153,7 +168,7 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $moduleId Module id
      *
-     * @return array key=>value
+     * @return array key=>['type' => type, 'value' => value]
      */
     protected function getModuleConfigs($moduleId)
     {
@@ -170,7 +185,10 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
 
         $result = [];
         foreach ($dbConfigs as $oneModuleConfig) {
-            $result[$oneModuleConfig['oxvarname']] = $config->decodeValue($oneModuleConfig['oxvartype'], $oneModuleConfig['oxvarvalue']);
+            $result[$oneModuleConfig['oxvarname']] = [
+                'type' => $oneModuleConfig['oxvartype'],
+                'value' => $config->decodeValue($oneModuleConfig['oxvartype'], $oneModuleConfig['oxvarvalue']),
+            ];
         }
 
         return $result;
@@ -228,5 +246,10 @@ class SettingsHandler extends \OxidEsales\Eshop\Core\Base
     protected function getModuleConfigId($moduleId)
     {
         return $this->moduleType . ':' . $moduleId;
+    }
+
+    private function hasTypeChanged(string $name, string $type, array $moduleConfigs): bool
+    {
+        return array_key_exists($name, $moduleConfigs) && $moduleConfigs[$name]['type'] !== $type;
     }
 }

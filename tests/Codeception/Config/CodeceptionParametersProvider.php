@@ -80,7 +80,7 @@ class CodeceptionParametersProvider
     {
         $facts = new Facts();
         return $facts->isEnterprise()
-            ? $facts->getEnterpriseEditionRootPath() . '/Tests'
+            ? $facts->getEnterpriseEditionRootPath() . '/tests'
             : $this->getShopSuitePath($facts);
     }
 

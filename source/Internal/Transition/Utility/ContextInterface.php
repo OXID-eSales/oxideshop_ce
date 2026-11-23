@@ -18,10 +18,6 @@ interface ContextInterface extends BasicContextInterface
 
     public function getCurrentShopId(): int;
 
-    public function getLogFilePath(): string;
-
-    public function getLogLevel(): string;
-
     public function getRequiredContactFormFields(): array;
 
     public function getSkipLogTags(): array;

@@ -16,6 +16,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionPaths;
 use OxidEsales\EshopCommunity\Internal\Framework\Edition\EditionResolver;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectDirectoriesLocator;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\ProjectRootLocator;
+use Psr\Log\LogLevel;
 use Symfony\Component\Filesystem\Path;
 
 use function sprintf;
@@ -25,6 +26,18 @@ class BasicContext implements BasicContextInterface
     private string $projectRoot;
     private string $outPath;
     private Edition $edition;
+
+    public function getLogLevel(): string
+    {
+        $envValue = getenv('OXID_LOG_LEVEL');
+
+        return !empty($envValue) ? $envValue : LogLevel::ERROR;
+    }
+
+    public function getLogFilePath(): string
+    {
+        return Path::join($this->getSourcePath(), 'log', 'oxideshop.log');
+    }
 
     public function getContainerCacheFilePath(int $shopId): string
     {

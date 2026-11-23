@@ -12,6 +12,10 @@ use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\DirectoryNotExistent
 
 interface BasicContextInterface
 {
+    public function getLogFilePath(): string;
+
+    public function getLogLevel(): string;
+
     public function getActiveModuleServicesFilePath(int $shopId): string;
 
     public function getAllShopIds(): array;

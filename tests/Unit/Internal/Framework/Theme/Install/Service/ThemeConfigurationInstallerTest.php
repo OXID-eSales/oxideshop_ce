@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\DataObject\Theme
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 final class ThemeConfigurationInstallerTest extends TestCase
 {
@@ -59,10 +60,10 @@ final class ThemeConfigurationInstallerTest extends TestCase
         $this->assertSettingValue('defaultValue', 'testSetting', $savedConfigs[2]);
     }
 
-    public function testReinstallKeepsCustomisedValueButTakesPackageSettingType(): void
+    public function testReinstallReplacesStoredValueWhenSettingTypeChanged(): void
     {
-        $installedSetting = (new Setting())->setName('testSetting')->setType('bool')->setValue('customValue');
-        $installed = (new ThemeConfiguration())->setId('testTheme')->addThemeSetting($installedSetting);
+        $storedBoolSetting = (new Setting())->setName('testSetting')->setType('bool')->setValue(true);
+        $installed = (new ThemeConfiguration())->setId('testTheme')->addThemeSetting($storedBoolSetting);
 
         $savedConfigs = [];
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
@@ -74,8 +75,48 @@ final class ThemeConfigurationInstallerTest extends TestCase
 
         $this->createInstaller($dao, shopIds: [1])->install($this->themePath);
 
-        $this->assertSettingValue('customValue', 'testSetting', $savedConfigs[1]);
+        $this->assertSettingValue('defaultValue', 'testSetting', $savedConfigs[1]);
         $this->assertSame('str', $savedConfigs[1]->getSettingByName('testSetting')->getType());
+    }
+
+    public function testReinstallLogsErrorWhenSettingTypeChanged(): void
+    {
+        $storedBoolSetting = (new Setting())->setName('testSetting')->setType('bool')->setValue(true);
+        $installed = (new ThemeConfiguration())->setId('testTheme')->addThemeSetting($storedBoolSetting);
+
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+        $dao->method('get')->willReturn($installed);
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with(
+                $this->anything(),
+                [
+                    'shopId' => 1,
+                    'themeId' => 'testTheme',
+                    'settingName' => 'testSetting',
+                    'previousType' => 'bool',
+                    'previousValue' => true,
+                    'type' => 'str',
+                    'value' => 'defaultValue',
+                ]
+            );
+
+        $this->createInstaller($dao, shopIds: [1], logger: $logger)->install($this->themePath);
+    }
+
+    public function testReinstallLogsNothingWhenSettingTypeIsUnchanged(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+        $dao->method('get')->willReturn($this->buildConfiguration(settingValues: ['testSetting' => 'customValue']));
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())->method('error');
+
+        $this->createInstaller($dao, shopIds: [1], logger: $logger)->install($this->themePath);
     }
 
     public function testInstallThrowsWhenShopFails(): void
@@ -166,6 +207,7 @@ final class ThemeConfigurationInstallerTest extends TestCase
         ThemeConfigurationDaoInterface $dao,
         array $shopIds = [1],
         ?ThemeActivationServiceInterface $activationService = null,
+        ?LoggerInterface $logger = null,
     ): ThemeConfigurationInstaller {
         $metaData = (new ThemeMetaData())->setId('testTheme');
 
@@ -192,6 +234,7 @@ final class ThemeConfigurationInstallerTest extends TestCase
             $shopConfigurationDao,
             $context,
             $activationService ?? $this->createStub(ThemeActivationServiceInterface::class),
+            $logger ?? $this->createStub(LoggerInterface::class),
         );
     }
 

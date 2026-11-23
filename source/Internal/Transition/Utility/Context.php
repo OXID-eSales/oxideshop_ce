@@ -14,25 +14,12 @@ use OxidEsales\Eshop\Core\DatabaseProvider;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Exception\AdminUserNotFoundException;
 use PDO;
-use Psr\Log\LogLevel;
 use Symfony\Component\Filesystem\Path;
 
 class Context extends BasicContext implements ContextInterface
 {
     public function __construct(private readonly int $shopId)
     {
-    }
-
-    public function getLogLevel(): string
-    {
-        $envValue = getenv('OXID_LOG_LEVEL');
-
-        return !empty($envValue) ? $envValue : LogLevel::ERROR;
-    }
-
-    public function getLogFilePath(): string
-    {
-        return Path::join($this->getSourcePath(), 'log', 'oxideshop.log');
     }
 
     public function getRequiredContactFormFields(): array

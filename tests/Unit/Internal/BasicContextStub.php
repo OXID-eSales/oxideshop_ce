@@ -37,6 +37,16 @@ class BasicContextStub implements BasicContextInterface
         $this->basicContext = new BasicContext();
     }
 
+    public function getLogLevel(): string
+    {
+        return $this->basicContext->getLogLevel();
+    }
+
+    public function getLogFilePath(): string
+    {
+        return $this->basicContext->getLogFilePath();
+    }
+
     public function getCommunityEditionSourcePath(): string
     {
         return $this->ceSourcePath ?? $this->basicContext->getCommunityEditionSourcePath();

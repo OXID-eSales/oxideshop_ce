@@ -19,6 +19,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMe
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Path;
 
 final class ThemeConfigurationInstallerTest extends IntegrationTestCase
@@ -162,6 +163,7 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
             $shopConfigurationDao,
             $context,
             $this->get(ThemeActivationServiceInterface::class),
+            $this->get(LoggerInterface::class),
         );
 
         $installer->install($this->themePath);

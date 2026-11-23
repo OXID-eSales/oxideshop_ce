@@ -12,11 +12,13 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Exception\ThemeConfigurationInstallException;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\MetaData\Provider\ThemeMetaDataProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Filesystem\Path;
 use Throwable;
 
@@ -29,6 +31,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         private ShopConfigurationDaoInterface $shopConfigurationDao,
         private BasicContextInterface $context,
         private ThemeActivationServiceInterface $themeActivationService,
+        private LoggerInterface $logger,
     ) {
     }
 
@@ -47,7 +50,8 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
                 if ($this->themeConfigurationDao->exists($configuration->getId(), $shopId)) {
                     $this->keepCustomisedValues(
                         $configuration,
-                        $this->themeConfigurationDao->get($configuration->getId(), $shopId)
+                        $this->themeConfigurationDao->get($configuration->getId(), $shopId),
+                        $shopId
                     );
                 }
 
@@ -91,14 +95,39 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         return true;
     }
 
-    private function keepCustomisedValues(ThemeConfiguration $configuration, ThemeConfiguration $installed): void
-    {
+    private function keepCustomisedValues(
+        ThemeConfiguration $configuration,
+        ThemeConfiguration $installed,
+        int $shopId
+    ): void {
         foreach ($configuration->getThemeSettings() as $setting) {
             $installedSetting = $installed->getSettingByName($setting->getName());
-            if ($installedSetting !== null) {
+            if ($installedSetting === null) {
+                continue;
+            }
+
+            if ($installedSetting->getType() === $setting->getType()) {
                 $setting->setValue($installedSetting->getValue());
+            } else {
+                $this->logTypeChange($shopId, $configuration->getId(), $installedSetting, $setting);
             }
         }
+    }
+
+    private function logTypeChange(int $shopId, string $themeId, Setting $installedSetting, Setting $setting): void
+    {
+        $this->logger->error(
+            'Type of theme setting changed. Its value was replaced with the value from config.yaml',
+            [
+                'shopId' => $shopId,
+                'themeId' => $themeId,
+                'settingName' => $setting->getName(),
+                'previousType' => $installedSetting->getType(),
+                'previousValue' => $installedSetting->getValue(),
+                'type' => $setting->getType(),
+                'value' => $setting->getValue(),
+            ]
+        );
     }
 
     /**

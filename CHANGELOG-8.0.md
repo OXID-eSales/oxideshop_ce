@@ -32,6 +32,9 @@
   - A child theme declares its parent theme in its `metadata.yaml`
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 - `ThemeActivatedEvent` moved from namespace `Internal\Framework\Theme\Event` to `Internal\Framework\Theme\Activation\Event`
+- Theme settings with a changed type get the value from the theme's `config.yaml` on reinstall and the change is logged
+- Logger is available in the bootstrap container
+- `getLogFilePath()` and `getLogLevel()` moved from `ContextInterface` to `BasicContextInterface`
 
 ### Deprecated
 - `ProjectMigrationPathProvider`

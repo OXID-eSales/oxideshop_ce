@@ -87,7 +87,7 @@ class CodeceptionParametersProvider
 
         try {
             return $edition->value === Edition::Enterprise->value
-                ? Path::join($loader->getEditionRootPath($edition), 'tests')
+                ? Path::join($loader->getEditionRootPath($edition), 'Tests')
                 : Path::join($loader->getEditionRootPath(Edition::Community), 'tests');
         } catch (DirectoryNotExistentException) {
             return Path::join($this->getProjectRoot(), 'tests');

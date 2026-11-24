@@ -2742,24 +2742,40 @@ class Basket extends \OxidEsales\Eshop\Core\Base
     }
 
     /**
-     * Returns TRUE if ( current basket products sum - total discount - voucher discount ) > 0
+     * Returns whether the basket is below the minimum order price
      *
+     * @see self::getRemainingAmountToReachMinOrderPrice()
      * @return bool
      */
     public function isBelowMinOrderPrice()
     {
-        $blIsBelowMinOrderPrice = false;
+        return $this->getRemainingAmountToReachMinOrderPrice() > 0;
+    }
+
+    /**
+     * Returns the amount left to reach the minimum order price
+     *
+     * @return float
+     */
+    public function getRemainingAmountToReachMinOrderPrice()
+    {
+        $dRemainingAmount = 0;
         $sConfValue = Registry::getConfig()->getConfigParam('iMinOrderPrice');
+        // A missing/invalid minimum or an empty basket has no amount left to calculate.
         if (is_numeric($sConfValue) && $this->getProductsCount()) {
             $dMinOrderPrice = Price::getPriceInActCurrency((float) $sConfValue);
             $dNotDiscountedProductPrice = 0;
             if ($oPrice = $this->getNotDiscountProductsPrice()) {
                 $dNotDiscountedProductPrice = $oPrice->getBruttoSum();
             }
-            $blIsBelowMinOrderPrice = ($dMinOrderPrice > ($this->getDiscountedProductsBruttoPrice() + $dNotDiscountedProductPrice));
+            // Combine discounted and undiscounted products, then clamp the shortfall at zero.
+            $dRemainingAmount = max(
+                0,
+                $dMinOrderPrice - ($this->getDiscountedProductsBruttoPrice() + $dNotDiscountedProductPrice)
+            );
         }
 
-        return $blIsBelowMinOrderPrice;
+        return $dRemainingAmount;
     }
 
     /**

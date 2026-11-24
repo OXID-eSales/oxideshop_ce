@@ -200,6 +200,8 @@ class Wrapping extends \OxidEsales\Eshop\Core\Model\MultiLanguageModel
     /**
      * Returns returns dyn image dir (not ssl)
      *
+     * @deprecated will be removed in v8.0, use Config::getPictureUrl() instead.
+     *
      * @return string
      */
     public function getNoSslDynImageDir()

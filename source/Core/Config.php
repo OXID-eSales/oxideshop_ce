@@ -77,12 +77,16 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Shop SSL mode Url
      *
+     * @deprecated will be removed in v8.0, use sShopURL instead.
+     *
      * @var string
      */
     protected $sSSLShopURL = null;
 
     /**
      * Shops admin SSL mode Url
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @var string
      */
@@ -278,6 +282,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Whether shop is in SSL mode
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @var bool
      */
@@ -769,6 +775,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Set is shop url
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @param bool $isSsl - state bool value
      */
     public function setIsSsl($isSsl = false)
@@ -778,6 +786,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Checks if WEB session is SSL.
+     *
+     * @deprecated will be removed in v8.0.
      */
     protected function checkSsl()
     {
@@ -806,6 +816,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if WEB session is SSL. Returns true if yes.
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @return bool
      */
     public function isSsl()
@@ -820,6 +832,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Checks if shop runs in https only mode
      * https only mode means there is no http url but only a https url
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @return bool
      */
@@ -844,6 +858,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Compares current protocol to supplied url string
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @param string $url URL
      *
@@ -961,6 +977,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns SSL or not SSL shop URL with index.php and sid
      *
+     * @deprecated will be removed in v8.0, use getShopHomeUrl() instead.
+     *
      * @param int $lang language (optional)
      *
      * @return string
@@ -1018,6 +1036,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns shop SSL URL with index.php and sid.
+     *
+     * @deprecated will be removed in v8.0, use getShopHomeUrl() instead.
      *
      * @return string
      */
@@ -1149,7 +1169,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns url to out dir
      *
-     * @param bool $ssl       Whether to force ssl
+     * @param bool $ssl       Whether to force ssl, @deprecated will be removed in v8.0
      * @param bool $admin     Whether to force admin
      * @param bool $nativeImg Whether to force native image dirs
      *
@@ -1314,7 +1334,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * @param string $file      File name
      * @param string $dir       Directory name
      * @param bool   $admin     Whether to force admin
-     * @param bool   $ssl       Whether to force ssl
+     * @param bool   $ssl       Whether to force ssl, @deprecated will be removed in v8.0
      * @param bool   $nativeImg Whether to force native image dirs
      * @param int    $lang      Language id
      * @param int    $shop      Shop id
@@ -1348,7 +1368,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Finds and returns image folder url
      *
      * @param bool   $admin     Whether to force admin
-     * @param bool   $ssl       Whether to force ssl
+     * @param bool   $ssl       Whether to force ssl, @deprecated will be removed in v8.0
      * @param bool   $nativeImg Whether to force native image dirs
      * @param string $file      Image file name
      *
@@ -1419,7 +1439,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $file   File name
      * @param bool   $admin  Whether to force admin
-     * @param bool   $ssl    Whether to force ssl
+     * @param bool   $ssl    Whether to force ssl, @deprecated will be removed in v8.0
      * @param int    $lang   Language
      * @param int    $shopId Shop id
      * @param string $defPic Default (nopic) image path ["0/nopic.jpg"]
@@ -1485,7 +1505,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
-     * @param bool   $ssl   Whether to force ssl
+     * @param bool   $ssl   Whether to force ssl, @deprecated will be removed in v8.0
      * @param int    $lang  Language id
      *
      * @return string
@@ -1526,7 +1546,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $file  File name
      * @param bool   $admin Whether to force admin
-     * @param bool   $ssl   Whether to force ssl
+     * @param bool   $ssl   Whether to force ssl, @deprecated will be removed in v8.0
      * @param int    $lang  Language id
      *
      * @return string
@@ -2010,7 +2030,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * #680 per language another URL
      *
      * @param integer $lang Language id.
-     * @param bool    $ssl  Whether to use ssl.
+     * @param bool    $ssl  Whether to use ssl, @deprecated will be removed in v8.0
      *
      * @return null|string
      */
@@ -2028,7 +2048,7 @@ class Config extends \OxidEsales\Eshop\Core\Base
     /**
      * Function returns mall shop url.
      *
-     * @param bool $ssl
+     * @param bool $ssl @deprecated will be removed in v8.0
      *
      * @return null|string
      */

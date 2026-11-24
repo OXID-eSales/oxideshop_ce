@@ -27,12 +27,16 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     /**
      * Session cookie parameter name
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @var string
      */
     protected $_sSessionCookiesName = 'aSessionCookies';
 
     /**
      * Session stored cookies
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @var array
      */
@@ -46,8 +50,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      * @param int    $iExpire     expire time
      * @param string $sPath       The path on the server in which the cookie will be available on
      * @param string $sDomain     The domain that the cookie is available.
-     * @param bool   $blToSession is true, records cookie information to session
-     * @param bool   $blSecure    if true, transfer cookie only via SSL
+     * @param bool   $blToSession is true, records cookie information to session, @deprecated will be removed in v8.0
+     * @param bool   $blSecure    if true, transfer cookie only via SSL, @deprecated will be removed in v8.0
      * @param bool   $blHttpOnly  if true, only accessible via HTTP
      *
      * @return bool
@@ -76,10 +80,17 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         );
     }
 
+    /**
+     * @deprecated will be removed in v8.0.
+     *
+     * @var bool|null
+     */
     protected $_blSaveToSession = null;
 
     /**
      * Checks if cookie must be saved to session in order to transfer it to different domain
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @return bool
      */
@@ -109,6 +120,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns session cookie key
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @param bool $blGet mode - true - get, false - set cookie
      *
      * @return string
@@ -127,6 +140,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Copies cookie info to session
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @param string $sName   cookie name
      * @param string $sValue  cookie value
@@ -148,6 +163,8 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Stored all session cookie info to cookies
+     *
+     * @deprecated will be removed in v8.0.
      */
     public function loadSessionCookies()
     {

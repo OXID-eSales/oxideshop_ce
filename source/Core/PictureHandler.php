@@ -247,7 +247,7 @@ class PictureHandler extends Base
      * @param string $sFilePath path to file
      * @param string $sFile     filename in pictures dir
      * @param bool   $blAdmin   is admin mode ?
-     * @param bool   $blSSL     is ssl ?
+     * @param bool   $blSSL     is ssl ?, @deprecated will be removed in v8.0
      * @param int    $iLang     language id
      * @param int    $iShopId   shop id
      *
@@ -277,7 +277,7 @@ class PictureHandler extends Base
      *
      * @param string $sFilePath path to file
      * @param string $sFile     filename in pictures dir
-     * @param bool   $blSSL     is ssl ?
+     * @param bool   $blSSL     is ssl ?, @deprecated will be removed in v8.0
      *
      * @return string
      */
@@ -318,7 +318,7 @@ class PictureHandler extends Base
      * @param string $sSize    picture sizes (x, y)
      * @param string $sIndex   picture index [optional]
      * @param string|false $sAltPath alternative picture path [optional]
-     * @param bool   $bSsl     Whether to force SSL
+     * @param bool   $bSsl     Whether to force SSL, @deprecated will be removed in v8.0
      *
      * @return string|bool
      */
@@ -352,7 +352,7 @@ class PictureHandler extends Base
      * @param string $sFile  picture file name
      * @param string $sSize  picture sizes (x, y)
      * @param string $sIndex picture index [optional]
-     * @param bool   $bSsl   Whether to force SSL
+     * @param bool   $bSsl   Whether to force SSL, @deprecated will be removed in v8.0
      *
      * @return string|bool
      */

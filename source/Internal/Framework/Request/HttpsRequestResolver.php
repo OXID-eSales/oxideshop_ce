@@ -12,6 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Request;
 use Symfony\Component\HttpFoundation\HeaderUtils;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @deprecated will be removed in v8.0.
+ */
 readonly class HttpsRequestResolver implements HttpsRequestResolverInterface
 {
     private const NON_STANDARD_SSL_HEADERS = [

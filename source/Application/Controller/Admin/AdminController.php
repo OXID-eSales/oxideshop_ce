@@ -190,6 +190,8 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
     /**
      * Returns service url protocol: "https" is admin works in ssl mode, "http" if no ssl
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @return string
      */
     protected function getServiceProtocol()

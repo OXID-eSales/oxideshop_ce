@@ -16,8 +16,8 @@ $this->dbPwd  = '<dbPwd>'; // database user password
 $this->dbDriverOptions = []; // database driver options
 $this->dbUnixSocket = null; // unix domain socket, optional
 $this->sShopURL     = '<sShopURL>'; // eShop base url, required
-$this->sSSLShopURL  = null;            // eShop SSL url, optional
-$this->sAdminSSLURL = null;            // eShop Admin SSL url, optional
+$this->sSSLShopURL  = null;            // deprecated, will be removed in v8.0, use sShopURL with https instead
+$this->sAdminSSLURL = null;            // deprecated, will be removed in v8.0
 $this->sShopDir     = '<sShopDir>';
 $this->sCompileDir  = '<sCompileDir>';
 

@@ -408,6 +408,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
     /**
      * Returns shops self ssl link
      *
+     * @deprecated will be removed in v8.0, use getSelfLink() instead.
+     *
      * @return string
      */
     public function getSslSelfLink()
@@ -462,6 +464,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns shops action link
+     *
+     * @deprecated will be removed in v8.0, use getSelfLink() instead.
      *
      * @return string
      */
@@ -618,7 +622,7 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
      * Returns image url
      *
      * @param string $sFile Image file name
-     * @param bool   $bSsl  Whether to force SSL
+     * @param bool   $bSsl  Whether to force SSL, @deprecated will be removed in v8.0
      *
      * @return string
      */
@@ -636,6 +640,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns non ssl image url
+     *
+     * @deprecated will be removed in v8.0, use getImageUrl() instead.
      *
      * @return string
      */
@@ -696,6 +702,8 @@ class ViewConfig extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Returns ssl mode (on/off)
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @return string
      */

@@ -141,12 +141,16 @@ class BasketItem extends \OxidEsales\Eshop\Core\Base
     /**
      * Image NON SSL url
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @var string
      */
     protected $_sDimageDirNoSsl = null;
 
     /**
      * Image SSL url
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @var string
      */

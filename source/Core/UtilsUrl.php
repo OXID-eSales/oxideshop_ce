@@ -433,6 +433,8 @@ class UtilsUrl extends \OxidEsales\Eshop\Core\Base
     /**
      * Return current url.
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @return string
      */
     public function getCurrentUrl()

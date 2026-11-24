@@ -7,6 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Request;
 
+/**
+ * @deprecated will be removed in v8.0.
+ */
 interface HttpsRequestResolverInterface
 {
     public function isHttps(): bool;

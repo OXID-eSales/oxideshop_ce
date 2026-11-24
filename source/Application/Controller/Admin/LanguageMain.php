@@ -33,12 +33,16 @@ class LanguageMain extends \OxidEsales\Eshop\Application\Controller\Admin\AdminD
     /**
      * Current shop base languages base urls
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @var array
      */
     protected $_aLanguagesUrls = null;
 
     /**
      * Current shop base languages base ssl urls
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @var array
      */

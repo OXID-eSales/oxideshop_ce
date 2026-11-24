@@ -398,6 +398,8 @@ class SystemRequirements
      * returns host, port, base dir, ssl information as assotiative array, false on error
      * takes this info from eShop config.inc.php (via oxConfig class)
      *
+     * @deprecated will be removed in v8.0.
+     *
      * @return array
      */
     protected function getShopSSLHostInfoFromConfig()
@@ -465,6 +467,8 @@ class SystemRequirements
     /**
      * returns host, port, current script, ssl information as assotiative array, false on error
      * Takes ssl address from config so important only in admin.
+     *
+     * @deprecated will be removed in v8.0.
      *
      * @return array
      */

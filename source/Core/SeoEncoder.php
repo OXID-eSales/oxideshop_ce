@@ -1147,7 +1147,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
 
         $sFullUrl = '';
         if (($sSeoUrl = $this->getStaticUri($sStdUrl, $iShopId, $iLang))) {
-            $sFullUrl = $this->getFullUrl($sSeoUrl, $iLang, strpos($sStdUrl, "https:") === 0);
+            $sFullUrl = $this->getFullUrl($sSeoUrl, $iLang);
         }
 
 
@@ -1295,7 +1295,7 @@ class SeoEncoder extends \OxidEsales\Eshop\Core\Base
     public function getDynamicUrl($sStdUrl, $sSeoUrl, $iLang)
     {
         startProfile("getDynamicUrl");
-        $sDynUrl = $this->getFullUrl($this->getDynamicUri($sStdUrl, $sSeoUrl, $iLang), $iLang, strpos($sStdUrl, "https:") === 0);
+        $sDynUrl = $this->getFullUrl($this->getDynamicUri($sStdUrl, $sSeoUrl, $iLang), $iLang);
         stopProfile("getDynamicUrl");
 
         return $sDynUrl;

@@ -115,16 +115,16 @@ class DiagnosticsOutput
         return $this->_oUtils->fromFileCache($sCurrentKey);
     }
 
-    public function getResultFileResponse($sOutputKey = null): Response
+    public function getResultFileResponse(): Response
     {
-        $content = $this->readResultFile($sOutputKey);
+        $content = $this->readResultFile();
 
         $factory = ContainerFacade::get(FileResponseFactoryInterface::class);
 
         if (!is_string($content) || $content === '') {
-            return $factory->notFound();
+            return $factory->createNotFound();
         }
 
-        return $factory->fromContent($content, 'text/html; charset=utf-8', $this->_sOutputFileName);
+        return $factory->createFromContent($content, 'text/html; charset=utf-8', $this->_sOutputFileName);
     }
 }

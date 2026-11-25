@@ -141,26 +141,19 @@ class ListComponentAjax extends \OxidEsales\Eshop\Core\Base
         return 'select count( * ) ' . $sQ;
     }
 
-    public function processRequest($function = null): Response
+    public function processRequest(?string $function = null): Response
     {
-        if ($function) {
-            $response = $this->$function();
-            ContainerFacade::dispatch(new AfterAdminAjaxRequestProcessedEvent());
+        if (!$function) {
+            $query = $this->getQuery();
+            $this->outputResponse($this->getData($this->getCountQuery($query), $this->getDataQuery($query)));
 
-            if ($response instanceof Response) {
-                return $response;
-            }
-        } else {
-            $sQAdd = $this->getQuery();
-
-            // formatting SQL queries
-            $sQ = $this->getDataQuery($sQAdd);
-            $sCountQ = $this->getCountQuery($sQAdd);
-
-            $this->outputResponse($this->getData($sCountQ, $sQ));
+            return new Response($this->renderedOutput);
         }
 
-        return new Response($this->renderedOutput);
+        $response = $this->$function();
+        ContainerFacade::dispatch(new AfterAdminAjaxRequestProcessedEvent());
+
+        return $response instanceof Response ? $response : new Response($this->renderedOutput);
     }
 
     /**

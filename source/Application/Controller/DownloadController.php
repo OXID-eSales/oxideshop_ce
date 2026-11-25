@@ -7,6 +7,10 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller;
 
+use OxidEsales\Eshop\Application\Model\File;
+use OxidEsales\Eshop\Application\Model\OrderFile;
+use OxidEsales\Eshop\Core\Exception\ExceptionToDisplay;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 
 /**
@@ -24,40 +28,37 @@ class DownloadController extends \OxidEsales\Eshop\Application\Controller\Fronte
     }
 
     /**
-     * Checks if given token is valid, formats HTTP headers,
-     * and outputs file to buffer.
+     * Checks if given token is valid and returns the file as download response.
      *
-     * If token is not valid, redirects to start page.
+     * If token is not valid, redirects to the account downloads page.
      */
     public function render()
     {
-        $sFileOrderId = Registry::getRequest()->getRequestEscapedParameter('sorderfileid');
+        $orderFileId = Registry::getRequest()->getRequestEscapedParameter('sorderfileid');
+        $error = "ERROR_MESSAGE_WRONG_DOWNLOAD_LINK";
 
-        if ($sFileOrderId) {
-            $oArticleFile = oxNew(\OxidEsales\Eshop\Application\Model\File::class);
+        if ($orderFileId) {
+            $file = oxNew(File::class);
             try {
-                /** @var \OxidEsales\Eshop\Application\Model\OrderFile $oOrderFile */
-                $oOrderFile = oxNew(\OxidEsales\Eshop\Application\Model\OrderFile::class);
-                if ($oOrderFile->load($sFileOrderId)) {
-                    $sFileId = $oOrderFile->getFileId();
-                    $blLoadedAndExists = $oArticleFile->load($sFileId) && $oArticleFile->exist();
-                    if ($sFileId && $blLoadedAndExists && $oOrderFile->processOrderFile()) {
-                        return $oArticleFile->download();
+                /** @var OrderFile $orderFile */
+                $orderFile = oxNew(OrderFile::class);
+                if ($orderFile->load($orderFileId)) {
+                    $fileId = $orderFile->getFileId();
+                    $fileExists = $file->load($fileId) && $file->exist();
+                    if ($fileId && $fileExists && $orderFile->processOrderFile()) {
+                        return $file->download();
                     } else {
-                        $sError = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";
+                        $error = "ERROR_MESSAGE_FILE_DOESNOT_EXIST";
                     }
                 }
-            } catch (\OxidEsales\Eshop\Core\Exception\StandardException $oEx) {
-                $sError = "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED";
+            } catch (StandardException) {
+                $error = "ERROR_MESSAGE_FILE_DOWNLOAD_FAILED";
             }
-        } else {
-            $sError = "ERROR_MESSAGE_WRONG_DOWNLOAD_LINK";
         }
-        if ($sError) {
-            $oEx = new \OxidEsales\Eshop\Core\Exception\ExceptionToDisplay();
-            $oEx->setMessage($sError);
-            Registry::getUtilsView()->addErrorToDisplay($oEx, false);
-            Registry::getUtils()->redirect(Registry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
-        }
+
+        $exception = new ExceptionToDisplay();
+        $exception->setMessage($error);
+        Registry::getUtilsView()->addErrorToDisplay($exception, false);
+        Registry::getUtils()->redirect(Registry::getConfig()->getShopUrl() . 'index.php?cl=account_downloads');
     }
 }

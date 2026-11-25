@@ -9,6 +9,7 @@ namespace OxidEsales\EshopCommunity\Core\GenericImport;
 
 use Exception;
 use OxidEsales\Eshop\Core\GenericImport\ImportObject\ImportObject;
+use OxidEsales\Eshop\Core\Registry;
 
 /**
  * Class responsible for generic import functionality.
@@ -172,7 +173,7 @@ class GenericImport
 
         if (is_resource($file)) {
             $data = [];
-            while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser())) !== false) {
+            while (($row = fgetcsv($file, $this->maxLineLength, $this->getCsvFieldsTerminator(), $this->getCsvFieldsEncolser(), escape: '\\')) !== false) {
                 $data[] = $this->csvTextConvert($row, false);
             }
             fclose($file);
@@ -184,7 +185,8 @@ class GenericImport
             try {
                 $this->importData($data);
             } catch (Exception $ex) {
-                echo $ex->getMessage();
+                Registry::getLogger()->error($ex->getMessage(), [$ex]);
+                $this->statistics[] = ['r' => false, 'm' => $ex->getMessage()];
                 $this->returnMessage = 'ERPGENIMPORT_ERROR_DURING_IMPORT';
             }
         } else {

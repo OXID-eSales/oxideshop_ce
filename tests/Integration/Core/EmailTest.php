@@ -15,10 +15,15 @@ use OxidEsales\Eshop\Core\Email;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Email\EmailAdapterInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\BeforeEmailSendEvent;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Mailer\Exception\TransportException;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email as SymfonyEmail;
 
 final class EmailTest extends IntegrationTestCase
@@ -28,6 +33,7 @@ final class EmailTest extends IntegrationTestCase
     private LoggerInterface|MockObject $logger;
     private Email|MockObject $email;
     private Order|MockObject $order;
+    private int $dispatchedEvents = 0;
 
     public function testSendOrderEmailToUserWithDefaultConfiguration(): void
     {
@@ -140,6 +146,26 @@ final class EmailTest extends IntegrationTestCase
         $this->assertTrue($result);
     }
 
+    public function testSendDeliversBodiesChangedByListener(): void
+    {
+        $this->useSymfonyMailer(false);
+        $email = $this->createEmailSentByPhpMailer();
+
+        $email->send();
+
+        $this->assertSame('<b>Body</b> changed', $email->getBody());
+        $this->assertSame('Alt body changed', $email->getAltBody());
+    }
+
+    public function testSendDispatchesEventOnceWhenFallingBackToPhpMailer(): void
+    {
+        $this->useSymfonyMailer(true);
+
+        $this->createEmailSentByPhpMailer()->send();
+
+        $this->assertSame(1, $this->dispatchedEvents);
+    }
+
     private function getOrderStub(bool $expectsOrderUser): void
     {
         $user = new User();
@@ -165,5 +191,42 @@ final class EmailTest extends IntegrationTestCase
             ->willReturn($templateRenderer);
         $this->email->method('sendMail')
             ->willReturn(true);
+    }
+
+    private function useSymfonyMailer(bool $useSymfonyMailer): void
+    {
+        $failingMailer = $this->createStub(MailerInterface::class);
+        $failingMailer->method('send')->willThrowException(new TransportException());
+
+        $this->createContainer();
+        $this->container->setParameter('oxid_esales.mailing.use_symfony_mailer', $useSymfonyMailer);
+        $this->replaceService(LoggerInterface::class, new NullLogger());
+        $this->replaceService(MailerInterface::class, $failingMailer);
+        $this->compileContainer();
+        $this->replaceContainerInstance();
+
+        $this->get(EventDispatcherInterface::class)->addListener(
+            BeforeEmailSendEvent::class,
+            function (BeforeEmailSendEvent $event): void {
+                $this->dispatchedEvents++;
+                $email = $event->getEmail();
+                $email->setBody($email->getBody() . ' changed');
+                $email->setAltBody($email->getAltBody() . ' changed');
+            }
+        );
+    }
+
+    private function createEmailSentByPhpMailer(): Email
+    {
+        $email = $this->createPartialMock(Email::class, ['sendMail']);
+        $email->expects($this->once())->method('sendMail')->willReturn(true);
+        $email->isHTML(true);
+        $email->setRecipient('customer@example.com', 'Customer');
+        $email->setFrom('shop@example.com', 'Shop');
+        $email->setSubject('Subject');
+        $email->setBody('<b>Body</b>');
+        $email->setAltBody('Alt body');
+
+        return $email;
     }
 }

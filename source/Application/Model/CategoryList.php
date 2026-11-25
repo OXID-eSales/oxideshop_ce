@@ -548,7 +548,7 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
     /**
      * Rebuilds nested sets information by updating oxLeft and oxRight category attributes, from oxParentId
      *
-     * @param bool   $blVerbose Set to true for output the update status for user,
+     * @param bool   $blVerbose
      * @param string $sShopID   the shop id
      */
     public function updateCategoryTree($blVerbose = true, $sShopID = null)
@@ -574,9 +574,6 @@ class CategoryList extends \OxidEsales\Eshop\Core\Model\ListModel
                 while (!$categories->EOF) {
                     $this->_aUpdateInfo[] = "<b>Processing : " . $categories->fields['oxtitle']
                         . "</b>(" . $categories->fields['oxid'] . ")<br>";
-                    if ($blVerbose) {
-                        echo next($this->_aUpdateInfo);
-                    }
                     $oxRootId = $categories->fields['oxid'];
 
                     $this->updateNodes($oxRootId, true, $oxRootId);

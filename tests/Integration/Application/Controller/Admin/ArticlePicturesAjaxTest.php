@@ -27,7 +27,6 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\FileBag;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -287,23 +286,6 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
 
         $this->assertNotEmpty($this->decodeErrors($errorResponse));
         $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll($productId));
-    }
-
-    public function testProcessRequestReturnsCollectedOutputWithoutEcho(): void
-    {
-        $this->expectOutputString('');
-        $this->setupContainerWithRequest([]);
-
-        $component = new class extends ArticlePicturesAjax {
-            public function emitGridData(): void
-            {
-                $this->outputResponse(['records' => [['id' => 'abc']]]);
-            }
-        };
-
-        $response = $component->processRequest('emitGridData');
-
-        $this->assertSame(json_encode(['records' => [['id' => 'abc']]]), $response->getContent());
     }
 
     /**

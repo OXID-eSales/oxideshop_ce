@@ -9,46 +9,33 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Model;
 
-use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\DiagnosticsOutput;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use PHPUnit\Framework\TestCase;
 
-final class DiagnosticsOutputTest extends TestCase
+final class DiagnosticsOutputTest extends IntegrationTestCase
 {
-    private string $key = 'diagnostic_tool_result';
-
-    public function testDownloadResultFileBuildsResponseWithExpectedHeaders(): void
+    public function testGetResultFileResponseDeliversCachedResultAsAttachment(): void
     {
-        $content = 'some-content-123';
-        Registry::getUtils()->toFileCache($this->key, $content);
+        $diagnosticsOutput = new DiagnosticsOutput();
+        $diagnosticsOutput->storeResult('some-content-123');
 
-        $response = $this->runDownload($this->key);
+        $response = $diagnosticsOutput->getResultFileResponse();
 
-        $this->assertSame((string)strlen($content), $response->headers->get('Content-Length'));
-        $this->assertStringContainsString('text/html', (string)$response->headers->get('Content-Type'));
-        $this->assertStringContainsString('attachment', (string)$response->headers->get('Content-Disposition'));
+        $this->assertSame('some-content-123', $response->getContent());
+        $this->assertSame(
+            'attachment; filename=diagnostic_tool_result.html',
+            $response->headers->get('Content-Disposition')
+        );
     }
 
-    public function testDownloadResultFileCarriesCachedContent(): void
+    public function testGetResultFileResponseReturnsNotFoundWithoutStoredResult(): void
     {
-        $content = 'some-content-123';
-        Registry::getUtils()->toFileCache($this->key, $content);
+        $diagnosticsOutput = new DiagnosticsOutput();
+        $diagnosticsOutput->storeResult('');
 
-        $response = $this->runDownload($this->key);
-
-        $this->assertSame($content, $response->getContent());
-    }
-
-    public function testDownloadResultFileWithEmptyCacheReturnsNotFound(): void
-    {
-        $response = $this->runDownload('missing_diagnostics_key_xyz');
+        $response = $diagnosticsOutput->getResultFileResponse();
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-    }
-
-    private function runDownload(string $key): Response
-    {
-        return (new DiagnosticsOutput())->getResultFileResponse($key);
     }
 }

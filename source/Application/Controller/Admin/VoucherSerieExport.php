@@ -116,11 +116,13 @@ class VoucherSerieExport extends \OxidEsales\Eshop\Application\Controller\Admin\
     public function download(): Response
     {
         $factory = ContainerFacade::get(FileResponseFactoryInterface::class);
-        $sFile = $this->getExportFilePath();
+        $filePath = $this->getExportFilePath();
 
-        return !file_exists($sFile) || !is_readable($sFile)
-            ? $factory->notFound()
-            : $factory->fromFile($sFile, 'text/csv; charset=utf-8', 'vouchers.csv');
+        if (!is_readable($filePath)) {
+            return $factory->createNotFound();
+        }
+
+        return $factory->createFromFile($filePath, 'text/csv; charset=utf-8', 'vouchers.csv');
     }
 
     /**

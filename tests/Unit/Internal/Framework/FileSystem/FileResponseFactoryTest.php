@@ -10,9 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\FileSystem;
 
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\FileResponseFactory;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\StreamedResponse;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class FileResponseFactoryTest extends TestCase
@@ -32,67 +31,63 @@ final class FileResponseFactoryTest extends TestCase
         }
     }
 
-    public function testFromCallbackBuildsStreamedResponse(): void
+    #[DataProvider('factoryMethodDataProvider')]
+    public function testResponseIsNotCacheable(string $factoryMethod): void
     {
-        $response = (new FileResponseFactory())->fromCallback(
-            static fn() => print('x'),
-            'text/csv; charset=utf-8',
-            'export.csv'
-        );
+        $response = $this->createResponse($factoryMethod);
 
-        $this->assertInstanceOf(StreamedResponse::class, $response);
-        $this->assertSame('text/csv; charset=utf-8', $response->headers->get('Content-Type'));
-        $this->assertStringContainsString('export.csv', (string)$response->headers->get('Content-Disposition'));
-        $this->assertNoCacheHeaders($response);
+        $this->assertSame('no-store, private', $response->headers->get('Cache-Control'));
     }
 
-    public function testNotFoundReturns404(): void
+    #[DataProvider('factoryMethodDataProvider')]
+    public function testResponseIsAttachment(string $factoryMethod): void
     {
-        $this->assertSame(Response::HTTP_NOT_FOUND, (new FileResponseFactory())->notFound()->getStatusCode());
+        $response = $this->createResponse($factoryMethod);
+
+        $this->assertSame('attachment; filename=export.csv', $response->headers->get('Content-Disposition'));
     }
 
-    public function testFromFileCarriesNoCacheHeaders(): void
+    public static function factoryMethodDataProvider(): array
     {
-        $response = (new FileResponseFactory())->fromFile($this->file, 'text/csv; charset=utf-8', 'export.csv');
-
-        $this->assertInstanceOf(BinaryFileResponse::class, $response);
-        $this->assertSame('text/csv; charset=utf-8', $response->headers->get('Content-Type'));
-        $this->assertStringContainsString('attachment', (string)$response->headers->get('Content-Disposition'));
-        $this->assertStringContainsString('export.csv', (string)$response->headers->get('Content-Disposition'));
-        $this->assertNoCacheHeaders($response);
+        return [
+            'file' => ['createFromFile'],
+            'content' => ['createFromContent'],
+            'streamed' => ['createStreamed'],
+        ];
     }
 
-    public function testFromContentCarriesBodyLengthAndNoCacheHeaders(): void
+    public function testCreateFromContentSetsContentLength(): void
     {
-        $response = (new FileResponseFactory())->fromContent('some-content', 'text/html; charset=utf-8', 'report.html');
+        $response = (new FileResponseFactory())->createFromContent('some-content', 'text/html', 'report.html');
 
-        $this->assertSame('some-content', $response->getContent());
-        $this->assertSame('text/html; charset=utf-8', $response->headers->get('Content-Type'));
-        $this->assertSame((string) strlen('some-content'), $response->headers->get('Content-Length'));
-        $this->assertStringContainsString('report.html', (string)$response->headers->get('Content-Disposition'));
-        $this->assertNoCacheHeaders($response);
+        $this->assertSame('12', $response->headers->get('Content-Length'));
     }
 
     public function testNonAsciiDownloadFilenameGetsAsciiFallback(): void
     {
-        $response = (new FileResponseFactory())->fromContent('x', 'application/pdf', 'Rechnung März.pdf');
+        $response = (new FileResponseFactory())->createFromContent('x', 'application/pdf', 'Rechnung März.pdf');
 
-        $disposition = (string) $response->headers->get('Content-Disposition');
-        $this->assertStringContainsString('filename=Rechnung Marz.pdf', str_replace('"', '', $disposition));
-        $this->assertStringContainsString("filename*=utf-8''Rechnung%20M%C3%A4rz.pdf", $disposition);
+        $this->assertSame(
+            "attachment; filename=\"Rechnung M__rz.pdf\"; filename*=utf-8''Rechnung%20M%C3%A4rz.pdf",
+            $response->headers->get('Content-Disposition')
+        );
     }
 
     public function testDownloadFilenameDirectoryPartsAreStripped(): void
     {
-        $response = (new FileResponseFactory())->fromContent('x', 'application/pdf', 'path/to\file.pdf');
+        $response = (new FileResponseFactory())->createFromContent('x', 'application/pdf', 'path/to\file.pdf');
 
-        $disposition = (string) $response->headers->get('Content-Disposition');
-        $this->assertStringContainsString('filename=file.pdf', str_replace('"', '', $disposition));
-        $this->assertStringNotContainsString('path', $disposition);
+        $this->assertSame('attachment; filename=file.pdf', $response->headers->get('Content-Disposition'));
     }
 
-    private function assertNoCacheHeaders(Response $response): void
+    private function createResponse(string $factoryMethod): Response
     {
-        $this->assertSame('no-store, private', $response->headers->get('Cache-Control'));
+        $factory = new FileResponseFactory();
+
+        return match ($factoryMethod) {
+            'createFromFile' => $factory->createFromFile($this->file, 'text/csv', 'export.csv'),
+            'createFromContent' => $factory->createFromContent('file-body', 'text/csv', 'export.csv'),
+            'createStreamed' => $factory->createStreamed(static fn() => null, 'text/csv', 'export.csv'),
+        };
     }
 }

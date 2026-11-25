@@ -7,7 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use stdClass;
@@ -179,25 +179,24 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
      */
     public function start()
     {
-        // delete file, if its already there
         $this->fpFile = @fopen($this->_sFilePath, "w");
         if (!isset($this->fpFile) || !$this->fpFile) {
-            // we do have an error !
             $this->stop(ERR_FILEIO);
         } else {
             fclose($this->fpFile);
 
             try {
-                $iEnd = $this->prepareExport();
-            } catch (SystemComponentException $exception) {
+                $end = $this->prepareExport();
+            } catch (StandardException $exception) {
+                Registry::getLogger()->error($exception->getMessage(), [$exception]);
                 Registry::getUtilsView()->addErrorToDisplay($exception);
                 return;
             }
 
             $this->_aViewData['refresh'] = 0;
             $this->_aViewData['iStart'] = 0;
-            Registry::getSession()->setVariable("iEnd", $iEnd);
-            $this->_aViewData['iEnd'] = $iEnd;
+            Registry::getSession()->setVariable("iEnd", $end);
+            $this->_aViewData['iEnd'] = $end;
         }
     }
 
@@ -491,12 +490,12 @@ class DynamicExportBaseController extends \OxidEsales\Eshop\Application\Controll
 
         // create heap table
         if (!($this->createHeapTable($sHeapTable, $sTableCharset))) {
-            throw new SystemComponentException("Could not create HEAP Table {$sHeapTable}");
+            throw new StandardException("Could not create HEAP Table {$sHeapTable}");
         }
 
         $sCatAdd = $this->getCatAdd(Registry::getRequest()->getRequestEscapedParameter("acat"));
         if (!$this->insertArticles($sHeapTable, $sCatAdd)) {
-            throw new SystemComponentException("Could not insert Articles in Table {$sHeapTable}");
+            throw new StandardException("Could not insert Articles in Table {$sHeapTable}");
         }
 
         $this->removeParentArticles($sHeapTable);

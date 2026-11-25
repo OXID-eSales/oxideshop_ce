@@ -33,7 +33,7 @@ class AdminNewsletter extends \OxidEsales\Eshop\Application\Controller\Admin\Adm
     {
         $recipients = $this->getNewsLetterRecipientsList();
 
-        return ContainerFacade::get(FileResponseFactoryInterface::class)->fromCallback(
+        return ContainerFacade::get(FileResponseFactoryInterface::class)->createStreamed(
             function () use ($recipients): void {
                 $this->generateCSV($recipients);
             },

@@ -10,39 +10,54 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Application\Controller\Admin;
 
 use OxidEsales\Eshop\Application\Controller\Admin\GenericExportDo;
-use OxidEsales\Eshop\Core\Exception\SystemComponentException;
+use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsView;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 final class GenericExportDoTest extends TestCase
 {
+    use ContainerTrait;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Registry::getSession()->setId('generic-export-test');
+    }
+
     public function tearDown(): void
     {
-        Registry::getSession()->deleteVariable('Errors');
+        oxNew(GenericExportDo::class)->stop();
+        (new Filesystem())->remove(
+            Path::join($this->getParameter('oxid_esales.shop_source_directory'), 'export', 'genexport.txt')
+        );
+        unset($_POST['search']);
+        Registry::set(UtilsView::class, null);
+        Registry::set('logger', null);
 
         parent::tearDown();
     }
 
-    public function testExportThatCannotBePreparedShowsTheMessageAndDoesNotRun(): void
+    public function testStartShowsAndLogsErrorWhenExportCannotBePrepared(): void
     {
-        $controller = new class extends GenericExportDo {
-            public function prepareExport()
-            {
-                throw new SystemComponentException('Could not insert Articles in Table oxdyn');
-            }
-        };
+        $_POST['search'] = uniqid('no-match-');
+        $utilsView = $this->createMock(UtilsView::class);
+        $utilsView->expects($this->once())
+            ->method('addErrorToDisplay')
+            ->with($this->isInstanceOf(StandardException::class));
+        Registry::set(UtilsView::class, $utilsView);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('error');
+        Registry::set('logger', $logger);
+        $controller = oxNew(GenericExportDo::class);
 
         $controller->start();
 
-        $this->assertSame(
-            [['Could not insert Articles in Table oxdyn'], false],
-            [
-                array_map(
-                    static fn (string $error): string => unserialize($error)->getOxMessage(),
-                    Registry::getSession()->getVariable('Errors')['default']
-                ),
-                array_key_exists('refresh', $controller->getViewData()),
-            ]
-        );
+        $this->assertArrayNotHasKey('refresh', $controller->getViewData());
     }
 }

@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Http\Exception;
 
-class AccessDeniedException extends \Error implements RequestTerminationInterface
+use Error;
+
+class AccessDeniedException extends Error implements RequestTerminationInterface
 {
 }

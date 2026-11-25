@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Controller;
 
+use LogicException;
 use Symfony\Component\HttpFoundation\Response;
 
 interface ViewControllerInterface
@@ -15,9 +16,12 @@ interface ViewControllerInterface
 
     public function render();
 
-    public function getResponse(): ?Response;
+    public function hasResponse(): bool;
 
-    public function setResponse(Response $response): void;
+    /**
+     * @throws LogicException
+     */
+    public function getResponse(): Response;
 
     public function executeFunction($function);
 

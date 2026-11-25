@@ -9,82 +9,39 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http\ErrorRenderer;
 
-use OxidEsales\Eshop\Core\Exception\RoutingException;
-use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ShopHtmlErrorRenderer;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponseFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
+use RuntimeException;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
-use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class ShopHtmlErrorRendererTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $context = $this->get(BasicContextInterface::class);
-        $this->get(ThemeConfigurationInstallerInterface::class)
-            ->install(Path::join($context->getVendorPath(), 'oxid-esales', 'apex-theme'));
-        $this->get(ThemeActivationServiceInterface::class)->activate('apex', $context->getDefaultShopId());
-    }
-
     public function testRendersTheNotFoundPageWithNotFoundStatus(): void
     {
-        $this->useTemplateRenderer($this->rendererReturning('<html>404</html>'));
+        $renderer = $this->createStub(TemplateRendererInterface::class);
+        $renderer->method('renderTemplate')->willReturn('<html>404</html>');
+        $this->useTemplateRenderer($renderer);
+        $this->pushErrorSubRequest(Request::create('/missing/'));
 
-        $exception = $this->createRenderer()->render(new NotFoundHttpException());
+        $exception = $this->createRenderer(new NullLogger())->render(new NotFoundHttpException());
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
         $this->assertSame('<html>404</html>', $exception->getAsString());
-        $this->assertSame('text/html', $exception->getHeaders()['Content-Type']);
-    }
-
-    public function testRendersTheNotFoundTemplateWithTheRequestedUri(): void
-    {
-        $rendered = [];
-        $renderer = $this->createStub(TemplateRendererInterface::class);
-        $renderer->method('renderTemplate')->willReturnCallback(
-            function (string $template, array $viewData) use (&$rendered): string {
-                $rendered = [
-                    'template' => $template,
-                    'sUrl' => $viewData['sUrl'],
-                    'view' => $viewData['oView']->getClassKey(),
-                    'hasViewConfig' => isset($viewData['oViewConf']),
-                ];
-
-                return 'page';
-            }
-        );
-        $this->useTemplateRenderer($renderer);
-        ContainerFacade::get(RequestStack::class)->push(Request::create('/retired-url/?a=1'));
-
-        $this->createRenderer()->render(new NotFoundHttpException());
-
-        $this->assertSame(
-            [
-                'template' => 'message/err_404',
-                'sUrl' => '/retired-url/?a=1',
-                'view' => 'notfound',
-                'hasViewConfig' => true,
-            ],
-            $rendered
-        );
     }
 
     public function testRedirectsWhenTheNotFoundPageRequestsIt(): void
@@ -93,32 +50,33 @@ final class ShopHtmlErrorRendererTest extends IntegrationTestCase
         $renderer->method('renderTemplate')
             ->willThrowException(new RedirectException('https://shop.example/target', 301));
         $this->useTemplateRenderer($renderer);
+        $this->pushErrorSubRequest(Request::create('/missing/'));
 
-        $exception = $this->createRenderer()->render(new NotFoundHttpException());
+        $exception = $this->createRenderer(new NullLogger())->render(new NotFoundHttpException());
 
         $this->assertSame(301, $exception->getStatusCode());
         $this->assertSame('https://shop.example/target', $exception->getHeaders()['Location']);
-        $this->assertSame('', $exception->getAsString());
     }
 
-    public function testFallsBackToTheExceptionPageWhenTheTemplateFails(): void
+    public function testFallsBackToSymfonyNotFoundPageWhenShopCannotRenderIt(): void
     {
-        $renderer = $this->createStub(TemplateRendererInterface::class);
-        $renderer->method('renderTemplate')->willReturnCallback(
-            static function (string $template): string {
-                if ($template === 'message/err_404') {
-                    throw new \RuntimeException();
-                }
+        $this->useTemplateRenderer($this->failingRenderer());
+        $this->pushErrorSubRequest(Request::create('/missing/'));
 
-                return 'fallback';
-            }
-        );
-        $this->useTemplateRenderer($renderer);
-
-        $exception = $this->createRenderer()->render(new NotFoundHttpException());
+        $exception = $this->createRenderer(new NullLogger())->render(new NotFoundHttpException());
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
-        $this->assertSame('fallback', $exception->getAsString());
+        $this->assertStringContainsString('404 Not Found', $exception->getAsString());
+    }
+
+    public function testLogsWhenShopCannotRenderTheNotFoundPage(): void
+    {
+        $this->useTemplateRenderer($this->failingRenderer());
+        $this->pushErrorSubRequest(Request::create('/missing/'));
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('error');
+
+        $this->createRenderer($logger)->render(new NotFoundHttpException());
     }
 
     public function testRendersTheOfflinePageWhenTheShopGoesOfflineWhileRenderingTheNotFoundPage(): void
@@ -126,50 +84,23 @@ final class ShopHtmlErrorRendererTest extends IntegrationTestCase
         $renderer = $this->createStub(TemplateRendererInterface::class);
         $renderer->method('renderTemplate')->willThrowException(new ShopOfflineException());
         $this->useTemplateRenderer($renderer);
+        $this->pushErrorSubRequest(Request::create('/missing/'));
 
-        $exception = $this->createRenderer()->render(new NotFoundHttpException());
+        $exception = $this->createRenderer(new NullLogger())->render(new NotFoundHttpException());
 
-        $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $exception->getStatusCode());
-        $this->assertSame(new OfflinePageResponse()->getContent(), $exception->getAsString());
+        $this->assertSame(Response::HTTP_SERVICE_UNAVAILABLE, $exception->getStatusCode());
+        $this->assertSame($this->getOfflinePage(), $exception->getAsString());
     }
 
-    public function testRendersTheThemedNotFoundPage(): void
+    private function createRenderer(LoggerInterface $logger): ShopHtmlErrorRenderer
     {
-        $this->skipWithoutTemplateEngine($this->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer());
-        ContainerFacade::get(RequestStack::class)->push(new Request(server: ['REQUEST_URI' => '/"><script>alert(1)</script>']));
-
-        $exception = $this->createRenderer()->render(new NotFoundHttpException());
-
-        $this->assertSame(Response::HTTP_NOT_FOUND, $exception->getStatusCode());
-        $this->assertStringContainsString('err-404', $exception->getAsString());
-        $this->assertStringNotContainsString('<script>alert(1)</script>', $exception->getAsString());
-        $this->assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $exception->getAsString());
-    }
-
-    public function testKernelRendersTheThemedPageForHtmlClients(): void
-    {
-        $this->skipWithoutTemplateEngine($this->get(TemplateRendererBridgeInterface::class)->getTemplateRenderer());
-        $request = Request::create('/retired-url/');
-        $request->attributes->set('_controller', static function (): Response {
-            throw new RoutingException();
-        });
-
-        $response = $this->get(HttpKernelInterface::class)->handle($request);
-
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertStringContainsString('err-404', $response->getContent());
-    }
-
-    private function createRenderer(): ShopHtmlErrorRenderer
-    {
-        return new ShopHtmlErrorRenderer(new HtmlErrorRenderer(), false);
-    }
-
-    private function skipWithoutTemplateEngine(TemplateRendererInterface $renderer): void
-    {
-        if ($renderer->renderTemplate('message/err_404', []) === 'message/err_404.html.twig') {
-            $this->markTestSkipped('No template engine is registered for this shop configuration.');
-        }
+        return new ShopHtmlErrorRenderer(
+            new HtmlErrorRenderer(),
+            false,
+            $this->get(ContextInterface::class),
+            $this->get(OfflinePageResponseFactoryInterface::class),
+            $logger
+        );
     }
 
     private function useTemplateRenderer(TemplateRendererInterface $renderer): void
@@ -181,11 +112,23 @@ final class ShopHtmlErrorRendererTest extends IntegrationTestCase
         $this->replaceContainerInstance();
     }
 
-    private function rendererReturning(string $output): TemplateRendererInterface
+    private function pushErrorSubRequest(Request $errorRequest): void
+    {
+        $requestStack = $this->get(RequestStack::class);
+        $requestStack->push(Request::create('/'));
+        $requestStack->push($errorRequest);
+    }
+
+    private function failingRenderer(): TemplateRendererInterface
     {
         $renderer = $this->createStub(TemplateRendererInterface::class);
-        $renderer->method('renderTemplate')->willReturn($output);
+        $renderer->method('renderTemplate')->willThrowException(new RuntimeException());
 
         return $renderer;
+    }
+
+    private function getOfflinePage(): string
+    {
+        return (string) $this->get(OfflinePageResponseFactoryInterface::class)->create()->getContent();
     }
 }

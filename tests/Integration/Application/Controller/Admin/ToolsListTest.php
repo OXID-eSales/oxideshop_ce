@@ -37,7 +37,7 @@ final class ToolsListTest extends IntegrationTestCase
         ];
         $toolsList = oxNew(ToolsList::class);
 
-        $toolsList->performsql();
+        $toolsList->executeFunction('performsql');
 
         $this->assertSame(
             [[Registry::getLang()->translateString('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE')], false],

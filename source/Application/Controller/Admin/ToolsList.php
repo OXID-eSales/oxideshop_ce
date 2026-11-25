@@ -47,12 +47,7 @@ class ToolsList extends \OxidEsales\Eshop\Application\Controller\Admin\AdminList
         $oAuthUser->loadAdminUser();
         if ($oAuthUser->oxuser__oxrights->value === "malladmin") {
             $sUpdateSQL = Registry::getRequest()->getRequestEscapedParameter("updatesql");
-            try {
-                $sUpdateSQLFile = $this->processFiles();
-            } catch (FileTypeNotAllowedException) {
-                Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
-                return;
-            }
+            $sUpdateSQLFile = $this->processFiles();
 
             if ($sUpdateSQLFile && strlen($sUpdateSQLFile) > 0) {
                 if (isset($sUpdateSQL) && strlen($sUpdateSQL)) {

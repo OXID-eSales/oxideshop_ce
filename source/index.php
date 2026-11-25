@@ -15,5 +15,5 @@ use Symfony\Component\HttpFoundation\Response;
 require_once __DIR__ . '/bootstrap.php';
 
 ContainerFacade::get(ShopRunnerInterface::class)->run(
-    static fn(): Response => oxNew(ShopControl::class)->buildResponse()
+    static fn(): Response => oxNew(ShopControl::class)->handleRequest()
 );

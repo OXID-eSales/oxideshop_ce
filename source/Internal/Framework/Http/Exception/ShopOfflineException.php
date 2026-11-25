@@ -9,6 +9,19 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Http\Exception;
 
-class ShopOfflineException extends \Error implements RequestTerminationInterface
+use Error;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
+class ShopOfflineException extends Error implements RequestTerminationInterface, HttpExceptionInterface
 {
+    public function getStatusCode(): int
+    {
+        return Response::HTTP_SERVICE_UNAVAILABLE;
+    }
+
+    public function getHeaders(): array
+    {
+        return [];
+    }
 }

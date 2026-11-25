@@ -36,6 +36,12 @@ services:
       $request: '@Symfony\Component\HttpFoundation\Request'
     public: true
 
+  OxidEsales\EshopCommunity\Application\Controller\NotFoundController:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'notfound' }
+    public: true
+    shared: false
+
   OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RedirectListener:
     tags:
       - { name: kernel.event_subscriber }
@@ -74,6 +80,9 @@ services:
     arguments:
       $debug: '%oxid_esales.debug_mode%'
       $charset: '%oxid_esales.http.charset%'
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponseFactoryInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponseFactory
 
   OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueueInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueue

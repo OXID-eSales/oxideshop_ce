@@ -1,0 +1,24 @@
+services:
+  OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Fixtures\FailingWidget:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'failing_widget' }
+    public: true
+    shared: false
+
+  OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Fixtures\IncludingWidget:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'including_widget' }
+    public: true
+    shared: false
+
+  OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Fixtures\ErrorThrowingWidget:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'error_throwing_widget' }
+    public: true
+    shared: false
+
+  OxidEsales\EshopCommunity\Tests\Integration\Legacy\Core\Fixtures\RedirectingWidget:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'redirecting_widget' }
+    public: true
+    shared: false

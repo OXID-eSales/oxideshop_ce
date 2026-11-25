@@ -10,6 +10,7 @@ namespace OxidEsales\EshopCommunity\Application\Controller\Admin;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileTypeNotAllowedException;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileValidatorBridgeInterface;
 
 /**
@@ -150,6 +151,15 @@ class AdminController extends \OxidEsales\Eshop\Core\Controller\BaseController
         parent::init();
 
         $this->_aViewData['malladmin'] = Registry::getSession()->getVariable('malladmin');
+    }
+
+    public function executeFunction($function)
+    {
+        try {
+            parent::executeFunction($function);
+        } catch (FileTypeNotAllowedException) {
+            Registry::getUtilsView()->addErrorToDisplay('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+        }
     }
 
     /**

@@ -11,10 +11,12 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http;
 
 use LogicException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
+use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileTypeNotAllowedException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueueInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\AccessDeniedException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponseFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -26,6 +28,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Controller\ErrorController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
@@ -122,8 +126,40 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $response = $this->get(HttpKernelInterface::class)->handle($request);
 
         $this->assertSame(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
-        $this->assertSame((string) new OfflinePageResponse()->getContent(), $response->getContent());
+        $this->assertSame($this->getOfflinePage(), $response->getContent());
         $this->assertSame('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
+    }
+
+    public function testAnswersOfflineShopWithServiceUnavailable(): void
+    {
+        $request = $this->requestWithController(static function (): Response {
+            throw new ShopOfflineException();
+        });
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_SERVICE_UNAVAILABLE, $response->getStatusCode());
+        $this->assertSame($this->getOfflinePage(), $response->getContent());
+    }
+
+    public function testAnswersAccessDeniedWithForbidden(): void
+    {
+        $request = $this->requestWithController(static function (): Response {
+            throw new AccessDeniedException();
+        });
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertStringContainsString('The server returned a "403 Forbidden".', $response->getContent());
+        $this->assertStringNotContainsString($this->getOfflinePage(), $response->getContent());
+    }
+
+    public function testAnswersForbiddenFileTypeWithBadRequest(): void
+    {
+        $response = $this->handleJsonRequestThrowing(new FileTypeNotAllowedException());
+
+        $this->assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
     }
 
     public function testAnswersTooManyRequestsOfHtmlClientsWithTheGenericErrorPage(): void
@@ -155,6 +191,8 @@ final class HttpKernelServiceTest extends IntegrationTestCase
                 [LogLevel::INFO, NotFoundHttpException::class, RoutingException::class],
                 [LogLevel::INFO, NotFoundHttpException::class, null],
                 [LogLevel::INFO, ShopOfflineException::class, null],
+                [LogLevel::INFO, AccessDeniedHttpException::class, AccessDeniedException::class],
+                [LogLevel::WARNING, BadRequestHttpException::class, FileTypeNotAllowedException::class],
                 [LogLevel::INFO, TooManyRequestsHttpException::class, null],
                 [LogLevel::ERROR, MethodNotAllowedHttpException::class, null],
                 [LogLevel::CRITICAL, \RuntimeException::class, null],
@@ -295,6 +333,8 @@ final class HttpKernelServiceTest extends IntegrationTestCase
             new RoutingException(),
             new NotFoundHttpException(),
             new ShopOfflineException(),
+            new AccessDeniedException(),
+            new FileTypeNotAllowedException(),
             new TooManyRequestsHttpException(45),
             new MethodNotAllowedHttpException(['GET']),
             new \RuntimeException(),
@@ -345,5 +385,10 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $request->attributes->set('_controller', $controller);
 
         return $request;
+    }
+
+    private function getOfflinePage(): string
+    {
+        return (string) $this->get(OfflinePageResponseFactoryInterface::class)->create()->getContent();
     }
 }

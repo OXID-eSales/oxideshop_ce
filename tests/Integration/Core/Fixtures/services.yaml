@@ -1,0 +1,6 @@
+services:
+  OxidEsales\EshopCommunity\Tests\Integration\Core\Fixtures\ResponseController:
+    tags:
+      - { name: 'oxid.view_controller', controller_key: 'shop_control_test' }
+    public: true
+    shared: false

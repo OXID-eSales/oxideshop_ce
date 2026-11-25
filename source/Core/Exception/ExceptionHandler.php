@@ -11,15 +11,15 @@ namespace OxidEsales\EshopCommunity\Core\Exception;
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\ShopIdCalculator;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponseFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Logger\LoggerServiceFactory;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
-use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class ExceptionHandler
 {
-    public function __construct(private readonly bool $debugMode = false)
+    public function __construct(private readonly bool $isDebugMode = false)
     {
     }
 
@@ -30,11 +30,11 @@ class ExceptionHandler
     {
         $this->logException($exception);
 
-        if ($this->debugMode || PHP_SAPI === 'cli') {
+        if ($this->isDebugMode || PHP_SAPI === 'cli') {
             throw $exception;
         }
 
-        $response = new OfflinePageResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
+        $response = new OfflinePageResponseFactory(new BasicContext())->create();
         $response->headers->set('Connection', 'close');
         $response->send();
     }

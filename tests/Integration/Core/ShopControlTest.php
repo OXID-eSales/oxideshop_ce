@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
-use OxidEsales\Eshop\Application\Controller\FrontendController;
+use Exception;
 use OxidEsales\Eshop\Core\Config;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Exception\StandardException;
@@ -19,10 +19,14 @@ use OxidEsales\Eshop\Core\ShopControl;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
+use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\Core\Fixtures\FailingTemplateRenderer;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use Symfony\Component\HttpFoundation\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use TypeError;
 
 final class ShopControlTest extends IntegrationTestCase
 {
@@ -30,12 +34,13 @@ final class ShopControlTest extends IntegrationTestCase
 
     public function tearDown(): void
     {
+        unset($_GET['renderPartial']);
         Registry::set(Config::class, null);
 
         parent::tearDown();
     }
 
-    public function testBuildResponsePropagatesShopExceptions(): void
+    public function testHandleRequestPropagatesShopExceptions(): void
     {
         $config = $this->createMock(Config::class);
         $config->expects($this->once())
@@ -45,87 +50,122 @@ final class ShopControlTest extends IntegrationTestCase
 
         $this->expectException(SystemComponentException::class);
 
-        new ShopControl()->buildResponse();
+        new ShopControl()->handleRequest();
     }
 
-    #[RunInSeparateProcess]
-    public function testActionLeadingToAnUnknownControllerIsNotFound(): void
+    public function testBuildResponseRejectsActionLeadingToUnknownController(): void
     {
         $this->expectException(RoutingException::class);
 
         new ShopControl()->buildResponse('start', 'getTitle');
     }
 
-    public function testBuildResponseDeliversTheResponseReturnedByRender(): void
-    {
-        $response = new Response('file');
-        $view = $this->createStub(FrontendController::class);
-        $view->method('render')->willReturn($response);
-        $view->method('getFncName')->willReturn('');
-        $shopControl = new class ($view) extends ShopControl {
-            public function __construct(private readonly FrontendController $view)
-            {
-            }
-
-            protected function initializeViewObject($class, $function, $parameters = null, $viewsChain = null)
-            {
-                return $this->view;
-            }
-        };
-
-        $this->assertSame($response, $shopControl->buildResponse('download'));
-    }
-
-    public function testRenderRejectsViewWithoutTemplate(): void
+    public function testBuildResponseRejectsControllerWithoutView(): void
     {
         $this->expectException(RoutingException::class);
 
-        $this->renderView(null);
+        new ShopControl()->buildResponse('article_pictures_ajax', '');
     }
 
-    public function testRenderRethrowsShopExceptionWrappedByTemplateEngine(): void
+    public function testBuildResponseRejectsViewWithoutTemplate(): void
     {
-        $this->useTemplateRendererThrowing(new \Exception('', 0, new StandardException()));
+        $this->expectException(RoutingException::class);
 
-        $this->expectException(StandardException::class);
-
-        $this->renderView();
+        new ShopControl()->buildResponse('oxubase', '');
     }
 
-    public function testRenderRethrowsRedirectExceptionWrappedByTemplateEngine(): void
+    public function testBuildResponseDeliversTheResponseReturnedByRender(): void
     {
-        $signal = new RedirectException('https://shop.example/target');
-        $this->useTemplateRendererThrowing(new \Exception('', 0, $signal));
+        $this->useResponseControllerFixture();
 
-        try {
-            $this->renderView();
-            $this->fail('RedirectException was not rethrown');
-        } catch (RedirectException $rethrown) {
-            $this->assertSame($signal, $rethrown);
-        }
+        $response = new ShopControl()->buildResponse('shop_control_test', '');
+
+        $this->assertSame('rendered', $response->getContent());
     }
 
-    private function renderView(?string $templateName = 'page'): void
+    public function testBuildResponseNotifiesAboutRenderedViewReturningResponse(): void
     {
-        $view = $this->createStub(FrontendController::class);
-        $view->method('render')->willReturn($templateName);
-        $view->method('getViewData')->willReturn([]);
-        $view->method('getClassKey')->willReturn('start');
-        $view->method('getViewId')->willReturn('viewId');
-
-        $shopControl = new class extends ShopControl {
-            public function renderView($view): string
-            {
-                return $this->render($view);
+        $this->useResponseControllerFixture();
+        $renderedViews = 0;
+        $this->get(EventDispatcherInterface::class)->addListener(
+            ViewRenderedEvent::class,
+            static function () use (&$renderedViews): void {
+                $renderedViews++;
             }
-        };
-        $shopControl->renderView($view);
+        );
+
+        new ShopControl()->buildResponse('shop_control_test', '');
+
+        $this->assertSame(1, $renderedViews);
     }
 
-    private function useTemplateRendererThrowing(\Throwable $throwable): void
+    public function testBuildResponseDeliversActionResponseWithoutRendering(): void
+    {
+        $this->useResponseControllerFixture();
+
+        $response = new ShopControl()->buildResponse('shop_control_test', 'download');
+
+        $this->assertSame('downloaded', $response->getContent());
+    }
+
+    public function testBuildResponseWithRenderPartialReturnsContentAndErrorsAsJson(): void
     {
         $renderer = $this->createStub(TemplateRendererInterface::class);
-        $renderer->method('renderTemplate')->willThrowException($throwable);
+        $renderer->method('renderTemplate')->willReturn('partial content');
+        $this->useTemplateRenderer($renderer);
+        Registry::getUtilsView()->addErrorToDisplay('Partial error');
+        $_GET['renderPartial'] = '1';
+
+        $response = new ShopControl()->buildResponse('start', '');
+
+        $this->assertInstanceOf(JsonResponse::class, $response);
+        $this->assertSame(
+            ['errors' => ['default' => ['Partial error']], 'content' => 'partial content'],
+            json_decode((string) $response->getContent(), true)
+        );
+    }
+
+    public static function templateErrorDataProvider(): array
+    {
+        return [
+            'shop exception' => [StandardException::class],
+            'error' => [TypeError::class],
+        ];
+    }
+
+    #[DataProvider('templateErrorDataProvider')]
+    public function testBuildResponseShowsExceptionPageForTemplateErrors(string $errorClass): void
+    {
+        $this->useTemplateRenderer(new FailingTemplateRenderer(new $errorClass()));
+
+        $response = new ShopControl()->buildResponse('start', '');
+
+        $this->assertSame('exception page', $response->getContent());
+    }
+
+    public function testBuildResponseRethrowsRedirectExceptionWrappedByTemplateEngine(): void
+    {
+        $renderer = $this->createStub(TemplateRendererInterface::class);
+        $renderer->method('renderTemplate')->willThrowException(
+            new Exception('', 0, new RedirectException('https://shop.example/target'))
+        );
+        $this->useTemplateRenderer($renderer);
+
+        $this->expectException(RedirectException::class);
+
+        new ShopControl()->buildResponse('start', '');
+    }
+
+    private function useResponseControllerFixture(): void
+    {
+        $this->createContainer();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
+        $this->compileContainer();
+        $this->replaceContainerInstance();
+    }
+
+    private function useTemplateRenderer(TemplateRendererInterface $renderer): void
+    {
         $bridge = $this->createStub(TemplateRendererBridgeInterface::class);
         $bridge->method('getTemplateRenderer')->willReturn($renderer);
         $this->createContainer();

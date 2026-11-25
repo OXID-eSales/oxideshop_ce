@@ -255,9 +255,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
         $this->initVars($this->getShopId());
 
-        // application initialization
         $this->initializeShop();
-        $this->_oStart = oxNew(\OxidEsales\Eshop\Application\Controller\OxidStartController::class);
+        $this->_oStart = oxNew(OxidStartController::class);
         $this->_oStart->appInit();
     }
 
@@ -1629,6 +1628,11 @@ class Config extends \OxidEsales\Eshop\Core\Base
     public function getActiveViewsList()
     {
         return $this->_aActiveViews;
+    }
+
+    public function setActiveViewsList(array $views): void
+    {
+        $this->_aActiveViews = $views;
     }
 
     /**

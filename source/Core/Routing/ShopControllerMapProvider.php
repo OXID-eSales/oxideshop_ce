@@ -214,7 +214,6 @@ class ShopControllerMapProvider implements ControllerMapProviderInterface
         'discount_users' => Controller\Admin\DiscountUsers::class,
         'discount_users_ajax' => Controller\Admin\DiscountUsersAjax::class,
         'content' => Controller\ContentController::class,
-        'notfound' => Controller\NotFoundController::class,
         'links' => Controller\LinksController::class,
         'newsletter' => Controller\NewsletterController::class,
         'pricealarm' => Controller\PriceAlarmController::class,

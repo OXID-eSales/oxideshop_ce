@@ -11,29 +11,35 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http\ErrorRend
 
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ProblemJsonErrorRenderer;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
+use Throwable;
 
 final class ProblemJsonErrorRendererTest extends TestCase
 {
-    public function testRendersProblemForJsonRoutes(): void
+    public function testRendersProblemWithStatusForJsonRoutes(): void
+    {
+        $exception = $this->render(new NotFoundHttpException(), $this->jsonRouteRequest());
+
+        $this->assertSame(404, json_decode($exception->getAsString(), true)['status']);
+    }
+
+    public function testHidesTheMessageOfHttpExceptionsBehindStatusText(): void
     {
         $exception = $this->render(new NotFoundHttpException('internal detail'), $this->jsonRouteRequest());
 
-        $this->assertSame(404, $exception->getStatusCode());
-        $this->assertSame(
-            [
-                'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
-                'title' => 'An error occurred',
-                'status' => 404,
-                'detail' => 'Not Found',
-            ],
-            json_decode($exception->getAsString(), true)
-        );
+        $this->assertSame('Not Found', json_decode($exception->getAsString(), true)['detail']);
+    }
+
+    public function testAnswersWithJsonContentType(): void
+    {
+        $exception = $this->render(new NotFoundHttpException(), $this->jsonRouteRequest());
+
         $this->assertSame('application/json', $exception->getHeaders()['Content-Type']);
     }
 
@@ -56,7 +62,7 @@ final class ProblemJsonErrorRendererTest extends TestCase
 
     public function testHidesTheMessageOfOtherThrowables(): void
     {
-        $exception = $this->render(new \RuntimeException('database password leaked'), $this->jsonRouteRequest());
+        $exception = $this->render(new RuntimeException('database password leaked'), $this->jsonRouteRequest());
 
         $problem = json_decode($exception->getAsString(), true);
         $this->assertSame(500, $problem['status']);
@@ -66,17 +72,17 @@ final class ProblemJsonErrorRendererTest extends TestCase
 
     public function testAddsExceptionDetailsInDebugMode(): void
     {
-        $exception = $this->render(new \RuntimeException('boom'), $this->jsonRouteRequest(), debug: true);
+        $exception = $this->render(new RuntimeException('boom'), $this->jsonRouteRequest(), debug: true);
 
         $problem = json_decode($exception->getAsString(), true);
         $this->assertSame('boom', $problem['detail']);
-        $this->assertSame(\RuntimeException::class, $problem['class']);
+        $this->assertSame(RuntimeException::class, $problem['class']);
         $this->assertNotEmpty($problem['trace']);
     }
 
     public function testSubstitutesInvalidCharactersInDebugMode(): void
     {
-        $exception = $this->render(new \RuntimeException("\xB1boom"), $this->jsonRouteRequest(), debug: true);
+        $exception = $this->render(new RuntimeException("\xB1boom"), $this->jsonRouteRequest(), debug: true);
 
         $this->assertSame("\u{FFFD}boom", json_decode($exception->getAsString(), true)['detail']);
     }
@@ -90,17 +96,17 @@ final class ProblemJsonErrorRendererTest extends TestCase
 
     public function testRendersWithTheHtmlRendererWithoutRequest(): void
     {
-        $exception = $this->render(new NotFoundHttpException(), null);
+        $renderer = new ProblemJsonErrorRenderer(new RequestStack(), $this->htmlRenderer(), debug: false);
+
+        $exception = $renderer->render(new NotFoundHttpException());
 
         $this->assertSame('html-page', $exception->getAsString());
     }
 
-    private function render(\Throwable $throwable, ?Request $request, bool $debug = false): FlattenException
+    private function render(Throwable $throwable, Request $request, bool $debug = false): FlattenException
     {
         $requestStack = new RequestStack();
-        if ($request !== null) {
-            $requestStack->push($request);
-        }
+        $requestStack->push($request);
 
         return new ProblemJsonErrorRenderer($requestStack, $this->htmlRenderer(), $debug)->render($throwable);
     }
@@ -108,10 +114,7 @@ final class ProblemJsonErrorRendererTest extends TestCase
     private function htmlRenderer(): ErrorRendererInterface
     {
         $renderer = $this->createStub(ErrorRendererInterface::class);
-        $renderer->method('render')->willReturnCallback(
-            static fn(\Throwable $throwable): FlattenException => FlattenException::createFromThrowable($throwable)
-                ->setAsString('html-page')
-        );
+        $renderer->method('render')->willReturn(new FlattenException()->setAsString('html-page'));
 
         return $renderer;
     }

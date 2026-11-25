@@ -1497,12 +1497,6 @@ return [
         'isInterface'      => false,
         'isDeprecated'     => false
     ],
-    'OxidEsales\Eshop\Application\Controller\NotFoundController'                 => [
-        'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\NotFoundController::class,
-        'isAbstract'       => false,
-        'isInterface'      => false,
-        'isDeprecated'     => false
-    ],
     'OxidEsales\Eshop\Application\Controller\OrderController'                    => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\OrderController::class,
         'isAbstract'       => false,

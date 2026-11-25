@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer;
 use Symfony\Component\ErrorHandler\ErrorRenderer\ErrorRendererInterface;
 use Symfony\Component\ErrorHandler\Exception\FlattenException;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Throwable;
 
 readonly class ProblemJsonErrorRenderer implements ErrorRendererInterface
 {
@@ -22,7 +23,7 @@ readonly class ProblemJsonErrorRenderer implements ErrorRendererInterface
     ) {
     }
 
-    public function render(\Throwable $exception): FlattenException
+    public function render(Throwable $exception): FlattenException
     {
         if ($this->requestStack->getCurrentRequest()?->getPreferredFormat() !== 'json') {
             return $this->htmlErrorRenderer->render($exception);
@@ -38,6 +39,9 @@ readonly class ProblemJsonErrorRenderer implements ErrorRendererInterface
             ));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function getProblem(FlattenException $exception): array
     {
         $problem = [

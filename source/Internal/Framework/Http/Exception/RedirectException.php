@@ -9,11 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Http\Exception;
 
-class RedirectException extends \Error implements RequestTerminationInterface
+use Error;
+
+class RedirectException extends Error implements RequestTerminationInterface
 {
     public function __construct(
         private readonly string $url,
-        private readonly int $statusCode = 302
+        private readonly int $statusCode = 302,
     ) {
         parent::__construct();
     }

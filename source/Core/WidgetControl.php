@@ -8,12 +8,14 @@
 namespace OxidEsales\EshopCommunity\Core;
 
 use OxidEsales\Eshop\Application\Component\Widget\WidgetController;
-use OxidEsales\Eshop\Core\Exception\ObjectException;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RequestTerminationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 /**
  * Main shop actions controller. Processes user actions, logs
@@ -31,16 +33,23 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      */
     protected $parentsAdded = [];
 
-    public function buildWidgetResponse($class = null, $function = null, $parameters = null, $viewsChain = null): Response
+    public function buildResponse(string $controllerKey, string $function): Response
     {
-        if (!isset($viewsChain) && Registry::getRequest()->getRequestEscapedParameter('oxwparent')) {
-            $viewsChain = explode("|", Registry::getRequest()->getRequestEscapedParameter('oxwparent'));
-        }
-
         try {
-            return parent::buildResponse($class, $function, $parameters, $viewsChain);
-        } finally {
-            $this->runLast();
+            return $this->processWidget($controllerKey, $function, [], $this->getRequestedViewsChain());
+        } catch (RoutingException $exception) {
+            throw $exception;
+        } catch (Throwable $exception) {
+            return $this->handleWidgetException($exception);
+        }
+    }
+
+    public function buildIncludedWidgetResponse(string $controllerKey, array $parameters, array $viewsChain): Response
+    {
+        try {
+            return $this->processWidget($controllerKey, '', $parameters, $viewsChain);
+        } catch (Throwable $exception) {
+            return $this->handleWidgetException($exception);
         }
     }
 
@@ -49,19 +58,9 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      */
     protected function runLast()
     {
-        $oConfig = \OxidEsales\Eshop\Core\Registry::getConfig();
-
-        if ($oConfig->hasActiveViewsChain()) {
-            // Removing current active view.
-            $oConfig->dropLastActiveView();
-
-            foreach ($this->parentsAdded as $sParentClassName) {
-                $oConfig->dropLastActiveView();
-            }
-
-            // Setting back last active view.
-            $engine = $this->getRenderer()->getTemplateEngine();
-            $engine->addGlobal('oView', $oConfig->getActiveView());
+        $config = Registry::getConfig();
+        if ($config->getActiveViewsList() !== []) {
+            $this->getRenderer()->getTemplateEngine()->addGlobal('oView', $config->getActiveView());
         }
     }
 
@@ -73,7 +72,7 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views keys that should be initialized as well
      *
-     * @throws ObjectException
+     * @throws RoutingException
      *
      * @return \OxidEsales\Eshop\Core\Controller\BaseController Current active view
      */
@@ -84,6 +83,10 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
         $activeViewsIds = array_map("strtolower", $activeViewsIds);
         $classKey = Registry::getControllerClassNameResolver()->getIdByClassName($class);
         $classKey = !is_null($classKey) ? $classKey : $class; //fallback
+
+        if (!is_a($class, WidgetController::class, true)) {
+            throw new RoutingException(sprintf('Controller "%s" is not a widget', $classKey));
+        }
 
         // if exists views chain, initializing these view at first
         if (is_array($viewsChain) && !empty($viewsChain)) {
@@ -104,18 +107,52 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
 
         $widgetViewObject = parent::initializeViewObject($class, $function, $parameters, null);
 
-        if (!is_a($widgetViewObject, WidgetController::class)) {
-            /** @var ObjectException $exception */
-            $exception = oxNew(ObjectException::class, get_class($widgetViewObject) . ' is not an instance of ' . WidgetController::class);
-            throw $exception;
-        }
-
         // Set template name for current widget.
         if (!empty($parameters['oxwtemplate'])) {
             $widgetViewObject->setTemplateName($parameters['oxwtemplate']);
         }
 
         return $widgetViewObject;
+    }
+
+    private function processWidget(
+        string $controllerKey,
+        string $function,
+        array $parameters,
+        array $viewsChain,
+    ): Response {
+        $config = Registry::getConfig();
+        $config->init();
+        $controllerClass = $this->resolveControllerClass($controllerKey);
+
+        $activeViews = $config->getActiveViewsList();
+        try {
+            return $this->process($controllerClass, $function, $parameters, $viewsChain);
+        } finally {
+            $config->setActiveViewsList($activeViews);
+            $this->runLast();
+        }
+    }
+
+    private function handleWidgetException(Throwable $exception): Response
+    {
+        if ($exception instanceof RequestTerminationInterface || $this->isDebugMode()) {
+            throw $exception;
+        }
+
+        Registry::getLogger()->error($exception->getMessage(), ['exception' => $exception]);
+
+        return new Response();
+    }
+
+    private function getRequestedViewsChain(): array
+    {
+        $parentViews = (string) Registry::getRequest()->getRequestEscapedParameter('oxwparent');
+        if ($parentViews === '') {
+            return [];
+        }
+
+        return explode('|', $parentViews);
     }
 
     private function getRenderer(): TemplateRendererInterface

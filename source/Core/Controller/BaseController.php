@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core\Controller;
 
+use LogicException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -56,7 +57,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
      */
     protected $_oParent = null;
 
-    protected ?Response $response = null;
+    private ?Response $response = null;
 
     /**
      * Flag if this object is a component or not
@@ -481,44 +482,45 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
         return $this->_blIsComponent;
     }
 
-    /**
-     * Executes method (creates class and then executes). Returns executed
-     * function result.
-     *
-     * @param string $sFunction name of function to execute
-     *
-     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
-     */
-    public function executeFunction($sFunction)
+    public function executeFunction($function)
     {
-        // execute
-        if ($sFunction && !self::$_blExecuted) {
-            if (method_exists($this, $sFunction)) {
-                $sNewAction = $this->$sFunction();
-                self::$_blExecuted = true;
-                ContainerFacade::dispatch(new AfterRequestProcessedEvent());
+        if (!$function || self::$_blExecuted) {
+            return;
+        }
 
-                if ($sNewAction instanceof Response) {
-                    $this->setResponse($sNewAction);
-                } elseif (isset($sNewAction)) {
-                    $this->executeNewAction($sNewAction);
-                }
-            } elseif (!$this->_blIsComponent) {
-                throw new RoutingException(
-                    sprintf("Controller method is not accessible: %s::%s", self::class, $sFunction)
-                );
+        if (!method_exists($this, $function)) {
+            if ($this->_blIsComponent) {
+                return;
             }
+
+            throw new RoutingException(
+                sprintf("Controller method is not accessible: %s::%s", static::class, $function)
+            );
+        }
+
+        $result = $this->$function();
+        self::$_blExecuted = true;
+        ContainerFacade::dispatch(new AfterRequestProcessedEvent());
+
+        if ($result instanceof Response) {
+            $this->response = $result;
+        } elseif ($result !== null) {
+            $this->executeNewAction($result);
         }
     }
 
-    public function getResponse(): ?Response
+    public function hasResponse(): bool
     {
-        return $this->response;
+        return $this->response !== null;
     }
 
-    public function setResponse(Response $response): void
+    public function getResponse(): Response
     {
-        $this->response = $response;
+        if ($this->response === null) {
+            throw new LogicException(sprintf('Controller "%s" has no response', static::class));
+        }
+
+        return $this->response;
     }
 
     /**
@@ -528,7 +530,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
      *
      * @param string $sNewAction new action params
      *
-     * @throws \OxidEsales\Eshop\Core\Exception\SystemComponentException system component exception
+     * @throws RoutingException
      */
     protected function executeNewAction($sNewAction)
     {
@@ -548,7 +550,7 @@ class BaseController extends \OxidEsales\Eshop\Core\Base implements ViewControll
             $realClassName = $resolvedClassName ? Registry::getUtilsObject()->getClassName($resolvedClassName) : Registry::getUtilsObject()->getClassName($className);
 
             if (false === class_exists($realClassName)) {
-                throw new RoutingException(sprintf('Controller does not exist: %s', $className));
+                throw new RoutingException(sprintf('Controller "%s" does not exist', $className));
             }
 
             $session = Registry::getSession();

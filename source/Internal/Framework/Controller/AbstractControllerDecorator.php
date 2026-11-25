@@ -28,14 +28,14 @@ abstract class AbstractControllerDecorator implements ViewControllerInterface
         return $this->controller->render();
     }
 
-    public function getResponse(): ?Response
+    public function hasResponse(): bool
     {
-        return $this->controller->getResponse();
+        return $this->controller->hasResponse();
     }
 
-    public function setResponse(Response $response): void
+    public function getResponse(): Response
     {
-        $this->controller->setResponse($response);
+        return $this->controller->getResponse();
     }
 
     public function getFncName()

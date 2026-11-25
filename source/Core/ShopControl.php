@@ -7,9 +7,9 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Application\Controller\FrontendController;
 use OxidEsales\Eshop\Application\Model\ArticleList;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
-use OxidEsales\Eshop\Core\Exception\StandardException;
 use OxidEsales\Eshop\Core\Exception\SystemComponentException;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
@@ -21,6 +21,7 @@ use OxidEsales\EshopCommunity\Internal\Transition\ShopEvents\ViewRenderedEvent;
 use ReflectionMethod;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class ShopControl extends \OxidEsales\Eshop\Core\Base
 {
@@ -30,19 +31,25 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     protected ?array $errors = null;
 
-    protected ?array $remainingErrors = null;
+    protected array $remainingErrors = [];
 
-    protected ?array $errorControllers = null;
+    protected array $errorControllers = [];
 
-    public function buildResponse($controllerKey = null, $function = null, $parameters = null, $viewsChain = null): Response
+    public function handleRequest(): Response
     {
         Registry::getConfig()->init();
 
-        $function ??= Registry::getRequest()->getRequestEscapedParameter('fnc');
-        $controllerKey ??= $this->getStartControllerKey();
-        $controllerClass = $this->resolveControllerClass($controllerKey);
+        return $this->buildResponse(
+            $this->getStartControllerKey(),
+            (string) Registry::getRequest()->getRequestEscapedParameter('fnc')
+        );
+    }
 
-        return $this->process($controllerClass, $function, $parameters, $viewsChain);
+    public function buildResponse(string $controllerKey, string $function): Response
+    {
+        Registry::getConfig()->init();
+
+        return $this->process($this->resolveControllerClass($controllerKey), $function);
     }
 
     protected function getStartControllerKey(): string
@@ -69,7 +76,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     {
         $resolvedClass = Registry::getControllerClassNameResolver()->getClassNameById($controllerKey);
 
-        if (!$resolvedClass) {
+        if (!is_a($resolvedClass, ViewControllerInterface::class, true)) {
             throw new RoutingException(sprintf('Controller "%s" cannot be resolved', $controllerKey));
         }
 
@@ -237,7 +244,7 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         try {
             $output = $renderer->renderTemplate($templateName, $viewData);
         } catch (\Throwable $exception) {
-            $this->rethrowShopThrowable($exception);
+            $this->rethrowRequestTermination($exception);
             $this->processTemplateRenderError($templateName, $exception);
             $viewData = $this->passSessionErrorsToViewData($view, $viewData);
             $output = $renderer->renderTemplate('message/exception', $viewData);
@@ -269,17 +276,24 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     private function resolveResponse(ViewControllerInterface $view): Response
     {
-        $output = $view->getResponse() ?? $this->render($view);
-        if ($output instanceof Response) {
-            return $output;
+        if ($view->hasResponse()) {
+            return $view->getResponse();
         }
 
-        ContainerFacade::dispatch(new ViewRenderedEvent($this));
+        $output = $this->renderAndNotify($view);
 
-        return $this->createResponse($view, $output);
+        return $output instanceof Response ? $output : $this->createResponse($view, $output);
     }
 
-    private function createResponse($view, string $output): Response
+    private function renderAndNotify(ViewControllerInterface $view): string|Response
+    {
+        $output = $this->render($view);
+        ContainerFacade::dispatch(new ViewRenderedEvent($this));
+
+        return $output;
+    }
+
+    private function createResponse(ViewControllerInterface $view, string $output): Response
     {
         if (Registry::getRequest()->getRequestEscapedParameter('renderPartial')) {
             return new JsonResponse([
@@ -322,11 +336,11 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
     }
 
-    private function rethrowShopThrowable(\Throwable $exception): void
+    private function rethrowRequestTermination(Throwable $exception): void
     {
         $candidate = $exception;
         while ($candidate !== null) {
-            if ($candidate instanceof RequestTerminationInterface || $candidate instanceof StandardException) {
+            if ($candidate instanceof RequestTerminationInterface) {
                 throw $candidate;
             }
             $candidate = $candidate->getPrevious();

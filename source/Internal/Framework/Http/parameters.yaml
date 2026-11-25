@@ -18,3 +18,9 @@ parameters:
     OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException:
       status_code: null
       log_level: info
+    OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\AccessDeniedException:
+      status_code: 403
+      log_level: info
+    OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileTypeNotAllowedException:
+      status_code: 400
+      log_level: warning

@@ -26,9 +26,9 @@ use Symfony\Component\Filesystem\Path;
 #[RunTestsInSeparateProcesses]
 final class ModuleControllerRenderTest extends IntegrationTestCase
 {
-	private ShopControl $shopControl;
+    private ShopControl $shopControl;
 
-	public function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -50,9 +50,9 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
         $this->get(ThemeConfigurationDaoInterface::class)->save($configuration, $shopId);
         $this->get(ThemeActivationServiceInterface::class)->activate('testTheme', $shopId);
 
-	    $_GET['searchparam'] = '';
-	    $_GET['page'] = '';
-	    $_GET['tpl'] = '';
+        $_GET['searchparam'] = '';
+        $_GET['page'] = '';
+        $_GET['tpl'] = '';
 
         $this->setupModuleFixture('module1');
 
@@ -75,14 +75,14 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 
     public function testRenderServiceController(): void
     {
-        $output = $this->buildResponseCapturingEchoedOutput('test_module_controller_as_service', '');
+        $output = $this->shopControl->buildResponse('test_module_controller_as_service', '')->getContent();
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
     }
 
     public function testRenderServiceControllerWithFunction(): void
     {
-        $output = $this->buildResponseCapturingEchoedOutput('test_module_controller_as_service', 'testFunction');
+        $output = $this->shopControl->buildResponse('test_module_controller_as_service', 'testFunction')->getContent();
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
         $this->assertStringContainsString('Function output', $output);
@@ -90,18 +90,17 @@ final class ModuleControllerRenderTest extends IntegrationTestCase
 
     public function testControllerDecorator(): void
     {
-        $output = $this->buildResponseCapturingEchoedOutput('test_module_controller_as_service', 'testFunction');
+        $output = $this->shopControl->buildResponse('test_module_controller_as_service', 'testFunction')->getContent();
 
         $this->assertStringContainsString('module1/module_controller_as_service', $output);
         $this->assertStringContainsString('Init Decorator', $output);
     }
 
-    private function buildResponseCapturingEchoedOutput(string $controllerKey, string $function): string
+    public function testDeliversTheControllerOutputOnlyThroughTheResponse(): void
     {
-        ob_start();
-        $response = $this->shopControl->buildResponse($controllerKey, $function);
+        $this->expectOutputString('');
 
-        return ob_get_clean() . $response->getContent();
+        $this->shopControl->buildResponse('test_module_controller_as_service', 'testFunction');
     }
 
     private function setupModuleFixture(string $moduleId): void

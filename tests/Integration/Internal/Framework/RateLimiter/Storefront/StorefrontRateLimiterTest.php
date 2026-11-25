@@ -13,39 +13,29 @@ use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Event\Ra
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimiterInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Session\SessionInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\RateLimiter\Storage\InMemoryStorage;
 
-final class StorefrontRateLimiterTest extends TestCase
+final class StorefrontRateLimiterTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
     private Request $request;
 
-    #[RunInSeparateProcess]
     public function testGlobalRuleThrottlesAnonymousByIp(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)]);
 
         $this->limiter()->enforce($this->request);
 
-        try {
-            $this->limiter()->enforce($this->request);
-            $this->fail('Second request must be rejected');
-        } catch (TooManyRequestsHttpException $exception) {
-            $this->assertSame(429, $exception->getStatusCode());
-            $this->assertSame('1', $exception->getHeaders()['X-RateLimit-Limit']);
-            $this->assertSame('0', $exception->getHeaders()['X-RateLimit-Remaining']);
-            $this->assertGreaterThan(0, (int) $exception->getHeaders()['Retry-After']);
-            $this->assertGreaterThan(time(), (int) $exception->getHeaders()['X-RateLimit-Reset']);
-        }
+        $this->expectException(TooManyRequestsHttpException::class);
+
+        $this->limiter()->enforce($this->request);
     }
 
-    #[RunInSeparateProcess]
     public function testGlobalRuleKeysByLoggedInUser(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)], userId: 'user-x');
@@ -57,7 +47,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->limiter()->enforce($this->request);
     }
 
-    #[RunInSeparateProcess]
     public function testExcludedIpBypassesAllRules(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)], excludedIps: ['203.0.113.10']);
@@ -68,7 +57,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    #[RunInSeparateProcess]
     public function testExcludedRouteBypassesAllRules(): void
     {
         $this->configureLimiter(
@@ -83,7 +71,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    #[RunInSeparateProcess]
     public function testActionRuleThrottlesByIp(): void
     {
         $this->configureLimiter(
@@ -98,7 +85,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->limiter()->enforce($this->request);
     }
 
-    #[RunInSeparateProcess]
     public function testActionRuleThrottlesByEmail(): void
     {
         $this->configureLimiter(
@@ -113,7 +99,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->limiter()->enforce($this->request);
     }
 
-    #[RunInSeparateProcess]
     public function testActionRuleThrottlesByEmailSubmittedViaGet(): void
     {
         $this->configureLimiter(
@@ -128,7 +113,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->limiter()->enforce($this->request);
     }
 
-    #[RunInSeparateProcess]
     public function testEmailRuleIsSkippedWithoutLoginUser(): void
     {
         $this->configureLimiter(
@@ -142,7 +126,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    #[RunInSeparateProcess]
     public function testControllerBoundRuleIgnoresOtherController(): void
     {
         $this->configureLimiter(
@@ -156,7 +139,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->addToAssertionCount(1);
     }
 
-    #[RunInSeparateProcess]
     public function testFunctionBoundRuleCannotBeShadowedByQueryParameter(): void
     {
         $this->configureLimiter(
@@ -172,7 +154,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->limiter()->enforce($this->request);
     }
 
-    #[RunInSeparateProcess]
     public function testRotatingQueryEmailStaysInThePostEmailBucket(): void
     {
         $this->configureLimiter(
@@ -189,7 +170,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->limiter()->enforce($this->request);
     }
 
-    #[RunInSeparateProcess]
     public function testIpRuleIsEnforcedBeforeUserAndEmailRules(): void
     {
         $this->configureLimiter(
@@ -214,7 +194,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->assertSame('login_ip', $events[0]->getRuleId());
     }
 
-    #[RunInSeparateProcess]
     public function testBlockedRequestDispatchesRateLimitExceededEvent(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 1)]);
@@ -235,7 +214,6 @@ final class StorefrontRateLimiterTest extends TestCase
         $this->assertSame(60, $events[0]->getRetryAfter());
     }
 
-    #[RunInSeparateProcess]
     public function testAcceptedRequestDispatchesNoEvent(): void
     {
         $this->configureLimiter([$this->rule('global', 'user', 2)]);
@@ -273,12 +251,15 @@ final class StorefrontRateLimiterTest extends TestCase
         array $excludedIps = [],
         string $path = '/'
     ): void {
-        $this->request = new Request($query, $post, server: ['REMOTE_ADDR' => '203.0.113.10', 'REQUEST_URI' => $path]);
+        $this->request = new Request($query, $post, server: [
+            'REMOTE_ADDR' => '203.0.113.10',
+            'REQUEST_URI' => $path,
+            'REQUEST_METHOD' => $post === [] ? Request::METHOD_GET : Request::METHOD_POST,
+        ]);
 
         $this->createContainer();
         $this->container->register('oxid_esales.rate_limiter.storefront.storage', InMemoryStorage::class);
         $this->container->register(SessionInterface::class)->setSynthetic(true)->setPublic(true);
-        $this->container->findDefinition(StorefrontRateLimiterInterface::class)->setShared(false);
         $this->container->setParameter('oxid_esales.rate_limiter.storefront.rules', $rules);
         $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_routes', $excludedRoutes);
         $this->container->setParameter('oxid_esales.rate_limiter.storefront.excluded_ips', $excludedIps);

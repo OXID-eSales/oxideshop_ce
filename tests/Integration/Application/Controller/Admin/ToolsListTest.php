@@ -13,6 +13,7 @@ use OxidEsales\Eshop\Application\Controller\Admin\ToolsList;
 use OxidEsales\Eshop\Application\Model\User;
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\Eshop\Core\Registry;
+use OxidEsales\Eshop\Core\UtilsView;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
@@ -23,7 +24,7 @@ final class ToolsListTest extends IntegrationTestCase
     {
         unset($_FILES['myfile']);
         Registry::getSession()->deleteVariable('auth');
-        Registry::getSession()->deleteVariable('Errors');
+        Registry::set(UtilsView::class, null);
 
         parent::tearDown();
     }
@@ -35,20 +36,14 @@ final class ToolsListTest extends IntegrationTestCase
             'name' => ['sqlfile' => 'dump.php'],
             'tmp_name' => ['sqlfile' => '/tmp/dump.php'],
         ];
+        $utilsView = $this->createMock(UtilsView::class);
+        $utilsView->expects($this->once())->method('addErrorToDisplay')->with('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE');
+        Registry::set(UtilsView::class, $utilsView);
         $toolsList = oxNew(ToolsList::class);
 
         $toolsList->executeFunction('performsql');
 
-        $this->assertSame(
-            [[Registry::getLang()->translateString('ERROR_MESSAGE_WRONG_IMAGE_FILE_TYPE')], false],
-            [
-                array_map(
-                    static fn (string $error): string => unserialize($error)->getOxMessage(),
-                    Registry::getSession()->getVariable('Errors')['default']
-                ),
-                array_key_exists('aQueries', $toolsList->getViewData()),
-            ]
-        );
+        $this->assertArrayNotHasKey('aQueries', $toolsList->getViewData());
     }
 
     private function signInMallAdmin(): void

@@ -31,21 +31,29 @@ final class UserComponentBlockedUserTest extends IntegrationTestCase
         parent::tearDown();
     }
 
-    public function testSignedInBlockedUserIsSignedOutAndSentToTheBlockedPage(): void
+    public function testInitSignsOutBlockedUserAndRedirectsToBlockedPage(): void
     {
         $this->createBlockedUser();
         oxNew(User::class)->login(self::USER_NAME, self::PASSWORD);
 
         $redirect = $this->catchRedirect($this->createComponent()->init(...));
-        $blockedPageRedirect = $this->catchRedirect($this->createComponent()->init(...));
 
-        $this->assertSame(
-            [['content', 'user_blocked'], null, null],
-            [$this->getRedirectTarget($redirect), Registry::getSession()->getVariable('usr'), $blockedPageRedirect]
-        );
+        $this->assertSame('user_blocked', $this->getRedirectTemplate($redirect));
+        $this->assertNull(Registry::getSession()->getVariable('usr'));
     }
 
-    public function testBlockedUserLoggingInIsSignedOutAndSentToTheBlockedPage(): void
+    public function testInitDoesNotRedirectAgainOnBlockedPage(): void
+    {
+        $this->createBlockedUser();
+        oxNew(User::class)->login(self::USER_NAME, self::PASSWORD);
+        $this->catchRedirect($this->createComponent()->init(...));
+
+        $redirect = $this->catchRedirect($this->createComponent()->init(...));
+
+        $this->assertNull($redirect);
+    }
+
+    public function testLoginSignsOutBlockedUserAndRedirectsToBlockedPage(): void
     {
         $this->createBlockedUser();
         $_POST['lgn_usr'] = self::USER_NAME;
@@ -53,10 +61,8 @@ final class UserComponentBlockedUserTest extends IntegrationTestCase
 
         $redirect = $this->catchRedirect($this->createComponent()->login(...));
 
-        $this->assertSame(
-            [['content', 'user_blocked'], null],
-            [$this->getRedirectTarget($redirect), Registry::getSession()->getVariable('usr')]
-        );
+        $this->assertSame('user_blocked', $this->getRedirectTemplate($redirect));
+        $this->assertNull(Registry::getSession()->getVariable('usr'));
     }
 
     private function createBlockedUser(): void
@@ -90,13 +96,10 @@ final class UserComponentBlockedUserTest extends IntegrationTestCase
         return null;
     }
 
-    /**
-     * @return array<int, string|null>
-     */
-    private function getRedirectTarget(?RedirectException $redirect): array
+    private function getRedirectTemplate(?RedirectException $redirect): ?string
     {
         parse_str((string) parse_url((string) $redirect?->getUrl(), PHP_URL_QUERY), $query);
 
-        return [$query['cl'] ?? null, $query['tpl'] ?? null];
+        return $query['tpl'] ?? null;
     }
 }

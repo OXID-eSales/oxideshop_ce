@@ -16,12 +16,11 @@ class ModuleControllerDecorator extends AbstractControllerDecorator
 {
     public function __construct(protected readonly ViewControllerInterface $controller)
     {
-
     }
 
     public function init()
     {
-        echo "Init Decorator";
         $this->controller->init();
+        $this->controller->setViewData(['decoratorOutput' => 'Init Decorator'] + $this->controller->getViewData());
     }
 }

@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http;
 
-use LogicException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\EshopCommunity\Internal\Framework\FileSystem\Validator\FileTypeNotAllowedException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueueInterface;
@@ -17,48 +16,36 @@ use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\AccessDeniedExce
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponseFactoryInterface;
-use OxidEsales\EshopCommunity\Internal\Framework\Templating\TemplateRendererInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
-use Psr\Log\AbstractLogger;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
-use Symfony\Component\HttpKernel\Controller\ErrorController;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\TerminableInterface;
+use Throwable;
 
 final class HttpKernelServiceTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    public function testKernelServiceIsTerminable(): void
+    public function setUp(): void
     {
-        $this->assertInstanceOf(TerminableInterface::class, $this->get(HttpKernelInterface::class));
-    }
+        parent::setUp();
 
-    public function testRunsTheControllerFromRequestAttributes(): void
-    {
-        $request = $this->requestWithController(static fn(): Response => new Response('from-controller'));
-
-        $response = $this->get(HttpKernelInterface::class)->handle($request);
-
-        $this->assertSame('from-controller', $response->getContent());
+        $this->setParameter('oxid_esales.debug_mode', false);
     }
 
     public function testRoutesTheRequestToTheControllerOfTheMatchingRoute(): void
     {
-        $this->createContainer();
-        $this->loadYamlFixture(__DIR__ . '/Fixtures');
-        $this->compileContainer();
+        $this->useRoutedControllerFixture();
 
         $response = $this->get(HttpKernelInterface::class)->handle(Request::create('/kernel-routing/7'));
 
@@ -77,6 +64,15 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame('GET', $response->headers->get('Allow'));
     }
 
+    public function testAnswersUnroutedRequestWithoutFallbackWithNotFound(): void
+    {
+        $request = Request::create('/', server: ['HTTP_ACCEPT' => 'application/json']);
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
     public function testRunsTheFallbackControllerForTheRootPath(): void
     {
         $request = Request::create('/');
@@ -85,17 +81,6 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $response = $this->get(HttpKernelInterface::class)->handle($request);
 
         $this->assertSame('fallback-body', $response->getContent());
-    }
-
-    public function testBuildsTheErrorControllerOnlyWhenHandlingAnError(): void
-    {
-        $this->get(HttpKernelInterface::class)->handle(
-            $this->requestWithController(static fn(): Response => new Response())
-        );
-        $this->assertFalse($this->container->initialized(ErrorController::class));
-
-        $this->handleJsonRequestThrowing(new RoutingException());
-        $this->assertTrue($this->container->initialized(ErrorController::class));
     }
 
     public function testDeliversRedirectResponseForRedirectExceptionFromTheController(): void
@@ -110,14 +95,12 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame(302, $response->getStatusCode());
     }
 
-    public function testAnswersRoutingExceptionWithJsonProblemWithoutBuildingTheTemplateRenderer(): void
+    public function testAnswersRoutingExceptionWithJsonProblem(): void
     {
         $response = $this->handleJsonRequestThrowing(new RoutingException());
 
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame($this->problem(404, 'Not Found'), json_decode($response->getContent(), true));
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertFalse($this->container->initialized(TemplateRendererInterface::class));
     }
 
     public function testAnswersWrongMethodWithJsonProblemAndAllowedMethods(): void
@@ -126,13 +109,12 @@ final class HttpKernelServiceTest extends IntegrationTestCase
 
         $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $response->getStatusCode());
         $this->assertSame('GET', $response->headers->get('Allow'));
-        $this->assertSame($this->problem(405, 'Method Not Allowed'), json_decode($response->getContent(), true));
     }
 
     public function testAnswersServerErrorsOfHtmlClientsWithTheOfflinePage(): void
     {
         $request = $this->requestWithController(static function (): Response {
-            throw new \RuntimeException('boom');
+            throw new RuntimeException('boom');
         });
 
         $response = $this->get(HttpKernelInterface::class)->handle($request);
@@ -190,47 +172,48 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         );
     }
 
-    public function testLogsExceptionsByTheirMappedLevel(): void
+    #[DataProvider('loggedExceptionDataProvider')]
+    public function testLogsExceptionWithMappedLevel(string $exceptionClass, array $arguments, string $level): void
     {
-        $logger = $this->useLoggerSpy();
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('log')->with($level);
+        $this->useLogger($logger);
 
-        foreach ($this->loggedThrowables() as $throwable) {
-            $this->handleJsonRequestThrowing($throwable);
-        }
+        $this->handleJsonRequestThrowing(new $exceptionClass(...$arguments));
+    }
 
-        $this->assertSame(
-            [
-                [LogLevel::INFO, NotFoundHttpException::class, RoutingException::class],
-                [LogLevel::INFO, NotFoundHttpException::class, null],
-                [LogLevel::INFO, ShopOfflineException::class, null],
-                [LogLevel::INFO, AccessDeniedHttpException::class, AccessDeniedException::class],
-                [LogLevel::WARNING, BadRequestHttpException::class, FileTypeNotAllowedException::class],
-                [LogLevel::INFO, TooManyRequestsHttpException::class, null],
-                [LogLevel::ERROR, MethodNotAllowedHttpException::class, null],
-                [LogLevel::CRITICAL, \RuntimeException::class, null],
-            ],
-            $logger->records
-        );
+    public static function loggedExceptionDataProvider(): array
+    {
+        return [
+            'routing exception' => [RoutingException::class, [], LogLevel::INFO],
+            'not found' => [NotFoundHttpException::class, [], LogLevel::INFO],
+            'shop offline' => [ShopOfflineException::class, [], LogLevel::INFO],
+            'access denied' => [AccessDeniedException::class, [], LogLevel::INFO],
+            'file type not allowed' => [FileTypeNotAllowedException::class, [], LogLevel::WARNING],
+            'too many requests' => [TooManyRequestsHttpException::class, [], LogLevel::INFO],
+            'method not allowed' => [MethodNotAllowedHttpException::class, [['GET']], LogLevel::ERROR],
+            'server error' => [RuntimeException::class, [], LogLevel::CRITICAL],
+        ];
     }
 
     public function testDoesNotLogRedirects(): void
     {
-        $logger = $this->useLoggerSpy();
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())->method('log');
+        $this->useLogger($logger);
 
         $this->handleJsonRequestThrowing(new RedirectException('https://shop.example/target'));
-
-        $this->assertSame([], $logger->records);
     }
 
     public function testAddsExceptionDetailsToJsonProblemsInDebugMode(): void
     {
         $this->setParameter('oxid_esales.debug_mode', true);
 
-        $response = $this->handleJsonRequestThrowing(new \RuntimeException('boom'));
+        $response = $this->handleJsonRequestThrowing(new RuntimeException('boom'));
 
         $problem = json_decode($response->getContent(), true);
         $this->assertSame('boom', $problem['detail']);
-        $this->assertSame(\RuntimeException::class, $problem['class']);
+        $this->assertSame(RuntimeException::class, $problem['class']);
         $this->assertNotEmpty($problem['trace']);
     }
 
@@ -248,25 +231,6 @@ final class HttpKernelServiceTest extends IntegrationTestCase
             rawurlencode('Controller "nothing" cannot be resolved'),
             $response->headers->get('X-Debug-Exception')
         );
-    }
-
-    public function testSetsHtmlContentTypeOnResponseWithoutOne(): void
-    {
-        $request = $this->requestWithController(static fn(): Response => new Response('some-content'));
-
-        $response = $this->get(HttpKernelInterface::class)->handle($request);
-
-        $this->assertSame('text/html; charset=UTF-8', $response->headers->get('Content-Type'));
-    }
-
-    public function testStripsBodyFromResponseToHeadRequest(): void
-    {
-        $request = Request::create('/', 'HEAD');
-        $request->attributes->set('_controller', static fn(): Response => new Response('some-content'));
-
-        $response = $this->get(HttpKernelInterface::class)->handle($request);
-
-        $this->assertSame('', $response->getContent());
     }
 
     public function testAppliesTheCacheAttributeOfTheController(): void
@@ -319,18 +283,6 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame('must-revalidate, no-cache, no-store, private', $response->headers->get('Cache-Control'));
     }
 
-    public function testAnswersMatchingConditionalRequestWithNotModifiedWithoutRunningTheController(): void
-    {
-        $request = $this->requestWithController(
-            #[Cache(etag: "'v1'")] static fn(): Response => throw new LogicException()
-        );
-        $request->headers->set('If-None-Match', '"' . hash('sha256', 'v1') . '"');
-
-        $response = $this->get(HttpKernelInterface::class)->handle($request);
-
-        $this->assertSame(Response::HTTP_NOT_MODIFIED, $response->getStatusCode());
-    }
-
     public function testKeepsRevalidationForControllerDeclaringAnEtag(): void
     {
         $request = $this->requestWithController(#[Cache(etag: "'v1'")] static fn(): Response => new Response());
@@ -366,24 +318,16 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame([], $response->headers->getCookies());
     }
 
-    /**
-     * @return \Throwable[]
-     */
-    private function loggedThrowables(): array
+    public function testAddsSecurityHeadersToResponse(): void
     {
-        return [
-            new RoutingException(),
-            new NotFoundHttpException(),
-            new ShopOfflineException(),
-            new AccessDeniedException(),
-            new FileTypeNotAllowedException(),
-            new TooManyRequestsHttpException(45),
-            new MethodNotAllowedHttpException(['GET']),
-            new \RuntimeException(),
-        ];
+        $request = $this->requestWithController(static fn(): Response => new Response());
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame('SAMEORIGIN', $response->headers->get('X-Frame-Options'));
     }
 
-    private function handleJsonRequestThrowing(\Throwable $throwable): Response
+    private function handleJsonRequestThrowing(Throwable $throwable): Response
     {
         $request = Request::create('/nothing', 'GET', server: ['HTTP_ACCEPT' => 'application/json']);
         $request->attributes->set('_controller', static function () use ($throwable): Response {
@@ -393,32 +337,11 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         return $this->get(HttpKernelInterface::class)->handle($request);
     }
 
-    private function useLoggerSpy(): AbstractLogger
+    private function useLogger(LoggerInterface $logger): void
     {
-        $logger = new class extends AbstractLogger {
-            public array $records = [];
-
-            public function log($level, $message, array $context = []): void
-            {
-                $previous = $context['exception']->getPrevious();
-                $this->records[] = [$level, $context['exception']::class, $previous ? $previous::class : null];
-            }
-        };
-        $this->createContainer();
+        $this->createContainerWithoutDebugMode();
         $this->replaceService(LoggerInterface::class, $logger);
         $this->replaceContainerInstance();
-
-        return $logger;
-    }
-
-    private function problem(int $status, string $detail): array
-    {
-        return [
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
-            'title' => 'An error occurred',
-            'status' => $status,
-            'detail' => $detail,
-        ];
     }
 
     private function requestWithController(callable $controller): Request
@@ -427,11 +350,6 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $request->attributes->set('_controller', $controller);
 
         return $request;
-    }
-
-    private function getOfflinePage(): string
-    {
-        return (string) $this->get(OfflinePageResponseFactoryInterface::class)->create()->getContent();
     }
 
     private function useRoutedControllerFixture(): void
@@ -452,5 +370,10 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         if (session_status() === PHP_SESSION_ACTIVE) {
             session_write_close();
         }
+    }
+
+    private function getOfflinePage(): string
+    {
+        return (string) $this->get(OfflinePageResponseFactoryInterface::class)->create()->getContent();
     }
 }

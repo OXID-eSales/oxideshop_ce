@@ -259,7 +259,7 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $this->assertEquals((string) $existingMediaId, (string) $allMedia->first()->getId());
     }
 
-    public function testAddMediaFailureSignalsJsonErrorResponse(): void
+    public function testProcessRequestReturnsErrorsOfFailedUpload(): void
     {
         $fixture = Path::join(__DIR__, self::FIXTURES_PATH, self::VALID_IMAGE);
         $uploadedFile = new UploadedFile($fixture, self::VALID_IMAGE, 'image/jpeg', null, true);
@@ -282,7 +282,7 @@ final class ArticlePicturesAjaxTest extends IntegrationTestCase
         $this->createArticleWithId((string) $productId);
 
         $controller = oxNew(ArticlePicturesAjax::class);
-        $errorResponse = $controller->addMedia();
+        $errorResponse = $controller->processRequest('addMedia');
 
         $this->assertNotEmpty($this->decodeErrors($errorResponse));
         $this->assertCount(0, $this->get(ProductMediaDaoInterface::class)->getAll($productId));

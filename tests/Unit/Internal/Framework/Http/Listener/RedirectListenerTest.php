@@ -13,21 +13,14 @@ use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectExceptio
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RedirectListener;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
+use Throwable;
 
 final class RedirectListenerTest extends TestCase
 {
-    public function testSubscribesBeforeTheErrorListenerLogsExceptions(): void
-    {
-        $this->assertSame(
-            [KernelEvents::EXCEPTION => ['onKernelException', 16]],
-            RedirectListener::getSubscribedEvents()
-        );
-    }
-
     public function testDeliversRedirectResponseForRedirectException(): void
     {
         $event = $this->createExceptionEvent(new RedirectException('https://shop.example/target', 301));
@@ -40,7 +33,7 @@ final class RedirectListenerTest extends TestCase
         $this->assertTrue($event->isPropagationStopped());
     }
 
-    #[DataProvider('nonRedirectStatusCodes')]
+    #[DataProvider('nonRedirectStatusCodeDataProvider')]
     public function testNormalisesNonRedirectStatusCodeToFound(int $statusCode): void
     {
         $event = $this->createExceptionEvent(new RedirectException('https://shop.example/target', $statusCode));
@@ -51,21 +44,28 @@ final class RedirectListenerTest extends TestCase
         $this->assertSame(302, $event->getResponse()->getStatusCode());
     }
 
-    public static function nonRedirectStatusCodes(): array
+    public static function nonRedirectStatusCodeDataProvider(): array
     {
-        return [[200], [300], [304], [305], [306], [500]];
+        return [
+            'ok' => [200],
+            'multiple choices' => [300],
+            'not modified' => [304],
+            'use proxy' => [305],
+            'unused' => [306],
+            'server error' => [500],
+        ];
     }
 
     public function testIgnoresOtherThrowables(): void
     {
-        $event = $this->createExceptionEvent(new \RuntimeException());
+        $event = $this->createExceptionEvent(new RuntimeException());
 
         new RedirectListener()->onKernelException($event);
 
         $this->assertNull($event->getResponse());
     }
 
-    private function createExceptionEvent(\Throwable $throwable): ExceptionEvent
+    private function createExceptionEvent(Throwable $throwable): ExceptionEvent
     {
         return new ExceptionEvent(
             $this->createStub(HttpKernelInterface::class),

@@ -168,29 +168,33 @@ final class ShopConfigurationDaoTest extends IntegrationTestCase
 
         $shopConfigurationDao->deleteAll();
 
-        $this->assertEquals(
-            [new ShopConfiguration(), new ShopConfiguration()],
-            [$shopConfigurationDao->get(1), $shopConfigurationDao->get(2)]
-        );
+        $this->assertEquals(new ShopConfiguration(), $shopConfigurationDao->get(1));
+        $this->assertEquals(new ShopConfiguration(), $shopConfigurationDao->get(2));
     }
 
-    public function testDeleteAllKeepsThemeConfigurationAndShopParametersButDropsModuleServices(): void
+    public function testDeleteAllKeepsThemeAndShopParameterFiles(): void
     {
         $context = $this->get(ContextInterface::class);
         $themeConfiguration = Path::join($context->getShopConfigurationDirectory(1), 'themes', 'some-theme.yaml');
         $shopParameters = Path::join($context->getShopConfigurationDirectory(1), 'parameters.yaml');
-        $moduleServices = $context->getActiveModuleServicesFilePath(1);
         $filesystem = new Filesystem();
         $filesystem->dumpFile($themeConfiguration, 'id: some-theme');
         $filesystem->dumpFile($shopParameters, 'parameters: {  }');
-        $filesystem->dumpFile($moduleServices, 'imports: {  }');
 
         $this->get(ShopConfigurationDaoInterface::class)->deleteAll();
 
-        $this->assertSame(
-            [true, true, false],
-            [is_file($themeConfiguration), is_file($shopParameters), is_file($moduleServices)]
-        );
+        $this->assertFileExists($themeConfiguration);
+        $this->assertFileExists($shopParameters);
+    }
+
+    public function testDeleteAllRemovesActiveModuleServicesFile(): void
+    {
+        $moduleServices = $this->get(ContextInterface::class)->getActiveModuleServicesFilePath(1);
+        (new Filesystem())->dumpFile($moduleServices, 'imports: {  }');
+
+        $this->get(ShopConfigurationDaoInterface::class)->deleteAll();
+
+        $this->assertFileDoesNotExist($moduleServices);
     }
 
     private function configureModuleInEnvironmentFile(): void

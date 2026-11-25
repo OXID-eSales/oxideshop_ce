@@ -19,11 +19,9 @@
   - `ThemeSettingServiceInterface`, `ActiveThemeProviderInterface`, `ThemePathProviderInterface` and `ThemeViewServiceInterface` to read theme settings, the active theme and theme data
   - `ViewConfig::getThemeSettings()` to read theme settings in templates
   - `ThemeConfigurationChangedEvent`
-- Support for subscribing to Symfony kernel events (`KernelEvents`)
-- Security headers on shop responses (DI parameter `oxid_esales.http.security_headers`)
-- Default `Cache-Control` policy for responses without an explicit one (DI parameter `oxid_esales.http.default_cache_control`)
-- `FileResponseFactoryInterface` for building file download responses
-- `BeforeEmailSendEvent` - replaces `Output::process()` and `Output::processEmail()` for emails
+- `ShopRunnerInterface`, `FileResponseFactoryInterface`, `BeforeEmailSendEvent`, the `RequestStack` service and the `#[Cache]` attribute on `#[Route]` controllers
+- `RedirectException`, `AccessDeniedException` and `ShopOfflineException` to end a request with a redirect, `403` or `503`, and `NotFoundController` rendering the 404 page
+- DI parameters `oxid_esales.http.exceptions` (status code and log level per exception), `oxid_esales.http.security_headers`, `oxid_esales.http.default_cache_control` and `oxid_esales.http.charset`
 
 ### Changed
 - `RandomTokenGenerator` enforces a minimum token length of eight characters
@@ -37,24 +35,34 @@
   - A child theme declares its parent theme in its `metadata.yaml`
   - `Config::getConfigParam()` no longer returns theme settings, use `ThemeSettingServiceInterface` instead
 - `ThemeActivatedEvent` moved from namespace `Internal\Framework\Theme\Event` to `Internal\Framework\Theme\Activation\Event`
-- HTTP header and request handling on the shop kernel
-  - Symfony `#[Route]` controllers are resolved on `kernel.request`
-  - The response status, headers and cookies are owned by the Symfony `Response`
-  - Controllers can return a Symfony `Response` object
-  - `Utils::redirect()` throws a `RedirectException` delivered as a redirect on `kernel.exception`
-  - `Utils::redirect()` no longer appends the `redirected` parameter
-  - The `Cache-Control` header is owned by the `Response`
-  - The default `Content-Type` and charset are configured via `oxid_esales.http.charset`
-  - Errors are rendered by Symfony's `ErrorListener`, as RFC 7807 problem details for JSON requests
-- Rate limiting rules accept `format: json`; JSON routes are limited by default
+- Requests are handled by the Symfony HttpKernel
+  - `index.php`, `widget.php`, `admin/oxajax.php` and `api.php` run through `ShopRunnerInterface` and dispatch the kernel events
+  - `#[Route]` controllers are matched for the storefront `index.php`, SEO URLs and `/api/`
+  - Controllers can return a `Response`; `ViewControllerInterface` declares `hasResponse()` and `getResponse()`
+  - Status, headers and cookies, also from `UtilsServer::setOxCookie()`, are set on the `Response`; cookies of HTTPS requests are `Secure`
+  - `Utils::redirect()` throws a `RedirectException`
+  - Errors are rendered by Symfony's `ErrorListener`: in the storefront as the 404 or offline page, for JSON requests as problem details
+  - Without debug mode, failing widgets are logged and left out of the page
+- Status codes and headers
+  - `404` for unknown pages, controllers and widgets, `503` for the offline shop, `400` for an unhandled `FileTypeNotAllowedException`
+  - Security headers on all responses; responses without an own cache policy get `Cache-Control: no-store, no-cache, must-revalidate, private`
+  - `Pragma` and `Expires` are no longer sent
+- Methods that sent output return a `Response`
+  - `ShopControl::process()`, `ListComponentAjax::processRequest()`, `AdminNewsletter::export()` and `VoucherSerieExport::download()`
+  - `DiagnosticsMain::downloadResultFile()`, `NavigationController::exturl()` and `File::download()`
+  - `ArticlePicturesAjax::addMedia()` and `ArticlePicturesAjax::replaceMedia()`
+- `GenericImport::importFile()` and `CategoryList::updateCategoryTree()` no longer print
+- `UtilsFile::processFiles()` throws `FileTypeNotAllowedException` for forbidden file types instead of exiting; admin controllers show it as a form error
+- Overridable `ShopControl` methods declare types: `getStartControllerKey(): string`, `resolveControllerClass(string $controllerKey): string`, `executeMaintenanceTasks(): void`, `isDebugMode(): bool` and `getErrors(): array`
+- The storefront rate limiter is enabled by default and also limits the API with the default rule `api` instead of `global`
+- `StorefrontRateLimiterInterface::enforce()` and `RuleProviderInterface::getMatchingRules()` take the `Request`
 
 ### Deprecated
 - `ProjectMigrationPathProvider`
 - The `$blAddRedirectParam` parameter of `Utils::redirect()`
-- `api.php` - use `index.php`
+- `api.php`, route `/api/` to `index.php` instead as the shipped `.htaccess` does
 
 ### Removed
-- `ApiRateLimiterFactoryInterface`, `ClientIdentifierProviderInterface` and the `oxid_esales.rate_limiter.*` parameters - use `oxid_esales.rate_limiter.storefront.rules`
 - `OXURL` from the storefront-updatable user fields `UserUpdatableFields::getUpdatableFields()`
 - The backwards-compatibility autoloader for legacy class names (e.g. `oxarticle`, `oxorder`)
   - `BaseModel::getClassName()` and `BaseModel::$_sClassName`
@@ -62,29 +70,6 @@
   - `Registry::getStorageKey()`
   - `BasicContextInterface::getBackwardsCompatibilityClassMap()`
   - The `$classAlias` parameter of `ModuleChainsGenerator::createClassChain()`
-- `Oxid`, `ShopControl::start()` and `WidgetControl::start()`
-- `ShopControl` internals superseded by the kernel migration
-- `ShopControl::formOutput()` - override `ShopControl::render()`
-- `ExceptionErrorController` and the `exceptionerror` controller key
-- `Config::handleDbConnectionException()`, `Config::handleCookieException()` and `Config::getExceptionHandler()`
-- `Config::processSeoCall()` - SEO URLs are decoded on `kernel.request`
-- `UtilsView::getTemplateOutput()` and `Session::isHeaderSent()`
-- Inclusion of `modules/functions.php` and `modules/functions.php.dist`
-- `Output` - process output with a `kernel.response` listener
-- `Header` - set headers on the `Response` or use a `kernel.response` listener
-- `Utils::setHeader()` - set headers on the `Response` or subscribe to the `kernel.response` event
-- `Utils::showMessageAndExit()` - return a `Response`
-- `Utils::showOfflinePage()` - use `OfflinePageResponse`
-- `Utils::handlePageNotFoundError()` and the `error_404_handler()` function - throw a `RoutingException`
-- `Utils::simpleRedirect()`, `Utils::prepareToExit()` and `Utils::addUrlParameters()`
-- `oxTriggerOfflinePageDisplay()` - use `OfflinePageResponse`
-- `Session::needToSetHeaders()`
-- `Email::makeOutputProcessing()` and `Email::processViewArray()`
-- `HeaderGeneratorBridgeInterface`, `CsvHeaderGeneratorBridge`, `HeaderGeneratorInterface` and `CsvHeaderGenerator` - use `FileResponseFactoryInterface`
-- `BeforeHeadersSendEvent` - use the `kernel.response` event
-- `ApplicationExitEvent` - use the `kernel.response` event
-- `DebugInfo` and the storefront debug monitor block - use a profiler
-- `File::getFilenameForUrl()`
 - The `Argon2IPasswordHashService` and its configuration have been removed
 - Remove deprecated constant `Database::MYSQL_ATTR_INIT_COMMAND`
 - PHP v8.3 support
@@ -107,6 +92,26 @@
   - `ViewConfig::getViewThemeParam()`, use `ViewConfig::getThemeSettings()` instead
   - `Language::getCustomThemeLanguageFiles()`
   - `ShopAdapterInterface`: `getActiveThemesList()`, `getCustomTheme()`, `getActiveThemeId()`, `themeExists()` and `activateTheme()`
+- `Oxid`, `ShopControl::start()` and `WidgetControl::start()`, use `ShopRunnerInterface`, `ShopControl::handleRequest()`, `ShopControl::buildResponse()` and `WidgetControl::buildIncludedWidgetResponse()` instead
+- `Output`, `Header`, `Utils::setHeader()`, `Utils::showMessageAndExit()`, `BeforeHeadersSendEvent` and `ApplicationExitEvent`, use the `Response` or the `kernel.response` event instead
+- `Utils::simpleRedirect()`, `Utils::showOfflinePage()`, `Utils::handlePageNotFoundError()`, `oxTriggerOfflinePageDisplay()` and `error_404_handler()`, use `Utils::redirect()` or throw a `ShopOfflineException` or `RoutingException` instead
+- `ShopControl::formOutput()`, use `ShopControl::render()` instead
+- `ShopControl::getControllerClass()`, use `ShopControl::resolveControllerClass()` instead
+- `ShopControl::sendAdditionalHeaders()`, `handleSystemException()`, `handleRoutingException()`, `handleCookieException()`, `handleBaseException()` and `logException()`, use kernel event listeners or `oxid_esales.http.exceptions` instead
+- `UtilsView::getTemplateOutput()`, use `TemplateRendererBridgeInterface` instead
+- `Email::makeOutputProcessing()`, use `BeforeEmailSendEvent` instead
+- `Config::processSeoCall()`, use `SeoDecoder::processSeoCall()` instead
+- `DiagnosticsOutput::downloadResultFile()`, use `DiagnosticsOutput::getResultFileResponse()` instead
+- `HeaderGeneratorBridgeInterface` and `HeaderGeneratorInterface`, use `FileResponseFactoryInterface` instead
+- `DebugInfo`, `ExceptionErrorController`, `ShopControl::getTotalTime()`, `Session::isHeaderSent()` and protected output, header, exception and monitoring members of `ShopControl`, `WidgetControl`, `Utils`, `Config`, `Session`, `Email` and `File`
+- `ShopControl::$_aErrors`, `$_aAllErrors`, `$_aControllerErrors` and `$_blMainTasksExecuted`, use `$errors`, `$remainingErrors`, `$errorControllers` and `$skipMaintenanceTasks` instead
+- Inclusion of `modules/functions.php`, use Composer's `autoload.files` instead
+- `FilesystemTagAwareAdapterFactory`, the shop cache uses `PhpFilesAdapter` with a generation per shop instead
+- The API rate limiter and its DI parameters `oxid_esales.rate_limiter.{enabled,limit,interval,policy,excluded_routes}`, use a storefront rule with `format: json` instead
+- `TooManyRequestsException` and `RateLimitResponderInterface`, use Symfony's `TooManyRequestsHttpException` instead
+
+### Fixed
+- Unknown download links (`cl=download`) redirect to the account downloads page with an error message instead of failing with `500`
 
 ## v8.0.0-alpha.2 - 2026-02-12
 *Compilation release*

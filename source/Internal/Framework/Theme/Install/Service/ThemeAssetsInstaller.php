@@ -48,6 +48,10 @@ readonly class ThemeAssetsInstaller implements ThemeAssetsInstallerInterface
 
     public function isInstalled(string $themePath): bool
     {
+        if (!$this->hasAssets($themePath)) {
+            return true;
+        }
+
         $assetsLinkPath = $this->getAssetsLinkPath($themePath);
 
         return is_link($assetsLinkPath) && is_dir($assetsLinkPath);

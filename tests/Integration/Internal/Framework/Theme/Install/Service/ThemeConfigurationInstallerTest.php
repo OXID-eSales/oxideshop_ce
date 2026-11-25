@@ -12,6 +12,8 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Theme\I
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstaller;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service\ThemeConfigurationInstallerInterface;
@@ -104,6 +106,72 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
         $this->fail('Setting testStringSetting not found after reinstall');
     }
 
+    public function testReinstallAddsSettingsNewInTheme(): void
+    {
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $shopId = $this->get(BasicContextInterface::class)->getDefaultShopId();
+        $installedConfiguration = (new ThemeConfiguration())
+            ->setId($this->themeId)
+            ->setTitle('Test Theme')
+            ->setSource('old/source/path')
+            ->addThemeSetting(
+                (new Setting())
+                    ->setName('testStringSetting')
+                    ->setType('str')
+                    ->setValue('customValue')
+            );
+        $dao->save($installedConfiguration, $shopId);
+
+        $this->get(ThemeConfigurationInstallerInterface::class)->install($this->themePath);
+
+        $configuration = $dao->get($this->themeId, $shopId);
+        $this->assertSame('customValue', $configuration->getSettingByName('testStringSetting')->getValue());
+        $this->assertTrue($configuration->getSettingByName('testBoolSetting')->getValue());
+        $this->assertSame('option1', $configuration->getSettingByName('testSelectSetting')->getValue());
+    }
+
+    public function testReinstallRemovesSettingsNoLongerInTheme(): void
+    {
+        $installer = $this->get(ThemeConfigurationInstallerInterface::class);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $shopId = $this->get(BasicContextInterface::class)->getDefaultShopId();
+        $installer->install($this->themePath);
+        $configuration = $dao->get($this->themeId, $shopId);
+        $configuration->addThemeSetting(
+            (new Setting())
+                ->setName('removedSetting')
+                ->setType('str')
+                ->setValue('someValue')
+        );
+        $dao->save($configuration, $shopId);
+
+        $installer->install($this->themePath);
+
+        $this->assertNull($dao->get($this->themeId, $shopId)->getSettingByName('removedSetting'));
+    }
+
+    public function testReinstallUpdatesTitleAndSource(): void
+    {
+        $installer = $this->get(ThemeConfigurationInstallerInterface::class);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $context = $this->get(BasicContextInterface::class);
+        $shopId = $context->getDefaultShopId();
+        $installer->install($this->themePath);
+        $configuration = $dao->get($this->themeId, $shopId);
+        $configuration->setTitle('Old Title');
+        $configuration->setSource('old/source/path');
+        $dao->save($configuration, $shopId);
+
+        $installer->install($this->themePath);
+
+        $configuration = $dao->get($this->themeId, $shopId);
+        $this->assertSame('Test Theme', $configuration->getTitle());
+        $this->assertSame(
+            Path::makeRelative($this->themePath, $context->getShopRootPath()),
+            $configuration->getSource()
+        );
+    }
+
     public function testInstallSavesThemeTitle(): void
     {
         $this->get(ThemeConfigurationInstallerInterface::class)->install($this->themePath);
@@ -140,6 +208,56 @@ final class ThemeConfigurationInstallerTest extends IntegrationTestCase
         $this->assertTrue(
             $this->get(ThemeConfigurationInstallerInterface::class)->isInstalled($this->themePath)
         );
+    }
+
+    public function testIsInstalledReturnsFalseWhenInstalledFromAnotherPath(): void
+    {
+        $this->get(ThemeConfigurationInstallerInterface::class)->install($this->themePath);
+
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $shopId = $this->get(BasicContextInterface::class)->getDefaultShopId();
+        $configuration = $dao->get($this->themeId, $shopId);
+        $configuration->setSource('source/Application/views/' . $this->themeId);
+        $dao->save($configuration, $shopId);
+
+        $this->assertFalse(
+            $this->get(ThemeConfigurationInstallerInterface::class)->isInstalled($this->themePath)
+        );
+    }
+
+    public function testIsInstalledReturnsFalseWhenSettingIsNewInTheme(): void
+    {
+        $installer = $this->get(ThemeConfigurationInstallerInterface::class);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $shopId = $this->get(BasicContextInterface::class)->getDefaultShopId();
+        $installer->install($this->themePath);
+        $configuration = $dao->get($this->themeId, $shopId);
+        $installedConfiguration = (new ThemeConfiguration())
+            ->setId($this->themeId)
+            ->setTitle($configuration->getTitle())
+            ->setSource($configuration->getSource())
+            ->addThemeSetting($configuration->getSettingByName('testStringSetting'));
+        $dao->save($installedConfiguration, $shopId);
+
+        $this->assertFalse($installer->isInstalled($this->themePath));
+    }
+
+    public function testIsInstalledReturnsFalseWhenSettingIsNoLongerInTheme(): void
+    {
+        $installer = $this->get(ThemeConfigurationInstallerInterface::class);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $shopId = $this->get(BasicContextInterface::class)->getDefaultShopId();
+        $installer->install($this->themePath);
+        $configuration = $dao->get($this->themeId, $shopId);
+        $configuration->addThemeSetting(
+            (new Setting())
+                ->setName('removedSetting')
+                ->setType('str')
+                ->setValue('someValue')
+        );
+        $dao->save($configuration, $shopId);
+
+        $this->assertFalse($installer->isInstalled($this->themePath));
     }
 
     public function testReinstallDoesNotLeakStateAcrossShops(): void

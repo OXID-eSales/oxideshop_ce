@@ -50,6 +50,7 @@ class CodeceptionParametersProvider
             'SCREEN_SHOT_URL' => getenv('CC_SCREEN_SHOTS_URL') ?: '',
             'BROWSER' => getenv('BROWSER_NAME') ?: 'chrome',
             'THEME_ID' => getenv('THEME_ID') ?: 'apex',
+            'THEME_PATH' => getenv('THEME_PATH') ?: '../vendor/oxid-esales/apex-theme',
             'MAIL_HOST' => getenv('MAIL_HOST') ?: 'mailpit',
             'MAIL_WEB_PORT' => getenv('MAIL_WEB_PORT') ?: '8025',
             'PAGE_LOAD_TIMEOUT' => getenv('PAGE_LOAD_TIMEOUT') ?: 0.25,

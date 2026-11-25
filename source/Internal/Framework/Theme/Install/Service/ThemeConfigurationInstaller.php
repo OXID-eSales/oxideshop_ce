@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Service;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Dao\ShopConfigurationDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Activation\Service\ThemeActivationServiceInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Dao\ThemeConfigurationDaoInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\Setting;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\DataObject\ThemeConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Configuration\Provider\ThemeConfigurationProviderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Theme\Install\Exception\ThemeConfigurationInstallException;
@@ -38,7 +39,7 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
         $defaultConfiguration = $this->configurationProvider->get($themePath);
         $defaultConfiguration->setId($metadata->getId());
         $defaultConfiguration->setTitle($metadata->getTitle());
-        $defaultConfiguration->setSource(Path::makeRelative($themePath, $this->context->getShopRootPath()));
+        $defaultConfiguration->setSource($this->getSource($themePath));
 
         foreach ($this->getShopIds() as $shopId) {
             try {
@@ -81,14 +82,44 @@ readonly class ThemeConfigurationInstaller implements ThemeConfigurationInstalle
     public function isInstalled(string $themePath): bool
     {
         $themeId = $this->metaDataProvider->get($themePath)->getId();
+        $source = $this->getSource($themePath);
+        $settingNames = $this->getSettingNames($this->configurationProvider->get($themePath));
 
         foreach ($this->getShopIds() as $shopId) {
             if (!$this->themeConfigurationDao->exists($themeId, $shopId)) {
                 return false;
             }
+
+            $configuration = $this->themeConfigurationDao->get($themeId, $shopId);
+            if (
+                $configuration->getSource() !== $source
+                || $this->getSettingNames($configuration) !== $settingNames
+            ) {
+                return false;
+            }
         }
 
         return true;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getSettingNames(ThemeConfiguration $configuration): array
+    {
+        $settingNames = array_map(
+            fn (Setting $setting): string => $setting->getName(),
+            $configuration->getThemeSettings()
+        );
+
+        sort($settingNames);
+
+        return $settingNames;
+    }
+
+    private function getSource(string $themePath): string
+    {
+        return Path::makeRelative($themePath, $this->context->getShopRootPath());
     }
 
     private function keepCustomisedValues(ThemeConfiguration $configuration, ThemeConfiguration $installed): void

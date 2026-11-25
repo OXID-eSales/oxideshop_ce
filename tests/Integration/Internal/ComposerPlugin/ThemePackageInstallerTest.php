@@ -9,6 +9,8 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\ComposerPlugin;
 
+use Composer\IO\BufferIO;
+use Composer\IO\IOInterface;
 use Composer\IO\NullIO;
 use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ThemePackageInstaller;
@@ -27,18 +29,89 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
     use ContainerTrait;
 
     private string $themePackagePath = __DIR__ . '/Fixtures/test-theme-package-installation';
+    private string $themePackageWithoutAssetsPath = __DIR__ . '/Fixtures/test-theme-package-without-assets';
+    private string $themePackageWithoutMetadataPath = __DIR__ . '/Fixtures/test-theme-package-without-metadata';
+    private string $themePackageWithInvalidMetadataPath = __DIR__ . '/Fixtures/test-theme-package-with-invalid-metadata';
+    private string $themePackageWithInvalidConfigurationPath =
+        __DIR__ . '/Fixtures/test-theme-package-with-invalid-configuration';
+    private string $themePackageWithOutDirectoryPath = __DIR__ . '/Fixtures/test-theme-package-with-out-directory';
     private string $packageName = 'test-vendor/test-theme-package-installation';
     private string $themeId = 'test-theme-package-installation';
 
     public function tearDown(): void
     {
-        $sourcePath = $this->get(BasicContextInterface::class)->getSourcePath();
-        (new Filesystem())->remove([
-            Path::join($sourcePath, ThemePackageInstaller::PATH_TO_THEMES, $this->themeId),
-            Path::join($sourcePath, 'out', $this->themeId),
-        ]);
+        (new Filesystem())->remove($this->getAssetsLinkPath());
 
         parent::tearDown();
+    }
+
+    public function testThemeNotInstalledByDefault(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+
+        $this->assertFalse($installer->isInstalled($this->themePackagePath));
+    }
+
+    public function testThemeIsInstalledAfterInstallProcess(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+
+        $installer->install($this->themePackagePath);
+
+        $this->assertTrue($installer->isInstalled($this->themePackagePath));
+    }
+
+    public function testThemeWithoutAssetsIsInstalledAfterInstallProcess(): void
+    {
+        $installer = $this->getPackageInstaller('test-vendor/test-theme-package-without-assets');
+
+        $installer->install($this->themePackageWithoutAssetsPath);
+
+        $this->assertTrue($installer->isInstalled($this->themePackageWithoutAssetsPath));
+    }
+
+    public function testThemeIsInstalledAfterUpdateProcess(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+
+        $installer->update($this->themePackagePath);
+
+        $this->assertTrue($installer->isInstalled($this->themePackagePath));
+    }
+
+    public function testInstalledThemeConfigurationIsUpdatedAfterUpdateProcess(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $context = $this->get(BasicContextInterface::class);
+        $shopId = $context->getDefaultShopId();
+        $installer->install($this->themePackagePath);
+        $configuration = $dao->get($this->themeId, $shopId);
+        $configuration->setTitle('Old Title');
+        $configuration->setSource('old/source/path');
+        $dao->save($configuration, $shopId);
+
+        $installer->update($this->themePackagePath);
+
+        $configuration = $dao->get($this->themeId, $shopId);
+        $this->assertSame('Test Theme Package Installation', $configuration->getTitle());
+        $this->assertSame(
+            Path::makeRelative($this->themePackagePath, $context->getShopRootPath()),
+            $configuration->getSource()
+        );
+    }
+
+    public function testThemeInstalledFromAnotherPathIsNotInstalled(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+        $dao = $this->get(ThemeConfigurationDaoInterface::class);
+        $shopId = $this->get(BasicContextInterface::class)->getDefaultShopId();
+        $installer->install($this->themePackagePath);
+        $configuration = $dao->get($this->themeId, $shopId);
+        $configuration->setSource('old/source/path');
+        $dao->save($configuration, $shopId);
+
+        $this->assertFalse($installer->isInstalled($this->themePackagePath));
     }
 
     public function testThemeConfigurationIsInstalledAfterInstallProcess(): void
@@ -53,6 +126,30 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
         );
     }
 
+    public function testThemeAssetsAreLinkedToOutDirectoryAfterInstallProcess(): void
+    {
+        $this->getPackageInstaller($this->packageName)->install($this->themePackagePath);
+
+        $this->assertTrue(is_link($this->getAssetsLinkPath()));
+        $this->assertFileEquals(
+            Path::join($this->themePackagePath, 'assets/some.css'),
+            Path::join($this->getAssetsLinkPath(), 'some.css')
+        );
+    }
+
+    public function testThemeFilesAreNotCopiedToShopSourceAfterInstallProcess(): void
+    {
+        $this->getPackageInstaller($this->packageName)->install($this->themePackagePath);
+
+        $this->assertDirectoryDoesNotExist(
+            Path::join(
+                $this->get(BasicContextInterface::class)->getSourcePath(),
+                'Application/views',
+                $this->themeId
+            )
+        );
+    }
+
     public function testThemeInstallDoesNotUseMainContainer(): void
     {
         ContainerFactory::resetContainer();
@@ -62,6 +159,115 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
             $this->get(ContextInterface::class)->getContainerCacheFilePath(
                 $this->get(ContextInterface::class)->getCurrentShopId()
             )
+        );
+    }
+
+    public function testThemeUpdateDoesNotUseMainContainer(): void
+    {
+        ContainerFactory::resetContainer();
+        $this->getPackageInstaller($this->packageName)->update($this->themePackagePath);
+
+        $this->assertFileDoesNotExist(
+            $this->get(ContextInterface::class)->getContainerCacheFilePath(
+                $this->get(ContextInterface::class)->getCurrentShopId()
+            )
+        );
+    }
+
+    public function testThemeWithoutMetadataIsNotInstalled(): void
+    {
+        $installer = $this->getPackageInstaller('test-vendor/test-theme-package-without-metadata');
+
+        $installer->install($this->themePackageWithoutMetadataPath);
+
+        $this->assertFalse($installer->isInstalled($this->themePackageWithoutMetadataPath));
+    }
+
+    public function testThemeWithInvalidMetadataIsNotInstalled(): void
+    {
+        $installer = $this->getPackageInstaller('test-vendor/test-theme-package-with-invalid-metadata');
+
+        $installer->install($this->themePackageWithInvalidMetadataPath);
+
+        $this->assertFalse($installer->isInstalled($this->themePackageWithInvalidMetadataPath));
+    }
+
+    public function testWarningWithPackageNameIsWrittenForThemeWithoutMetadata(): void
+    {
+        $io = new BufferIO();
+
+        $this->getPackageInstaller('test-vendor/test-theme-package-without-metadata', $io)
+            ->install($this->themePackageWithoutMetadataPath);
+
+        $this->assertStringContainsString(
+            'Theme package test-vendor/test-theme-package-without-metadata is skipped',
+            $io->getOutput()
+        );
+    }
+
+    public function testThemeWithInvalidConfigurationIsNotInstalled(): void
+    {
+        $installer = $this->getPackageInstaller('test-vendor/test-theme-package-with-invalid-configuration');
+
+        $installer->install($this->themePackageWithInvalidConfigurationPath);
+
+        $this->assertFalse($installer->isInstalled($this->themePackageWithInvalidConfigurationPath));
+    }
+
+    public function testWarningWithPackageNameIsWrittenForThemeWithInvalidConfiguration(): void
+    {
+        $io = new BufferIO();
+
+        $this->getPackageInstaller('test-vendor/test-theme-package-with-invalid-configuration', $io)
+            ->update($this->themePackageWithInvalidConfigurationPath);
+
+        $this->assertStringContainsString(
+            'Theme package test-vendor/test-theme-package-with-invalid-configuration is skipped',
+            $io->getOutput()
+        );
+    }
+
+    public function testThemeWithOutDirectoryIsInstalled(): void
+    {
+        $installer = $this->getPackageInstaller('test-vendor/test-theme-package-with-out-directory');
+
+        $installer->install($this->themePackageWithOutDirectoryPath);
+
+        $this->assertTrue($installer->isInstalled($this->themePackageWithOutDirectoryPath));
+    }
+
+    public function testWarningWithPackageNameIsWrittenForThemeWithOutDirectory(): void
+    {
+        $io = new BufferIO();
+
+        $this->getPackageInstaller('test-vendor/test-theme-package-with-out-directory', $io)
+            ->update($this->themePackageWithOutDirectoryPath);
+
+        $this->assertStringContainsString(
+            'Theme package test-vendor/test-theme-package-with-out-directory has no assets directory',
+            $io->getOutput()
+        );
+    }
+
+    public function testNoOutDirectoryWarningIsWrittenForThemeWithAssets(): void
+    {
+        $io = new BufferIO();
+
+        $this->getPackageInstaller($this->packageName, $io)->install($this->themePackagePath);
+
+        $this->assertStringNotContainsString('has no assets directory', $io->getOutput());
+    }
+
+    public function testThemeWithoutMetadataIsSkippedOnUninstall(): void
+    {
+        $io = new BufferIO();
+
+        $this->getPackageInstaller('test-vendor/test-theme-package-without-metadata', $io)
+            ->uninstall($this->themePackageWithoutMetadataPath);
+
+        $this->assertStringContainsString(
+            'Theme package test-vendor/test-theme-package-without-metadata is skipped',
+            $io->getOutput()
         );
     }
 
@@ -80,6 +286,16 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
         );
     }
 
+    public function testThemeAssetsLinkIsRemovedAfterUninstallProcess(): void
+    {
+        $installer = $this->getPackageInstaller($this->packageName);
+        $installer->install($this->themePackagePath);
+
+        $installer->uninstall($this->themePackagePath);
+
+        $this->assertFileDoesNotExist($this->getAssetsLinkPath());
+    }
+
     public function testThemeCacheIsClearedAfterUninstallProcess(): void
     {
         $installer = $this->getPackageInstaller($this->packageName);
@@ -92,15 +308,19 @@ final class ThemePackageInstallerTest extends IntegrationTestCase
         $this->assertSame('recomputed', $cache->get('theme_uninstall_cache_probe', fn (): string => 'recomputed'));
     }
 
-    private function getPackageInstaller(string $packageName, array $extra = []): ThemePackageInstaller
+    private function getAssetsLinkPath(): string
     {
-        $package = new Package($packageName, '1.0.0', '1.0.0');
-        $package->setExtra($extra);
+        return Path::join($this->get(BasicContextInterface::class)->getOutPath(), $this->themeId);
+    }
 
+    private function getPackageInstaller(
+        string $packageName,
+        IOInterface $io = new NullIO()
+    ): ThemePackageInstaller {
         return new ThemePackageInstaller(
-            new NullIO(),
+            $io,
             $this->get(BasicContextInterface::class)->getSourcePath(),
-            $package
+            new Package($packageName, '1.0.0', '1.0.0')
         );
     }
 }

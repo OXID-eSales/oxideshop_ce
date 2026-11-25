@@ -128,6 +128,66 @@ final class ThemeConfigurationInstallerTest extends TestCase
     {
         $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
         $dao->method('exists')->willReturnOnConsecutiveCalls(true, false);
+        $dao->method('get')->willReturn(
+            $this->buildInstalledConfiguration()
+        );
+
+        $this->assertFalse(
+            $this->createInstaller($dao, shopIds: [1, 2])->isInstalled($this->themePath)
+        );
+    }
+
+    public function testIsInstalledReturnsTrueWhenInstalledFromThemePathForAllShops(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+        $dao->method('get')->willReturn(
+            $this->buildInstalledConfiguration()
+        );
+
+        $this->assertTrue(
+            $this->createInstaller($dao, shopIds: [1, 2])->isInstalled($this->themePath)
+        );
+    }
+
+    public function testIsInstalledReturnsFalseWhenInstalledFromAnotherPathForAnyShop(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+        $dao->method('get')->willReturnOnConsecutiveCalls(
+            $this->buildInstalledConfiguration(),
+            $this->buildInstalledConfiguration()->setSource('source/Application/views/testTheme'),
+        );
+
+        $this->assertFalse(
+            $this->createInstaller($dao, shopIds: [1, 2])->isInstalled($this->themePath)
+        );
+    }
+
+    public function testIsInstalledReturnsFalseWhenSettingIsMissingForAnyShop(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+        $dao->method('get')->willReturnOnConsecutiveCalls(
+            $this->buildInstalledConfiguration(),
+            (new ThemeConfiguration())->setSource('../../some/theme/path'),
+        );
+
+        $this->assertFalse(
+            $this->createInstaller($dao, shopIds: [1, 2])->isInstalled($this->themePath)
+        );
+    }
+
+    public function testIsInstalledReturnsFalseWhenSettingIsNoLongerInThemeForAnyShop(): void
+    {
+        $dao = $this->createStub(ThemeConfigurationDaoInterface::class);
+        $dao->method('exists')->willReturn(true);
+        $dao->method('get')->willReturnOnConsecutiveCalls(
+            $this->buildInstalledConfiguration(),
+            $this->buildInstalledConfiguration()->addThemeSetting(
+                (new Setting())->setName('removedSetting')->setType('str')->setValue('someValue')
+            ),
+        );
 
         $this->assertFalse(
             $this->createInstaller($dao, shopIds: [1, 2])->isInstalled($this->themePath)
@@ -193,6 +253,13 @@ final class ThemeConfigurationInstallerTest extends TestCase
             $context,
             $activationService ?? $this->createStub(ThemeActivationServiceInterface::class),
         );
+    }
+
+    private function buildInstalledConfiguration(): ThemeConfiguration
+    {
+        return (new ThemeConfiguration())
+            ->setSource('../../some/theme/path')
+            ->addThemeSetting((new Setting())->setName('testSetting')->setType('str')->setValue('customValue'));
     }
 
     private function buildConfiguration(array $settingValues): ThemeConfiguration

@@ -109,7 +109,11 @@ final class ThemeAssetsInstallerTest extends IntegrationTestCase
         $installer->install($this->themeWithoutAssetsPath);
 
         $this->assertFalse(is_link($this->getAssetsLinkPath(self::THEME_WITHOUT_ASSETS_ID)));
-        $this->assertFalse($installer->isInstalled($this->themeWithoutAssetsPath));
+    }
+
+    public function testThemeWithoutAssetsIsInstalled(): void
+    {
+        $this->assertTrue($this->getAssetsInstaller()->isInstalled($this->themeWithoutAssetsPath));
     }
 
     public function testBrokenAssetsLinkIsNotInstalled(): void

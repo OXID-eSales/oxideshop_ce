@@ -17,7 +17,11 @@ install:
         "require": {
           "oxid-esales/twig-component": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525",
           "oxid-esales/twig-admin-theme": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525",
-          "oxid-esales/apex-theme": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525"
+          "oxid-esales/apex-theme": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525",
+          "oxid-esales/oxideshop-composer-plugin": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525"
+        },
+        "require-dev": {
+          "oxid-esales/codeception-modules": "dev-b-8.0.x-dont-copy-theme-file-into-application-dir-OXDEV-10525"
         }
       }
 

@@ -75,6 +75,14 @@ services:
       $debug: '%oxid_esales.debug_mode%'
       $charset: '%oxid_esales.http.charset%'
 
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueueInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueue
+    public: true
+
+  OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\ResponseCookieListener:
+    tags:
+      - { name: kernel.event_subscriber }
+
   OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\SecurityHeadersListener:
     arguments:
       $headers: '%oxid_esales.http.security_headers%'

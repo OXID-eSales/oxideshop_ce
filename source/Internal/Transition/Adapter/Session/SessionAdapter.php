@@ -10,10 +10,9 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Session;
 
 use OxidEsales\Eshop\Core\Registry;
-use OxidEsales\Eshop\Core\Session;
 use OxidEsales\EshopCommunity\Internal\Framework\Session\SessionInterface;
 
-class SessionAdapter implements SessionInterface
+readonly class SessionAdapter implements SessionInterface
 {
     public function get(string $name, mixed $default = null): mixed
     {
@@ -21,17 +20,22 @@ class SessionAdapter implements SessionInterface
             return $default;
         }
 
-        return $this->session()->getVariable($name);
+        return Registry::getSession()->getVariable($name);
     }
 
     public function has(string $name): bool
     {
-        return $this->session()->hasVariable($name);
+        if ($this->hasSessionCookie()) {
+            $this->startSession();
+        }
+
+        return Registry::getSession()->hasVariable($name);
     }
 
     public function set(string $name, mixed $value): void
     {
-        $this->session()->setVariable($name, $value);
+        $this->startSession();
+        Registry::getSession()->setVariable($name, $value);
     }
 
     public function remove(string $name): mixed
@@ -41,18 +45,20 @@ class SessionAdapter implements SessionInterface
         }
 
         $value = $this->get($name);
-        $this->session()->deleteVariable($name);
+        Registry::getSession()->deleteVariable($name);
 
         return $value;
     }
 
-    private function session(): Session
+    private function startSession(): void
     {
-        $session = Registry::getSession();
-        if (!$session->isSessionStarted()) {
-            $session->start();
+        if (!Registry::getSession()->isSessionStarted()) {
+            Registry::getSession()->start();
         }
+    }
 
-        return $session;
+    private function hasSessionCookie(): bool
+    {
+        return (bool) Registry::getUtilsServer()->getOxCookie(Registry::getSession()->isAdmin() ? 'admin_sid' : 'sid');
     }
 }

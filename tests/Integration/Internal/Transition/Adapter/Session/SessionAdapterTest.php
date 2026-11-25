@@ -25,12 +25,47 @@ final class SessionAdapterTest extends IntegrationTestCase
         $this->setParameter('oxid_esales.force_session_start', true);
     }
 
-    public function testReadingStartsTheSession(): void
+    public function testHasWithoutSessionCookieDoesNotStartSession(): void
     {
-        $this->assertFalse(Registry::getSession()->isSessionStarted());
+        $this->get(SessionInterface::class)->has('some-key');
 
-        $this->get(SessionInterface::class)->has('usr');
+        $this->assertFalse(Registry::getSession()->isSessionStarted());
+    }
+
+    public function testGetWithSessionCookieResumesSession(): void
+    {
+        $this->storeSessionOfPreviousRequest(['some-key' => 'some-value']);
+
+        $value = $this->get(SessionInterface::class)->get('some-key');
+
+        $this->assertSame('some-value', $value);
+    }
+
+    public function testSetStartsSession(): void
+    {
+        $this->get(SessionInterface::class)->set('some-key', 'some-value');
 
         $this->assertTrue(Registry::getSession()->isSessionStarted());
+    }
+
+    public function testRemoveDeletesValueOfResumedSession(): void
+    {
+        $this->storeSessionOfPreviousRequest(['some-key' => 'some-value']);
+        $session = $this->get(SessionInterface::class);
+
+        $session->remove('some-key');
+
+        $this->assertFalse($session->has('some-key'));
+    }
+
+    private function storeSessionOfPreviousRequest(array $values): void
+    {
+        $sessionId = uniqid('session');
+        session_id($sessionId);
+        session_start();
+        $_SESSION = $values;
+        session_write_close();
+        $_SESSION = [];
+        $_COOKIE['sid'] = $sessionId;
     }
 }

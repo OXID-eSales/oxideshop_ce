@@ -643,8 +643,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * redirect user to the specified URL
      *
      * @param string $sUrl               URL to be redirected
-     * @param bool   $blAddRedirectParam @deprecated ignored, the "redirected" parameter is no longer added
-     * @param int    $iHeaderCode        header code, default 302; a code that cannot carry a redirect is normalised to 302
+     * @param bool   $blAddRedirectParam
+     * @param int    $iHeaderCode        header code, default 302
      *
      * @throws RedirectException
      */

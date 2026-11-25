@@ -12,11 +12,9 @@ use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Application\Model\User;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueueInterface;
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\HttpFoundation\Request;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 
 use function array_key_exists;
@@ -48,52 +46,34 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
      */
     protected $_sSessionCookies = [];
 
-    /**
-     * sets cookie
-     *
-     * @param string $sName cookie name
-     * @param string $sValue value
-     * @param int $iExpire expire time
-     * @param string $sPath The path on the server in which the cookie will be available on
-     * @param string $sDomain The domain that the cookie is available.
-     * @param bool $blToSession is true, records cookie information to session
-     * @param bool $blSecure if true, transfer cookie only via SSL
-     * @param bool $blHttpOnly if true, only accessible via HTTP
-     */
     public function setOxCookie(
-        $sName,
-        $sValue = "",
-        $iExpire = 0,
-        $sPath = '/',
-        $sDomain = null,
-        $blToSession = true,
-        $blSecure = false,
-        $blHttpOnly = true
+        $name,
+        $value = "",
+        $expire = 0,
+        $path = '/',
+        $domain = null,
+        $toSession = true,
+        $secure = false,
+        $httpOnly = true
     ) {
-        if ($blToSession && !$this->isAdmin()) {
-            $this->saveSessionCookie($sName, $sValue, $iExpire, $sPath, $sDomain);
+        if ($toSession && !$this->isAdmin()) {
+            $this->saveSessionCookie($name, $value, $expire, $path, $domain);
         }
 
-        //if shop runs in https only mode we can set secure flag to all cookies
-        $blSecure = $blSecure || Registry::getConfig()->isSsl();
+        ContainerFacade::get(ResponseCookieQueueInterface::class)->add(
+            Cookie::create(
+                name: $name,
+                value: (string) $value,
+                expire: $expire,
+                path: $this->getCookiePath($path),
+                domain: $this->getCookieDomain($domain),
+                secure: $secure || $this->isHttpsRequest(),
+                httpOnly: $httpOnly,
+                sameSite: null
+            )
+        );
 
-        $cookie = Cookie::create(
-            $sName,
-            (string) $sValue,
-            $iExpire,
-            $this->getCookiePath($sPath),
-            $this->getCookieDomain($sDomain),
-            $blSecure,
-            $blHttpOnly,
-            false,
-            null
-        );
-        ContainerFacade::get(EventDispatcherInterface::class)->addListener(
-            KernelEvents::RESPONSE,
-            static function (ResponseEvent $event) use ($cookie): void {
-                $event->getResponse()->headers->setCookie($cookie);
-            }
-        );
+        return true;
     }
 
     protected $_blSaveToSession = null;
@@ -321,7 +301,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
         // check for SSL connection
         if (!$myConfig->isSsl() && $this->getOxCookie('oxid_' . $sShopId . '_autologin') == '1') {
             $sslUrl = rtrim($myConfig->getShopUrl(), '/') . $_SERVER['REQUEST_URI'];
-            if (strncasecmp($sslUrl, 'https', 5) === 0) {
+            if (strncasecmp($sslUrl, 'https', 5) === 0 && $this->needsSslForLoginCookie($sShopId)) {
                 Registry::getUtils()->redirect($sslUrl, true, 302);
             }
         }
@@ -339,7 +319,7 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     public function isTrustedClientIp()
     {
         return in_array(
-            ContainerFacade::get(RequestStack::class)->getCurrentRequest()?->getClientIp(),
+            ContainerFacade::get(Request::class)->getClientIp(),
             ContainerFacade::getParameter('oxid_esales.trusted_ips'),
             true
         );
@@ -454,5 +434,15 @@ class UtilsServer extends \OxidEsales\Eshop\Core\Base
     private function getServerName()
     {
         return php_uname();
+    }
+
+    private function needsSslForLoginCookie(int|string $shopId): bool
+    {
+        return !ContainerFacade::get(Request::class)->isSecure() && $this->getOxCookie('oxid_' . $shopId) === null;
+    }
+
+    private function isHttpsRequest(): bool
+    {
+        return Registry::getConfig()->isSsl() || ContainerFacade::get(Request::class)->isSecure();
     }
 }

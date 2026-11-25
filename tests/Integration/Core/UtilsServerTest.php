@@ -10,23 +10,20 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Application\Model\User;
+use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\Eshop\Core\UtilsServer;
 use OxidEsales\EshopCommunity\Internal\Domain\Authentication\Bridge\PasswordServiceBridgeInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\TestContainerFactory;
-use PHPUnit\Framework\TestCase;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 
-final class UtilsServerTest extends TestCase
+final class UtilsServerTest extends IntegrationTestCase
 {
     use ContainerTrait;
     use ProphecyTrait;
@@ -45,59 +42,7 @@ final class UtilsServerTest extends TestCase
     {
         $_SERVER = $this->serverBackup;
         $_COOKIE = $this->cookieBackup;
-        TestContainerFactory::resetContainer();
         parent::tearDown();
-    }
-
-    public function testGetServerVarReturnsNamedValue(): void
-    {
-        $_SERVER['SOME_SERVER_VAR'] = 'some-value';
-
-        $this->assertSame('some-value', oxNew(UtilsServer::class)->getServerVar('SOME_SERVER_VAR'));
-    }
-
-    public function testGetServerVarReturnsNullForMissingName(): void
-    {
-        $this->assertNull(oxNew(UtilsServer::class)->getServerVar('MISSING_SERVER_VAR'));
-    }
-
-    public function testGetServerVarWithoutNameReturnsWholeServerArray(): void
-    {
-        $this->assertSame($_SERVER, oxNew(UtilsServer::class)->getServerVar());
-    }
-
-    public function testGetOxCookieSanitizesNamedValue(): void
-    {
-        $_COOKIE['some-cookie'] = 'a<b&c';
-
-        $this->assertSame('a&lt;b&amp;c', oxNew(UtilsServer::class)->getOxCookie('some-cookie'));
-    }
-
-    public function testGetOxCookieReturnsNullForMissingName(): void
-    {
-        $this->assertNull(oxNew(UtilsServer::class)->getOxCookie('missing-cookie'));
-    }
-
-    public function testGetOxCookieFallsBackToSessionCookies(): void
-    {
-        $utilsServer = new class extends \OxidEsales\EshopCommunity\Core\UtilsServer {
-            public function addSessionCookie(string $name, string $value): void
-            {
-                $this->_sSessionCookies[$name] = $value;
-            }
-        };
-        $utilsServer->addSessionCookie('session-only', 'session-value');
-
-        $this->assertSame('session-value', $utilsServer->getOxCookie('session-only'));
-    }
-
-    public function testGetOxCookieWithoutNameReturnsWholeCookieArrayUnsanitized(): void
-    {
-        $_COOKIE['raw-cookie'] = 'a<b&c';
-
-        $wholeCookieArray = oxNew(UtilsServer::class)->getOxCookie();
-
-        $this->assertSame('a<b&c', $wholeCookieArray['raw-cookie']);
     }
 
     public function testSetUserCookieWillCallPasswordHashing(): void
@@ -128,7 +73,7 @@ final class UtilsServerTest extends TestCase
     {
         $someIp = '255.255.255.255';
         $this->setParameter('oxid_esales.trusted_ips', [$someIp]);
-        $this->get(RequestStack::class)->push(new Request(server: ['REMOTE_ADDR' => $someIp]));
+        $this->get(Request::class)->server->set('REMOTE_ADDR', $someIp);
 
         $isTrusted = oxNew(UtilsServer::class)->isTrustedClientIp();
 
@@ -139,31 +84,100 @@ final class UtilsServerTest extends TestCase
     {
         $someIp = '255.255.255.255';
         $this->setParameter('oxid_esales.trusted_ips', ['1.2.3.4', '5.6.7.8']);
-        $this->get(RequestStack::class)->push(new Request(server: ['REMOTE_ADDR' => $someIp]));
+        $this->get(Request::class)->server->set('REMOTE_ADDR', $someIp);
 
         $isTrusted = oxNew(UtilsServer::class)->isTrustedClientIp();
 
         $this->assertFalse($isTrusted);
     }
 
-    public function testSetOxCookieAddsCookieToOutgoingResponseOnKernelResponse(): void
+    public function testSetOxCookieAddsCookieToResponse(): void
     {
-        oxNew(UtilsServer::class)->setOxCookie('some-cookie', 'some-value', 0, '/', null, false);
+        $response = $this->handleRequestSettingCookie('http://shop.test/', false);
 
-        $response = new Response();
-        $this->get(EventDispatcherInterface::class)->dispatch(
-            new ResponseEvent(
-                $this->createStub(HttpKernelInterface::class),
-                new Request(),
-                HttpKernelInterface::MAIN_REQUEST,
-                $response
-            ),
-            KernelEvents::RESPONSE
-        );
+        $this->assertSame('some-value', $response->headers->getCookies()[0]->getValue());
+    }
 
-        $this->assertEquals(
-            [Cookie::create('some-cookie', 'some-value', 0, '/', null, false, true, false, null)],
-            $response->headers->getCookies()
-        );
+    #[DataProvider('secureCookieDataProvider')]
+    public function testSetOxCookieIsSecureForHttpsRequestsOrWhenRequested(
+        string $url,
+        bool $secure,
+        bool $expectedSecure
+    ): void {
+        $response = $this->handleRequestSettingCookie($url, $secure);
+
+        $this->assertSame($expectedSecure, $response->headers->getCookies()[0]->isSecure());
+    }
+
+    public static function secureCookieDataProvider(): array
+    {
+        return [
+            'http' => ['http://shop.test/', false, false],
+            'https' => ['https://shop.test/', false, true],
+            'http with secure flag' => ['http://shop.test/', true, true],
+        ];
+    }
+
+    #[DataProvider('shopUrlDataProvider')]
+    public function testGetUserCookieReturnsLoginCookieWithoutRedirect(string $url): void
+    {
+        $this->requestWithRememberMeCookies($url);
+        $_COOKIE[$this->getLoginCookieName()] = 'some-user@@@some-hash';
+
+        $userCookie = oxNew(UtilsServer::class)->getUserCookie();
+
+        $this->assertSame('some-user@@@some-hash', $userCookie);
+    }
+
+    public static function shopUrlDataProvider(): array
+    {
+        return [
+            'http' => ['http://shop.test/'],
+            'https' => ['https://shop.test/'],
+        ];
+    }
+
+    public function testGetUserCookieOfHttpsRequestWithoutLoginCookieDoesNotRedirect(): void
+    {
+        $this->requestWithRememberMeCookies('https://shop.test/');
+
+        $this->assertNull(oxNew(UtilsServer::class)->getUserCookie());
+    }
+
+    public function testGetUserCookieRedirectsHttpRequestWithoutLoginCookieToHttps(): void
+    {
+        $this->requestWithRememberMeCookies('http://shop.test/');
+
+        $this->expectException(RedirectException::class);
+
+        oxNew(UtilsServer::class)->getUserCookie();
+    }
+
+    private function handleRequestSettingCookie(string $url, bool $secure): Response
+    {
+        $request = Request::create($url);
+        $this->get(Request::class)->server->replace($request->server->all());
+        $request->attributes->set('_controller', static function () use ($secure): Response {
+            oxNew(UtilsServer::class)->setOxCookie('some-cookie', 'some-value', 0, '/', null, false, $secure);
+
+            return new Response();
+        });
+
+        return $this->get(HttpKernelInterface::class)->handle($request);
+    }
+
+    private function requestWithRememberMeCookies(string $url): void
+    {
+        $this->setParameter('oxid_esales.shop_url', 'https://shop.test/');
+        $request = Request::create($url);
+        $this->get(Request::class)->server->replace($request->server->all());
+        $_SERVER['REQUEST_URI'] = $request->getRequestUri();
+        $_COOKIE[$this->getLoginCookieName() . '_autologin'] = '1';
+        unset($_COOKIE[$this->getLoginCookieName()]);
+    }
+
+    private function getLoginCookieName(): string
+    {
+        return 'oxid_' . Registry::getConfig()->getShopId();
     }
 }

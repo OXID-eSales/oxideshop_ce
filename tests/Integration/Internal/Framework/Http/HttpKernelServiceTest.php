@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Http;
 
 use LogicException;
 use OxidEsales\Eshop\Core\Exception\RoutingException;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\Cookie\ResponseCookieQueueInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\RedirectException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Exception\ShopOfflineException;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\OfflinePageResponse;
@@ -20,18 +21,15 @@ use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\Cache;
 use Symfony\Component\HttpKernel\Controller\ErrorController;
-use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\TerminableInterface;
 
 final class HttpKernelServiceTest extends IntegrationTestCase
@@ -264,21 +262,28 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame('no-cache, private', $response->headers->get('Cache-Control'));
     }
 
-    public function testCookiesQueuedDuringHandlingGetSecureDefaultOnHttpsRequest(): void
+    public function testAddsQueuedCookiesAsSecureToHttpsResponse(): void
     {
-        $this->get(EventDispatcherInterface::class)->addListener(
-            KernelEvents::RESPONSE,
-            static function (ResponseEvent $event): void {
-                $event->getResponse()->headers->setCookie(Cookie::create('some-cookie', 'some-value'));
-            }
-        );
-        $request = Request::create('https://anything.local/');
-        $request->attributes->set('_controller', static fn(): Response => new Response('some-content'));
+        $request = Request::create('https://shop.local/');
+        $request->attributes->set('_controller', function (): Response {
+            $this->get(ResponseCookieQueueInterface::class)->add(Cookie::create('some-cookie', 'some-value'));
+
+            return new Response();
+        });
 
         $response = $this->get(HttpKernelInterface::class)->handle($request);
 
-        [$cookie] = $response->headers->getCookies();
-        $this->assertTrue($cookie->isSecure());
+        $this->assertTrue($response->headers->getCookies()[0]->isSecure());
+    }
+
+    public function testDoesNotLeakQueuedCookiesIntoNextRequest(): void
+    {
+        $this->get(ResponseCookieQueueInterface::class)->add(Cookie::create('stale-cookie', 'some-value'));
+        $request = $this->requestWithController(static fn(): Response => new Response());
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame([], $response->headers->getCookies());
     }
 
     /**

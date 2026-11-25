@@ -305,4 +305,13 @@ final class SessionTest extends TestCase
 
         $this->assertTrue($sidNeeded);
     }
+
+    public function testGetRemoteAccessTokenReturnsConfiguredLength(): void
+    {
+        $session = oxNew(Session::class);
+        $token = $session->getRemoteAccessToken();
+
+        $this->assertEquals(Session::REMOTE_ACCESS_TOKEN_LENGTH, strlen($token));
+        $this->assertTrue(ctype_xdigit($token));
+    }
 }

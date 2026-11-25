@@ -414,7 +414,7 @@ class BasketConstruct
             for ($i = 1; $i <= $voucherData['voucher_count']; $i++) {
                 $data = [
                     'oxreserved' => 0,
-                    'oxvouchernr' => md5(uniqid((string)random_int(0, mt_getrandmax()), true)),
+                    'oxvouchernr' => bin2hex(random_bytes(16)),
                     'oxvoucherserieid' => $voucherSerie->getId(),
                 ];
                 $voucher = $this->createObj($data, Voucher::class, 'oxvouchers');

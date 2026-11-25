@@ -150,13 +150,13 @@ final class InputValidatorTest extends IntegrationTestCase
     #[DataProvider('provideCheckLoginReturnsUsername')]
     public function testCheckLoginReturnsUsername($userLogged, $inputPassword, $exception): void
     {
-        $userNameLogin = rand();
+        $userNameLogin = random_int(1000, 999999);
         $submittedData = [];
 
         $user = oxNew(User::class);
         if ($userLogged) {
             $user->assign([
-                'oxuser__oxusername' => rand(),
+                'oxuser__oxusername' => random_int(1000, 999999),
                 'oxuser__oxsalt'     => '',
                 'oxuser__oxpassword' => password_hash(md5(uniqid()), PASSWORD_DEFAULT),
             ]);
@@ -212,7 +212,7 @@ final class InputValidatorTest extends IntegrationTestCase
 
     public function testCheckLoginWithExistingEmail(): void
     {
-        $userNameLogin = rand();
+        $userNameLogin = random_int(1000, 999999);
 
         $user = $this->createStub(User::class);
         $user->method('checkIfEmailExists')->willReturn(true);

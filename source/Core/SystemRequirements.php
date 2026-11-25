@@ -141,7 +141,6 @@ class SystemRequirements
         "mb_string"          => "php",
         "curl"               => "php",
         "bc_math"            => "php",
-        "open_ssl"           => "openssl",
         "soap"               => "php",
     ];
 
@@ -210,7 +209,6 @@ class SystemRequirements
                 'mb_string',
                 'curl',
                 'bc_math',
-                'open_ssl',
                 'soap',
             ];
 
@@ -552,16 +550,6 @@ class SystemRequirements
     public function checkBcMath()
     {
         return extension_loaded('bcmath') ? 2 : 1;
-    }
-
-    /**
-     * Checks if openssl extension is loaded
-     *
-     * @return integer
-     */
-    public function checkOpenSsl()
-    {
-        return extension_loaded('openssl') ? 2 : 1;
     }
 
     /**

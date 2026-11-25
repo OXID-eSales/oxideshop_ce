@@ -25,7 +25,7 @@ final class AdminUserServiceTest extends TestCase
         $email = uniqid();
         $password = uniqid();
         $rights = uniqid();
-        $shopId = rand(1, 10);
+        $shopId = random_int(1, 10);
 
         $adminStub = $this->createStub(Admin::class);
 

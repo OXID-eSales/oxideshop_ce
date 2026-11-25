@@ -243,9 +243,9 @@ class SystemEventHandler
     {
         $checkTime = Registry::getConfig()->getSystemConfigParameter('sOnlineLicenseCheckTime');
         if (!$checkTime) {
-            $hourToCheck = rand(8, 23);
-            $minuteToCheck = rand(0, 59);
-            $secondToCheck = rand(0, 59);
+            $hourToCheck = random_int(8, 23);
+            $minuteToCheck = random_int(0, 59);
+            $secondToCheck = random_int(0, 59);
 
             $checkTime = $hourToCheck . ':' . $minuteToCheck . ':' . $secondToCheck;
             Registry::getConfig()->saveSystemConfigParameter('str', 'sOnlineLicenseCheckTime', $checkTime);

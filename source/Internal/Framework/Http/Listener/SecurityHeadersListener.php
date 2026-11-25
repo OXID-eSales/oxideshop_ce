@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 readonly class SecurityHeadersListener implements EventSubscriberInterface
 {
     /**
-     * @param string[] $headers
+     * @param array<string, string> $headers
      */
     public function __construct(private array $headers)
     {

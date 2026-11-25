@@ -271,6 +271,7 @@ final class HttpKernelServiceTest extends IntegrationTestCase
 
     public function testAppliesTheCacheAttributeOfTheController(): void
     {
+        $this->withoutActiveSession();
         $request = $this->requestWithController(
             #[Cache(public: true, maxage: 600)] static fn(): Response => new Response()
         );
@@ -280,12 +281,41 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame('max-age=600, public', $response->headers->get('Cache-Control'));
     }
 
+    public function testMakesPublicCacheAttributeResponseWithQueuedCookiePrivate(): void
+    {
+        $this->withoutActiveSession();
+        $cookieQueue = $this->get(ResponseCookieQueueInterface::class);
+        $request = $this->requestWithController(
+            #[Cache(public: true, maxage: 600, smaxage: 600)] static function () use ($cookieQueue): Response {
+                $cookieQueue->add(Cookie::create('sid', 'session-of-user-a'));
+
+                return new Response();
+            }
+        );
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame('max-age=600, private', $response->headers->get('Cache-Control'));
+    }
+
     public function testAppliesTheDefaultCachePolicyToControllerWithoutCacheAttribute(): void
     {
         $request = $this->requestWithController(static fn(): Response => new Response());
 
         $response = $this->get(HttpKernelInterface::class)->handle($request);
 
+        $this->assertSame('must-revalidate, no-cache, no-store, private', $response->headers->get('Cache-Control'));
+    }
+
+    public function testAppliesDefaultCachePolicyToPermanentRedirect(): void
+    {
+        $request = $this->requestWithController(static function (): Response {
+            throw new RedirectException('https://shop.example/target', 301);
+        });
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_MOVED_PERMANENTLY, $response->getStatusCode());
         $this->assertSame('must-revalidate, no-cache, no-store, private', $response->headers->get('Cache-Control'));
     }
 
@@ -415,5 +445,12 @@ final class HttpKernelServiceTest extends IntegrationTestCase
     {
         $this->createContainer();
         $this->container->setParameter('oxid_esales.debug_mode', false);
+    }
+
+    private function withoutActiveSession(): void
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            session_write_close();
+        }
     }
 }

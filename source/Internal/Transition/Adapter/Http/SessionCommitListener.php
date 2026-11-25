@@ -32,6 +32,7 @@ readonly class SessionCommitListener implements EventSubscriberInterface
             return;
         }
 
+        $event->getRequest()->attributes->set('_session_started', true);
         Registry::getSession()->freeze();
     }
 }

@@ -35,7 +35,7 @@ class NotFoundController extends FrontendController
 
     public function render()
     {
-        $this->addTplParam('sUrl', $this->requestStack->getCurrentRequest()?->getRequestUri() ?? '');
+        $this->addTplParam('sUrl', $this->requestStack->getCurrentRequest()->getRequestUri());
 
         return parent::render();
     }

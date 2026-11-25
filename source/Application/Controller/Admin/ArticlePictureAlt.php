@@ -69,7 +69,7 @@ class ArticlePictureAlt extends AdminDetailsController
             return;
         }
 
-        $productMediaId = (string) $this->requestStack->getCurrentRequest()?->request->get('productMediaId', '');
+        $productMediaId = (string) $this->requestStack->getCurrentRequest()->request->get('productMediaId', '');
         $productMedia = $this->productMediaService->get(Id::fromString($productMediaId));
         if ((string) $productMedia->getProductId() !== $this->getEditObjectId()) {
             return;
@@ -94,7 +94,7 @@ class ArticlePictureAlt extends AdminDetailsController
     /** @return array<string, string> */
     private function getSubmittedAltTexts(string $productMediaId): array
     {
-        $altTexts = $this->requestStack->getCurrentRequest()?->request->all('altTexts')[$productMediaId] ?? [];
+        $altTexts = $this->requestStack->getCurrentRequest()->request->all('altTexts')[$productMediaId] ?? [];
 
         return array_map(static fn($altText) => trim((string) $altText), $altTexts);
     }

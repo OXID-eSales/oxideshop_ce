@@ -135,7 +135,7 @@ class ThemeConfiguration extends AdminDetailsController
     private function getValidSettingValues(): array
     {
         return array_filter(
-            $this->requestStack->getCurrentRequest()?->request->all('settings') ?? [],
+            $this->requestStack->getCurrentRequest()->request->all('settings'),
             fn(mixed $value): bool => is_string($value) && $this->isValidSettingValue($value)
         );
     }

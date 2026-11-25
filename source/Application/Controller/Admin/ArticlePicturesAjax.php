@@ -26,7 +26,6 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\Id;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class ArticlePicturesAjax extends ListComponentAjax
@@ -41,7 +40,7 @@ class ArticlePicturesAjax extends ListComponentAjax
         parent::__construct();
         $this->productMediaUploadProcessor = ContainerFacade::get(ProductMediaUploadProcessorInterface::class);
         $this->productMediaService = ContainerFacade::get(ProductMediaServiceInterface::class);
-        $request = ContainerFacade::get(RequestStack::class)->getCurrentRequest() ?? new Request();
+        $request = ContainerFacade::get(RequestStack::class)->getCurrentRequest();
         $this->requestData = $request->request;
         $this->requestFiles = $request->files;
     }

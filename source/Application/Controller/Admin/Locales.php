@@ -57,12 +57,12 @@ class Locales extends AdminDetailsController
 
     public function delete(): void
     {
-        $this->localeService->delete($this->requestStack->getCurrentRequest()?->request->get('localeCode'));
+        $this->localeService->delete($this->requestStack->getCurrentRequest()->request->get('localeCode'));
     }
 
     private function updateExistingLocales(array $assignedCodes, int $shopId): void
     {
-        foreach ($this->requestStack->getCurrentRequest()?->request->all('locales') ?? [] as $code => $data) {
+        foreach ($this->requestStack->getCurrentRequest()->request->all('locales') as $code => $data) {
             $code = (string) $code;
             $this->localeService->update(new Locale($code, $data['name'], $data['fallback']));
             $this->updateShopAssignment($code, !empty($data['active']), $assignedCodes, $shopId);
@@ -71,7 +71,7 @@ class Locales extends AdminDetailsController
 
     private function addNewLocales(array $assignedCodes, int $shopId): void
     {
-        foreach ($this->requestStack->getCurrentRequest()?->request->all('newLocales') ?? [] as $data) {
+        foreach ($this->requestStack->getCurrentRequest()->request->all('newLocales') as $data) {
             if (empty($data['code'])) {
                 continue;
             }

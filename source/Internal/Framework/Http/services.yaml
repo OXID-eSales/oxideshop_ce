@@ -4,7 +4,6 @@ imports:
 services:
   _defaults:
     autowire: true
-    public: false
 
   Symfony\Component\HttpKernel\Controller\ControllerResolverInterface:
     class: Symfony\Component\HttpKernel\Controller\ContainerControllerResolver
@@ -21,19 +20,10 @@ services:
     arguments:
       $handleAllThrowables: true
 
-
   OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner
     arguments:
       $kernel: '@Symfony\Component\HttpKernel\HttpKernelInterface'
-      $request: '@Symfony\Component\HttpFoundation\Request'
-    public: true
-
-  OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyAjaxRunnerInterface:
-    class: OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyAjaxRunner
-    arguments:
-      $kernel: '@Symfony\Component\HttpKernel\HttpKernelInterface'
-      $request: '@Symfony\Component\HttpFoundation\Request'
     public: true
 
   OxidEsales\EshopCommunity\Application\Controller\NotFoundController:

@@ -9,7 +9,8 @@ declare(strict_types=1);
 
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
-use OxidEsales\EshopCommunity\Internal\Framework\Http\LegacyAjaxRunnerInterface;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 if (!defined('OX_IS_ADMIN')) {
@@ -22,12 +23,12 @@ if (!defined('OX_ADMIN_DIR')) {
 
 require_once __DIR__ . '/../bootstrap.php';
 
-$blAjaxCall = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest');
-if (!$blAjaxCall) {
-    return;
-}
+$request = ContainerFacade::get(Request::class);
+ContainerFacade::get(ShopRunnerInterface::class)->runController($request, static function () use ($request): Response {
+    if (!$request->isXmlHttpRequest()) {
+        return new Response();
+    }
 
-ContainerFacade::get(LegacyAjaxRunnerInterface::class)->runController(static function (): Response {
     $myConfig = Registry::getConfig();
     $myConfig->init();
 

@@ -7,6 +7,7 @@
 
 namespace OxidEsales\EshopCommunity\Core;
 
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\Str;
 use OxidEsales\Eshop\Core\TableViewNameGenerator;
 
@@ -209,6 +210,8 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
      * @param string $sRequest request
      * @param string $sPath    path
      *
+     * @throws RoutingException
+     *
      * @access public
      */
     public function processSeoCall($sRequest = null, $sPath = null)
@@ -235,6 +238,8 @@ class SeoDecoder extends \OxidEsales\Eshop\Core\Base
             } elseif (($sRedirectUrl = $this->decodeSimpleUrl($sParams))) {
                 // old type II seo urls
                 \OxidEsales\Eshop\Core\Registry::getUtils()->redirect(\OxidEsales\Eshop\Core\Registry::getConfig()->getShopURL() . $sRedirectUrl, false, 301);
+            } else {
+                throw new RoutingException(sprintf('SEO URL "%s" cannot be resolved', $sParams));
             }
         }
     }

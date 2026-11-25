@@ -11,16 +11,19 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Transition\Adapte
 
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http\LegacyRoutingListener;
+use OxidEsales\EshopCommunity\Tests\ContainerTrait;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 final class LegacyRoutingListenerTest extends IntegrationTestCase
 {
+    use ContainerTrait;
+
     private array $query;
 
     public function setUp(): void
@@ -48,32 +51,49 @@ final class LegacyRoutingListenerTest extends IntegrationTestCase
         $this->assertSame('seo-listener-category', $request->query->get('cnid'));
     }
 
-    public function testRejectsUnknownSeoPathWithNotFound(): void
+    public function testLetsQueryParametersOverrideDecodedSeoParameters(): void
+    {
+        $request = $this->legacyRequest($this->givenCategorySeoUrlPath() . '?cl=search', '/oxseo.php');
+        $_GET = $request->query->all();
+
+        $this->handle($request);
+
+        $this->assertSame('search', $request->query->get('cl'));
+        $this->assertSame('seo-listener-category', $request->query->get('cnid'));
+    }
+
+    public function testRejectsUnknownSeoPath(): void
     {
         $request = $this->legacyRequest('/unknown-seo-path/', '/oxseo.php');
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectException(RoutingException::class);
 
         $this->handle($request);
     }
 
-    public function testRejectsUnknownPathOfOtherEntryPointsWithoutSeoDecoding(): void
+    public function testRejectsUnknownSeoPathWithControllerKey(): void
     {
-        $request = $this->legacyRequest('/index.php/unknown', '/index.php');
+        $request = $this->legacyRequest('/unknown-seo-path/?cl=start', '/oxseo.php');
+        $_GET = $request->query->all();
 
-        $this->expectException(NotFoundHttpException::class);
+        $this->expectException(RoutingException::class);
 
         $this->handle($request);
     }
 
-    public function testLeavesRequestsRoutedToAnotherControllerUndecoded(): void
+    public function testKernelAnswersUnknownSeoPathWithNotFound(): void
     {
-        $request = $this->legacyRequest($this->givenCategorySeoUrlPath(), '/oxseo.php');
-        $request->attributes->set('_controller', 'routed-controller');
+        $this->setParameter('oxid_esales.debug_mode', false);
+        $request = Request::create(
+            '/unknown-seo-path/?cl=start',
+            server: ['SCRIPT_NAME' => '/oxseo.php', 'HTTP_ACCEPT' => 'application/json']
+        );
+        $request->attributes->set('_fallback_controller', static fn(): Response => new Response('legacy-page'));
+        $_GET = $request->query->all();
 
-        $this->handle($request);
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
 
-        $this->assertSame([], $request->query->all());
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
     private function givenCategorySeoUrlPath(): string
@@ -101,7 +121,7 @@ final class LegacyRoutingListenerTest extends IntegrationTestCase
 
     private function handle(Request $request): void
     {
-        new LegacyRoutingListener()->onKernelRequest(
+        $this->get(LegacyRoutingListener::class)->onKernelRequest(
             new RequestEvent($this->createStub(HttpKernelInterface::class), $request, HttpKernelInterface::MAIN_REQUEST)
         );
     }

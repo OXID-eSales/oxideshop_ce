@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final readonly class RoutedController
 {
-    #[Route('/kernel-routing/{id}')]
+    #[Route('/kernel-routing/{id}', methods: ['GET'])]
     public function show(string $id): Response
     {
         return new Response('routed-body id=' . $id);

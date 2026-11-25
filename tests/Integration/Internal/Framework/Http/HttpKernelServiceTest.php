@@ -65,6 +65,18 @@ final class HttpKernelServiceTest extends IntegrationTestCase
         $this->assertSame('routed-body id=7', $response->getContent());
     }
 
+    public function testAnswersWrongMethodOnRouteWithMethodNotAllowed(): void
+    {
+        $this->useRoutedControllerFixture();
+        $request = Request::create('/kernel-routing/7', 'POST', server: ['HTTP_ACCEPT' => 'application/json']);
+        $request->attributes->set('_fallback_controller', static fn(): Response => new Response('fallback-body'));
+
+        $response = $this->get(HttpKernelInterface::class)->handle($request);
+
+        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $response->getStatusCode());
+        $this->assertSame('GET', $response->headers->get('Allow'));
+    }
+
     public function testRunsTheFallbackControllerForTheRootPath(): void
     {
         $request = Request::create('/');
@@ -390,5 +402,18 @@ final class HttpKernelServiceTest extends IntegrationTestCase
     private function getOfflinePage(): string
     {
         return (string) $this->get(OfflinePageResponseFactoryInterface::class)->create()->getContent();
+    }
+
+    private function useRoutedControllerFixture(): void
+    {
+        $this->createContainerWithoutDebugMode();
+        $this->loadYamlFixture(__DIR__ . '/Fixtures');
+        $this->compileContainer();
+    }
+
+    private function createContainerWithoutDebugMode(): void
+    {
+        $this->createContainer();
+        $this->container->setParameter('oxid_esales.debug_mode', false);
     }
 }

@@ -8,7 +8,13 @@
 declare(strict_types=1);
 
 /**
- * @deprecated since v8.0.0; will be removed in the next major. Route /api/ requests to index.php instead.
+ * @deprecated
  */
 
-require_once __DIR__ . '/index.php';
+use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
+use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface;
+use Symfony\Component\HttpFoundation\Request;
+
+require_once __DIR__ . '/bootstrap.php';
+
+ContainerFacade::get(ShopRunnerInterface::class)->runRoutes(ContainerFacade::get(Request::class));

@@ -9,164 +9,123 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http\Listener;
 
-use OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ProblemJsonErrorRenderer;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RoutingListener;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
-use Symfony\Component\HttpKernel\Controller\ContainerControllerResolver;
-use Symfony\Component\HttpKernel\Controller\ErrorController;
-use Symfony\Component\HttpKernel\EventListener\ErrorListener;
-use Symfony\Component\HttpKernel\HttpKernel;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 final class RoutingListenerTest extends TestCase
 {
-    public function testRunsTheFallbackControllerWhenNoRouteMatches(): void
+    public function testOnKernelRequestSetsRouteOfMatchingPath(): void
     {
-        $response = $this->handle($this->withFallbackController(Request::create('/unrouted/path')));
+        $request = Request::create('/routed/some-id');
 
-        $this->assertSame('fallback-body', $response->getContent());
-    }
+        $this->dispatch($request);
 
-    public function testRunsTheFallbackControllerWhenTheMethodDoesNotMatchOutsideTheApi(): void
-    {
-        $response = $this->handle($this->withFallbackController(Request::create('/routed/some-id', 'POST')));
-
-        $this->assertSame('fallback-body', $response->getContent());
-    }
-
-    public function testRunsTheRoutedControllerWhenARouteMatches(): void
-    {
-        $request = $this->withFallbackController(Request::create('/routed/some-id'));
-
-        $response = $this->handle($request);
-
-        $this->assertSame('routed-body id=some-id', $response->getContent());
         $this->assertSame('routed', $request->attributes->get('_route'));
+        $this->assertSame('some-id', $request->attributes->get('id'));
+    }
+
+    public function testOnKernelRequestSetsNoFormatOutsideApi(): void
+    {
+        $request = Request::create('/routed/some-id');
+
+        $this->dispatch($request);
+
         $this->assertFalse($request->attributes->has('_format'));
     }
 
-    public function testDefaultsApiRoutesWithoutDeclaredFormatToJson(): void
+    public function testOnKernelRequestDefaultsApiRouteFormatToJson(): void
     {
         $request = Request::create('/api/routed/some-id');
 
-        $response = $this->handle($request);
+        $this->dispatch($request);
 
-        $this->assertSame('routed-body id=some-id', $response->getContent());
         $this->assertSame('json', $request->attributes->get('_format'));
     }
 
-    public function testKeepsTheFormatDeclaredByAnApiRoute(): void
+    public function testOnKernelRequestKeepsFormatDeclaredByApiRoute(): void
     {
         $request = Request::create('/api/xml/some-id');
 
-        $this->handle($request);
+        $this->dispatch($request);
 
         $this->assertSame('xml', $request->attributes->get('_format'));
     }
 
-    public function testAnswersUnknownApiPathsWithJsonNotFoundDespiteTheFallbackController(): void
+    public function testOnKernelRequestSetsFallbackControllerForUnroutedPath(): void
     {
-        $response = $this->handle($this->withFallbackController(Request::create('/api/nothing')));
+        $fallbackController = static fn(): Response => new Response();
+        $request = Request::create('/unrouted/path');
+        $request->attributes->set('_fallback_controller', $fallbackController);
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-        $this->assertSame($this->problem(404, 'Not Found'), json_decode($response->getContent(), true));
+        $this->dispatch($request);
+
+        $this->assertSame($fallbackController, $request->attributes->get('_controller'));
     }
 
-    public function testAnswersWrongMethodOnApiRoutesWithJsonMethodNotAllowedDespiteTheFallbackController(): void
+    public function testOnKernelRequestRejectsUnroutedPathWithoutFallbackController(): void
     {
-        $response = $this->handle($this->withFallbackController(Request::create('/api/routed/some-id', 'POST')));
+        $this->expectException(NotFoundHttpException::class);
 
-        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $response->getStatusCode());
-        $this->assertSame('GET', $response->headers->get('Allow'));
-        $this->assertSame($this->problem(405, 'Method Not Allowed'), json_decode($response->getContent(), true));
+        $this->dispatch(Request::create('/unrouted/path'));
     }
 
-    public function testAnswersUnroutedPathWithoutFallbackControllerWithNotFound(): void
+    public function testOnKernelRequestRejectsUnknownApiPathDespiteFallbackController(): void
     {
-        $response = $this->handle(Request::create('/unrouted/path'));
+        $request = Request::create('/api/nothing');
+        $request->attributes->set('_fallback_controller', static fn(): Response => new Response());
 
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->expectException(NotFoundHttpException::class);
+
+        $this->dispatch($request);
     }
 
-    public function testAnswersWrongMethodWithoutFallbackControllerWithMethodNotAllowed(): void
+    public function testOnKernelRequestRejectsWrongMethodDespiteFallbackController(): void
     {
-        $response = $this->handle(Request::create('/routed/some-id', 'POST'));
+        $request = Request::create('/routed/some-id', 'POST');
+        $request->attributes->set('_fallback_controller', static fn(): Response => new Response());
 
-        $this->assertSame(Response::HTTP_METHOD_NOT_ALLOWED, $response->getStatusCode());
-        $this->assertSame('GET', $response->headers->get('Allow'));
+        $this->expectException(MethodNotAllowedHttpException::class);
+
+        $this->dispatch($request);
     }
 
-    public function testKeepsTheControllerAlreadySetOnTheRequest(): void
+    public function testOnKernelRequestKeepsControllerAlreadySet(): void
     {
         $request = Request::create('/routed/some-id');
-        $request->attributes->set('_controller', static fn(): Response => new Response('preset-body'));
+        $request->attributes->set('_controller', 'preset-controller');
 
-        $response = $this->handle($request);
+        $this->dispatch($request);
 
-        $this->assertSame('preset-body', $response->getContent());
         $this->assertFalse($request->attributes->has('_route'));
     }
 
-    public static function routedController(string $id): Response
+    private function dispatch(Request $request): void
     {
-        return new Response('routed-body id=' . $id);
-    }
-
-    private function handle(Request $request): Response
-    {
-        $dispatcher = new EventDispatcher();
-        $requestStack = new RequestStack();
-        $kernel = new HttpKernel(
-            $dispatcher,
-            new ContainerControllerResolver(new Container()),
-            $requestStack,
-            new ArgumentResolver(),
-            handleAllThrowables: true
+        $event = new RequestEvent(
+            $this->createStub(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MAIN_REQUEST
         );
-        $dispatcher->addSubscriber(new RoutingListener($this->compiledRoutes()));
-        $dispatcher->addSubscriber(new ErrorListener(new ErrorController(
-            $kernel,
-            null,
-            new ProblemJsonErrorRenderer($requestStack, new HtmlErrorRenderer(), false)
-        )));
 
-        return $kernel->handle($request);
-    }
-
-    private function withFallbackController(Request $request): Request
-    {
-        $request->attributes->set('_fallback_controller', static fn(): Response => new Response('fallback-body'));
-
-        return $request;
-    }
-
-    private function problem(int $status, string $detail): array
-    {
-        return [
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
-            'title' => 'An error occurred',
-            'status' => $status,
-            'detail' => $detail,
-        ];
+        (new RoutingListener($this->compiledRoutes()))->onKernelRequest($event);
     }
 
     private function compiledRoutes(): array
     {
-        $controller = ['_controller' => self::class . '::routedController'];
         $routes = new RouteCollection();
-        $routes->add('routed', new Route('/routed/{id}', $controller, methods: ['GET']));
-        $routes->add('api', new Route('/api/routed/{id}', $controller, methods: ['GET']));
-        $routes->add('api_xml', new Route('/api/xml/{id}', $controller + ['_format' => 'xml']));
+        $routes->add('routed', new Route('/routed/{id}', ['_controller' => 'routed-controller'], methods: ['GET']));
+        $routes->add('api', new Route('/api/routed/{id}', ['_controller' => 'routed-controller'], methods: ['GET']));
+        $routes->add('api_xml', new Route('/api/xml/{id}', ['_controller' => 'routed-controller', '_format' => 'xml']));
 
-        return new CompiledUrlMatcherDumper($routes)->getCompiledRoutes();
+        return (new CompiledUrlMatcherDumper($routes))->getCompiledRoutes();
     }
 }

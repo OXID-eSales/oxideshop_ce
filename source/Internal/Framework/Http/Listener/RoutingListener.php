@@ -12,7 +12,6 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Http\Listener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -23,6 +22,9 @@ use Symfony\Component\Routing\RequestContext;
 
 readonly class RoutingListener implements EventSubscriberInterface
 {
+    /**
+     * @param array<int, mixed> $routes
+     */
     public function __construct(private array $routes)
     {
     }
@@ -45,11 +47,13 @@ readonly class RoutingListener implements EventSubscriberInterface
 
         try {
             $request->attributes->add($this->matchRoute($request));
-        } catch (ResourceNotFoundException | MethodNotAllowedException $exception) {
-            $request->attributes->set(
-                '_controller',
-                $this->getFallbackController($request) ?? throw $this->toHttpException($exception)
-            );
+        } catch (ResourceNotFoundException $exception) {
+            if (!$this->hasFallbackController($request)) {
+                throw new NotFoundHttpException(previous: $exception);
+            }
+            $request->attributes->set('_controller', $request->attributes->get('_fallback_controller'));
+        } catch (MethodNotAllowedException $exception) {
+            throw new MethodNotAllowedHttpException($exception->getAllowedMethods(), previous: $exception);
         }
     }
 
@@ -66,17 +70,8 @@ readonly class RoutingListener implements EventSubscriberInterface
         return new CompiledUrlMatcher($this->routes, $context)->match($request->getPathInfo());
     }
 
-    private function getFallbackController(Request $request): ?callable
+    private function hasFallbackController(Request $request): bool
     {
-        return $this->isApiRequest($request) ? null : $request->attributes->get('_fallback_controller');
-    }
-
-    private function toHttpException(ResourceNotFoundException | MethodNotAllowedException $exception): HttpException
-    {
-        if ($exception instanceof MethodNotAllowedException) {
-            return new MethodNotAllowedHttpException($exception->getAllowedMethods(), previous: $exception);
-        }
-
-        return new NotFoundHttpException(previous: $exception);
+        return !$this->isApiRequest($request) && $request->attributes->get('_fallback_controller') !== null;
     }
 }

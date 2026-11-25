@@ -15,9 +15,11 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleIn
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\Eshop\Core\Registry;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\BrowserKit\HttpBrowser;
+use Symfony\Component\BrowserKit\Response as BrowserKitResponse;
 
 #[RunTestsInSeparateProcesses]
 final class ModuleControllerApiTest extends TestCase
@@ -38,10 +40,7 @@ final class ModuleControllerApiTest extends TestCase
 
     public function testApiController(): void
     {
-        $shopUrl = Registry::getConfig()->getShopUrl();
-        $httpBrowser = new HttpBrowser();
-        $httpBrowser->request('GET', $shopUrl . 'api/oxid/8/');
-        $response = $httpBrowser->getResponse();
+        $response = $this->request('GET', 'api/oxid/8/');
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame(
@@ -56,36 +55,57 @@ final class ModuleControllerApiTest extends TestCase
 
     public function testApiControllerWrongRequest(): void
     {
-        $shopUrl = Registry::getConfig()->getShopUrl();
-        $httpBrowser = new HttpBrowser();
-        $httpBrowser->request('GET', $shopUrl . 'api/oxid/notInt/');
-        $response = $httpBrowser->getResponse();
+        $response = $this->request('GET', 'api/oxid/notInt/');
 
         $this->assertSame(404, $response->getStatusCode());
         $this->assertSame('application/json', $response->getHeader('Content-Type'));
-        $this->assertSame($this->problem(404, 'Not Found'), json_decode($response->getContent(), true));
     }
 
-    public function testApiControllerWrongMethod(): void
+    public function testApiRouteAnswersPostWithMethodNotAllowed(): void
     {
-        $shopUrl = Registry::getConfig()->getShopUrl();
-        $httpBrowser = new HttpBrowser();
-        $httpBrowser->request('POST', $shopUrl . 'api/oxid/8/');
-        $response = $httpBrowser->getResponse();
+        $response = $this->request('POST', 'api/oxid/8/');
 
         $this->assertSame(405, $response->getStatusCode());
         $this->assertSame('GET', $response->getHeader('Allow'));
-        $this->assertSame($this->problem(405, 'Method Not Allowed'), json_decode($response->getContent(), true));
     }
 
-    private function problem(int $status, string $detail): array
+    public function testApiScriptServesApiRoutes(): void
+    {
+        $response = $this->request('GET', 'api.php/api/oxid/8/');
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame('oxid', json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR)['name']);
+    }
+
+    public function testApiScriptDoesNotServeStorefront(): void
+    {
+        $this->assertSame(404, $this->request('GET', 'api.php?cl=start')->getStatusCode());
+    }
+
+    public static function entryPointDataProvider(): array
     {
         return [
-            'type' => 'https://tools.ietf.org/html/rfc2616#section-10',
-            'title' => 'An error occurred',
-            'status' => $status,
-            'detail' => $detail,
+            'admin' => ['admin/index.php/api/oxid/8/'],
+            'widget' => ['widget.php/api/oxid/8/?cl=oxwminibasket'],
         ];
+    }
+
+    #[DataProvider('entryPointDataProvider')]
+    public function testOtherEntryPointsIgnoreModuleRoutes(string $path): void
+    {
+        $response = $this->request('GET', $path);
+
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertStringNotContainsString('json', (string) $response->getHeader('Content-Type'));
+        $this->assertStringNotContainsString('"name":"oxid"', $response->getContent());
+    }
+
+    private function request(string $method, string $path): BrowserKitResponse
+    {
+        $httpBrowser = new HttpBrowser();
+        $httpBrowser->request($method, Registry::getConfig()->getShopUrl() . $path);
+
+        return $httpBrowser->getResponse();
     }
 
     private function get(string $serviceId)

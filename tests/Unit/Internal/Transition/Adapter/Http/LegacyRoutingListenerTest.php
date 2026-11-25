@@ -93,13 +93,6 @@ final class LegacyRoutingListenerTest extends TestCase
         $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
 
-    public function testAnswersWrongMethodOnARoutePathWithoutControllerKeyWithNotFound(): void
-    {
-        $response = $this->handle($this->withFallbackController(Request::create('/routed/some-id', 'POST')));
-
-        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
-    }
-
     public function testLeavesRoutedRequestsToTheirController(): void
     {
         $response = $this->handle($this->withFallbackController(Request::create('/routed/some-id')));

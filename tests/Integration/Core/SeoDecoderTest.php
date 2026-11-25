@@ -11,6 +11,7 @@ namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Application\Model\Category;
 use OxidEsales\Eshop\Application\Model\SeoEncoderCategory;
+use OxidEsales\Eshop\Core\Exception\RoutingException;
 use OxidEsales\Eshop\Core\SeoDecoder;
 use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 
@@ -37,11 +38,18 @@ final class SeoDecoderTest extends IntegrationTestCase
         $this->assertSame('alist', $_GET['cl']);
     }
 
-    public function testProcessSeoCallLeavesUnknownUrlUnrouted(): void
+    public function testProcessSeoCallRejectsUnknownUrl(): void
     {
-        oxNew(SeoDecoder::class)->processSeoCall('/retired-url/', '/');
+        $this->expectException(RoutingException::class);
 
-        $this->assertArrayNotHasKey('cl', $_GET);
+        oxNew(SeoDecoder::class)->processSeoCall('/retired-url/', '/');
+    }
+
+    public function testProcessSeoCallIgnoresShopRoot(): void
+    {
+        oxNew(SeoDecoder::class)->processSeoCall('/?cl=start', '/');
+
+        $this->assertSame([], $_GET);
     }
 
     private function createCategorySeoUrlPath(): string

@@ -23,39 +23,78 @@ use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Matcher\Dumper\CompiledUrlMatcherDumper;
+use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 final class ShopRunnerTest extends TestCase
 {
-    public function testSendsTheResponseOfTheFallbackControllerAndTerminatesTheKernelWithIt(): void
+    private EventDispatcher $dispatcher;
+    private ?string $terminatedWith = null;
+
+    protected function setUp(): void
     {
-        $dispatcher = new EventDispatcher();
-        $kernel = new HttpKernel(
-            $dispatcher,
-            new ContainerControllerResolver(new Container()),
-            new RequestStack(),
-            new ArgumentResolver()
-        );
-        $dispatcher->addSubscriber(
-            new RoutingListener(new CompiledUrlMatcherDumper(new RouteCollection())->getCompiledRoutes())
-        );
-        $terminatedWith = null;
-        $dispatcher->addListener(
+        parent::setUp();
+
+        $this->dispatcher = new EventDispatcher();
+        $this->dispatcher->addSubscriber(new RoutingListener($this->compiledRoutes()));
+        $this->dispatcher->addListener(
             KernelEvents::TERMINATE,
-            static function (TerminateEvent $event) use (&$terminatedWith): void {
-                $terminatedWith = $event->getResponse()->getContent();
+            function (TerminateEvent $event): void {
+                $this->terminatedWith = (string) $event->getResponse()->getContent();
             }
         );
+    }
 
-        ob_start();
-        try {
-            new ShopRunner($kernel, Request::create('/'))
-                ->run(static fn(): Response => new Response('fallback-body'));
-        } finally {
-            $output = ob_get_clean();
-        }
+    public function testRunSendsFallbackResponseAndTerminatesKernel(): void
+    {
+        $this->expectOutputString('fallback-body');
 
-        $this->assertSame('fallback-body', $output);
-        $this->assertSame('fallback-body', $terminatedWith);
+        $this->createShopRunner()->run(Request::create('/'), static fn(): Response => new Response('fallback-body'));
+
+        $this->assertSame('fallback-body', $this->terminatedWith);
+    }
+
+    public function testRunRoutesSendsResponseOfMatchingRoute(): void
+    {
+        $this->expectOutputString('routed-body id=some-id');
+
+        $this->createShopRunner()->runRoutes(Request::create('/routed/some-id'));
+    }
+
+    public function testRunControllerIgnoresRoutes(): void
+    {
+        $this->expectOutputString('given-controller-body');
+
+        $this->createShopRunner()->runController(
+            Request::create('/routed/some-id'),
+            static fn(): Response => new Response('given-controller-body')
+        );
+
+        $this->assertSame('given-controller-body', $this->terminatedWith);
+    }
+
+    public static function routedController(string $id): Response
+    {
+        return new Response('routed-body id=' . $id);
+    }
+
+    private function createShopRunner(): ShopRunner
+    {
+        return new ShopRunner(
+            new HttpKernel(
+                $this->dispatcher,
+                new ContainerControllerResolver(new Container()),
+                new RequestStack(),
+                new ArgumentResolver()
+            )
+        );
+    }
+
+    private function compiledRoutes(): array
+    {
+        $routes = new RouteCollection();
+        $routes->add('routed', new Route('/routed/{id}', ['_controller' => self::class . '::routedController']));
+
+        return new CompiledUrlMatcherDumper($routes)->getCompiledRoutes();
     }
 }

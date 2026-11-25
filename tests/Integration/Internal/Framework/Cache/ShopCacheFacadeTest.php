@@ -9,78 +9,81 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Cache;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\CachePoolGenerationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\ShopCacheCleanerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Cache\ModuleCacheInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Tests\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 
 #[Group('cache')]
-final class ShopCacheFacadeTest extends TestCase
+final class ShopCacheFacadeTest extends IntegrationTestCase
 {
     use ContainerTrait;
 
-    public function testDeleteShopRelatedCache(): void
+    private string $cacheDirectory;
+
+    public function setUp(): void
     {
-        $moduleCache = $this->getModuleCache();
+        parent::setUp();
+
+        $this->cacheDirectory = Path::join(sys_get_temp_dir(), uniqid('shop-cache-facade-', true));
+        $this->get(BasicContextInterface::class)->setCacheDirectory($this->cacheDirectory);
+    }
+
+    public function tearDown(): void
+    {
+        (new Filesystem())->remove($this->cacheDirectory);
+
+        parent::tearDown();
+    }
+
+    public function testClearInvalidatesModuleCache(): void
+    {
+        $moduleCache = $this->get(ModuleCacheInterface::class);
         $moduleCache->put('test', ['something']);
 
-        $shopPool = $this->getShopCacheCleaner();
-        $shopPool->clear(1);
+        $this->get(ShopCacheCleanerInterface::class)->clear(1);
 
-        $this->assertFalse(
-            $moduleCache->exists('test')
-        );
+        $this->assertFalse($moduleCache->exists('test'));
     }
 
-    public function testClearMovesThePoolOfTheShopToAnotherNamespace(): void
+    public function testClearDropsCachedItemsOfShop(): void
     {
-        $before = $this->getGenerationMarker();
+        $this->readItem(default: 'old');
 
-        $this->getShopCacheCleaner()->clear(1);
+        $this->get(ShopCacheCleanerInterface::class)->clear(1);
 
-        $this->assertNotSame($before, $this->getGenerationMarker());
-        $this->assertDirectoryExists($this->storeItemAndGetPoolDirectory());
+        $this->assertSame('new', $this->readItem(default: 'new'));
     }
 
-    public function testClearAllMovesThePoolOfTheShopToAnotherNamespace(): void
+    public function testClearAllDropsCachedItemsOfShops(): void
     {
-        $before = $this->getGenerationMarker();
+        $this->readItem(default: 'old');
 
-        $this->getShopCacheCleaner()->clearAll();
+        $this->get(ShopCacheCleanerInterface::class)->clearAll();
 
-        $this->assertNotSame($before, $this->getGenerationMarker());
-        $this->assertDirectoryExists($this->storeItemAndGetPoolDirectory());
+        $this->assertSame('new', $this->readItem(default: 'new'));
     }
 
-    private function getGenerationMarker(): ?string
+    public function testClearRemovesOldGenerationOfPool(): void
     {
-        $path = $this->get(BasicContextInterface::class)->getCachePoolGenerationFilePath(1);
+        $this->readItem(default: 'old');
+        $oldDirectory = $this->get(CachePoolGenerationInterface::class)->getDirectory(1);
 
-        return is_file($path) ? file_get_contents($path) : null;
+        $this->get(ShopCacheCleanerInterface::class)->clear(1);
+
+        $this->assertDirectoryDoesNotExist($oldDirectory);
     }
 
-    private function storeItemAndGetPoolDirectory(): string
+    private function readItem(string $default): string
     {
-        $this->get(TagAwareAdapterFactoryInterface::class)->create(1)->get('some-key', fn (): string => 'value');
-
-        return Path::join(
-            $this->get(BasicContextInterface::class)->getCacheDirectory(),
-            'pool',
-            'cache_items_shop_1_' . $this->getGenerationMarker()
-        );
-    }
-
-    private function getShopCacheCleaner(): ShopCacheCleanerInterface
-    {
-        return $this->get(ShopCacheCleanerInterface::class);
-    }
-
-    private function getModuleCache(): ModuleCacheInterface
-    {
-        return $this->get(ModuleCacheInterface::class);
+        return $this->get(TagAwareAdapterFactoryInterface::class)
+            ->create(1)
+            ->get('some-key', static fn (): string => $default);
     }
 }

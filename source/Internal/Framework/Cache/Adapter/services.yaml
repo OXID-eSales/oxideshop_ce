@@ -2,6 +2,9 @@ services:
   _defaults:
     autowire: true
 
+  OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\CachePoolGenerationInterface:
+    class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\CachePoolGeneration
+
   OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\TagAwareAdapterFactoryInterface:
     class: OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\PhpFilesTagAwareAdapterFactory
 

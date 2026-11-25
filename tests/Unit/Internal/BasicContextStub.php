@@ -174,11 +174,6 @@ class BasicContextStub implements BasicContextInterface
         $this->cacheDirectory = $cacheDirectory;
     }
 
-    public function getCachePoolGenerationFilePath(int $shopId): string
-    {
-        return Path::join($this->getCacheDirectory(), 'pool', "shop_$shopId.generation");
-    }
-
     public function getModuleCacheDirectory(): string
     {
         return $this->basicContext->getModuleCacheDirectory();

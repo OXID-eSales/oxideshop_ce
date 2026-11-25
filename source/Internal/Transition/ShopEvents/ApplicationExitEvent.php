@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Transition\ShopEvents;
 
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * @deprecated
+ */
 class ApplicationExitEvent extends Event
 {
 }

@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * @deprecated
+ */
 readonly class ApiRateLimitListener implements EventSubscriberInterface
 {
     private const API_PATH_PREFIX = '/api/';

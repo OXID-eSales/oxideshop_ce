@@ -13,6 +13,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * @deprecated
+ */
 readonly class RateLimitHeadersListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array

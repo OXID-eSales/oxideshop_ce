@@ -11,6 +11,8 @@ use OxidEsales\Eshop\Core\Str;
 
 /**
  * class for output processing
+ *
+ * @deprecated
  */
 class Output extends \OxidEsales\Eshop\Core\Base
 {

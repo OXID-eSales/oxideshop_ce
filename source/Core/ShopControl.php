@@ -31,6 +31,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Used to force handling, it allows other place like widget controller to skip it.
      *
      * @var bool
+     *
+     * @deprecated
      */
     protected $_blMainTasksExecuted = null;
 
@@ -38,6 +40,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Profiler start time
      *
      * @var double
+     *
+     * @deprecated
      */
     protected $_dTimeStart = null;
 
@@ -45,6 +49,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Profiler end time
      *
      * @var double
+     *
+     * @deprecated
      */
     protected $_dTimeEnd = null;
 
@@ -54,6 +60,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @see _getErrors
      *
      * @var array
+     *
+     * @deprecated
      */
     protected $_aErrors = null;
 
@@ -63,6 +71,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @see _getErrors
      *
      * @var array
+     *
+     * @deprecated
      */
     protected $_aAllErrors = null;
 
@@ -72,6 +82,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @see _getErrors
      *
      * @var array
+     *
+     * @deprecated
      */
     protected $_aControllerErrors = null;
 
@@ -82,6 +94,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @see _getOuput
      *
      * @var \OxidEsales\Eshop\Core\Output
+     *
+     * @deprecated
      */
     protected $_oOutput = null;
 
@@ -114,6 +128,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param string $function      Function name
      * @param array  $parameters    Parameters array
      * @param array  $viewsChain    Array of views names that should be initialized also
+     *
+     * @deprecated
      */
     public function start($controllerKey = null, $function = null, $parameters = null, $viewsChain = null)
     {
@@ -151,6 +167,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Returns the difference between stored profiler end time and start time. Works only after stopMonitoring() is called, otherwise returns 0.
      *
      * @return double
+     *
+     * @deprecated
      */
     public function getTotalTime()
     {
@@ -323,6 +341,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $view
      *
      * @return string
+     *
+     * @deprecated
      */
     protected function formOutput($view)
     {
@@ -333,6 +353,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Method for sending any additional headers on every page requests.
      *
      * @param FrontendController $view
+     *
+     * @deprecated
      */
     protected function sendAdditionalHeaders($view)
     {
@@ -477,6 +499,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Return output handler.
      *
      * @return \OxidEsales\Eshop\Core\Output
+     *
+     * @deprecated
      */
     protected function getOutputManager()
     {
@@ -524,6 +548,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
     /**
      * This function is only executed one time here we perform checks if we
      * only need once per session.
+     *
+     * @deprecated
      */
     protected function runOnce()
     {
@@ -564,6 +590,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Starts resource monitor.
+     *
+     * @deprecated
      */
     protected function startMonitor()
     {
@@ -576,6 +604,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Stops resource monitor, summarizes and outputs values.
      *
      * @param FrontendController $view View object
+     *
+     * @deprecated
      */
     protected function stopMonitoring($view = null)
     {
@@ -620,6 +650,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param FrontendController $view
      *
      * @return string
+     *
+     * @deprecated
      */
     protected function formMonitorMessage($view)
     {
@@ -649,6 +681,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * possible reason: class does not exist etc. --> just redirect to start page.
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
+     *
+     * @deprecated
      */
     protected function handleSystemException($exception)
     {
@@ -662,6 +696,9 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
         }
     }
 
+    /**
+     * @deprecated
+     */
     protected function handleRoutingException(RoutingException $exception)
     {
         Registry::getLogger()->error($exception->getMessage(), [$exception]);
@@ -674,6 +711,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Redirect to start page, in debug mode shows error message.
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception Exception
+     *
+     * @deprecated
      */
     protected function handleCookieException($exception)
     {
@@ -725,6 +764,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * Handling other not caught exceptions.
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $exception
+     *
+     * @deprecated
      */
     protected function handleBaseException($exception)
     {
@@ -742,6 +783,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * This method forms part of the exception handling process. Any further exceptions must be caught.
      *
      * @param \Exception $exception
+     *
+     * @deprecated
      */
     protected function logException(\Exception $exception)
     {
@@ -873,6 +916,8 @@ class ShopControl extends \OxidEsales\Eshop\Core\Base
      * @param string $controllerKey
      *
      * @return string
+     *
+     * @deprecated
      */
     protected function getControllerClass($controllerKey)
     {

@@ -14,6 +14,9 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\Context;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @deprecated
+ */
 class ExceptionHandler
 {
     public function handle(\Throwable $throwable): void

@@ -20,6 +20,9 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\Routing\Matcher\CompiledUrlMatcher;
 use Symfony\Component\Routing\RequestContext;
 
+/**
+ * @deprecated
+ */
 class Api
 {
     public function run(): void

@@ -17,6 +17,9 @@ use Symfony\Component\RateLimiter\LimiterInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Symfony\Component\RateLimiter\Storage\CacheStorage;
 
+/**
+ * @deprecated
+ */
 class ApiRateLimiterFactory implements ApiRateLimiterFactoryInterface
 {
     private ?RateLimiterFactory $factory = null;

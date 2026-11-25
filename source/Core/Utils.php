@@ -933,6 +933,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      *
      * @param string $sUrl        the URL to redirect to
      * @param string $sHeaderCode code to add to the header(e.g. "HTTP/1.1 301 Moved Permanently", or "HTTP/1.1 500 Internal Server Error"
+     *
+     * @deprecated
      */
     protected function simpleRedirect($sUrl, $sHeaderCode)
     {
@@ -947,6 +949,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * Shows offline page.
      * Directly displays the offline page to the client (browser)
      * with a 500 status code header.
+     *
+     * @deprecated
      */
     public function showOfflinePage()
     {
@@ -1007,6 +1011,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * message might be whole content like 404 page.
      *
      * @param string $sMsg message to show
+     *
+     * @deprecated
      */
     public function showMessageAndExit($sMsg)
     {
@@ -1016,6 +1022,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
 
     /**
      * helper with commands to run before exit action
+     *
+     * @deprecated
      */
     protected function prepareToExit()
     {
@@ -1039,6 +1047,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * set header sent to browser
      *
      * @param string $sHeader header to sent
+     *
+     * @deprecated
      */
     public function setHeader($sHeader)
     {
@@ -1052,6 +1062,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * @param array  $aParams the params which will be added
      *
      * @return string
+     *
+     * @deprecated
      */
     protected function addUrlParameters($sUrl, $aParams)
     {
@@ -1308,6 +1320,8 @@ class Utils extends \OxidEsales\Eshop\Core\Base
      * handler for 404 (page not found) error
      *
      * @param string $sUrl url which was given, can be not specified in some cases
+     *
+     * @deprecated
      */
     public function handlePageNotFoundError($sUrl = '')
     {

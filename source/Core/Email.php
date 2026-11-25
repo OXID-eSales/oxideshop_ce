@@ -1480,6 +1480,9 @@ class Email extends PHPMailer
         $this->set("SMTPDebug", $debug);
     }
 
+    /**
+     * @deprecated
+     */
     protected function makeOutputProcessing()
     {
         $output = oxNew(\OxidEsales\Eshop\Core\Output::class);
@@ -1506,6 +1509,9 @@ class Email extends PHPMailer
         return $result;
     }
 
+    /**
+     * @deprecated
+     */
     protected function processViewArray()
     {
         $outputProcessor = oxNew(\OxidEsales\Eshop\Core\Output::class);

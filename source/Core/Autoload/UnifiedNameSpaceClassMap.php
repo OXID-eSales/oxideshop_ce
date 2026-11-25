@@ -1453,7 +1453,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\ExceptionErrorController::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Application\Controller\ForgotPasswordController'           => [
         'editionClassName' => \OxidEsales\EshopCommunity\Application\Controller\ForgotPasswordController::class,
@@ -2347,7 +2347,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\DebugInfo::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Decryptor'                                            => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Decryptor::class,
@@ -2677,7 +2677,7 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Header::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\InputValidator'                                       => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\InputValidator::class,
@@ -2827,13 +2827,13 @@ return [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Output::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\Oxid'                                                 => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\Oxid::class,
         'isAbstract'       => false,
         'isInterface'      => false,
-        'isDeprecated'     => false
+        'isDeprecated'     => true
     ],
     'OxidEsales\Eshop\Core\PasswordHasher'                                       => [
         'editionClassName' => \OxidEsales\EshopCommunity\Core\PasswordHasher::class,

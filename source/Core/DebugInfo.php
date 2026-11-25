@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Debug information formatter
+ *
+ * @deprecated
  */
 class DebugInfo
 {

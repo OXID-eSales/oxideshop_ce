@@ -23,6 +23,33 @@
 - `ThemeSettingChangedEvent`
 - `AdminThemeBridgeInterface`, use the DI parameter `oxid_esales.theme.admin.name` instead
 - `Internal\Framework\Theme\Event\ThemeActivatedEvent`
+- Legacy request, output and header handling
+  - `Oxid`, `ShopControl::start()` and `WidgetControl::start()`
+  - `ShopControl::formOutput()`, override `ShopControl::render()` instead
+  - `ShopControl::getControllerClass()`, use `ShopControl::resolveControllerClass()` instead
+  - `ShopControl`: `handleSystemException()`, `handleRoutingException()`, `handleCookieException()`, `handleBaseException()`, `logException()`, `sendAdditionalHeaders()`, `getOutputManager()`, `runOnce()`, `getTotalTime()`, `startMonitor()`, `stopMonitoring()` and `formMonitorMessage()`
+  - `ShopControl`: `$_blMainTasksExecuted`, `$_dTimeStart`, `$_dTimeEnd`, `$_aErrors`, `$_aAllErrors`, `$_aControllerErrors` and `$_oOutput`; `WidgetControl::$_blMainTasksExecuted`
+  - `ExceptionErrorController` and the controller key `exceptionerror`
+  - `Config::processSeoCall()`, use `SeoDecoder::processSeoCall()` instead
+  - `Config`: `handleDbConnectionException()`, `handleCookieException()` and `getExceptionHandler()`
+  - `Output`, `Header` and `DebugInfo`
+  - `Utils`: `setHeader()`, `showMessageAndExit()`, `showOfflinePage()`, `prepareToExit()` and `addUrlParameters()`
+  - `Utils::handlePageNotFoundError()` and `error_404_handler()`, throw a `RoutingException` instead
+  - `Utils::simpleRedirect()`, use `Utils::redirect()` instead
+  - `oxTriggerOfflinePageDisplay()`
+  - `UtilsView::getTemplateOutput()`, use `TemplateRendererBridgeInterface` instead
+  - `Session::isHeaderSent()` and `Session::needToSetHeaders()`
+  - `Email::makeOutputProcessing()` and `Email::processViewArray()`
+  - `DiagnosticsOutput::downloadResultFile()` and `File::getFilenameForUrl()`
+  - `BeforeHeadersSendEvent` and `ApplicationExitEvent`
+  - `HeaderGeneratorBridgeInterface`, `CsvHeaderGeneratorBridge`, `HeaderGeneratorInterface` and `CsvHeaderGenerator`
+  - Inclusion of `modules/functions.php`
+  - Language constants `ERROR_MESSAGE_OXID_SHOP_ERROR` and `MESSAGE_PLEASE_DELETE_FOLLOWING_DIRECTORY`
+- `Internal\Framework\Api`: `Api`, `ExceptionHandler`, `HttpExceptionListener` and `AttributeRouteControllerLoader`
+- API rate limiter
+  - `ApiRateLimiterFactoryInterface`, `ApiRateLimiterFactory`, `ClientIdentifierProviderInterface`, `ClientIdentifierProvider`, `ApiRateLimitListener` and `RateLimitHeadersListener`
+  - The DI parameters `oxid_esales.rate_limiter.enabled`, `oxid_esales.rate_limiter.limit`, `oxid_esales.rate_limiter.interval`, `oxid_esales.rate_limiter.policy` and `oxid_esales.rate_limiter.excluded_routes`
+- `TooManyRequestsException`, `RateLimitResponderInterface` and `RateLimitResponder`
 
 ### Fixed
 - Password reset links are invalidated when the user's email address or password is changed

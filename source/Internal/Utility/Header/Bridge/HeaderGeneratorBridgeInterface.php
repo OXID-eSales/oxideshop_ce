@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Utility\Header\Bridge;
 
+/**
+ * @deprecated
+ */
 interface HeaderGeneratorBridgeInterface
 {
     /**

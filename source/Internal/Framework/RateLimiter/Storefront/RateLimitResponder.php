@@ -12,6 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * @deprecated
+ */
 readonly class RateLimitResponder implements RateLimitResponderInterface
 {
     public function respond(TooManyRequestsException $exception): void

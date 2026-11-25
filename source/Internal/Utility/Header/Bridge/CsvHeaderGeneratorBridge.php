@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Utility\Header\Bridge;
 
 use OxidEsales\EshopCommunity\Internal\Utility\Header\HeaderGeneratorInterface;
 
+/**
+ * @deprecated
+ */
 class CsvHeaderGeneratorBridge implements HeaderGeneratorBridgeInterface
 {
     public function __construct(private HeaderGeneratorInterface $headerGenerator)

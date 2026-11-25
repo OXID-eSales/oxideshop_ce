@@ -13,6 +13,9 @@ use OxidEsales\Eshop\Core\ShopControl;
 use OxidEsales\EshopCommunity\Internal\Framework\Controller\ViewControllerInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
+/**
+ * @deprecated
+ */
 class BeforeHeadersSendEvent extends Event
 {
     public function __construct(

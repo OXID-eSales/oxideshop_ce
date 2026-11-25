@@ -16,6 +16,8 @@ define('VENDOR_PATH', INSTALLATION_ROOT_PATH . DIRECTORY_SEPARATOR . 'vendor' . 
 if (!function_exists('oxTriggerOfflinePageDisplay')) {
     /**
      * Bulletproof offline page loader
+     *
+     * @deprecated
      */
     function oxTriggerOfflinePageDisplay(): void
     {
@@ -205,6 +207,8 @@ require_once OX_BASE_PATH . 'oxfunctions.php';
 
 /**
  * Custom bootstrap functionality.
+ *
+ * @deprecated
  */
 if (@is_readable(OX_BASE_PATH . 'modules/functions.php')) {
     include OX_BASE_PATH . 'modules/functions.php';

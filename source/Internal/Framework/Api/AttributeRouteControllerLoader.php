@@ -12,6 +12,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\Api;
 use Symfony\Component\Routing\Loader\AttributeClassLoader;
 use Symfony\Component\Routing\Route;
 
+/**
+ * @deprecated
+ */
 class AttributeRouteControllerLoader extends AttributeClassLoader
 {
     protected function configureRoute(

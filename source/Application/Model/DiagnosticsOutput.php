@@ -115,6 +115,8 @@ class DiagnosticsOutput
      * Sends generated file for download
      *
      * @param string $sOutputKey Output key.
+     *
+     * @deprecated
      */
     public function downloadResultFile($sOutputKey = null)
     {

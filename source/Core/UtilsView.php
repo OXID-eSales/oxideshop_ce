@@ -33,6 +33,8 @@ class UtilsView extends \OxidEsales\Eshop\Core\Base
      * @param object $oObject      object, witch template we wish to output
      *
      * @return string
+     *
+     * @deprecated
      */
     public function getTemplateOutput($templateName, $oObject)
     {

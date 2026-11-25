@@ -16,6 +16,9 @@ use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ * @deprecated
+ */
 class HttpExceptionListener implements EventSubscriberInterface
 {
     public static function getSubscribedEvents(): array

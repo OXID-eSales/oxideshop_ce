@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Utility\Header;
 
+/**
+ * @deprecated
+ */
 interface HeaderGeneratorInterface
 {
     /**

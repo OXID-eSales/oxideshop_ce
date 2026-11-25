@@ -9,6 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront;
 
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception\TooManyRequestsException;
 
+/**
+ * @deprecated
+ */
 interface RateLimitResponderInterface
 {
     public function respond(TooManyRequestsException $exception): void;

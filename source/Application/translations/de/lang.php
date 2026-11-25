@@ -146,7 +146,9 @@ $aLang = [
 'EXCEPTION_NOTALLOWEDTYPE'                                    => 'Verbotener Dateityp. Bitte config.inc.php anpassen, um diesen Dateityp zu erlauben.',
 'ERROR_MESSAGE_OUTOFSTOCK_OUTOFSTOCK'                         => 'Der Lagerbestand dieses Artikels ist nicht ausreichend! Verfügbar',
 'ERROR_MESSAGE_OXID_ESALES'                                   => 'OXID eSales',
+// @deprecated
 'ERROR_MESSAGE_OXID_SHOP_ERROR'                               => 'OXID eShop Fehler',
+// END deprecated
 'ERROR_MESSAGE_PASSWORD_DO_NOT_MATCH'                         => 'Fehler: Die Passwörter stimmen nicht überein.',
 // @deprecated will be removed in next major
 'ERROR_MESSAGE_PASSWORD_EMAIL_INVALID'                        => 'Bitte geben Sie eine gültige E-Mail-Adresse ein!',
@@ -288,7 +290,9 @@ $aLang = [
 'MESSAGE_PAYMENT_UNAVAILABLE_PAYMENT'                         => 'Die Zahlungsweise ist aus technischen Gründen derzeit leider nicht möglich. Bitte wählen Sie eine andere Zahlungsart!',
 'MESSAGE_PAYMENT_UNAVAILABLE_PAYMENT_ERROR'                   => 'Die Zahlungsweise ist aus technischen Gründen derzeit leider nicht möglich. Bitte wählen Sie eine andere Zahlungsart! (Fehler',
 'MESSAGE_PLEASE_CONTACT_SUPPORT'                              => 'Bitte wenden Sie sich an den technischen Support!',
+// @deprecated
 'MESSAGE_PLEASE_DELETE_FOLLOWING_DIRECTORY'                   => 'Bitte löschen Sie folgendes Verzeichnis',
+// END deprecated
 'MESSAGE_PRICE_ALARM_PRICE_CHANGE'                            => 'Wir informieren Sie gern darüber, falls der Preis dieses Artikels Ihrem Wunschpreis entspricht.',
 'MESSAGE_RATE_THIS_ARTICLE'                                   => 'Bewerten Sie diesen Artikel!',
 'MESSAGE_READ_DETAILS'                                        => 'Lesen Sie Details zum',

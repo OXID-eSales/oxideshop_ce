@@ -1098,6 +1098,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Checks if headers were already outputed
      *
      * @return bool
+     *
+     * @deprecated
      */
     public function isHeaderSent()
     {
@@ -1128,6 +1130,8 @@ class Session extends \OxidEsales\Eshop\Core\Base
      * Decide if need to set session headers to browser.
      *
      * @return bool
+     *
+     * @deprecated
      */
     protected function needToSetHeaders()
     {

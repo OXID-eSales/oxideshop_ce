@@ -9,6 +9,9 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\Exception;
 
+/**
+ * @deprecated
+ */
 class TooManyRequestsException extends \RuntimeException
 {
     public function __construct(

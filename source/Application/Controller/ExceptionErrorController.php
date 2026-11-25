@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Application\Controller;
 
 /**
  * Displays exception errors
+ *
+ * @deprecated
  */
 class ExceptionErrorController extends \OxidEsales\Eshop\Application\Controller\FrontendController
 {

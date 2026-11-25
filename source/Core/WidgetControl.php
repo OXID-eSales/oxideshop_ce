@@ -24,6 +24,8 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * Skip main tasks as it already handled in oxShopControl.
      *
      * @var bool
+     *
+     * @deprecated
      */
     protected $_blMainTasksExecuted = true;
 
@@ -44,6 +46,8 @@ class WidgetControl extends \OxidEsales\Eshop\Core\ShopControl
      * @param string $function   Function name
      * @param array  $parameters Parameters array
      * @param array  $viewsChain Array of views names that should be initialized also
+     *
+     * @deprecated
      */
     public function start($class = null, $function = null, $parameters = null, $viewsChain = null)
     {

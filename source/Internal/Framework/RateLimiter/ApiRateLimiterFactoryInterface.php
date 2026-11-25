@@ -9,6 +9,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter;
 
 use Symfony\Component\RateLimiter\LimiterInterface;
 
+/**
+ * @deprecated
+ */
 interface ApiRateLimiterFactoryInterface
 {
     public function create(string $clientIdentifier): LimiterInterface;

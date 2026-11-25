@@ -10,6 +10,8 @@ namespace OxidEsales\EshopCommunity\Core;
 /**
  * HTTP headers formator.
  * Collects HTTP headers and form HTTP header.
+ *
+ * @deprecated
  */
 class Header
 {

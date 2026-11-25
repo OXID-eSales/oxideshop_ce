@@ -332,6 +332,8 @@ class File extends \OxidEsales\Eshop\Core\Model\BaseModel
      * converts spec symbols to %xx combination
      *
      * @return string
+     *
+     * @deprecated
      */
     protected function getFilenameForUrl()
     {

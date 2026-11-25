@@ -11,6 +11,9 @@ namespace OxidEsales\EshopCommunity\Internal\Framework\RateLimiter;
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * @deprecated
+ */
 readonly class ClientIdentifierProvider implements ClientIdentifierProviderInterface
 {
     public function getClientIdentifier(Request $request): string

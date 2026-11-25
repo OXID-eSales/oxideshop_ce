@@ -9,6 +9,8 @@ namespace OxidEsales\EshopCommunity\Core;
 
 /**
  * Static class mostly containing static methods which are supposed to be called before the full framework initialization
+ *
+ * @deprecated
  */
 class Oxid
 {

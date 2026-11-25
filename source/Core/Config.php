@@ -358,6 +358,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * Parse SEO url parameters.
+     *
+     * @deprecated
      */
     protected function processSeoCall()
     {
@@ -2047,6 +2049,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * So just go straight and call the ExceptionHandler.
      *
      * @param \OxidEsales\Eshop\Core\Exception\DatabaseException $exception
+     *
+     * @deprecated
      */
     protected function handleDbConnectionException(\OxidEsales\Eshop\Core\Exception\DatabaseException $exception)
     {
@@ -2058,6 +2062,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
      * Redirect to start page and display the error
      *
      * @param \OxidEsales\Eshop\Core\Exception\StandardException $ex message to show on exit
+     *
+     * @deprecated
      */
     protected function handleCookieException($ex)
     {
@@ -2132,6 +2138,8 @@ class Config extends \OxidEsales\Eshop\Core\Base
 
     /**
      * @return \OxidEsales\Eshop\Core\Exception\ExceptionHandler
+     *
+     * @deprecated
      */
     protected function getExceptionHandler()
     {

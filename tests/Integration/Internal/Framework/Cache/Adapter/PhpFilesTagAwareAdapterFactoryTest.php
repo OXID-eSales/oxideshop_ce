@@ -9,10 +9,13 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Cache\Adapter;
 
+use OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\CachePoolGeneration;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\CachePoolGenerationInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter\PhpFilesTagAwareAdapterFactory;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
@@ -53,6 +56,28 @@ final class PhpFilesTagAwareAdapterFactoryTest extends TestCase
         $this->factory->create(1)->invalidateTags(['some-tag']);
 
         $this->assertSame('new', $this->storeTaggedItem('new'));
+    }
+
+    public function testCreateReturnsPoolThatWritesToGenerationRenewedAfterItsCreation(): void
+    {
+        $generation = $this->createGeneration();
+        $pool = (new PhpFilesTagAwareAdapterFactory($generation))->create(1);
+        $pool->getItem('some-key');
+        $generation->renew(1);
+
+        $pool->save($pool->getItem('some-key')->set('value'));
+
+        $this->assertTrue(
+            (new PhpFilesTagAwareAdapterFactory($this->createGeneration()))->create(1)->getItem('some-key')->isHit()
+        );
+    }
+
+    private function createGeneration(): CachePoolGeneration
+    {
+        $context = $this->createStub(BasicContextInterface::class);
+        $context->method('getCacheDirectory')->willReturn($this->directory);
+
+        return new CachePoolGeneration($context, new Filesystem(), new NullLogger());
     }
 
     private function storeTaggedItem(string $value): string

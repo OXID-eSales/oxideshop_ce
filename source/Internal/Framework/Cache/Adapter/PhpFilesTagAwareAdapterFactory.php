@@ -9,9 +9,6 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Internal\Framework\Cache\Adapter;
 
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
-use Symfony\Component\Cache\Adapter\TagAwareAdapter;
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 
 readonly class PhpFilesTagAwareAdapterFactory implements TagAwareAdapterFactoryInterface
@@ -22,11 +19,6 @@ readonly class PhpFilesTagAwareAdapterFactory implements TagAwareAdapterFactoryI
 
     public function create(int $shopId): TagAwareAdapterInterface
     {
-        $directory = $this->cachePoolGeneration->getDirectory($shopId);
-
-        return new TagAwareAdapter(
-            new PhpFilesAdapter(namespace: 'items', directory: $directory),
-            new FilesystemAdapter(namespace: 'tags', directory: $directory)
-        );
+        return new GenerationalTagAwareAdapter($this->cachePoolGeneration, $shopId);
     }
 }

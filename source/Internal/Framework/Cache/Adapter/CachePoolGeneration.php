@@ -16,26 +16,33 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\Finder\Finder;
 
-readonly class CachePoolGeneration implements CachePoolGenerationInterface
+class CachePoolGeneration implements CachePoolGenerationInterface
 {
+    /**
+     * @var array<int, string>
+     */
+    private array $generations = [];
+
     public function __construct(
-        private BasicContextInterface $context,
-        private Filesystem $filesystem,
-        private LoggerInterface $logger,
+        private readonly BasicContextInterface $context,
+        private readonly Filesystem $filesystem,
+        private readonly LoggerInterface $logger,
     ) {
     }
 
     public function getDirectory(int $shopId): string
     {
-        return Path::join($this->getShopDirectory($shopId), $this->getCurrentGeneration($shopId));
+        $this->generations[$shopId] ??= $this->getCurrentGeneration($shopId);
+
+        return Path::join($this->getShopDirectory($shopId), $this->generations[$shopId]);
     }
 
     public function renew(int $shopId): void
     {
-        $generation = bin2hex(random_bytes(4));
-        $this->filesystem->dumpFile($this->getGenerationFile($shopId), $generation);
+        $this->generations[$shopId] = bin2hex(random_bytes(4));
+        $this->filesystem->dumpFile($this->getGenerationFile($shopId), $this->generations[$shopId]);
 
-        $this->removeOldGenerations($shopId, $generation);
+        $this->removeOldGenerations($shopId, $this->generations[$shopId]);
     }
 
     private function getShopDirectory(int $shopId): string

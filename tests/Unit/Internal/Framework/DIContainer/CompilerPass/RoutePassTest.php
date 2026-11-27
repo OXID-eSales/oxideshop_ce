@@ -10,13 +10,8 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\DIContainer\CompilerPass;
 
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\CompilerPass\RoutePass;
-use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\ReservedRoutePathException;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\DIContainer\CompilerPass\Fixtures\ApiController;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\DIContainer\CompilerPass\Fixtures\IndexScriptPathController;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\DIContainer\CompilerPass\Fixtures\OptionalPathParameterController;
-use OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\DIContainer\CompilerPass\Fixtures\RootPathController;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\DIContainer\CompilerPass\Fixtures\SlugController;
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
@@ -46,23 +41,6 @@ final class RoutePassTest extends TestCase
         $this->expectException(ResourceNotFoundException::class);
 
         $this->matcher($container)->match('/api/items/7');
-    }
-
-    #[DataProvider('controllerMatchingShopEntryPointDataProvider')]
-    public function testProcessRejectsRouteMatchingShopEntryPoint(string $controllerClass): void
-    {
-        $this->expectException(ReservedRoutePathException::class);
-
-        new RoutePass()->process($this->containerWithPublicService($controllerClass));
-    }
-
-    public static function controllerMatchingShopEntryPointDataProvider(): array
-    {
-        return [
-            'root path' => [RootPathController::class],
-            'index.php' => [IndexScriptPathController::class],
-            'optional parameter on root path' => [OptionalPathParameterController::class],
-        ];
     }
 
     public function testProcessCompilesRouteWithPathParameter(): void

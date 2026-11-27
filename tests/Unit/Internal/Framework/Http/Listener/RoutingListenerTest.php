@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Framework\Http\Listener;
 
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RoutingListener;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -71,6 +72,26 @@ final class RoutingListenerTest extends TestCase
         $this->assertSame($fallbackController, $request->attributes->get('_controller'));
     }
 
+    #[DataProvider('requestMethodDataProvider')]
+    public function testOnKernelRequestLeavesRootPathToFallbackController(string $method): void
+    {
+        $fallbackController = static fn(): Response => new Response();
+        $request = Request::create('/', $method);
+        $request->attributes->set('_fallback_controller', $fallbackController);
+
+        $this->dispatch($request);
+
+        $this->assertSame($fallbackController, $request->attributes->get('_controller'));
+    }
+
+    public static function requestMethodDataProvider(): array
+    {
+        return [
+            'method of the root route' => ['POST'],
+            'other method' => ['GET'],
+        ];
+    }
+
     public function testOnKernelRequestRejectsUnroutedPathWithoutFallbackController(): void
     {
         $this->expectException(NotFoundHttpException::class);
@@ -122,6 +143,7 @@ final class RoutingListenerTest extends TestCase
     private function compiledRoutes(): array
     {
         $routes = new RouteCollection();
+        $routes->add('root', new Route('/', ['_controller' => 'root-controller'], methods: ['POST']));
         $routes->add('routed', new Route('/routed/{id}', ['_controller' => 'routed-controller'], methods: ['GET']));
         $routes->add('api', new Route('/api/routed/{id}', ['_controller' => 'routed-controller'], methods: ['GET']));
         $routes->add('api_xml', new Route('/api/xml/{id}', ['_controller' => 'routed-controller', '_format' => 'xml']));

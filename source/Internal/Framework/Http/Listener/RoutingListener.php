@@ -64,6 +64,10 @@ readonly class RoutingListener implements EventSubscriberInterface
 
     private function matchRoute(Request $request): array
     {
+        if ($request->getPathInfo() === '/') {
+            throw new ResourceNotFoundException();
+        }
+
         $context = new RequestContext();
         $context->fromRequest($request);
 

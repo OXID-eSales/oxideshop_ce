@@ -91,11 +91,11 @@ final class ModuleControllerApiTest extends TestCase
     }
 
     #[DataProvider('entryPointDataProvider')]
-    public function testOtherEntryPointsIgnoreModuleRoutes(string $path): void
+    public function testOtherEntryPointsDoNotServeModuleRoutes(string $path): void
     {
         $response = $this->request('GET', $path);
 
-        $this->assertSame(200, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
         $this->assertStringNotContainsString('json', (string) $response->getHeader('Content-Type'));
         $this->assertStringNotContainsString('"name":"oxid"', $response->getContent());
     }

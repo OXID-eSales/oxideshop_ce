@@ -10,6 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http;
 
 use OxidEsales\Eshop\Core\SeoDecoder;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -18,9 +19,26 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 readonly class LegacyRoutingListener implements EventSubscriberInterface
 {
+    public function __construct(private ContextInterface $context)
+    {
+    }
+
     public static function getSubscribedEvents(): array
     {
-        return [KernelEvents::REQUEST => ['onKernelRequest', 24]];
+        return [
+            KernelEvents::REQUEST => [
+                ['rejectPathOfLegacyOnlyEntryPoint', 40],
+                ['onKernelRequest', 24],
+            ],
+        ];
+    }
+
+    public function rejectPathOfLegacyOnlyEntryPoint(RequestEvent $event): void
+    {
+        $request = $event->getRequest();
+        if ($event->isMainRequest() && $request->getPathInfo() !== '/' && $this->isLegacyOnlyEntryPoint($request)) {
+            throw new NotFoundHttpException($request->getPathInfo());
+        }
     }
 
     public function onKernelRequest(RequestEvent $event): void
@@ -37,6 +55,11 @@ readonly class LegacyRoutingListener implements EventSubscriberInterface
         if ($request->getPathInfo() !== '/' && !$this->hasControllerKey($request)) {
             throw new NotFoundHttpException($request->getPathInfo());
         }
+    }
+
+    private function isLegacyOnlyEntryPoint(Request $request): bool
+    {
+        return $this->context->isAdmin() || str_ends_with($request->getScriptName(), '/widget.php');
     }
 
     private function isHandledByTheLegacyController(Request $request): bool

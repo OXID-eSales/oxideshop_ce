@@ -24,7 +24,7 @@ if (!defined('OX_ADMIN_DIR')) {
 require_once __DIR__ . '/../bootstrap.php';
 
 $request = ContainerFacade::get(Request::class);
-ContainerFacade::get(ShopRunnerInterface::class)->runController($request, static function () use ($request): Response {
+ContainerFacade::get(ShopRunnerInterface::class)->run(static function () use ($request): Response {
     if (!$request->isXmlHttpRequest()) {
         return new Response();
     }

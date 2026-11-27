@@ -24,6 +24,7 @@ services:
     class: OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunner
     arguments:
       $kernel: '@Symfony\Component\HttpKernel\HttpKernelInterface'
+      $request: '@Symfony\Component\HttpFoundation\Request'
     public: true
 
   OxidEsales\EshopCommunity\Application\Controller\NotFoundController:

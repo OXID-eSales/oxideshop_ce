@@ -49,28 +49,17 @@ final class ShopRunnerTest extends TestCase
     {
         $this->expectOutputString('fallback-body');
 
-        $this->createShopRunner()->run(Request::create('/'), static fn(): Response => new Response('fallback-body'));
+        $this->createShopRunner(Request::create('/'))->run(static fn(): Response => new Response('fallback-body'));
 
         $this->assertSame('fallback-body', $this->terminatedWith);
     }
 
-    public function testRunRoutesSendsResponseOfMatchingRoute(): void
+    public function testRunSendsResponseOfMatchingRouteInsteadOfFallback(): void
     {
         $this->expectOutputString('routed-body id=some-id');
 
-        $this->createShopRunner()->runRoutes(Request::create('/routed/some-id'));
-    }
-
-    public function testRunControllerIgnoresRoutes(): void
-    {
-        $this->expectOutputString('given-controller-body');
-
-        $this->createShopRunner()->runController(
-            Request::create('/routed/some-id'),
-            static fn(): Response => new Response('given-controller-body')
-        );
-
-        $this->assertSame('given-controller-body', $this->terminatedWith);
+        $this->createShopRunner(Request::create('/routed/some-id'))
+            ->run(static fn(): Response => new Response('fallback-body'));
     }
 
     public static function routedController(string $id): Response
@@ -78,7 +67,7 @@ final class ShopRunnerTest extends TestCase
         return new Response('routed-body id=' . $id);
     }
 
-    private function createShopRunner(): ShopRunner
+    private function createShopRunner(Request $request): ShopRunner
     {
         return new ShopRunner(
             new HttpKernel(
@@ -86,7 +75,8 @@ final class ShopRunnerTest extends TestCase
                 new ContainerControllerResolver(new Container()),
                 new RequestStack(),
                 new ArgumentResolver()
-            )
+            ),
+            $request
         );
     }
 

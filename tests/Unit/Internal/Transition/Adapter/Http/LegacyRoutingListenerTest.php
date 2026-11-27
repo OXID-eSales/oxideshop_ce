@@ -13,6 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Http\ErrorRenderer\ProblemJsonE
 use OxidEsales\EshopCommunity\Internal\Framework\Http\Listener\RoutingListener;
 use OxidEsales\EshopCommunity\Internal\Framework\RateLimiter\Storefront\StorefrontRateLimitListener;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\Http\LegacyRoutingListener;
+use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\ErrorHandler\ErrorRenderer\HtmlErrorRenderer;
@@ -32,12 +33,43 @@ use Symfony\Component\Routing\RouteCollection;
 
 final class LegacyRoutingListenerTest extends TestCase
 {
-    public function testSubscribesAfterRoutingAndBeforeTheRateLimiter(): void
+    public function testRejectsPathsOfLegacyOnlyEntryPointsBeforeRouting(): void
     {
-        $priority = $this->requestPriority(LegacyRoutingListener::getSubscribedEvents());
+        $this->assertGreaterThan(
+            $this->requestPriority(RoutingListener::getSubscribedEvents()),
+            $this->legacyPriority('rejectPathOfLegacyOnlyEntryPoint')
+        );
+    }
+
+    public function testHandlesLegacyPathsAfterRoutingAndBeforeTheRateLimiter(): void
+    {
+        $priority = $this->legacyPriority('onKernelRequest');
 
         $this->assertLessThan($this->requestPriority(RoutingListener::getSubscribedEvents()), $priority);
         $this->assertGreaterThan($this->requestPriority(StorefrontRateLimitListener::getSubscribedEvents()), $priority);
+    }
+
+    public function testAnswersARoutedPathOfAnAdminRequestWithNotFound(): void
+    {
+        $response = $this->handle($this->withFallbackController(Request::create('/routed/some-id')), isAdmin: true);
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    public function testAnswersARoutedPathOfAWidgetRequestWithNotFound(): void
+    {
+        $request = Request::create('/routed/some-id', server: ['SCRIPT_NAME' => '/widget.php']);
+
+        $response = $this->handle($this->withFallbackController($request));
+
+        $this->assertSame(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+    }
+
+    public function testKeepsTheLegacyControllerOfAnAdminRequestWithoutPath(): void
+    {
+        $response = $this->handle($this->withFallbackController(Request::create('/')), isAdmin: true);
+
+        $this->assertSame('fallback-body', $response->getContent());
     }
 
     public function testKeepsTheLegacyControllerForTheRootPath(): void
@@ -105,7 +137,7 @@ final class LegacyRoutingListenerTest extends TestCase
         return new Response('routed-body id=' . $id);
     }
 
-    private function handle(Request $request): Response
+    private function handle(Request $request, bool $isAdmin = false): Response
     {
         $dispatcher = new EventDispatcher();
         $requestStack = new RequestStack();
@@ -117,7 +149,9 @@ final class LegacyRoutingListenerTest extends TestCase
             handleAllThrowables: true
         );
         $dispatcher->addSubscriber(new RoutingListener($this->compiledRoutes()));
-        $dispatcher->addSubscriber(new LegacyRoutingListener());
+        $dispatcher->addSubscriber(new LegacyRoutingListener(
+            $this->createConfiguredStub(ContextInterface::class, ['isAdmin' => $isAdmin])
+        ));
         $dispatcher->addSubscriber(new ErrorListener(new ErrorController(
             $kernel,
             null,
@@ -137,6 +171,11 @@ final class LegacyRoutingListenerTest extends TestCase
     private function requestPriority(array $subscribedEvents): int
     {
         return $subscribedEvents[KernelEvents::REQUEST][1];
+    }
+
+    private function legacyPriority(string $method): int
+    {
+        return array_column(LegacyRoutingListener::getSubscribedEvents()[KernelEvents::REQUEST], 1, 0)[$method];
     }
 
     private function compiledRoutes(): array

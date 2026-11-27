@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 use OxidEsales\EshopCommunity\Core\Di\ContainerFacade;
 use OxidEsales\EshopCommunity\Internal\Framework\Http\ShopRunnerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 require_once __DIR__ . '/bootstrap.php';
 
-ContainerFacade::get(ShopRunnerInterface::class)->runRoutes(ContainerFacade::get(Request::class));
+ContainerFacade::get(ShopRunnerInterface::class)->run(
+    static fn(): Response => throw new NotFoundHttpException()
+);
